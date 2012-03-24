@@ -27,6 +27,7 @@ gem 'handlebars_assets'
 
 # Helpers
 gem 'default_value_for'
+gem 'grit'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

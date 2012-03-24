@@ -1,5 +1,5 @@
 <h4 class="top"><%= link_to release.name, release %></h4>
-<ul>
+<ul class="changes">
   <% release.changes.each do |change| %>
     <li><%= change.message %></li>
   <% end %>

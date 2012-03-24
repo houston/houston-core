@@ -11,17 +11,16 @@
   <% end %>
 <% end %>
 
-<p>
-  <b>Name</b><br>
-  <%= @release.name %>
-</p>
+<h3><%= @release.name %></h4>
+<ul class="changes">
+  <% @release.changes.each do |change| %>
+    <li><%= change.message %></li>
+  <% end %>
+</ul>
 
-<p>
-  <b>Commit0</b><br>
-  <%= @release.commit0 %>
-</p>
-
-<p>
-  <b>Commit1</b><br>
-  <%= @release.commit1 %>
-</p>
+<h5>Commits</h5>
+<ul class="commits">
+  <% @release.commits.each do |commit| %>
+    <li><%= commit.message %></li>
+  <% end %>
+</ul>

@@ -11,13 +11,23 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120324212946) do
+ActiveRecord::Schema.define(:version => 20120324230038) do
 
   create_table "changes", :force => true do |t|
     t.integer  "release_id"
     t.string   "description"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+  end
+
+  create_table "commits", :force => true do |t|
+    t.integer  "release_id"
+    t.string   "sha"
+    t.text     "message"
+    t.string   "committer"
+    t.date     "date"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "environments", :force => true do |t|
@@ -29,9 +39,10 @@ ActiveRecord::Schema.define(:version => 20120324212946) do
   end
 
   create_table "projects", :force => true do |t|
-    t.string   "title"
+    t.string   "name"
     t.string   "slug"
     t.integer  "unfuddle_id"
+    t.string   "git_url"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
   end

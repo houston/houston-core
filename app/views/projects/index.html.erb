@@ -15,7 +15,7 @@
   <tbody>
     <% @projects.each do |project| %>
       <tr>
-        <td><%= link_to project.title, project_path(project) %></td>
+        <td><%= link_to project.name, project_path(project) %></td>
         <td><%= project.created_at %></td>
       </tr>
     <% end %>
