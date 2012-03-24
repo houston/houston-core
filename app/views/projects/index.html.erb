@@ -1,0 +1,26 @@
+<h1>Projects</h1>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Title</th>
+      <th>Created at</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @projects.each do |project| %>
+      <tr>
+        <td><%= project.id %></td>
+        <td><%= link_to project.title, project_path(project) %></td>
+        <td><%= project.created_at %></td>
+        <td>
+          <%= link_to 'Edit', edit_project_path(project), :class => 'btn btn-mini' %>
+          <%= link_to 'Destroy', project_path(project), :method => :delete, :confirm => 'Are you sure?', :class => 'btn btn-mini btn-danger' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to 'New', new_project_path, :class => 'btn btn-primary' %>

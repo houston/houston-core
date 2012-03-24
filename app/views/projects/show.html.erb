@@ -1,0 +1,22 @@
+<h1>/Project</h1>
+
+<p>
+  <b>Title</b><br>
+  <%= @project.title %>
+</p>
+
+<p>
+  <b>Slug</b><br>
+  <%= @project.slug %>
+</p>
+
+<p>
+  <b>Unfuddle</b><br>
+  <%= @project.unfuddle_id %>
+</p>
+
+<div class="form-actions">
+  <%= link_to 'Back', projects_path, :class => 'btn'  %>
+  <%= link_to 'Edit', edit_project_path(@project), :class => 'btn' %>
+  <%= link_to 'Delete', project_path(@project), :method => 'delete', :confirm => 'Are you sure?', :class => 'btn btn-danger' %>
+</div>

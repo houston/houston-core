@@ -2,6 +2,8 @@ Changelog::Application.routes.draw do
   
   root :to => "home#index", :via => :get
   
+  resources :projects
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
