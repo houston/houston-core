@@ -9,17 +9,22 @@
   <% end %>
 <% end %>
 
-<p>
-  <b>Slug</b><br>
-  <%= @environment.slug %>
-</p>
+<% if @releases.length > 0 %>
+  <h5>Current Release</h5>
+  <div class="current-release">
+    <%= render :partial => @releases.first %>
+  </div>
+<% else %>
+  <p>No releases.</p>
+<% end %>
 
-<p>
-  <b>Name</b><br>
-  <%= @environment.name %>
-</p>
+<% if @releases.length > 1 %>
+  <h5>Past Releases</h5>
+  <div class="previous-releases">
+    <% @releases[1..-1].each do |release| %>
+      <%= render :partial => release %>
+    <% end %>
+  </div>
+<% end %>
 
-<p>
-  <b>Project</b><br>
-  <%= @environment.project_id %>
-</p>
+<%= link_to 'New Release', new_project_environment_release_path(@project, @environment), :class => 'btn btn-primary' %>

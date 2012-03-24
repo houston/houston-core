@@ -3,7 +3,9 @@ Changelog::Application.routes.draw do
   root :to => "home#index", :via => :get
   
   resources :projects do
-    resources :environments, :controller => "project_environments"
+    resources :environments, :controller => "project_environments" do
+      resources :releases
+    end
   end
 
   # The priority is based upon order of creation:

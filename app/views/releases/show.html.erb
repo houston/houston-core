@@ -1,0 +1,27 @@
+<%= header do |p| %>
+  <%= p.breadcrumbs "Projects" => projects_path,
+                    @project.name => Project.all,
+                    "Environments" => project_environments_path(@project),
+                    @environment.name => @project.environments,
+                    "Releases" => project_environment_releases_path(@project, @environment),
+                    @release.name => @environment.releases %>
+  <%= p.actions do %>
+    <%= link_to 'Edit', edit_release_path(@release), :class => 'btn' %>
+    <%= link_to 'Delete', release_path(@release), :method => 'delete', :confirm => 'Are you sure?', :class => 'btn btn-danger' %>
+  <% end %>
+<% end %>
+
+<p>
+  <b>Name</b><br>
+  <%= @release.name %>
+</p>
+
+<p>
+  <b>Commit0</b><br>
+  <%= @release.commit0 %>
+</p>
+
+<p>
+  <b>Commit1</b><br>
+  <%= @release.commit1 %>
+</p>

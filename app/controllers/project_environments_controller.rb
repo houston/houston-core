@@ -17,6 +17,7 @@ class ProjectEnvironmentsController < ApplicationController
   # GET /environments/1.json
   def show
     @environment = @project.environments.find_by_slug!(params[:id])
+    @releases = @environment.releases
 
     respond_to do |format|
       format.html # show.html.erb

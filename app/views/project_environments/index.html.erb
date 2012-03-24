@@ -7,4 +7,17 @@
   <% end %>
 <% end %>
 
-<%= render :partial => "table" %>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @environments.each do |environment| %>
+      <tr>
+        <td><%= link_to environment.name, environment_path(environment) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

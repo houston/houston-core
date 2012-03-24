@@ -11,7 +11,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120324202224) do
+ActiveRecord::Schema.define(:version => 20120324212946) do
+
+  create_table "changes", :force => true do |t|
+    t.integer  "release_id"
+    t.string   "description"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
 
   create_table "environments", :force => true do |t|
     t.string   "slug"
@@ -27,6 +34,15 @@ ActiveRecord::Schema.define(:version => 20120324202224) do
     t.integer  "unfuddle_id"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+  end
+
+  create_table "releases", :force => true do |t|
+    t.integer  "environment_id"
+    t.string   "name"
+    t.string   "commit0"
+    t.string   "commit1"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
   end
 
 end

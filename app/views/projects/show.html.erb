@@ -7,6 +7,18 @@
   <% end %>
 <% end %>
 
-<h2>Environments</h2>
-<%= render :partial => "project_environments/table" %>
+<% @environments.each do |environment| %>
+  <% release = environment.releases.first %>
+  <% if release %>
+    <h5><b><%= link_to environment.name, environment %></b> &mdash; Last Release</h5>
+    <div class="well">
+      <%= render :partial => release %>
+    </div>
+  <% else %>
+    <h5><b><%= link_to environment.name, environment %></b></h5>
+    <div class="well">
+      <p>No releases</p>
+    </div>
+  <% end %>
+<% end %>
 
