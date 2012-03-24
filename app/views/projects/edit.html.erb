@@ -1,4 +1,6 @@
-<%= breadcrumbs "Projects" => projects_path,
-                @project.name => Project.all %>
+<%= header do |p| %>
+  <%= p.breadcrumbs "Projects" => projects_path,
+                    @project.name => Project.all %>
+<% end %>
 
 <%= render :partial => 'form' %>

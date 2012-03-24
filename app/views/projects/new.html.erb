@@ -1,3 +1,5 @@
-<%= breadcrumbs "Projects" => projects_path, "New" => nil %>
+<%= header do |p| %>
+  <%= p.breadcrumbs "Projects" => projects_path, "New" => nil %>
+<% end %>
 
 <%= render :partial => 'form' %>
