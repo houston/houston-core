@@ -1,0 +1,6 @@
+<%= breadcrumbs "Projects" => projects_path,
+                @project.name => Project.all,
+                "Environments" => project_environments_path(@project),
+                "New" => nil %>
+
+<%= render :partial => 'form' %>

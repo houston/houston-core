@@ -1,0 +1,5 @@
+<%= breadcrumbs "Projects" => projects_path,
+                @project.name => Project.all,
+                "Environments" => nil %>
+
+<%= render :partial => "table" %>

@@ -1,0 +1,25 @@
+<%= breadcrumbs "Projects" => projects_path,
+                @project.name => Project.all,
+                "Environments" => project_environments_path(@project),
+                @environment.name => @project.environments %>
+
+<p>
+  <b>Slug</b><br>
+  <%= @environment.slug %>
+</p>
+
+<p>
+  <b>Name</b><br>
+  <%= @environment.name %>
+</p>
+
+<p>
+  <b>Project</b><br>
+  <%= @environment.project_id %>
+</p>
+
+<div class="form-actions">
+  <%= link_to 'Back', environments_path, :class => 'btn'  %>
+  <%= link_to 'Edit', edit_environment_path(@environment), :class => 'btn' %>
+  <%= link_to 'Delete', environment_path(@environment), :method => 'delete', :confirm => 'Are you sure?', :class => 'btn btn-danger' %>
+</div>
