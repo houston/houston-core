@@ -2,6 +2,10 @@ class Project < ActiveRecord::Base
   
   has_many :environments, :dependent => :destroy
   
+  accepts_nested_attributes_for :environments, :allow_destroy => true
+  
+  
+  
   def to_param
     slug
   end

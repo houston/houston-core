@@ -1,7 +1,6 @@
 <%= header do |p| %>
   <%= p.breadcrumbs "Projects" => projects_path,
                     @project.name => Project.all,
-                    "Environments" => project_environments_path(@project),
                     @environment.name => @project.environments %>
 <% end %>
 

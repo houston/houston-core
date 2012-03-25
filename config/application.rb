@@ -55,5 +55,11 @@ module Changelog
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
+    
+    def config.default_environments
+      # !todo: read this from a config file
+      [ {slug: "dev", name: "PRI"},
+        {slug: "master", name: "Production"} ]
+    end
   end
 end

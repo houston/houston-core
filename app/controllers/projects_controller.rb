@@ -26,6 +26,7 @@ class ProjectsController < ApplicationController
   # GET /projects/new.json
   def new
     @project = Project.new
+    @project.environments.build(Rails.configuration.default_environments) if @project.environments.none?
 
     respond_to do |format|
       format.html # new.html.erb

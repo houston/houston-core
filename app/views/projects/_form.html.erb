@@ -20,6 +20,17 @@
         <%= f.number_field :unfuddle_id, :class => 'number_field' %>
       </div>
     </div>
+    
+    <%# !todo: warn before deleting an environment %>
+    <div class="control-group">
+      <%= f.label :environments, :class => 'control-label' %>
+      <div class="controls changes-nested-editor">
+        <%= f.nested_editor_for :environments do |f| -%>
+          <div class="environment-name"><%= f.text_field :name %></div>
+          <div class="environment-slug"><%= f.text_field :slug %></div>
+        <% end -%>
+      </div>
+    </div>
 
     <div class="form-actions">
       <%= f.submit nil, :class => 'btn btn-primary' %>
