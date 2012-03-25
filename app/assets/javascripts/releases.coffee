@@ -10,3 +10,8 @@ $ ->
       e.preventDefault()
       e.stopImmediatePropagation()
       FT.deleteNestedRow(FT.getNestedRowFromEvent(e));      
+    if e.keyCode == 38
+      $(this).closest('.nested-row').prev().find('input').select()
+    if e.keyCode == 40
+      $(this).closest('.nested-row').next().find('input').select()
+      
