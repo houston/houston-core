@@ -1,0 +1,6 @@
+[submodule "lib/lail_extensions"]
+	path = lib/lail_extensions
+	url = git://github.com/boblail/lail_extensions.git
+[submodule "lib/freight_train"]
+	path = lib/freight_train
+	url = git://github.com/boblail/freight_train.git

@@ -8,16 +8,11 @@
     </div>
 
     <div class="control-group">
-      <%= f.label :commit0, :class => 'control-label' %>
-      <div class="controls">
-        <%= f.text_field :commit0, :class => 'text_field' %>
-      </div>
-    </div>
-
-    <div class="control-group">
-      <%= f.label :commit1, :class => 'control-label' %>
-      <div class="controls">
-        <%= f.text_field :commit1, :class => 'text_field' %>
+      <%= f.label :changes, :class => 'control-label' %>
+      <div class="controls changes-nested-editor">
+        <%= f.nested_editor_for :changes do |f| -%>
+          <div class="change-description"><%= f.text_field :description %></div>
+        <% end -%>
       </div>
     </div>
 

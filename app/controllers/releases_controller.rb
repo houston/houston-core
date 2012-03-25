@@ -27,7 +27,9 @@ class ReleasesController < ApplicationController
   # GET /releases/new
   # GET /releases/new.json
   def new
-    @release = @environment.releases.new
+    @release = @environment.releases.new(params.pick(:commit0, :commit1))
+    @release.build_changes_from_commits if @release.can_read_commits?
+    @release.changes.build if @release.changes.none?
 
     respond_to do |format|
       format.html # new.html.erb
@@ -38,6 +40,7 @@ class ReleasesController < ApplicationController
   # GET /releases/1/edit
   def edit
     @release = @environment.releases.find(params[:id])
+    @release.changes.build if @release.changes.none?
   end
 
   # POST /releases
