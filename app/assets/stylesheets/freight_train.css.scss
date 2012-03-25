@@ -13,3 +13,8 @@
     }
   }
 }
+
+.add-link, .delete-link { 
+  opacity: 0.2;
+  &:hover { opacity: 1; }
+}
