@@ -17,7 +17,7 @@ class Project < ActiveRecord::Base
   end
   
   def git_uri
-    @git_uri ||= URI(git_url)
+    @git_uri ||= Addressable::URI.parse(git_url)
   end
   
   def temp_path
@@ -36,6 +36,14 @@ private
   
   
   
+  # Git repositories can be located on the local
+  # machine (e.g. /path/to/repo) or they can be
+  # located on remotely (e.g. git@host:repo.git).
+  #
+  # If the repo is local, we don't need to check
+  # out a copy. If it is remote, we want to clone
+  # it to a temp folder and then manipulate it.
+  #
   def get_local_git_path
     if git_uri.absolute?
       get_local_copy_of_project!

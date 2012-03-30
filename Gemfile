@@ -26,6 +26,7 @@ gem 'backbone-rails'
 gem 'handlebars_assets'
 
 # Helpers
+gem 'addressable', :require => 'addressable/uri'
 gem 'default_value_for'
 gem 'grit'
 
