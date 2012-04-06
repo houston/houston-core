@@ -25,7 +25,7 @@ module BreadcrumbsHelper
       render_selected_breadcrumb(active, name)
     elsif value.is_a?(Array)
       if value.length <= 1
-        render_selected_breadcrumb(active, name)
+        render_breadcrumb_option(name, active)
       else
         render_dropdown_breadcrumb(active, name, value)
       end
@@ -34,19 +34,20 @@ module BreadcrumbsHelper
     end
   end
   
-  def render_dropdown_breadcrumb(active, name, options)
+  def render_dropdown_breadcrumb(active, model, options)
     <<-HTML
     <li class="dropdown #{"active" if active}">
-      <a class="dropdown-toggle" data-toggle="dropdown" href="#">#{name} <b class="caret"></b></a>
+      <a class="dropdown-toggle" data-toggle="dropdown" href="#">#{model.name} <b class="caret"></b></a>
       <ul class="dropdown-menu">
+        
         #{options.map(&method(:render_breadcrumb_option)).join}
       </ul>
     </li>
     HTML
   end
   
-  def render_breadcrumb_option(model)
-    "<li><a href=\"#{url_for(model)}\">#{model.name}</a></li>"
+  def render_breadcrumb_option(model, active=false)
+    "<li class=\"#{"active" if active}\"><a href=\"#{url_for(model)}\">#{model.name}</a></li>"
   end
   
   def render_simple_breadcrumb(active, name, url)

@@ -1,9 +1,9 @@
 <%= header do |p| %>
   <%= p.breadcrumbs "Projects" => projects_path,
-                    @project.name => Project.all,
-                    @environment.name => @project.environments,
+                    @project => Project.all,
+                    @environment => @project.environments,
                     "Releases" => project_environment_releases_path(@project, @environment),
-                    @release.name => @environment.releases %>
+                    @release => @environment.releases %>
 <% end %>
 
 <%= render :partial => 'form' %>

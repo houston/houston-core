@@ -1,6 +1,6 @@
 <%= header do |p| %>
   <%= p.breadcrumbs "Projects" => projects_path,
-                    @project.name => Project.all %>
+                    @project => Project.all %>
   <%= p.actions do %>
     <%= link_to 'Edit', edit_project_path(@project), :class => 'btn' %>
     <%= link_to 'Delete', project_path(@project), :method => 'delete', :confirm => 'Are you sure?', :class => 'btn btn-danger' %>
