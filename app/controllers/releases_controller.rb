@@ -27,7 +27,9 @@ class ReleasesController < ApplicationController
   # GET /releases/new
   # GET /releases/new.json
   def new
-    @release = @environment.releases.new(params.pick(:commit0, :commit1))
+    @release = @environment.releases.new(
+      commit0: @environment.last_commit,
+      commit1: params[:commit])
     @release.build_changes_from_commits if @release.can_read_commits?
     @release.changes.build if @release.changes.none?
 

@@ -7,4 +7,9 @@ class Environment < ActiveRecord::Base
     slug
   end
   
+  def last_commit
+    last_release = releases.first
+    last_release ? last_release.commit1 : initial_commit
+  end
+  
 end
