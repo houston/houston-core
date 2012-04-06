@@ -10,12 +10,18 @@
   <% end %>
 <% end %>
 
-<h3><%= @release.name %></h4>
+<h3><%= @release.name %></h3>
+
+<br />
+
+<h5>Changes</h5>
 <ul class="changes">
   <% @release.changes.each do |change| %>
     <li><%= change.description %></li>
   <% end %>
 </ul>
+
+<br />
 
 <h5>Commits</h5>
 <ul class="commits">
