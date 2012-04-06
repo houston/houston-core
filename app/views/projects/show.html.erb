@@ -10,14 +10,21 @@
 <% @environments.each do |environment| %>
   <% release = environment.releases.first %>
   <% if release %>
-    <h5><b><%= link_to environment.name, environment %></b> &mdash; Last Release</h5>
+    <h5>
+      <b><%= link_to environment.name, environment %></b>
+      &mdash; Last Release
+    </h5>
     <div class="well">
       <%= render :partial => release %>
+      <%= link_to "New Release", new_project_environment_release_path(@project, environment), :class => 'btn btn-primary btn-mini btn-new-release' %>
     </div>
   <% else %>
-    <h5><b><%= link_to environment.name, environment %></b></h5>
+    <h5>
+      <b><%= link_to environment.name, environment %></b>
+    </h5>
     <div class="well">
       <p>No releases</p>
+      <%= link_to "New Release", new_project_environment_release_path(@project, environment), :class => 'btn btn-primary btn-mini btn-new-release' %>
     </div>
   <% end %>
 <% end %>
