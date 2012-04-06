@@ -9,40 +9,52 @@
   <thead>
     <tr>
       <th class="project-title">Title</th>
-      <th class="project-releases">Releases</th>
+      <th class="project-environments">Environments</th>
       <th class="project-last-release">Last Release</th>
+      <th class="project-releases">Releases</th>
+      <th class="project-new-release"></th>
     </tr>
   </thead>
   <tbody>
     <% @projects.each do |project| %>
       <tr>
         <td class="project-title"><%= link_to project.name, project_path(project) %></td>
-        <td class="project-releases">
-          <% project.environments.each do |environment| %>
-            <dl class="grouped-values">
-              <dt><%= link_to environment.name, project_environment_path(project, environment) %></dt>
-              <dd>
-                <%= count = environment.releases.count %>
-                <span<%= ' style="visibility:hidden;"'.html_safe if count == 0 %>>
-                  (<%= link_to "View", project_environment_releases_path(project, environment) %>)
-                </span>
-              </dd>
-            </dl>
-          <% end %>
+        <td class="project-environments">
+          <ol>
+            <% project.environments.each do |environment| %>
+              <li><%= link_to environment.name, project_environment_path(project, environment) %></li>
+            <% end %>
+          </ol>
         </td>
         <td class="project-last-release">
-          <% project.environments.each do |environment| %>
-            <dl class="grouped-values">
-              <dd>
+          <ol>
+            <% project.environments.each do |environment| %>
+              <li>
                 <% if release = environment.releases.first %>
                   <%= link_to format_release_date(release), project_environment_release_path(project, environment, release) %>
                 <% else %>
                   &mdash;
                 <% end %>
-              </dd>
-              <dt><%= link_to environment.name, project_environment_path(project, environment) %></dt>
-            </dl>
-          <% end %>
+              </li>
+            <% end %>
+          </ol>
+        </td>
+        <td class="project-releases">
+          <ol>
+            <% project.environments.each do |environment| %>
+              <li><%= environment.releases.count %></li>
+            <% end %>
+          </ol>
+        </td>
+        <td class="project-new-release">
+          <ol>
+            <% project.environments.each do |environment| %>
+              <li>
+                <%= link_to "New Release", new_project_environment_release_path(project, environment), :class => 'btn btn-primary btn-mini btn-new-release' %>
+                &nbsp;&nbsp;&nbsp;<%= link_to "View Releases", project_environment_releases_path(project, environment) %>
+              </li>
+            <% end %>
+          </ol>
         </td>
       </tr>
     <% end %>
