@@ -12,14 +12,18 @@
   <thead>
     <tr>
       <th>Name</th>
-      <th>Created at</th>
+      <th>Changes</th>
+      <th>Commits</th>
+      <th>Release Date</th>
     </tr>
   </thead>
   <tbody>
     <% @releases.each do |release| %>
       <tr>
         <td><%= link_to release.name, release %></td>
-        <td><%= release.created_at %></td>
+        <td><%= release.changes.count %></td>
+        <td><%= release.commits.count %></td>
+        <td><%= format_release_date(release) %></td>
       </tr>
     <% end %>
   </tbody>
