@@ -37,14 +37,16 @@
         <div class="nested editor headings">
           <ol>
             <li>
-              <div class="environment-name">Environment Name</div>
-              <div class="environment-slug">Git Branch</div>
+              <div class="environment-name">Environment Name<small>&nbsp;</small></div>
+              <div class="environment-slug">Git Branch<small>May be a URL or local path</small></div>
+              <div class="environment-initial-commit">Initial Commit (SHA)<small>Leave blank for first commit</small></div>
             </li>
           </ol>
         </div>
         <%= f.nested_editor_for :environments do |f| -%>
           <div class="environment-name"><%= f.text_field :name %></div>
           <div class="environment-slug"><%= f.text_field :slug %></div>
+          <div class="environment-initial-commit"><%= f.text_field :initial_commit %></div>
         <% end -%>
       </div>
     </div>
