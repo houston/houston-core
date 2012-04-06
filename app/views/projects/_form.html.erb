@@ -28,10 +28,20 @@
       </div>
     </div>
     
+    <hr />
+    
     <%# !todo: warn before deleting an environment %>
     <div class="control-group">
       <%= f.label :environments, :class => 'control-label' %>
       <div class="controls changes-nested-editor">
+        <div class="nested editor headings">
+          <ol>
+            <li>
+              <div class="environment-name">Environment Name</div>
+              <div class="environment-slug">Git Branch</div>
+            </li>
+          </ol>
+        </div>
         <%= f.nested_editor_for :environments do |f| -%>
           <div class="environment-name"><%= f.text_field :name %></div>
           <div class="environment-slug"><%= f.text_field :slug %></div>

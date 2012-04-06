@@ -10,9 +10,16 @@
     div { 
       display: inline-block;
       margin-right: 0.5em;
+      margin: 1px 0;
     }
   }
 }
+.nested.editor.headings div {
+  padding-top: 5px;
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+
 
 .add-link, .delete-link { 
   opacity: 0.2;
