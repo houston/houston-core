@@ -14,3 +14,11 @@
 .hidden { 
   display: none !important;
 }
+
+dl.grouped-values {
+  margin: 0;
+  overflow: hidden;
+  
+  dt { float: left; font-weight: normal; }
+  dd { float: right; }
+}

@@ -8,15 +8,42 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th>Title</th>
-      <th>Created at</th>
+      <th class="project-title">Title</th>
+      <th class="project-releases">Releases</th>
+      <th class="project-last-release">Last Release</th>
     </tr>
   </thead>
   <tbody>
     <% @projects.each do |project| %>
       <tr>
-        <td><%= link_to project.name, project_path(project) %></td>
-        <td><%= project.created_at %></td>
+        <td class="project-title"><%= link_to project.name, project_path(project) %></td>
+        <td class="project-releases">
+          <% project.environments.each do |environment| %>
+            <dl class="grouped-values">
+              <dt><%= link_to environment.name, project_environment_path(project, environment) %></dt>
+              <dd>
+                <%= count = environment.releases.count %>
+                <span<%= ' style="visibility:hidden;"'.html_safe if count == 0 %>>
+                  (<%= link_to "View", project_environment_releases_path(project, environment) %>)
+                </span>
+              </dd>
+            </dl>
+          <% end %>
+        </td>
+        <td class="project-last-release">
+          <% project.environments.each do |environment| %>
+            <dl class="grouped-values">
+              <dd>
+                <% if release = environment.releases.first %>
+                  <%= link_to format_release_date(release), project_environment_release_path(project, environment, release) %>
+                <% else %>
+                  &mdash;
+                <% end %>
+              </dd>
+              <dt><%= link_to environment.name, project_environment_path(project, environment) %></dt>
+            </dl>
+          <% end %>
+        </td>
       </tr>
     <% end %>
   </tbody>
