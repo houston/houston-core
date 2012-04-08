@@ -27,15 +27,18 @@ class ReleasesController < ApplicationController
   # GET /releases/new
   # GET /releases/new.json
   def new
+    @commit = params[:commit]
     @release = @environment.releases.new(
       commit0: @environment.last_commit,
-      commit1: params[:commit])
+      commit1: @commit)
     @release.build_changes_from_commits if @release.can_read_commits?
-    @release.changes.build if @release.changes.none?
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @release }
+    if @release.changes.none?
+      render :template => "releases/new_pick_commit"
+    else
+      respond_to do |format|
+        format.html # new.html.erb
+        format.json { render json: @release }
+      end
     end
   end
 
