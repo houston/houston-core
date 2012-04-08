@@ -15,6 +15,8 @@ $red:    rgb(219, 54, 58);
 }
 
 .label {
+  vertical-align: baseline;
+  
   &.teal { background-color: $teal; }
   &.orange { background-color: $orange; }
   &.slate { background-color: $slate; }

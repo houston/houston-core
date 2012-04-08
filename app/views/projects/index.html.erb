@@ -9,7 +9,6 @@
   <thead>
     <tr>
       <th class="project-title">Title</th>
-      <th>Color</th>
       <th class="project-environments">Environments</th>
       <th class="project-last-release">Last Release</th>
       <th>Unfuddle Page</th>
@@ -19,8 +18,10 @@
   <tbody>
     <% @projects.each do |project| %>
       <tr>
-        <td class="project-title"><%= link_to project.name, project_path(project) %></td>
-        <td><span class="label <%= project.color %>"><%= project.color.capitalize %></span></td>
+        <td class="project-title">
+          <%= link_to project.name, project_path(project) %>
+          <span class="label <%= project.color %>"><%= project.color.capitalize %></span>
+        </td>
         <td class="project-environments">
           <ol>
             <% project.environments.each do |environment| %>
