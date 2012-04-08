@@ -14,4 +14,6 @@
 //= require jquery_ujs
 //= require twitter/bootstrap
 //= require freight_train
+//= require sugar
+//= require handlebars
 //= require_tree .

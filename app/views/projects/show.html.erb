@@ -7,18 +7,12 @@
   <% end %>
 <% end %>
 
-<% @environments.each do |environment| %>
-  <% releases = environment.releases.count %>
-  <h5>
-    <b><%= link_to environment.name, environment %></b>
-    &mdash; <% if releases > 0 %>Latest Release<% else %><em>No Releases</em><% end %>
-  </h5>
-  <div class="well">
-    <% if releases > 0 %>
-      <%= render :partial => environment.releases.first %>
-      <p><%= link_to "View past releases", project_environment_releases_path(@project, environment) %></p>
-    <% end %>
-    <%= link_to "New Release", new_project_environment_release_path(@project, environment), :class => 'btn btn-primary btn-mini btn-new-release' %>
-  </div>
-<% end %>
+<%= render :partial => "kanban/kanban" %>
 
+<% content_for :scripts do %>
+  <script type="text/javascript">
+    $(function() {
+      new Kanban({id: <%= @project.unfuddle_id %>, color: '<%= @project.color %>'});
+    });
+  </script>
+<% end %>

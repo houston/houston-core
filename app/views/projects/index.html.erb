@@ -9,9 +9,10 @@
   <thead>
     <tr>
       <th class="project-title">Title</th>
+      <th>Color</th>
       <th class="project-environments">Environments</th>
       <th class="project-last-release">Last Release</th>
-      <th class="project-releases">Releases</th>
+      <th>Unfuddle Page</th>
       <th class="project-new-release"></th>
     </tr>
   </thead>
@@ -19,6 +20,7 @@
     <% @projects.each do |project| %>
       <tr>
         <td class="project-title"><%= link_to project.name, project_path(project) %></td>
+        <td><span class="label <%= project.color %>"><%= project.color.capitalize %></span></td>
         <td class="project-environments">
           <ol>
             <% project.environments.each do |environment| %>
@@ -39,13 +41,7 @@
             <% end %>
           </ol>
         </td>
-        <td class="project-releases">
-          <ol>
-            <% project.environments.each do |environment| %>
-              <li><%= environment.releases.count %></li>
-            <% end %>
-          </ol>
-        </td>
+        <td><%= link_to "View in Unfuddle", "https://cphep.unfuddle.com/a#/projects/#{project.unfuddle_id}" if project.unfuddle_id %></td>
         <td class="project-new-release">
           <ol>
             <% project.environments.each do |environment| %>

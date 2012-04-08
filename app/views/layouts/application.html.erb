@@ -18,6 +18,16 @@
     <link href="images/apple-touch-icon.png" rel="apple-touch-icon">
     <link href="images/apple-touch-icon-72x72.png" rel="apple-touch-icon" sizes="72x72">
     <link href="images/apple-touch-icon-114x114.png" rel="apple-touch-icon" sizes="114x114">
+    
+    <!-- Templates -->
+    <script id="ticket_template" type="text/x-handlebars-template">
+      <li class="ticket {{color}}">
+        <a href="https://<%= unfuddle.subdomain %>.unfuddle.com/a#/projects/{{project_id}}/tickets/by_number/{{number}}">
+          <h3 class="ticket-number">{{number}}</h3>
+          <p class="ticket-summary">{{summary}}</p>
+        </a>
+      </li>
+    </script>
   </head>
   <body>
 
@@ -33,6 +43,7 @@
           <div class="container-fluid nav-collapse">
             <ul class="nav">
                 <li><%= link_to "Projects", "/projects"  %></li>
+                <li><%= link_to "Kanban", "/kanban"  %></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -57,6 +68,7 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <%= javascript_include_tag "/assets/application" %>
     <%= include_freight_train :adapter => :jquery %>
+    <%= yield :scripts %>
 
   </body>
 </html>

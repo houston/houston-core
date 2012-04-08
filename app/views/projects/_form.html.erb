@@ -15,11 +15,20 @@
     </div>
 
     <div class="control-group">
+      <%= f.label :color, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.select :color, %w{teal orange slate blue green red}, :class => 'select_field' %>
+      </div>
+    </div>
+
+    <div class="control-group">
       <%= f.label :git_url, "Git URL", :class => 'control-label' %>
       <div class="controls">
         <%= f.text_field :git_url, :class => 'text_field' %>
       </div>
     </div>
+    
+    <hr />
 
     <div class="control-group">
       <%= f.label :unfuddle_id, :class => 'control-label' %>
@@ -27,7 +36,35 @@
         <%= f.number_field :unfuddle_id, :class => 'number_field' %>
       </div>
     </div>
-    
+
+    <div class="control-group">
+      <%= f.label :kanban_field, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.text_field :kanban_field, :class => 'text_field' %>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <%= f.label :development_id, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.number_field :development_id, :class => 'number_field' %>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <%= f.label :testing_id, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.number_field :testing_id, :class => 'number_field' %>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <%= f.label :production_id, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.number_field :production_id, :class => 'number_field' %>
+      </div>
+    </div>
+        
     <hr />
     
     <%# !todo: warn before deleting an environment %>

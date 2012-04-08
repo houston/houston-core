@@ -22,7 +22,7 @@ end
 
 # Javascript
 gem 'jquery-rails'
-gem 'backbone-rails'
+gem 'sugar-rails'
 gem 'handlebars_assets'
 
 # Helpers

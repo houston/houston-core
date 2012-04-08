@@ -1,0 +1,24 @@
+$teal:   rgb(49, 188, 211);
+$orange: rgb(237, 142, 30);
+$slate:  rgb(92, 103, 105);
+$blue:   rgb(6, 97, 156);
+$green:  rgb(76, 183, 29);
+$red:    rgb(219, 54, 58);
+
+#kanban li {
+  &.teal { border-color: rgba($teal, 0.6); background-color: rgba($teal, 0.2); }
+  &.orange { border-color: rgba($orange, 0.6); background-color: rgba($orange, 0.2); }
+  &.slate { border-color: rgba($slate, 0.6); background-color: rgba($slate, 0.2); }
+  &.blue { border-color: rgba($blue, 0.6); background-color: rgba($blue, 0.2); }
+  &.green { border-color: rgba($green, 0.6); background-color: rgba($green, 0.2); }
+  &.red { border-color: rgba($red, 0.6); background-color: rgba($red, 0.2); }
+}
+
+.label {
+  &.teal { background-color: $teal; }
+  &.orange { background-color: $orange; }
+  &.slate { background-color: $slate; }
+  &.blue { background-color: $blue; }
+  &.green { background-color: $green; }
+  &.red { background-color: $red; }
+}

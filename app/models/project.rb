@@ -1,8 +1,27 @@
 class Project < ActiveRecord::Base
+  include Project::Unfuddle
   
   has_many :environments, :dependent => :destroy
   
   accepts_nested_attributes_for :environments, :allow_destroy => true
+  
+  
+  
+  def in_development_query
+    "#{kanban_field}-eq-#{development_id}"
+  end
+  
+  def staged_for_testing_query
+    "#{kanban_field}-eq-#{development_id}"
+  end
+  
+  def in_testing_query
+    "#{kanban_field}-eq-#{testing_id}"
+  end
+  
+  def staged_for_release_query
+    "#{kanban_field}-neq-#{production_id}"
+  end
   
   
   

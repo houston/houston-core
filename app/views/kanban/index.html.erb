@@ -1,0 +1,14 @@
+<h1>All Projects</h1>
+
+<%= render :partial => "kanban/kanban" %>
+
+<% content_for :scripts do %>
+  <script type="text/javascript">
+    $(function() {
+      new Kanban(<%=raw @projects.map { |project| {
+        id: project.unfuddle_id,
+        color: project.color
+      }}.to_json %>);
+    });
+  </script>
+<% end %>

@@ -2,9 +2,24 @@ Changelog::Application.routes.draw do
   
   root :to => "home#index", :via => :get
   
+  match "kanban" => "kanban#index", :via => :get
+  
   resources :projects do
     resources :environments, :controller => "project_environments" do
       resources :releases
+    end
+  end
+  
+  namespace :unfuddle do
+    resources :projects do
+      resources :ticket_reports
+      
+      member do
+        get "in_development"
+        get "staged_for_testing"
+        get "in_testing"
+        get "staged_for_release"
+      end
     end
   end
 

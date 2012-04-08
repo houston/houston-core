@@ -1,0 +1,76 @@
+#kanban {
+  
+  td { 
+    width: 16.666666%;
+    max-width: 16.666666%;
+    vertical-align: bottom;
+    text-align: center;
+  }
+  
+  th { 
+    text-align: center;
+  }
+  
+  ol, ul {
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+  }
+  
+  li {
+    list-style-type: none;
+    display: block;
+    border-radius: 0.65em;
+    border: 2px solid #ccc;
+    margin: 0.5em 0;
+    font-size: 1.5em;
+    
+    a {
+      display: block;
+      padding: 0.5em;
+      min-width: 2.53846154em; // 66px
+      max-width: 2.76923077em; // 72px
+      height: 1.84615385em;    // 48px
+      
+      &:hover { text-decoration: none; }
+    }
+    
+    &.hover {
+      border-color: #ed8;
+      background-color: #ffffcf;
+    }
+    
+    &.placeholder {
+      border-style: dotted;
+      border-color: #aaa;
+      background-color: #fff;
+    }
+    
+    .add-ticket {
+      font-size: 2em;
+      vertical-align: middle;
+      color: #c0c0c0;
+    }
+    
+    .ticket-number { 
+      font-size: 1em;
+      color: #333;
+      text-align: right;
+      font-weight: normal;
+      line-height: 1.84615385em;
+      
+      &:before { content: '#'; }
+    }
+    
+    .ticket-summary {
+      display: none ;
+//      display: inline-block;
+//      float: left;
+//      max-width: 120px;
+//      margin-left: 12px;
+//      margin-left: 90px;
+    }
+    
+  }
+  
+}
