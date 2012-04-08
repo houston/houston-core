@@ -12,7 +12,7 @@
 
 # Ignore sensitive passwords and things.
 config/database.yml
-config/unfuddle.yml
+config/changelog.yml
 
 # Ignore all logfiles and tempfiles.
 /log/*.log

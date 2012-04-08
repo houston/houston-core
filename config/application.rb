@@ -56,8 +56,10 @@ module Changelog
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
     
-    # Load unfuddle.yaml
-    config.unfuddle = YAML.load_file(Rails.root.join("config", "unfuddle.yml").to_s).fetch("unfuddle", {})
+    # Load changelog.yaml
+    yaml = YAML.load_file(Rails.root.join("config", "changelog.yml").to_s)
+    config.title = yaml.fetch("title", "Changelog")
+    config.unfuddle = yaml.fetch("unfuddle", {})
     
     def config.default_environments
       # !todo: read this from a config file
