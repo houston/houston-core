@@ -4,7 +4,8 @@ class window.Unfuddle
     new Unfuddle.Project(@, projectId)
   
   urlFor: (path)->
-    "/unfuddle#{path}.json"
+    relativeRoot = $('base').attr('href')
+    "#{relativeRoot}/unfuddle#{path}.json"
   
   get:  (path, params)-> @ajax(path,  'GET', params)
   post: (path, params)-> @ajax(path, 'POST', params)
