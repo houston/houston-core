@@ -68,7 +68,7 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <%= javascript_include_tag "/assets/application" %>
-    <%= include_freight_train :adapter => :jquery %>
+    <%= ft_init :adapter => :jquery %>
     <%= yield :scripts %>
 
   </body>
