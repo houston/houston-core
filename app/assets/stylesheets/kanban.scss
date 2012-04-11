@@ -1,3 +1,10 @@
+#full_screen_link {
+  position: absolute;
+  right: 2em;
+  z-index: 1999;
+  cursor: pointer;
+}
+
 #kanban {
   width: 100%;
   position: absolute;

@@ -1,30 +1,24 @@
+<a id="full_screen_link">Full Screen</a>
+
 <%= render :partial => "kanban/kanban" %>
 
 <% content_for :scripts do %>
   <script type="text/javascript">
     $(function() {
-      new Kanban(<%=raw @projects.map { |project| {
+      var kanban = new Kanban(<%=raw @projects.map { |project| {
         id: project.unfuddle_id,
         color: project.color
       }}.to_json %>);
       
-      // Style alternating columns
-      $('#kanban tr td:even, #kanban tr th:even').addClass('alt');
+      $('#full_screen_link').click(function() {
+        kanban.showFullScreen();
+      });
       
-      // Make the Kanban fill the browser window
-      var $kanban = $('#kanban'),
-          $window = $(window),
-          top = $kanban.offset().top;
-      
-      function setKanbanSize() {
-        var height = $window.height() - top;
-        $kanban.css({height: height + 'px'});
-      }
-      
-      $window.resize(setKanbanSize);
-      setKanbanSize();
-      
-      $kanban.css({'bottom': '0px'});
+      $(document).keydown(function(e) {
+        if(e.keyCode == 27) {
+          kanban.showNormal();
+        }
+      });
     });
   </script>
 <% end %>
