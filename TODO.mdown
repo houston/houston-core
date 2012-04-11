@@ -1,11 +1,9 @@
 # To Do
 
  - **Kanban**:
-   - show multiple columns per queue
    - implement the ability to add/remove tickets to "Staged for Development" (for a project)
    - remove the ability to add/remove tickets to "Staged for Development" (for All Projects)
    - implement "Released Last Week"
-   - make headings bolder, add subtler descriptions beneath each
    - Implement the ability to refresh the view every 5min
    - Test variety of colors
  - **Project::Unfuddle**: implement a way of specifying `neq` in Ruby (e.g. `find_tickets(:field_1.neq(197))` or `find_tickets(:deployment.neq(:production))` and have Project figure it out...)

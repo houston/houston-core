@@ -1,5 +1,3 @@
-<h1>All Projects</h1>
-
 <%= render :partial => "kanban/kanban" %>
 
 <% content_for :scripts do %>
@@ -9,6 +7,24 @@
         id: project.unfuddle_id,
         color: project.color
       }}.to_json %>);
+      
+      // Style alternating columns
+      $('#kanban tr td:even, #kanban tr th:even').addClass('alt');
+      
+      // Make the Kanban fill the browser window
+      var $kanban = $('#kanban'),
+          $window = $(window),
+          top = $kanban.offset().top;
+      
+      function setKanbanSize() {
+        var height = $window.height() - top;
+        $kanban.css({height: height + 'px'});
+      }
+      
+      $window.resize(setKanbanSize);
+      setKanbanSize();
+      
+      $kanban.css({'bottom': '0px'});
     });
   </script>
 <% end %>
