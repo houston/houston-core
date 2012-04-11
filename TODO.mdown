@@ -1,15 +1,16 @@
 # To Do
 
  - **Kanban**:
-   - implement the ability to add/remove tickets to "Staged for Development" (for a project)
-   - remove the ability to add/remove tickets to "Staged for Development" (for All Projects)
-   - implement "Released Last Week"
+   - Implement the ability to add/remove tickets to "Staged for Development" (for a project)
+   - Remove the ability to add/remove tickets to "Staged for Development" (for All Projects)
+   - Implement "Released Last Week"
    - Implement the ability to refresh the view every 5min
    - Test variety of colors
+   - Implement a way of visualizing _batches_
  - **Project::Unfuddle**: implement a way of specifying `neq` in Ruby (e.g. `find_tickets(:field_1.neq(197))` or `find_tickets(:deployment.neq(:production))` and have Project figure it out...)
  - **Release**:
-   - have option to update Unfuddle tickets on creation
-   - have option to send an email on creation
+   - Have option to update Unfuddle tickets on creation
+   - Have option to send an email on creation
  - Add Devise and CanCan for authentication
    - Allow "Stakeholders" to manipulate the "Staged for Development" queue
    - Allow "Developers" to create releases
