@@ -1,5 +1,5 @@
 class Project < ActiveRecord::Base
-  include Project::Unfuddle
+  include ::Project::Unfuddle
   
   has_many :environments, :dependent => :destroy
   
