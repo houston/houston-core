@@ -9,6 +9,10 @@ class Unfuddle::ProjectsController < UnfuddleController
     render_from_unfuddle "/projects/#{@project.unfuddle_id}"
   end
   
+  def staged_for_development
+    render :json => []
+  end
+  
   def in_development
     render :json => @project.find_tickets(@project.in_development_query, :status => :accepted)
   end
@@ -23,6 +27,10 @@ class Unfuddle::ProjectsController < UnfuddleController
   
   def staged_for_release
     render :json => @project.find_tickets(@project.staged_for_release_query, :status => :closed, :resolution => :fixed)
+  end
+  
+  def last_release
+    render :json => []
   end
   
 private

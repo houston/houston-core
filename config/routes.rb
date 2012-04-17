@@ -22,10 +22,9 @@ Changelog::Application.routes.draw do
       resources :ticket_reports
       
       member do
-        get "in_development"
-        get "staged_for_testing"
-        get "in_testing"
-        get "staged_for_release"
+        KanbanQueue.slugs.each do |slug|
+          get slug
+        end
       end
     end
   end

@@ -5,10 +5,10 @@
 <% content_for :scripts do %>
   <script type="text/javascript">
     $(function() {
-      var kanban = new Kanban(<%=raw @projects.map { |project| {
-        id: project.unfuddle_id,
-        color: project.color
-      }}.to_json %>);
+      var kanban = new Kanban({
+        projects: <%= raw @projects.map { |project| { id: project.unfuddle_id, color: project.color } }.to_json %>,
+        queues: <%= raw KanbanQueue.slugs %>
+      });
       
       kanban.loadQueues();
       

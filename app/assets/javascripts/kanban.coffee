@@ -1,9 +1,8 @@
 class window.Kanban
   
-  constructor: (projects)->
-    projects = [projects] unless Object.isArray(projects)
-    @projects = projects
-    @queues = ['in_development', 'staged_for_testing', 'in_testing', 'staged_for_release']
+  constructor: (options)->
+    @projects = options.projects
+    @queues = options.queues
     @unfuddle = new Unfuddle()
     @renderTicket = Handlebars.compile($('#ticket_template').html())
     
