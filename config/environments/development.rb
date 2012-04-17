@@ -34,4 +34,11 @@ Changelog::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
+
+  # Test emails
+  config.action_mailer.delivery_method = :letter_opener
+
+  # So Devise mailers can make links
+  config.action_mailer.default_url_options = { :host => "localhost:3000" }
+
 end

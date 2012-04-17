@@ -43,8 +43,16 @@
           <a class="brand" href="/"><%= Rails.configuration.title %></a>
           <div class="container-fluid nav-collapse">
             <ul class="nav">
-                <li><%= link_to "Projects", projects_path  %></li>
-                <li><%= link_to "Kanban", kanban_path  %></li>
+              <li><%= link_to "Projects", projects_path  %></li>
+              <li><%= link_to "Kanban", kanban_path  %></li>
+              <li><%= link_to "Users", users_path  %></li>
+            </ul>
+            <ul class="nav pull-right">
+              <% if current_user %>
+                <li><%= link_to "Sign out", destroy_user_session_path %></li>
+              <% else %>
+                <li><%= link_to "Sign in", new_user_session_path %></li>
+              <% end %>
             </ul>
           </div><!--/.nav-collapse -->
         </div>

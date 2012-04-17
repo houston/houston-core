@@ -1,5 +1,7 @@
 Changelog::Application.routes.draw do
   
+  devise_for :users
+  
   root :to => "home#index", :via => :get
   
   match "kanban" => "kanban#index", :via => :get
@@ -8,6 +10,10 @@ Changelog::Application.routes.draw do
     resources :environments, :controller => "project_environments" do
       resources :releases
     end
+  end
+  
+  constraints :id => /\d+/ do
+    resources :users
   end
   
   namespace :unfuddle do
