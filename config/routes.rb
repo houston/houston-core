@@ -6,6 +6,7 @@ Changelog::Application.routes.draw do
   
   match "kanban" => "kanban#index", :via => :get
   match "kanban/:slug" => "kanban#show", :via => :get
+  match "kanban/:slug/:queue" => "kanban#queue", :via => :get, :constraints => {queue: Regexp.new(KanbanQueue.slugs.join("|"))}
   
   resources :projects do
     resources :environments, :controller => "project_environments" do
@@ -17,18 +18,6 @@ Changelog::Application.routes.draw do
     resources :users
   end
   
-  namespace :unfuddle do
-    resources :projects do
-      resources :ticket_reports
-      
-      member do
-        KanbanQueue.slugs.each do |slug|
-          get slug
-        end
-      end
-    end
-  end
-
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

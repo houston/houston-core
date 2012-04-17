@@ -9,7 +9,7 @@
   <script type="text/javascript">
     $(function() {
       var kanban = new Kanban({
-        projects: [{id: <%= @project.unfuddle_id %>, color: '<%= @project.color %>'}],
+        projects: [{slug: '<%= @project.slug %>', color: '<%= @project.color %>'}],
         queues: <%= raw KanbanQueue.slugs %>
       });
       kanban.loadQueues();

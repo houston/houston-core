@@ -25,6 +25,30 @@ class Project < ActiveRecord::Base
   
   
   
+  def tickets_in_queue(queue)
+    case queue.to_sym
+    when :staged_for_development
+      []
+    
+    when :in_development
+      find_tickets(in_development_query, :status => :accepted)
+    
+    when :staged_for_testing
+      find_tickets(staged_for_testing_query, :status => :resolved)
+    
+    when :in_testing
+      find_tickets(in_testing_query, :status => :resolved)
+    
+    when :staged_for_release
+      find_tickets(staged_for_release_query, :status => :closed, :resolution => :fixed)
+    
+    when :last_release
+      []
+    end
+  end
+  
+  
+  
   def to_param
     slug
   end

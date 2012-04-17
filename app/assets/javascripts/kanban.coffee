@@ -3,7 +3,6 @@ class window.Kanban
   constructor: (options)->
     @projects = options.projects
     @queues = options.queues
-    @unfuddle = new Unfuddle()
     @renderTicket = Handlebars.compile($('#ticket_template').html())
     
     # Ticket description popover
@@ -28,22 +27,26 @@ class window.Kanban
   loadQueues: ->
     for queueName in @queues
       for project in @projects
-        color = project.color
-        project = @unfuddle.project(project.id)
-        @loadQueue(project, queueName, color)
+        @loadQueue(project, queueName)
   
-  loadQueue: (project, queueName, color)->
+  loadQueue: (project, queueName)->
     $queue = $("##{queueName}")
-    report = project.queue(queueName)
-    report.get (data)=>
-      window.console.log(data)
+    @fetchQueue project, queueName, (data)=>
       group0 = (data['groups'] || [])[0]
       tickets = if group0 then group0.tickets else []
       for ticket in tickets
-        ticket.color = color
+        ticket.color = project.color
         $queue.append @renderTicket(ticket)
       
       $queue.find('.ticket').popoverForTicket().pseudoHover()
+  
+  fetchQueue: (project, queueName, callback)->
+    xhr = @get "#{project.slug}/#{queueName}"
+    xhr.error ->
+      window.console.log('error', arguments)
+    xhr.success (data)->
+      window.console.log(data)
+      callback(data)
   
   setKanbanSize: ->
     height = @window.height() - @top
@@ -60,4 +63,16 @@ class window.Kanban
     @top = @naturalTop
     @kanban.css('z-index': '')
     @setKanbanSize()
-      
+  
+  urlFor: (path)->
+    relativeRoot = $('base').attr('href')
+    relativeRoot = relativeRoot.substring(0, relativeRoot.length - 1) if /\/$/.test(relativeRoot)
+    "#{relativeRoot}/kanban/#{path}.json"
+  
+  get:  (path, params)-> @ajax(path,  'GET', params)
+  post: (path, params)-> @ajax(path, 'POST', params)
+  put:  (path, params)-> @ajax(path,  'PUT', params)
+  ajax: (path, method, params)->
+    url = @urlFor(path)
+    $.ajax url,
+      method: method

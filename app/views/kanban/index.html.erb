@@ -6,7 +6,7 @@
   <script type="text/javascript">
     $(function() {
       var kanban = new Kanban({
-        projects: <%= raw @projects.map { |project| { id: project.unfuddle_id, color: project.color } }.to_json %>,
+        projects: <%= raw @projects.map { |project| { slug: project.slug, color: project.color } }.to_json %>,
         queues: <%= raw KanbanQueue.slugs %>
       });
       
