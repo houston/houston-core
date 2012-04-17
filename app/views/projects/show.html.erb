@@ -12,7 +12,8 @@
 <% content_for :scripts do %>
   <script type="text/javascript">
     $(function() {
-      new Kanban({id: <%= @project.unfuddle_id %>, color: '<%= @project.color %>'});
+      var kanban = new Kanban({id: <%= @project.unfuddle_id %>, color: '<%= @project.color %>'});
+      kanban.loadQueues();
     });
   </script>
 <% end %>

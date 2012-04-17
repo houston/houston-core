@@ -10,6 +10,8 @@
         color: project.color
       }}.to_json %>);
       
+      kanban.loadQueues();
+      
       $('#full_screen_link').click(function() {
         kanban.showFullScreen();
       });
