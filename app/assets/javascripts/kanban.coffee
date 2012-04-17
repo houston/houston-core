@@ -6,9 +6,10 @@ class window.Kanban
     @renderTicket = Handlebars.compile($('#ticket_template').html())
     
     # Ticket description popover
-    $('#on_deck .ticket').pseudoHover().popover
-      title: 'Add Ticket'
-      content: 'Click to add a ticket to the queue'
+    $('.ticket').popoverForTicket().pseudoHover()
+    # $('#on_deck .ticket').pseudoHover().popover
+    #   title: 'Add Ticket'
+    #   content: 'Click to add a ticket to the queue'
     
     # Make the Kanban fill the browser window
     @kanban = $('#kanban')

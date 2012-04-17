@@ -1,6 +1,6 @@
 <a id="full_screen_link">Full Screen</a>
 
-<%= render :partial => "kanban/kanban" %>
+<%= render :partial => "kanban/kanban", locals: {projects: @projects} %>
 
 <% content_for :scripts do %>
   <script type="text/javascript">

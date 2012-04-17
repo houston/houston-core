@@ -7,7 +7,7 @@
   <% end %>
 <% end %>
 
-<%= render :partial => "kanban/kanban" %>
+<%= render :partial => "kanban/kanban", locals: {projects: [@project]} %>
 
 <% content_for :scripts do %>
   <script type="text/javascript">

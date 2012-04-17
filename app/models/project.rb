@@ -27,6 +27,7 @@ class Project < ActiveRecord::Base
   
   
   def tickets_in_queue(queue)
+    queue = queue.slug if queue.is_a?(KanbanQueue)
     case queue.to_sym
     when :staged_for_development
       []

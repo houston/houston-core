@@ -2,7 +2,21 @@
   <tbody>
     <tr>
       <% KanbanQueue.all.each do |queue| %>
-        <td><ul id="<%= queue.slug %>"></ul></td>
+        <td>
+          <ul id="<%= queue.slug %>">
+            <% projects.each do |project| %>
+              <% project.tickets.in_queue(queue).each do |ticket| %>
+                <%# This is copied from application.html.erb %>
+                <li class="ticket <%= project.color %>">
+                  <a href="https://<%= unfuddle.subdomain %>.unfuddle.com/a#/projects/<%= project.unfuddle_id %>/tickets/by_number/<%= ticket.number %>">
+                    <h3 class="ticket-number"><%= ticket.number %></h3>
+                    <p class="ticket-summary"><%= ticket.summary %></p>
+                  </a>
+                </li>
+              <% end %>
+            <% end %>
+          </ul>
+        </td>
       <% end %>
     </tr>
   </tbody>
