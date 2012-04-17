@@ -15,6 +15,13 @@
         <%= f.text_field :email, :class => 'text_field' %>
       </div>
     </div>
+    
+    <div class="control-group">
+      <%= f.label :role, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.select :role, User::ROLES, :class => 'select_field' %>
+      </div>
+    </div>
 
     <div class="form-actions">
       <%= f.submit nil, :class => 'btn btn-primary' %>

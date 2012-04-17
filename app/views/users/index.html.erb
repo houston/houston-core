@@ -4,7 +4,7 @@
     <tr>
       <th>Name</th>
       <th>Email</th>
-      <th>Created at</th>
+      <th>Role</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -13,7 +13,7 @@
       <tr>
         <td><%= link_to user.name, user_path(user) %></td>
         <td><%= mail_to user.email, user.email %></td>
-        <td><%= user.created_at %></td>
+        <td><%= user.role %></td>
         <td>
           <%= link_to "Edit", edit_user_path(user), :class => "btn btn-mini" %>
           <%= link_to "Destroy", user_path(user), :method => :delete, :confirm => "Are you sure?", :class => "btn btn-mini btn-danger" %>

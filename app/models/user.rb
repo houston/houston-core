@@ -16,6 +16,11 @@ class User < ActiveRecord::Base
          :invitable
   
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me
+  attr_accessible :name, :email, :role, :password, :password_confirmation, :remember_me
+  
+  ROLES = %w{Developer Stakeholder Tester}
+  
+  validates :name, :presence => true, :uniqueness => true
+  validates :role, :presence => true, :inclusion => ROLES
   
 end
