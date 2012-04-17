@@ -2,6 +2,7 @@ class Project < ActiveRecord::Base
   include ::Project::Unfuddle
   
   has_many :environments, :dependent => :destroy
+  has_many :tickets, :dependent => :destroy
   
   accepts_nested_attributes_for :environments, :allow_destroy => true
   
