@@ -6,4 +6,9 @@ class KanbanController < ApplicationController
   end
   
   
+  def show
+    @project = Project.find_by_slug!(params[:slug])
+  end
+  
+  
 end

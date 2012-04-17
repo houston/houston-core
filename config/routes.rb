@@ -5,6 +5,7 @@ Changelog::Application.routes.draw do
   root :to => "home#index", :via => :get
   
   match "kanban" => "kanban#index", :via => :get
+  match "kanban/:slug" => "kanban#show", :via => :get
   
   resources :projects do
     resources :environments, :controller => "project_environments" do
