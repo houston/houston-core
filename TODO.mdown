@@ -1,21 +1,23 @@
 # To Do
 
  - **Kanban**:
-   - Implement the ability to add/remove tickets to "Staged for Development" (for a project)
-   - Remove the ability to add/remove tickets to "Staged for Development" (for All Projects)
-   - Implement "Released Last Week"
+   - Implement "Last Release" (NB: need to _know_ something about environments)
+   - When getting tickets from Unfuddle, synchronize them with a project's saved tickets
+   - Implement the ability to add/remove tickets to "Staged for Development" (for a project) (Stakeholders only)
    - Implement the ability to refresh the view every 5min
    - Test variety of colors
    - Implement a way of visualizing _batches_
+   - Implement a way of visualizing _age_
  - **Project::Unfuddle**: implement a way of specifying `neq` in Ruby (e.g. `find_tickets(:field_1.neq(197))` or `find_tickets(:deployment.neq(:production))` and have Project figure it out...)
  - **Release**:
+   - Extract Unfuddle tickets from other changes
    - Have option to update Unfuddle tickets on creation
    - Have option to send an email on creation
- - Add Devise and CanCan for authentication
-   - Allow "Stakeholders" to manipulate the "Staged for Development" queue
-   - Allow "Developers" to create releases
+   - Filter out [testfix] and [skip]
+   - Bold whatever comes before the ":"
 
 # Ideas
 
  - Get rid of "environments"; have two hard-coded ones: Testing and Production
  - Later: make "environments" a configuration option for all projects
+ - Later: make Kanban queues a configuration option for all projects
