@@ -22,4 +22,10 @@ class TicketQueue < ActiveRecord::Base
   end
   alias :deleted? :destroyed?
   
+  # Returns the amount of time the ticket spent in the given queue (in seconds)
+  def queue_time
+    end_time = destroyed? ? destroyed_at : Time.now
+    end_time - created_at
+  end
+  
 end

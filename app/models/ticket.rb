@@ -23,5 +23,10 @@ class Ticket < ActiveRecord::Base
     ticket_queue && ticket_queue.name
   end
   
+  # Returns the amount of time the ticket has spent in its current queue (in seconds)
+  def age
+    ticket_queue ? ticket_queue.queue_time : 0
+  end
+  
   
 end
