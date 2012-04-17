@@ -1,6 +1,8 @@
 class ProjectEnvironmentsController < ApplicationController
   include UrlHelper
   before_filter :find_project
+  load_resource :environment, :find_by => :slug, :through => :project
+  authorize_resource :environment
   
   # GET /environments
   # GET /environments.json

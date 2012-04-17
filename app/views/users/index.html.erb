@@ -1,4 +1,4 @@
-<h1>Users <%= link_to "New", new_user_path, :class => "btn btn-primary" %></h1>
+<h1>Users <%= link_to "New", new_user_path, :class => "btn btn-primary" if can?(:create, User) %></h1>
 <table class="table table-striped">
   <thead>
     <tr>

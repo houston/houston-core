@@ -1,7 +1,7 @@
 <%= header do |p| %>
   <%= p.breadcrumbs "Projects" => projects_path %>
   <%= p.actions do %>
-    <%= link_to "New Project", new_project_path, :class => 'btn btn-primary' %>
+    <%= link_to "New Project", new_project_path, :class => "btn btn-primary" if can?(:create, Project) %>
   <% end %>
 <% end %>
 
@@ -47,7 +47,7 @@
           <ol>
             <% project.environments.each do |environment| %>
               <li>
-                <%= link_to "New Release", new_project_environment_release_path(project, environment), :class => 'btn btn-primary btn-mini btn-new-release' %>
+                <%= link_to "New Release", new_project_environment_release_path(project, environment), :class => 'btn btn-primary btn-mini btn-new-release' if can?(:create, Release) %>
                 &nbsp;&nbsp;&nbsp;<%= link_to "View Releases", project_environment_releases_path(project, environment) %>
               </li>
             <% end %>

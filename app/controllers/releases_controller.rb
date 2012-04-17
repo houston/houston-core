@@ -1,6 +1,7 @@
 class ReleasesController < ApplicationController
   include UrlHelper
   before_filter :get_project_and_environment
+  load_and_authorize_resource
   
   # GET /releases
   # GET /releases.json

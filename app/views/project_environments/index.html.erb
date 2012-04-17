@@ -3,7 +3,7 @@
                   @project => Project.all,
                   "Environments" => nil %>
   <%= p.actions do %>
-    <%= link_to "New Environment", new_project_environment_path(@project), :class => 'btn btn-primary' %>
+    <%= link_to "New Environment", new_project_environment_path(@project), :class => 'btn btn-primary' if can?(:update, @project) %>
   <% end %>
 <% end %>
 

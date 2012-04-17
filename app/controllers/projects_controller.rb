@@ -1,4 +1,7 @@
 class ProjectsController < ApplicationController
+  load_resource :find_by => :slug # will use find_by_permalink!(params[:id])
+  authorize_resource
+  
   # GET /projects
   # GET /projects.json
   def index
