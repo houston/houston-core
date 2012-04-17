@@ -17,6 +17,7 @@ class Ticket < ActiveRecord::Base
     
     value
   end
+  alias :queue= :set_queue!
   
   def queue
     ticket_queue && ticket_queue.name
