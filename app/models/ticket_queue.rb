@@ -3,6 +3,7 @@ class TicketQueue < ActiveRecord::Base
   belongs_to :ticket
   
   validates :ticket, :presence => true
+  validates :queue, :presence => true, :inclusion => KanbanQueue.slugs
   
   def name
     queue
