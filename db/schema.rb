@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120417190504) do
+ActiveRecord::Schema.define(:version => 20120417195433) do
 
   create_table "changes", :force => true do |t|
     t.integer  "release_id"
@@ -60,6 +60,23 @@ ActiveRecord::Schema.define(:version => 20120417190504) do
     t.string   "commit1"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
+  end
+
+  create_table "ticket_queues", :force => true do |t|
+    t.integer  "ticket_id"
+    t.string   "queue"
+    t.datetime "destroyed_at"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  create_table "tickets", :force => true do |t|
+    t.integer  "project_id"
+    t.integer  "number"
+    t.string   "summary"
+    t.text     "description"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "users", :force => true do |t|
