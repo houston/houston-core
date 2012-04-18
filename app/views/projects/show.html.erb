@@ -17,6 +17,7 @@
         queues: <%= raw KanbanQueue.slugs %>
       });
       kanban.loadQueues();
+      $('#auto_update').initializeAutoUpdate(300000, kanban); // 5 minutes
     });
   </script>
 <% end %>

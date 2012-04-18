@@ -12,6 +12,8 @@
       
       kanban.loadQueues();
       
+      $('#auto_update').initializeAutoUpdate(300000, kanban); // 5 minutes
+      
       $('#full_screen_link').click(function() {
         kanban.showFullScreen();
       });
