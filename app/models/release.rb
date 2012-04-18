@@ -48,4 +48,21 @@ class Release < ActiveRecord::Base
   end
   
   
+  
+  def ticket_numbers
+    [].tap do |ticket_numbers|
+      commits.each { |commit| ticket_numbers.concat commit.ticket_numbers }
+    end
+  end
+  
+  def load_tickets!
+    project.find_or_create_tickets_by_number(ticket_numbers)
+  end
+  
+  def tickets
+    @tickets ||= load_tickets!
+  end
+  
+  
+  
 end

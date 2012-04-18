@@ -11,6 +11,17 @@
     </div>
 
     <div class="control-group">
+      <%= f.label :tickets, "Tickets", :class => 'control-label' %>
+      <div class="controls changes-nested-editor">
+        <ol>
+          <% @release.tickets.each do |ticket| %>
+            <li><%= link_to_ticket(ticket) %></li>
+          <% end %>
+        </ol>
+      </div>
+    </div>
+
+    <div class="control-group">
       <%= f.label :changes, :class => 'control-label' %>
       <div class="controls changes-nested-editor">
         <%= f.nested_editor_for :changes do |f| -%>

@@ -2,6 +2,16 @@ module UrlHelper
   
   
   
+  def unfuddle_project_url(project)
+    "https://#{unfuddle.subdomain}.unfuddle.com/a#/projects/#{project.unfuddle_id}"
+  end
+  
+  def unfuddle_ticket_url(ticket)
+    "#{unfuddle_project_url(ticket.project)}/tickets/by_number/#{ticket.number}"
+  end
+  
+  
+  
   def environments_path(*args)
     project_environments_path(*args)
   end

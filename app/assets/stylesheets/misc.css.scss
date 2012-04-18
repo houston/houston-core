@@ -14,3 +14,13 @@
 .hidden { 
   display: none !important;
 }
+
+.changes-nested-editor ol {
+  margin: 3px 0;
+  padding: 0;
+  
+  li {
+    list-style-type: none;
+    padding: 2px 0;
+  }
+}

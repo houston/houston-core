@@ -9,6 +9,9 @@ class Commit < ActiveRecord::Base
       :committer => grit_commit.committer.name }
   end
   
+  def ticket_numbers
+    message.scan(TICKET_PATTERN).flatten
+  end
   
   def skip?
     SKIP_PATTERNS.any? { |pattern| message =~ pattern }
@@ -16,6 +19,7 @@ class Commit < ActiveRecord::Base
   
   
   
+  TICKET_PATTERN = /\[#(\d+)\]/
   
   SKIP_PATTERNS = [
     /\[skip\]/,

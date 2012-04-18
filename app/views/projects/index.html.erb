@@ -42,7 +42,7 @@
             <% end %>
           </ol>
         </td>
-        <td><%= link_to "View in Unfuddle", "https://cphep.unfuddle.com/a#/projects/#{project.unfuddle_id}" if project.unfuddle_id %></td>
+        <td><%= link_to "View in Unfuddle", unfuddle_project_url(project) if project.unfuddle_id %></td>
         <td class="project-new-release">
           <ol>
             <% project.environments.each do |environment| %>

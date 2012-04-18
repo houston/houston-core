@@ -16,6 +16,15 @@ class Ticket < ActiveRecord::Base
       queue = queue.slug if queue.is_a?(KanbanQueue)
       where(["ticket_queues.queue = ?", queue])
     end
+    
+    def numbered(*numbers)
+      numbers = numbers.flatten.map(&:to_i)
+      where(:number => numbers)
+    end
+    
+    def attributes_from_unfuddle_ticket(unfuddle_ticket)
+      unfuddle_ticket.pick("number", "summary", "description")
+    end
   end
   
   

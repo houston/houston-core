@@ -25,6 +25,16 @@ class Project < ActiveRecord::Base
       response.body
     end
     
+    def parse_ticket_report(json)
+      ticket_report = parse_response(json)
+      group0 = ticket_report.fetch("groups", [])[0] || {}
+      group0.fetch("tickets", [])
+    end
+    
+    def parse_response(json)
+      JSON.load(json)
+    end
+    
     def unfuddle
       @unfuddle ||= ::Unfuddle.new
     end

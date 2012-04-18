@@ -26,6 +26,29 @@ class Project < ActiveRecord::Base
   
   
   
+  def find_or_create_tickets_by_number(*numbers)
+    numbers = numbers.flatten.map(&:to_i).uniq
+    tickets = self.tickets.numbered(numbers)
+    if tickets.length < numbers.length
+      ticket_numbers = tickets.map(&:number)
+      numbers_to_fetch = numbers - ticket_numbers
+      
+      # Unfuddle will return all tickets if we fetch
+      # tickets by number with no numbers given.
+      if numbers_to_fetch.any?
+        
+        # !todo: move `parse_ticket_report` to `find_tickets` (use everywhere)
+        unfuddle_tickets = parse_ticket_report find_tickets(:number => numbers_to_fetch)
+        unfuddle_tickets.each do |unfuddle_ticket|
+          tickets << self.tickets.create(Ticket.attributes_from_unfuddle_ticket(unfuddle_ticket))
+        end
+      end
+    end
+    tickets
+  end
+  
+  
+  
   def tickets_in_queue(queue)
     queue = queue.slug if queue.is_a?(KanbanQueue)
     case queue.to_sym

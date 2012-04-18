@@ -32,7 +32,11 @@ class ReleasesController < ApplicationController
     @release = @environment.releases.new(
       commit0: @environment.last_commit,
       commit1: @commit)
-    @release.build_changes_from_commits if @release.can_read_commits?
+    if @release.can_read_commits?
+      @release.load_commits!
+      @release.load_tickets!
+      @release.build_changes_from_commits
+    end
     if @release.changes.none?
       render :template => "releases/new_pick_commit"
     else
@@ -49,7 +53,11 @@ class ReleasesController < ApplicationController
     
     if params[:recreate]
       @release.changes.each { |change| change._destroy = true }
-      @release.build_changes_from_commits if @release.can_read_commits?
+      if @release.can_read_commits?
+        @release.load_commits!
+        @release.load_tickets!
+        @release.build_changes_from_commits
+      end
     end
     
     @release.changes.build if @release.changes.select { |change| !change._destroy }.none?
