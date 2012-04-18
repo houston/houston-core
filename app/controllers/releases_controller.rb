@@ -46,7 +46,13 @@ class ReleasesController < ApplicationController
   # GET /releases/1/edit
   def edit
     @release = @environment.releases.find(params[:id])
-    @release.changes.build if @release.changes.none?
+    
+    if params[:recreate]
+      @release.changes.each { |change| change._destroy = true }
+      @release.build_changes_from_commits if @release.can_read_commits?
+    end
+    
+    @release.changes.build if @release.changes.select { |change| !change._destroy }.none?
   end
 
   # POST /releases

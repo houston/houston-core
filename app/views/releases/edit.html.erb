@@ -4,6 +4,13 @@
                     @environment => @project.environments,
                     "Releases" => project_environment_releases_path(@project, @environment),
                     @release => @environment.releases %>
+  <%= p.actions do %>
+    <% if params[:recreate] %>
+      <%= link_to "Cancel", edit_release_path(@release), :class => "btn" %>
+    <% else %>
+      <%= link_to "Recreate", edit_release_path(@release, :recreate => true), :class => "btn" %>
+    <% end %>
+  <% end %>
 <% end %>
 
-<%= render :partial => 'form' %>
+<%= render :partial => "form" %>
