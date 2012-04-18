@@ -31,9 +31,8 @@ class Release < ActiveRecord::Base
   end
   
   def build_changes_from_commits
-    git_commits.each do |commit|
-      message = commit.message
-      changes.build(description: message)
+    commits.each do |commit|
+      changes.build(description: commit.message) unless commit.skip?
     end
   end
   

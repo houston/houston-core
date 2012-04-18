@@ -9,4 +9,18 @@ class Commit < ActiveRecord::Base
       :committer => grit_commit.committer.name }
   end
   
+  
+  def skip?
+    SKIP_PATTERNS.any? { |pattern| message =~ pattern }
+  end
+  
+  
+  
+  
+  SKIP_PATTERNS = [
+    /\[skip\]/,
+    /\[testfix\]/,
+    /\[refactor\]/
+  ]
+  
 end
