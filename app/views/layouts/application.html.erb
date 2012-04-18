@@ -22,7 +22,7 @@
     
     <!-- Templates -->
     <script id="ticket_template" type="text/x-handlebars-template">
-      <li class="ticket {{color}}">
+      <li class="ticket {{projectSlug}} {{color}}">
         <a href="https://<%= unfuddle.subdomain %>.unfuddle.com/a#/projects/{{project_id}}/tickets/by_number/{{number}}">
           <h3 class="ticket-number">{{number}}</h3>
           <p class="ticket-summary">{{summary}}</p>

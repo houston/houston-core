@@ -35,8 +35,13 @@ class window.Kanban
     @fetchQueue project, queueName, (data)=>
       group0 = (data['groups'] || [])[0]
       tickets = if group0 then group0.tickets else []
+      
+      # Remove existing tickets
+      $queue.find(".#{project.slug}").remove()
+      
       for ticket in tickets
         ticket.color = project.color
+        ticket.projectSlug = project.slug
         $queue.append @renderTicket(ticket)
       
       $queue.find('.ticket').popoverForTicket().pseudoHover()
