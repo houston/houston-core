@@ -4,7 +4,6 @@
    - Implement "Last Release" (NB: need to _know_ something about environments)
    - When getting tickets from Unfuddle, synchronize them with a project's saved tickets
    - Implement the ability to add/remove tickets to "Staged for Development" (for a project) (Stakeholders only)
-   - Implement the ability to refresh the view every 5min
    - Test variety of colors
    - Implement a way of visualizing _batches_
    - Implement a way of visualizing _age_
@@ -15,6 +14,7 @@
    - Have option to send an email on creation
    - Filter out [testfix] and [skip]
    - Bold whatever comes before the ":"
+ - **Config**: add email configuration options
 
 # Ideas
 
