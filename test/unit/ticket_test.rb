@@ -34,6 +34,17 @@ class TicketTest < ActiveSupport::TestCase
   end
   
   
+  test "TicketQueues aren't destroyed or created when you set a ticket's queue to the same value" do
+    ticket = Ticket.create(project_id: 1, number: 1, summary: "Test summary")
+    ticket.set_queue! "in_development"
+    queue = ticket.ticket_queue
+    
+    assert_no_difference "TicketQueue.count" do
+      ticket.set_queue! "in_development"
+    end
+  end
+  
+  
   
   
   test "a ticket's queue can be mass-assigned on creation" do
