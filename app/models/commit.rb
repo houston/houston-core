@@ -12,11 +12,11 @@ class Commit < ActiveRecord::Base
   end
   
   def ticket_numbers
-    message.scan(TICKET_PATTERN).flatten
+    @ticket_numbers ||= message.scan(TICKET_PATTERN).flatten
   end
   
   def skip?
-    SKIP_PATTERNS.any? { |pattern| message =~ pattern }
+    ticket_numbers.any? || SKIP_PATTERNS.any? { |pattern| message =~ pattern }
   end
   
   
@@ -26,7 +26,8 @@ class Commit < ActiveRecord::Base
   SKIP_PATTERNS = [
     /\[skip\]/,
     /\[testfix\]/,
-    /\[refactor\]/
+    /\[refactor\]/,
+    /^Merge branch/
   ]
   
 end

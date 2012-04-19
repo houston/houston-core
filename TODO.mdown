@@ -9,7 +9,6 @@
    - Implement a way of visualizing _age_
  - **Project::Unfuddle**: implement a way of specifying `neq` in Ruby (e.g. `find_tickets(:field_1.neq(197))` or `find_tickets(:deployment.neq(:production))` and have Project figure it out...)
  - **Release**:
-   - Extract Unfuddle tickets from other changes
    - Have option to update Unfuddle tickets on creation
    - Have option to send an email on creation
  - **Config**: add email configuration options
