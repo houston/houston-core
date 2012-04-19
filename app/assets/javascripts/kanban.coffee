@@ -32,9 +32,7 @@ class window.Kanban
   
   loadQueue: (project, queueName)->
     $queue = $("##{queueName}")
-    @fetchQueue project, queueName, (data)=>
-      group0 = (data['groups'] || [])[0]
-      tickets = if group0 then group0.tickets else []
+    @fetchQueue project, queueName, (tickets)=>
       
       # Remove existing tickets
       $queue.find(".#{project.slug}").remove()

@@ -16,7 +16,7 @@ class Unfuddle
       path = "/projects/#{project_id}/ticket_reports/dynamic.json"
       params = create_conditions_string(*conditions)
       path << "?#{params}" if params
-      get_from_unfuddle(path)
+      parse_ticket_report get_from_unfuddle(path)
     end
     
     def create_conditions_string(*conditions)

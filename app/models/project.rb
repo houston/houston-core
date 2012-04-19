@@ -44,9 +44,7 @@ class Project < ActiveRecord::Base
       # Unfuddle will return all tickets if we fetch
       # tickets by number with no numbers given.
       if numbers_to_fetch.any?
-        
-        # !todo: move `parse_ticket_report` to `find_tickets` (use everywhere)
-        unfuddle_tickets = ticket_system.parse_ticket_report find_tickets(:number => numbers_to_fetch)
+        unfuddle_tickets = find_tickets(:number => numbers_to_fetch)
         unfuddle_tickets.each do |unfuddle_ticket|
           tickets << self.tickets.create(Ticket.attributes_from_unfuddle_ticket(unfuddle_ticket))
         end
