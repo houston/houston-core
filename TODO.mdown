@@ -12,7 +12,6 @@
    - Extract Unfuddle tickets from other changes
    - Have option to update Unfuddle tickets on creation
    - Have option to send an email on creation
-   - Bold whatever comes before the ":"
  - **Config**: add email configuration options
 
 # Ideas

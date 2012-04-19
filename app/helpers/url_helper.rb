@@ -6,8 +6,13 @@ module UrlHelper
     "https://#{unfuddle.subdomain}.unfuddle.com/a#/projects/#{project.unfuddle_id}"
   end
   
-  def unfuddle_ticket_url(ticket)
-    "#{unfuddle_project_url(ticket.project)}/tickets/by_number/#{ticket.number}"
+  def unfuddle_ticket_url(*args)
+    project, number = args
+    if project.is_a?(Ticket)
+      ticket = project
+      project, number = ticket.project, ticket.number
+    end
+    "#{unfuddle_project_url(project)}/tickets/by_number/#{number}"
   end
   
   

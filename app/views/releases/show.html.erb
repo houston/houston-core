@@ -25,7 +25,7 @@
 <h5>Changes</h5>
 <ul class="changes">
   <% @release.changes.each do |change| %>
-    <li><%= change.description %></li>
+    <li><%= format_change(change) %></li>
   <% end %>
 </ul>
 
@@ -34,6 +34,6 @@
 <h5>Commits</h5>
 <ul class="commits">
   <% @release.commits.each do |commit| %>
-    <li><%= commit.message %></li>
+    <li><%= format_commit(commit) %></li>
   <% end %>
 </ul>
