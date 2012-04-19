@@ -1,7 +1,6 @@
 # To Do
 
  - **Kanban**:
-   - When getting tickets from Unfuddle, synchronize them with a project's saved tickets
    - Implement the ability to add/remove tickets to "Staged for Development" (for a project) (Stakeholders only)
    - Test variety of colors
    - Implement a way of visualizing _age_

@@ -56,7 +56,13 @@ class Project < ActiveRecord::Base
   def find_tickets(*query)
     unfuddle_tickets = ticket_system.find_tickets(*query)
     unfuddle_tickets.map do |unfuddle_ticket|
-      self.tickets.find_by_number(unfuddle_ticket["number"]) || self.tickets.create(Ticket.attributes_from_unfuddle_ticket(unfuddle_ticket))
+      ticket = self.tickets.find_by_number(unfuddle_ticket["number"])
+      if ticket
+        ticket.update_attributes(Ticket.attributes_from_unfuddle_ticket(unfuddle_ticket))
+      else
+        ticket = self.tickets.create(Ticket.attributes_from_unfuddle_ticket(unfuddle_ticket))
+      end
+      ticket
     end
   end
   
