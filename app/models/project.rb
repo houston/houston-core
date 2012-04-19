@@ -53,10 +53,11 @@ class Project < ActiveRecord::Base
     tickets
   end
   
-  
-  
   def find_tickets(*query)
-    ticket_system.find_tickets(*query)
+    unfuddle_tickets = ticket_system.find_tickets(*query)
+    unfuddle_tickets.map do |unfuddle_ticket|
+      self.tickets.find_by_number(unfuddle_ticket["number"]) || self.tickets.create(Ticket.attributes_from_unfuddle_ticket(unfuddle_ticket))
+    end
   end
   
   
@@ -65,7 +66,7 @@ class Project < ActiveRecord::Base
     queue = queue.slug if queue.is_a?(KanbanQueue)
     case queue.to_sym
     when :staged_for_development
-      []
+      tickets.in_queue("staged_for_development")
     
     when :in_development
       find_tickets(in_development_query, :status => :accepted)
@@ -80,7 +81,9 @@ class Project < ActiveRecord::Base
       find_tickets(staged_for_release_query, :status => :closed, :resolution => :fixed)
     
     when :last_release
-      []
+      production = environments.find_by_slug("master") # <-- !todo: encode this special knowledge about 'master'
+      last_release = production && production.releases.first
+      last_release ? last_release.tickets : [] 
     end
   end
   
