@@ -4,12 +4,12 @@
    - When getting tickets from Unfuddle, synchronize them with a project's saved tickets
    - Implement the ability to add/remove tickets to "Staged for Development" (for a project) (Stakeholders only)
    - Test variety of colors
-   - Implement a way of visualizing _batches_
    - Implement a way of visualizing _age_
  - **Project::Unfuddle**: implement a way of specifying `neq` in Ruby (e.g. `find_tickets(:field_1.neq(197))` or `find_tickets(:deployment.neq(:production))` and have Project figure it out...)
  - **Release**:
    - Have option to update Unfuddle tickets on creation
    - Have option to send an email on creation
+   - If no Project#git_url make that the error message
  - **Config**: add email configuration options
 
 # Ideas
@@ -17,3 +17,4 @@
  - Get rid of "environments"; have two hard-coded ones: Testing and Production
  - Later: make "environments" a configuration option for all projects
  - Later: make Kanban queues a configuration option for all projects
+ - Implement a way of visualizing _batches_
