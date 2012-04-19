@@ -8,4 +8,8 @@ module TicketHelper
     link_to format_ticket(ticket), unfuddle_ticket_url(ticket)
   end
   
+  def link_to_ticket_number(ticket)
+    link_to "##{ticket.number}", unfuddle_ticket_url(ticket)
+  end
+  
 end

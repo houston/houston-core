@@ -12,7 +12,7 @@
   <thead>
     <tr>
       <th>Name</th>
-      <th>Changes</th>
+      <th>Tickets Resolved</th>
       <th>Commits</th>
       <th>Release Date</th>
     </tr>
@@ -21,7 +21,7 @@
     <% @releases.each do |release| %>
       <tr>
         <td><%= link_to release.name, release %></td>
-        <td><%= release.changes.count %></td>
+        <td><%= release.tickets.map { |ticket| link_to_ticket_number(ticket) }.join(", ").html_safe %></td>
         <td><%= release.commits.count %></td>
         <td><%= format_release_date(release) %></td>
       </tr>

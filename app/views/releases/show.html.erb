@@ -15,14 +15,14 @@
 
 <br />
 
-<h5>Tickets</h5>
+<h5>Tickets Resolved</h5>
 <ul class="tickets">
   <% @release.tickets.each do |ticket| %>
     <li><%= link_to_ticket(ticket) %></li>
   <% end %>
 </ul>
 
-<h5>Changes</h5>
+<h5>Other Changes</h5>
 <ul class="changes">
   <% @release.changes.each do |change| %>
     <li><%= format_change(change) %></li>
