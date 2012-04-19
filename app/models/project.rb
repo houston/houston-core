@@ -64,9 +64,9 @@ class Project < ActiveRecord::Base
   
   def tickets_in_queue(queue)
     queue = queue.slug if queue.is_a?(KanbanQueue)
-    case queue.to_sym
+    tickets = case queue.to_sym
     when :staged_for_development
-      tickets.in_queue("staged_for_development")
+      self.tickets.in_queue("staged_for_development")
     
     when :in_development
       find_tickets(in_development_query, :status => :accepted)
@@ -83,8 +83,11 @@ class Project < ActiveRecord::Base
     when :last_release
       production = environments.find_by_slug("master") # <-- !todo: encode this special knowledge about 'master'
       last_release = production && production.releases.first
-      last_release ? last_release.tickets : [] 
+      last_release ? last_release.tickets : []
     end
+    
+    tickets.each { |ticket| ticket.queue = queue }
+    tickets
   end
   
   
