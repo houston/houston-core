@@ -21,6 +21,7 @@ class Project < ActiveRecord::Base
     end
     
     def get_from_unfuddle(path)
+      Rails.logger.info "[unfuddle] #{path}"
       response = unfuddle.get(path)
       response.body
     end

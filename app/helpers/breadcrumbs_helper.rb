@@ -20,7 +20,6 @@ module BreadcrumbsHelper
   end
   
   def render_breadcrumb(active, name, value=nil)
-    puts "active: #{active}, name: #{name}, value: #{value} (#{value.class})"
     if value.nil?
       render_selected_breadcrumb(active, name)
     elsif value.is_a?(Array)
