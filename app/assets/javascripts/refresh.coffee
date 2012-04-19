@@ -43,4 +43,4 @@ class window.Refresher
     @elapsedArc = @elapsedArc + @increments
   
   updateLastUpdated: ->
-    $('#lastUpdate span').html dateFormat('shortTime')
+    $('#last_update span').html dateFormat('shortTime')
