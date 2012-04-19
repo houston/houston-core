@@ -1,10 +1,18 @@
 class Project < ActiveRecord::Base
-  include ::Project::Unfuddle
   
   has_many :environments, :dependent => :destroy
   has_many :tickets, :dependent => :destroy
   
   accepts_nested_attributes_for :environments, :allow_destroy => true
+  
+  
+  
+  # Later, I hope to support multiple adapters
+  # and make the ticket system choice either part
+  # of the config.yml or a project's configuration.
+  def ticket_system
+    @unfuddle ||= Unfuddle.instance.project(unfuddle_id)
+  end
   
   
   
@@ -38,13 +46,19 @@ class Project < ActiveRecord::Base
       if numbers_to_fetch.any?
         
         # !todo: move `parse_ticket_report` to `find_tickets` (use everywhere)
-        unfuddle_tickets = parse_ticket_report find_tickets(:number => numbers_to_fetch)
+        unfuddle_tickets = ticket_system.parse_ticket_report find_tickets(:number => numbers_to_fetch)
         unfuddle_tickets.each do |unfuddle_ticket|
           tickets << self.tickets.create(Ticket.attributes_from_unfuddle_ticket(unfuddle_ticket))
         end
       end
     end
     tickets
+  end
+  
+  
+  
+  def find_tickets(*query)
+    ticket_system.find_tickets(*query)
   end
   
   

@@ -1,8 +1,19 @@
-class Project < ActiveRecord::Base
-  module Unfuddle
+class Unfuddle
+  class Project
+    
+    
+    
+    def initialize(unfuddle, project_id)
+      @unfuddle = unfuddle
+      @project_id = project_id
+    end
+    
+    attr_reader :unfuddle, :project_id
+    
+    
     
     def find_tickets(*conditions)
-      path = "/projects/#{unfuddle_id}/ticket_reports/dynamic.json"
+      path = "/projects/#{project_id}/ticket_reports/dynamic.json"
       params = create_conditions_string(*conditions)
       path << "?#{params}" if params
       get_from_unfuddle(path)
@@ -36,9 +47,7 @@ class Project < ActiveRecord::Base
       JSON.load(json)
     end
     
-    def unfuddle
-      @unfuddle ||= ::Unfuddle.new
-    end
+    
     
   end
 end

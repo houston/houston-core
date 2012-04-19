@@ -1,12 +1,10 @@
 require 'net/https'
+require 'unfuddle/project'
 
 class Unfuddle
   
-  def initialize(options={})
-    options.reverse_merge!(Rails.application.config.unfuddle)
-    @subdomain = options["subdomain"]
-    @username = options["username"]
-    @password = options["password"]
+  def self.instance
+    @unfuddle ||= self.new
   end
   
   attr_reader :subdomain
@@ -23,6 +21,19 @@ class Unfuddle
     request = Net::HTTP::Get.new(path)
     request.basic_auth @username, @password
     http.request(request)
+  end
+  
+  def project(project_id)
+    ::Unfuddle::Project.new(self, project_id)
+  end
+  
+protected
+  
+  def initialize(options={})
+    options.reverse_merge!(Rails.application.config.unfuddle)
+    @subdomain = options["subdomain"]
+    @username = options["username"]
+    @password = options["password"]
   end
   
 end
