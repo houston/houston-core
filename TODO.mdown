@@ -3,7 +3,6 @@
  - **Kanban**:
    - Implement the ability to add/remove tickets to "Staged for Development" (for a project) (Stakeholders only)
    - Test variety of colors
-   - Implement a way of visualizing _age_
  - **Project::Unfuddle**: implement a way of specifying `neq` in Ruby (e.g. `find_tickets(:field_1.neq(197))` or `find_tickets(:deployment.neq(:production))` and have Project figure it out...)
  - **Release**:
    - Have option to update Unfuddle tickets on creation

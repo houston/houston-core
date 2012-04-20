@@ -11,3 +11,16 @@ Handlebars.registerHelper 'formatDuration', (seconds)->
     days = Math.floor(seconds / Duration.DAY)
     unit = if days == 1 then 'day' else 'days'
     "#{days} #{unit}"
+
+# Tickets that have been in a queue for less than 2 days are 'young';
+# ones that are 3-7 days old are 'adult'; tickets that have been in
+# their queue longer than 7 days are 'old'.
+Handlebars.registerHelper 'classForAge', (seconds)->
+  # i = Math.floor(Math.random() * 3)
+  # ['young', 'adult', 'old'][i]
+  if seconds < (2 * Duration.DAY)
+    'young'
+  else if seconds < (7 * Duration.DAY)
+    'adult'
+  else
+    'old'

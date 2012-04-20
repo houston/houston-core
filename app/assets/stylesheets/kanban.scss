@@ -133,6 +133,7 @@
         bottom: -0.55em;
         display: block;
         width: 100%;
+        white-space: nowrap;
       }
       
       &:before { content: '#'; }

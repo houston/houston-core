@@ -5,13 +5,19 @@ $blue:   rgb(6, 97, 156);
 $green:  rgb(76, 183, 29);
 $red:    rgb(219, 54, 58);
 
+@mixin age($color) {
+  &.young { border-color: lighten($color, 20%); background-color: lighten($color, 48%); }
+  &.adult { border-color: lighten($color, 12%); background-color: lighten($color, 40%); }
+  &.old { border-color: lighten($color, 2%); background-color: lighten($color, 36%); }
+}
+
 #kanban li {
-  &.teal { border-color: rgba($teal, 0.6); background-color: rgba($teal, 0.2); }
-  &.orange { border-color: rgba($orange, 0.6); background-color: rgba($orange, 0.2); }
-  &.slate { border-color: rgba($slate, 0.6); background-color: rgba($slate, 0.2); }
-  &.blue { border-color: rgba($blue, 0.6); background-color: rgba($blue, 0.2); }
-  &.green { border-color: rgba($green, 0.6); background-color: rgba($green, 0.2); }
-  &.red { border-color: rgba($red, 0.6); background-color: rgba($red, 0.2); }
+  &.teal { @include age($teal) }
+  &.orange { @include age($orange) }
+  &.slate { @include age($slate) }
+  &.blue { @include age($blue) }
+  &.green { @include age($green) }
+  &.red { @include age($red) }
 }
 
 .label {
