@@ -12,7 +12,7 @@ class KanbanController < ApplicationController
   
   
   def queue
-    render :json => @project.tickets_in_queue(params[:queue])
+    render :json => TicketPresenter.new(@project.tickets_in_queue(params[:queue]))
   end
   
   

@@ -38,8 +38,6 @@ class window.Kanban
       $queue.find(".#{project.slug}").remove()
       
       for ticket in tickets
-        ticket.color = project.color
-        ticket.projectSlug = project.slug
         $queue.append @renderTicket(ticket)
       
       $queue.find('.ticket').popoverForTicket().pseudoHover()
