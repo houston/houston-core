@@ -44,10 +44,7 @@ class Project < ActiveRecord::Base
       # Unfuddle will return all tickets if we fetch
       # tickets by number with no numbers given.
       if numbers_to_fetch.any?
-        unfuddle_tickets = find_tickets(:number => numbers_to_fetch)
-        unfuddle_tickets.each do |unfuddle_ticket|
-          tickets << self.tickets.create(Ticket.attributes_from_unfuddle_ticket(unfuddle_ticket))
-        end
+        tickets.concat find_tickets(:number => numbers_to_fetch)
       end
     end
     tickets
