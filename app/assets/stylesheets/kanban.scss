@@ -123,6 +123,17 @@
       text-align: right;
       font-weight: normal;
       line-height: 1.84615385em;
+      position: relative;
+      
+      .ticket-age {
+        font-size: 0.55em;
+        line-height: 1em;
+        position: absolute;
+        left: 0;
+        bottom: -0.55em;
+        display: block;
+        width: 100%;
+      }
       
       &:before { content: '#'; }
     }
