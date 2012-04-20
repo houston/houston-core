@@ -12,7 +12,7 @@
             <% projects.each do |project| %>
               <% project.tickets.in_queue(queue).each do |ticket| %>
                 <%# This is copied from application.html.erb %>
-                <li class="ticket <%= project.slug %> <%= project.color %> young">
+                <li class="ticket <%= project.slug %> <%= project.color %> young" id="ticket_<%= ticket.id %>" data-number="<%= ticket.number %>">
                   <a href="https://<%= unfuddle.subdomain %>.unfuddle.com/a#/projects/<%= project.unfuddle_id %>/tickets/by_number/<%= ticket.number %>">
                     <h3 class="ticket-number"><%= ticket.number %></h3>
                     <p class="ticket-summary"><%= ticket.summary %></p>

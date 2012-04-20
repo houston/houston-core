@@ -22,7 +22,7 @@
     
     <!-- Templates -->
     <script id="ticket_template" type="text/x-handlebars-template">
-      <li class="ticket {{projectSlug}} {{projectColor}} {{classForAge age}} {{verdict}}">
+      <li class="ticket {{projectSlug}} {{projectColor}} {{classForAge age}} {{verdict}}" id="ticket_{{id}}" data-number="{{number}}">
         <a href="https://<%= unfuddle.subdomain %>.unfuddle.com/a#/projects/{{projectId}}/tickets/by_number/{{number}}">
           <h3 class="ticket-number">{{number}} <span class="ticket-age">{{formatDuration age}}</span></h3>
           <p class="ticket-summary">{{summary}}</p>

@@ -50,6 +50,10 @@ class Project < ActiveRecord::Base
     tickets
   end
   
+  def find_or_create_ticket_by_number(number)
+    find_or_create_tickets_by_number(number).first
+  end
+  
   def find_tickets(*query)
     unfuddle_tickets = ticket_system.find_tickets(*query)
     unfuddle_tickets.map do |unfuddle_ticket|
@@ -105,7 +109,9 @@ class Project < ActiveRecord::Base
     slug
   end
   
-  
+  def number_of_slots
+    5
+  end
   
   def git_path
     @git_path ||= get_local_git_path

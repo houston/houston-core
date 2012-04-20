@@ -5,12 +5,11 @@ class window.Kanban
     @queues = options.queues
     @renderTicket = Handlebars.compile($('#ticket_template').html())
     
+    @observer = new Observer()
+    
     # Ticket description popover
     $('.kanban-column').each ->
       $(@).find('.ticket').popoverForTicket().pseudoHover()
-    # $('#on_deck .ticket').pseudoHover().popover
-    #   title: 'Add Ticket'
-    #   content: 'Click to add a ticket to the queue'
     
     # Make the Kanban fill the browser window
     @kanban = $('#kanban')
@@ -25,6 +24,9 @@ class window.Kanban
     # Fix the Kanban to the bottom of the window
     # after determining its natural top.
     @kanban.css('bottom': '0px')
+  
+  observe: (name, func)-> @observer.observe(name, func)
+  unobserve: (name, func)-> @observer.unobserve(name, func)
   
   loadQueues: ->
     for queueName in @queues
@@ -45,6 +47,8 @@ class window.Kanban
         .popoverForTicket()
         .pseudoHover()
         .illustrateTicketVerdict()
+      
+      @observer.fire('queueLoaded', [queueName, project])
   
   fetchQueue: (project, queueName, callback)->
     xhr = @get "#{project.slug}/#{queueName}"

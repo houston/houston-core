@@ -109,6 +109,10 @@
       border-style: dotted;
       border-color: #aaa;
       background-color: #fff;
+      
+      &:hover {
+        cursor: pointer;
+      }
     }
     
     .add-ticket {
