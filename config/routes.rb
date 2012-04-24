@@ -5,8 +5,9 @@ Changelog::Application.routes.draw do
   root :to => "home#index", :via => :get
   
   match "kanban" => "kanban#index", :via => :get
-  match "kanban/:slug" => "kanban#show", :via => :get
-  match "kanban/:slug/:queue" => "kanban#queue", :via => :get, :constraints => {queue: Regexp.new(KanbanQueue.slugs.join("|"))}
+  # match "kanban/:queue" => "kanban#queue", :via => :get, :constraints => {queue: Regexp.new(KanbanQueue.slugs.join("|"))}
+  match "kanban/:slug" => "project_kanban#index", :via => :get
+  match "kanban/:slug/:queue" => "project_kanban#queue", :via => :get, :constraints => {queue: Regexp.new(KanbanQueue.slugs.join("|"))}
   
   resources :projects do
     resources :environments, :controller => "project_environments" do
