@@ -7,7 +7,7 @@
   <tbody>
     <tr>
       <% KanbanQueue.all.each do |queue| %>
-        <td>
+        <td class="kanban-column" data-queue="<%= queue.slug %>">
           <ul id="<%= queue.slug %>">
             <% projects.each do |project| %>
               <% project.tickets.in_queue(queue).each do |ticket| %>
@@ -28,7 +28,7 @@
   <tfoot>
     <tr>
       <% KanbanQueue.all.each do |queue| %>
-        <th>
+        <th class="kanban-column" data-queue="<%= queue.slug %>">
           <%= queue.name %>
           <p class="small"><%= queue.description %></p>
         </th>

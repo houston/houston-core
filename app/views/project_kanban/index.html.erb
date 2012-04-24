@@ -1,6 +1,6 @@
 <%= header do |p| %>
   <%= p.breadcrumbs "Kanban" => kanban_path,
-                    @project => Project.all %>
+                    @project.name => nil %>
 <% end %>
 
 <%= render partial: "kanban/kanban", locals: {projects: [@project]} %>
@@ -14,6 +14,24 @@
       });
       kanban.loadQueues();
       $('#auto_update').initializeAutoUpdate(300000, kanban); // 5 minutes
+      $('.kanban-column')
+        .addClass('clickable')
+        .hover(function() {
+            var queue = $(this).attr('data-queue');
+            $('.kanban-column[data-queue="' + queue + '"]').addClass('hover');
+          }, function() {
+            var queue = $(this).attr('data-queue');
+            $('.kanban-column[data-queue="' + queue + '"]').removeClass('hover');
+          })
+        .click(function(e) {
+            var $target = $(e.target);
+            if($target.is('a') || $target.parents('a').length > 0) {
+              return true;
+            } else {
+              window.location = window.location.pathname + '/' + $(this).attr('data-queue');
+              return false;
+            }
+          });
     });
   </script>
 <% end %>

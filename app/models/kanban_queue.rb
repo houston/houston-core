@@ -36,6 +36,10 @@ class KanbanQueue
       @slugs ||= all.map(&:slug)
     end
     
+    def find_by_slug(slug)
+      all.find { |queue| queue.slug == slug }
+    end
+    
     def create(*attributes_array)
       attributes_array.flatten.map { |attributes| KanbanQueue.new(attributes) }
     end

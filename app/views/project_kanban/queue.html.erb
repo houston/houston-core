@@ -1,0 +1,11 @@
+<%= header do |p| %>
+  <%= p.breadcrumbs "Kanban" => kanban_path,
+                    @project.name => project_kanban_path(@project),
+                    @queue.name => nil %>
+<% end %>
+
+<ul class="tickets">
+  <% @tickets.each do |ticket| %>
+    <li><%= link_to_ticket(ticket) %></li>
+  <% end %>
+</ul>
