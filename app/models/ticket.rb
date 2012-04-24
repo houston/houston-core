@@ -2,6 +2,7 @@ class Ticket < ActiveRecord::Base
   
   belongs_to :project
   has_one :ticket_queue, conditions: "destroyed_at IS NULL"
+  has_many :testing_notes
   
   default_scope includes(:ticket_queue)
   
@@ -47,6 +48,27 @@ class Ticket < ActiveRecord::Base
   # Returns the amount of time the ticket has spent in its current queue (in seconds)
   def age
     ticket_queue ? ticket_queue.queue_time : 0
+  end
+  
+  
+  
+  def testers
+    project.testers
+  end
+  
+  def verdicts
+    # !todo: get the most recent verdict per tester; only the ones since the last deploy
+    testing_notes.map(&:verdict)
+  end
+  
+  def testing_status
+    if verdicts.member? "fails"
+      "failing"
+    elsif verdicts.length < testers.length
+      "pending"
+    else
+      "passing"
+    end
   end
   
   

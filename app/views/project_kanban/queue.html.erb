@@ -6,6 +6,9 @@
 
 <ul class="tickets">
   <% @tickets.each do |ticket| %>
-    <li><%= link_to_ticket(ticket) %></li>
+    <li>
+      <%= link_to_ticket(ticket) %>
+      <%= testing_note_badge_for_ticket(ticket) if @queue.slug == "in_testing" %>
+    </li>
   <% end %>
 </ul>

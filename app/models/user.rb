@@ -1,5 +1,7 @@
 class User < ActiveRecord::Base
   
+  has_many :testing_notes
+  
   # Include default devise modules. Others available are:
   #      :token_authenticatable,
   #      :registerable,
@@ -30,7 +32,12 @@ class User < ActiveRecord::Base
     def #{role.downcase}?
       role == "#{role}"
     end
+    
+    def self.#{role.downcase.pluralize}
+      where(:role => "#{role}")
+    end
     RUBY
   end
+  
   
 end

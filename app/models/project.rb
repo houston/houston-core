@@ -121,6 +121,12 @@ class Project < ActiveRecord::Base
   
   
   
+  def testers
+    User.testers
+  end
+  
+  
+  
 private
   
   

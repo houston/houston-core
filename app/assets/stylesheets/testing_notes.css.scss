@@ -1,0 +1,17 @@
+.testing-note-badge {
+  display: inline-block;
+  font-size: 0.88em;
+  font-weight: bold;
+  height: 1em;
+  width: 1em;
+  line-height: 1em;
+  padding: 0.25em;
+  border-width: 1px;
+  border-style: solid;
+  text-align: center;
+  margin-left: 1em;
+  
+  &.pending { border-color: #ed8; background-color: #ffffcf; }
+  
+}
+
