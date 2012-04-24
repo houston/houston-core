@@ -6,9 +6,9 @@ $green:  rgb(76, 183, 29);
 $red:    rgb(219, 54, 58);
 
 @mixin age($color) {
-  &.young { border-color: lighten($color, 20%); background-color: lighten($color, 48%); }
-  &.adult { border-color: lighten($color, 12%); background-color: lighten($color, 40%); }
-  &.old { border-color: lighten($color, 2%); background-color: lighten($color, 36%); }
+  &.young { border-color: lighten($color, 18%); background-color: lighten($color, 40%); }
+  &.adult { border-color: lighten($color, 12%); background-color: lighten($color, 35%); }
+  &.old { border-color: lighten($color, 2%); background-color: lighten($color, 30%); }
 }
 
 #kanban li {
