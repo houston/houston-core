@@ -5,6 +5,19 @@
   cursor: pointer;
 }
 
+#modal {
+  
+  width: 275px;
+  
+  form input[type='text'] {
+    width:145px;
+  }
+  
+  #error {
+    color: red;
+  }
+}
+
 #timer_wrapper {
   display: none;
   position: absolute;

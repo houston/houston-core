@@ -15,6 +15,7 @@
     <input type="text" name="ticket_number" value="" id="ticket_number">
     <input type="submit" value="Fetch Ticket">
   </form>
+  <div id="error"></div>
 </div>
 
 <% content_for :scripts do %>
@@ -79,8 +80,8 @@
                 .popoverForTicket()
                 .pseudoHover();
         });
-        xhr.error(function() {
-          window.console.log('error', arguments)
+        xhr.error(function(e) {
+          $('#modal #error').text(JSON.parse(e.responseText).errors[0]);
         });
         return false;
       });
