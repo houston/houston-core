@@ -49,6 +49,17 @@
         }
       });
       
+      // Change border style of ticket about to be deleted
+      $(document).keydown(function(e) {
+        $ticket = $('#staged_for_development .ticket:not(.placeholder) a:hover');
+        if(e.shiftKey && ($ticket.length > 0)) {
+          $ticket.closest('.ticket').css({'border-style':'dashed'});
+        }
+      });
+      $(document).keyup(function() {
+        $('#staged_for_development .ticket:not(.placeholder)').css({'border-style':'solid'});
+      });
+      
       $('#staged_for_development').delegate('.ticket:not(.placeholder) a', 'click', function(e) {
         if(e.shiftKey) {
           e.stopImmediatePropagation();
