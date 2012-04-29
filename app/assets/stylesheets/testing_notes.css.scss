@@ -2,6 +2,13 @@
   clear: both; 
   list-style-type: none;
   a { max-width: 750px; }
+  
+  padding-left: 16px;
+  background-image: url(/images/tree-collapsed.png);
+  background-position: 0 4px;
+  background-repeat: no-repeat;
+  
+  &.expanded { background-image: url(/images/tree-expanded.png); }
 }
 
 .tickets-list,

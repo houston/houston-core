@@ -22,9 +22,13 @@ class window.TestingTicketView extends Backbone.View
     @renderTestingNotes()
     
     # Wire up the ticket in an accordian control
-    $el.find('[data-toggle="collapse"]').collapse
-      toggle: true
-      parent: '#tickets'
+    $el.find('[data-toggle="collapse"]')
+      .collapse
+        toggle: true
+        parent: '#tickets'
+    $el.find('.testing-notes')
+      .on('show', -> $(@).closest('.ticket').addClass('expanded'))
+      .on('hide', -> $(@).closest('.ticket').removeClass('expanded'))
     @
   
   renderTesterVerdicts: ->
