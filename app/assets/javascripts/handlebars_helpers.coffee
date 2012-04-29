@@ -30,3 +30,8 @@ Handlebars.registerHelper 'radioButton', (object, id, name, value, selectedValue
   input = "<input type=\"radio\" id=\"#{id}\" name=\"#{name}\" value=\"#{value}\""
   input = input + ' checked="checked"' if value == selectedValue
   "#{input} />"
+
+Handlebars.registerHelper 'formatTicketSummary', (message)->
+  [feature, sentence] = message.split(':', 2)
+  if sentence then "<b>#{feature}:</b>#{sentence}" else message
+  
