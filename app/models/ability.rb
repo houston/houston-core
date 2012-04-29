@@ -16,6 +16,11 @@ class Ability
       can :manage, User
     end
     
+    # Testers can add testing notes
+    if user.tester?
+      can :create, TestingNote
+    end
+    
     # Admins can do everything
     can :manage, :all if user.administrator?
     

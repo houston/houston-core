@@ -30,6 +30,8 @@ GEM
       multi_json (~> 1.0)
     addressable (2.2.7)
     arel (3.0.2)
+    backbone-rails (0.9.1)
+      rails (>= 3.0.0)
     bcrypt-ruby (3.0.1)
     builder (3.0.0)
     cancan (1.6.7)
@@ -168,6 +170,7 @@ PLATFORMS
 
 DEPENDENCIES
   addressable
+  backbone-rails
   cancan
   capistrano
   coffee-rails (~> 3.2.1)

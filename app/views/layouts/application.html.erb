@@ -29,6 +29,54 @@
         </a>
       </li>
     </script>
+    
+    <script id="ticket_in_testing_template" type="text/x-handlebars-template">
+      <a data-toggle="collapse" data-parent="#tickets" data-target="#ticket_{{id}}_testing_notes" class="testing-notes">{{summary}}</a>
+      <span class="testing-note-badge" data-status="{{badgeStatus}}">{{badgeCount}}</span>
+      <ol id="ticket_{{id}}_testing_notes" class="testing-notes collapse"></ol>
+    </script>
+    
+    <script id="testing_note_template" type="text/x-handlebars-template">
+      <span class="tester-avatar">{{{avatarImage}}}</span>
+      <span class="tester-comment">{{comment}}</span>
+      {{#if editable}}
+      <span class="tester-controls">
+        <a class="edit-note">Edit</a>
+        <a class="destroy-note">Delete</a>
+      </span>
+      {{/if}}
+    </script>
+    
+    <script id="edit_testing_note_template" type="text/x-handlebars-template">
+      <form accept-charset="UTF-8" action="/tickets/{{ticketId}}/testing_notes/{{id}}" class="testing-note-form" id="edit_testing_note_{{id}}" method="post">
+        <p>
+          <input data-attr="ticket_id" id="testing_note_{{id}}_ticket_id" name="ticket_id" type="hidden" value="{{ticketId}}" />
+          <label for="testing_note_{{id}}_verdict_works">{{{radioButton "testing_note" id "verdict" "works" verdict}}} Works</label>
+          <label for="testing_note_{{id}}_verdict_fails">{{{radioButton "testing_note" id "verdict" "fails" verdict}}} Fails</label>
+        </p>
+        <p>
+          <input id="testing_note_comment" name="comment" size="30" type="text" value="{{comment}}" />
+          <input class="btn btn-primary" name="commit" type="submit" value="Save" />
+          <input class="btn btn-cancel" name="commit" type="submit" value="Cancel" />
+        </p>
+      </form>
+    </script>
+    
+    <script id="new_testing_note_template" type="text/x-handlebars-template">
+      <li class="testing-note new">
+        <form accept-charset="UTF-8" action="/tickets/{{ticketId}}/testing_notes" class="testing-note-form" id="new_testing_note" method="post">
+          <p>
+            <input data-attr="ticket_id" id="ticket_{{ticketId}}_new_testing_note_ticket_id" name="ticket_id" type="hidden" value="{{ticketId}}" />
+            <label for="ticket_{{ticketId}}_new_testing_note_verdict_works"><input id="ticket_{{ticketId}}_new_testing_note_verdict_works" name="verdict" type="radio" value="works"> Works</label>
+            <label for="ticket_{{ticketId}}_new_testing_note_verdict_fails"><input id="ticket_{{ticketId}}_new_testing_note_verdict_fails" name="verdict" type="radio" value="fails"> Fails</label>
+          </p>
+          <p>
+            <input id="testing_note_comment" name="comment" size="30" type="text" value="" />
+            <input class="btn btn-primary" name="commit" type="submit" value="Post" />
+          </p>
+        </form>
+      </li>
+    </script>
   </head>
   <body>
 

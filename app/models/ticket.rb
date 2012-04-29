@@ -51,25 +51,4 @@ class Ticket < ActiveRecord::Base
   end
   
   
-  
-  def testers
-    project.testers
-  end
-  
-  def verdicts
-    # !todo: get the most recent verdict per tester; only the ones since the last deploy
-    testing_notes.map(&:verdict)
-  end
-  
-  def testing_status
-    if verdicts.member? "fails"
-      "failing"
-    elsif verdicts.length < testers.length
-      "pending"
-    else
-      "passing"
-    end
-  end
-  
-  
 end

@@ -45,4 +45,13 @@ class KanbanQueue
     end
   end
   
+  slugs.each do |slug|
+    class_eval <<-RUBY
+    def #{slug.downcase}?
+      slug == "#{slug}"
+    end
+    RUBY
+  end
+  
+  
 end

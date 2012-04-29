@@ -19,6 +19,11 @@ Changelog::Application.routes.draw do
     resources :users
   end
   
+  scope "tickets/:ticket_id" do 
+    resources :testing_notes
+  end
+  
+  
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

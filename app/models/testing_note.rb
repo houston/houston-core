@@ -5,6 +5,9 @@ class TestingNote < ActiveRecord::Base
   
   VERDICTS = %w{works fails}
   
-  validate :verdict, :presence => true, :inclusion => VERDICTS
+  validates :user, :presence => true
+  validates :ticket, :presence => true
+  validates :comment, :presence => true, :length => 1..250
+  validates :verdict, :presence => true, :inclusion => VERDICTS
   
 end

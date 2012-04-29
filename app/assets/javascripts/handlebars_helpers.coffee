@@ -24,3 +24,9 @@ Handlebars.registerHelper 'classForAge', (seconds)->
     'adult'
   else
     'old'
+
+Handlebars.registerHelper 'radioButton', (object, id, name, value, selectedValue)->
+  id = "#{object}_#{id}_#{name}_#{value}"
+  input = "<input type=\"radio\" id=\"#{id}\" name=\"#{name}\" value=\"#{value}\""
+  input = input + ' checked="checked"' if value == selectedValue
+  "#{input} />"

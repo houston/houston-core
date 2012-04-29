@@ -12,8 +12,11 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery-ui
 //= require twitter/bootstrap
 //= require freight_train
 //= require sugar
+//= require underscore
+//= require backbone
 //= require handlebars
 //= require_tree .

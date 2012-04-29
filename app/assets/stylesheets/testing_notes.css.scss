@@ -11,7 +11,35 @@
   text-align: center;
   margin-left: 1em;
   
-  &.pending { border-color: #ed8; background-color: #ffffcf; }
-  
+  &[data-status="pending"] { border-color: #e9d649; background-color: #fff7bd; } // Hue: 53
+  &[data-status="passing"] { border-color: #55c832; background-color: #d1efc8; } // Hue: 106
+  &[data-status="failing"] { border-color: #ff6d6d; background-color: #ffd6d6; } // Hue: 0
 }
 
+.testing-note {
+  display: block;
+  margin: 0.25em 0;
+  
+  img {
+    padding: 0.25em;
+    margin-right: 0.5em;
+  }
+  
+  &.works {
+    img { background-color: #cfc; }
+    color: #0a0;
+  }
+  
+  &.fails {
+    img { background-color: #fcc; }
+    color: #a00;
+  }
+}
+
+.testing-note-form {
+  label {
+    display: inline-block;
+    input { display: inline; }
+  }
+  p { margin: 0; }
+}
