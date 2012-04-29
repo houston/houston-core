@@ -36,6 +36,11 @@ class window.TestingTicketView extends Backbone.View
     $testerVerdicts.empty()
     @ticket.testerVerdicts().each (verdict)=>
       $testerVerdicts.append @renderTesterVerdict(verdict)
+    
+    verdict = @ticket.verdict()
+    $(@el).find('.ticket-verdict-summary')
+      .attr('class', "ticket-verdict-summary #{verdict.toLowerCase()}")
+      .html(verdict)
     @
   
   renderTestingNotes: ->

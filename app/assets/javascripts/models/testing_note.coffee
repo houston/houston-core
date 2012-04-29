@@ -23,3 +23,12 @@ class window.TestingNotes extends Backbone.Collection
       else
         verdictsByTester[testerId] ?= 'passing'
     verdictsByTester
+  
+  verdict: ->
+    verdicts = _.values(@verdictsByTester())
+    if _.include verdicts, 'failing'
+      'Failing'
+    else if verdicts.length < window.testers.length
+      'Pending'
+    else
+      'Passing'

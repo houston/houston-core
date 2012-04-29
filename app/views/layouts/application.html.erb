@@ -32,6 +32,7 @@
     
     <script id="ticket_in_testing_template" type="text/x-handlebars-template">
       <a data-toggle="collapse" data-parent="#tickets" data-target="#ticket_{{id}}_testing_notes" class="testing-notes">[#{{number}}] {{{formatTicketSummary summary}}}</a>
+      <span class="ticket-verdict-summary"></span>
       <span class="tester-verdicts"></span>
       <ol id="ticket_{{id}}_testing_notes" class="testing-notes collapse"></ol>
     </script>

@@ -1,7 +1,7 @@
 .tickets-list .ticket { 
   clear: both; 
   list-style-type: none;
-  a { max-width: 750px; }
+  a { max-width: 685px; }
   
   padding-left: 16px;
   background-image: url(/images/tree-collapsed.png);
@@ -11,12 +11,9 @@
   &.expanded { background-image: url(/images/tree-expanded.png); }
 }
 
-.tickets-list,
+.tickets-list { max-width: 800px; }
 #testers {
-  max-width: 800px;
-}
-
-#testers {
+  max-width: 735px;
   height: 4em;
 //  overflow: hidden;
 }
@@ -41,13 +38,25 @@
   overflow: hidden;
 }
 
+.ticket-verdict-summary {
+  text-align: right;
+  display: block;
+  float: right;
+  width: 65px;
+  font-weight: bold;
+  
+  &.pending { opacity: 0.33; }
+  &.passing { color: #0a0; }
+  &.failing { color: #c11; }
+}
+
 .ticket-verdict {
   float: right;
   img { padding: 0.25em; }
   
   &[data-verdict="pending"] img { background-color: transparent; opacity: 0.33; }
-  &[data-verdict="passing"] img { background-color: #55c832; opacity: 1; }
-  &[data-verdict="failing"] img { background-color: #ff6d6d; opacity: 1; }
+  &[data-verdict="passing"] img { background-color: #55c832; }
+  &[data-verdict="failing"] img { background-color: #ff6d6d; }
 }
 
 .testing-note {

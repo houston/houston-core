@@ -16,6 +16,9 @@ class window.Ticket extends Backbone.Model
       'pending'
     else
       'passing'
+  
+  verdict: ->
+    @testingNotes().verdict()
 
 
 class window.Tickets extends Backbone.Collection
