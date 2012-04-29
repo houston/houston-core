@@ -11,6 +11,7 @@ class TicketPresenter
         projectColor: ticket.project.color,
         number: ticket.number,
         summary: ticket.summary,
+        verdict: ticket.verdict.downcase,
         age: ticket.age }
     end
   end

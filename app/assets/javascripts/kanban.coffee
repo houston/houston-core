@@ -40,7 +40,10 @@ class window.Kanban
       for ticket in tickets
         $queue.append @renderTicket(ticket)
       
-      $queue.find('.ticket').popoverForTicket().pseudoHover()
+      $queue.find('.ticket')
+        .popoverForTicket()
+        .pseudoHover()
+        .illustrateTicketVerdict()
   
   fetchQueue: (project, queueName, callback)->
     xhr = @get "#{project.slug}/#{queueName}"

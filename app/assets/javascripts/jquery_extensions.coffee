@@ -10,6 +10,14 @@ $.fn.extend
       title: -> $(@).find('.ticket-summary').html().split(': ')[0]
       content: -> $(@).find('.ticket-summary').html().split(': ')[1].capitalize()
   
+  illustrateTicketVerdict: ->
+    $(@).each ->
+      $ticket = $(@)
+      if $ticket.hasClass('failing')
+        $ticket.append('<div class="ticket-badge failing-ticket-badge"></div>')
+      else if $ticket.hasClass('passing')
+        $ticket.append('<div class="ticket-badge passing-ticket-badge"></div>')
+  
   initializeAutoUpdate: (interval, kanban)->
     $(@).click ->
       $('#timer_wrapper').fadeIn()

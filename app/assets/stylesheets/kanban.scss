@@ -156,3 +156,15 @@
 .kanban-column.hover { background-color: #ffffcf !important; }
 .kanban-column.clickable { cursor: pointer; }
 
+
+.ticket-badge {
+  position: absolute;
+  top: -0.5em;
+  left: -0.5em;
+  width: 40px;
+  height: 40px;
+  background-repeat: no-repeat;
+  background-image: url(/images/badges.png);
+}
+.passing-ticket-badge { background-position: -40px 0px; }
+.failing-ticket-badge { background-position:   0px 0px; }

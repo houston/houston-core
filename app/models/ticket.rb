@@ -51,4 +51,29 @@ class Ticket < ActiveRecord::Base
   end
   
   
+  
+  # c.f. app/assets/models/testing_note.coffee
+  def verdict
+    verdicts_by_tester = {}
+    testing_notes.each do |note|
+      tester_id = note.user_id
+      if note.verdict == "fails"
+        verdicts_by_tester[tester_id] = "failing"
+      else
+        verdicts_by_tester[tester_id] ||= "passing"
+      end
+    end
+    
+    verdicts = verdicts_by_tester.values
+    if verdicts.member? "failing"
+      "Failing"
+    elsif verdicts.length < project.testers.length
+      "Pending"
+    else
+      "Passing"
+    end
+  end
+  
+  
+  
 end

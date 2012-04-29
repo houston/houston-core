@@ -22,7 +22,7 @@
     
     <!-- Templates -->
     <script id="ticket_template" type="text/x-handlebars-template">
-      <li class="ticket {{projectSlug}} {{projectColor}} {{classForAge age}}">
+      <li class="ticket {{projectSlug}} {{projectColor}} {{classForAge age}} {{verdict}}">
         <a href="https://<%= unfuddle.subdomain %>.unfuddle.com/a#/projects/{{projectId}}/tickets/by_number/{{number}}">
           <h3 class="ticket-number">{{number}} <span class="ticket-age">{{formatDuration age}}</span></h3>
           <p class="ticket-summary">{{summary}}</p>
@@ -132,6 +132,12 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <%= javascript_include_tag "/assets/application" %>
     <%= ft_init :adapter => :jquery %>
+    <script type="text/javascript">
+      $(function(){
+        window.userId = <%=raw current_user ? current_user.id : "null" %>;
+        window.testers = new Testers(<%= raw TesterPresenter.new(User.testers).to_json %>);
+      });
+    </script>
     <%= yield :scripts %>
 
   </body>
