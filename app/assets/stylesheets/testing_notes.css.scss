@@ -1,19 +1,46 @@
-.testing-note-badge {
+.tickets-list .ticket { 
+  clear: both; 
+  list-style-type: none;
+  a { max-width: 750px; }
+}
+
+.tickets-list,
+#testers {
+  max-width: 800px;
+}
+
+#testers {
+  height: 4em;
+//  overflow: hidden;
+}
+
+.tester {
   display: inline-block;
-  font-size: 0.88em;
-  font-weight: bold;
-  height: 1em;
-  width: 1em;
-  line-height: 1em;
-  padding: 0.25em;
-  border-width: 1px;
-  border-style: solid;
-  text-align: center;
-  margin-left: 1em;
+  float: right;
+  transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg); /* IE 9 */
+  -moz-transform: rotate(-90deg); /* Firefox */
+  -webkit-transform: rotate(-90deg); /* Safari and Chrome */
+  -o-transform: rotate(-90deg); /* Opera */
+  width: 22px;
+  height: 22px;
+  position: relative;
+  top: 2em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tester-verdicts {
+  overflow: hidden;
+}
+
+.ticket-verdict {
+  float: right;
+  img { padding: 0.25em; }
   
-  &[data-status="pending"] { border-color: #e9d649; background-color: #fff7bd; } // Hue: 53
-  &[data-status="passing"] { border-color: #55c832; background-color: #d1efc8; } // Hue: 106
-  &[data-status="failing"] { border-color: #ff6d6d; background-color: #ffd6d6; } // Hue: 0
+  &[data-verdict="pending"] img { background-color: transparent; opacity: 0.33; }
+  &[data-verdict="passing"] img { background-color: #55c832; opacity: 1; }
+  &[data-verdict="failing"] img { background-color: #ff6d6d; opacity: 1; }
 }
 
 .testing-note {
@@ -25,15 +52,8 @@
     margin-right: 0.5em;
   }
   
-  &.works {
-    img { background-color: #cfc; }
-    color: #0a0;
-  }
-  
-  &.fails {
-    img { background-color: #fcc; }
-    color: #a00;
-  }
+  &.works { img { background-color: #55c832; } color: #0a0; }
+  &.fails { img { background-color: #ff6d6d; } color: #c11; }
 }
 
 .testing-note-form {

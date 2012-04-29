@@ -32,8 +32,12 @@
     
     <script id="ticket_in_testing_template" type="text/x-handlebars-template">
       <a data-toggle="collapse" data-parent="#tickets" data-target="#ticket_{{id}}_testing_notes" class="testing-notes">[#{{number}}] {{{formatTicketSummary summary}}}</a>
-      <span class="testing-note-badge" data-status="{{badgeStatus}}">{{badgeCount}}</span>
+      <span class="tester-verdicts"></span>
       <ol id="ticket_{{id}}_testing_notes" class="testing-notes collapse"></ol>
+    </script>
+    
+    <script id="ticket_tester_verdict_template" type="text/x-handlebars-template">
+      <span class="ticket-verdict" data-verdict="{{verdict}}">{{{testerAvatar email 16}}}</span>
     </script>
     
     <script id="testing_note_template" type="text/x-handlebars-template">

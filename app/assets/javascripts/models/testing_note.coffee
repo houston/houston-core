@@ -14,16 +14,12 @@ class window.TestingNotes extends Backbone.Collection
     super(models, options)
     @ticket = options.ticket
   
-  badgeVerdicts: ->
-    @pluck('verdict')
-  
-  badgeStatus: ->
-    if _.include @badgeVerdicts(), 'fails'
-      'failing'
-    else if @badgeVerdicts().length < @ticket.get('projectTesters').length
-      'pending'
-    else
-      'passing'
-    
-  badgeCount: ->
-    @length
+  verdictsByTester: ->
+    verdictsByTester = {}
+    @each (note)->
+      testerId = note.get('userId')
+      if note.get('verdict') == 'fails'
+        verdictsByTester[testerId] = 'failing'
+      else
+        verdictsByTester[testerId] ?= 'passing'
+    verdictsByTester

@@ -9,19 +9,33 @@ class window.TestingTicketView extends Backbone.View
     @ticket = @options.ticket
     @testingNotes = @ticket.testingNotes()
     @renderTicket = Handlebars.compile($('#ticket_in_testing_template').html())
+    @renderTesterVerdict = Handlebars.compile($('#ticket_tester_verdict_template').html())
     @renderNewTestingNote = Handlebars.compile($('#new_testing_note_template').html())
     @viewInEdit = null
   
   render: ->
     window.console.log '[ticket] render'
     $el = $(@el)
-    json = _.extend @ticket.toJSON(),
-      badgeStatus: @testingNotes.badgeStatus()
-      badgeCount: @testingNotes.badgeCount()
-    $el.html @renderTicket(json)
+    $el.html @renderTicket(@ticket.toJSON())
     
-    # Render testing notes
-    $testingNotes = $el.find('ol.testing-notes')
+    @renderTesterVerdicts()
+    @renderTestingNotes()
+    
+    # Wire up the ticket in an accordian control
+    $el.find('[data-toggle="collapse"]').collapse
+      toggle: true
+      parent: '#tickets'
+    @
+  
+  renderTesterVerdicts: ->
+    $testerVerdicts = $(@el).find('.tester-verdicts')
+    $testerVerdicts.empty()
+    @ticket.testerVerdicts().each (verdict)=>
+      $testerVerdicts.append @renderTesterVerdict(verdict)
+    @
+  
+  renderTestingNotes: ->
+    $testingNotes = $(@el).find('ol.testing-notes')
     @testingNotes.each (note)=>
       view = new TestingNoteView(model: note)
       view.on 'edit:begin', _.bind(@beginEditTestingNote, @)
@@ -32,11 +46,6 @@ class window.TestingTicketView extends Backbone.View
     
     # Render form for adding a testing note
     $testingNotes.append @renderNewTestingNote(ticketId: @ticket.get('id'))
-    
-    # Wire up the ticket in an accordian control
-    $el.find('[data-toggle="collapse"]').collapse
-      toggle: true
-      parent: '#tickets'
     @
   
   beginEditTestingNote: (view)->
@@ -49,25 +58,19 @@ class window.TestingTicketView extends Backbone.View
   
   commitEditTestingNote: (view, testingNote)->
     @viewInEdit = null
-    @updateBadge()
+    @renderTesterVerdicts()
   
   destroyTestingNote: (view, testingNote)->
     @testingNotes.remove(testingNote)
     $(view.el).remove()
-    @updateBadge()
+    @renderTesterVerdicts()
   
   addTestingNote: (testingNote)->  
     @testingNotes.add(testingNote)
     view = new TestingNoteView(model: testingNote)
     view.render()
     $(view.el).insertBefore($(@el).find('.testing-note.new')).highlight()
-    @updateBadge()
-  
-  updateBadge: ->
-    $(@el).find('.testing-note-badge')
-      .attr('data-status', @testingNotes.badgeStatus())
-      .html(@testingNotes.badgeCount())
-    @
+    @renderTesterVerdicts()
   
   save: (e)->
     e.preventDefault()

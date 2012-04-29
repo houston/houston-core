@@ -34,4 +34,8 @@ Handlebars.registerHelper 'radioButton', (object, id, name, value, selectedValue
 Handlebars.registerHelper 'formatTicketSummary', (message)->
   [feature, sentence] = message.split(':', 2)
   if sentence then "<b>#{feature}:</b>#{sentence}" else message
+
+Handlebars.registerHelper 'testerAvatar', (email, size)->
+  gravatarUrl = "http://www.gravatar.com/avatar/#{MD5(email)}?r=g&d=identicon&s=#{size}"
+  "<img src=\"#{gravatarUrl}\" width=\"#{size}\" height=\"#{size}\" />"
   

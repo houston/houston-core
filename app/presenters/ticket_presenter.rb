@@ -22,7 +22,6 @@ class TicketPresenter
         projectId: ticket.project.unfuddle_id,
         projectSlug: ticket.project.slug,
         projectColor: ticket.project.color,
-        projectTesters: ticket.project.testers.map(&:id),
         number: ticket.number,
         summary: ticket.summary }
     end
