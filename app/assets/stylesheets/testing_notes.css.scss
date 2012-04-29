@@ -52,11 +52,16 @@
 
 .ticket-verdict {
   float: right;
-  img { padding: 0.25em; }
+  img { 
+    border-width: 2px;
+    border-style: solid;
+    border-color: transparent;
+    margin: 2px;
+  }
   
-  &[data-verdict="pending"] img { background-color: transparent; opacity: 0.33; }
-  &[data-verdict="passing"] img { background-color: #55c832; }
-  &[data-verdict="failing"] img { background-color: #ff6d6d; }
+  &[data-verdict="pending"] img { opacity: 0.33; }
+  &[data-verdict="passing"] img { border-color: #55c832; }
+  &[data-verdict="failing"] img { border-color: #ff6d6d; }
 }
 
 .testing-note {
