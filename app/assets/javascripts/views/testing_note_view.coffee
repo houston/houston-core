@@ -45,7 +45,7 @@ class window.TestingNoteView extends Backbone.View
           @trigger('edit:commit', @, @model)
         error: (model, response)=>
           @model.set(previousAttributes, {silent: true})
-          errors = Errors.fromResponseText(response.responseText)
+          errors = Errors.fromResponse(response)
           errors.renderToAlert().prependTo($(@el)).alert()
     @
   

@@ -1,6 +1,7 @@
 class TestingNotesController < ApplicationController
   before_filter :find_ticket
   before_filter :find_testing_note, :only => [:destroy, :update]
+  before_filter :authenticate_user!, :only => [:create, :update, :destroy]
   
   
   def create

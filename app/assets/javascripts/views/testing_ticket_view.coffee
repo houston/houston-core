@@ -3,7 +3,7 @@ class window.TestingTicketView extends Backbone.View
   className: 'ticket'
   
   events:
-    'submit form#new_testing_note': 'save'
+    'submit form#new_testing_note': 'createTestingNote'
   
   initialize: ->
     @ticket = @options.ticket
@@ -81,7 +81,7 @@ class window.TestingTicketView extends Backbone.View
     $(view.el).insertBefore($(@el).find('.testing-note.new')).highlight()
     @renderTesterVerdicts()
   
-  save: (e)->
+  createTestingNote: (e)->
     e.preventDefault()
     $form = $(@el).find('form')
     params = $form.serializeObject()
@@ -93,5 +93,5 @@ class window.TestingTicketView extends Backbone.View
         $form.reset()
         @addTestingNote(testingNote)
       error: (model, response)=>
-        errors = Errors.fromResponseText(response.responseText)
+        errors = Errors.fromResponse(response)
         errors.renderToAlert().insertBefore($(@el).find('.testing-note.new')).alert()
