@@ -117,6 +117,9 @@
     <div class="container-fluid">
       <div class="row-fluid">
         <div class="span9">
+          <%= flash[:alert] %>
+          <%= flash[:notice] %>
+          <%= flash[:error] %>
           <%= yield %>
         </div>
       </div><!--/row-->
