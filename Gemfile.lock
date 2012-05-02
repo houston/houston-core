@@ -42,6 +42,7 @@ GEM
     backbone-rails (0.9.1)
       rails (>= 3.0.0)
     bcrypt-ruby (3.0.1)
+    bluecloth (2.2.0)
     builder (3.0.0)
     cancan (1.6.7)
     capistrano (2.9.0)
@@ -180,6 +181,7 @@ PLATFORMS
 DEPENDENCIES
   addressable
   backbone-rails
+  bluecloth
   cancan
   capistrano
   coffee-rails (~> 3.2.1)

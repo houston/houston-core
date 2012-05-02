@@ -34,7 +34,9 @@
       <a data-toggle="collapse" data-parent="#tickets" data-target="#ticket_{{id}}_testing_notes" class="testing-notes">[#{{number}}] {{{formatTicketSummary summary}}}</a>
       <span class="ticket-verdict-summary"></span>
       <span class="tester-verdicts"></span>
-      <ol id="ticket_{{id}}_testing_notes" class="testing-notes collapse"></ol>
+      <ol id="ticket_{{id}}_testing_notes" class="testing-notes collapse">
+        <li class='ticket-description'>{{{description}}}</li>
+      </ol>
     </script>
     
     <script id="ticket_tester_verdict_template" type="text/x-handlebars-template">

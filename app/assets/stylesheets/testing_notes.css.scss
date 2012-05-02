@@ -64,6 +64,18 @@
   &[data-verdict="failing"] img { border-color: #ff6d6d; }
 }
 
+.ticket-description {
+  padding-bottom:10px;
+  margin-bottom:10px;
+  border-bottom:#dedede solid 1px;
+  list-style: none;
+  width: 400px;
+  
+  &h3 {
+    font-size:14px;
+  }
+}
+
 .testing-note {
   display: block;
   margin: 0.25em 0;
