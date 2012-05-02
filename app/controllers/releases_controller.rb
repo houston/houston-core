@@ -28,10 +28,9 @@ class ReleasesController < ApplicationController
   # GET /releases/new
   # GET /releases/new.json
   def new
-    @commit = params[:commit]
-    @release = @environment.releases.new(
-      commit0: @environment.last_commit,
-      commit1: @commit)
+    @commit0 = params[:commit0] || @environment.last_commit
+    @commit1 = params[:commit1] || params[:commit]
+    @release = @environment.releases.new(commit0: @commit0, commit1: @commit1)
     if @release.can_read_commits?
       @release.load_commits!
       @release.load_tickets!

@@ -6,7 +6,7 @@
                     "New" => nil %>
 <% end %>
 
-<% if @commit.blank? %>
+<% if @commit1.blank? %>
   <p>What is the SHA of the latest release?</p>
 <% else %>
   <p>The SHA you specified has no commits on this branch.</p>
@@ -15,9 +15,16 @@
 <form accept-charset="UTF-8" action="<%= new_project_environment_release_path(@project, @environment) %>" class="form-horizontal" method="get">
   <fieldset>
     <div class="control-group">
+      <%= label_tag :commit0, "Last Commit", :class => "control-label" %>
+      <div class="controls">
+        <%= text_field_tag :commit0, @commit0, :class => "text_field" %>
+      </div>
+    </div>
+
+    <div class="control-group">
       <%= label_tag :commit, "Commit", :class => "control-label" %>
       <div class="controls">
-        <%= text_field_tag :commit, @commit, :class => "text_field" %>
+        <%= text_field_tag :commit, @commit1, :class => "text_field" %>
       </div>
     </div>
 
