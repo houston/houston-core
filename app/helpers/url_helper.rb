@@ -3,7 +3,7 @@ module UrlHelper
   
   
   def unfuddle_project_url(project)
-    "https://#{unfuddle.subdomain}.unfuddle.com/a#/projects/#{project.unfuddle_id}"
+    "https://#{Unfuddle.instance.subdomain}.unfuddle.com/a#/projects/#{project.unfuddle_id}"
   end
   
   def unfuddle_ticket_url(*args)
