@@ -27,7 +27,10 @@ class Release < ActiveRecord::Base
   
   
   def git_commits
-    can_read_commits? ? project.repo.commits_between(commit0, commit1) : []
+    return [] unless can_read_commits?
+    
+    Rails.logger.info "[git] getting commits: #{commit0}..#{commit1}"
+    project.repo.commits_between(commit0, commit1)
   end
   
   def build_changes_from_commits
