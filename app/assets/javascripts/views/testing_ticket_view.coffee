@@ -46,12 +46,7 @@ class window.TestingTicketView extends Backbone.View
   renderTestingNotes: ->
     $testingNotes = $(@el).find('ol.testing-notes')
     @testingNotes.each (note)=>
-      view = new TestingNoteView(model: note)
-      view.on 'edit:begin', _.bind(@beginEditTestingNote, @)
-      view.on 'edit:cancel', _.bind(@cancelEditTestingNote, @)
-      view.on 'edit:commit', _.bind(@commitEditTestingNote, @)
-      view.on 'destroy', _.bind(@destroyTestingNote, @)
-      $testingNotes.appendView(view)
+      $testingNotes.appendView @newViewForTestingNote(note)
     
     # Render form for adding a testing note
     $testingNotes.append @renderNewTestingNote(ticketId: @ticket.get('id'))
@@ -74,9 +69,17 @@ class window.TestingTicketView extends Backbone.View
     $(view.el).remove()
     @renderTesterVerdicts()
   
+  newViewForTestingNote: (testingNote)->
+    view = new TestingNoteView(model: testingNote)
+    view.on 'edit:begin', _.bind(@beginEditTestingNote, @)
+    view.on 'edit:cancel', _.bind(@cancelEditTestingNote, @)
+    view.on 'edit:commit', _.bind(@commitEditTestingNote, @)
+    view.on 'destroy', _.bind(@destroyTestingNote, @)
+    view
+  
   addTestingNote: (testingNote)->  
     @testingNotes.add(testingNote)
-    view = new TestingNoteView(model: testingNote)
+    view = @newViewForTestingNote(testingNote)
     view.render()
     $(view.el).insertBefore($(@el).find('.testing-note.new')).highlight()
     @renderTesterVerdicts()
