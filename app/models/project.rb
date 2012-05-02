@@ -157,7 +157,7 @@ private
   end
   
   def git_pull!
-    `cd "#{temp_path}" && git pull origin master`
+    `cd "#{temp_path}" && git pull`
   end
   
   def git_clone!
