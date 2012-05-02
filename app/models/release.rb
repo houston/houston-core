@@ -4,7 +4,7 @@ class Release < ActiveRecord::Base
   
   belongs_to :environment
   has_many :changes, :dependent => :destroy
-  has_many :commits, :dependent => :destroy
+  has_many :commits, :dependent => :destroy, :autosave => true
   
   default_scope order("created_at DESC")
   
@@ -45,7 +45,7 @@ class Release < ActiveRecord::Base
       if commit
         commit.update_attributes Commit.attributes_from_grit_commit(grit_commit)
       else
-        commits.create Commit.attributes_from_grit_commit(grit_commit)
+        commits.build Commit.attributes_from_grit_commit(grit_commit)
       end
     end
   end
