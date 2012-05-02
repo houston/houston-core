@@ -1,0 +1,6 @@
+<h2><%= @tester %> put a failing verdict on ticket #<%= @ticket.number %></h2>
+
+<h3 style='margin:0'>Their Comment:</h3>
+<p style='margin:0 0 10px 0'><%= @note.comment %></p>
+  
+<a href="<%= unfuddle_ticket_url(@ticket) %>"><%= @ticket.summary %></a>
