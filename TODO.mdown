@@ -3,7 +3,15 @@
  - **Kanban**:
    - Implement the ability to add/remove tickets to "Staged for Development" (for a project) (Stakeholders only)
    - Test variety of colors
- - **Project::Unfuddle**: implement a way of specifying `neq` in Ruby (e.g. `find_tickets(:field_1.neq(197))` or `find_tickets(:deployment.neq(:production))` and have Project figure it out...)
+   - Verdict badges get clipped
+ - **Testing Notes**:
+   - Connect releases to tickets
+   - Intersperse releases with testing notes
+   - Reset verdicts after a release
+   - Send email to developers immediately when a failing testing note is made
+ - **Home**:
+   - Add a home page for testers that shows what tickets they need to test
+     - Show which comments they've posted which don't have verdicts
  - **Release**:
    - Have option to update Unfuddle tickets on creation
    - Have option to send an email on creation
@@ -16,3 +24,4 @@
  - Later: make "environments" a configuration option for all projects
  - Later: make Kanban queues a configuration option for all projects
  - Implement a way of visualizing _batches_
+ - **Project::Unfuddle**: implement a way of specifying `neq` in Ruby (e.g. `find_tickets(:field_1.neq(197))` or `find_tickets(:deployment.neq(:production))` and have Project figure it out...)
