@@ -7,7 +7,9 @@ class Unfuddle
     @unfuddle ||= self.new
   end
   
-  attr_reader :subdomain
+  attr_reader :subdomain,
+              :username,
+              :password
   
   def http
     @http ||= Net::HTTP.new("#{@subdomain}.unfuddle.com", 443).tap do |http|

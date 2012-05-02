@@ -41,4 +41,17 @@ Changelog::Application.configure do
   # So Devise mailers can make links
   config.action_mailer.default_url_options = { :host => "localhost:3000" }
 
+  # Log ActiveResource requests and responses
+  ActiveResource::Base.logger = ActiveRecord::Base.logger
+  ActiveSupport::Notifications.subscribe("request.active_resource") do |name, start, finish, id, payload|
+    response = payload[:result]
+    notice = ["  [active_resource]:"]
+    notice << "    #{payload[:method].upcase} #{payload[:request_uri]}"
+    response.each_header {|key, value| notice << "    #{key}: #{value}"} if response
+    notice << ("  " << "-"*80)
+    notice << response.body if response
+    
+    Rails.logger.debug notice.join("\n")
+  end
+
 end
