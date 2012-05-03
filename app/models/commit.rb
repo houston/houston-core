@@ -27,7 +27,7 @@ class Commit < ActiveRecord::Base
     /\[skip\]/,
     /\[testfix\]/,
     /\[refactor\]/,
-    /^Merge branch/
+    /^Merge (remote-tracking )?branch/
   ]
   
 end
