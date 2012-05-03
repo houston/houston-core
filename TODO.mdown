@@ -1,5 +1,7 @@
 # To Do
 
+ - **Global**:
+   - Links to tickets in Unfuddle should open in a new window
  - **Kanban**:
    - Implement the ability to add/remove tickets to "Staged for Development" (for a project) (Stakeholders only)
    - Test variety of colors
@@ -13,12 +15,21 @@
    - Add a home page for testers that shows what tickets they need to test
      - Show which comments they've posted which don't have verdicts
  - **Release**:
-   - Have option to update Unfuddle tickets on creation
+   - Show commit range and release form in one view
+   - Have option to update Unfuddle tickets on creation (to close them and change their deployment to Production)
    - Have option to send an email on creation
    - If no Project#git_url make that the error message
- - **Config**: add email configuration options
 
-# Ideas
+### Would be Cool
+
+ - Have client know about product version, hard-refresh if code updated
+
+### Refactoring
+
+ - **Config**: add email configuration options
+ - **Environment**: don't ask for "initial_commit"; can be specified in the New Release experience now
+
+### Ideas
 
  - Get rid of "environments"; have two hard-coded ones: Testing and Production
  - Later: make "environments" a configuration option for all projects
