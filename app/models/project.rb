@@ -90,6 +90,12 @@ class Project < ActiveRecord::Base
     end
     
     tickets.each { |ticket| ticket.queue = queue }
+    
+    tickets_removed_from_queue = self.tickets.in_queue(queue)
+    ids = tickets.map(&:id).compact
+    tickets_removed_from_queue = tickets_removed_from_queue.where(["NOT (tickets.id IN (?))", ids]) if ids.any?
+    tickets_removed_from_queue.each { |ticket| ticket.queue = nil }
+    
     tickets
   end
   
