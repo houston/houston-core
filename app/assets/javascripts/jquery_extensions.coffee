@@ -6,7 +6,9 @@ $.fn.extend
       -> $(@).removeClass('hover'))
   
   popoverForTicket: ->
+    placement = if $(@).closest('ul').attr('id') == 'last_release' then 'left' else 'right'
     $(@).popover
+      placement: placement
       title: -> $(@).find('.ticket-summary').html().split(': ')[0]
       content: -> $(@).find('.ticket-summary').html().split(': ')[1].capitalize()
   

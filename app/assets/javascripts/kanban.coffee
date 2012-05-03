@@ -6,7 +6,8 @@ class window.Kanban
     @renderTicket = Handlebars.compile($('#ticket_template').html())
     
     # Ticket description popover
-    $('.ticket').popoverForTicket().pseudoHover()
+    $('.kanban-column').each ->
+      $(@).find('.ticket').popoverForTicket().pseudoHover()
     # $('#on_deck .ticket').pseudoHover().popover
     #   title: 'Add Ticket'
     #   content: 'Click to add a ticket to the queue'
