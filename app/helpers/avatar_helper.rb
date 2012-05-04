@@ -2,8 +2,8 @@ module AvatarHelper
   
   
   
-  def avatar_for(user, size={})
-    size, options = 24, size if size.is_a?(Hash)
+  def avatar_for(user, options={})
+    size = options.fetch(:size, 24)
     "<img src=\"#{gravatar_url(user, options)}\" width=\"#{size}\" height=\"#{size}\" alt=\"#{user.name}\" />".html_safe
   end
   
