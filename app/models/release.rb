@@ -1,6 +1,7 @@
 class Release < ActiveRecord::Base
   
   after_create :load_commits!, :if => :can_read_commits?
+  after_create :associated_tickets
   
   belongs_to :environment
   has_many :changes, :dependent => :destroy
@@ -45,7 +46,7 @@ class Release < ActiveRecord::Base
       if commit
         commit.update_attributes Commit.attributes_from_grit_commit(grit_commit)
       else
-        commits.build Commit.attributes_from_grit_commit(grit_commit)
+        commits.build Commit.attributes_from_grit_commit(grit_commit).merge(release: self)
       end
     end
   end
@@ -59,15 +60,23 @@ class Release < ActiveRecord::Base
   end
   
   def load_tickets!
-    project.find_or_create_tickets_by_number(ticket_numbers).tap do |tickets|
-      tickets.each do |ticket|
-        ticket.releases << self unless ticket.releases.exists?(id)
-      end
-    end
+    project.find_or_create_tickets_by_number(ticket_numbers)
   end
   
   def tickets
     @tickets ||= load_tickets!
+  end
+  
+  
+  
+private
+  
+  
+  
+  def associated_tickets
+    tickets.each do |ticket|
+      ticket.releases << self unless ticket.releases.exists?(id)
+    end
   end
   
   
