@@ -12,5 +12,5 @@
     There are no commits in the repo <code><%= @project.git_url %></code> that match <code><%= @commit0 %>...<%= @commit1 %></code>
   </div>
 <% else %>
-  <%= render :partial => 'form' %>
+  <%= render partial: "form" %>
 <% end %>
