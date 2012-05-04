@@ -5,9 +5,7 @@ class Ability
     user ||= User.new # guest user (not logged in)
     
     # Everybody can see everything
-    # (but you can only see users if you can manage them)
     can :read, :all
-    cannot :read, User
     
     # Developers can manage releases and users and projects
     if user.developer?
