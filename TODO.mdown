@@ -1,7 +1,6 @@
 # To Do
 
  - **Global**: Links to tickets in Unfuddle should open in a new window
- - **Kanban**: Verdict badges get clipped
  - **Testing Notes**:
    - Connect releases to tickets
    - Intersperse releases with testing notes
