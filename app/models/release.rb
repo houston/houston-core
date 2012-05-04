@@ -1,7 +1,7 @@
 class Release < ActiveRecord::Base
   
   after_create :load_commits!, :if => :can_read_commits?
-  after_create :associated_tickets
+  after_create :associate_tickets_with_self
   
   belongs_to :environment
   has_many :changes, :dependent => :destroy
@@ -84,7 +84,7 @@ private
   
   
   
-  def associated_tickets
+  def associate_tickets_with_self
     tickets.each do |ticket|
       ticket.releases << self unless ticket.releases.exists?(id)
     end
