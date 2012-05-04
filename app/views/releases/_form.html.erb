@@ -29,6 +29,17 @@
         <% end -%>
       </div>
     </div>
+    
+    <div class="control-group">
+      <label class="control-label">Commits</label>
+      <div class="controls changes-nested-editor">
+        <ul class="commits">
+          <% @release.commits.each do |commit| %>
+            <li><%= format_commit(commit) %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
 
     <div class="form-actions">
       <%= f.submit nil, :class => 'btn btn-primary' %>
