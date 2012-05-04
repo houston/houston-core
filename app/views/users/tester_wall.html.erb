@@ -33,9 +33,3 @@
     </div>
   </div>
 </div>
-
-<div class="form-actions">
-  <%= link_to 'Back', users_path, :class => 'btn'  %>
-  <%= link_to 'Edit', edit_user_path(@user), :class => 'btn' if can?(:update, @user) %>
-  <%= link_to 'Delete', user_path(@user), :method => 'delete', :confirm => 'Are you sure?', :class => 'btn btn-danger' if can?(:destroy, @user) %>
-</div>
