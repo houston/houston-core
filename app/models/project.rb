@@ -125,6 +125,10 @@ class Project < ActiveRecord::Base
     @temp_path ||= Rails.root.join("tmp", slug).to_s
   end
   
+  def git_url_valid?
+    !git_url.blank?
+  end
+  
   
   
   def repo
