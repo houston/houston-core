@@ -10,7 +10,6 @@
    - Connect releases to tickets
    - Intersperse releases with testing notes
    - Reset verdicts after a release
-   - Send email to developers immediately when a failing testing note is made
  - **Home**:
    - Add a home page for testers that shows what tickets they need to test
      - Show which comments they've posted which don't have verdicts
