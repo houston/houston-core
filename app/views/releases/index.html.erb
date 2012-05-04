@@ -1,31 +1,28 @@
-<%= header do |p| %>
-  <%= p.breadcrumbs "Projects" => projects_path,
-                    @project => Project.all,
-                    @environment => @project.environments,
-                    "Releases" => nil %>
-  <%= p.actions do %>
-    <%= link_to "New Release", new_project_environment_release_path(@project, @environment), :class => 'btn btn-primary' if can?(:create, Release) %>
-  <% end %>
+<%= render partial: "projects/header", locals: {project: @project, subtitle: "Releases"} %>
+
+<% if @releases.any? %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Tickets Resolved</th>
+        <th>Commits</th>
+        <th>Release Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @releases.each do |release| %>
+        <tr>
+          <td><%= link_to release.name, release %></td>
+          <td><%= release.tickets.map { |ticket| link_to_ticket_number(ticket) }.join(", ").html_safe %></td>
+          <td><%= release.commits.count %></td>
+          <td><%= format_release_date(release) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>There have been no releases of <b><%= @project.name %></b> recorded.</p>
 <% end %>
 
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Tickets Resolved</th>
-      <th>Commits</th>
-      <th>Release Date</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @releases.each do |release| %>
-      <tr>
-        <td><%= link_to release.name, release %></td>
-        <td><%= release.tickets.map { |ticket| link_to_ticket_number(ticket) }.join(", ").html_safe %></td>
-        <td><%= release.commits.count %></td>
-        <td><%= format_release_date(release) %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
+<%= link_to "New Release", new_project_environment_release_path(@project, @environment), :class => 'btn btn-primary' if can?(:create, Release) %>

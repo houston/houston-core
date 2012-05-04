@@ -1,10 +1,4 @@
-<%= header do |p| %>
-  <%= p.breadcrumbs "Projects" => projects_path,
-                    @project => Project.all,
-                    @environment => @project.environments,
-                    "Releases" => project_environment_releases_path(@project, @environment),
-                    "New" => nil %>
-<% end %>
+<%= render partial: "projects/header", locals: {project: @project, subtitle: "New Release"} %>
 
 <form accept-charset="UTF-8" action="<%= new_project_environment_release_path(@project, @environment) %>" class="form-horizontal pjax" method="get">
   <fieldset>

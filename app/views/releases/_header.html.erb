@@ -1,0 +1,8 @@
+<h1 class="space-below">
+  <%= release.project.name %>
+  <span class="subtitle">Release</span>
+  <small>
+    <%= custom_link_unless_current "Show", release_path(release) %>
+    <%= custom_link_unless_current "Edit", edit_release_path(release) %>
+  </small>
+</h1>

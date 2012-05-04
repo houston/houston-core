@@ -98,11 +98,62 @@
           <a class="brand" href="/"><%= Rails.configuration.title %></a>
           <div class="container-fluid nav-collapse">
             <ul class="nav">
-              <li><%= link_to "Projects", projects_path  %></li>
-              <li><%= link_to "Kanban", kanban_path  %></li>
-            <% if can?(:read, User) %>
-              <li><%= link_to "Users", users_path %></li>
-            <% end %>
+              
+              <%# Kanban %>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Kanban <b class="caret"></b></a>
+                <ul class="dropdown-menu kanban-menu">
+                  <li><%= link_to "All Projects", kanban_path %></li>
+                  <li class="divider"></li>
+                <% Project.all.each do |project| %>
+                  <li class="project">
+                    <%= link_to project_kanban_path(project) do %>
+                      <%= project.name %> <b class="bubble <%= project.color %>"></b>
+                    <% end %>
+                  </li>
+                <% end %>
+                </ul>
+              </li>
+              
+              <%# Testing Reports %>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Testing Reports <b class="caret"></b></a>
+                <ul class="dropdown-menu testing-reports-menu">
+                <% Project.all.each do |project| %>
+                  <li class="project">
+                    <%= link_to project_kanban_queue_path(project, "in_testing") do %>
+                      <%= project.name %> <b class="bubble <%= project.color %>"></b>
+                    <% end %>
+                  </li>
+                <% end %>
+                </ul>
+              </li>
+              
+              <%# Releases %>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Releases <b class="caret"></b></a>
+                <ul class="dropdown-menu releases-menu">
+                <% Project.all.each do |project| %>
+                  <li class="project">
+                    <%= link_to project_environment_releases_path(project, "master") do %>
+                      <%= project.name %> <b class="bubble <%= project.color %>"></b>
+                    <% end %>
+                  </li>
+                <% end %>
+                </ul>
+              </li>
+              
+              
+              <li class="divider"></li>
+
+              <% if can?(:read, Project) %>
+                <li><%= link_to "Projects", projects_path %></li>
+              <% end %>  
+
+              <% if can?(:read, User) %>
+                <li><%= link_to "Users", users_path %></li>
+              <% end %>
+              
             </ul>
             <ul class="nav pull-right">
               <% if current_user %>

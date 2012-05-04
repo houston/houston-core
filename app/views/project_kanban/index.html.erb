@@ -1,7 +1,4 @@
-<%= header do |p| %>
-  <%= p.breadcrumbs "Kanban" => kanban_path,
-                    @project.name => nil %>
-<% end %>
+<%= render partial: "projects/header", locals: {project: @project} %>
 
 <%= render partial: "kanban/kanban", locals: {projects: [@project]} %>
 

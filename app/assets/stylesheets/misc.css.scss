@@ -26,3 +26,22 @@
 }
 
 label input[type="checkbox"] { vertical-align: baseline; }
+
+.nav > .divider { 
+  width: 1px;
+  background: #181818;
+  border-right: 1px solid #3f3f3f;
+  height: 40px;
+  margin: 0 0.7em 0 0.75em
+}
+
+h1 .subtitle {
+  font-weight: normal;
+  color: #444;
+}
+
+h1.space-below { 
+  margin-bottom: 1em;
+}
+
+.form-actions .btn-delete { float: right; }

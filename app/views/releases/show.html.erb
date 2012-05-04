@@ -1,15 +1,4 @@
-<%= header do |p| %>
-  <%= p.breadcrumbs "Projects" => projects_path,
-                    @project => Project.all,
-                    @environment => @project.environments,
-                    "Releases" => project_environment_releases_path(@project, @environment),
-                    @release => @environment.releases %>
-  <%= p.actions do %>
-    <%= link_to "New Release", new_project_environment_release_path(@project, @environment), :class => "btn btn-primary" if can?(:create, Release) %>
-    <%= link_to "Edit", edit_release_path(@release), :class => "btn" if can?(:update, @release) %>
-    <%= link_to "Delete", release_path(@release), :method => "delete", :confirm => "Are you sure?", :class => "btn btn-danger" if can?(:destroy, @release) %>
-  <% end %>
-<% end %>
+<%= render partial: "releases/header", locals: {release: @release} %>
 
 <h3><%= @release.name %></h3>
 

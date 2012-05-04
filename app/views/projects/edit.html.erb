@@ -1,6 +1,3 @@
-<%= header do |p| %>
-  <%= p.breadcrumbs "Projects" => projects_path,
-                    @project => Project.all %>
-<% end %>
+<%= render partial: "projects/header", locals: {project: @project, subtitle: "Edit"} %>
 
 <%= render partial: "form" %>

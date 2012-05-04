@@ -17,6 +17,12 @@ module UrlHelper
   
   
   
+  def kanban_path(*args)
+    root_path(*args)
+  end
+  
+  
+  
   def environments_path(*args)
     project_environments_path(*args)
   end
