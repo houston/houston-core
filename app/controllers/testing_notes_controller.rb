@@ -28,7 +28,7 @@ private
   def check_failing_verdict
     verdict = params[:testing_note][:verdict]
     if verdict == "fails"
-      ChangelogMailer::failed_verdict(@testing_note).deliver
+      NotificationMailer.on_fail_verdict(@testing_note).deliver
     end
   end
   

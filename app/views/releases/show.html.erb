@@ -15,19 +15,7 @@
 
 <br />
 
-<h5>Tickets Resolved</h5>
-<ul class="tickets">
-  <% @release.tickets.each do |ticket| %>
-    <li><%= link_to_ticket(ticket) %></li>
-  <% end %>
-</ul>
-
-<h5>Other Changes</h5>
-<ul class="changes">
-  <% @release.changes.each do |change| %>
-    <li><%= format_change(change) %></li>
-  <% end %>
-</ul>
+<%= render partial: "releases/changelog", locals: {release: @release} %>
 
 <br />
 

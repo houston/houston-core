@@ -74,6 +74,7 @@ class ReleasesController < ApplicationController
     respond_to do |format|
       if @release.save
         @release.update_tickets_in_unfuddle! if params[:update_tickets_in_unfuddle]
+        NotificationMailer.on_release(@release).deliver! if params[:send_release_email]
         
         format.html { redirect_to @release, notice: 'Release was successfully created.' }
         format.json { render json: @release, status: :created, location: @release }
@@ -122,8 +123,10 @@ private
   def get_deployment_and_recipients
     if @environment.slug == "dev" # <-- knowledge about environments!
       @deployment = "Testing"
+      @recipients = "Testers"
     elsif @environment.slug == "master"
       @deployment = "Production"
+      @recipients = "Everyone"
     end
   end
   
