@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery-ui
+//= require jquery.pjax.js
 //= require twitter/bootstrap
 //= require freight_train
 //= require sugar

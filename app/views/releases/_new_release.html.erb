@@ -1,0 +1,11 @@
+<% if @commit0.blank? || @commit1.blank? %>
+  <div class="alert alert-info">
+    Please enter a range of commits for this release.
+  </div>
+<% elsif @release.changes.none? %>
+  <div class="alert alert-error">
+    There are no commits in the repo <code><%= @project.git_url %></code> that match <code><%= @commit0 %>...<%= @commit1 %></code>
+  </div>
+<% else %>
+  <%= render :partial => 'form' %>
+<% end %>

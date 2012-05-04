@@ -36,13 +36,15 @@ class ReleasesController < ApplicationController
       @release.load_tickets!
       @release.build_changes_from_commits
     end
-    if @release.changes.none?
-      render :template => "releases/new_pick_commit"
-    else
-      respond_to do |format|
-        format.html # new.html.erb
-        format.json { render json: @release }
+    respond_to do |format|
+      format.html do
+        if request.headers['X-PJAX']
+          render template: "releases/_new_release", layout: false
+        else
+          render
+        end
       end
+      format.json { render json: @release }
     end
   end
 
