@@ -1,7 +1,5 @@
 # To Do
 
- - **Global**:
-   - Links to tickets in Unfuddle should open in a new window
  - **Testing Notes**:
    - Intersperse releases with testing notes
    - Reset verdicts after a release
