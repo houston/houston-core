@@ -1,0 +1,9 @@
+<% if tickets.empty? %>
+  <p>Nothing to see here, move along.</p>
+<% else %>
+  <ul class="tickets">
+    <% tickets.each do |ticket| %>
+      <li class="ticket"><%= link_to_ticket(ticket) %></li>
+    <% end %>
+  </ul>
+<% end %>

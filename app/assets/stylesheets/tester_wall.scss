@@ -1,0 +1,31 @@
+.tester-ticket-list {
+  margin: 3em 0 6em;
+  
+  ul {
+    margin: 0;
+    padding: 0;
+  }
+  
+  li {
+    list-style-type: none;
+    display: block;
+    line-height: 1.5em;
+  }
+  
+  .span3 {
+    position: relative;
+  }
+  
+  .span3:after {
+    content: '.';
+    background-image: url(/images/chevron.png);
+    background-position: top right;
+    background-repeat: no-repeat;
+    position: absolute;
+    text-indent: -9999em;
+    width: 60px;
+    height: 72px;
+    top: 0;
+    left: -4.5em;
+  }
+}

@@ -1,13 +1,15 @@
 # To Do
 
- - **Global**: Links to tickets in Unfuddle should open in a new window
+ - **Global**:
+   - Links to tickets in Unfuddle should open in a new window
+   - The home page should vary depending on who you are (Guest? Kanban. Tester? Tester Wall. Other? ?)
  - **Testing Notes**:
    - Connect releases to tickets
    - Intersperse releases with testing notes
    - Reset verdicts after a release
- - **Home**:
-   - Add a home page for testers that shows what tickets they need to test
-     - Show which comments they've posted which don't have verdicts
+ - **Tester Wall**:
+   - Implement real queries
+   - Show verdicts for finished tickets
  - **Release**:
    - Show commit range and release form in one view
    - Have option to update Unfuddle tickets on creation (to close them and change their deployment to Production)

@@ -18,7 +18,33 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     
     respond_to do |format|
-      format.html # show.html.erb
+      format.html do
+        
+        template = "show"
+        
+        if @user.tester?
+          template = "tester_wall"
+          
+          # These are tickets that are:
+          #  1. In Testing
+          #  2. Where the tester's most recent note is failing
+          #  3. Where the tester's most recent note is before a release
+          @tickets_to_retest = []
+          
+          # These are tickets that are:
+          #  1. In Testing
+          #  2. Where the tester hasn't created any notes
+          @tickets_to_test = Ticket.limit(5)
+          
+          # These are tickets that are:
+          #  1. In Testing
+          #  2. Where the tester _hash_ created a note
+          #  3. That are not in @tickets_to_retest
+          @tickets_already_tested = Ticket.limit(13)
+        end
+        
+        render template: "users/#{template}"
+      end
       format.json { render json: @user }
     end
   end
