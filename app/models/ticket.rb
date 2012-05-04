@@ -3,13 +3,14 @@ class Ticket < ActiveRecord::Base
   belongs_to :project
   has_one :ticket_queue, conditions: "destroyed_at IS NULL"
   has_many :testing_notes
+  has_and_belongs_to_many :releases, before_add: :ignore_release_if_duplicate
   
   default_scope includes(:ticket_queue)
   
   validates :project_id, presence: true
   validates :summary, presence: true
   validates :number, presence: true
-  validates_uniqueness_of :number, :scope => :project_id
+  validates_uniqueness_of :number, scope: :project_id
   
   
   class << self
@@ -72,6 +73,16 @@ class Ticket < ActiveRecord::Base
     else
       "Passing"
     end
+  end
+  
+  
+  
+private
+  
+  
+  
+  def ignore_release_if_duplicate(release)
+    raise ActiveRecord::Rollback if self.releases.exists?(release.id)
   end
   
   

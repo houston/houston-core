@@ -4,7 +4,6 @@
    - Links to tickets in Unfuddle should open in a new window
    - The home page should vary depending on who you are (Guest? Kanban. Tester? Tester Wall. Other? ?)
  - **Testing Notes**:
-   - Connect releases to tickets
    - Intersperse releases with testing notes
    - Reset verdicts after a release
  - **Tester Wall**:

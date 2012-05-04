@@ -59,7 +59,11 @@ class Release < ActiveRecord::Base
   end
   
   def load_tickets!
-    project.find_or_create_tickets_by_number(ticket_numbers)
+    project.find_or_create_tickets_by_number(ticket_numbers).tap do |tickets|
+      tickets.each do |ticket|
+        ticket.releases << self unless ticket.releases.exists?(id)
+      end
+    end
   end
   
   def tickets
