@@ -18,6 +18,52 @@ class Ticket < ActiveRecord::Base
       where(["ticket_queues.queue = ?", queue])
     end
     
+    def with_testing_notes_by(user)
+      sql = <<-SQL
+        INNER JOIN (
+          SELECT ticket_id, COUNT(id) AS count
+            FROM testing_notes
+            WHERE testing_notes.user_id=#{user.id}
+            GROUP BY ticket_id
+        ) AS q
+          ON tickets.id=q.ticket_id
+      SQL
+      joins(sql).where("q.count>0")
+      
+      # joins(:testing_notes) \
+      #   .group("tickets.id") \
+      #   .where("testing_notes.user_id = ?", user.id) \
+      #   .having("COUNT(testing_notes.id) > 0")
+    end
+    
+    def without_testing_notes_by(user)
+      testing_notes = Arel::Table.new(:testing_notes)
+      tickets = Arel::Table.new(:tickets)
+      
+      notes = testing_notes \
+        .project(testing_notes[:ticket_id], testing_notes[:id].count) \
+        .group(testing_notes[:ticket_id])
+        
+      joins(notes) \
+        .on(tickets[:id].eq(notes[:ticket_id])) \
+        .having(notes[:id] = 0)
+      
+      # sql = <<-SQL
+      #   LEFT OUTER JOIN (
+      #     SELECT ticket_id, COUNT(id) AS count
+      #       FROM testing_notes
+      #       WHERE testing_notes.user_id=#{user.id}
+      #       GROUP BY ticket_id
+      #   ) AS q
+      #     ON tickets.id=q.ticket_id
+      # SQL
+      # "q.count IS NULL OR q.count=0"
+      
+      # joins("LEFT OUTER JOIN testing_notes ON tickets.id = testing_notes.ticket_id") \
+      #   .group("tickets.id") \
+      #   .having("COUNT(testing_notes.id) = 0")
+    end
+    
     def numbered(*numbers)
       numbers = numbers.flatten.map(&:to_i)
       where(:number => numbers)

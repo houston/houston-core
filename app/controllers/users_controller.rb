@@ -24,6 +24,7 @@ class UsersController < ApplicationController
         
         if @user.tester?
           template = "tester_wall"
+          tickets_in_testing = Ticket.in_queue "in_testing"
           
           # These are tickets that are:
           #  1. In Testing
@@ -34,13 +35,13 @@ class UsersController < ApplicationController
           # These are tickets that are:
           #  1. In Testing
           #  2. Where the tester hasn't created any notes
-          @tickets_to_test = Ticket.limit(5)
+          @tickets_to_test = tickets_in_testing.without_testing_notes_by(@user)
           
           # These are tickets that are:
           #  1. In Testing
           #  2. Where the tester _hash_ created a note
           #  3. That are not in @tickets_to_retest
-          @tickets_already_tested = Ticket.limit(13)
+          @tickets_already_tested = tickets_in_testing.with_testing_notes_by(@user)
         end
         
         render template: "users/#{template}"
