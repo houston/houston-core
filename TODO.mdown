@@ -9,10 +9,6 @@
  - **Tester Wall**:
    - Implement real queries
    - Show verdicts for finished tickets
- - **Release**:
-   - Have option to update Unfuddle tickets on creation (to close them and change their deployment to Production)
-   - Have option to send an email on creation
-   - If no Project#git_url make that the error message
 
 ### Would be Cool
 
