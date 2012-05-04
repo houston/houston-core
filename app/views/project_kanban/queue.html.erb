@@ -28,5 +28,5 @@
     
   <% end %>
 <% else %>
-  <p>There are no tickets <b><%= @queue.name.downcase %></b> for <b><%= @project.name %></b> right now.</p>
+  <div class="alert alert-info">There are no tickets <b><%= @queue.name.downcase %></b> for <b><%= @project.name %></b> right now.</div>
 <% end %>
