@@ -1,6 +1,7 @@
 class ReleasesController < ApplicationController
   include UrlHelper
   before_filter :get_project_and_environment
+  before_filter :get_deployment_and_recipients, only: [:new, :create]
   load_and_authorize_resource
   
   # GET /releases
@@ -31,6 +32,7 @@ class ReleasesController < ApplicationController
     @commit0 = params[:commit0] || @environment.last_commit
     @commit1 = params[:commit1] || params[:commit]
     @release = @environment.releases.new(commit0: @commit0, commit1: @commit1)
+    
     if @release.can_read_commits?
       @release.load_commits!
       @release.load_tickets!
@@ -68,9 +70,11 @@ class ReleasesController < ApplicationController
   # POST /releases.json
   def create
     @release = @environment.releases.new(params[:release])
-
+    
     respond_to do |format|
       if @release.save
+        @release.update_tickets_in_unfuddle! if params[:update_tickets_in_unfuddle]
+        
         format.html { redirect_to @release, notice: 'Release was successfully created.' }
         format.json { render json: @release, status: :created, location: @release }
       else
@@ -113,6 +117,14 @@ private
   def get_project_and_environment
     @project = Project.find_by_slug!(params[:project_id])
     @environment = @project.environments.find_by_slug!(params[:environment_id])
+  end
+  
+  def get_deployment_and_recipients
+    if @environment.slug == "dev" # <-- knowledge about environments!
+      @deployment = "Testing"
+    elsif @environment.slug == "master"
+      @deployment = "Production"
+    end
   end
   
 end

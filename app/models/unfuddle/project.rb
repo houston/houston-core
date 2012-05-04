@@ -12,6 +12,12 @@ class Unfuddle
     
     
     
+    def ticket(ticket_id)
+      ::Unfuddle::UnfuddleTicket.new(self, ticket_id)
+    end
+    
+    
+    
     def find_tickets(*conditions)
       path = "/projects/#{project_id}/ticket_reports/dynamic.json"
       params = create_conditions_string(*conditions)

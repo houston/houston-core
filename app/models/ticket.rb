@@ -77,6 +77,18 @@ class Ticket < ActiveRecord::Base
   
   
   
+  def set_unfuddle_kanban_field_to(id)
+    return false if unfuddle_id.blank?
+    
+    # Transform `field_2` to `field2-value-id`
+    attribute = project.kanban_field.gsub(/field_(\d)/, 'field\1-value-id')
+    
+    remote_ticket = project.ticket_system.ticket(unfuddle_id)
+    remote_ticket.update_attribute(attribute, id)
+  end
+  
+  
+  
 private
   
   
