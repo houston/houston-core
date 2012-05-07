@@ -6,3 +6,10 @@
   font-size: 0.88em;
   line-height: 1em;
 }
+
+.controls > .commits {
+  margin: 0 0 5px 0;
+  padding: 5px 0 0 0;
+  
+  li { list-style-type: none; } 
+}

@@ -23,7 +23,7 @@
     <!-- Templates -->
     <script id="ticket_template" type="text/x-handlebars-template">
       <li class="ticket {{projectSlug}} {{projectColor}} {{classForAge age}} {{verdict}}" id="ticket_{{id}}" data-number="{{number}}">
-        <a href="https://<%= unfuddle.subdomain %>.unfuddle.com/a#/projects/{{projectId}}/tickets/by_number/{{number}}">
+        <a href="https://<%= unfuddle.subdomain %>.unfuddle.com/a#/projects/{{projectId}}/tickets/by_number/{{number}}" target="_blank">
           <h3 class="ticket-number">{{number}} <span class="ticket-age">{{formatDuration age}}</span></h3>
           <p class="ticket-summary">{{summary}}</p>
         </a>
@@ -98,11 +98,62 @@
           <a class="brand" href="/"><%= Rails.configuration.title %></a>
           <div class="container-fluid nav-collapse">
             <ul class="nav">
-              <li><%= link_to "Projects", projects_path  %></li>
-              <li><%= link_to "Kanban", kanban_path  %></li>
-            <% if can?(:read, User) %>
-              <li><%= link_to "Users", users_path %></li>
-            <% end %>
+              
+              <%# Kanban %>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Kanban <b class="caret"></b></a>
+                <ul class="dropdown-menu kanban-menu">
+                  <li><%= link_to "All Projects", kanban_path %></li>
+                  <li class="divider"></li>
+                <% Project.all.each do |project| %>
+                  <li class="project">
+                    <%= link_to project_kanban_path(project) do %>
+                      <%= project.name %> <b class="bubble <%= project.color %>"></b>
+                    <% end %>
+                  </li>
+                <% end %>
+                </ul>
+              </li>
+              
+              <%# Testing Reports %>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Testing Reports <b class="caret"></b></a>
+                <ul class="dropdown-menu testing-reports-menu">
+                <% Project.all.each do |project| %>
+                  <li class="project">
+                    <%= link_to project_kanban_queue_path(project, "in_testing") do %>
+                      <%= project.name %> <b class="bubble <%= project.color %>"></b>
+                    <% end %>
+                  </li>
+                <% end %>
+                </ul>
+              </li>
+              
+              <%# Releases %>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Releases <b class="caret"></b></a>
+                <ul class="dropdown-menu releases-menu">
+                <% Project.all.each do |project| %>
+                  <li class="project">
+                    <%= link_to project_environment_releases_path(project, "master") do %>
+                      <%= project.name %> <b class="bubble <%= project.color %>"></b>
+                    <% end %>
+                  </li>
+                <% end %>
+                </ul>
+              </li>
+              
+              
+              <li class="divider"></li>
+
+              <% if can?(:read, Project) %>
+                <li><%= link_to "Projects", projects_path %></li>
+              <% end %>  
+
+              <% if can?(:read, User) %>
+                <li><%= link_to "Users", users_path %></li>
+              <% end %>
+              
             </ul>
             <ul class="nav pull-right">
               <% if current_user %>
@@ -141,6 +192,13 @@
       $(function(){
         window.userId = <%=raw current_user ? current_user.id : "null" %>;
         window.testers = new Testers(<%= raw TesterPresenter.new(User.testers).to_json %>);
+        
+        <% if current_user %>
+        $('.avatar.user-' + window.userId).popover({
+          title: 'Changing your Avatar',
+          content: 'You can change your avatar by going to <a href="http://gravatar.com/">gravatar.com</a> and associating an image with your email address <b><%= current_user.email %></b>.'
+        });
+        <% end %>
       });
     </script>
     <%= yield :scripts %>

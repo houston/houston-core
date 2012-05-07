@@ -1,0 +1,11 @@
+<h1 class="space-below">
+  <%= avatar_for(user, size: 80) %>
+  <%= user.name %>
+  <% if defined?(subtitle) %>
+    <span class="subtitle"><%= subtitle %></span>
+  <% end %>
+  <small>
+    <%= custom_link_unless_current "Show", user_path(user) %>
+    <%= custom_link_unless_current "Edit", edit_user_path(user) %>
+  </small>
+</h1>

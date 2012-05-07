@@ -29,10 +29,42 @@
         <% end -%>
       </div>
     </div>
+    
+    <div class="control-group">
+      <label class="control-label">Commits</label>
+      <div class="controls changes-nested-editor">
+        <ul class="commits">
+          <% @release.commits.each do |commit| %>
+            <li><%= format_commit(commit) %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+    
+    <% if @deployment %>
+    <div class="control-group">
+      <div class="controls">
+        <label for="update_tickets_in_unfuddle">
+          <input type="checkbox" id="update_tickets_in_unfuddle" name="update_tickets_in_unfuddle" value="1" checked="checked" /> Change tickets' <b>Deployment</b> to <b><%= @deployment %></b>
+        </label>
+      </div>
+    </div>
+    <% end %>
+    
+    <% if @recipients %>
+    <div class="control-group">
+      <div class="controls">
+        <label for="send_release_email">
+          <input type="checkbox" id="send_release_email" name="send_release_email" value="1" checked="checked" /> Send an email to notify <b><%= @recipients %></b> about this release
+        </label>
+      </div>
+    </div>
+    <% end %>
 
     <div class="form-actions">
       <%= f.submit nil, :class => 'btn btn-primary' %>
       <%= link_to 'Cancel', releases_path, :class => 'btn' %>
+      <%= link_to "Delete", release_path(@release), :method => "delete", :confirm => "Are you sure?", :class => "btn btn-danger btn-delete" if @release.persisted? && can?(:destroy, @release) %>
     </div>
   </fieldset>
 <% end %>

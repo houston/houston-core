@@ -3,13 +3,14 @@ class Ticket < ActiveRecord::Base
   belongs_to :project
   has_one :ticket_queue, conditions: "destroyed_at IS NULL"
   has_many :testing_notes
+  has_and_belongs_to_many :releases, before_add: :ignore_release_if_duplicate
   
   default_scope includes(:ticket_queue)
   
   validates :project_id, presence: true
   validates :summary, presence: true
   validates :number, presence: true
-  validates_uniqueness_of :number, :scope => :project_id
+  validates_uniqueness_of :number, scope: :project_id
   
   
   class << self
@@ -19,49 +20,61 @@ class Ticket < ActiveRecord::Base
     end
     
     def with_testing_notes_by(user)
+      q = "q#{rand(9999)}"
       sql = <<-SQL
         INNER JOIN (
           SELECT ticket_id, COUNT(id) AS count
             FROM testing_notes
             WHERE testing_notes.user_id=#{user.id}
             GROUP BY ticket_id
-        ) AS q
-          ON tickets.id=q.ticket_id
+        ) AS #{q}
+          ON tickets.id=#{q}.ticket_id
       SQL
-      joins(sql).where("q.count>0")
-      
-      # joins(:testing_notes) \
-      #   .group("tickets.id") \
-      #   .where("testing_notes.user_id = ?", user.id) \
-      #   .having("COUNT(testing_notes.id) > 0")
+      joins(sql).where("#{q}.count>0")
     end
     
     def without_testing_notes_by(user)
-      testing_notes = Arel::Table.new(:testing_notes)
-      tickets = Arel::Table.new(:tickets)
-      
-      notes = testing_notes \
-        .project(testing_notes[:ticket_id], testing_notes[:id].count) \
-        .group(testing_notes[:ticket_id])
+      q = "q#{rand(9999)}"
+      sql = <<-SQL
+        LEFT OUTER JOIN (
+          SELECT ticket_id, COUNT(id) AS count
+            FROM testing_notes
+            WHERE testing_notes.user_id=#{user.id}
+            GROUP BY ticket_id
+        ) AS #{q}
+          ON tickets.id=#{q}.ticket_id
+      SQL
+      joins(sql).where("#{q}.count IS NULL OR #{q}.count=0")
+    end
+    
+    # Tickets where the most recent testing_note
+    # by the supplied user has a failing verdict
+    # and is _before_ the most recent release
+    def to_be_retested_by(user)
+      q = "q#{rand(9999)}"
+      r = "r#{rand(9999)}"
+      sql = <<-SQL
         
-      joins(notes) \
-        .on(tickets[:id].eq(notes[:ticket_id])) \
-        .having(notes[:id] = 0)
-      
-      # sql = <<-SQL
-      #   LEFT OUTER JOIN (
-      #     SELECT ticket_id, COUNT(id) AS count
-      #       FROM testing_notes
-      #       WHERE testing_notes.user_id=#{user.id}
-      #       GROUP BY ticket_id
-      #   ) AS q
-      #     ON tickets.id=q.ticket_id
-      # SQL
-      # "q.count IS NULL OR q.count=0"
-      
-      # joins("LEFT OUTER JOIN testing_notes ON tickets.id = testing_notes.ticket_id") \
-      #   .group("tickets.id") \
-      #   .having("COUNT(testing_notes.id) = 0")
+        -- 1) Find the most recent failing testing_note
+        INNER JOIN (
+          SELECT ticket_id, created_at
+            FROM testing_notes
+            WHERE testing_notes.user_id=#{user.id}
+              AND testing_notes.verdict='fails'
+            ORDER BY testing_notes.created_at DESC
+        ) AS #{q}
+          ON tickets.id=#{q}.ticket_id
+        
+        -- 2) Find the most recent release of this ticket
+        INNER JOIN (
+          SELECT releases_tickets.ticket_id, releases.created_at
+            FROM releases
+              INNER JOIN releases_tickets ON releases_tickets.release_id=releases.id
+            ORDER BY releases.created_at DESC
+        ) AS #{r}
+          ON tickets.id=#{r}.ticket_id
+      SQL
+      joins(sql).where("#{q}.created_at < #{r}.created_at")
     end
     
     def numbered(*numbers)
@@ -118,6 +131,28 @@ class Ticket < ActiveRecord::Base
     else
       "Passing"
     end
+  end
+  
+  
+  
+  def set_unfuddle_kanban_field_to(id)
+    return false if unfuddle_id.blank?
+    
+    # Transform `field_2` to `field2-value-id`
+    attribute = project.kanban_field.gsub(/field_(\d)/, 'field\1-value-id')
+    
+    remote_ticket = project.ticket_system.ticket(unfuddle_id)
+    remote_ticket.update_attribute(attribute, id)
+  end
+  
+  
+  
+private
+  
+  
+  
+  def ignore_release_if_duplicate(release)
+    raise ActiveRecord::Rollback if self.releases.exists?(release.id)
   end
   
   

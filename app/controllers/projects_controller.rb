@@ -16,13 +16,7 @@ class ProjectsController < ApplicationController
   # GET /projects/1
   # GET /projects/1.json
   def show
-    @project = Project.find_by_slug!(params[:id])
-    @environments = @project.environments
-    
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @project }
-    end
+    redirect_to project_kanban_path(@project)
   end
 
   # GET /projects/new

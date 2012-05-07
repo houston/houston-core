@@ -1,20 +1,12 @@
 # To Do
 
- - **Global**:
-   - Links to tickets in Unfuddle should open in a new window
-   - The home page should vary depending on who you are (Guest? Kanban. Tester? Tester Wall. Other? ?)
  - **Testing Notes**:
-   - Connect releases to tickets
    - Intersperse releases with testing notes
    - Reset verdicts after a release
  - **Tester Wall**:
-   - Implement real queries
    - Show verdicts for finished tickets
- - **Release**:
-   - Show commit range and release form in one view
-   - Have option to update Unfuddle tickets on creation (to close them and change their deployment to Production)
-   - Have option to send an email on creation
-   - If no Project#git_url make that the error message
+   - Implement tickets accordian-style
+ - **Kanban**: navigating away from the Kanban takes a while
 
 ### Would be Cool
 
@@ -22,7 +14,6 @@
 
 ### Refactoring
 
- - **Config**: add email configuration options
  - **Environment**: don't ask for "initial_commit"; can be specified in the New Release experience now
 
 ### Ideas

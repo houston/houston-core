@@ -1,0 +1,5 @@
+<p>The following changes have been deployed to <%= @release.environment.name %>:</p>
+
+<%= render partial: "releases/changelog", locals: {release: @release} %>
+
+<p>See <%= link_to "release notes", release_path(@release) %>.</p>

@@ -1,3 +1,8 @@
+h1 img {
+  float: left;
+  margin: 0 0.5em 0 0;
+}
+
 .tester-ticket-list {
   margin: 3em 0 6em;
   
@@ -12,11 +17,11 @@
     line-height: 1.5em;
   }
   
-  .span3 {
+  .span4 {
     position: relative;
   }
   
-  .span3:after {
+  .span4:after {
     content: '.';
     background-image: url(/images/chevron.png);
     background-position: top right;

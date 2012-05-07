@@ -1,16 +1,9 @@
-<%= header do |p| %>
-  <%= p.breadcrumbs "Projects" => projects_path,
-                    @project => Project.all,
-                    @environment => @project.environments,
-                    "Releases" => project_environment_releases_path(@project, @environment),
-                    @release => @environment.releases %>
-  <%= p.actions do %>
-    <% if params[:recreate] %>
-      <%= link_to "Cancel", edit_release_path(@release), :class => "btn" %>
-    <% else %>
-      <%= link_to "Recreate", edit_release_path(@release, :recreate => true), :class => "btn" %>
-    <% end %>
-  <% end %>
+<%= render partial: "releases/header", locals: {release: @release} %>
+
+<% if params[:recreate] %>
+  <%= link_to "Cancel", edit_release_path(@release), :class => "btn" %>
+<% else %>
+  <%= link_to "Recreate", edit_release_path(@release, :recreate => true), :class => "btn" %>
 <% end %>
 
 <%= render :partial => "form" %>

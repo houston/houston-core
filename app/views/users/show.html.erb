@@ -1,17 +1,6 @@
-<h1>/User</h1>
-
-<p>
-  <b>Name</b><br>
-  <%= @user.name %>
-</p>
+<%= render partial: "users/header", locals: {user: @user} %>
 
 <p>
   <b>Email</b><br>
   <%= @user.email %>
 </p>
-
-<div class="form-actions">
-  <%= link_to 'Back', users_path, :class => 'btn'  %>
-  <%= link_to 'Edit', edit_user_path(@user), :class => 'btn' if can?(:update, @user) %>
-  <%= link_to 'Delete', user_path(@user), :method => 'delete', :confirm => 'Are you sure?', :class => 'btn btn-danger' if can?(:destroy, @user) %>
-</div>

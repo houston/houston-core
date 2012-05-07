@@ -1,9 +1,36 @@
-<%= header do |p| %>
-  <%= p.breadcrumbs "Projects" => projects_path,
-                    @project => Project.all,
-                    @environment => @project.environments,
-                    "Releases" => project_environment_releases_path(@project, @environment),
-                    "New" => nil %>
-<% end %>
+<%= render partial: "projects/header", locals: {project: @project, subtitle: "New Release"} %>
 
-<%= render :partial => 'form' %>
+<form accept-charset="UTF-8" action="<%= new_project_environment_release_path(@project, @environment) %>" class="form-horizontal pjax" method="get">
+  <fieldset>
+    <div class="control-group form-actions">
+      <h3>Create a New Release for the following commits</h3>
+      <%= text_field_tag :commit0, @commit0, :class => "text_field" %>
+      ...
+      <%= text_field_tag :commit, @commit1, :class => "text_field" %>
+      <%= submit_tag "Continue", :name => nil, :class => "btn btn-primary" %>
+    </div>
+  </fieldset>
+</form>
+
+<hr />
+
+<div id="new_release_form">
+  <%= render partial: "releases/new_release" %>
+</div>
+
+<% content_for :scripts do %>
+<script type="text/javascript">
+  $(function() {
+    $('form.pjax').submit(function(e) {
+      e.preventDefault();
+      var $form = $(this),
+          url = $form.attr('action') + '?' + $form.serialize();
+      $.pjax({
+        url: url,
+        container: '#new_release_form'
+      });
+      return false;
+    });
+  });
+</script>
+<% end %>

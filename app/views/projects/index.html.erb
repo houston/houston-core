@@ -1,60 +1,56 @@
-<%= header do |p| %>
-  <%= p.breadcrumbs "Projects" => projects_path %>
-  <%= p.actions do %>
-    <%= link_to "New Project", new_project_path, :class => "btn btn-primary" if can?(:create, Project) %>
-  <% end %>
-<% end %>
+<h1 class="space-below">
+  Projects
+  <%= link_to "New Project", new_project_path, :class => "btn btn-primary" if can?(:create, Project) %>
+</h1>
 
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th class="project-title">Title</th>
-      <th class="project-environments">Environments</th>
-      <th class="project-last-release">Last Release</th>
-      <th>Unfuddle Page</th>
-      <th class="project-new-release"></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @projects.each do |project| %>
+<% if @projects.any? %>
+  <table class="table table-striped">
+    <thead>
       <tr>
-        <td class="project-title">
-          <%= link_to project.name, project_path(project) %>
-          <span class="label <%= project.color %>"><%= project.color.capitalize %></span>
-        </td>
-        <td class="project-environments">
-          <ol>
-            <% project.environments.each do |environment| %>
-              <li><%= link_to environment.name, project_environment_path(project, environment) %></li>
-            <% end %>
-          </ol>
-        </td>
-        <td class="project-last-release">
-          <ol>
-            <% project.environments.each do |environment| %>
-              <li>
-                <% if release = environment.releases.first %>
-                  <%= link_to format_release_date(release), project_environment_release_path(project, environment, release) %>
-                <% else %>
-                  &mdash;
-                <% end %>
-              </li>
-            <% end %>
-          </ol>
-        </td>
-        <td><%= link_to "View in Unfuddle", unfuddle_project_url(project) if project.unfuddle_id %></td>
-        <td class="project-new-release">
-          <ol>
-            <% project.environments.each do |environment| %>
-              <li>
-                <%= link_to "New Release", new_project_environment_release_path(project, environment), :class => 'btn btn-primary btn-mini btn-new-release' if can?(:create, Release) %>
-                &nbsp;&nbsp;&nbsp;<%= link_to "View Releases", project_environment_releases_path(project, environment) %>
-              </li>
-            <% end %>
-          </ol>
-        </td>
+        <th class="project-title">Title</th>
+        <th class="project-title"></th>
+        <th class="project-last-release">Last Testing Update (PRI)</th>
+        <th class="project-last-release"></th>
+        <th class="project-last-release">Last Release (Production)</th>
+        <th class="project-last-release"></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
-
+    </thead>
+    <tbody>
+      <% @projects.each do |project| %>
+        <% dev = project.environments.find_by_slug("dev") %>
+        <% master = project.environments.find_by_slug("master") %>
+        <tr>
+          <td class="project-title">
+            <%= link_to project.name, project_path(project) %>
+            <span class="label <%= project.color %>"><%= project.color.capitalize %></span>
+          </td>
+          <td class="project-title">
+            <%= link_to "(View in Unfuddle)", unfuddle_project_url(project) if project.unfuddle_id %>
+          </td>
+          <td class="project-last-release">
+            <% release = dev && dev.releases.first %>
+            <%= link_to format_release_date(release), project_environment_release_path(project, dev, release) if release %>
+          </td>
+          <td class="project-last-release">
+            <% if dev %>
+              <%= link_to "(View Releases)", project_environment_releases_path(project, dev) %>
+              &nbsp;&nbsp;&nbsp;<%= link_to "New Update", new_project_environment_release_path(project, dev), :class => 'btn btn-primary btn-mini btn-new-release' if can?(:create, Release) %>
+            <% end %>
+          </td>
+          <td class="project-last-release">
+            <% release = master && master.releases.first %>
+            <%= link_to format_release_date(release), project_environment_release_path(project, master, release) if release %>
+          </td>
+          <td class="project-last-release">
+            <% if master %>
+              <%= link_to "(View Releases)", project_environment_releases_path(project, master) %>
+              &nbsp;&nbsp;&nbsp;<%= link_to "New Release", new_project_environment_release_path(project, master), :class => 'btn btn-primary btn-mini btn-new-release' if can?(:create, Release) %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <div class="alert alert-info">There are no projects yet. Click <b>New Project</b> to create one.</div>
+<% end %>

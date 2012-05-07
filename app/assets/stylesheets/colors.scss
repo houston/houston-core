@@ -30,3 +30,21 @@ $red:    rgb(219, 54, 58);
   &.green { background-color: $green; }
   &.red { background-color: $red; }
 }
+
+.bubble {
+  display: inline-block;
+  width: 0.92em;
+  height: 0.92em;
+  border-radius: 0.18em;
+  vertical-align: baseline;
+  position: relative;
+  top: 1px;
+  margin-left: 0.25em;
+  
+  &.teal { background-color: $teal; }
+  &.orange { background-color: $orange; }
+  &.slate { background-color: $slate; }
+  &.blue { background-color: $blue; }
+  &.green { background-color: $green; }
+  &.red { background-color: $red; }
+}

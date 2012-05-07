@@ -2,8 +2,8 @@
   <p>Nothing to see here, move along.</p>
 <% else %>
   <ul class="tickets">
-    <% tickets.each do |ticket| %>
-      <li class="ticket"><%= link_to_ticket(ticket) %></li>
-    <% end %>
+    <% tickets.each do |ticket| if ticket.project %>
+      <li class="ticket"><b class="bubble <%= ticket.project.color %>"></b> <%= link_to_ticket(ticket) %></li>
+    <% end; end %>
   </ul>
 <% end %>

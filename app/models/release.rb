@@ -1,6 +1,7 @@
 class Release < ActiveRecord::Base
   
   after_create :load_commits!, :if => :can_read_commits?
+  after_create :associate_tickets_with_self
   
   belongs_to :environment
   has_many :changes, :dependent => :destroy
@@ -45,7 +46,7 @@ class Release < ActiveRecord::Base
       if commit
         commit.update_attributes Commit.attributes_from_grit_commit(grit_commit)
       else
-        commits.build Commit.attributes_from_grit_commit(grit_commit)
+        commits.build Commit.attributes_from_grit_commit(grit_commit).merge(release: self)
       end
     end
   end
@@ -64,6 +65,29 @@ class Release < ActiveRecord::Base
   
   def tickets
     @tickets ||= load_tickets!
+  end
+  
+  
+  
+  def update_tickets_in_unfuddle!
+    kanban_field_id = environment.resulting_kanban_field_id
+    if kanban_field_id
+      tickets.each do |ticket|
+        ticket.set_unfuddle_kanban_field_to(kanban_field_id)
+      end
+    end
+  end
+  
+  
+  
+private
+  
+  
+  
+  def associate_tickets_with_self
+    tickets.each do |ticket|
+      ticket.releases << self unless ticket.releases.exists?(id)
+    end
   end
   
   
