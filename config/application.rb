@@ -60,6 +60,7 @@ module Changelog
     yaml = YAML.load_file(Rails.root.join("config", "changelog.yml").to_s)
     config.title = yaml.fetch("title", "Changelog")
     config.unfuddle = yaml.fetch("unfuddle", {})
+    config.action_mailer.smtp_settings = yaml["smtp"] if yaml["smtp"]
     
     def config.default_environments
       # !todo: read this from a config file
