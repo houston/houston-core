@@ -14,7 +14,6 @@
 
 ### Refactoring
 
- - **Config**: add email configuration options
  - **Environment**: don't ask for "initial_commit"; can be specified in the New Release experience now
 
 ### Ideas
