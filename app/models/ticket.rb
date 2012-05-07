@@ -19,6 +19,64 @@ class Ticket < ActiveRecord::Base
       where(["ticket_queues.queue = ?", queue])
     end
     
+    def with_testing_notes_by(user)
+      q = "q#{rand(9999)}"
+      sql = <<-SQL
+        INNER JOIN (
+          SELECT ticket_id, COUNT(id) AS count
+            FROM testing_notes
+            WHERE testing_notes.user_id=#{user.id}
+            GROUP BY ticket_id
+        ) AS #{q}
+          ON tickets.id=#{q}.ticket_id
+      SQL
+      joins(sql).where("#{q}.count>0")
+    end
+    
+    def without_testing_notes_by(user)
+      q = "q#{rand(9999)}"
+      sql = <<-SQL
+        LEFT OUTER JOIN (
+          SELECT ticket_id, COUNT(id) AS count
+            FROM testing_notes
+            WHERE testing_notes.user_id=#{user.id}
+            GROUP BY ticket_id
+        ) AS #{q}
+          ON tickets.id=#{q}.ticket_id
+      SQL
+      joins(sql).where("#{q}.count IS NULL OR #{q}.count=0")
+    end
+    
+    # Tickets where the most recent testing_note
+    # by the supplied user has a failing verdict
+    # and is _before_ the most recent release
+    def to_be_retested_by(user)
+      q = "q#{rand(9999)}"
+      r = "r#{rand(9999)}"
+      sql = <<-SQL
+        
+        -- 1) Find the most recent failing testing_note
+        INNER JOIN (
+          SELECT ticket_id, created_at
+            FROM testing_notes
+            WHERE testing_notes.user_id=#{user.id}
+              AND testing_notes.verdict='fails'
+            ORDER BY testing_notes.created_at DESC
+        ) AS #{q}
+          ON tickets.id=#{q}.ticket_id
+        
+        -- 2) Find the most recent release of this ticket
+        INNER JOIN (
+          SELECT releases_tickets.ticket_id, releases.created_at
+            FROM releases
+              INNER JOIN releases_tickets ON releases_tickets.release_id=releases.id
+            ORDER BY releases.created_at DESC
+        ) AS #{r}
+          ON tickets.id=#{r}.ticket_id
+      SQL
+      joins(sql).where("#{q}.created_at < #{r}.created_at")
+    end
+    
     def numbered(*numbers)
       numbers = numbers.flatten.map(&:to_i)
       where(:number => numbers)

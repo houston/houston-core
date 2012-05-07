@@ -4,8 +4,9 @@
    - Intersperse releases with testing notes
    - Reset verdicts after a release
  - **Tester Wall**:
-   - Implement real queries
    - Show verdicts for finished tickets
+   - Implement tickets accordian-style
+ - **Kanban**: navigating away from the Kanban takes a while
 
 ### Would be Cool
 
