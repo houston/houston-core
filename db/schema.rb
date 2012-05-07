@@ -16,8 +16,9 @@ ActiveRecord::Schema.define(:version => 20120504143615) do
   create_table "changes", :force => true do |t|
     t.integer  "release_id"
     t.string   "description"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.integer  "ticket_number"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
   create_table "commits", :force => true do |t|
@@ -103,7 +104,7 @@ ActiveRecord::Schema.define(:version => 20120504143615) do
 
   create_table "users", :force => true do |t|
     t.string   "name"
-    t.string   "email",                                :default => "",          :null => false
+    t.string   "email",                                :default => "",      :null => false
     t.string   "encrypted_password",                   :default => ""
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
@@ -113,15 +114,15 @@ ActiveRecord::Schema.define(:version => 20120504143615) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.datetime "created_at",                                                    :null => false
-    t.datetime "updated_at",                                                    :null => false
+    t.datetime "created_at",                                                :null => false
+    t.datetime "updated_at",                                                :null => false
     t.string   "invitation_token",       :limit => 60
     t.datetime "invitation_sent_at"
     t.datetime "invitation_accepted_at"
     t.integer  "invitation_limit"
     t.integer  "invited_by_id"
     t.string   "invited_by_type"
-    t.string   "role",                                 :default => "Developer"
+    t.string   "role",                                 :default => "Guest"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
