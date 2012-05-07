@@ -7,7 +7,7 @@
   <table class="table table-striped">
     <thead>
       <tr>
-        <th>Name</th>
+        <th><span class="avatar-24"></span> Name</th>
         <th>Email</th>
         <th>Role</th>
       <% if can?(:update, User) %>
@@ -18,7 +18,10 @@
     <tbody>
       <% @users.each do |user| %>
         <tr>
-          <td><%= link_to user.name, user_path(user) %></td>
+          <td>
+            <span class="avatar-24"><%= avatar_for(user) %></span>
+            <%= link_to user.name, user_path(user) %>
+          </td>
           <td><%= mail_to user.email, user.email %></td>
           <td><%= user.role %></td>
         <% if can?(:update, user) %>
