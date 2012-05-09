@@ -1,0 +1,108 @@
+#!/usr/bin/env ruby
+
+#************************************************************
+# Run git submodule init and git submodule update
+
+def git_step(step)
+  puts  "",
+        "Running " + step + "...",
+        "="*80
+  system(step)
+end
+
+
+#************************************************************
+# check if Bundler, Postgres, and MySQL are installed
+
+def check(key)
+  puts ""
+  if system("which #{key}")
+    if key == 'bundle'
+      puts  "Bundler is installed! Checking for Postgres...",
+            "="*80
+    elsif key == 'postgres'
+      puts  "Postgres is installed! Checking for MySQL...",
+            "="*80 
+    else
+      puts  "MySQL is installed!",
+            "="*80 
+    end
+  else
+    if key == 'bundle'
+      puts "Bundler missing, installing...",
+         "="*80
+      system("gem install bundler")
+      puts  "Bundler is installed!  Checking for Postgres...",
+         "="*80
+    else
+      puts  "You don't have " + key + " :(  Please install it and rerun this script.",
+         "="*80
+      exit(1)
+    end
+  end
+end
+
+
+#************************************************************
+# Commands for database_setup
+
+def command(input)
+  puts  "",
+        "Setting up database with " + input + "...",
+        "="*80
+  system(input)
+end
+
+
+#************************************************************
+# Rake the database!!
+
+def database_setup
+  if system("cp config/database.yml.sample config/database.yml")
+    if command('rake db:create')
+      if command('rake db:migrate')
+        puts  "="*80,
+              "",
+              "******   All done!  You can haz teh codez!   ******",
+              "",
+              "="*80
+      else
+        puts  "="*80,
+              "",
+              "******   Something bad happened with the migration                    ******",
+              "******   Check the errors above for more details on what to do next   ******",
+              "",
+              "="*80
+      end
+    else
+      puts  "="*80,
+            "",
+            "******   Something bad happened with the creation of your databases   ******",
+            "******   Check the errors above for more details on what to do next   ******",
+            "",
+            "="*80
+    end
+  else
+    puts  "="*80,
+          "",
+          "******   Error :( The script can't find your database.yml.sample file, so please ask one of the other developers for a copy :)",
+          "",
+          "="*80
+    exit(1)
+  end
+end
+
+
+#************************************************************
+# The Script!!!
+
+git_step('git submodule init')
+git_step('git submodule update')
+check('bundle')
+check('postgres')
+check('mysql')
+puts  "",
+      "You have postgres and mysql! Good job!  Now copying the database.yml.sample file...",
+      "="*80
+command('bundle install')
+database_setup
