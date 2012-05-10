@@ -75,9 +75,7 @@ class window.Kanban
     @setKanbanSize()
   
   urlFor: (path)->
-    relativeRoot = $('base').attr('href')
-    relativeRoot = relativeRoot.substring(0, relativeRoot.length - 1) if /\/$/.test(relativeRoot)
-    "#{relativeRoot}/kanban/#{path}.json"
+    "#{App.relativeRoot()}/kanban/#{path}.json"
   
   get:  (path, params)-> @ajax(path,  'GET', params)
   post: (path, params)-> @ajax(path, 'POST', params)

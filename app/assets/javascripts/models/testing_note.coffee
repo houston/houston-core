@@ -1,14 +1,14 @@
 class window.TestingNote extends Backbone.Model
   url: ->
     if @isNew()
-      "/tickets/#{@get('ticketId')}/testing_notes"
+      "#{App.relativeRoot()}/tickets/#{@get('ticketId')}/testing_notes"
     else
-      "/tickets/#{@get('ticketId')}/testing_notes/#{@get('id')}"
+      "#{App.relativeRoot()}/tickets/#{@get('ticketId')}/testing_notes/#{@get('id')}"
 
 
 class window.TestingNotes extends Backbone.Collection
   model: TestingNote
-  url: -> "/tickets/#{@ticket.get('id')}/testing_notes"
+  url: -> "#{App.relativeRoot()}/tickets/#{@ticket.get('id')}/testing_notes"
   
   initialize: (models, options)->
     super(models, options)
