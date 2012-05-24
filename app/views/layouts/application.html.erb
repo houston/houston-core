@@ -121,7 +121,7 @@
                 <ul class="dropdown-menu testing-reports-menu">
                 <% Project.all.each do |project| %>
                   <li class="project">
-                    <%= link_to project_kanban_queue_path(project, "in_testing") do %>
+                    <%= link_to project_testing_report_path(project) do %>
                       <%= project.name %> <b class="bubble <%= project.color %>"></b>
                     <% end %>
                   </li>
