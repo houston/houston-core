@@ -8,13 +8,15 @@ h1 img {
   
   ul {
     margin: 0;
-    padding: 0;
+    padding: 0 4em 0 0;
   }
   
   li {
     list-style-type: none;
     display: block;
     line-height: 1.5em;
+    padding-left: 1.5em;
+    text-indent: -1.5em;
   }
   
   .span4 {
