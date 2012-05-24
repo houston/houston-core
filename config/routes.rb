@@ -4,8 +4,6 @@ Changelog::Application.routes.draw do
   
   root :to => "kanban#index", :via => :get
   
-  # match "kanban" => "kanban#index", :via => :get
-  # match "kanban/:queue" => "kanban#queue", :via => :get, :constraints => {queue: Regexp.new(KanbanQueue.slugs.join("|"))}
   match "kanban/:slug" => "project_kanban#index", :via => :get, :as => :project_kanban
   
   constraints :queue => Regexp.new(KanbanQueue.slugs.join("|")) do
