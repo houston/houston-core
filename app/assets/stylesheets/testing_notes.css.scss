@@ -61,7 +61,7 @@
   
   &[data-verdict="pending"] img { opacity: 0.33; }
   &[data-verdict="passing"] img { border-color: #55c832; }
-  &[data-verdict="failing"] img { border-color: #ff6d6d; }
+  &[data-verdict="failing"] img { border-color: #ff3030; }
 }
 
 .ticket-description {
