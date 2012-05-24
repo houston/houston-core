@@ -2,10 +2,20 @@
   Testing Report
 </h1>
 
-<ul id="testers">
-  <% User.testers.each do |tester| %>
-    <li class="tester"><%= tester.name %></li>
-  <% end %>
+<ul class="tester-names">
+  <li class="row-fluid">
+    <div class="span8">&nbsp;</div>
+    <div class="span4">
+      <span class="ticket-verdict-summary">&nbsp;</span>
+      <span class="tester-verdicts">
+        <ul id="testers">
+          <% User.testers.each do |tester| %>
+            <li class="tester"><%= tester.name %></li>
+          <% end %>
+        </ul>
+      </span>
+    </div>
+  </li>
 </ul>
 
 <% @projects.each do |project, tickets| %>

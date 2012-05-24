@@ -31,10 +31,15 @@
     </script>
     
     <script id="ticket_in_testing_template" type="text/x-handlebars-template">
-      <a data-toggle="collapse" data-parent="#tickets" data-target="#ticket_{{id}}_testing_notes" class="testing-notes">[#{{number}}] {{{formatTicketSummary summary}}}</a>{{#ifEq queue "in_testing_production"}} <span class="label label-inverse">Production</span>{{/ifEq}}
-      <span class="ticket-verdict-summary"></span>
-      <span class="tester-verdicts"></span>
-      <ol id="ticket_{{id}}_testing_notes" class="testing-notes collapse">
+      <div class="span8">
+        <a data-toggle="collapse" data-parent="#tickets" data-target="#ticket_{{id}}_testing_notes" class="testing-notes">[#{{number}}] {{{formatTicketSummary summary}}}</a>
+        {{#ifEq queue "in_testing_production"}}<span class="label label-inverse">Production</span>{{/ifEq}}
+      </div>
+      <div class="span4">
+        <span class="ticket-verdict-summary"></span>
+        <span class="tester-verdicts"></span>
+      </div>
+      <ol id="ticket_{{id}}_testing_notes" class="testing-notes collapse span8">
         <li class='ticket-description'>{{{description}}}</li>
       </ol>
     </script>

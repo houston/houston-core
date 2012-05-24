@@ -1,10 +1,20 @@
 <%= render partial: "projects/header", locals: {project: @project, subtitle: "Testing Report"} %>
 
 <% if @tickets.any? %>
-  <ul id="testers">
-    <% @project.testers.each do |tester| %>
-      <li class="tester"><%= tester.name %></li>
-    <% end %>
+  <ul class="tester-names">
+    <li class="row-fluid">
+      <div class="span8">&nbsp;</div>
+      <div class="span4">
+        <span class="ticket-verdict-summary">&nbsp;</span>
+        <span class="tester-verdicts">
+          <ul id="testers">
+            <% @project.testers.each do |tester| %>
+              <li class="tester"><%= tester.name %></li>
+            <% end %>
+          </ul>
+        </span>
+      </div>
+    </li>
   </ul>
   <ul id="tickets" class="tickets tickets-list"></ul>
 

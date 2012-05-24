@@ -1,19 +1,22 @@
 .tickets-list .ticket { 
   clear: both; 
   list-style-type: none;
-  a { max-width: 685px; }
   
   padding-left: 16px;
   background-position: 0 4px;
   background-repeat: no-repeat;
 }
 
-.tickets-list { max-width: 800px; }
-#testers {
-  max-width: 735px;
-  height: 4em;
-//  overflow: hidden;
+ul.tester-names { 
+  margin-bottom: 0;
+  > li { 
+    list-style-type: none;
+    padding-left: 16px;
+  }
+  #testers { height: 4em; }
 }
+
+.tester-names, .tickets-list { max-width: 800px; }
 
 .tester {
   display: inline-block;
@@ -23,8 +26,9 @@
   -moz-transform: rotate(-90deg); /* Firefox */
   -webkit-transform: rotate(-90deg); /* Safari and Chrome */
   -o-transform: rotate(-90deg); /* Opera */
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
   position: relative;
   top: 2em;
   text-overflow: ellipsis;

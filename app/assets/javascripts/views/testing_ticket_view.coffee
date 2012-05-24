@@ -1,6 +1,6 @@
 class window.TestingTicketView extends Backbone.View
   tagName: 'li'
-  className: 'ticket'
+  className: 'ticket row-fluid'
   
   events:
     'submit form#new_testing_note': 'createTestingNote'
