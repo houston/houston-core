@@ -1,12 +1,12 @@
-.ticket-badge { background-image: url('<%= "#{Rails.configuration.try(:relative_url_root)}/images/badges.png" %>'); }
+.ticket-badge { background-image: url('<%= "#{ENV['RAILS_RELATIVE_URL_ROOT']}/images/badges.png" %>'); }
 .tickets-list .ticket { 
-  background-image: url('<%= "#{Rails.configuration.try(:relative_url_root)}/images/tree-collapsed.png" %>');
-  &.expanded { background-image: url('<%= "#{Rails.configuration.try(:relative_url_root)}/images/tree-expanded.png" %>'); }
+  background-image: url('<%= "#{ENV['RAILS_RELATIVE_URL_ROOT']}/images/tree-collapsed.png" %>');
+  &.expanded { background-image: url('<%= "#{ENV['RAILS_RELATIVE_URL_ROOT']}/images/tree-expanded.png" %>'); }
 }
 .tester-ticket-list {
   .span4:after {
     content: '.';
-    background-image: url('<%= "#{Rails.configuration.try(:relative_url_root)}/images/chevron.png" %>');
+    background-image: url('<%= "#{ENV['RAILS_RELATIVE_URL_ROOT']}/images/chevron.png" %>');
     background-position: top right;
     background-repeat: no-repeat;
     position: absolute;
