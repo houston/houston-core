@@ -1,32 +1,11 @@
 <%= render partial: "projects/header", locals: {project: @project, subtitle: @queue.name} %>
 
 <% if @tickets.any? %>
-  <% if @queue.in_testing? %>
-    <ul id="testers">
-      <% @project.testers.each do |tester| %>
-        <li class="tester"><%= tester.name %></li>
-      <% end %>
-    </ul>
-    <ul id="tickets" class="tickets tickets-list"></ul>
-  
-    <% content_for :scripts do %>
-      <script type="text/javascript">
-        $(function(){
-          var tickets = new Tickets(<%= raw TicketPresenter.new(@tickets).with_testing_notes.to_json %>);
-          var view = new TestingTicketsView({tickets: tickets});
-        });
-      </script>
+  <ul class="tickets">
+    <% @tickets.each do |ticket| %>
+      <li><%= link_to_ticket(ticket) %></li>
     <% end %>
-    
-  <% else %>
-    
-    <ul class="tickets">
-      <% @tickets.each do |ticket| %>
-        <li><%= link_to_ticket(ticket) %></li>
-      <% end %>
-    </ul>
-    
-  <% end %>
+  </ul>
 <% else %>
   <div class="alert alert-info">There are no tickets <b><%= @queue.name.downcase %></b> for <b><%= @project.name %></b> right now.</div>
 <% end %>

@@ -21,6 +21,7 @@ class TicketPresenter
         projectColor: ticket.project.color,
         number: ticket.number,
         summary: ticket.summary,
+        queue: ticket.queue,
         description: BlueCloth::new(ticket.description).to_html }
     end
   end

@@ -26,6 +26,12 @@ class ProjectKanbanController < ApplicationController
   end
   
   
+  def testing_report
+    @queue = KanbanQueue.find_by_slug(params[:queue])
+    @tickets = @project.tickets.in_queues "in_testing", "in_testing_production"
+  end
+  
+  
   def assign_ticket_to_queue
     ticket = @project.find_or_create_ticket_by_number(params[:ticket_number])
     if ticket

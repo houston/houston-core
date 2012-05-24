@@ -39,3 +39,12 @@ Handlebars.registerHelper 'testerAvatar', (email, size)->
   gravatarUrl = "http://www.gravatar.com/avatar/#{MD5(email)}?r=g&d=identicon&s=#{size}"
   "<img src=\"#{gravatarUrl}\" width=\"#{size}\" height=\"#{size}\" />"
   
+Handlebars.registerHelper 'ifEq', (v1, v2, block)->
+  if v1 == v2
+    block(@)
+  else
+    block.inverse(@)
+  # if context == options.hash.compare
+  #   options.fn(context)
+  # else
+  #   options.inverse(context)

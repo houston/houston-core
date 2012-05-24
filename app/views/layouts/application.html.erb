@@ -31,7 +31,7 @@
     </script>
     
     <script id="ticket_in_testing_template" type="text/x-handlebars-template">
-      <a data-toggle="collapse" data-parent="#tickets" data-target="#ticket_{{id}}_testing_notes" class="testing-notes">[#{{number}}] {{{formatTicketSummary summary}}}</a>
+      <a data-toggle="collapse" data-parent="#tickets" data-target="#ticket_{{id}}_testing_notes" class="testing-notes">[#{{number}}] {{{formatTicketSummary summary}}}</a>{{#ifEq queue "in_testing_production"}} <span class="label label-inverse">Production</span>{{/ifEq}}
       <span class="ticket-verdict-summary"></span>
       <span class="tester-verdicts"></span>
       <ol id="ticket_{{id}}_testing_notes" class="testing-notes collapse">
