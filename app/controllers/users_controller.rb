@@ -24,7 +24,7 @@ class UsersController < ApplicationController
         
         if @user.tester?
           template = "tester_wall"
-          tickets_in_testing = Ticket.in_queue "in_testing"
+          tickets_in_testing = Ticket.in_queues "in_testing", "in_testing_production"
           tickets_tested_by_user = tickets_in_testing.with_testing_notes_by(@user)
           
           # These are tickets that are:

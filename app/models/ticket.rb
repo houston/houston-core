@@ -19,6 +19,11 @@ class Ticket < ActiveRecord::Base
       where(["ticket_queues.queue = ?", queue])
     end
     
+    def in_queues(*queues)
+      queues = queues.map { |queue| queue.is_a?(KanbanQueue) ? queue.slug : queue }
+      where(["ticket_queues.queue IN (?)", queues])
+    end
+    
     def with_testing_notes_by(user)
       q = "q#{rand(9999)}"
       sql = <<-SQL
@@ -85,6 +90,11 @@ class Ticket < ActiveRecord::Base
     def attributes_from_unfuddle_ticket(unfuddle_ticket)
       unfuddle_ticket.pick("number", "summary", "description").merge("unfuddle_id" => unfuddle_ticket["id"])
     end
+  end
+  
+  
+  def in_queue?(name)
+    self.queue == name
   end
   
   

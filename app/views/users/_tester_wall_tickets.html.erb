@@ -3,7 +3,13 @@
 <% else %>
   <ul class="tickets">
     <% tickets.each do |ticket| if ticket.project %>
-      <li class="ticket"><b class="bubble <%= ticket.project.color %>"></b> <%= link_to_ticket(ticket) %></li>
+      <li class="ticket">
+        <b class="bubble <%= ticket.project.color %>"></b>
+        <%= link_to_ticket(ticket) %>
+        <% if ticket.in_queue?("in_testing_production") %>
+          <span class="label label-inverse">Production</span>
+        <% end %>
+      </li>
     <% end; end %>
   </ul>
 <% end %>
