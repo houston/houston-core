@@ -1,0 +1,19 @@
+.ticket-badge { background-image: url('<%= "#{Rails.configuration.try(:relative_url_root)}/images/badges.png" %>'); }
+.tickets-list .ticket { 
+  background-image: url('<%= "#{Rails.configuration.try(:relative_url_root)}/images/tree-collapsed.png" %>');
+  &.expanded { background-image: url('<%= "#{Rails.configuration.try(:relative_url_root)}/images/tree-expanded.png" %>'); }
+}
+.tester-ticket-list {
+  .span4:after {
+    content: '.';
+    background-image: url('<%= "#{Rails.configuration.try(:relative_url_root)}/images/chevron.png" %>');
+    background-position: top right;
+    background-repeat: no-repeat;
+    position: absolute;
+    text-indent: -9999em;
+    width: 60px;
+    height: 72px;
+    top: 0;
+    left: -4.5em;
+  }
+}
