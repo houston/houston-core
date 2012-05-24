@@ -14,6 +14,7 @@ Changelog::Application.routes.draw do
     match "kanban/:slug/:queue/:ticket_number" => "project_kanban#remove_ticket_from_queue", :via => :delete
   end
   
+  match "testing_report" => "testing_report#index", :via => :get, :as => :testing_report
   match "testing_report/:slug" => "testing_report#show", :via => :get, :as => :project_testing_report
   
   resources :projects do

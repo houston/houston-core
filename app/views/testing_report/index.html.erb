@@ -1,0 +1,27 @@
+<h1 class="space-below">
+  Testing Report
+</h1>
+
+<ul id="testers">
+  <% User.testers.each do |tester| %>
+    <li class="tester"><%= tester.name %></li>
+  <% end %>
+</ul>
+
+<% @projects.each do |project, tickets| %>
+  <h4><%= project.name %></h4>
+  <ul id="project_<%= project.id %>_tickets" class="tickets tickets-list"></ul>
+<% end %>
+
+<% content_for :scripts do %>
+  <script type="text/javascript">
+    $(function() {
+      var tickets, view;
+      
+      <% @projects.each do |project, tickets| %>
+      tickets = new Tickets(<%= raw TicketPresenter.new(tickets).with_testing_notes.to_json %>);
+      view = new TestingTicketsView({el: '#project_<%= project.id %>_tickets', tickets: tickets});
+      <% end %>
+    });
+  </script>
+<% end %>
