@@ -28,6 +28,10 @@ class Project < ActiveRecord::Base
     "#{kanban_field}-eq-#{testing_id}"
   end
   
+  def in_production_query
+    "#{kanban_field}-eq-#{production_id}"
+  end
+  
   def staged_for_release_query
     "#{kanban_field}-neq-#{production_id}"
   end
@@ -84,13 +88,11 @@ class Project < ActiveRecord::Base
     when :in_testing
       find_tickets(in_testing_query, :status => :resolved)
     
+    when :in_testing_production
+      find_tickets(in_production_query, :status => :resolved)
+    
     when :staged_for_release
       find_tickets(staged_for_release_query, :status => :closed, :resolution => :fixed)
-    
-    when :last_release
-      production = environments.find_by_slug("master") # <-- !todo: encode this special knowledge about 'master'
-      last_release = production && production.releases.first
-      last_release ? last_release.tickets : []
     end
     
     tickets.each { |ticket| ticket.queue = queue }

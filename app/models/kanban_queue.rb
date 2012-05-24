@@ -20,15 +20,15 @@ class KanbanQueue
         { name: "On Deck",
           slug: "staged_for_testing",
           description: "Tickets waiting to enter testing" },
-        { name: "In Testing",
+        { name: "In Testing (PRI)",
           slug: "in_testing",
-          description: "Tickets ready to test" },
-        { name: "On Deck",
+          description: "Tickets ready to test in PRI" },
+        { name: "In Testing (Production)",
+          slug: "in_testing_production",
+          description: "Tickets ready to test in Production" },
+        { name: "Ready to Release",
           slug: "staged_for_release",
-          description: "Tickets staged for the next release" },
-        { name: "Last Release",
-          slug: "last_release",
-          description: "Tickets closed during the last release" }
+          description: "Tickets staged for the next release" }
       ]
     end
     

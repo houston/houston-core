@@ -6,7 +6,7 @@ $.fn.extend
       -> $(@).removeClass('hover'))
   
   popoverForTicket: ->
-    placement = if $(@).closest('ul').attr('id') == 'last_release' then 'left' else 'right'
+    placement = if $(@).closest('ul').attr('id') == 'staged_for_release' then 'left' else 'right'
     is_staged_for_development = $(@).closest('ul').is '#staged_for_development'
     $(@).popover
       placement: placement
