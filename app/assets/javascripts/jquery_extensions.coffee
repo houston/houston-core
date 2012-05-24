@@ -15,7 +15,7 @@ $.fn.extend
         if title[1] then title[0] else '<span class="no-feature">No Feature</span>'
       content: ->
         content = $(@).find('.ticket-summary').html().split(': ')
-        content = if content[1] then content[1] else content
+        content = if content[1] then content[1] else content[0]
         if is_staged_for_development then content + '<span class="remove-instructions">Shift + Click to remove</span>' else content.capitalize()
   
   illustrateTicketVerdict: ->
