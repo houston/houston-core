@@ -18,6 +18,7 @@
 
 ### Ideas
 
+ - Show a commit author's name next to a ticket/change
  - Get rid of "environments"; have two hard-coded ones: Testing and Production
  - Later: make "environments" a configuration option for all projects
  - Later: make Kanban queues a configuration option for all projects
