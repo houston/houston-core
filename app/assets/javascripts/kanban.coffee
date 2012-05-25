@@ -6,10 +6,7 @@ class window.Kanban
     @renderTicket = Handlebars.compile($('#ticket_template').html())
     
     @observer = new Observer()
-    
-    # Ticket description popover
-    $('.kanban-column').each ->
-      $(@).find('.ticket').popoverForTicket().pseudoHover()
+    self = @
     
     # Make the Kanban fill the browser window
     @kanban = $('#kanban')
@@ -24,6 +21,21 @@ class window.Kanban
     # Fix the Kanban to the bottom of the window
     # after determining its natural top.
     @kanban.css('bottom': '0px')
+    
+    # It might be nice to calculate this
+    @standardTicketWidth = Math.ceil(72 + 4.55) # px
+    @standardTicketHeight = Math.ceil(55 + 4.55) # px
+    
+    # Set the size of tickets initially
+    # Ticket description popover
+    $('.kanban-column').each ->
+      self.resizeColumn $(@).find('ul:first')
+      $(@).find('.ticket').popoverForTicket().pseudoHover()
+    
+    # Resize the tickets in a column when the window resizes
+    $(window).resize ->
+      $('.kanban-column ul').each ->
+        self.resizeColumn $(@)
   
   observe: (name, func)-> @observer.observe(name, func)
   unobserve: (name, func)-> @observer.unobserve(name, func)
@@ -42,6 +54,8 @@ class window.Kanban
       
       for ticket in tickets
         $queue.append @renderTicket(ticket)
+      
+      @resizeColumn $queue
       
       $queue.find('.ticket')
         .popoverForTicket()
@@ -84,3 +98,36 @@ class window.Kanban
     url = @urlFor(path)
     $.ajax url,
       method: method
+  
+  resizeColumn: ($ul)->
+    queue = $ul.attr('id')
+    tickets = $ul.children().length
+    
+    return if tickets == 0
+    
+    height = $(window).height() - 40 - $('tfoot').height()
+    width = $ul.width()
+    window.console.log("[layout] ##{queue} is", [width, height])
+    
+    ratio = 1
+    ticketWidth = @standardTicketWidth
+    ticketHeight = @standardTicketHeight
+    ticketsThatFitHorizontally = Math.floor(width / ticketWidth)
+    
+    if isNaN(ticketsThatFitHorizontally)
+      window.console.log "[layout] #{ticketsThatFitHorizontally} tickets fit into ##{queue}"
+      return
+    
+    while true
+      numberOfRowsRequired = Math.ceil(tickets / ticketsThatFitHorizontally)
+      heightOfTickets = numberOfRowsRequired * ticketHeight
+      break if heightOfTickets < height
+      
+      # What ratio is required to squeeze one more column of tickets
+      window.console.log "[layout] adding a column to ##{queue}, #{ticketsThatFitHorizontally} wasn't enough"
+      ticketsThatFitHorizontally++
+      ratio = width / (@standardTicketWidth * ticketsThatFitHorizontally)
+      ticketWidth = @standardTicketWidth * ratio
+      ticketHeight = @standardTicketHeight * ratio
+    
+    $ul.css('font-size': "#{ratio}em")
