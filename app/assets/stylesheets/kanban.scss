@@ -69,7 +69,15 @@
     text-align: center;
   }
   
-  th { 
+  thead th {
+    font-size: 1em;
+    font-weight: normal;
+    padding: 1em 0 0 0;
+    
+    &.zero { color: rgba(0, 0, 0, 0.25); }
+  }
+  
+  tfoot th { 
     text-align: center;
     font-size: 2em;
     padding: .75em 0;

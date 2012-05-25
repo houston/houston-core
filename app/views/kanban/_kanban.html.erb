@@ -4,6 +4,13 @@
 </div>
 <a id="auto_update">Auto-Update</a>
 <table id="kanban">
+  <thead>
+    <tr>
+      <% KanbanQueue.all.each do |queue| %>
+        <th class="kanban-column" data-queue="<%= queue.slug %>"></th>
+      <% end %>
+    </tr>
+  </thead>
   <tbody>
     <tr>
       <% KanbanQueue.all.each do |queue| %>

@@ -16,7 +16,7 @@ class window.Kanban
     @setKanbanSize()
     
     # Style alternating columns
-    @kanban.find('tr td:even, tr th:even').addClass('alt')
+    @kanban.find('thead tr th:even, tbody tr td:even, tfoot tr th:even').addClass('alt')
     
     # Fix the Kanban to the bottom of the window
     # after determining its natural top.
@@ -103,9 +103,16 @@ class window.Kanban
     queue = $ul.attr('id')
     tickets = $ul.children().length
     
+    $count = $("thead .kanban-column[data-queue=\"#{queue}\"]")
+    $count.html("<strong>#{tickets}</strong> tickets")
+    $count.toggleClass('zero', tickets == 0)
+    
     return if tickets == 0
     
-    height = $(window).height() - 40 - $('tfoot').height()
+    # This is obviously imprecise.
+    # 60 is for the admin stripe and its bottom margin
+    # 32 is for the THEAD which lists the number of tickets in a queue
+    height = $(window).height() - 60 - 32 - $('tfoot').height()
     width = $ul.width()
     window.console.log("[layout] ##{queue} is", [width, height])
     
