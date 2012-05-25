@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120504143615) do
+ActiveRecord::Schema.define(:version => 20120525013703) do
 
   create_table "changes", :force => true do |t|
     t.integer  "release_id"
@@ -44,13 +44,15 @@ ActiveRecord::Schema.define(:version => 20120504143615) do
     t.string   "slug"
     t.integer  "unfuddle_id"
     t.string   "git_url"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
     t.string   "color"
     t.string   "kanban_field"
     t.integer  "development_id"
     t.integer  "testing_id"
     t.integer  "production_id"
+    t.string   "assign_health_query"
+    t.string   "new_tickets_query"
   end
 
   create_table "releases", :force => true do |t|

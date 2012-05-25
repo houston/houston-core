@@ -76,6 +76,12 @@ class Project < ActiveRecord::Base
   def tickets_in_queue(queue)
     queue = queue.slug if queue.is_a?(KanbanQueue)
     tickets = case queue.to_sym
+    when :assign_health
+      assign_health_query.blank? ? [] : find_tickets(assign_health_query)
+    
+    when :new_tickets
+      new_tickets_query.blank? ? [] : find_tickets(new_tickets_query)
+    
     when :staged_for_development
       self.tickets.in_queue("staged_for_development")
     

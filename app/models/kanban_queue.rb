@@ -11,6 +11,12 @@ class KanbanQueue
   class << self
     def all
       @queues ||= create [
+        { name: "Assign Health",
+          slug: "assign_health",
+          description: "New tickets to be screened" },
+        { name: "New Tickets",
+          slug: "new_tickets",
+          description: "New tickets to be accepted" },
         { name: "On Deck",
           slug: "staged_for_development",
           description: "Tickets staged for development" },
@@ -25,10 +31,10 @@ class KanbanQueue
           description: "Tickets ready to test in PRI" },
         { name: "In Testing (Production)",
           slug: "in_testing_production",
-          description: "Tickets ready to test in Production" },
-        { name: "Ready to Release",
-          slug: "staged_for_release",
-          description: "Tickets staged for the next release" }
+          description: "Tickets ready to test in Production" }
+        # { name: "Ready to Release",
+        #   slug: "staged_for_release",
+        #   description: "Tickets staged for the next release" }
       ]
     end
     
