@@ -114,7 +114,7 @@ class window.Kanban
     # 32 is for the THEAD which lists the number of tickets in a queue
     height = $(window).height() - 60 - 32 - $('tfoot').height()
     width = $ul.width()
-    window.console.log("[layout] ##{queue} is", [width, height])
+    # window.console.log("[layout] ##{queue} is", [width, height])
     
     ratio = 1
     ticketWidth = @standardTicketWidth
@@ -131,7 +131,7 @@ class window.Kanban
       break if heightOfTickets < height
       
       # What ratio is required to squeeze one more column of tickets
-      window.console.log "[layout] adding a column to ##{queue}, #{ticketsThatFitHorizontally} wasn't enough"
+      # window.console.log "[layout] adding a column to ##{queue}, #{ticketsThatFitHorizontally} wasn't enough"
       ticketsThatFitHorizontally++
       ratio = width / (@standardTicketWidth * ticketsThatFitHorizontally)
       ticketWidth = @standardTicketWidth * ratio
