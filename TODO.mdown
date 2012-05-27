@@ -1,7 +1,6 @@
 # To Do
 
  - **Testing Notes**:
-   - Intersperse releases with testing notes
    - Reset verdicts after a release
  - **Tester Wall**:
    - Show verdicts for finished tickets

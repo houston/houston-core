@@ -15,6 +15,7 @@ class TestingNotePresenter
   
   def to_hash(testing_note)
     { id: testing_note.id,
+      createdAt: testing_note.created_at,
       avatarImage: avatar_for(testing_note.user),
       userId: testing_note.user_id,
       ticketId: testing_note.ticket_id,

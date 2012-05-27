@@ -40,7 +40,7 @@
         <span class="tester-verdicts"></span>
       </div>
       <ol id="ticket_{{id}}_testing_notes" class="testing-notes collapse span8">
-        <li class='ticket-description'>{{{description}}}</li>
+        {{#if description}}<li class='ticket-description'>{{{description}}}</li>{{/if}}
       </ol>
     </script>
     

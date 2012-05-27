@@ -14,7 +14,7 @@ class window.TestingTicketView extends Backbone.View
     @viewInEdit = null
   
   render: ->
-    window.console.log '[ticket] render'
+    window.console.log "[ticket] render ##{@ticket.get('number')}", @ticket.toJSON()
     $el = $(@el)
     $el.html @renderTicket(@ticket.toJSON())
     
@@ -45,8 +45,11 @@ class window.TestingTicketView extends Backbone.View
   
   renderTestingNotes: ->
     $testingNotes = $(@el).find('ol.testing-notes')
-    @testingNotes.each (note)=>
-      $testingNotes.appendView @newViewForTestingNote(note)
+    @ticket.activityStream().each (item)=>
+      if item.constructor == TestingNote
+        $testingNotes.appendView @newViewForTestingNote(item)
+      else
+        $testingNotes.append("<li class=\"ticket-release\">Release</li>")
     
     # Render form for adding a testing note
     $testingNotes.append @renderNewTestingNote(ticketId: @ticket.get('id'))
