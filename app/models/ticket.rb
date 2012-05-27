@@ -121,19 +121,9 @@ class Ticket < ActiveRecord::Base
   
   
   
-  # c.f. app/assets/models/testing_note.coffee
+  # c.f. app/assets/models/ticket.coffee
   def verdict
-    verdicts_by_tester = {}
-    testing_notes.each do |note|
-      tester_id = note.user_id
-      if note.verdict == "fails"
-        verdicts_by_tester[tester_id] = "failing"
-      else
-        verdicts_by_tester[tester_id] ||= "passing"
-      end
-    end
-    
-    verdicts = verdicts_by_tester.values
+    verdicts = verdicts_by_tester(testing_notes_since_last_release).values
     if verdicts.member? "failing"
       "Failing"
     elsif verdicts.length < project.testers.length
@@ -141,6 +131,25 @@ class Ticket < ActiveRecord::Base
     else
       "Passing"
     end
+  end
+  
+  def verdicts_by_tester(notes)
+    verdicts_by_tester = {}
+    notes.each do |note|
+      tester_id = note.user_id
+      if note.verdict == "fails"
+        verdicts_by_tester[tester_id] = "failing"
+      else
+        verdicts_by_tester[tester_id] ||= "passing"
+      end
+    end
+    verdicts_by_tester
+  end
+  
+  def testing_notes_since_last_release
+    last_release = releases.last
+    date = last_release && last_release.created_at
+    testing_notes.where(["created_at > ?", date])
   end
   
   

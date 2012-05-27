@@ -9,23 +9,41 @@ class window.Ticket extends Backbone.Model
   activityStream: ->
     @testingNotes().models.concat(@releases().models).sortBy (item)-> item.get('createdAt')
   
+  lastRelease: ->
+    @get('releases').last()
+  
+  
+  
   testerVerdicts: ->
-    verdictsByTester = @testingNotes().verdictsByTester()
+    verdictsByTester = @verdictsByTester(@testingNotesSinceLastRelease())
     window.testers.map (tester)->
       email: tester.get('email')
       verdict: verdictsByTester[tester.get('id')] ? 'pending'
   
-  getVerdictFromNotes: (notes)->
-    if _.include @badgeVerdicts(), 'fails'
-      'failing'
-    else if @badgeVerdicts().length < @ticket.get('projectTesters').length
-      'pending'
-    else
-      'passing'
-  
-
   verdict: ->
-    @testingNotes().verdict()
+    verdicts = _.values(@verdictsByTester(@testingNotesSinceLastRelease()))
+    if _.include verdicts, 'failing'
+      'Failing'
+    else if verdicts.length < window.testers.length
+      'Pending'
+    else
+      'Passing'
+  
+  verdictsByTester: (notes)->
+    verdictsByTester = {}
+    notes.each (note)->
+      testerId = note.get('userId')
+      if note.get('verdict') == 'fails'
+        verdictsByTester[testerId] = 'failing'
+      else
+        verdictsByTester[testerId] ?= 'passing'
+    verdictsByTester
+    
+  testingNotesSinceLastRelease: ->
+    lastRelease = @lastRelease()
+    date = lastRelease && lastRelease.createdAt
+    @testingNotes().since(date)
+
 
 
 class window.Tickets extends Backbone.Collection

@@ -1,7 +1,5 @@
 # To Do
 
- - **Testing Notes**:
-   - Reset verdicts after a release
  - **Tester Wall**:
    - Show verdicts for finished tickets
    - Implement tickets accordian-style
