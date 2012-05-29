@@ -45,10 +45,12 @@ class window.TestingTicketView extends Backbone.View
   
   renderTestingNotes: ->
     $testingNotes = $(@el).find('ol.testing-notes')
+    hasRenderedANote = false
     @ticket.activityStream().each (item)=>
       if item.constructor == TestingNote
+        hasRenderedANote = true
         $testingNotes.appendView @newViewForTestingNote(item)
-      else
+      else if hasRenderedANote # Don't render 'release' separators _before_ any testing notes have been entered.
         $testingNotes.append("<li class=\"ticket-release\">Release</li>")
     
     # Render form for adding a testing note
