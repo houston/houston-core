@@ -9,9 +9,6 @@ class window.Ticket extends Backbone.Model
   activityStream: ->
     @testingNotes().models.concat(@releases().models).sortBy (item)-> item.get('createdAt')
   
-  lastRelease: ->
-    @get('releases').last()
-  
   
   
   testerVerdicts: ->
@@ -40,9 +37,8 @@ class window.Ticket extends Backbone.Model
     verdictsByTester
     
   testingNotesSinceLastRelease: ->
-    lastRelease = @lastRelease()
-    date = lastRelease && lastRelease.createdAt
-    @testingNotes().since(date)
+    date = @get('lastReleaseAt')
+    if date then @testingNotes().since(date) else @testingNotes()
 
 
 

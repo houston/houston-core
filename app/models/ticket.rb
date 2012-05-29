@@ -119,6 +119,11 @@ class Ticket < ActiveRecord::Base
     ticket_queue ? ticket_queue.queue_time : 0
   end
   
+  def last_release_at
+    last_release = releases.first
+    last_release && last_release.created_at
+  end
+  
   
   
   # c.f. app/assets/models/ticket.coffee
@@ -147,9 +152,7 @@ class Ticket < ActiveRecord::Base
   end
   
   def testing_notes_since_last_release
-    last_release = releases.last
-    date = last_release && last_release.created_at
-    testing_notes.where(["created_at > ?", date])
+    last_release_at ? testing_notes.where(["created_at > ?", last_release_at]) : testing_notes
   end
   
   

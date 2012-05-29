@@ -17,6 +17,7 @@ class TicketPresenter
       { id: ticket.id,
         testingNotes: TestingNotePresenter.new(ticket.testing_notes).as_json,
         releases: ReleasePresenter.new(ticket.releases).as_json,
+        lastReleaseAt: ticket.last_release_at,
         projectId: ticket.project.unfuddle_id,
         projectSlug: ticket.project.slug,
         projectColor: ticket.project.color,
