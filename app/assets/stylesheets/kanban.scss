@@ -81,8 +81,19 @@
     text-align: center;
     font-size: 2em;
     padding: .75em 0;
+    line-height: 0.88em;
     
-    .small { font-weight: normal; }
+    .small {
+      display: block;
+      font-weight: normal;
+      margin-top: 0.75em;
+      line-height: 1em;
+      
+      u {
+        text-decoration: none;
+        background-color: #FFB;
+      }
+    }
   }
   
   td.alt, th.alt { background: #efefef; }

@@ -37,7 +37,7 @@
       <% KanbanQueue.all.each do |queue| %>
         <th class="kanban-column" data-queue="<%= queue.slug %>">
           <%= queue.name %>
-          <p class="small"><%= queue.description %></p>
+          <p class="small"><%= queue.description.html_safe %></p>
         </th>
       <% end %>
     </tr>
