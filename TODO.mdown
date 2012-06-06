@@ -4,10 +4,9 @@
    - Show verdicts for finished tickets
    - Implement tickets accordian-style
  - **Kanban**: navigating away from the Kanban takes a while
-
-### Would be Cool
-
- - Have client know about product version, hard-refresh if code updated
+ - 1. Incorporate **Unfuddlite** for figuring out the ids of fields from names
+ - 2. Move configuration of the Kanban to yml, remove project-specific cut-and-paste fields
+ - 3. Have "New Tickets" queue omit "0 Suggestions" severity
 
 ### Refactoring
 
@@ -15,9 +14,13 @@
 
 ### Ideas
 
+ - **Kanban:** show fragmented badges (e.g. indicate if 4 of 5 testers pass a ticket)
+   - c.f. [Fill SVG path element with a background-image](http://stackoverflow.com/questions/3796025/fill-svg-path-element-with-a-background-image)
+   - c.f. [Element.attr (Raphael.js)](http://raphaeljs.com/reference.html#Element.attr)
  - Show a commit author's name next to a ticket/change
  - Get rid of "environments"; have two hard-coded ones: Testing and Production
  - Later: make "environments" a configuration option for all projects
  - Later: make Kanban queues a configuration option for all projects
  - Implement a way of visualizing _batches_
  - **Project::Unfuddle**: implement a way of specifying `neq` in Ruby (e.g. `find_tickets(:field_1.neq(197))` or `find_tickets(:deployment.neq(:production))` and have Project figure it out...)
+ - Have client know about product version, hard-refresh if code updated
