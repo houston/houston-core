@@ -4,3 +4,6 @@
 [submodule "lib/freight_train"]
 	path = lib/freight_train
 	url = git://github.com/boblail/freight_train.git
+[submodule "lib/unfuddle"]
+	path = lib/unfuddle
+	url = git://github.com/boblail/unfuddle.git
