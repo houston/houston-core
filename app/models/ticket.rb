@@ -128,10 +128,12 @@ class Ticket < ActiveRecord::Base
   
   # c.f. app/assets/models/ticket.coffee
   def verdict
+    return "" if project.testers.none?
+    
     verdicts = verdicts_by_tester(testing_notes_since_last_release).values
     if verdicts.member? "failing"
       "Failing"
-    elsif verdicts.length < project.testers.length
+    elsif verdicts.length < project.testers.length 
       "Pending"
     else
       "Passing"
