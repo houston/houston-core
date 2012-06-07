@@ -1,4 +1,8 @@
+require 'unfuddle/neq'
+
+
 class Project < ActiveRecord::Base
+  include Unfuddle::NeqHelper
   
   has_many :environments, :dependent => :destroy
   has_many :tickets, :dependent => :destroy
@@ -12,28 +16,6 @@ class Project < ActiveRecord::Base
   # of the config.yml or a project's configuration.
   def ticket_system
     @unfuddle ||= Unfuddle.instance.project(unfuddle_id)
-  end
-  
-  
-  
-  def in_development_query
-    "#{kanban_field}-eq-#{development_id}"
-  end
-  
-  def staged_for_testing_query
-    "#{kanban_field}-eq-#{development_id}"
-  end
-  
-  def in_testing_query
-    "#{kanban_field}-eq-#{testing_id}"
-  end
-  
-  def in_production_query
-    "#{kanban_field}-eq-#{production_id}"
-  end
-  
-  def staged_for_release_query
-    "#{kanban_field}-neq-#{production_id}"
   end
   
   
@@ -76,29 +58,39 @@ class Project < ActiveRecord::Base
   def tickets_in_queue(queue)
     queue = queue.slug if queue.is_a?(KanbanQueue)
     tickets = case queue.to_sym
+      
     when :assign_health
-      assign_health_query.blank? ? [] : find_tickets(assign_health_query)
+      # !todo: add "severity-eq-0" to OR
+      #
+      #   title:      "To Proofread",
+      #   conditions: [ [ "#{f "Health"}-eq-0",
+      #                   "#{f "Health"}-eq-#{v "Health", "Summary and Description need work"}",
+      #                   "#{f "Health"}-eq-#{v "Health", "Summary needs work"}",
+      #                   "severity-eq-0" ],
+      #                 [ "status-neq-closed" ] ],
+      #
+      find_tickets("Health" => [0, "Summary and Description need work", "Summary needs work"], :status => neq(:closed))
     
     when :new_tickets
-      new_tickets_query.blank? ? [] : find_tickets(new_tickets_query)
+      find_tickets(:status => :new, :severity => neq(0), :severity => neq("0 Suggestion"), "Health" => ["Good", "Description needs work"])
     
     when :staged_for_development
       self.tickets.in_queue("staged_for_development")
     
     when :in_development
-      find_tickets(in_development_query, :status => :accepted)
+      find_tickets("Deployment" => "In Development", :status => :accepted)
     
     when :staged_for_testing
-      find_tickets(staged_for_testing_query, :status => :resolved)
+      find_tickets("Deployment" => "In Development", :status => :resolved)
     
     when :in_testing
-      find_tickets(in_testing_query, :status => :resolved)
+      find_tickets("Deployment" => "In Testing (PRI)", :status => :resolved)
     
     when :in_testing_production
-      find_tickets(in_production_query, :status => :resolved)
+      find_tickets("Deployment" => "In Production (Released)", :status => :resolved)
     
     when :staged_for_release
-      find_tickets(staged_for_release_query, :status => :closed, :resolution => :fixed)
+      find_tickets("Deployment" => neq("In Production (Released)"), :status => :closed, :resolution => :fixed)
     end
     
     tickets.each { |ticket| ticket.queue = queue }
