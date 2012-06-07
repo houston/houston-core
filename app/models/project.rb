@@ -78,19 +78,19 @@ class Project < ActiveRecord::Base
       self.tickets.in_queue("staged_for_development")
     
     when :in_development
-      find_tickets("Deployment" => "In Development", :status => :accepted)
+      find_tickets(kanban_field => development_id, :status => :accepted)
     
     when :staged_for_testing
-      find_tickets("Deployment" => "In Development", :status => :resolved)
+      find_tickets(kanban_field => development_id, :status => :resolved)
     
     when :in_testing
-      find_tickets("Deployment" => "In Testing (PRI)", :status => :resolved)
+      find_tickets(kanban_field => testing_id, :status => :resolved)
     
     when :in_testing_production
-      find_tickets("Deployment" => "In Production (Released)", :status => :resolved)
+      find_tickets(kanban_field => production_id, :status => :resolved)
     
     when :staged_for_release
-      find_tickets("Deployment" => neq("In Production (Released)"), :status => :closed, :resolution => :fixed)
+      find_tickets(kanban_field => neq(production_id), :status => :closed, :resolution => :fixed)
     end
     
     tickets.each { |ticket| ticket.queue = queue }
@@ -101,6 +101,20 @@ class Project < ActiveRecord::Base
     tickets_removed_from_queue.each { |ticket| ticket.queue = nil }
     
     tickets
+  end
+  
+  def kanban_field
+    super || (self.kanban_field = ticket_system.get_key_for_custom_field_named!("Deployment"))
+  end
+  
+  { development_id: "In Development",
+    testing_id: "In Testing (PRI)",
+    production_id: "In Production (Released)" }.each do |field, value|
+    module_eval <<-RUBY
+      def #{field}
+        super || (self.#{field} = ticket_system.find_custom_field_value_by_value!("Deployment", "#{value}").id)
+      end
+    RUBY
   end
   
   
