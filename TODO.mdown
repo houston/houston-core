@@ -1,12 +1,11 @@
 # To Do
 
+ - Optimize lookup of custom field and severity values so the requests are issued _every_ update
+ - Remove project-specific cut-and-paste fields
  - **Tester Wall**:
    - Show verdicts for finished tickets
    - Implement tickets accordian-style
  - **Kanban**: navigating away from the Kanban takes a while
- - 1. Incorporate **Unfuddlite** for figuring out the ids of fields from names
- - 2. Move configuration of the Kanban to yml, remove project-specific cut-and-paste fields
- - 3. Have "New Tickets" queue omit "0 Suggestions" severity
 
 ### Refactoring
 
@@ -20,7 +19,6 @@
  - Show a commit author's name next to a ticket/change
  - Get rid of "environments"; have two hard-coded ones: Testing and Production
  - Later: make "environments" a configuration option for all projects
- - Later: make Kanban queues a configuration option for all projects
+ - Move configuration of the Kanban (dynamic query definitions) to yml
  - Implement a way of visualizing _batches_
- - **Project::Unfuddle**: implement a way of specifying `neq` in Ruby (e.g. `find_tickets(:field_1.neq(197))` or `find_tickets(:deployment.neq(:production))` and have Project figure it out...)
  - Have client know about product version, hard-refresh if code updated
