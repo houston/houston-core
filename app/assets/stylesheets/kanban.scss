@@ -5,6 +5,8 @@
   cursor: pointer;
 }
 
+.popover { z-index: 3000; }
+
 .remove-instructions {display:block;font-style:italic;color:#ababab;}
 .no-feature {font-style:italic;}
 
