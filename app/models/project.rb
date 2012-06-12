@@ -2,7 +2,8 @@ require 'unfuddle/neq'
 
 
 class Project < ActiveRecord::Base
-  include Unfuddle::NeqHelper
+  
+  serialize :cached_queries
   
   has_many :environments, :dependent => :destroy
   has_many :tickets, :dependent => :destroy
@@ -56,66 +57,34 @@ class Project < ActiveRecord::Base
   
   
   def tickets_in_queue(queue)
-    queue = queue.slug if queue.is_a?(KanbanQueue)
-    tickets = case queue.to_sym
-      
-    when :assign_health
-      # !todo: add "severity-eq-0" to OR
-      #
-      #   title:      "To Proofread",
-      #   conditions: [ [ "#{f "Health"}-eq-0",
-      #                   "#{f "Health"}-eq-#{v "Health", "Summary and Description need work"}",
-      #                   "#{f "Health"}-eq-#{v "Health", "Summary needs work"}",
-      #                   "severity-eq-0" ],
-      #                 [ "status-neq-closed" ] ],
-      #
-      find_tickets("Health" => [0, "Summary and Description need work", "Summary needs work"], :status => neq(:closed))
+    queue = KanbanQueue.find_by_slug(queue) unless queue.is_a?(KanbanQueue)
     
-    when :new_tickets
-      find_tickets(:status => :new, :severity => neq(0), :severity => neq("0 Suggestion"), "Health" => ["Good", "Description needs work"])
-    
-    when :staged_for_development
-      self.tickets.in_queue("staged_for_development")
-    
-    when :in_development
-      find_tickets(kanban_field => development_id, :status => :accepted)
-    
-    when :staged_for_testing
-      find_tickets(kanban_field => development_id, :status => :resolved)
-    
-    when :in_testing
-      find_tickets(kanban_field => testing_id, :status => :resolved)
-    
-    when :in_testing_production
-      find_tickets(kanban_field => production_id, :status => :resolved)
-    
-    when :staged_for_release
-      find_tickets(kanban_field => neq(production_id), :status => :closed, :resolution => :fixed)
+    if queue.local_query?
+      self.tickets.in_queue(queue.slug)
+    else
+      query = construct_ticket_query_for_queue(queue)
+      find_tickets(query).tap do |tickets|
+        update_tickets_in_queue(tickets, queue)
+      end
     end
+  end
+  
+  def construct_ticket_query_for_queue(queue)
+    self.cached_queries ||= {}
+    self.cached_queries[queue.slug] ||= ticket_system.construct_ticket_query(queue.query)
+  end
+  
+  def update_tickets_in_queue(tickets, queue)
+    tickets.each { |ticket| ticket.queue = queue.slug }
     
-    tickets.each { |ticket| ticket.queue = queue }
-    
-    tickets_removed_from_queue = self.tickets.in_queue(queue)
     ids = tickets.map(&:id).compact
+    tickets_removed_from_queue = self.tickets.in_queue(queue)
     tickets_removed_from_queue = tickets_removed_from_queue.where(["NOT (tickets.id IN (?))", ids]) if ids.any?
     tickets_removed_from_queue.each { |ticket| ticket.queue = nil }
     
     tickets
   end
   
-  def kanban_field
-    super || (self.kanban_field = ticket_system.get_key_for_custom_field_named!("Deployment"))
-  end
-  
-  { development_id: "In Development",
-    testing_id: "In Testing (PRI)",
-    production_id: "In Production (Released)" }.each do |field, value|
-    module_eval <<-RUBY
-      def #{field}
-        super || (self.#{field} = ticket_system.find_custom_field_value_by_value!("Deployment", "#{value}").id)
-      end
-    RUBY
-  end
   
   
   

@@ -14,8 +14,8 @@ class Environment < ActiveRecord::Base
   
   def resulting_kanban_field_id
     case slug # <-- NB! knowledge about environments
-    when "dev"; project.testing_id
-    when "master"; project.production_id
+    when "dev";     "In Testing (PRI)"
+    when "master";  "In Production (Release)"
     else; nil
     end
   end

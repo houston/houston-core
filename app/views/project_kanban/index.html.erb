@@ -44,9 +44,9 @@
       var $form = $('#modal form'),
           basePath = $form.attr('action') + '/';
       
-      function createPlaceholder() {
+      function createPlaceholder($queue) {
         return $('<li class="ticket placeholder"><a data-toggle="modal" href="#modal"><span class="add-ticket">+<span></a></li>')
-          .appendTo('#staged_for_development')
+          .appendTo($queue)
           .pseudoHover()
           .popover({
             title: 'Add Ticket',
@@ -54,26 +54,28 @@
       }
       
       kanban.observe('queueLoaded', function(queueName, project) {
-        if(queueName == 'staged_for_development') {
-          var numberOfTickets = $('#staged_for_development .ticket.' + project.slug).length;
+        var $queue = $('#' + queueName);
+        var $column = $queue.closest('.kanban-column');
+        if($column.hasClass('manual')) {
+          var numberOfTickets = $queue.find('.ticket.' + project.slug).length;
           for(i=numberOfTickets, ii=<%= @project.number_of_slots %>; i<ii; i++) {
-            createPlaceholder();
+            createPlaceholder($queue);
           }
         }
       });
       
       // Change border style of ticket about to be deleted
       $(document).keydown(function(e) {
-        $ticket = $('#staged_for_development .ticket:not(.placeholder) a:hover');
+        $ticket = $('.kanban-column.manual .ticket:not(.placeholder) a:hover');
         if(e.shiftKey && ($ticket.length > 0)) {
           $ticket.closest('.ticket').css({'border-style':'dashed'});
         }
       });
       $(document).keyup(function() {
-        $('#staged_for_development .ticket:not(.placeholder)').css({'border-style':'solid'});
+        $('.kanban-column.manual .ticket:not(.placeholder)').css({'border-style':'solid'});
       });
       
-      $('#staged_for_development').delegate('.ticket:not(.placeholder) a', 'click', function(e) {
+      $('.kanban-column.manual').delegate('.ticket:not(.placeholder) a', 'click', function(e) {
         if(e.shiftKey) {
           e.stopImmediatePropagation();
           var $ticket = $(this).closest('.ticket'),
@@ -98,7 +100,8 @@
             xhr = $.put(url);
         xhr.success(function(ticket) {
           $('#modal').modal('hide');
-          var $placeholder = $('#staged_for_development .ticket.placeholder').first();
+          var $queue = $('#' + ticket.queue);
+          var $placeholder = $queue.find('.ticket.placeholder').first();
           $(kanban.renderTicket(ticket))
                 .replaceAll($placeholder)
                 .popoverForTicket()

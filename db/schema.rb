@@ -11,13 +11,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120525013703) do
+ActiveRecord::Schema.define(:version => 20120607124115) do
 
   create_table "changes", :force => true do |t|
     t.integer  "release_id"
     t.string   "description"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.integer  "ticket_number"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
   create_table "commits", :force => true do |t|
@@ -53,6 +54,7 @@ ActiveRecord::Schema.define(:version => 20120525013703) do
     t.integer  "production_id"
     t.string   "assign_health_query"
     t.string   "new_tickets_query"
+    t.text     "cached_queries"
   end
 
   create_table "releases", :force => true do |t|
@@ -105,7 +107,7 @@ ActiveRecord::Schema.define(:version => 20120525013703) do
 
   create_table "users", :force => true do |t|
     t.string   "name"
-    t.string   "email",                                :default => "",          :null => false
+    t.string   "email",                                :default => "",      :null => false
     t.string   "encrypted_password",                   :default => ""
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
@@ -115,15 +117,15 @@ ActiveRecord::Schema.define(:version => 20120525013703) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.datetime "created_at",                                                    :null => false
-    t.datetime "updated_at",                                                    :null => false
+    t.datetime "created_at",                                                :null => false
+    t.datetime "updated_at",                                                :null => false
     t.string   "invitation_token",       :limit => 60
     t.datetime "invitation_sent_at"
     t.datetime "invitation_accepted_at"
     t.integer  "invitation_limit"
     t.integer  "invited_by_id"
     t.string   "invited_by_type"
-    t.string   "role",                                 :default => "Developer"
+    t.string   "role",                                 :default => "Guest"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

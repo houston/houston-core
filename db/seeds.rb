@@ -14,11 +14,7 @@ unite = Project.create(
   name: "Unite",
   slug: "unite",
   color: "teal",
-  unfuddle_id: 25,
-  kanban_field: "field_1",
-  development_id: 197,
-  testing_id: 199,
-  production_id: 198)
+  unfuddle_id: 25)
 unite_dev = unite.environments.create(name: "PRI", slug: "dev")
 unite_master = unite.environments.create(name: "Production", slug: "master")
 
@@ -49,8 +45,13 @@ church_360 = Project.create(
   name: "Church360",
   slug: "360",
   color: "orange",
-  unfuddle_id: 1,
-  kanban_field: "field_2",
-  development_id: 173,
-  testing_id: 174,
-  production_id: 175)
+  unfuddle_id: 1)
+
+
+
+
+User.create(
+  name: "Bob Lail",
+  email: "bob.lail@cph.org",
+  password: "password",
+  role: "Administrator")

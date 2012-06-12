@@ -159,14 +159,16 @@ class Ticket < ActiveRecord::Base
   
   
   
-  def set_unfuddle_kanban_field_to(id)
+  def set_unfuddle_kanban_field_to(value)
     return false if unfuddle_id.blank?
     
-    # Transform `field_2` to `field2-value-id`
-    attribute = project.kanban_field.gsub(/field_(\d)/, 'field\1-value-id')
+    unfuddle = project.ticket_system
+    field = unfuddle.get_key_for_custom_field_named! "Deployment"
+    id = unfuddle.find_custom_field_value_by_value! "Deployment", value
+    ticket = unfuddle.ticket(unfuddle_id)
+    attribute = field.gsub(/field_(\d)/, 'field\1-value-id') # Transform `field_2` to `field2-value-id`
     
-    remote_ticket = project.ticket_system.ticket(unfuddle_id)
-    remote_ticket.update_attribute(attribute, id)
+    ticket.update_attribute(attribute, id)
   end
   
   

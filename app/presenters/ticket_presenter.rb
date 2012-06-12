@@ -38,6 +38,7 @@ class TicketPresenter
       number: ticket.number,
       summary: ticket.summary,
       verdict: ticket.verdict.downcase,
+      queue: ticket.queue,
       age: ticket.age }
   end
   
