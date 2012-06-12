@@ -1,24 +1,24 @@
 # To Do
 
- - Optimize lookup of custom field and severity values so the requests are issued _every_ update
+ - Remove hard-coded references to `staged_for_development`; use .manual class
  - Remove project-specific cut-and-paste fields
  - **Tester Wall**:
    - Show verdicts for finished tickets
    - Implement tickets accordian-style
  - **Kanban**: navigating away from the Kanban takes a while
-
-### Refactoring
-
- - **Environment**: don't ask for "initial_commit"; can be specified in the New Release experience now
-
-### Ideas
-
  - **Kanban:** show fragmented badges (e.g. indicate if 4 of 5 testers pass a ticket)
    - c.f. [Fill SVG path element with a background-image](http://stackoverflow.com/questions/3796025/fill-svg-path-element-with-a-background-image)
    - c.f. [Element.attr (Raphael.js)](http://raphaeljs.com/reference.html#Element.attr)
  - Show a commit author's name next to a ticket/change
+
+### Refactoring and Configuration
+
+ - **Environment**: don't ask for "initial_commit"; can be specified in the New Release experience now
  - Get rid of "environments"; have two hard-coded ones: Testing and Production
- - Later: make "environments" a configuration option for all projects
- - Move configuration of the Kanban (dynamic query definitions) to yml
+ - Move "environments" to the config file?
+ - Move configuration of the Kanban (dynamic query definitions) to one config file and special DSL
+
+### Ideas
+
  - Implement a way of visualizing _batches_
  - Have client know about product version, hard-refresh if code updated
