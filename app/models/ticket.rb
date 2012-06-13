@@ -164,7 +164,7 @@ class Ticket < ActiveRecord::Base
     
     unfuddle = project.ticket_system
     field = unfuddle.get_key_for_custom_field_named! "Deployment"
-    id = unfuddle.find_custom_field_value_by_value! "Deployment", value
+    id = unfuddle.find_custom_field_value_by_value!("Deployment", value).id
     ticket = unfuddle.ticket(unfuddle_id)
     attribute = field.gsub(/field_(\d)/, 'field\1-value-id') # Transform `field_2` to `field2-value-id`
     
