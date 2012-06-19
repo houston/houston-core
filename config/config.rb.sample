@@ -1,0 +1,59 @@
+Changelog.config do
+  
+  # This is the name that will be shown in the banner
+  title "Changelog"
+  
+  # The ticketing system that Changelog will interface with.
+  # Right now, the only supported system is Unfuddle.
+  ticket_system :unfuddle
+  
+  # Configuration for Unfuddle
+  unfuddle({
+    subdomain: SUBDOMAIN,
+    username: USERNAME,
+    password: PASSWORD
+  })
+  
+  # Configuration for Email
+  # These options are just passed to
+  # action_mailer.smtp_settings.
+  # smtp({
+  #   address: "10.10.10.10",
+  #   port: 25,
+  #   domain: "10.10.10.10"
+  # })
+  
+  # Queues
+  queues [ {
+      name: "To Proofread",
+      slug: "assign_health",
+      description: "<b>Testers</b>, check that these tickets are healthy and unique.",
+      query: {"Health" => [0, "Summary and Description need work", "Summary needs work"], :status => neq(:closed)}
+    }, {
+      name: "To Accept",
+      slug: "new_tickets",
+      description: "<b>Developers</b>, check that these tickets make sense and accept them.",
+      query: {:status => :new, :severity => neq(0), :severity => neq("0 Suggestion"), "Health" => ["Good", "Description needs work"]}
+    }, {
+      name: "Flagged",
+      slug: "staged_for_development",
+      description: "Tickets flagged for forthcoming work",
+      query: :local
+    }, {
+      name: "In Development",
+      slug: "in_development",
+      description: "Tickets currently being worked on",
+      query: {"Deployment" => "In Development", :status => :accepted}
+    }, {
+      name: "Queued",
+      slug: "staged_for_testing",
+      description: "Tickets waiting to enter testing",
+      query: {"Deployment" => "In Development", :status => :resolved}
+    }, {
+      name: "To Test",
+      slug: "in_testing",
+      description: "<b>Testers</b>, these tickets are ready to test",
+      query: {"Deployment" => ["In Testing (PRI)", "In Production (Released)"], :status => :resolved}
+  } ]
+  
+end

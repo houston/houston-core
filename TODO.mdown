@@ -16,7 +16,6 @@
  - **Environment**: don't ask for "initial_commit"; can be specified in the New Release experience now
  - Get rid of "environments"; have two hard-coded ones: Testing and Production
  - Move "environments" to the config file?
- - Move configuration of the Kanban (dynamic query definitions) to one config file and special DSL
 
 ### Ideas
 

@@ -14,7 +14,7 @@ namespace :deploy do
   end
   
   task :symlink_config, :roles => :app do
-    run "ln -nfs #{shared_path}/config/changelog.yml #{release_path}/config/changelog.yml"
+    run "ln -nfs #{shared_path}/config/config.rb #{release_path}/config/config.rb"
   end
   
 end

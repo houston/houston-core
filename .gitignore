@@ -13,6 +13,7 @@
 # Ignore sensitive passwords and things.
 config/database.yml
 config/changelog.yml
+config/config.rb
 
 # Ignore all logfiles and tempfiles.
 /log/*.log
