@@ -23,8 +23,9 @@ class window.Kanban
     @kanban.css('bottom': '0px')
     
     # It might be nice to calculate this
-    @standardTicketWidth = Math.ceil(72 + 4.55) # px
-    @standardTicketHeight = Math.ceil(55 + 4.55) # px
+    # + 8 for 4px margin on all sides
+    @standardTicketWidth = 72 + 8 
+    @standardTicketHeight = 55 + 8
     
     # Set the size of tickets initially
     # Ticket description popover
@@ -131,10 +132,13 @@ class window.Kanban
       break if heightOfTickets < height
       
       # What ratio is required to squeeze one more column of tickets
-      # window.console.log "[layout] adding a column to ##{queue}, #{ticketsThatFitHorizontally} wasn't enough"
       ticketsThatFitHorizontally++
       ratio = width / (@standardTicketWidth * ticketsThatFitHorizontally)
       ticketWidth = @standardTicketWidth * ratio
       ticketHeight = @standardTicketHeight * ratio
+    
+    # window.console.log("[layout] tickets: ", [ticketsThatFitHorizontally, numberOfRowsRequired]) if queue == 'in_testing'
+    # window.console.log("[layout] ticket size: ", [ticketWidth, ticketHeight]) if queue == 'in_testing'
+    # window.console.log('')
     
     $ul.css('font-size': "#{ratio}em")
