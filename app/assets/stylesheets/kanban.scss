@@ -89,8 +89,10 @@
     .small {
       display: block;
       font-weight: normal;
-      margin-top: 0.75em;
-      line-height: 1em;
+      margin: 0.75em 0.75em 0;
+      font-size: 0.75em;
+      text-align: left;
+      line-height: 1.15em;
       
       u {
         text-decoration: none;
