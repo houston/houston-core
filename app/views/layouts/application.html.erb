@@ -49,13 +49,15 @@
     </script>
     
     <script id="testing_note_template" type="text/x-handlebars-template">
-      <span class="tester-avatar">{{{avatarImage}}}</span>
-      <span class="tester-comment">{{comment}}</span>
-      {{#if editable}}
-      <span class="tester-controls">
-        <a class="edit-note">Edit</a>
-        <a class="destroy-note">Delete</a>
-      </span>
+      <div class="tester-avatar">{{{avatarImage}}}</div>
+      <div class="testing-note-body">
+        <span class="tester-comment">{{comment}}</span>
+        {{#if editable}}
+        <span class="tester-controls">
+          <a class="edit-note">Edit</a>
+          <a class="destroy-note">Delete</a>
+        </span>
+      </div>
       {{/if}}
     </script>
     
