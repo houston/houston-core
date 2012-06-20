@@ -1,7 +1,7 @@
 module UnfuddleHelper
   
   def unfuddle
-    @unfuddle ||= Unfuddle.new
+    Unfuddle.instance
   end
   
 end
