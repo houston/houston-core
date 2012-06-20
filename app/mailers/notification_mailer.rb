@@ -24,7 +24,7 @@ class NotificationMailer < ActionMailer::Base
     @ticket = note.ticket
     mail({
       to: DEVELOPERS,
-      subject: "#{@tester} has passed judgement (#notlookinggood)"
+      subject: "@#{note.project.slug} [##{@ticket.number}] #{@tester} passed judgement #notlookinggood"
     }) do |format|
       format.html
     end
