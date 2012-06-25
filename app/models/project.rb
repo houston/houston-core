@@ -70,8 +70,14 @@ class Project < ActiveRecord::Base
   end
   
   def construct_ticket_query_for_queue(queue)
-    self.cached_queries ||= {}
-    self.cached_queries[queue.slug] ||= ticket_system.construct_ticket_query(queue.query)
+    query = (self.cached_queries ||= {})[queue.slug]
+    
+    unless query
+      query = self.cached_queries[queue.slug] = ticket_system.construct_ticket_query(queue.query)
+      save
+    end
+    
+    query
   end
   
   def update_tickets_in_queue(tickets, queue)
