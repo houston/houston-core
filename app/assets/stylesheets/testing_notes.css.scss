@@ -13,7 +13,10 @@ ul.tester-names {
     list-style-type: none;
     padding-left: 16px;
   }
-  #testers { height: 4em; }
+  #testers {
+    height: 4em; 
+    margin-left: 0;
+  }
 }
 
 .tester-names, .tickets-list { max-width: 800px; }
@@ -26,18 +29,16 @@ ul.tester-names {
   -moz-transform: rotate(-90deg); /* Firefox */
   -webkit-transform: rotate(-90deg); /* Safari and Chrome */
   -o-transform: rotate(-90deg); /* Opera */
-  width: 24px;
+  width: 32px;
   height: 24px;
-  line-height: 24px;
+  line-height: 32px;
   position: relative;
   top: 2em;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.tester-verdicts {
-  overflow: hidden;
-}
+.tester-verdicts { overflow: hidden; }
 
 .ticket-verdict-summary {
   text-align: right;

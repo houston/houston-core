@@ -19,7 +19,7 @@
       <% @users.each do |user| %>
         <tr>
           <td>
-            <span class="avatar-24"><%= avatar_for(user) %></span>
+            <span class="avatar-42"><%= avatar_for(user, size: 42) %></span>
             <%= link_to user.name, user_path(user) %>
           </td>
           <td><%= mail_to user.email, user.email %></td>

@@ -51,3 +51,21 @@ h1.space-below {
   width: 24px;
   margin-right: 0.5em;
 }
+
+.avatar-42 {
+  display: inline-block;
+  width: 42px;
+  margin-right: 0.5em;
+}
+
+.nav .avatar {
+  width: 34px;
+  height: 34px;
+  margin: 0;
+  position: absolute;
+  top: 3px;
+}
+
+.committer-avatar img {
+  border: 2px solid #555;
+}
