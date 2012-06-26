@@ -22,10 +22,16 @@ $.fn.extend
   illustrateTicketVerdict: ->
     $(@).each ->
       $ticket = $(@)
+      $el = $('<div class="ticket-badge"></div>')
       if $ticket.hasClass('failing')
-        $ticket.append('<div class="ticket-badge failing-ticket-badge"></div>')
+        $el.append('<img src="/images/badge-failing.png" width="38" height="38" style="opacity: 0.3;" />')
       else if $ticket.hasClass('passing')
-        $ticket.append('<div class="ticket-badge passing-ticket-badge"></div>')
+        $el.append('<img src="/images/badge-passing.png" width="38" height="38" style="opacity: 0.3;" />')
+      $ticket.append $el
+      testers = +$ticket.attr('data-testers')
+      for i in [1..testers]
+        verdict = $ticket.attr("data-tester-#{i}")
+        new Badge($el, i, testers, verdict) if verdict
   
   initializeAutoUpdate: (interval, kanban)->
     $(@).click ->

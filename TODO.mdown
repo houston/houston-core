@@ -1,8 +1,5 @@
 # To Do
 
- - **Kanban:** show fragmented badges (e.g. indicate if 4 of 5 testers pass a ticket)
-   - c.f. [Fill SVG path element with a background-image](http://stackoverflow.com/questions/3796025/fill-svg-path-element-with-a-background-image)
-   - c.f. [Element.attr (Raphael.js)](http://raphaeljs.com/reference.html#Element.attr)
  - Show a commit author's name next to a ticket/change
  - **Tester Wall**:
    - Show verdicts for finished tickets

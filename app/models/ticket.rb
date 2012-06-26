@@ -14,6 +14,8 @@ class Ticket < ActiveRecord::Base
   
   attr_readonly :number, :project_id
   
+  delegate :testers, to: :project
+  
   
   class << self
     def in_queue(queue)
@@ -130,29 +132,38 @@ class Ticket < ActiveRecord::Base
   
   # c.f. app/assets/models/ticket.coffee
   def verdict
-    return "" if project.testers.none?
+    return "" if testers.none?
     
-    verdicts = verdicts_by_tester(testing_notes_since_last_release).values
+    verdicts = verdicts_by_tester.values
     if verdicts.member? "failing"
       "Failing"
-    elsif verdicts.length < project.testers.length 
+    elsif verdicts.length < testers.length 
       "Pending"
     else
       "Passing"
     end
   end
   
-  def verdicts_by_tester(notes)
-    verdicts_by_tester = {}
+  def verdicts_by_tester(notes=testing_notes_since_last_release)
+    return {} if notes.empty?
+    
+    verdicts_by_tester = Hash[testers.map(&:id).zip([nil])]
     notes.each do |note|
       tester_id = note.user_id
-      if note.verdict == "fails"
-        verdicts_by_tester[tester_id] = "failing"
-      else
-        verdicts_by_tester[tester_id] ||= "passing"
+      if verdicts_by_tester.key?(tester_id)
+        if note.verdict == "fails"
+          verdicts_by_tester[tester_id] = "failing"
+        else
+          verdicts_by_tester[tester_id] ||= "passing"
+        end
       end
     end
     verdicts_by_tester
+  end
+  
+  def verdicts_by_tester_index
+    verdicts = verdicts_by_tester
+    testers.each_with_index.each_with_object({}) { |(tester, i), response| response[i + 1] = verdicts[tester.id] if verdicts.key?(tester.id) }
   end
   
   def testing_notes_since_last_release

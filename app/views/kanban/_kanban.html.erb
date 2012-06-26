@@ -19,7 +19,7 @@
             <% projects.each do |project| %>
               <% project.tickets.in_queue(queue).each do |ticket| %>
                 <%# This is copied from application.html.erb %>
-                <li class="ticket <%= project.slug %> <%= project.color %> young <%= ticket.verdict.downcase %> <%= class_for_age(ticket.age) %>" id="ticket_<%= ticket.id %>" data-number="<%= ticket.number %>" data-project="<%= project.name %>">
+                <li class="ticket <%= project.slug %> <%= project.color %> <%= class_for_age(ticket.age) %> <%= ticket.verdict.downcase %>" id="ticket_<%= ticket.id %>" data-number="<%= ticket.number %>" data-project="<%= project.name %>" <%= attributes_for_ticket_verdict(ticket) %>>
                   <a href="https://<%= unfuddle.subdomain %>.unfuddle.com/a#/projects/<%= project.unfuddle_id %>/tickets/by_number/<%= ticket.number %>" target="_blank">
                     <h3 class="ticket-number"><%= ticket.number %> <span class="ticket-age"><%= format_duration ticket.age %></span></h3>
                     <p class="ticket-summary"><%= ticket.summary %></p>
