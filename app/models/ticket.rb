@@ -123,11 +123,6 @@ class Ticket < ActiveRecord::Base
     ticket_queue ? ticket_queue.queue_time : 0
   end
   
-  def last_release_at
-    last_release = releases.first
-    last_release && last_release.created_at
-  end
-  
   
   
   # c.f. app/assets/models/ticket.coffee

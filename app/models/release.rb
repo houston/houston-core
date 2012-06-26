@@ -87,6 +87,7 @@ private
   def associate_tickets_with_self
     tickets.each do |ticket|
       ticket.releases << self unless ticket.releases.exists?(id)
+      ticket.update_attribute(:last_release_at, self.created_at)
     end
   end
   
