@@ -45,6 +45,7 @@ class Project < ActiveRecord::Base
     Rails.logger.info "[project.find_tickets] query: #{query.inspect}"
     
     unfuddle_tickets = ticket_system.find_tickets(*query)
+    return [] if unfuddle_tickets.empty?
     
     self.class.benchmark("[project.find_tickets] synchronizing with local tickets") do
       numbers = unfuddle_tickets.map { |unfuddle_ticket| unfuddle_ticket["number"] }
@@ -52,7 +53,7 @@ class Project < ActiveRecord::Base
       
       unfuddle_tickets.map do |unfuddle_ticket|
         ticket = tickets.detect { |ticket| ticket.number == unfuddle_ticket["number"] }
-        attributes = Ticket.attributes_from_unfuddle_ticket(unfuddle_ticket)
+        attributes = ticket_attributes_from_unfuddle_ticket(unfuddle_ticket)
         if ticket
           
           # This is essentially a call to update_attributes,
@@ -74,6 +75,21 @@ class Project < ActiveRecord::Base
     end
   end
   
+  def ticket_attributes_from_unfuddle_ticket(unfuddle_ticket)
+    attributes = Ticket.attributes_from_unfuddle_ticket(unfuddle_ticket)
+    
+    deployment_field = find_in_cache_or_execute(:depoyment_field) do
+      ticket_system.get_ticket_attribute_for_custom_value_named!("Deployment")
+    end
+    
+    deployment_value_id = unfuddle_ticket[deployment_field]
+    deployment_value = deployment_value_id.blank? ? nil : find_in_cache_or_execute("depoyment_value_#{deployment_value_id}") do
+      ticket_system.find_custom_field_value_by_id!("Deployment", deployment_value_id).value
+    end
+    
+    attributes.merge("deployment" => deployment_value)
+  end
+  
   
   
   def tickets_in_queue(queue)
@@ -90,14 +106,19 @@ class Project < ActiveRecord::Base
   end
   
   def construct_ticket_query_for_queue(queue)
-    query = (self.cached_queries ||= {})[queue.slug]
+    find_in_cache_or_execute(queue.slug) { ticket_system.construct_ticket_query(queue.query) }
+  end
+  
+  def find_in_cache_or_execute(key)
+    raise ArgumentError unless block_given?
+    key = key.to_s
     
-    unless query
-      query = self.cached_queries[queue.slug] = ticket_system.construct_ticket_query(queue.query)
+    value = (self.cached_queries ||= {})[key]
+    unless value
+      value = self.cached_queries[key] = yield
       save
     end
-    
-    query
+    value
   end
   
   def update_tickets_in_queue(tickets, queue)

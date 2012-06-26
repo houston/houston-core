@@ -33,7 +33,7 @@
     <script id="ticket_in_testing_template" type="text/x-handlebars-template">
       <div class="span8">
         <a data-toggle="collapse" data-parent="#tickets" data-target="#ticket_{{id}}_testing_notes" class="testing-notes">[#{{number}}] {{{formatTicketSummary summary}}}</a>
-        {{#ifEq queue "in_testing_production"}}<span class="label label-inverse">Production</span>{{/ifEq}}
+        {{#ifEq deployment "In Production (Released)"}}<span class="label label-inverse">Production</span>{{/ifEq}}
       </div>
       <div class="span4">
         <span class="ticket-verdict-summary"></span>
