@@ -20,4 +20,34 @@ module TicketHelper
     end
   end
   
+  MINUTE = 60
+  HOUR = MINUTE * 60
+  DAY = HOUR = 24
+  
+  def format_duration(seconds)
+    if seconds < HOUR
+      minutes = (seconds / MINUTE).floor
+      unit = minutes == 1 ? 'minute' : 'minutes'
+      "#{minutes} #{unit}"
+    elsif seconds < DAY
+      hours = (seconds / HOUR).floor
+      unit = hours == 1 ? 'hour' : 'hours'
+      "#{hours} #{unit}"
+    else
+      days = (seconds / DAY).floor
+      unit = days == 1 ? 'day' : 'days'
+      "#{days} #{unit}"
+    end
+  end
+  
+  def class_for_age(seconds)
+    if seconds < (2 * DAY)
+      'young'
+    elsif seconds < (7 * DAY)
+      'adult'
+    else
+      'old'
+    end
+  end
+  
 end

@@ -31,7 +31,7 @@ class window.Kanban
     # Ticket description popover
     $('.kanban-column').each ->
       self.resizeColumn $(@).find('ul:first')
-      $(@).find('.ticket').popoverForTicket().pseudoHover()
+      $(@).find('.ticket').popoverForTicket().pseudoHover().illustrateTicketVerdict()
     
     # Resize the tickets in a column when the window resizes
     $(window).resize ->
