@@ -45,29 +45,32 @@ class Project < ActiveRecord::Base
     Rails.logger.info "[project.find_tickets] query: #{query.inspect}"
     
     unfuddle_tickets = ticket_system.find_tickets(*query)
-    numbers = unfuddle_tickets.map { |unfuddle_ticket| unfuddle_ticket["number"] }
-    tickets = self.tickets.where(number: numbers).includes(:testing_notes)
     
-    unfuddle_tickets.map do |unfuddle_ticket|
-      ticket = tickets.detect { |ticket| ticket.number == unfuddle_ticket["number"] }
-      attributes = Ticket.attributes_from_unfuddle_ticket(unfuddle_ticket)
-      if ticket
-        
-        # This is essentially a call to update_attributes,
-        # but I broke it down so that we don't begin a
-        # transaction if we don't have any changes to save.
-        # This is pretty much just to reduce log verbosity.
-        ticket.assign_attributes(attributes)
-        ticket.save if ticket.changed?
-      else
-        ticket = self.tickets.create(attributes)
-      end
+    self.class.benchmark("[project.find_tickets] synchronizing with local tickets") do
+      numbers = unfuddle_tickets.map { |unfuddle_ticket| unfuddle_ticket["number"] }
+      tickets = self.tickets.where(number: numbers).includes(:testing_notes)
       
-      # There's no reason why this shouldn't be set,
-      # but in order to reduce a bunch of useless hits
-      # to the cache and a bunch of log output...
-      ticket.project = self
-      ticket
+      unfuddle_tickets.map do |unfuddle_ticket|
+        ticket = tickets.detect { |ticket| ticket.number == unfuddle_ticket["number"] }
+        attributes = Ticket.attributes_from_unfuddle_ticket(unfuddle_ticket)
+        if ticket
+          
+          # This is essentially a call to update_attributes,
+          # but I broke it down so that we don't begin a
+          # transaction if we don't have any changes to save.
+          # This is pretty much just to reduce log verbosity.
+          ticket.assign_attributes(attributes)
+          ticket.save if ticket.changed?
+        else
+          ticket = self.tickets.create(attributes)
+        end
+        
+        # There's no reason why this shouldn't be set,
+        # but in order to reduce a bunch of useless hits
+        # to the cache and a bunch of log output...
+        ticket.project = self
+        ticket
+      end
     end
   end
   
