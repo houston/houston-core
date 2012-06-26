@@ -1,6 +1,5 @@
 # To Do
 
- - Show a commit author's name next to a ticket/change
  - **Tester Wall**:
    - Show verdicts for finished tickets
    - Implement tickets accordian-style

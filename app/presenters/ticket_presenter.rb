@@ -25,6 +25,7 @@ class TicketPresenter
         number: ticket.number,
         summary: ticket.summary,
         queue: ticket.queue,
+        committers: ticket.committers,
         deployment: ticket.deployment,
         description: BlueCloth::new(ticket.description).to_html }
     end
@@ -41,6 +42,7 @@ class TicketPresenter
       verdict: ticket.verdict.downcase,
       verdictsByTester: ticket.verdicts_by_tester_index,
       queue: ticket.queue,
+      committers: ticket.committers,
       deployment: ticket.deployment,
       age: ticket.age }
   end

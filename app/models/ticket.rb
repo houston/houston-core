@@ -4,6 +4,7 @@ class Ticket < ActiveRecord::Base
   has_one :ticket_queue, conditions: "destroyed_at IS NULL"
   has_many :testing_notes
   has_and_belongs_to_many :releases, before_add: :ignore_release_if_duplicate
+  has_and_belongs_to_many :commits
   
   default_scope includes(:ticket_queue)
   
@@ -121,6 +122,10 @@ class Ticket < ActiveRecord::Base
   # Returns the amount of time the ticket has spent in its current queue (in seconds)
   def age
     ticket_queue ? ticket_queue.queue_time : 0
+  end
+  
+  def committers
+    commits.map { |commit| {name: commit.committer, email: commit.committer_email} }
   end
   
   

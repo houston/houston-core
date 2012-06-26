@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120626150333) do
+ActiveRecord::Schema.define(:version => 20120626152020) do
 
   create_table "changes", :force => true do |t|
     t.integer  "release_id"
@@ -26,9 +26,17 @@ ActiveRecord::Schema.define(:version => 20120626150333) do
     t.text     "message"
     t.string   "committer"
     t.date     "date"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+    t.string   "committer_email"
   end
+
+  create_table "commits_tickets", :id => false, :force => true do |t|
+    t.integer "commit_id"
+    t.integer "ticket_id"
+  end
+
+  add_index "commits_tickets", ["commit_id", "ticket_id"], :name => "index_commits_tickets_on_commit_id_and_ticket_id", :unique => true
 
   create_table "environments", :force => true do |t|
     t.string   "slug"
