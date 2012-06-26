@@ -11,8 +11,8 @@ class Commit < ActiveRecord::Base
     { :sha => grit_commit.sha,
       :message => grit_commit.message,
       :date => grit_commit.committed_date,
-      :committer => grit_commit.committer.name,
-      :committer_email => grit_commit.committer.email }
+      :committer => grit_commit.author.name,
+      :committer_email => grit_commit.author.email }
   end
   
   def ticket_numbers
