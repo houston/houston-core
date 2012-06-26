@@ -42,11 +42,22 @@ class window.Kanban
   unobserve: (name, func)-> @observer.unobserve(name, func)
   
   loadQueues: ->
+    requests = []
     for queueName in @queues
       for project in @projects
-        @loadQueue(project, queueName)
+        requests.push([project, queueName])
+    
+    nextRequest = =>
+      request = requests.shift()
+      if request
+        [project, queueName] = request
+        @loadQueue(project, queueName, nextRequest)
+    
+    # Send two requests at a time
+    nextRequest()
+    nextRequest()
   
-  loadQueue: (project, queueName)->
+  loadQueue: (project, queueName, callback)->
     $queue = $("##{queueName}")
     @fetchQueue project, queueName, (tickets)=>
       
@@ -64,6 +75,7 @@ class window.Kanban
         .illustrateTicketVerdict()
       
       @observer.fire('queueLoaded', [queueName, project])
+      callback() if callback
   
   fetchQueue: (project, queueName, callback)->
     xhr = @get "#{project.slug}/#{queueName}"

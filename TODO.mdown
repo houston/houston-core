@@ -4,7 +4,6 @@
  - **Tester Wall**:
    - Show verdicts for finished tickets
    - Implement tickets accordian-style
- - **Kanban**: navigating away from the Kanban takes a while
 
 ### Refactoring and Configuration
 
