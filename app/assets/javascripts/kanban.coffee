@@ -92,13 +92,13 @@ class window.Kanban
   showFullScreen: ->
     window.console.log('full screen')
     @top = 0
-    @kanban.css('z-index': 2000)
+    @kanban.addClass('full-screen')
     @setKanbanSize()
   
   showNormal: ->
     window.console.log('normal')
     @top = @naturalTop
-    @kanban.css('z-index': '')
+    @kanban.removeClass('full-screen')
     @setKanbanSize()
   
   urlFor: (path)->

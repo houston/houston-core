@@ -197,6 +197,10 @@
   
 }
 
+.full-screen {
+  z-index: 2000 !important;
+  tfoot .small { display: none !important; }
+}
 
 .kanban-column.hover { background-color: #ffffcf !important; }
 .kanban-column.clickable { cursor: pointer; }
