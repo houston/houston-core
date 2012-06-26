@@ -166,6 +166,7 @@
             </ul>
             <ul class="nav pull-right">
               <% if current_user %>
+                <li><%= link_to user_path(current_user) do %><span class="avatar-24" style="margin-right: 0"><%= avatar_for(current_user) %></span><% end %></li>
                 <li><%= link_to "Sign out", destroy_user_session_path %></li>
               <% else %>
                 <li><%= link_to "Sign in", new_user_session_path %></li>
@@ -176,7 +177,7 @@
       </div>
     </div>
 
-    <div class="container-fluid">
+    <div class="container-fluid" id="body">
       <div class="row-fluid">
         <div class="span9">
           <%= flash[:alert] %>
@@ -203,7 +204,7 @@
         window.testers = new Testers(<%= raw TesterPresenter.new(User.testers).to_json %>);
         
         <% if current_user %>
-        $('.avatar.user-' + window.userId).popover({
+        $('#body .avatar.user-' + window.userId).popover({
           title: 'Changing your Avatar',
           content: 'You can change your avatar by going to <a href="http://gravatar.com/">gravatar.com</a> and associating an image with your email address <b><%= current_user.email %></b>.'
         });
