@@ -10,7 +10,7 @@ class window.Badge
     arcWidth = 360 / total
     a1 = (arcWidth * n) - 90
     a2 = a1 + arcWidth
-    path = "http://localhost:3000/images/badge-#{status}.png"
+    path = "#{App.relativeRoot()}/images/badge-#{status}.png"
     
     r.customAttributes.segment = (x, y, r, a1, a2)->
       flag = (a2 - a1) > 180
