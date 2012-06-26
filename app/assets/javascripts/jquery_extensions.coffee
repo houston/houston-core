@@ -24,9 +24,9 @@ $.fn.extend
       $ticket = $(@)
       $el = $('<div class="ticket-badge"></div>')
       if $ticket.hasClass('failing')
-        $el.append('<img src="/images/badge-failing.png" width="38" height="38" style="opacity: 0.3;" />')
+        $el.append("<img src=\"#{App.relativeRoot()}/images/badge-failing.png\" width=\"38\" height=\"38\" style=\"opacity: 0.3;\" />")
       else if $ticket.hasClass('passing')
-        $el.append('<img src="/images/badge-passing.png" width="38" height="38" style="opacity: 0.3;" />')
+        $el.append("<img src=\"#{App.relativeRoot()}/images/badge-passing.png\" width=\"38\" height=\"38\" style=\"opacity: 0.3;\" />")
       $ticket.append $el
       testers = +$ticket.attr('data-testers')
       for i in [1..testers]
