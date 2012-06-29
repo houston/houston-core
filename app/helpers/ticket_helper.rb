@@ -5,10 +5,11 @@ module TicketHelper
   end
   
   def link_to_ticket(ticket)
+    contents = block_given? ? yield : format_ticket(ticket)
     if ticket.project
-      link_to format_ticket(ticket), unfuddle_ticket_url(ticket), target: "_blank"
+      link_to contents, unfuddle_ticket_url(ticket), target: "_blank"
     else
-      format_ticket(ticket)
+      contents
     end
   end
   

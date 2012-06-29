@@ -14,7 +14,7 @@ class ProjectKanbanController < ApplicationController
         
         # Render existing tickets
         # !todo: figure out when the last refresh was and do a fresh pull if stale
-        @tickets = @project.tickets.in_queue(@queue)
+        @tickets = @project.tickets.in_queue(@queue).order(:summary)
       end
       format.json do
         
