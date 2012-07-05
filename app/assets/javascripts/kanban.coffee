@@ -69,7 +69,7 @@ class window.Kanban
       
       @resizeColumn $queue
       
-      $queue.find('.ticket')
+      $queue.find(".ticket.#{project.slug}")
         .popoverForTicket()
         .pseudoHover()
         .illustrateTicketVerdict()
