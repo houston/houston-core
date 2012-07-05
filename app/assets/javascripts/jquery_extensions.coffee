@@ -22,16 +22,20 @@ $.fn.extend
   illustrateTicketVerdict: ->
     $(@).each ->
       $ticket = $(@)
-      $el = $('<div class="ticket-badge"></div>')
-      if $ticket.hasClass('failing')
-        $el.append("<img src=\"#{App.relativeRoot()}/images/badge-failing.png\" width=\"38\" height=\"38\" style=\"opacity: 0.3;\" />")
-      else if $ticket.hasClass('passing')
-        $el.append("<img src=\"#{App.relativeRoot()}/images/badge-passing.png\" width=\"38\" height=\"38\" style=\"opacity: 0.3;\" />")
-      $ticket.append $el
-      testers = +$ticket.attr('data-testers')
-      for i in [1..testers]
-        verdict = $ticket.attr("data-tester-#{i}")
-        new Badge($el, i, testers, verdict) if verdict
+      if $ticket.is('[data-tester-1]')
+        $el = $('<div class="ticket-badge"></div>')
+        if $ticket.hasClass('failing')
+          $el.appendTicketBadge('failing')
+        else if $ticket.hasClass('passing')
+          $el.appendTicketBadge('passing')
+        $ticket.append $el
+        testers = +$ticket.attr('data-testers')
+        for i in [1..testers]
+          verdict = $ticket.attr("data-tester-#{i}")
+          new Badge($el, i, testers, verdict) if verdict
+  
+  appendTicketBadge: (status)->
+    $(@).append("<img src=\"#{App.relativeRoot()}/images/badge-#{status}.png\" width=\"38\" height=\"38\" style=\"opacity: 0.3;\" />")
   
   initializeAutoUpdate: (interval, kanban)->
     $(@).click ->
