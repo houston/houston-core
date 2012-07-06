@@ -152,7 +152,7 @@ class Project < ActiveRecord::Base
   end
   
   def temp_path
-    @temp_path ||= Rails.root.join("tmp", slug).to_s
+    @temp_path ||= Rails.root.join("tmp", "#{slug}.git").to_s
   end
   
   def git_url_valid?
@@ -203,11 +203,11 @@ private
   end
   
   def git_pull!
-    `cd "#{temp_path}" && git pull`
+    `cd "#{temp_path}" && git remote update`
   end
   
   def git_clone!
-    `cd "#{Rails.root.join("tmp").to_s}" && git clone #{git_url} ./#{slug}`
+    `cd "#{Rails.root.join("tmp").to_s}" && git clone --mirror #{git_url} #{temp_path}`
   end
   
   
