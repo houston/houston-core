@@ -3,12 +3,14 @@
  - **Tester Wall**:
    - Show verdicts for finished tickets
    - Implement tickets accordian-style
+ - **Kanban:** optimize loading many tickets for many projects from the server
+ - **User:** add notification options: [] notify on testing update, [] notify on release (w/ defaults for role; admin can edit)
+ - **Email:** add _retest_ group for testing update
 
 ### Refactoring and Configuration
 
  - Remove hard-coded references to `staged_for_development`; use .manual class
  - Refactor hard-coded references to testing queues for "Testing Report" feature
- - Remove project-specific cut-and-paste fields
  - **Environment**: don't ask for "initial_commit"; can be specified in the New Release experience now
  - Get rid of "environments"; have two hard-coded ones: Testing and Production
  - Move "environments" to the config file?
