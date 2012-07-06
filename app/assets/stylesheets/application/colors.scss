@@ -1,9 +1,14 @@
-$teal:   rgb(49, 188, 211);
-$orange: rgb(237, 142, 30);
-$slate:  rgb(92, 103, 105);
-$blue:   rgb(6, 97, 156);
-$green:  rgb(76, 183, 29);
-$red:    rgb(219, 54, 58);
+$teal:          rgb( 82, 179, 173);
+$sky:           rgb( 35, 156, 231);
+$indigo:        rgb(125,  99, 184);
+$thistle:       rgb(179,  90, 184);
+$tomato:        rgb(231,  76,  35);
+$hazelnut:      rgb(164, 112,  61);
+$burnt_sienna:  rgb(223, 138,  61);
+$orange:        rgb(233, 184,  78);
+$pea:           rgb(141, 198,  63);
+$spruce:        rgb( 84, 160,  67);
+$slate:         rgb(141, 145, 143);
 
 @mixin age($color) {
   &.young { border-color: lighten($color, 18%); background-color: lighten($color, 40%); }
@@ -13,22 +18,32 @@ $red:    rgb(219, 54, 58);
 
 #kanban li {
   &.teal { @include age($teal) }
+  &.sky { @include age($sky) }
+  &.indigo { @include age($indigo) }
+  &.thistle { @include age($thistle) }
+  &.tomato { @include age($tomato) }
+  &.hazelnut { @include age($hazelnut) }
+  &.burnt_sienna { @include age($burnt_sienna) }
   &.orange { @include age($orange) }
+  &.pea { @include age($pea) }
+  &.spruce { @include age($spruce) }
   &.slate { @include age($slate) }
-  &.blue { @include age($blue) }
-  &.green { @include age($green) }
-  &.red { @include age($red) }
 }
 
 .label {
   vertical-align: baseline;
   
   &.teal { background-color: $teal; }
+  &.sky { background-color: $sky; }
+  &.indigo { background-color: $indigo; }
+  &.thistle { background-color: $thistle; }
+  &.tomato { background-color: $tomato; }
+  &.hazelnut { background-color: $hazelnut; }
+  &.burnt_sienna { background-color: $burnt_sienna; }
   &.orange { background-color: $orange; }
+  &.pea { background-color: $pea; }
+  &.spruce { background-color: $spruce; }
   &.slate { background-color: $slate; }
-  &.blue { background-color: $blue; }
-  &.green { background-color: $green; }
-  &.red { background-color: $red; }
 }
 
 .bubble {
@@ -42,9 +57,14 @@ $red:    rgb(219, 54, 58);
   margin-left: 0.25em;
   
   &.teal { background-color: $teal; }
+  &.sky { background-color: $sky; }
+  &.indigo { background-color: $indigo; }
+  &.thistle { background-color: $thistle; }
+  &.tomato { background-color: $tomato; }
+  &.hazelnut { background-color: $hazelnut; }
+  &.burnt_sienna { background-color: $burnt_sienna; }
   &.orange { background-color: $orange; }
+  &.pea { background-color: $pea; }
+  &.spruce { background-color: $spruce; }
   &.slate { background-color: $slate; }
-  &.blue { background-color: $blue; }
-  &.green { background-color: $green; }
-  &.red { background-color: $red; }
 }
