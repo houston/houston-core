@@ -29,7 +29,7 @@ $.fn.extend
         else if $ticket.hasClass('passing')
           $el.appendTicketBadge('passing')
         $ticket.append $el
-        testers = +$ticket.attr('data-testers')
+        testers = window.testers.length
         for i in [1..testers]
           verdict = $ticket.attr("data-tester-#{i}")
           new Badge($el, i, testers, verdict) if verdict

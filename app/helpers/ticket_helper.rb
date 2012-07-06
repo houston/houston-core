@@ -22,7 +22,7 @@ module TicketHelper
   end
   
   def attributes_for_ticket_verdict(ticket)
-    attributes = {testers: ticket.testers.count}
+    attributes = {}
     ticket.verdicts_by_tester_index.each do |i, verdict|
       attributes["tester-#{i}"] = verdict
     end

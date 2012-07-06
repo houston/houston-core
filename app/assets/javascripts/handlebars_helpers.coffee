@@ -28,7 +28,7 @@ Handlebars.registerHelper 'classForAge', (seconds)->
 Handlebars.registerHelper 'attributesForVerdict', (verdictsByTester)->
   return '' if Object.keys(verdictsByTester).length == 0
   
-  attributes = " data-testers=\"#{window.testers.length}\""
+  attributes = ""
   for i, verdict of verdictsByTester
     attributes += " data-tester-#{i}=\"#{verdict}\""
   attributes
