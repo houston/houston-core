@@ -21,7 +21,7 @@
         <% master = project.environments.find_by_slug("master") %>
         <tr>
           <td class="project-title">
-            <%= link_to project.name, project_path(project) %>
+            <%= link_to project.name, edit_project_path(project) %>
             <span class="label <%= project.color %>"><%= project.color.capitalize %></span>
           </td>
           <td class="project-title">
