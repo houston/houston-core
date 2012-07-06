@@ -82,7 +82,6 @@ class window.Kanban
     xhr.error ->
       window.console.log('error', arguments)
     xhr.success (data)->
-      window.console.log(data)
       callback(data)
   
   setKanbanSize: ->
