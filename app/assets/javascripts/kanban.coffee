@@ -126,7 +126,7 @@ class window.Kanban
     # 32 is for the THEAD which lists the number of tickets in a queue
     height = $(window).height() - 60 - 32 - $('tfoot').height()
     width = $ul.width()
-    # window.console.log("[layout] ##{queue} is", [width, height])
+    # window.console.log("[layout] ##{queue} is", [width, height]) if queue == 'assign_health'
     
     ratio = 1
     ticketWidth = @standardTicketWidth
@@ -144,12 +144,11 @@ class window.Kanban
       
       # What ratio is required to squeeze one more column of tickets
       ticketsThatFitHorizontally++
-      ratio = width / (@standardTicketWidth * ticketsThatFitHorizontally)
-      ticketWidth = @standardTicketWidth * ratio
+      ticketWidth = Math.floor(width / ticketsThatFitHorizontally)
+      ratio = ticketWidth / @standardTicketWidth
       ticketHeight = @standardTicketHeight * ratio
     
-    # window.console.log("[layout] tickets: ", [ticketsThatFitHorizontally, numberOfRowsRequired]) if queue == 'in_testing'
-    # window.console.log("[layout] ticket size: ", [ticketWidth, ticketHeight]) if queue == 'in_testing'
-    # window.console.log('')
+    # window.console.log("[layout] tickets: ", [ticketsThatFitHorizontally, numberOfRowsRequired]) if queue == 'assign_health'
+    # window.console.log("[layout] ticket size: ", [ticketWidth, ticketHeight]) if queue == 'assign_health'
     
     $ul.css('font-size': "#{ratio}em")
