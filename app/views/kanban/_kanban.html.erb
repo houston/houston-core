@@ -3,6 +3,8 @@
   <div id="timer"></div>
 </div>
 <a id="auto_update">Auto-Update</a>
+<% tickets = Ticket.for_projects(projects).in_queues(KanbanQueue.all).includes(:testing_notes) %>
+<% tickets_by_project_by_queue = Ticket.benchmark("[kanban] time to query and organize tickets:") { group_tickets_by_queue_and_project(tickets, projects) } %>
 <table id="kanban">
   <thead>
     <tr>
@@ -13,22 +15,24 @@
   </thead>
   <tbody>
     <tr>
-      <% KanbanQueue.all.each do |queue| %>
-        <td class="kanban-column<%= " manual" if queue.local_query? %>" data-queue="<%= queue.slug %>">
-          <ul id="<%= queue.slug %>">
-            <% projects.each do |project| %>
-              <% project.tickets.includes(:testing_notes).in_queue(queue).each do |ticket|; ticket.project = project %>
-                <%# This is copied from application.html.erb %>
-                <li class="ticket <%= project.slug %> <%= project.color %> <%= class_for_age(ticket.age) %> <%= ticket.verdict.downcase %>" id="ticket_<%= ticket.id %>" data-number="<%= ticket.number %>" data-project="<%= project.name %>" <%= attributes_for_ticket_verdict(ticket) %>>
-                  <a href="https://<%= unfuddle.subdomain %>.unfuddle.com/a#/projects/<%= project.unfuddle_id %>/tickets/by_number/<%= ticket.number %>" target="_blank">
-                    <h3 class="ticket-number"><%= ticket.number %> <span class="ticket-age"><%= format_duration ticket.age %></span></h3>
-                    <p class="ticket-summary"><%= ticket.summary %></p>
-                  </a>
-                </li>
+      <% Ticket.benchmark("[kanban] time to render tickets:") do %>
+        <% KanbanQueue.all.each do |queue|; tickets_by_project = tickets_by_project_by_queue[queue.slug] %>
+          <td class="kanban-column<%= " manual" if queue.local_query? %>" data-queue="<%= queue.slug %>">
+            <ul id="<%= queue.slug %>">
+              <% projects.each do |project|; tickets = tickets_by_project[project.id] %>
+                <% tickets.each do |ticket|; ticket.project = project %>
+                  <%# This is copied from application.html.erb %>
+                  <li class="ticket <%= project.slug %> <%= project.color %> <%= class_for_age(ticket.age) %> <%= ticket.verdict.downcase %>" id="ticket_<%= ticket.id %>" data-number="<%= ticket.number %>" data-project="<%= project.name %>" <%= attributes_for_ticket_verdict(ticket) %>>
+                    <a href="https://<%= unfuddle.subdomain %>.unfuddle.com/a#/projects/<%= project.unfuddle_id %>/tickets/by_number/<%= ticket.number %>" target="_blank">
+                      <h3 class="ticket-number"><%= ticket.number %> <span class="ticket-age"><%= format_duration ticket.age %></span></h3>
+                      <p class="ticket-summary"><%= ticket.summary %></p>
+                    </a>
+                  </li>
+                <% end %>
               <% end %>
-            <% end %>
-          </ul>
-        </td>
+            </ul>
+          </td>
+        <% end %>
       <% end %>
     </tr>
   </tbody>

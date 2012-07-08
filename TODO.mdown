@@ -3,7 +3,7 @@
  - **Tester Wall**:
    - Show verdicts for finished tickets
    - Implement tickets accordian-style
- - **Kanban:** optimize loading many tickets for many projects from the server
+ - **Kanban:** optimize rendering tickets on the server
  - **User:** add notification options: [] notify on testing update, [] notify on release (w/ defaults for role; admin can edit)
  - **Email:** add _retest_ group for testing update
 

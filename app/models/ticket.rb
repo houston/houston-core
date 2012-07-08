@@ -19,13 +19,18 @@ class Ticket < ActiveRecord::Base
   
   
   class << self
+    def for_projects(*projects)
+      ids = projects.flatten.map { |project| project.is_a?(Project) ? project.id : project }
+      where(project_id: ids)
+    end
+    
     def in_queue(queue)
       queue = queue.slug if queue.is_a?(KanbanQueue)
       where(["ticket_queues.queue = ?", queue])
     end
     
     def in_queues(*queues)
-      queues = queues.map { |queue| queue.is_a?(KanbanQueue) ? queue.slug : queue }
+      queues = queues.flatten.map { |queue| queue.is_a?(KanbanQueue) ? queue.slug : queue }
       where(["ticket_queues.queue IN (?)", queues])
     end
     
