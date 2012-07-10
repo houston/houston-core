@@ -49,7 +49,7 @@ class Project < ActiveRecord::Base
     
     self.class.benchmark("[project.find_tickets] synchronizing with local tickets") do
       numbers = unfuddle_tickets.map { |unfuddle_ticket| unfuddle_ticket["number"] }
-      tickets = self.tickets.where(number: numbers).includes(:testing_notes)
+      tickets = self.tickets.where(number: numbers).includes(:testing_notes).includes(:commits)
       
       unfuddle_tickets.map do |unfuddle_ticket|
         ticket = tickets.detect { |ticket| ticket.number == unfuddle_ticket["number"] }
