@@ -106,7 +106,8 @@ class Project < ActiveRecord::Base
   end
   
   def construct_ticket_query_for_queue(queue)
-    find_in_cache_or_execute(queue.slug) { ticket_system.construct_ticket_query(queue.query) }
+    key = "#{queue.slug}-#{Digest::MD5::hexdigest(queue.query.inspect)}"
+    find_in_cache_or_execute(key) { ticket_system.construct_ticket_query(queue.query) }
   end
   
   def find_in_cache_or_execute(key)
