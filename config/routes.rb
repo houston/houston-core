@@ -25,7 +25,11 @@ Changelog::Application.routes.draw do
   end
   
   constraints :id => /\d+/ do
-    resources :users
+    resources :users do
+      member do
+        post :invite
+      end
+    end
   end
   
   scope "tickets/:ticket_id" do 

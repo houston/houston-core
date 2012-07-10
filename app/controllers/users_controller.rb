@@ -67,10 +67,22 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
   end
 
+  def invite
+    @user = User.find(params[:id])
+    @user.invite!
+    redirect_to request.referrer, :notice => "#{@user.name} has been invited to use this program"
+  end
+
   # POST /users
   # POST /users.json
   def create
-    @user = User.invite!(params[:user])
+    if params[:send_invitation]
+      @user = User.invite!(params[:user])
+    else
+      @user = User.new(params[:user])
+      @user.skip_password = true
+      @user.save!
+    end
     
     respond_to do |format|
       if @user.save

@@ -21,9 +21,21 @@
         <%= f.select :role, User::ROLES, :class => 'select_field' %>
       </div>
     </div>
+    
+    <% if @user.new_record? %>
+    <div class="control-group">
+      <div class="controls">
+        <label for="send_invitation">
+          <input type="checkbox" id="send_invitation" name="send_invitation" value="1" checked="checked" /> Invite user to set up an account
+        </label>
+      </div>
+    </div>
+    <% end %>
+    
 
     <div class="form-actions">
       <%= f.submit nil, :class => 'btn btn-primary' %>
+      <%= link_to 'Invite', invite_user_path(@user), :method => 'post', :class => 'btn btn-primary' if @user.persisted? && @user.encrypted_password.blank? && !@user.invited? && can?(:create, User) %>
       <%= link_to 'Cancel', users_path, :class => 'btn' %>
       <%= link_to 'Delete', user_path(@user), :method => 'delete', :confirm => 'Are you sure?', :class => 'btn btn-danger btn-delete' if @user.persisted? && can?(:destroy, @user) %>
     </div>
