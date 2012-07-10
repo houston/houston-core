@@ -8,7 +8,6 @@
     <thead>
       <tr>
         <th class="project-title">Title</th>
-        <th class="project-title"></th>
         <th class="project-last-release">Last Testing Update (PRI)</th>
         <th class="project-last-release"></th>
         <th class="project-last-release">Last Release (Production)</th>
@@ -21,11 +20,13 @@
         <% master = project.environments.find_by_slug("master") %>
         <tr>
           <td class="project-title">
+            <b class="bubble <%= project.color %>"></b>
             <%= link_to project.name, edit_project_path(project) %>
-            <span class="label <%= project.color %>"><%= project.color.capitalize %></span>
-          </td>
-          <td class="project-title">
-            <%= link_to "(View in Unfuddle)", unfuddle_project_url(project) if project.unfuddle_id %>
+            <% if project.unfuddle_id %>
+              <%= link_to unfuddle_project_url(project), :target => "_blank" do %>
+                <%= image_tag "/images/unfuddle.ico", :title => "View in Unfuddle", :width => 16, :height => 16 %>
+              <% end %>
+            <% end %>
           </td>
           <td class="project-last-release">
             <% release = dev && dev.releases.first %>
