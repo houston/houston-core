@@ -63,6 +63,7 @@ module UrlHelper
   end
   
   
+  
   def releases_url(*args)
     project_environment_releases_url(*args)
   end
@@ -73,6 +74,10 @@ module UrlHelper
   
   def edit_release_url(release, options={})
     edit_project_environment_release_url(release.project.to_param, release.environment.to_param, release, options)
+  end
+  
+  def new_release_url(release, options={})
+    new_project_environment_release_url(release.project.to_param, release.environment.to_param, options.merge(:commit => release.commit1))
   end
   
   

@@ -14,6 +14,7 @@ class Release < ActiveRecord::Base
   accepts_nested_attributes_for :changes, :allow_destroy => true
   
   delegate :project, :to => :environment
+  delegate :maintainers, :to => :project
   
   
   

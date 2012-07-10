@@ -6,6 +6,17 @@ class NotificationMailer < ActionMailer::Base
   helper TicketHelper
   
   
+  def on_post_receive(release)
+    @release = release
+    mail({
+      to: release.maintainers.map(&method(:format_email_address)),
+      subject: "@#{release.project.slug} new release"
+    }) do |format|
+      format.html
+    end
+  end
+  
+  
   def on_release(release)
     @release = release
     mail({

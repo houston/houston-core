@@ -1,7 +1,7 @@
 class ProjectEnvironmentsController < ApplicationController
   include UrlHelper
   before_filter :find_project
-  before_filter :find_environment, :only => [:show, :edit, :update, :destroy]
+  before_filter :find_environment, :only => [:show, :edit, :update, :destroy, :post_receive]
   load_resource :environment, :find_by => :slug, :through => :project
   authorize_resource :environment
   
@@ -12,6 +12,12 @@ class ProjectEnvironmentsController < ApplicationController
       format.html # index.html.erb
       format.json { render json: @environments }
     end
+  end
+  
+  def post_receive
+    release = @environment.releases.new(commit0: @environment.last_commit, commit1: params[:commit])
+    NotificationMailer.on_post_receive(release).deliver!
+    head :ok
   end
   
   def show

@@ -171,6 +171,10 @@ class Project < ActiveRecord::Base
     @testers ||= User.testers
   end
   
+  def maintainers
+    @maintainer ||= User.administrators
+  end
+  
   
   
 private

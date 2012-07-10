@@ -17,6 +17,9 @@ Changelog::Application.routes.draw do
   
   resources :projects do
     resources :environments, :controller => "project_environments" do
+      member do
+        post 'post_receive'
+      end
       resources :releases
     end
   end
