@@ -22,13 +22,14 @@ $.fn.extend
   illustrateTicketVerdict: ->
     $(@).each ->
       $ticket = $(@)
+      # <li class="ticket" data-tester-1="failing">...</li>
       if $ticket.is('[data-tester-1]')
         $el = $('<div class="ticket-badge"></div>')
         if $ticket.hasClass('failing')
           $el.appendTicketBadge('failing')
         else if $ticket.hasClass('passing')
           $el.appendTicketBadge('passing')
-        $ticket.append $el
+        $ticket.find('a').append $el
         testers = window.testers.length
         for i in [1..testers]
           verdict = $ticket.attr("data-tester-#{i}")
