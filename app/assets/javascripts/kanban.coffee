@@ -151,4 +151,18 @@ class window.Kanban
     # window.console.log("[layout] tickets: ", [ticketsThatFitHorizontally, numberOfRowsRequired]) if queue == 'assign_health'
     # window.console.log("[layout] ticket size: ", [ticketWidth, ticketHeight]) if queue == 'assign_health'
     
+    # At this point, get rid of the ticket age
+    $ul.toggleClass('no-age', ratio < 0.666)
+    
+    # assuming an em is 18px and border is 0.125em,
+    # then if ratio < 0.445, border will be < 1px
+    $ul.toggleClass('small-border', ratio < 0.444)
+    
+    # At this point, get rid of the ticket numbers
+    $ul.toggleClass('no-number', ratio < 0.333)
+    
+    # assuming an em is 18px and margin is 0.25em,
+    # then if ratio < 0.225, margin will be < 1px
+    $ul.toggleClass('small-margin', ratio < 0.222)
+    
     $ul.css('font-size': "#{ratio}em")

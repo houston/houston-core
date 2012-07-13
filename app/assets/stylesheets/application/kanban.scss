@@ -198,6 +198,12 @@
     
   }
   
+  .no-age li .ticket-age { display: none !important; }
+  .no-number li .ticket-number { display: none !important; }
+  .no-number li .ticket-number:after { content: '...'; }
+  .small-border li { border-width: 1px !important; }
+  .small-margin li { margin: 1px !important; }
+  
 }
 
 .full-screen {
