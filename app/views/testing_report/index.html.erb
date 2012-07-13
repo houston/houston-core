@@ -18,10 +18,12 @@
   </li>
 </ul>
 
-<% @projects.each do |project, tickets| %>
-  <h4><b class="bubble <%= project.color %>"></b> <%= project.name %>&nbsp;&nbsp;»&nbsp;&nbsp;<span style="font-weight: normal;"><%= pluralize(tickets.count, "tickets") %></span></h4>
-  <ul id="project_<%= project.id %>_tickets" class="tickets tickets-list"></ul>
-<% end %>
+<div class="testing-reports-projects">
+  <% @projects.each do |project, tickets| %>
+    <h4 class="testing-report-project"><b class="bubble <%= project.color %>"></b> <%= project.name %>&nbsp;&nbsp;»&nbsp;&nbsp;<span style="font-weight: normal;"><%= pluralize(tickets.count, "tickets") %></span></h4>
+    <ul id="project_<%= project.id %>_tickets" class="tickets tickets-list"></ul>
+  <% end %>
+</div>
 
 <% content_for :scripts do %>
   <script type="text/javascript">

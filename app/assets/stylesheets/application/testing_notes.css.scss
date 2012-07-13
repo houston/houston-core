@@ -1,9 +1,16 @@
+.testing-report-project {
+  margin: 2em 0 8px 0;
+  
+  &:first-child { margin-top: 0; }
+}
+
 .tickets-list .ticket { 
   clear: both; 
   list-style-type: none;
+  line-height: 26px;
   
   padding-left: 16px;
-  background-position: 0 4px;
+  background-position: 0 7px;
   background-repeat: no-repeat;
 }
 
@@ -54,11 +61,12 @@ ul.tester-names {
 
 .ticket-verdict {
   float: right;
+  
   img { 
     border-width: 2px;
     border-style: solid;
     border-color: transparent;
-    margin: 2px;
+    margin: 1px;
   }
   
   &[data-verdict="pending"] img { opacity: 0.33; }
