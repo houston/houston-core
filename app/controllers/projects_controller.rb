@@ -5,8 +5,9 @@ class ProjectsController < ApplicationController
   # GET /projects
   # GET /projects.json
   def index
+    @title = "Projects"
     @projects = Project.order(:name).all
-
+    
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @projects }
@@ -22,6 +23,8 @@ class ProjectsController < ApplicationController
   # GET /projects/new
   # GET /projects/new.json
   def new
+    @title = "New Project"
+    
     @project = Project.new
     @project.environments.build(Rails.configuration.default_environments) if @project.environments.none?
 
@@ -34,6 +37,8 @@ class ProjectsController < ApplicationController
   # GET /projects/1/edit
   def edit
     @project = Project.find_by_slug!(params[:id])
+    
+    @title = "#{@project.name}: Edit"
   end
 
   # POST /projects

@@ -3,6 +3,8 @@ class ProjectKanbanController < ApplicationController
   
   
   def index
+    @title = "Kanban: #{@project.name}"
+    
     @projects = Project.where("unfuddle_id IS NOT NULL")
   end
   

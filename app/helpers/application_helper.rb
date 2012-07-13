@@ -1,5 +1,9 @@
 module ApplicationHelper
   
+  def title
+    @title || Rails.configuration.title
+  end
+  
   def html_safe(html)
     html.html_safe
   end

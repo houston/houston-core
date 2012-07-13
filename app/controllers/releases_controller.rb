@@ -7,8 +7,10 @@ class ReleasesController < ApplicationController
   # GET /releases
   # GET /releases.json
   def index
+    @title = "#{@project.name}: Releases (#{@environment.name})"
+    
     @releases = @environment.releases.all
-
+    
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @releases }
@@ -19,7 +21,9 @@ class ReleasesController < ApplicationController
   # GET /releases/1.json
   def show
     @release = @environment.releases.find(params[:id])
-
+    
+    @title = "#{@project.name}: #{@release.name}"
+    
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @release }
@@ -29,6 +33,8 @@ class ReleasesController < ApplicationController
   # GET /releases/new
   # GET /releases/new.json
   def new
+    @title = "#{@project.name}: New Release (#{@environment.name})"
+    
     @commit0 = params[:commit0] || @environment.last_commit
     @commit1 = params[:commit1] || params[:commit]
     @release = @environment.releases.new(commit0: @commit0, commit1: @commit1)
