@@ -19,7 +19,7 @@
 </ul>
 
 <% @projects.each do |project, tickets| %>
-  <h4><b class="bubble <%= project.color %>"></b> <%= project.name %></h4>
+  <h4><b class="bubble <%= project.color %>"></b> <%= project.name %>&nbsp;&nbsp;»&nbsp;&nbsp;<span style="font-weight: normal;"><%= pluralize(tickets.count, "tickets") %></span></h4>
   <ul id="project_<%= project.id %>_tickets" class="tickets tickets-list"></ul>
 <% end %>
 
