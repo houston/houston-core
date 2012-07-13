@@ -1,17 +1,26 @@
 # To Do
 
+ - **Release:** allow adding/removing _tickets_ from release notes
+ - **Project:** add notification options: [] grid: environments x users notify on testing update
+ - **Email:** add _retest_ group for testing update
+ - **Kanban:**
+   - optimize rendering tickets on the server
+   - times are very wrong
+   - tickets still not always resized correctly
+ - **Testing Report:**
+   - Give a way of prioritizing / flagging tickets
+   - failing verdict email should be sent _from_ the tester who made it
+   - Don't use epdeveloper@cph.org email address, use contacts _in_ the program
  - **Tester Wall**:
    - Show verdicts for finished tickets
    - Implement tickets accordian-style
- - **Kanban:** optimize rendering tickets on the server
- - **User:** add notification options: [] notify on testing update, [] notify on release (w/ defaults for role; admin can edit)
- - **Email:** add _retest_ group for testing update
+ - **Post-Receive:** use token_authentication (?) to log a user in automatically when following a new release link in an email
+   - c.f. http://rdoc.info/github/plataformatec/devise/master/Devise/Models/TokenAuthenticatable
 
 ### Refactoring and Configuration
 
  - Remove hard-coded references to `staged_for_development`; use .manual class
  - Refactor hard-coded references to testing queues for "Testing Report" feature
- - **Environment**: don't ask for "initial_commit"; can be specified in the New Release experience now
  - Get rid of "environments"; have two hard-coded ones: Testing and Production
  - Move "environments" to the config file?
 
@@ -19,3 +28,6 @@
 
  - Implement a way of visualizing _batches_
  - Have client know about product version, hard-refresh if code updated
+ - **Release:** link commits to diff views
+ - Add graphs and reports on trends in Kanban (CFD, etc)
+
