@@ -15,7 +15,7 @@ class Ticket < ActiveRecord::Base
   
   attr_readonly :number, :project_id
   
-  delegate :testers, to: :project
+  delegate :testers, :maintainers, to: :project
   
   
   class << self

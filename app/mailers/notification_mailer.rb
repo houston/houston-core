@@ -31,11 +31,13 @@ class NotificationMailer < ActionMailer::Base
   
   def on_fail_verdict(note)
     @note = note
-    @tester = note.user.name
+    @tester = note.user
     @ticket = note.ticket
     mail({
-      to: DEVELOPERS,
-      subject: "@#{note.project.slug} [##{@ticket.number}] #{@tester} passed judgement #notlookinggood"
+      from: format_email_address(@tester),
+      to: @ticket.committers.map { |committer| "#{committer[:name]} <#{committer[:email]}>" },
+      cc: @ticket.maintainers.map(&method(:format_email_address)),
+      subject: "@#{note.project.slug} [##{@ticket.number}] #{@tester.name} passed judgement #notlookinggood"
     }) do |format|
       format.html
     end

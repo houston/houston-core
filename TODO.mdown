@@ -8,7 +8,6 @@
    - times are very wrong
  - **Testing Report:**
    - Give a way of prioritizing / flagging tickets
-   - failing verdict email should be sent _from_ the tester who made it
    - Don't use epdeveloper@cph.org email address, use contacts _in_ the program
  - **Tester Wall**:
    - Show verdicts for finished tickets
