@@ -187,20 +187,18 @@
       &:before { content: '#'; }
     }
     
-    .ticket-summary {
-      display: none ;
-//      display: inline-block;
-//      float: left;
-//      max-width: 120px;
-//      margin-left: 12px;
-//      margin-left: 90px;
-    }
-    
+    .ticket-summary { display: none; }
   }
   
   .no-age li .ticket-age { display: none !important; }
-  .no-number li .ticket-number { display: none !important; }
-  .no-number li .ticket-number:after { content: '...'; }
+  .no-number li {
+    .ticket-number { display: none !important; }
+    
+    -webkit-transform:none !important;
+    -moz-transform:none !important;
+    -ms-transform:none !important;
+    transform:none !important;
+  }
   .small-border li { border-width: 1px !important; }
   .small-margin li { margin: 1px !important; }
   
