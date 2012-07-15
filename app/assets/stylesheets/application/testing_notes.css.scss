@@ -98,7 +98,7 @@ ul.tester-names {
 .testing-note {
   display: block;
   margin: 0.25em 0;
-  overflow: hidden;
+  clear: both;
   
   .tester-avatar { float: left; }
   .testing-note-body { margin-left: 40px; }
