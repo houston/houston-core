@@ -103,6 +103,11 @@ ul.tester-names {
   .tester-avatar { float: left; }
   .testing-note-body { margin-left: 40px; }
   
+  textarea {
+    width: 80%;
+    height: 80px;
+  }
+  
   img {
     padding: 0.25em;
     margin-right: 0.5em;

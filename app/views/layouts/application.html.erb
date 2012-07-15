@@ -72,7 +72,7 @@
           <label for="testing_note_{{id}}_verdict_none">{{{radioButton "testing_note" id "verdict" "none" verdict}}} None</label>
         </p>
         <p>
-          <input id="testing_note_comment" name="comment" size="30" type="text" value="{{comment}}" />
+          <textarea id="testing_note_comment" name="comment">{{comment}}</textarea>
           <input class="btn btn-primary" name="commit" type="submit" value="Save" />
           <input class="btn btn-cancel" name="commit" type="submit" value="Cancel" />
         </p>
@@ -89,7 +89,7 @@
             <label for="ticket_{{ticketId}}_new_testing_note_verdict_none"><input id="ticket_{{ticketId}}_new_testing_note_verdict_none" name="verdict" type="radio" value="none"> None</label>
           </p>
           <p>
-            <input id="testing_note_comment" name="comment" size="30" type="text" value="" />
+            <textarea id="testing_note_comment" name="comment" value=""></textarea>
             <input class="btn btn-primary" name="commit" type="submit" value="Post" />
           </p>
         </form>
