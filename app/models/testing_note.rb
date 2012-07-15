@@ -3,7 +3,7 @@ class TestingNote < ActiveRecord::Base
   belongs_to :user
   belongs_to :ticket
   
-  VERDICTS = %w{works fails}
+  VERDICTS = %w{works fails none}
   
   validates :user, :presence => true
   validates :ticket, :presence => true
@@ -35,12 +35,11 @@ class TestingNote < ActiveRecord::Base
   end
   
   def unfuddle_comment_body=(val)
-    if val[/^\*\*works\*\* /]
-      val[/^\*\*works\*\* /] = ""
-      self.verdict = "works"
-    elsif  val[/^\*\*fails\*\* /]
-      val[/^\*\*fails\*\* /] = ""
-      self.verdict = "fails"
+    VERDICTS.each do |_verdict|
+      if val[/^\*\*#{_verdict}\*\* /]
+        val[/^\*\*#{_verdict}\*\* /] = ""
+        self.verdict = _verdict
+      end
     end
     self.comment = val
   end

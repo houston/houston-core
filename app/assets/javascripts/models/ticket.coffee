@@ -23,16 +23,17 @@ class window.Ticket extends Backbone.Model
       'Failing'
     else if verdicts.length < window.testers.length
       'Pending'
-    else
+    else if _.all verdicts, ((verdict)-> verdict == 'passing')
       'Passing'
   
   verdictsByTester: (notes)->
     verdictsByTester = {}
     notes.each (note)->
       testerId = note.get('userId')
-      if note.get('verdict') == 'fails'
+      verdict = note.get('verdict')
+      if verdict == 'fails'
         verdictsByTester[testerId] = 'failing'
-      else
+      else if verdict == 'works'
         verdictsByTester[testerId] ?= 'passing'
     verdictsByTester
     

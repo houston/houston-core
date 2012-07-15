@@ -69,6 +69,7 @@
           <input data-attr="ticket_id" id="testing_note_{{id}}_ticket_id" name="ticket_id" type="hidden" value="{{ticketId}}" />
           <label for="testing_note_{{id}}_verdict_works">{{{radioButton "testing_note" id "verdict" "works" verdict}}} Works</label>
           <label for="testing_note_{{id}}_verdict_fails">{{{radioButton "testing_note" id "verdict" "fails" verdict}}} Fails</label>
+          <label for="testing_note_{{id}}_verdict_none">{{{radioButton "testing_note" id "verdict" "none" verdict}}} None</label>
         </p>
         <p>
           <input id="testing_note_comment" name="comment" size="30" type="text" value="{{comment}}" />
@@ -85,6 +86,7 @@
             <input data-attr="ticket_id" id="ticket_{{ticketId}}_new_testing_note_ticket_id" name="ticket_id" type="hidden" value="{{ticketId}}" />
             <label for="ticket_{{ticketId}}_new_testing_note_verdict_works"><input id="ticket_{{ticketId}}_new_testing_note_verdict_works" name="verdict" type="radio" value="works"> Works</label>
             <label for="ticket_{{ticketId}}_new_testing_note_verdict_fails"><input id="ticket_{{ticketId}}_new_testing_note_verdict_fails" name="verdict" type="radio" value="fails"> Fails</label>
+            <label for="ticket_{{ticketId}}_new_testing_note_verdict_none"><input id="ticket_{{ticketId}}_new_testing_note_verdict_none" name="verdict" type="radio" value="none"> None</label>
           </p>
           <p>
             <input id="testing_note_comment" name="comment" size="30" type="text" value="" />

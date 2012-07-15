@@ -110,6 +110,7 @@ ul.tester-names {
   
   &.works { img { background-color: #55c832; } color: #0a0; }
   &.fails { img { background-color: #ff6d6d; } color: #c11; }
+  // no style when verdict is 'none'
 }
 
 .testing-note-form {

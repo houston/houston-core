@@ -144,7 +144,7 @@ class Ticket < ActiveRecord::Base
       "Failing"
     elsif verdicts.length < testers.length 
       "Pending"
-    else
+    elsif verdicts.all? "passing"
       "Passing"
     end
   end
@@ -158,7 +158,7 @@ class Ticket < ActiveRecord::Base
       if verdicts_by_tester.key?(tester_id)
         if note.verdict == "fails"
           verdicts_by_tester[tester_id] = "failing"
-        else
+        elsif note.verdict == "works"
           verdicts_by_tester[tester_id] ||= "passing"
         end
       end
