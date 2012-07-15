@@ -7,7 +7,7 @@ class TestingNote < ActiveRecord::Base
   
   validates :user, :presence => true
   validates :ticket, :presence => true
-  validates :comment, :presence => true, :length => 1..250
+  validates :comment, :presence => true, :length => 1..1000
   validates :verdict, :presence => true, :inclusion => VERDICTS
   
   remote_model Unfuddle::Comment

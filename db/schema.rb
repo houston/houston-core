@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120626152949) do
+ActiveRecord::Schema.define(:version => 20120715230526) do
 
   create_table "changes", :force => true do |t|
     t.integer  "release_id"
@@ -84,7 +84,7 @@ ActiveRecord::Schema.define(:version => 20120626152949) do
     t.integer  "user_id"
     t.integer  "ticket_id"
     t.string   "verdict",                     :null => false
-    t.string   "comment",     :default => "", :null => false
+    t.text     "comment",     :default => "", :null => false
     t.datetime "created_at",                  :null => false
     t.datetime "updated_at",                  :null => false
     t.datetime "expires_at"
