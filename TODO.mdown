@@ -6,7 +6,6 @@
  - **Kanban:**
    - optimize rendering tickets on the server
    - times are very wrong
-   - tickets still not always resized correctly
  - **Testing Report:**
    - Give a way of prioritizing / flagging tickets
    - failing verdict email should be sent _from_ the tester who made it

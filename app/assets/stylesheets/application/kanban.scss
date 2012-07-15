@@ -69,6 +69,8 @@
     max-width: 14.2857143%;
     vertical-align: bottom;
     text-align: center;
+    
+    &.kanban-column { font-size: 18px; }
   }
   
   thead th {
@@ -107,7 +109,7 @@
   
   ol, ul {
     margin: 0;
-    padding: 0 1.5em 2px;
+    padding: 0 10px 2px 12px; // slighly less padding on the right b/c tickets rarely take up full horizontal width
     display: block;
     overflow: hidden;
     
@@ -124,10 +126,8 @@
     display: block;
     float: left;
     border-radius: 0.65em;
-    border: 0.125em solid #ccc;
-    margin: 0.25em;
-    font-size: 1.4em;
-    width: 3.76923077em;          // * 18px (1.4em) = 68px
+    border: 0.1388889em solid #ccc;   // * 18px =  2.5px
+    margin: 0.2222222em;              // * 18px =  4px
     
     // Stack from the bottom
     -webkit-transform:scaleY(-1);
@@ -137,9 +137,9 @@
     
     a {
       display: block;
-      padding: 0.5em;             // * 18px (1.4em) =  9px
-      width: 2.76923077em;        // * 18px (1.4em) = 50px
-      height: 1.84615385em;       // * 18px (1.4em) = 33px
+      padding: 0.5em;                 // * 18px =  9px
+      width:  2.7777778em;            // * 18px = 50px
+      height: 1.8333333em;            // * 18px = 33px
       
       &:hover { text-decoration: none; }
     }

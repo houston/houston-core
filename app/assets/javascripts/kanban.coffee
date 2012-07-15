@@ -24,17 +24,22 @@ class window.Kanban
     
     # It might be nice to calculate this
     # + 8 for 4px margin on all sides
-    @standardTicketWidth = 72 + 8 
-    @standardTicketHeight = 55 + 8
+    @standardTicketWidth = 2.7777778 * 18
+    @standardTicketHeight = 1.8333333 * 18
+    @standardPadding = 0.5 * 36
+    @standardBorder = 0.1388889 * 36
+    @standardMargin = 0.2222222 * 36
     
     # Set the size of tickets initially
     # Ticket description popover
+    # window.console.log('[layout] init')
     $('.kanban-column').each ->
       self.resizeColumn $(@).find('ul:first')
       $(@).find('.ticket').popoverForTicket().pseudoHover().illustrateTicketVerdict()
     
     # Resize the tickets in a column when the window resizes
     $(window).resize ->
+      # window.console.log('[layout] window resize')
       $('.kanban-column ul').each ->
         self.resizeColumn $(@)
   
@@ -121,16 +126,23 @@ class window.Kanban
     
     return if tickets == 0
     
+    $ul.removeClass('small-border')
+    $ul.removeClass('small-margin')
+    
     # This is obviously imprecise.
     # 60 is for the admin stripe and its bottom margin
     # 32 is for the THEAD which lists the number of tickets in a queue
     height = $(window).height() - 60 - 32 - $('tfoot').height()
     width = $ul.width()
-    # window.console.log("[layout] ##{queue} is", [width, height]) if queue == 'assign_health'
+    
+    standardInnerWidth = @standardTicketWidth + @standardPadding
+    standardTicketWidth = standardInnerWidth + @standardBorder + @standardMargin
+    standardInnerHeight = @standardTicketHeight + @standardPadding
+    standardTicketHeight = standardInnerHeight + @standardBorder + @standardMargin
     
     ratio = 1
-    ticketWidth = @standardTicketWidth
-    ticketHeight = @standardTicketHeight
+    ticketWidth = standardTicketWidth
+    ticketHeight = standardTicketHeight
     ticketsThatFitHorizontally = Math.floor(width / ticketWidth)
     
     if isNaN(ticketsThatFitHorizontally)
@@ -145,24 +157,30 @@ class window.Kanban
       # What ratio is required to squeeze one more column of tickets
       ticketsThatFitHorizontally++
       ticketWidth = Math.floor(width / ticketsThatFitHorizontally)
-      ratio = ticketWidth / @standardTicketWidth
-      ticketHeight = @standardTicketHeight * ratio
+      ratio = ticketWidth / standardTicketWidth
+      
+      border = ratio * @standardBorder
+      if border < 2
+        $ul.addClass('small-border')
+        border = 2
+      
+      margin = ratio * @standardMargin
+      if margin < 2
+        $ul.addClass('small-margin')
+        margin = 2
+      
+      ratio = (ticketWidth - border - margin) / standardInnerWidth
+      ticketHeight = (standardInnerHeight * ratio) + border + margin
     
-    # window.console.log("[layout] tickets: ", [ticketsThatFitHorizontally, numberOfRowsRequired]) if queue == 'assign_health'
-    # window.console.log("[layout] ticket size: ", [ticketWidth, ticketHeight]) if queue == 'assign_health'
+    # window.console.log("[layout:#{queue}] column size: ", [width, height]) if queue == 'staged_for_testing'
+    # window.console.log("[layout:#{queue}] ratio: #{ratio}") if queue == 'staged_for_testing'
+    # window.console.log("[layout:#{queue}] tickets: #{ticketsThatFitHorizontally} rows x #{numberOfRowsRequired} cols") if queue == 'staged_for_testing'
+    # window.console.log("[layout:#{queue}] ticket size: ", [ticketWidth, ticketHeight]) if queue == 'staged_for_testing'
     
     # At this point, get rid of the ticket age
     $ul.toggleClass('no-age', ratio < 0.666)
     
-    # assuming an em is 18px and border is 0.125em,
-    # then if ratio < 0.445, border will be < 1px
-    $ul.toggleClass('small-border', ratio < 0.444)
-    
     # At this point, get rid of the ticket numbers
     $ul.toggleClass('no-number', ratio < 0.333)
-    
-    # assuming an em is 18px and margin is 0.25em,
-    # then if ratio < 0.225, margin will be < 1px
-    $ul.toggleClass('small-margin', ratio < 0.222)
     
     $ul.css('font-size': "#{ratio}em")
