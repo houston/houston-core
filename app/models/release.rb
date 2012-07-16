@@ -4,6 +4,7 @@ class Release < ActiveRecord::Base
   after_create :associate_tickets_with_self
   
   belongs_to :environment
+  belongs_to :user
   has_many :changes, :dependent => :destroy
   has_many :commits, :dependent => :destroy, :autosave => true
   
@@ -15,6 +16,8 @@ class Release < ActiveRecord::Base
   
   delegate :project, :to => :environment
   delegate :maintainers, :to => :project
+  
+  validates_presence_of :user_id
   
   
   

@@ -76,6 +76,7 @@ class ReleasesController < ApplicationController
   # POST /releases.json
   def create
     @release = @environment.releases.new(params[:release])
+    @release.user = current_user
     
     respond_to do |format|
       if @release.save

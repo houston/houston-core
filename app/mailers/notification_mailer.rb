@@ -19,6 +19,7 @@ class NotificationMailer < ActionMailer::Base
   def on_release(release)
     @release = release
     mail({
+      from: format_email_address(release.user),
       to: release.notification_recipients.map(&method(:format_email_address)),
       cc: release.maintainers.map(&method(:format_email_address)),
       subject: release_announcement_for(release)
