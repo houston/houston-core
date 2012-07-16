@@ -1,31 +1,37 @@
 # To Do
 
+### Soon
+
+ - **User:** add notification options: [] grid
+ - **Project:** specify maintainer too (use in place of epdeveloper@cph.org; can by Cody Frazer)
+ - Trigger post-receive in epic.cap, not in git hook
+ - **Post-Receive:** use token_authentication (?) to log a user in automatically when following a new release link in an email
+   - c.f. http://rdoc.info/github/plataformatec/devise/master/Devise/Models/TokenAuthenticatable
  - **Release:** allow adding/removing _tickets_ from release notes
- - **Project:** add notification options: [] grid: environments x users notify on testing update
- - **Email:** add _retest_ group for testing update
+
+### Eventually
+
  - **Kanban:**
    - optimize rendering tickets on the server
    - times are very wrong
+ - **Email:** add _retest_ group for testing update
  - **Testing Report:**
+   - Send notification for 'none' verdict
    - Give a way of prioritizing / flagging tickets
-   - Don't use epdeveloper@cph.org email address, use contacts _in_ the program
+   - Allow markdown comments
  - **Tester Wall**:
    - Show verdicts for finished tickets
    - Implement tickets accordian-style
- - **Post-Receive:** use token_authentication (?) to log a user in automatically when following a new release link in an email
-   - c.f. http://rdoc.info/github/plataformatec/devise/master/Devise/Models/TokenAuthenticatable
 
 ### Refactoring and Configuration
 
  - Remove hard-coded references to `staged_for_development`; use .manual class
  - Refactor hard-coded references to testing queues for "Testing Report" feature
- - Get rid of "environments"; have two hard-coded ones: Testing and Production
- - Move "environments" to the config file?
+ - Get rid of "environments"; have two hard-coded (or user-configured?) ones: Testing and Production
 
 ### Ideas
 
+ - Add graphs and reports on trends in Kanban (CFD, etc)
  - Implement a way of visualizing _batches_
  - Have client know about product version, hard-refresh if code updated
  - **Release:** link commits to diff views
- - Add graphs and reports on trends in Kanban (CFD, etc)
-
