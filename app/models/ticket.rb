@@ -142,10 +142,10 @@ class Ticket < ActiveRecord::Base
     verdicts = verdicts_by_tester.values
     if verdicts.member? "failing"
       "Failing"
-    elsif verdicts.length < testers.length 
-      "Pending"
-    elsif verdicts.all? "passing"
+    elsif verdicts.length >= testers.length && verdicts.all? { |verdict| verdict == "passing" }
       "Passing"
+    else
+      "Pending"
     end
   end
   

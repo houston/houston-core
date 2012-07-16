@@ -21,10 +21,10 @@ class window.Ticket extends Backbone.Model
     verdicts = _.values(@verdictsByTester(@testingNotesSinceLastRelease()))
     if _.include verdicts, 'failing'
       'Failing'
-    else if verdicts.length < window.testers.length
-      'Pending'
-    else if _.all verdicts, ((verdict)-> verdict == 'passing')
+    else if verdicts.length >= window.testers.length && _.all(verdicts, ((verdict)-> verdict == 'passing'))
       'Passing'
+    else
+      'Pending'
   
   verdictsByTester: (notes)->
     verdictsByTester = {}
