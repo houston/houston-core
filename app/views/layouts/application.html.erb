@@ -182,14 +182,10 @@
     </div>
 
     <div class="container-fluid" id="body">
-      <div class="row-fluid">
-        <div class="span9">
-          <%= flash[:alert] %>
-          <%= flash[:notice] %>
-          <%= flash[:error] %>
-          <%= yield %>
-        </div>
-      </div><!--/row-->
+      <%= flash[:alert] %>
+      <%= flash[:notice] %>
+      <%= flash[:error] %>
+      <%= yield %>
 
       <!-- <footer>
         <p>&copy; Company 2012</p>
