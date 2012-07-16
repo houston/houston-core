@@ -129,10 +129,8 @@ private
   def get_deployment_and_recipients
     if @environment.slug == "dev" # <-- knowledge about environments!
       @deployment = "Testing"
-      @recipients = "Testers"
     elsif @environment.slug == "master"
       @deployment = "Production"
-      @recipients = "Everyone"
     end
   end
   

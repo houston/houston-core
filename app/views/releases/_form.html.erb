@@ -51,11 +51,11 @@
     </div>
     <% end %>
     
-    <% if @recipients %>
+    <% if @release.new_record? %>
     <div class="control-group">
       <div class="controls">
         <label for="send_release_email">
-          <input type="checkbox" id="send_release_email" name="send_release_email" value="1" checked="checked" /> Send an email to notify <b><%= @recipients %></b> about this release
+          <input type="checkbox" id="send_release_email" name="send_release_email" value="1" checked="checked" /> Send notifications about this release 
         </label>
       </div>
     </div>

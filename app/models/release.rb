@@ -81,6 +81,15 @@ class Release < ActiveRecord::Base
   
   
   
+  def notification_recipients
+    @notification_recipients ||= begin
+      user_ids = project.notifications.where(environment: environment.slug).pluck(:user_id)
+      User.where(id: user_ids)
+    end
+  end
+  
+  
+  
 private
   
   

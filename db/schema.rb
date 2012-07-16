@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120715230526) do
+ActiveRecord::Schema.define(:version => 20120715230922) do
 
   create_table "changes", :force => true do |t|
     t.integer  "release_id"
@@ -112,6 +112,14 @@ ActiveRecord::Schema.define(:version => 20120715230526) do
     t.integer  "unfuddle_id"
     t.string   "deployment"
     t.datetime "last_release_at"
+  end
+
+  create_table "user_notifications", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "project_id"
+    t.string   "environment"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "users", :force => true do |t|

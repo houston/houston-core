@@ -59,6 +59,41 @@
         <% end -%>
       </div>
     </div>
+    
+    <div class="control-group">
+      <%= f.label :notifications, :class => 'control-label' %>
+      <div class="controls changes-nested-editor">
+        <table class="notifications-table">
+          <thead>
+            <tr>
+              <td class="user"></td>
+              <% @project.environments.each do |environment| %>
+                <th><%= environment.name %></th>
+              <% end %>
+            </tr>
+          <thead>
+          <tbody>
+            <% User.all.group_by(&:role).each do |role, users| %>
+              <tr class="group">
+                <td colspan="3"><%= role.pluralize %></td>
+              </tr>
+              <% users.each do |user| %>
+                <tr>
+                  <td class="notification-user"><span class="avatar-32"><%= avatar_for(user, size: 32) %></span> <%= user.name %></td>
+                  <% @project.environments.each do |environment| %>
+                  <td class="notification-checkbox">
+                    <%= label_tag "project_#{environment.slug}_#{user.id}_notification" do %>
+                      <%= check_box_tag "project[notifications_pairs][]", "#{user.id},#{environment.slug}", @project.notifications.where(environment: environment.slug, user_id: user.id).any?, :id => "project_#{environment.slug}_#{user.id}_notification" %>
+                    <% end %>
+                  </td>
+                  <% end %>
+                </tr>
+              <% end %>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
     <div class="form-actions">
       <%= f.submit nil, :class => 'btn btn-primary' %>

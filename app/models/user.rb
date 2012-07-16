@@ -1,6 +1,9 @@
 class User < ActiveRecord::Base
   
   has_many :testing_notes
+  has_many :notifications, :class_name => "UserNotification", :uniq => true
+  
+  after_create :save_default_notifications
   
   # Include default devise modules. Others available are:
   #      :token_authenticatable,
@@ -20,6 +23,8 @@ class User < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   attr_accessible :name, :email, :role, :password, :password_confirmation, :remember_me
   
+  attr_readonly :role
+  
   ROLES = %w{Guest Administrator Developer Stakeholder Tester}
   
   default_value_for :role, ROLES.first
@@ -37,6 +42,44 @@ class User < ActiveRecord::Base
       where(:role => "#{role}")
     end
     RUBY
+  end
+  
+  
+  
+  def notifications_pairs=(pairs)
+    self.notifications = pairs.map do |pair|
+      project_id, environment = pair.split(",")
+      find_or_create_notification(project_id: project_id.to_i, environment: environment)
+    end
+  end
+  
+  
+  
+  def default_notifications_environments
+    case role # <-- knowledge of environments
+    when "Tester";      %w{dev master}
+    when "Stakeholder"; %w{master}
+    else                []
+    end
+  end
+  
+  
+  
+protected
+  
+  
+  def save_default_notifications
+    environments = default_notifications_environments
+    Project.all.each do |project|
+      environments.each do |environment|
+        self.notifications.push find_or_create_notification(project_id: project.id, environment: environment)
+      end
+    end
+    nil
+  end
+  
+  def find_or_create_notification(attributes)
+    UserNotification.find_or_create(attributes.merge(user_id: id))
   end
   
   

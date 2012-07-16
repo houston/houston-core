@@ -1,6 +1,5 @@
 class NotificationMailer < ActionMailer::Base
-  DEVELOPERS = "EPDeveloper@cph.org"
-  default from: DEVELOPERS
+  default from: "EPDeveloper@cph.org"
   helper UrlHelper
   helper CommitHelper
   helper TicketHelper
@@ -20,8 +19,8 @@ class NotificationMailer < ActionMailer::Base
   def on_release(release)
     @release = release
     mail({
-      to: recipients_for(release).map(&method(:format_email_address)),
-      cc: DEVELOPERS,
+      to: release.notification_recipients.map(&method(:format_email_address)),
+      cc: release.maintainers.map(&method(:format_email_address)),
       subject: release_announcement_for(release)
     }) do |format|
       format.html
@@ -51,20 +50,8 @@ private
     "#{user.name} <#{user.email}>"
   end
   
-  def recipients_for(release)
-    roles = recipient_roles_for(release.environment)
-    User.where(role: roles)
-  end
-  
-  def recipient_roles_for(environment)
-    case environment.slug # <-- knowledge of environments
-    when "dev";     %w{Tester}
-    when "master";  %w{Administrator Stakeholder Tester}
-    end
-  end
-  
   def release_announcement_for(release)
-    case release.environment.slug
+    case release.environment.slug # <-- knowledge of environments
     when "dev"; "Testing updates for #{release.project.name}"
     when "master"; "Release notice for #{release.project.name}"
     end

@@ -1,0 +1,49 @@
+.notifications-table {
+  width: 100%;
+  
+  th, td {
+    padding: 2px;
+    line-height: 32px;
+    text-align: left;
+    vertical-align: middle;
+  }
+  
+  thead {
+    th {
+      text-align: center;
+    }
+  }
+  
+  tbody {
+    th, td {
+      border-bottom: 1px solid #DDD;
+      
+      &.notification-checkbox {
+        padding: 0;
+        text-align:center;
+        
+        label {
+          margin: 0;
+          padding: 2px;
+          line-height: 32px;
+        }
+        
+        
+      }
+      &.notification-user {
+        padding-left: 2em;
+      }
+    }
+    
+    .group {
+      th, td {
+        font-weight: bold;
+        padding-top: 32px;
+      }
+    }
+    
+    .group:first-child {
+      th, td { padding-top: 0; }
+    }
+  }
+}

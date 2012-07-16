@@ -7,8 +7,11 @@ class Project < ActiveRecord::Base
   
   has_many :environments, :dependent => :destroy
   has_many :tickets, :dependent => :destroy
+  has_many :notifications, :class_name => "UserNotification"
   
   accepts_nested_attributes_for :environments, :allow_destroy => true
+  
+  after_create :save_default_notifications
   
   
   
@@ -173,7 +176,16 @@ class Project < ActiveRecord::Base
   end
   
   def maintainers
-    @maintainer ||= User.administrators
+    @maintainers ||= User.administrators
+  end
+  
+  
+  
+  def notifications_pairs=(pairs)
+    self.notifications = pairs.map do |pair|
+      user_id, environment = pair.split(",")
+      find_or_create_notification(user_id: user_id.to_i, environment: environment)
+    end
   end
   
   
@@ -213,6 +225,21 @@ private
   
   def git_clone!
     `cd "#{Rails.root.join("tmp").to_s}" && git clone --mirror #{git_url} #{temp_path}`
+  end
+  
+  
+  
+  def save_default_notifications
+    User.all.each do |user|
+      environments = user.default_notifications_environments
+      environments.each do |environment|
+        self.notifications.push find_or_create_notification(user_id: user.id, environment: environment)
+      end
+    end
+  end
+  
+  def find_or_create_notification(attributes)
+    UserNotification.find_or_create(attributes.merge(project_id: id))
   end
   
   
