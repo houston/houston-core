@@ -15,12 +15,14 @@
       </div>
     </div>
     
-    <div class="control-group">
-      <%= f.label :role, :class => 'control-label' %>
-      <div class="controls">
-        <%= f.select :role, User::ROLES, :class => 'select_field' %>
+    <% if can?(:manage, @user) %>
+      <div class="control-group">
+        <%= f.label :role, :class => 'control-label' %>
+        <div class="controls">
+          <%= f.select :role, User::ROLES, :class => 'select_field' %>
+        </div>
       </div>
-    </div>
+    <% end %>
     
     <hr />
     
