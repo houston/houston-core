@@ -2,9 +2,7 @@
 
 ### Soon
 
- - **User:** add notification options: [] grid
  - **Project:** specify maintainer too (use in place of epdeveloper@cph.org; can by Cody Frazer)
- - Trigger post-receive in epic.cap, not in git hook
  - **Post-Receive:** use token_authentication (?) to log a user in automatically when following a new release link in an email
    - c.f. http://rdoc.info/github/plataformatec/devise/master/Devise/Models/TokenAuthenticatable
  - **Release:** allow adding/removing _tickets_ from release notes
@@ -32,6 +30,5 @@
 ### Ideas
 
  - Add graphs and reports on trends in Kanban (CFD, etc)
- - Implement a way of visualizing _batches_
  - Have client know about product version, hard-refresh if code updated
  - **Release:** link commits to diff views

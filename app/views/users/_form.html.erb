@@ -22,6 +22,40 @@
       </div>
     </div>
     
+    <hr />
+    
+    <div class="control-group">
+      <%= f.label :notifications, :class => 'control-label' %>
+      <div class="controls changes-nested-editor">
+        <table class="notifications-table">
+          <thead>
+            <tr>
+              <td class="project"></td>
+              <%# !<-- knowledge of environments encoded %>
+              <th>PRI</th>
+              <th>Production</th>
+            </tr>
+          <thead>
+          <tbody>
+            <% Project.all.each do |project| %>
+              <tr>
+                <td class="notification-project"><b class="bubble <%= project.color %>"></b> <%= project.name %></td>
+                <% %w{dev master}.each do |slug| %>
+                  <td class="notification-checkbox">
+                    <% if project.environments.where(slug: slug).any? %>
+                      <%= label_tag "user_#{slug}_#{project.id}_notification" do %>
+                        <%= check_box_tag "user[notifications_pairs][]", "#{project.id},#{slug}", @user.notifications.where(environment: slug, project_id: project.id).any?, :id => "user_#{slug}_#{project.id}_notification" %>
+                      <% end %>
+                    <% end %>
+                  </td>
+                <% end %>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
     <% if @user.new_record? %>
     <div class="control-group">
       <div class="controls">

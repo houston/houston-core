@@ -21,7 +21,7 @@ class User < ActiveRecord::Base
          :invitable
   
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :email, :role, :password, :password_confirmation, :remember_me
+  attr_accessible :name, :email, :role, :password, :password_confirmation, :remember_me, :notifications_pairs
   
   attr_readonly :role
   
