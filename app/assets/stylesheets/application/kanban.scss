@@ -220,6 +220,7 @@
   width: 40px;
   height: 40px;
   background-repeat: no-repeat;
+  z-index: 100;
 }
 .passing-ticket-badge { background-position: -40px 0px; }
 .failing-ticket-badge { background-position:   0px 0px; }
