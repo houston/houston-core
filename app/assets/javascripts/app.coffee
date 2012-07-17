@@ -10,8 +10,8 @@ window.App =
       if (@clientRevision != serverRevision)
         window.console.log("[App.checkRevision] reloading ('#{@clientRevision}' != '#{serverRevision}')")
         window.location.reload()
-      else
-        window.console.log("[App.checkRevision] serverRevision is blank")
+    else
+      window.console.log("[App.checkRevision] serverRevision is blank")
   
   relativeRoot: ->
     relativeRoot = App.meta('relative_url_root')
