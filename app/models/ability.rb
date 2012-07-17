@@ -19,6 +19,9 @@ class Ability
       can :create, TestingNote
     end
     
+    # Users can update their own info
+    can :update, user
+    
     # Admins can do everything
     can :manage, :all if user.administrator?
     

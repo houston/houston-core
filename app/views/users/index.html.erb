@@ -10,9 +10,7 @@
         <th><span class="avatar-24"></span> Name</th>
         <th>Email</th>
         <th>Role</th>
-      <% if can?(:update, User) %>
         <th>Actions</th>
-      <% end %>
       </tr>
     </thead>
     <tbody>
@@ -24,9 +22,9 @@
           </td>
           <td><%= mail_to user.email, user.email %></td>
           <td><%= user.role %></td>
-        <% if can?(:update, user) %>
-          <td><%= link_to "Edit", edit_user_path(user), :class => "btn btn-mini" %></td>
-        <% end %>
+          <td>
+            <%= link_to "Edit", edit_user_path(user), :class => "btn btn-mini" if can?(:update, user) %>
+          </td>
         </tr>
       <% end %>
     </tbody>
