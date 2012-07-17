@@ -14,7 +14,7 @@ class window.TestingTicketView extends Backbone.View
     @viewInEdit = null
   
   render: ->
-    window.console.log "[ticket] render ##{@ticket.get('number')}", @ticket.toJSON()
+    # window.console.log "[ticket] render ##{@ticket.get('number')}", @ticket.toJSON()
     $el = $(@el)
     $el.html @renderTicket(@ticket.toJSON())
     
