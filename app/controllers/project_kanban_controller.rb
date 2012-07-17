@@ -1,5 +1,6 @@
 class ProjectKanbanController < ApplicationController
   before_filter :find_project
+  before_filter :no_cache, :only => [:queue]
   
   
   def index
