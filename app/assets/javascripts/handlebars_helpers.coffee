@@ -12,6 +12,9 @@ Handlebars.registerHelper 'formatDuration', (seconds)->
     unit = if days == 1 then 'day' else 'days'
     "#{days} #{unit}"
 
+Handlebars.registerHelper 'formatTime', (timestamp)->
+  Date.create(timestamp).format('ddd mmm d, yyyy h:mmt')
+
 # Tickets that have been in a queue for less than 2 days are 'young';
 # ones that are 3-7 days old are 'adult'; tickets that have been in
 # their queue longer than 7 days are 'old'.

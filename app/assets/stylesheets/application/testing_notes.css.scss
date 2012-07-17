@@ -101,7 +101,8 @@ ul.tester-names {
   clear: both;
   
   .tester-avatar { float: left; }
-  .testing-note-body { margin-left: 40px; padding-top: 5px; }
+  .testing-note-body { margin-left: 40px; padding-top: 1px; }
+  .testing-note-timestamp { line-height: 1em; color: #333; display: block; }
   
   textarea {
     width: 80%;
