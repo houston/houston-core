@@ -6,9 +6,12 @@ window.App =
   checkRevision: (jqXHR)->
     @clientRevision ||= App.meta('revision')
     serverRevision = jqXHR.getResponseHeader('X-Revision')
-    unless @clientRevision == serverRevision
-      window.console.log("[App.checkRevision] reloading (#{@clientRevision} != #{serverRevision})")
-      window.location.reload()
+    if serverRevision
+      if (@clientRevision != serverRevision)
+        window.console.log("[App.checkRevision] reloading ('#{@clientRevision}' != '#{serverRevision}')")
+        window.location.reload()
+      else
+        window.console.log("[App.checkRevision] serverRevision is blank")
   
   relativeRoot: ->
     relativeRoot = App.meta('relative_url_root')
