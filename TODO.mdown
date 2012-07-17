@@ -3,15 +3,15 @@
 ### Soon
 
  - **Project:** specify maintainer too (use in place of epdeveloper@cph.org; can by Cody Frazer)
- - **Post-Receive:** use token_authentication (?) to log a user in automatically when following a new release link in an email
-   - c.f. http://rdoc.info/github/plataformatec/devise/master/Devise/Models/TokenAuthenticatable
- - **Release:** allow adding/removing _tickets_ from release notes
+ - **Post-Receive:** use token_authentication (?) to log a user in automatically when following a new release link in an email (c.f. http://rdoc.info/github/plataformatec/devise/master/Devise/Models/TokenAuthenticatable)
+ - **Release:**
+   - allow adding/removing _tickets_ from release notes
+   - allow adding a custom message to the top
 
 ### Eventually
 
- - **Kanban:**
-   - optimize rendering tickets on the server
- - **Email:** add _retest_ group for testing update
+ - **Kanban:** optimize rendering tickets on the server
+ - **Release Email:** add _retest_ group for testing update
  - **Testing Report:**
    - Send notification for 'none' verdict
    - Give a way of prioritizing / flagging tickets
