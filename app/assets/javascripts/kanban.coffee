@@ -8,12 +8,11 @@ class window.Kanban
     @observer = new Observer()
     self = @
     
-    # Make the Kanban fill the browser window
+    $('body').addClass('with-kanban')
     @kanban = $('#kanban')
     @window = $(window)
     @top = @naturalTop = @kanban.offset().top
-    @window.resize => @setKanbanSize()
-    @setKanbanSize()
+    @setKanbanHeight()
     
     # Style alternating columns
     @kanban.find('thead tr th:even, tbody tr td:even, tfoot tr th:even').addClass('alt')
@@ -37,11 +36,8 @@ class window.Kanban
       self.resizeColumn $(@).find('ul:first')
       $(@).find('.ticket').popoverForTicket().pseudoHover().illustrateTicketVerdict()
     
-    # Resize the tickets in a column when the window resizes
-    $(window).resize ->
-      # window.console.log('[layout] window resize')
-      $('.kanban-column ul').each ->
-        self.resizeColumn $(@)
+    # Make the Kanban fill the browser window and scale tickets
+    @window.resize(_.bind(@resize, @))
   
   observe: (name, func)-> @observer.observe(name, func)
   unobserve: (name, func)-> @observer.unobserve(name, func)
@@ -90,21 +86,17 @@ class window.Kanban
       App.checkRevision(jqXHR)
       callback(data)
   
-  setKanbanSize: ->
-    height = @window.height() - @top
-    @kanban.css(height: "#{height}px")
-  
   showFullScreen: ->
     window.console.log('full screen')
     @top = 0
     @kanban.addClass('full-screen')
-    @setKanbanSize()
+    @setKanbanHeight()
   
   showNormal: ->
     window.console.log('normal')
     @top = @naturalTop
     @kanban.removeClass('full-screen')
-    @setKanbanSize()
+    @setKanbanHeight()
   
   urlFor: (path)->
     "#{App.relativeRoot()}/kanban/#{path}.json"
@@ -116,6 +108,16 @@ class window.Kanban
     url = @urlFor(path)
     $.ajax url,
       method: method
+  
+  resize: ->
+    self = @
+    @setKanbanHeight()
+    $('.kanban-column ul').each ->
+      self.resizeColumn $(@)
+  
+  setKanbanHeight: ->
+    height = @window.height() - @top
+    @kanban.css(height: "#{height}px")
   
   resizeColumn: ($ul)->
     queue = $ul.attr('id')
@@ -133,7 +135,7 @@ class window.Kanban
     # This is obviously imprecise.
     # 60 is for the admin stripe and its bottom margin
     # 32 is for the THEAD which lists the number of tickets in a queue
-    height = $(window).height() - 60 - 32 - $('tfoot').height()
+    height = $(window).height() - 40 - 32 - $('tfoot').height()
     width = $ul.width()
     
     standardInnerWidth = @standardTicketWidth + @standardPadding
