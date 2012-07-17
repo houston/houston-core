@@ -34,7 +34,7 @@
     <script id="ticket_in_testing_template" type="text/x-handlebars-template">
       <div class="span8">
         <a data-toggle="collapse" data-parent="#tickets" data-target="#ticket_{{id}}_testing_notes" class="testing-notes">[#{{number}}] {{{formatTicketSummary summary}}}</a>
-        {{#committers}} <span class="committer-avatar">{{{testerAvatar email 24 name}}}</span>{{/committers}}
+        {{#committers}} <span class="committer-avatar">{{{avatar email 24 name}}}</span>{{/committers}}
         {{#ifEq deployment "In Production (Released)"}}<span class="label label-inverse">Production</span>{{/ifEq}}
       </div>
       <div class="span4">
@@ -213,6 +213,11 @@
       });
     </script>
     <%= yield :scripts %>
+    <script type="text/javascript">
+      $(function(){
+        $('[rel="tooltip"]').tooltip({placement: 'bottom'})
+      });
+    </script>
 
   </body>
 </html>

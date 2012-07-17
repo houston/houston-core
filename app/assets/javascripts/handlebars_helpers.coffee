@@ -47,8 +47,13 @@ Handlebars.registerHelper 'formatTicketSummary', (message)->
   if sentence then "<b>#{feature}:</b>#{sentence}" else message
 
 Handlebars.registerHelper 'testerAvatar', (email, size, title)->
+  tester = window.testers.findByEmail(email)
   gravatarUrl = "http://www.gravatar.com/avatar/#{MD5(email.toLowerCase().trim())}?r=g&d=identicon&s=#{size}"
-  "<img src=\"#{gravatarUrl}\" width=\"#{size}\" height=\"#{size}\" title=\"#{title}\" />"
+  "<img src=\"#{gravatarUrl}\" width=\"#{size}\" height=\"#{size}\" rel=\"tooltip\" title=\"#{tester.get('name')}\" />"
+  
+Handlebars.registerHelper 'avatar', (email, size, title)->
+  gravatarUrl = "http://www.gravatar.com/avatar/#{MD5(email.toLowerCase().trim())}?r=g&d=identicon&s=#{size}"
+  "<img src=\"#{gravatarUrl}\" width=\"#{size}\" height=\"#{size}\" rel=\"tooltip\" title=\"#{title}\" />"
   
 Handlebars.registerHelper 'ifEq', (v1, v2, block)->
   if v1 == v2
