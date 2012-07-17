@@ -9,17 +9,17 @@ class window.Kanban
     self = @
     
     $('body').addClass('with-kanban')
-    @kanban = $('#kanban')
+    @el = $('#kanban')
     @window = $(window)
-    @top = @naturalTop = @kanban.offset().top
+    @top = @naturalTop = @el.offset().top
     @setKanbanHeight()
     
     # Style alternating columns
-    @kanban.find('thead tr th:even, tbody tr td:even, tfoot tr th:even').addClass('alt')
+    @el.find('thead tr th:even, tbody tr td:even, tfoot tr th:even').addClass('alt')
     
     # Fix the Kanban to the bottom of the window
     # after determining its natural top.
-    @kanban.css('bottom': '0px')
+    @el.css('bottom': '0px')
     
     # It might be nice to calculate this
     # + 8 for 4px margin on all sides
@@ -89,13 +89,13 @@ class window.Kanban
   showFullScreen: ->
     window.console.log('full screen')
     @top = 0
-    @kanban.addClass('full-screen')
+    @el.addClass('full-screen')
     @setKanbanHeight()
   
   showNormal: ->
     window.console.log('normal')
     @top = @naturalTop
-    @kanban.removeClass('full-screen')
+    @el.removeClass('full-screen')
     @setKanbanHeight()
   
   urlFor: (path)->
@@ -117,7 +117,7 @@ class window.Kanban
   
   setKanbanHeight: ->
     height = @window.height() - @top
-    @kanban.css(height: "#{height}px")
+    @el.css(height: "#{height}px")
   
   resizeColumn: ($ul)->
     queue = $ul.attr('id')

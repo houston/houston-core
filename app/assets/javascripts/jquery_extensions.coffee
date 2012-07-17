@@ -38,14 +38,6 @@ $.fn.extend
   appendTicketBadge: (status)->
     $(@).append("<img src=\"#{App.relativeRoot()}/images/badge-#{status}.png\" width=\"38\" height=\"38\" style=\"opacity: 0.3;\" />")
   
-  initializeAutoUpdate: (interval, kanban)->
-    $(@).click ->
-      $('#timer_wrapper').fadeIn()
-      new Refresher
-        time: interval
-        callback: => kanban.loadQueues()
-      $(@).remove()
-  
   appendView: (view)->
     view.render()
     @append(view.el)

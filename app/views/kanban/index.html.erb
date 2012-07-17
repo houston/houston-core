@@ -5,24 +5,42 @@
 <% content_for :scripts do %>
   <script type="text/javascript">
     $(function() {
-      var kanban = new Kanban({
+      
+      window.kanban = new Kanban({
         projects: <%= raw @projects.map { |project| { slug: project.slug, color: project.color } }.to_json %>,
         queues: <%= raw KanbanQueue.slugs %>
       });
       
       kanban.loadQueues();
       
-      $('#auto_update').initializeAutoUpdate(300000, kanban); // 5 minutes
+      function autoUpdate() {
+        kanban.el.addClass('auto-update');
+        $('#auto_update').remove();
+        $('#timer_wrapper').fadeIn();
+        new Refresher({time: 300000, callback: kanban.loadQueues}); // 5 minutes
+      }
+      
+      $('#auto_update').click(function() {
+        autoUpdate();
+        window.location.hash = kanban.el.attr('class');
+      });
       
       $('#full_screen_link').click(function() {
         kanban.showFullScreen();
+        window.location.hash = kanban.el.attr('class');
       });
       
       $(document).keydown(function(e) {
         if(e.keyCode == 27) {
           kanban.showNormal();
+          window.location.hash = kanban.el.attr('class');
         }
       });
+      
+      var options = window.location.hash.substring(1).split(' ');
+      if(_.include(options, 'full-screen')) kanban.showFullScreen();
+      if(_.include(options, 'auto-update')) autoUpdate();
+      
     });
   </script>
 <% end %>
