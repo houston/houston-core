@@ -7,7 +7,7 @@ window.App =
     @clientRevision ||= App.meta('revision')
     serverRevision = jqXHR.getResponseHeader('X-Revision')
     unless @clientRevision == serverRevision
-      window.console.log('[App.checkRevision] reloading...')
+      window.console.log("[App.checkRevision] reloading (#{@clientRevision} != #{serverRevision})")
       window.location.reload()
   
   relativeRoot: ->
