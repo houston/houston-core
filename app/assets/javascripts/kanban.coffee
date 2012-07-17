@@ -86,7 +86,8 @@ class window.Kanban
     xhr = @get "#{project.slug}/#{queueName}"
     xhr.error ->
       window.console.log('error', arguments)
-    xhr.success (data)->
+    xhr.success (data, textStatus, jqXHR)->
+      App.checkRevision(jqXHR)
       callback(data)
   
   setKanbanSize: ->

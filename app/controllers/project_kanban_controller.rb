@@ -22,6 +22,7 @@ class ProjectKanbanController < ApplicationController
         
         # Always render the freshest tickets
         @tickets = @project.tickets_in_queue(@queue)
+        response.headers["X-Revision"] = revision
         render :json => TicketPresenter.new(@tickets)
       end
     end

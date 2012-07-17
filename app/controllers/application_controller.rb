@@ -28,4 +28,33 @@ class ApplicationController < ActionController::Base
     end
   end
   
+  
+  
+  def revision
+    expire_revision!
+    return_or_cache_revision!
+  end
+  
+  def expire_revision!
+    if session[:revision_expiration].blank? || session[:revision_expiration] < Time.now.utc
+      session[:revision] = nil
+      Rails.logger.info "[revision] expiring"
+    end
+  end
+  
+  def return_or_cache_revision!
+    session[:revision] || read_revision.tap do |sha|
+      session[:revision] = sha
+      session[:revision_expiration] = 3.minutes.from_now
+      Rails.logger.info "[revision] sha: #{sha[0..8]}, expiration: #{session[:revision_expiration]}"
+    end
+  end
+  
+  def read_revision
+    revision_path = Rails.root.join("REVISION")
+    File.exists?(revision_path) ? File.read(revision_path).chomp : ""
+  end
+  
+  
+  
 end

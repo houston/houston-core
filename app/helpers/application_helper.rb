@@ -4,6 +4,10 @@ module ApplicationHelper
     @title || Rails.configuration.title
   end
   
+  def revision
+    controller.revision
+  end
+  
   def html_safe(html)
     html.html_safe
   end
