@@ -24,7 +24,7 @@
             <%= link_to project.name, edit_project_path(project) %>
             <% if project.unfuddle_id %>
               <%= link_to unfuddle_project_url(project), :target => "_blank" do %>
-                <%= image_tag "/images/unfuddle.ico", :title => "View in Unfuddle", :width => 16, :height => 16 %>
+                <%= image_tag "/images/unfuddle.ico", "data-tooltip-placement" => "right", :rel => "tooltip", :title => "View in Unfuddle", :width => 16, :height => 16 %>
               <% end %>
             <% end %>
           </td>
