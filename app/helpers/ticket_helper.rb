@@ -31,7 +31,7 @@ module TicketHelper
   
   MINUTE = 60
   HOUR = MINUTE * 60
-  DAY = HOUR = 24
+  DAY = HOUR * 24
   
   def format_duration(seconds)
     if seconds < HOUR
