@@ -15,7 +15,6 @@
  - **Testing Report:**
    - Send notification for 'none' verdict
    - Give a way of prioritizing / flagging tickets
-   - Allow markdown comments
  - **Tester Wall**:
    - Show verdicts for finished tickets
    - Implement tickets accordian-style

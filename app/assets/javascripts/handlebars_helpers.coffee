@@ -15,6 +15,10 @@ Handlebars.registerHelper 'formatDuration', (seconds)->
 Handlebars.registerHelper 'formatTime', (timestamp)->
   Date.create(timestamp).format('ddd mmm d, yyyy h:mmt')
 
+Handlebars.registerHelper 'markdown', (markdown)->
+  converter = new Markdown.Converter()
+  converter.makeHtml(markdown)
+
 # Tickets that have been in a queue for less than 2 days are 'young';
 # ones that are 3-7 days old are 'adult'; tickets that have been in
 # their queue longer than 7 days are 'old'.
