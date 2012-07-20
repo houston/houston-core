@@ -104,6 +104,13 @@ ul.tester-names {
   .testing-note-body { margin-left: 40px; padding-top: 1px; }
   .testing-note-timestamp { line-height: 1em; color: #333; display: block; }
   
+  .tester-comment {
+    h1 { font-size: 22px; line-height: 30px; }
+    h2 { font-size: 18px; line-height: 23px; }
+    h3 { font-size: 15px; line-height: 20px; }
+    h4 { font-size: 14px; line-height: 18px; }
+  }
+  
   textarea {
     width: 80%;
     height: 80px;
