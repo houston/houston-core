@@ -33,8 +33,8 @@ class window.Kanban
     # Ticket description popover
     # window.console.log('[layout] init')
     $('.kanban-column').each ->
-      self.resizeColumn $(@).find('ul:first')
-      $(@).find('.ticket').popoverForTicket().pseudoHover().illustrateTicketVerdict()
+      $queue = $(@).find('ul:first')
+      self.refreshQueue $queue
     
     # Make the Kanban fill the browser window and scale tickets
     @window.resize(_.bind(@resize, @))
@@ -68,15 +68,21 @@ class window.Kanban
       for ticket in tickets
         $queue.append @renderTicket(ticket)
       
-      @resizeColumn $queue
-      
-      $queue.find(".ticket.#{project.slug}")
-        .popoverForTicket()
-        .pseudoHover()
-        .illustrateTicketVerdict()
+      @refreshQueue $queue, ".ticket.#{project.slug}"
       
       @observer.fire('queueLoaded', [queueName, project])
       callback() if callback
+  
+  refreshQueue: ($queue, ticketSelector)->
+    @resizeColumn $queue
+    
+    ticketSelector ?= '.ticket'
+    $tickets = $queue.find(ticketSelector)
+    
+    $tickets
+      .popoverForTicket()
+      .pseudoHover()
+    $tickets.illustrateTicketVerdict() if $queue.attr('id') == 'in_testing'
   
   fetchQueue: (project, queueName, callback)->
     xhr = @get "#{project.slug}/#{queueName}"

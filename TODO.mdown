@@ -22,7 +22,7 @@
 ### Refactoring and Configuration
 
  - Remove hard-coded references to `staged_for_development`; use .manual class
- - Refactor hard-coded references to testing queues for "Testing Report" feature
+ - Refactor hard-coded references to testing queues for "Testing Report" feature (and for Kanban)
  - Get rid of "environments"; have two hard-coded (or user-configured?) ones: Testing and Production
 
 ### Ideas
