@@ -3,7 +3,7 @@ class window.Badge
   constructor: ($el, n, total, status) ->
     return unless status == 'failing' or status == 'passing'
     
-    $div = $('<div style="position:absolute;left:0;top:0;"></div>').appendTo($el)
+    $div = $('<div style="position:absolute;left:0;top:0;" class="scale-me"></div>').appendTo($el)
     
     r = Raphael($div[0], 38, 38)
     x = y = radius = 19

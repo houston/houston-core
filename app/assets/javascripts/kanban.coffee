@@ -74,8 +74,6 @@ class window.Kanban
       callback() if callback
   
   refreshQueue: ($queue, ticketSelector)->
-    @resizeColumn $queue
-    
     ticketSelector ?= '.ticket'
     $tickets = $queue.find(ticketSelector)
     
@@ -83,6 +81,8 @@ class window.Kanban
       .popoverForTicket()
       .pseudoHover()
     $tickets.illustrateTicketVerdict() if $queue.attr('id') == 'in_testing'
+    
+    @resizeColumn $queue
   
   fetchQueue: (project, queueName, callback)->
     xhr = @get "#{project.slug}/#{queueName}"
@@ -193,3 +193,8 @@ class window.Kanban
     $ul.toggleClass('no-number', ratio < 0.333)
     
     $ul.css('font-size': "#{ratio}em")
+    $ul.find('.scale-me').css
+      '-webkit-transform': "scale(#{ratio})"
+      '-moz-transform': "scale(#{ratio})"
+      '-m-transform': "scale(#{ratio})"
+      'transform': "scale(#{ratio})"

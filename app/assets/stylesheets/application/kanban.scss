@@ -218,10 +218,20 @@ body.with-kanban { padding-top: 40px; }
   position: absolute;
   top: -0.5em;
   left: -0.5em;
-  width: 40px;
-  height: 40px;
+  
+  &, img {
+    width: 2.1111111em;           // * 18px = 38px
+    height: 2.1111111em;          // * 18px = 38px
+  }
   background-repeat: no-repeat;
   z-index: 100;
 }
 .passing-ticket-badge { background-position: -40px 0px; }
 .failing-ticket-badge { background-position:   0px 0px; }
+
+.scale-me {
+  -webkit-transform-origin:0 0;
+  -moz-transform-origin:0 0;
+  -ms-transform-origin:0 0;
+  transform-origin:0 0;
+}
