@@ -26,7 +26,7 @@
         kanban.el.addClass('auto-update');
         $('#auto_update').remove();
         $('#timer_wrapper').fadeIn();
-        new Refresher({time: 300000, callback: kanban.loadQueues}); // 5 minutes
+        new Refresher({time: 300000, callback: kanban.loadQueues.bind(kanban)}); // 5 minutes
       }
       
       $('#auto_update').click(function() {
