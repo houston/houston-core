@@ -5,6 +5,42 @@ class TicketQueue < ActiveRecord::Base
   validates :ticket, :presence => true
   validates :queue, :presence => true, :inclusion => KanbanQueue.slugs
   
+  
+  class << self
+    def average_time_for_queue(queue)
+      queue = queue.slug if queue.is_a?(KanbanQueue)
+      
+      connection.select_value "SELECT AVG(q.time_in_queue) FROM (#{where(queue: queue).with_time_in_queue.to_sql}) AS q"
+    end
+    
+    def average_time_for_queues
+      hashes = connection.select_all "SELECT q.queue, AVG(q.time_in_queue) FROM (#{with_time_in_queue.to_sql}) AS q GROUP BY q.queue"
+      Hash[hashes.map(&:values)]
+    end
+    
+    def with_time_in_queue
+      where("ticket_queues.destroyed_at IS NOT NULL") \
+        .group("queue, ticket_id") \
+        .select("queue, ticket_id, SUM(EXTRACT(EPOCH FROM (ticket_queues.destroyed_at-ticket_queues.created_at))) AS time_in_queue")
+    end
+    
+    
+    
+    def average_time_for_queues_for_project(project)
+      hashes = connection.select_all "SELECT q.queue, AVG(q.time_in_queue) FROM (#{with_time_in_queue_for_project(project).to_sql}) AS q GROUP BY q.queue"
+      Hash[hashes.map(&:values)]
+    end
+    
+    def with_time_in_queue_for_project(project)
+      where("ticket_queues.destroyed_at IS NOT NULL") \
+        .joins("INNER JOIN tickets ON ticket_queues.ticket_id=tickets.id") \
+        .where("tickets.project_id=#{project.id}") \
+        .group("queue, ticket_id") \
+        .select("queue, ticket_id, SUM(EXTRACT(EPOCH FROM (ticket_queues.destroyed_at-ticket_queues.created_at))) AS time_in_queue")
+    end
+  end
+  
+  
   def name
     queue
   end
