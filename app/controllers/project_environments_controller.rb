@@ -15,8 +15,15 @@ class ProjectEnvironmentsController < ApplicationController
   end
   
   def post_receive
-    release = @environment.releases.new(commit0: @environment.last_commit, commit1: params[:commit])
-    NotificationMailer.on_post_receive(release).deliver!
+    @release = @environment.releases.new(commit0: @environment.last_commit, commit1: params[:commit])
+    
+    if @release.can_read_commits?
+      @release.load_commits!
+      @release.load_tickets!
+      @release.build_changes_from_commits
+    end
+    
+    NotificationMailer.on_post_receive(@release).deliver!
     head :ok
   end
   
