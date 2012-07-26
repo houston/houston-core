@@ -8,6 +8,7 @@
     <thead>
       <tr>
         <th class="project-title">Title</th>
+        <th class="project-maintainers">Maintainers</th>
         <th class="project-last-release">Last Testing Update (PRI)</th>
         <th class="project-last-release"></th>
         <th class="project-last-release">Last Release (Production)</th>
@@ -26,6 +27,11 @@
               <%= link_to unfuddle_project_url(project), :target => "_blank" do %>
                 <%= image_tag "/images/unfuddle.ico", "data-tooltip-placement" => "right", :rel => "tooltip", :title => "View in Unfuddle", :width => 16, :height => 16 %>
               <% end %>
+            <% end %>
+          </td>
+          <td class="project-maintainers">
+            <% project.maintainers.each do |maintainer| %>
+              <span class="project-maintainer"><%= avatar_for(maintainer) %>&nbsp;<%= link_to maintainer.name, user_path(maintainer) %></span>
             <% end %>
           </td>
           <td class="project-last-release">
