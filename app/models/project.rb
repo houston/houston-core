@@ -8,6 +8,7 @@ class Project < ActiveRecord::Base
   has_many :environments, :dependent => :destroy
   has_many :tickets, :dependent => :destroy
   has_many :notifications, :class_name => "UserNotification"
+  has_and_belongs_to_many :maintainers, :join_table => "projects_maintainers", :class_name => "User"
   
   accepts_nested_attributes_for :environments, :allow_destroy => true
   
@@ -177,10 +178,6 @@ class Project < ActiveRecord::Base
   
   def testers
     @testers ||= User.testers
-  end
-  
-  def maintainers
-    @maintainers ||= User.administrators
   end
   
   

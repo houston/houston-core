@@ -38,6 +38,17 @@
     </div>
 
     <hr />
+
+    <div class="control-group">
+      <%= f.label :maintainers, :class => 'control-label' %>
+      <div class="controls changes-nested-editor">
+        <%= f.nested_editor_for :maintainers do |f| -%>
+          <%= f.select :id, User.where(role: %w{Administrator Developer}).map { |user| [user.name, user.id] } %>
+        <% end -%>
+      </div>
+    </div>
+
+    <hr />
     
     <%# !todo: warn before deleting an environment %>
     <div class="control-group" style="display: none;">

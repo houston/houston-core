@@ -1,4 +1,5 @@
 class ProjectsController < ApplicationController
+  before_filter :convert_maintainers_attributes_to_maintainer_ids
   load_resource :find_by => :slug # will use find_by_permalink!(params[:id])
   authorize_resource
   
@@ -27,6 +28,7 @@ class ProjectsController < ApplicationController
     
     @project = Project.new
     @project.environments.build(Rails.configuration.default_environments) if @project.environments.none?
+    @project.maintainers << current_user if @project.maintainers.none?
 
     respond_to do |format|
       format.html # new.html.erb
@@ -37,6 +39,7 @@ class ProjectsController < ApplicationController
   # GET /projects/1/edit
   def edit
     @project = Project.find_by_slug!(params[:id])
+    @project.maintainers << current_user if @project.maintainers.none?
     
     @title = "#{@project.name}: Edit"
   end
@@ -61,7 +64,7 @@ class ProjectsController < ApplicationController
   # PUT /projects/1.json
   def update
     @project = Project.find_by_slug!(params[:id])
-
+    
     respond_to do |format|
       if @project.update_attributes(params[:project])
         format.html { redirect_to projects_path, notice: 'Project was successfully updated.' }
@@ -78,10 +81,23 @@ class ProjectsController < ApplicationController
   def destroy
     @project = Project.find_by_slug!(params[:id])
     @project.destroy
-
+    
     respond_to do |format|
       format.html { redirect_to projects_url }
       format.json { head :no_content }
     end
   end
+  
+  
+private
+  
+  
+  def convert_maintainers_attributes_to_maintainer_ids
+    attributes = params.fetch(:project, {}).delete(:maintainers_attributes)
+    if attributes
+      params[:project][:maintainer_ids] = attributes.values.select { |attributes| attributes[:_destroy] != "1" }.map { |attributes| attributes[:id].to_i }
+    end
+  end
+  
+  
 end

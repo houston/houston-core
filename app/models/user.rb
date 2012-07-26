@@ -2,6 +2,7 @@ class User < ActiveRecord::Base
   
   has_many :testing_notes
   has_many :notifications, :class_name => "UserNotification", :uniq => true
+  has_and_belongs_to_many :projects, :join_table => "projects_maintainers"
   
   after_create :save_default_notifications
   

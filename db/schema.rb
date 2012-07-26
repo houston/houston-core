@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120726212620) do
+ActiveRecord::Schema.define(:version => 20120726231754) do
 
   create_table "changes", :force => true do |t|
     t.integer  "release_id"
@@ -63,6 +63,13 @@ ActiveRecord::Schema.define(:version => 20120726212620) do
     t.string   "new_tickets_query"
     t.text     "cached_queries"
   end
+
+  create_table "projects_maintainers", :id => false, :force => true do |t|
+    t.integer "project_id"
+    t.integer "user_id"
+  end
+
+  add_index "projects_maintainers", ["project_id", "user_id"], :name => "index_projects_maintainers_on_project_id_and_user_id", :unique => true
 
   create_table "releases", :force => true do |t|
     t.integer  "environment_id"
