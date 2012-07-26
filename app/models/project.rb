@@ -34,7 +34,11 @@ class Project < ActiveRecord::Base
       # Unfuddle will return all tickets if we fetch
       # tickets by number with no numbers given.
       if numbers_to_fetch.any?
-        tickets.concat find_tickets(:number => numbers_to_fetch)
+        begin
+          tickets.concat find_tickets(:number => numbers_to_fetch)
+        rescue SocketError # !todo: replace this with a custom error that represents all remote failures
+          # We couldn't fetch remote tickets, let's just return what we've got for now
+        end
       end
     end
     tickets
