@@ -6,8 +6,6 @@
 
 <%= render partial: "releases/changelog", locals: {release: @release} %>
 
-<br />
-
 <h5>Commits</h5>
 <ul class="commits">
   <% @release.commits.each do |commit| %>

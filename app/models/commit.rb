@@ -20,7 +20,7 @@ class Commit < ActiveRecord::Base
   end
   
   def skip?
-    ticket_numbers.any? || SKIP_PATTERNS.any? { |pattern| message =~ pattern }
+    SKIP_PATTERNS.any? { |pattern| message =~ pattern }
   end
   
   def grit_commit
