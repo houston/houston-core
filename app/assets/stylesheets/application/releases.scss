@@ -13,3 +13,32 @@
   
   li { list-style-type: none; } 
 }
+
+textarea#release_message {
+  width: 100%;
+  height: 120px;
+}
+
+.release-message {
+  margin: 1.5em;
+}
+
+.release-detail {
+  line-height: 1.5em;
+  
+  h5 {
+    float: left;
+    clear: left;
+    width: 80px;
+    margin: 2em 0 0 0;
+  }
+  
+  ul {
+    float: left;
+    margin: 2em 0 0 0;
+    
+    li {
+      list-style-type: none;
+    }
+  }
+}

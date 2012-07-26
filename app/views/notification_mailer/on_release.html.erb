@@ -1,5 +1,12 @@
-<p>The following changes have been deployed to <%= @release.environment.name %>:</p>
+<style type="text/css">
+  h5 { 
+    font-family: 'Calibri', 'Segoe UI', 'Helvetica', sans-serif;
+  }
+</style>
 
-<%= render partial: "releases/changelog", locals: {release: @release} %>
+<%= mdown(@release.message) %>
 
-<p>See <%= link_to "release notes", release_path(@release) %>.</p>
+<h4 style="margin:3em 8px 0.25em; padding:0; line-height:1em; font-family: 'Calibri', 'Segoe UI', 'Helvetica', sans-serif;">Release Notes (<%= link_to "link", release_path(@release) %>)</h4>
+<div style="margin:0 8px; padding:0.5em 1.25em 1em; border:1px solid #ccc; border-width: 1px 0;">
+  <%= render partial: "releases/changelog", locals: {release: @release} %>
+</div>

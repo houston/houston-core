@@ -11,13 +11,9 @@
     </div>
 
     <div class="control-group">
-      <%= f.label :tickets, "Tickets", :class => 'control-label' %>
-      <div class="controls changes-nested-editor">
-        <ol>
-          <% @release.tickets.each do |ticket| %>
-            <li><%= link_to_ticket(ticket) %></li>
-          <% end %>
-        </ol>
+      <%= f.label :message, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.text_area :message, :class => 'text_field' %>
       </div>
     </div>
 
@@ -30,6 +26,17 @@
       </div>
     </div>
     
+    <div class="control-group">
+      <%= f.label :tickets, "Tickets", :class => 'control-label' %>
+      <div class="controls changes-nested-editor">
+        <ol>
+          <% @release.tickets.each do |ticket| %>
+            <li><%= link_to_ticket(ticket) %></li>
+          <% end %>
+        </ol>
+      </div>
+    </div>
+
     <div class="control-group">
       <label class="control-label">Commits</label>
       <div class="controls changes-nested-editor">

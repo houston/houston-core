@@ -1,14 +1,24 @@
 <%= render partial: "releases/header", locals: {release: @release} %>
 
-<h3><%= @release.name %></h3>
-
-<br />
-
-<%= render partial: "releases/changelog", locals: {release: @release} %>
-
-<h5>Commits</h5>
-<ul class="commits">
-  <% @release.commits.each do |commit| %>
-    <li><%= format_commit(commit) %></li>
-  <% end %>
-</ul>
+<div class="release">
+  
+  <h3><%= @release.name %></h3>
+  
+  <div class="release-message">
+    <%= mdown(@release.message) %>
+  </div>
+  
+  <div class="release-detail">
+    
+    <%= render partial: "releases/changelog", locals: {release: @release} %>
+    
+    <h5>Commits</h5>
+    <ul class="commits">
+      <% @release.commits.each do |commit| %>
+        <li><%= format_commit(commit) %></li>
+      <% end %>
+    </ul>
+    
+  </div>
+  
+</div>

@@ -43,6 +43,7 @@ class ReleasesController < ApplicationController
       @release.load_commits!
       @release.load_tickets!
       @release.build_changes_from_commits
+      @release.message = "Hey everyone!\n\n#{@release.changes.length} changes have been deployed to #{@release.environment.name}."
     end
     respond_to do |format|
       format.html do

@@ -6,7 +6,6 @@
  - **Post-Receive:** use token_authentication (?) to log a user in automatically when following a new release link in an email (c.f. http://rdoc.info/github/plataformatec/devise/master/Devise/Models/TokenAuthenticatable)
  - **Release:**
    - allow adding/removing _tickets_ from release notes
-   - allow adding a custom message to the top
 
 ### Eventually
 

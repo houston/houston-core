@@ -3,6 +3,7 @@ class NotificationMailer < ActionMailer::Base
   helper UrlHelper
   helper CommitHelper
   helper TicketHelper
+  helper MarkdownHelper
   
   
   def on_post_receive(release)
