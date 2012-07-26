@@ -1,5 +1,19 @@
-<p>The following changes have been deployed to <%= @release.environment.name %>:</p>
+<style type="text/css">
+  h5 { 
+    font-family: 'Calibri', 'Segoe UI', 'Helvetica', sans-serif;
+  }
+</style>
 
-<%= render partial: "releases/changelog", locals: {release: @release} %>
+<h3>New Release</h3>
 
-<%= link_to "Create Release", new_release_url(@release) %>
+<div style="position:relative; border: 1px solid #ccc; padding: .66em 1.5em; background-color: #efefef;">
+  <h3 style="color: rgba(0,0,0,0.15); font-size: 6.66em; position: absolute; top: 0.5em; left: 0.25em; margin: 0; padding: 0; -webkit-transform:rotate(-30deg); -moz-transform:rotate(-30deg); -ms-transform:rotate(-30deg); transform:rotate(-30deg);">Sample</h3>
+  
+  <p>The following changes have been deployed to <%= @release.environment.name %>:</p>
+  
+  <%= render partial: "releases/changelog", locals: {release: @release} %>
+</div>
+
+<form action="<%= new_release_url(@release) %>" method="get">
+  <input type="submit" value="Create Release" />
+</form>
