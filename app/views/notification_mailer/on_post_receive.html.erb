@@ -12,6 +12,4 @@
   <%= render partial: "releases/changelog", locals: {release: @release} %>
 </div>
 
-<form action="<%= new_release_url(@release) %>" method="get">
-  <input type="submit" value="Create Release" />
-</form>
+<%= link_to "Create Release", new_release_url(@release) %>
