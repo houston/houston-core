@@ -69,3 +69,12 @@ h1.space-below {
 .committer-avatar img {
   border: 2px solid #555;
 }
+
+.remember-me {
+  line-height: 1em;
+  
+  label {
+    display: inline;
+    vertical-align: middle;
+  }
+}
