@@ -1,13 +1,21 @@
 <h5>Changes</h5>
-<ul class="changes">
-  <% release.changes.each do |change| %>
-    <li><%= format_change(change) %></li>
-  <% end %>
-</ul>
+<% if release.changes.any? %>
+  <ul class="changes">
+    <% release.changes.each do |change| %>
+      <li><%= format_change(change) %></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>There no important changes in this release.</p>
+<% end %>
 
 <h5>Tickets</h5>
-<ul class="tickets">
-  <% release.tickets.each do |ticket| %>
-    <li><%= link_to_ticket(ticket) %></li>
-  <% end %>
-</ul>
+<% if release.tickets.any? %>
+  <ul class="tickets">
+    <% release.tickets.each do |ticket| %>
+      <li><%= link_to_ticket(ticket) %></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No tickets were mentioned in this release.</p>
+<% end %>
