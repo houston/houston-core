@@ -86,12 +86,12 @@ class Project < ActiveRecord::Base
   def ticket_attributes_from_unfuddle_ticket(unfuddle_ticket)
     attributes = Ticket.attributes_from_unfuddle_ticket(unfuddle_ticket)
     
-    deployment_field = find_in_cache_or_execute(:depoyment_field) do
+    deployment_field = find_in_cache_or_execute(:deployment_field) do
       ticket_system.get_ticket_attribute_for_custom_value_named!("Deployment")
     end
     
     deployment_value_id = unfuddle_ticket[deployment_field]
-    deployment_value = deployment_value_id.blank? ? nil : find_in_cache_or_execute("depoyment_value_#{deployment_value_id}") do
+    deployment_value = deployment_value_id.blank? ? nil : find_in_cache_or_execute("deployment_value_#{deployment_value_id}") do
       ticket_system.find_custom_field_value_by_id!("Deployment", deployment_value_id).value
     end
     
