@@ -17,7 +17,7 @@
     <tr>
       <% Ticket.benchmark("[kanban] time to render tickets:") do %>
         <% KanbanQueue.all.each do |queue|; tickets_by_project = tickets_by_project_by_queue[queue.slug] %>
-          <td class="kanban-column<%= " manual" if queue.local_query? %>" data-queue="<%= queue.slug %>">
+          <td class="kanban-column" data-queue="<%= queue.slug %>">
             <ul id="<%= queue.slug %>">
               <% projects.each do |project|; tickets = tickets_by_project[project.id] %>
                 <% tickets.each do |ticket|; ticket.project = project %>

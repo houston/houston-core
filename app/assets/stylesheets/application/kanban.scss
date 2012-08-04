@@ -41,21 +41,7 @@ body.with-kanban { padding-top: 40px; }
 
 .popover { z-index: 3000; }
 
-.remove-instructions { display:block; font-style:italic; color:#ababab; }
 .no-feature { font-style:italic; }
-
-#modal {
-  
-  width: 275px;
-  
-  form input[type='text'] {
-    width:145px;
-  }
-  
-  #error {
-    color: red;
-  }
-}
 
 #kanban {
   table-layout: fixed;
@@ -148,22 +134,6 @@ body.with-kanban { padding-top: 40px; }
     &.hover {
       border-color: #ed8 !important;
       background-color: #ffffcf !important;
-    }
-    
-    &.placeholder {
-      border-style: dotted;
-      border-color: #aaa;
-      background-color: #fff;
-      
-      &:hover {
-        cursor: pointer;
-      }
-    }
-    
-    .add-ticket {
-      font-size: 2em;
-      vertical-align: middle;
-      color: #c0c0c0;
     }
     
     .ticket-number { 

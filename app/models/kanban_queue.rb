@@ -11,10 +11,6 @@ class KanbanQueue
     @query = attributes[:query]
   end
   
-  def local_query?
-    query == :local
-  end
-  
   class << self
     def all
       @queues ||= create(Rails.application.config.queues)
