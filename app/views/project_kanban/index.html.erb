@@ -52,14 +52,12 @@
       
       
       
-      $('.kanban-column')
+      $('tfoot .kanban-column')
         .addClass('clickable')
         .hover(function() {
-            var queue = $(this).attr('data-queue');
-            $('.kanban-column[data-queue="' + queue + '"]').addClass('hover');
+            $(this).addClass('hover');
           }, function() {
-            var queue = $(this).attr('data-queue');
-            $('.kanban-column[data-queue="' + queue + '"]').removeClass('hover');
+            $(this).removeClass('hover');
           })
         .click(function(e) {
             var $target = $(e.target);
