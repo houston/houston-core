@@ -6,7 +6,7 @@ class Ticket < ActiveRecord::Base
   has_and_belongs_to_many :releases, before_add: :ignore_release_if_duplicate
   has_and_belongs_to_many :commits
   
-  default_scope includes(:ticket_queue)
+  default_scope order(:number).includes(:ticket_queue)
   
   validates :project_id, presence: true
   validates :summary, presence: true
