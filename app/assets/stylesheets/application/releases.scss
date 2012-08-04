@@ -7,7 +7,7 @@
   line-height: 1em;
 }
 
-.controls > .commits {
+.controls > ul {
   margin: 0 0 5px 0;
   padding: 5px 0 0 0;
   
@@ -29,13 +29,13 @@ textarea#release_message {
   h5 {
     float: left;
     clear: left;
-    width: 80px;
-    margin: 2em 0 0 0;
+    width: 88px;
+    margin: 20px 0 0 0;
   }
   
   p, ul {
     float: left;
-    margin: 2em 0 0 0;
+    margin: 20px 0 0 0;
     
     li {
       list-style-type: none;

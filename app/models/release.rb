@@ -73,6 +73,12 @@ class Release < ActiveRecord::Base
   
   
   
+  def goldmine_numbers
+    @goldmine_numbers ||= tickets.each_with_object([]) { |ticket, numbers| numbers.concat(ticket.goldmine_numbers) }.uniq
+  end
+  
+  
+  
   def update_tickets_in_unfuddle!
     kanban_field_id = environment.resulting_kanban_field_id
     if kanban_field_id

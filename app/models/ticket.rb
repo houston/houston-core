@@ -133,6 +133,10 @@ class Ticket < ActiveRecord::Base
     commits.map { |commit| {name: commit.committer, email: commit.committer_email} }.uniq
   end
   
+  def goldmine_numbers
+    (goldmine || "").split(",").map(&:strip)
+  end
+  
   
   
   # c.f. app/assets/models/ticket.coffee

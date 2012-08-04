@@ -19,3 +19,14 @@
 <% else %>
   <p>No tickets were mentioned in this release.</p>
 <% end %>
+
+<h5>Goldmine No.</h5>
+<% if release.goldmine_numbers.any? %>
+  <ul class="goldmine-numbers">
+    <% release.goldmine_numbers.each do |number| %>
+      <li><%= number %></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No goldmine numbers were associated with this release.</p>
+<% end %>

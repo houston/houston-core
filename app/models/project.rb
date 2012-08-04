@@ -85,17 +85,24 @@ class Project < ActiveRecord::Base
   
   def ticket_attributes_from_unfuddle_ticket(unfuddle_ticket)
     attributes = Ticket.attributes_from_unfuddle_ticket(unfuddle_ticket)
+    attributes.merge(
+      "deployment" => get_custom_ticket_attribute(unfuddle_ticket, "Deployment"),
+      "goldmine" => get_custom_ticket_attribute(unfuddle_ticket, "Goldmine")
+    )
+  end
+  
+  def get_custom_ticket_attribute(unfuddle_ticket, custom_field_name)
+    custom_field_key = custom_field_name.underscore.gsub(/\s/, "_")
     
-    deployment_field = find_in_cache_or_execute(:deployment_field) do
-      ticket_system.get_ticket_attribute_for_custom_value_named!("Deployment")
+    key = find_in_cache_or_execute("#{custom_field_key}_field") do
+      ticket_system.get_ticket_attribute_for_custom_value_named!(custom_field_name)
     end
     
-    deployment_value_id = unfuddle_ticket[deployment_field]
-    deployment_value = deployment_value_id.blank? ? nil : find_in_cache_or_execute("deployment_value_#{deployment_value_id}") do
-      ticket_system.find_custom_field_value_by_id!("Deployment", deployment_value_id).value
+    value_id = unfuddle_ticket[key]
+    return nil if value_id.blank?
+    find_in_cache_or_execute("#{custom_field_key}_value_#{value_id}") do
+      ticket_system.find_custom_field_value_by_id!(custom_field_name, value_id).value
     end
-    
-    attributes.merge("deployment" => deployment_value)
   end
   
   

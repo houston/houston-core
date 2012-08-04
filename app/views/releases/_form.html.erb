@@ -36,6 +36,17 @@
         </ol>
       </div>
     </div>
+    
+    <div class="control-group">
+      <label class="control-label">Goldmine No.</label>
+      <div class="controls changes-nested-editor">
+        <ul class="goldmine-numbers">
+          <% @release.goldmine_numbers.each do |number| %>
+            <li><%= number %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
 
     <div class="control-group">
       <label class="control-label">Commits</label>
