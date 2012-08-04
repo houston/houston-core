@@ -29,6 +29,7 @@ gem 'handlebars_assets'
 # Helpers
 gem 'addressable', :require => 'addressable/uri'
 gem 'cancan'
+gem 'childprocess'
 gem 'default_value_for'
 gem 'devise',           '>= 2.0.0'
 gem 'devise_invitable', '~> 1.0.0'

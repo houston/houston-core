@@ -2,6 +2,7 @@ class Release < ActiveRecord::Base
   
   after_create :load_commits!, :if => :can_read_commits?
   after_create :associate_tickets_with_self
+  after_create { Changelog.observer.fire "release:create", self }
   
   belongs_to :environment
   belongs_to :user

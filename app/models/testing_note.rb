@@ -1,5 +1,7 @@
 class TestingNote < ActiveRecord::Base
   
+  after_create { Changelog.observer.fire "testing_note:create", self }
+  
   belongs_to :user
   belongs_to :ticket
   
@@ -42,6 +44,16 @@ class TestingNote < ActiveRecord::Base
       end
     end
     self.comment = val
+  end
+  
+  
+  
+  def pass?
+    verdict == "works"
+  end
+  
+  def fail?
+    verdict == "fails"
   end
   
   
