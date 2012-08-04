@@ -3,27 +3,30 @@
 ### Soon
 
  - **Post-Receive:** use token_authentication (?) to log a user in automatically when following a new release link in an email (c.f. http://rdoc.info/github/plataformatec/devise/master/Devise/Models/TokenAuthenticatable)
- - **Release:**
-   - allow adding/removing _tickets_ from release notes
+ - **Login:** after login, redirect to the page where you were going
 
 ### Eventually
 
  - **Kanban:** optimize rendering tickets on the server
+ - **Release:** allow adding/removing _tickets_ from release notes
  - **Release Email:** add _retest_ group for testing update
  - **Testing Report:**
    - Send notification for 'none' verdict
    - Give a way of prioritizing / flagging tickets
- - **Tester Wall**:
-   - Show verdicts for finished tickets
-   - Implement tickets accordian-style
+   - Expland/collapse all
 
 ### Refactoring and Configuration
 
- - Remove hard-coded references to `staged_for_development`; use .manual class
- - Refactor hard-coded references to testing queues for "Testing Report" feature (and for Kanban)
- - Get rid of "environments"; have two hard-coded (or user-configured?) ones: Testing and Production
+ - Get rid of "environments"; have two hard-coded ones, Testing and Production, or make them user-configurable
+ - Refactor hard-coded knowledge about Unfuddle/EP into configuration
+   - "in_testing" queue for "Testing Report"
+   - "deployment" for "Production" badge on tickets
+   - "goldmine" for Release notes
 
 ### Ideas
 
  - Add graphs and reports on trends in Kanban (CFD, etc)
- - **Release:** link commits to diff views
+ - **Release:** link commits to diff views (maybe esp. if GitHub integration?)
+ - **Tester Wall**:
+   - Show verdicts for finished tickets
+   - Implement tickets accordian-style
