@@ -83,9 +83,11 @@ class UsersController < ApplicationController
     if params[:send_invitation]
       @user = User.invite!(params[:user])
     else
+      notifications_pairs = params[:user].delete(:notifications_pairs)
       @user = User.new(params[:user])
       @user.skip_password = true
       @user.save!
+      @user.notifications_pairs = notifications_pairs if notifications_pairs
     end
     
     respond_to do |format|
