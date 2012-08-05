@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   include FreightTrain
+  include UrlHelper
   protect_from_forgery
   
   rescue_from CanCan::AccessDenied do |exception|
@@ -7,6 +8,7 @@ class ApplicationController < ActionController::Base
       redirect_url = request.referrer.blank? ? root_url : :back
       redirect_to redirect_url, :alert => exception.message
     else
+      session["user.return_to"] = request.url
       require_login
     end
   end
@@ -22,9 +24,10 @@ class ApplicationController < ActionController::Base
   end
   
   def after_sign_in_path_for(user)
-    case user.role
-    when "Tester"; user_path(user)
-    else; root_path
+    if session["user.return_to"].present?
+      session["user.return_to"]
+    else
+      default_path_for(user)
     end
   end
   

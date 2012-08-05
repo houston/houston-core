@@ -3,7 +3,6 @@
 ### Soon
 
  - **Post-Receive:** use token_authentication (?) to log a user in automatically when following a new release link in an email (c.f. http://rdoc.info/github/plataformatec/devise/master/Devise/Models/TokenAuthenticatable)
- - **Login:** after login, redirect to the page where you were going
 
 ### Eventually
 

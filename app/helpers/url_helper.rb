@@ -21,6 +21,13 @@ module UrlHelper
     root_path(*args)
   end
   
+  def default_path_for(user)
+    case user.role
+    when "Tester"; user_path(user)
+    else; root_path
+    end
+  end
+  
   
   
   def environments_path(*args)
