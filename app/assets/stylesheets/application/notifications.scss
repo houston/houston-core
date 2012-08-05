@@ -10,7 +10,19 @@
   
   thead {
     th {
-      text-align: center;
+      padding: 0 2em 0 0;
+      text-align: right;
+    }
+  }
+  
+  tfoot {
+    th {
+      padding: .5em 2em 0 0;
+      text-align: right;
+      
+      a { 
+        cursor: pointer;
+      }
     }
   }
   
@@ -19,8 +31,8 @@
       border-bottom: 1px solid #DDD;
       
       &.notification-checkbox {
-        padding: 0;
-        text-align:center;
+        padding: 0 2em 0 0;
+        text-align: right;
         
         label {
           margin: 0;
