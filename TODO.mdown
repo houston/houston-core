@@ -25,6 +25,7 @@
 ### Ideas
 
  - Add graphs and reports on trends in Kanban (CFD, etc)
+ - **Users** have a way of filtering, grouping, selecting only certain ones
  - **Release:** link commits to diff views (maybe esp. if GitHub integration?)
  - **Tester Wall**:
    - Show verdicts for finished tickets

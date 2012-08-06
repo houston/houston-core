@@ -4,31 +4,25 @@
 </h1>
 
 <% if @users.any? %>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th><span class="avatar-24"></span> Name</th>
-        <th>Email</th>
-        <th>Role</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @users.each do |user| %>
-        <tr>
-          <td>
-            <span class="avatar-42"><%= avatar_for(user, size: 42) %></span>
-            <%= link_to user.name, user_path(user) %>
-          </td>
-          <td><%= mail_to user.email, user.email %></td>
-          <td><%= user.role %></td>
-          <td>
-            <%= link_to "Edit", edit_user_path(user), :class => "btn btn-mini" if can?(:update, user) %>
-          </td>
-        </tr>
+  <% users_by_role(@users) do |role, users| %>
+    <h4><%= role.pluralize %></h4>
+    <ol class="columns">
+      <% users.in_groups(2, false).each do |users| %>
+        <li class="column users-column">
+          <ul class="users">
+            <% users.each do |user| %>
+              <li class="user">
+                <span class="user-avatar avatar-54"><%= avatar_for(user, size: 54) %></span>
+                <h3 class="user-name"><%= link_to user.name, user_path(user) %></h3>
+                <span class="user-email"><%= mail_to user.email, user.email %></span>
+                <%= link_to "Edit", edit_user_path(user), :class => "btn btn-mini" if can?(:update, user) %>
+              </li>
+            <% end %>
+          </ul>
+        </li>
       <% end %>
-    </tbody>
-  </table>
+    </ol>
+  <% end %>
 <% else %>
   <div class="alert alert-info">No users have been created yet.</div>
 <% end %>

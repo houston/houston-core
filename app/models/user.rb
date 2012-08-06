@@ -26,7 +26,7 @@ class User < ActiveRecord::Base
   
   attr_readonly :role
   
-  ROLES = %w{Guest Administrator Developer Stakeholder Tester}
+  ROLES = %w{Administrator Developer Tester Stakeholder Guest}
   
   default_value_for :role, ROLES.first
   

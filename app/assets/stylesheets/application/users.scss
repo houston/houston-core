@@ -1,0 +1,28 @@
+.users {
+  margin: 1em .5em 3em 0;
+  padding: 0;
+  
+  li {
+    list-style-type: none;
+    margin: 1em .25em 1em;
+    overflow: hidden;
+    
+    padding: 12px;
+    border-radius: 4px;
+    background-color: #F7F7F9;
+    border: 1px solid #E1E1E8;
+    
+    .user-avatar {
+      float: left;
+      margin: -1em 1em -1em -1em;
+      padding: 1em;
+      border-right: 1px solid #E1E1E8;
+      background: white;
+      display: block;
+    }
+  }
+}
+
+.users-column {
+  width: 360px;
+}

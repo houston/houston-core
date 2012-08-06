@@ -78,3 +78,15 @@ h1.space-below {
     vertical-align: middle;
   }
 }
+
+ol.columns {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+li.column {
+  float: left;
+  list-style-type: none;
+  display: block;
+}
