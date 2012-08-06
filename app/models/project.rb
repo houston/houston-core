@@ -95,7 +95,7 @@ class Project < ActiveRecord::Base
     custom_field_key = custom_field_name.underscore.gsub(/\s/, "_")
     
     key = find_in_cache_or_execute("#{custom_field_key}_field") do
-      ticket_system.get_ticket_attribute_for_custom_value_named!(custom_field_name)
+      ticket_system.get_ticket_attribute_for_custom_value_named!(custom_field_name) rescue "undefined"
     end
     
     value_id = unfuddle_ticket[key]
