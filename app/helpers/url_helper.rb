@@ -89,4 +89,10 @@ module UrlHelper
   
   
   
+  def weekly_report_path(date=Date.today, options={})
+    super(options.merge(year: date.year, month: date.month, day: date.day))
+  end
+  
+  
+  
 end

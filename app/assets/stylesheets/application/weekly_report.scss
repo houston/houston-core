@@ -1,0 +1,156 @@
+.weekly-report {
+  max-width: 880px;
+  padding: 20px 40px;
+  
+  h1 {
+    font-weight: normal;
+    font-size: 4em;
+    line-height: .66em;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight: 100;
+
+    .subtitle {
+      display: block;
+      font-size: .33em;
+      font-weight: 400;
+    }
+  }
+  
+  .disabled {
+    color: #999;
+  }
+  
+  
+  h3.heading {
+    font-weight: bold;
+    font-size: 2.25em;
+    
+    margin-top: 2em;
+    border-bottom: 1px solid #bbb;
+    
+    line-height: 48px;
+    vertical-align: top;
+    
+    b.icon {
+      display: inline-block;
+      width: 48px;
+      height: 48px;
+      background-image: url('/images/headings-48.png');
+      background-repeat: no-repeat;
+      vertical-align: bottom;
+      
+      &.commits { background-position: -48px -2px; }
+      &.bugs { background-position: 0 -2px; }
+      &.tickets { background-position: -96px -2px; }
+    }
+  }
+  
+  
+  .weekly-report-body {
+    padding-left: 54px;
+  }
+  
+  
+  table {
+    width: 100%;
+    margin-bottom: 6em;
+    
+    &.commits {
+      th {
+        text-align: left;
+        width: 80px;
+        padding: 1.25em .75em .5em;
+      }
+      
+      td {
+        vertical-align: top;
+        padding: .25em .75em;
+        line-height: 9px;
+      }
+    }
+    
+    &.bugs {
+      
+      td {
+        padding: 1em 0;
+      }
+      
+      th { 
+        text-align: left;
+        font-size: 1.5em;
+        min-width: 5em;
+      }
+    }
+  }
+  
+  
+  b.commit {
+    display: inline-block;
+    width: 14px;
+    height: 13px;
+    margin: 1px;
+    border-radius: 2px;
+  }
+  
+  
+  ol.column {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    vertical-align: top;
+  }
+  
+  
+  li.bug {
+    width: 28px;
+    height: 28px;
+    background-image: url('/images/bugs-3-32.png');
+    background-repeat: no-repeat;
+    background-position: -2px -2px;
+    list-style: none;
+    
+    &.resolved { background-position: -34px -2px; }
+    &.new { background-position: -66px -2px; }
+  }
+  
+  
+  .score {
+    margin: 4px 0 4px 1em;
+    text-align: right;
+    white-space: nowrap;
+    
+    p {
+      display: inline-block;
+      text-align: right;
+      margin: 0 0 0 1.25em;
+      width: 5em;
+    }
+    
+    .score-count {
+      display: block;
+      font-size: 3.25em;
+      line-height: 0.78em;
+      font-weight: 100;
+      
+      .sign {
+        font-size: 0.5em;
+        vertical-align: top;
+      }
+    }
+    
+    .score-label {
+      display: block;
+      font-size: 0.85em;
+      font-weight: 500;
+      padding-right: 1px;
+    }
+    
+    .new-bugs {
+      color: #B50000;
+    }
+    
+    .resolved-bugs {
+      color: #42A800;
+    }
+  }
+}

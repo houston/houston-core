@@ -37,6 +37,9 @@ Changelog::Application.routes.draw do
     resources :testing_notes
   end
   
+  match "weekly_report", :to => "weekly_report#show"
+  match "weekly_report/:year/:month/:day", :to => "weekly_report#show", :as => :weekly_report
+  
   
   # The priority is based upon order of creation:
   # first created -> highest priority.

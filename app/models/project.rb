@@ -173,7 +173,13 @@ class Project < ActiveRecord::Base
   
   
   def repo
-    @repo ||= Grit::Repo.new(git_path)
+    git_path.blank? ? nil : @repo ||= Grit::Repo.new(git_path)
+  end
+  
+  
+  
+  def commits_during(range)
+    repo ? Grit::Commit.find_all(repo, nil, {after: range.begin, before: range.end}) : []
   end
   
   

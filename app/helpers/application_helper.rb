@@ -21,6 +21,28 @@ module ApplicationHelper
     "| #{link_to(link_text, url)}".html_safe unless current_page?(url)
   end
   
+  
+  
+  def in_columns(collection, options={}, &block)
+    max_size = options.fetch(:max_size, 10)
+    column_count = (collection.length.to_f / max_size).ceil
+    column_count = 1 if column_count < 1
+    in_columns_of(collection, column_count, &block)
+  end
+  
+  def in_columns_of(collection, column_count)
+    html = collection.in_groups_of(column_count).each_with_object("") do |items_in_column, html|
+      html << "<ol class=\"column\">"
+      items_in_column.compact.each do |item|
+        html << capture { yield (item) }
+      end
+      html << "</ol>"
+    end
+    html.html_safe
+  end
+  
+  
+  
 end
 
 

@@ -177,6 +177,9 @@
                 </li>
               <% end %>
               
+              <% if can?(:read, Project) %>
+                <li><%= link_to "Weekly Report", weekly_report_path %></li>
+              <% end %>  
               
               <li class="divider"></li>
 

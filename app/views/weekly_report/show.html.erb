@@ -1,0 +1,138 @@
+<div class="weekly-report">
+  <h1>
+    Weekly Report
+    <span class="subtitle">
+      <%= link_to "Prev", weekly_report_path(1.week.until(@date_range.begin)) %>
+      Week of <%= @date_range.begin.to_s %>
+      <% next_date = 1.week.since(@date_range.begin) %>
+      <% if next_date <= Date.today %>
+        <%= link_to "Next", weekly_report_path(next_date) %>
+      <% else %>
+        <span class="disabled">Next</span>
+      <% end %>
+    </span>
+  </h1>
+
+
+
+  <h3 class="heading">
+    <b class="heading icon commits"></b>
+    Commits
+  </h3>
+
+  <%
+  
+    weekday_by_wday = %w{Weekend Monday Tuesday Wednesday Thursday Friday Weekend}
+    weekdays = %w{Monday Tuesday Wednesday Thursday Friday Weekend}
+    commits_by_weekday = Hash[weekdays.zip([[], [], [], [], [], []])]
+    projects_with_commits = 0
+    @projects.each do |project|
+      commits = project.commits_during(@date_range)
+      commits.each do |commit|
+        weekday = weekday_by_wday[commit.date.wday]
+        commits_by_weekday[weekday].push({
+          message: commit.message,
+          color: project.color,
+          project: project.name
+        })
+      end
+      projects_with_commits += 1 if commits.any?
+    end
+    total_commits = commits_by_weekday.values.map(&:count).sum
+
+  %>
+  
+  <div class="weekly-report-body">
+
+    <table class="commits">
+      <thead>
+        <tr>
+          <% weekdays.each do |weekday| %>
+            <th><%= weekday %></th>
+          <% end %>
+          <td></td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <% weekdays.each do |weekday| %>
+            <td>
+              <% commits_by_weekday[weekday].each do |commit| %><b class="commit bubble <%= commit[:color] %>" rel="tooltip" title="<%= commit[:project] %>"></b><% end %>
+            </td>
+          <% end %>
+
+          <td class="score">
+            <p class="total-commits">
+              <span class="score-count"><%= total_commits %></span>
+              <span class="score-label"><%= total_commits == 1 ? "Commit" : "Commits" %></span>
+            </p>
+            <p class="total-projects">
+              <span class="score-count"><%= projects_with_commits %></span>
+              <span class="score-label"><%= projects_with_commits == 1 ? "Project" : "Projects" %></span>
+            </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+  </div>
+
+
+
+  <h3 class="heading">
+    <b class="heading icon bugs"></b>
+    Bugs
+  </h3>
+  
+  <div class="weekly-report-body">
+    <% if @bugs.empty? %>
+    
+      <h1>No bugs! You win!</h1>
+    
+    <% else %>
+    
+      <table class="bugs">
+        <% @projects.each do |project| %>
+          <% bugs = @bugs
+              .select { |bug| bug.project_id == project.id }
+              .map { |bug| bug.resolved? ? "resolved" : @date_range.include?(bug.first_notice_at) ? "new" : "open" }
+              .sort %>
+          <% if bugs.any? %>
+            <tr>
+              <th><%= project.name %></th>
+              <td>
+                <%= in_columns(bugs, max_size: 13) do |bug| %>
+                  <%= content_tag :li, :class => ["bug", bug].compact.join(" ") do %>
+                  <% end %>
+                <% end %>
+              </td>
+              <td class="score">
+                <p class="new-bugs">
+                  <span class="score-count"><span class="sign">+</span><%= bugs.grep("new").count %></span>
+                  <span class="score-label">New</span>
+                </p>
+                <p class="resolved-bugs">
+                  <span class="score-count"><span class="sign">&minus;</span><%= bugs.grep("resolved").count %></span>
+                  <span class="score-label">Fixed</span>
+                </p>
+                <p class="open-bugs">
+                  <span class="score-count"><%= bugs.grep(/new|open/).count %></span>
+                  <span class="score-label">Open</span>
+                </p>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+      </table>
+    
+    <% end %>
+
+
+  <!-- <h3 class="heading">
+    <b class="heading icon tickets"></b>
+    Tickets
+  </h3>
+
+  <table>
+  </table> -->
+</div>
