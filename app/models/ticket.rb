@@ -185,8 +185,8 @@ class Ticket < ActiveRecord::Base
     return false if unfuddle_id.blank?
     
     unfuddle = project.ticket_system
-    attribute = unfuddle.get_ticket_attribute_for_custom_value_named!("Deployment") # e.g. field2_value_id
-    id = unfuddle.find_custom_field_value_by_value!("Deployment", value).id
+    attribute = unfuddle.get_ticket_attribute_for_custom_value_named!("Fixed in") # e.g. field2_value_id
+    id = unfuddle.find_custom_field_value_by_value!("Fixed in", value).id
     
     ticket = unfuddle.ticket(unfuddle_id)
     ticket.update_attribute(attribute, id)

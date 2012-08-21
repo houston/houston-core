@@ -86,7 +86,7 @@ class Project < ActiveRecord::Base
   def ticket_attributes_from_unfuddle_ticket(unfuddle_ticket)
     attributes = Ticket.attributes_from_unfuddle_ticket(unfuddle_ticket)
     attributes.merge(
-      "deployment" => get_custom_ticket_attribute(unfuddle_ticket, "Deployment"),
+      "deployment" => get_custom_ticket_attribute(unfuddle_ticket, "Fixed in"),
       "goldmine" => get_custom_ticket_attribute(unfuddle_ticket, "Goldmine")
     )
   end

@@ -54,12 +54,12 @@ Changelog.config do
       name: "Queued",
       slug: "staged_for_testing",
       description: "These tickets have been resolved, but are waiting for the current batch to be released before they enter testing",
-      query: {:status => neq(:closed), :resolution => :fixed, "Deployment" => [0, "In Development"]}
+      query: {:status => neq(:closed), :resolution => :fixed, "Fixed in" => 0}
     }, {
       name: "To Test",
       slug: "in_testing",
       description: "These tickets are ready to test. Click on <b>Testing Reports</b> to record your testing notes.",
-      query: {:status => neq(:closed), :resolution => :fixed, "Deployment" => ["In Testing (PRI)", "In Production (Released)"]}
+      query: {:status => neq(:closed), :resolution => :fixed, "Fixed in" => ["In Testing (PRI)", "In Production (Released)"]}
   } ]
   
 end
