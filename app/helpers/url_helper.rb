@@ -95,4 +95,10 @@ module UrlHelper
   
   
   
+  def image_url(image)
+    "#{root_url}/images/#{image}"
+  end
+  
+  
+  
 end

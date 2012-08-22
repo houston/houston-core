@@ -39,6 +39,7 @@ Changelog::Application.routes.draw do
   
   match "weekly_report", :to => "weekly_report#show"
   match "weekly_report/:year/:month/:day", :to => "weekly_report#show", :as => :weekly_report
+  match "weekly_report/:year/:month/:day/send", :to => "weekly_report#send_email", :as => :send_weekly_report
   
   
   # The priority is based upon order of creation:

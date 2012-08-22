@@ -20,4 +20,5 @@ config/config.rb
 /tmp
 
 REVISION
+.sass-cache
 

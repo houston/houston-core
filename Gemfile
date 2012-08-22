@@ -33,10 +33,15 @@ gem 'childprocess'
 gem 'default_value_for'
 gem 'devise',           '>= 2.0.0'
 gem 'devise_invitable', '~> 1.0.0'
+gem 'faraday'
 gem 'grit'
 gem 'letter_opener', :git => 'git://github.com/pcg79/letter_opener.git'
 gem 'remotable', '>= 0.2.2', :git => 'git://github.com/boblail/remotable.git'
 gem 'bluecloth'
+
+# For inlining CSS in HTML emails
+gem 'nokogiri'
+gem 'premailer-rails3'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

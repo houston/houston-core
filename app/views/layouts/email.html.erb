@@ -1,0 +1,19 @@
+<style type="text/css">
+  #email_body {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+    font-size: 13px !important;
+    line-height: 18px !important;
+    color: #333 !important;
+  }
+  
+  <%= render_scss "application/colors.scss" %>
+  <%= render_scss "application/weekly_report.scss" %>
+</style>
+
+<html>
+<body>
+  <div id="email_body">
+    <%= yield %>
+  </div>
+</body>
+</html>

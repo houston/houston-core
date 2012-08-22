@@ -1,18 +1,19 @@
 .weekly-report {
-  max-width: 880px;
   padding: 20px 40px;
   
-  h1 {
+  h1.weekly-report-heading {
     font-weight: normal;
-    font-size: 4em;
+    font-size: 52px; // for Gmail (4em)
     line-height: .66em;
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-weight: 100;
-
+    color: #333333; // for Gmail
+    
     .subtitle {
       display: block;
-      font-size: .33em;
+      font-size: 17px; // for Gmail (.33em)
       font-weight: 400;
+      color: #333333; // for Gmail
     }
   }
   
@@ -24,6 +25,7 @@
   h3.heading {
     font-weight: bold;
     font-size: 2.25em;
+    color: #333333; // for Gmail
     
     margin-top: 2em;
     border-bottom: 1px solid #bbb;
@@ -31,17 +33,11 @@
     line-height: 48px;
     vertical-align: top;
     
-    b.icon {
+    img {
       display: inline-block;
       width: 48px;
       height: 48px;
-      background-image: url('/images/headings-48.png');
-      background-repeat: no-repeat;
       vertical-align: bottom;
-      
-      &.commits { background-position: -48px -2px; }
-      &.bugs { background-position: 0 -2px; }
-      &.tickets { background-position: -96px -2px; }
     }
   }
   
@@ -60,6 +56,7 @@
         text-align: left;
         width: 80px;
         padding: 1.25em .75em .5em;
+        color: #333333; // for Gmail
       }
       
       td {
@@ -93,7 +90,7 @@
   }
   
   
-  ol.column {
+  .column {
     display: inline-block;
     margin: 0;
     padding: 0;
@@ -101,16 +98,8 @@
   }
   
   
-  li.bug {
-    width: 28px;
-    height: 28px;
-    background-image: url('/images/bugs-3-32.png');
-    background-repeat: no-repeat;
-    background-position: -2px -2px;
-    list-style: none;
-    
-    &.resolved { background-position: -34px -2px; }
-    &.new { background-position: -66px -2px; }
+  .bug {
+    margin: -2px;
   }
   
   
@@ -118,6 +107,7 @@
     margin: 4px 0 4px 1em;
     text-align: right;
     white-space: nowrap;
+    color: #333333; // for Gmail
     
     p {
       display: inline-block;

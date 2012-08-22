@@ -1,14 +1,16 @@
 <div class="weekly-report">
-  <h1>
+  <h1 class="weekly-report-heading">
     Weekly Report
     <span class="subtitle">
-      <%= link_to "Prev", weekly_report_path(1.week.until(@date_range.begin)) %>
-      Week of <%= @date_range.begin.to_s %>
+      <%= link_to "Prev", weekly_report_path(1.week.until(@date_range.begin)) unless for_email? %>
+      Week of <b><%= @date_range.begin.strftime("%B %e") %></b><% if @date_range.begin.year != Date.today.year %>, <%= @date_range.begin.year %><% end %>
       <% next_date = 1.week.since(@date_range.begin) %>
-      <% if next_date <= Date.today %>
-        <%= link_to "Next", weekly_report_path(next_date) %>
-      <% else %>
-        <span class="disabled">Next</span>
+      <% unless for_email? %>
+        <% if next_date <= Date.today %>
+          <%= link_to "Next", weekly_report_path(next_date) %>
+        <% else %>
+          <span class="disabled">Next</span>
+        <% end %>
       <% end %>
     </span>
   </h1>
@@ -16,7 +18,7 @@
 
 
   <h3 class="heading">
-    <b class="heading icon commits"></b>
+    <%= image_tag image_url("heading-commits-48.png"), size: "48" %>
     Commits
   </h3>
 
@@ -48,7 +50,7 @@
       <thead>
         <tr>
           <% weekdays.each do |weekday| %>
-            <th><%= weekday %></th>
+            <th width="80"><%= weekday %></th>
           <% end %>
           <td></td>
         </tr>
@@ -56,7 +58,7 @@
       <tbody>
         <tr>
           <% weekdays.each do |weekday| %>
-            <td>
+            <td width="80">
               <% commits_by_weekday[weekday].each do |commit| %><b class="commit bubble <%= commit[:color] %>" rel="tooltip" title="<%= commit[:project] %>"></b><% end %>
             </td>
           <% end %>
@@ -80,7 +82,7 @@
 
 
   <h3 class="heading">
-    <b class="heading icon bugs"></b>
+    <%= image_tag image_url("heading-bugs-48.png"), size: "48" %>
     Bugs
   </h3>
   
@@ -95,16 +97,13 @@
         <% @projects.each do |project| %>
           <% bugs = @bugs
               .select { |bug| bug.project_id == project.id }
-              .map { |bug| bug.resolved? ? "resolved" : @date_range.include?(bug.first_notice_at) ? "new" : "open" }
+              .map { |bug| bug.resolved? ? "fixed" : @date_range.include?(bug.first_notice_at) ? "new" : "open" }
               .sort %>
           <% if bugs.any? %>
             <tr>
               <th><%= project.name %></th>
               <td>
-                <%= in_columns(bugs, max_size: 13) do |bug| %>
-                  <%= content_tag :li, :class => ["bug", bug].compact.join(" ") do %>
-                  <% end %>
-                <% end %>
+                <%= in_columns(bugs, max_size: 13) { |bug| image_tag(image_url("bug-#{bug}-32.png"), size: 32, :class => "bug") } %>
               </td>
               <td class="score">
                 <p class="new-bugs">
