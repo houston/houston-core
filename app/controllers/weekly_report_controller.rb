@@ -8,12 +8,17 @@ class WeeklyReportController < ApplicationController
     @bugs = Bug.during(@date_range)
   end
   
+  def prepare_email
+    show
+    @for_email = true
+  end
+  
   def send_email
     show
-    
-    @recipients = params[:recipients]
-    
     @for_email = true
+    
+    @recipients = params[:recipients].split
+    
     WeeklyReportMailer._new(
       recipients: @recipients,
       body: render_to_string(template: "weekly_report/show", layout: "email")

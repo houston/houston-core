@@ -1,0 +1,17 @@
+<div class="email-preview">
+  <%= render template: "weekly_report/show" %>
+</div>
+
+<div class="email-form">
+  <h3>Send report</h3>
+  <%= form_tag send_weekly_report_path, method: :post do %>
+    <fieldset>
+      <%= label_tag :recipients, "Recipients: (one per line)", :class => 'control-label' %>
+      <%= text_area_tag :recipients, "", :class => 'text_field', :style => "width: 290px; height: 80px;" %>
+      
+      <div>
+        <%= submit_tag nil, :class => 'btn btn-primary' %>
+      </div>
+    </fieldset>
+  <% end %>
+</div>

@@ -94,3 +94,21 @@ li.column {
 .weekly-report {
   max-width: 880px;
 }
+
+.email-preview {
+  opacity: 0.33;
+}
+
+.email-form {
+  position: absolute;
+  width: 300px;
+  top: 15%;
+  left: 50%;
+  margin-left: -174px;
+  background: white;
+  padding: 18px 24px;
+  box-shadow: 0 0 5px #777;
+  
+  form { margin-bottom: 0; }
+}
+
