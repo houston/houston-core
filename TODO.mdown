@@ -3,16 +3,39 @@
 ### Soon
 
  - **Post-Receive:** use token_authentication (?) to log a user in automatically when following a new release link in an email (c.f. http://rdoc.info/github/plataformatec/devise/master/Devise/Models/TokenAuthenticatable)
+ - **Post-Receive:** use update event instead?
+ - **New Release:** very confusing if not logged in!
+ - **Weekly Report:**
+   - Add Errbit AppId to database
+   - Hook bugs up to Errbit
 
 ### Eventually
 
  - **Kanban:** optimize rendering tickets on the server
+ - **Kanban:** add a few more levels of darker
  - **Release:** allow adding/removing _tickets_ from release notes
  - **Release Email:** add _retest_ group for testing update
+ - Log in with your Unfuddle credentials
+   - use API GET `users/current` to validate
+   - implement in a modular way: easy to replace if Unfuddle is replaced
+   - activity in Unfuddle is performed as you
+   - icon indicating linkage in Kanban
+   - handle Unfuddle access denied errors like CanCan ones
+   - store password securely!
  - **Testing Report:**
    - Send notification for 'none' verdict
    - Give a way of prioritizing / flagging tickets
    - Expland/collapse all
+ - **Weekly Report:**
+   - Include tickets
+   - Get rid of "Intelligence"
+   - Add smaller graphs
+     - 6-week commit history
+     - Pie graph of commits / project
+     - 6-week exception history
+     - average rate of exception closure
+     - CFD for tickets
+ 
 
 ### Refactoring and Configuration
 
