@@ -15,6 +15,7 @@ class Bug
     def from_problem(problem)
       Bug.new(
         first_notice_at: problem[:first_notice_at],
+        resolved: problem[:resolved],
         resolved_at: problem[:resolved_at],
         errbit_app_id: problem[:app_id]
       )
@@ -28,7 +29,7 @@ class Bug
       response = Faraday.get(url)
       problems = JSON.load(response.body)
       
-      problems.map { |problem| problem["problem"].symbolize_keys }
+      problems.map { |problem| problem["problem"].symbolize_keys }.reject { |problem| problem[:resolved] && problem[:resolved_at].nil? }
     end
     
   end
@@ -44,7 +45,7 @@ class Bug
   end
   
   def resolved?
-    !resolved_at.nil?
+    @attributes[:resolved]
   end
   
   def errbit_app_id

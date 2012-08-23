@@ -6,7 +6,6 @@
  - **Post-Receive:** use update event instead?
  - **New Release:** very confusing if not logged in!
  - **Weekly Report:**
-   - Omit resolved problems from report
    - Fix layout issues
    - Optimize (by not always cloning repo?)
 
