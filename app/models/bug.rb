@@ -16,27 +16,19 @@ class Bug
       Bug.new(
         first_notice_at: problem[:first_notice_at],
         resolved_at: problem[:resolved_at],
-        project_id: problem[:app_id]
+        errbit_app_id: problem[:app_id]
       )
     end
     
     def fetch_problems(options={})
-      # Errbit Problems where first_notice_at <= range.end and resolved_at >= range.begin
+      protocol = Rails.application.config.errbit[:port] == 443 ? "https" : "http"
+      root_url = "#{protocol}://#{Rails.application.config.errbit[:host]}"
+      path = "#{root_url}/api/v1/problems.json"
+      url = "#{path}?start_date=#{options[:start_date].strftime("%Y-%m-%d")}&end_date=#{options[:start_date].strftime("%Y-%m-%d")}&auth_token=#{Rails.application.config.errbit[:auth_token]}"
+      response = Faraday.get(url)
+      problems = JSON.load(response.body)
       
-      project_ids = Project.pluck(:id)
-      
-      before_week = 5.days.until(options[:start_date])
-      during_week = 1.day.since(options[:start_date])
-      after_week = 1.day.since(options[:end_date])
-      
-      problems = []
-      project_ids.each do |project_id|
-        rand(14).times { problems << {first_notice_at: before_week, resolved_at: during_week, app_id: project_id} } +  # Resolved
-        rand(50).times { problems << {first_notice_at: before_week, resolved_at: nil, app_id: project_id} } +          # Open
-        rand( 8).times { problems << {first_notice_at: during_week, resolved_at: nil, app_id: project_id} }            # New
-      end
-      
-      problems
+      problems.map { |problem| problem["problem"].symbolize_keys }
     end
     
   end
@@ -55,8 +47,8 @@ class Bug
     !resolved_at.nil?
   end
   
-  def project_id
-    @attributes[:project_id]
+  def errbit_app_id
+    @attributes[:errbit_app_id]
   end
   
   

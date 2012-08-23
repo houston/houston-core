@@ -4,7 +4,7 @@ class WeeklyReportController < ApplicationController
   def show
     monday = @date.beginning_of_week
     @date_range = monday..(1.week.since(monday))
-    @projects = Project.all
+    @projects = Project.scoped
     @bugs = Bug.during(@date_range)
   end
   

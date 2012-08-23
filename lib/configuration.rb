@@ -10,9 +10,16 @@ class Configuration
   def ticket_system(value)
   end
   
+  def error_tracker(value)
+  end
+  
   def unfuddle(value)
     Rails.application.config.unfuddle = value
     Unfuddle.config(value)
+  end
+  
+  def errbit(value)
+    Rails.application.config.errbit = value
   end
   
   def smtp(value)

@@ -94,9 +94,9 @@
     <% else %>
     
       <table class="bugs">
-        <% @projects.each do |project| %>
+        <% @projects.where("errbit_app_id IS NOT NULL").each do |project| %>
           <% bugs = @bugs
-              .select { |bug| bug.project_id == project.id }
+              .select { |bug| bug.errbit_app_id == project.errbit_app_id }
               .map { |bug| bug.resolved? ? "fixed" : @date_range.include?(bug.first_notice_at) ? "new" : "open" }
               .sort %>
           <% if bugs.any? %>
@@ -111,7 +111,7 @@
                   <span class="score-label">New</span>
                 </p>
                 <p class="resolved-bugs">
-                  <span class="score-count"><span class="sign">&minus;</span><%= bugs.grep("resolved").count %></span>
+                  <span class="score-count"><span class="sign">&minus;</span><%= bugs.grep("fixed").count %></span>
                   <span class="score-label">Fixed</span>
                 </p>
                 <p class="open-bugs">
