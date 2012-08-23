@@ -15,6 +15,19 @@ module UrlHelper
     "#{unfuddle_project_url(project)}/tickets/by_number/#{number}"
   end
   
+  def errbit_app_url(project)
+    protocol = Rails.application.config.errbit[:port] == 443 ? "https" : "http"
+    "#{protocol}://#{Rails.application.config.errbit[:host]}/apps/#{project.errbit_app_id}"
+  end
+  
+  def github_url?(project)
+    project.git_url =~ /github/
+  end
+  
+  def github_project_url(project)
+    project.git_url.gsub(/^git@(?:www\.)?github.com:/, "https://github.com/").gsub(/^git:/, "https:").gsub(/\.git$/, "")
+  end
+  
   
   
   def kanban_path(*args)
