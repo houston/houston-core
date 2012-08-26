@@ -179,7 +179,11 @@ class Project < ActiveRecord::Base
   
   
   def commits_during(range)
-    repo ? Grit::Commit.find_all(repo, nil, {after: range.begin, before: range.end}) : []
+    if repo
+      Project.benchmark("[#{slug}] get commits") { Grit::Commit.find_all(repo, nil, {after: range.begin, before: range.end}) }
+    else
+      []
+    end
   end
   
   
@@ -229,11 +233,11 @@ private
   end
   
   def git_pull!
-    `cd "#{temp_path}" && git remote update`
+    Project.benchmark("[#{slug}] git remote update") { `cd "#{temp_path}" && git remote update` }
   end
   
   def git_clone!
-    `cd "#{Rails.root.join("tmp").to_s}" && git clone --mirror #{git_url} #{temp_path}`
+    Project.benchmark("[#{slug}] git clone") { `cd "#{Rails.root.join("tmp").to_s}" && git clone --mirror #{git_url} #{temp_path}` }
   end
   
   

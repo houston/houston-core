@@ -26,7 +26,7 @@ class Bug
       root_url = "#{protocol}://#{Rails.application.config.errbit[:host]}"
       path = "#{root_url}/api/v1/problems.json"
       url = "#{path}?start_date=#{options[:start_date].strftime("%Y-%m-%d")}&end_date=#{options[:start_date].strftime("%Y-%m-%d")}&auth_token=#{Rails.application.config.errbit[:auth_token]}"
-      response = Faraday.get(url)
+      response = Project.benchmark("[errbit] fetch \"#{url}\"") { Faraday.get(url) }
       problems = JSON.load(response.body)
       
       problems.map { |problem| problem["problem"].symbolize_keys }.reject { |problem| problem[:resolved] && problem[:resolved_at].nil? }
