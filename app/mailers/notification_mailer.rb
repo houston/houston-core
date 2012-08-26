@@ -6,10 +6,12 @@ class NotificationMailer < ActionMailer::Base
   helper MarkdownHelper
   
   
-  def on_post_receive(release)
+  def on_post_receive(release, maintainer)
     @release = release
+    @maintainer = maintainer
+    @maintainer.reset_authentication_token!
     mail({
-      to: release.maintainers.map(&method(:format_email_address)),
+      to: format_email_address(maintainer),
       subject: "@#{release.project.slug} new release"
     }) do |format|
       format.html

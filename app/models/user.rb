@@ -7,7 +7,6 @@ class User < ActiveRecord::Base
   after_create :save_default_notifications
   
   # Include default devise modules. Others available are:
-  #      :token_authenticatable,
   #      :registerable,
   #      :encryptable,
   #      :confirmable,
@@ -15,6 +14,7 @@ class User < ActiveRecord::Base
   #      :timeoutable,
   #      :omniauthable
   devise :database_authenticatable,
+         :token_authenticatable,
          :recoverable,
          :rememberable,
          :trackable,
