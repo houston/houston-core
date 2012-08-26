@@ -150,10 +150,6 @@ class Project < ActiveRecord::Base
     slug
   end
   
-  def number_of_slots
-    5
-  end
-  
   def git_path
     @git_path ||= get_local_git_path
   end
