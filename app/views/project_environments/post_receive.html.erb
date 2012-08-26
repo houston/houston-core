@@ -1,0 +1,3 @@
+<h3>Delivered New Release Notice</h3>
+<p>Delivered to <%= @release.maintainers.map { |maintainer| link_to(maintainer.name, user_path(maintainer)) }.to_sentence.html_safe %></p>
+<p><%= link_to "Create Release", new_release_url(@release) %></p>
