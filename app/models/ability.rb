@@ -2,7 +2,7 @@ class Ability
   include CanCan::Ability
   
   def initialize(user)
-    user ||= User.new # guest user (not logged in)
+    user ||= User.new(role: "Guest") # guest user (not logged in)
     
     # Everybody can see everything
     can :read, :all

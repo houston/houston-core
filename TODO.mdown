@@ -4,7 +4,6 @@
 
  - **Post-Receive:** use token_authentication (?) to log a user in automatically when following a new release link in an email (c.f. http://rdoc.info/github/plataformatec/devise/master/Devise/Models/TokenAuthenticatable)
  - **Post-Receive:** use update event instead?
- - **New Release:** very confusing if not logged in!
  - **Weekly Report:**
    - Fix layout issues
    - Optimize (by not always cloning repo?)
