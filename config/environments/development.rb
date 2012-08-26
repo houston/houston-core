@@ -14,7 +14,7 @@ Changelog::Application.configure do
   config.action_controller.perform_caching = false
 
   # Don't care if the mailer can't send
-  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.raise_delivery_errors = true
 
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log
@@ -39,7 +39,12 @@ Changelog::Application.configure do
   config.action_mailer.delivery_method = :letter_opener
 
   # So Devise mailers can make links
-  config.action_mailer.default_url_options = { :host => "localhost:3000" }
+  server_options = Rack::Server::Options.new.parse!(ARGV.dup)
+  config.action_mailer.default_url_options = {
+    :host => "localhost",
+    :port => server_options.fetch(:Port, "3000")
+  }
+  puts "[config] default host: localhost:#{config.action_mailer.default_url_options[:port]}"
 
   # Log ActiveResource requests and responses
   ActiveResource::Base.logger = ActiveRecord::Base.logger
