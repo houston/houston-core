@@ -23,6 +23,8 @@ class WeeklyReportController < ApplicationController
       recipients: @recipients,
       body: render_to_string(template: "weekly_report/show", layout: "email")
     ).deliver!
+  rescue Timeout::Error
+    redirect_to send_weekly_report_path, :notice => "Couldn't get a response from the mail server. Is everything OK?"
   end
   
 private

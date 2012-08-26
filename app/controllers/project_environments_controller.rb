@@ -25,6 +25,8 @@ class ProjectEnvironmentsController < ApplicationController
     
     NotificationMailer.on_post_receive(@release).deliver!
     head :ok
+  rescue Timeout::Error
+    render text: "Couldn't get a response from the mail server. Is everything OK?", status: 500
   end
   
   def show
