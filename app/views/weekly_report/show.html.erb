@@ -31,7 +31,7 @@
     @projects.each do |project|
       commits = project.commits_during(@date_range)
       commits.each do |commit|
-        weekday = weekday_by_wday[commit.date.wday]
+        weekday = weekday_by_wday[commit.authored_date.wday]
         commits_by_weekday[weekday].push({
           message: commit.message,
           color: project.color,

@@ -176,7 +176,10 @@ class Project < ActiveRecord::Base
   
   def commits_during(range)
     if repo
-      Project.benchmark("[#{slug}] get commits") { Grit::Commit.find_all(repo, nil, {after: range.begin, before: range.end}) }
+      Project.benchmark("[#{slug}] get commits") { 
+        commits = Grit::Commit.find_all(repo, nil, {after: range.begin, before: range.end})
+        commits.uniq { |commit| "#{commit.authored_date}#{commit.author.email}"}
+      }
     else
       []
     end
