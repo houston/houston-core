@@ -29,7 +29,7 @@ class Bug
       response = Project.benchmark("[errbit] fetch \"#{url}\"") { Faraday.get(url) }
       problems = JSON.load(response.body)
       
-      problems.map { |problem| problem["problem"].symbolize_keys }.reject { |problem| problem[:resolved] && problem[:resolved_at].nil? }
+      problems.map { |problem| problem.symbolize_keys }.reject { |problem| problem[:resolved] && problem[:resolved_at].nil? }
     end
     
   end
