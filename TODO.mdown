@@ -2,8 +2,6 @@
 
 ### Soon
 
- - **Post-Receive:** use update event instead?
- - **Weekly Report:** fix layout issues
 
 ### Eventually
 
@@ -43,6 +41,7 @@
 
 ### Ideas
 
+ - **Post-Receive:** use update event instead?
  - Add graphs and reports on trends in Kanban (CFD, etc)
  - **Users** have a way of filtering, grouping, selecting only certain ones
  - **Release:** link commits to diff views (maybe esp. if GitHub integration?)

@@ -76,6 +76,7 @@
         text-align: left;
         font-size: 1.5em;
         min-width: 5em;
+        padding-right: 1em;
       }
     }
   }
@@ -99,8 +100,8 @@
   
   
   .bug {
-    margin: -2px;
-    display: block;
+    margin: -2px -4px;
+    display: inline-block;
   }
   
   

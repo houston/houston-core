@@ -103,7 +103,9 @@
             <tr>
               <th><%= project.name %></th>
               <td>
-                <%= in_columns(bugs, max_size: 13) { |bug| image_tag(image_url("bug-#{bug}-32.png"), size: 32, :class => "bug") } %>
+                <% bugs.each do |bug| %>
+                  <%= image_tag(image_url("bug-#{bug}-32.png"), size: 32, :class => "bug") %>
+                <% end %>
               </td>
               <td class="score">
                 <p class="new-bugs">
