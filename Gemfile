@@ -28,6 +28,7 @@ gem 'handlebars_assets'
 
 # Helpers
 gem 'addressable', :require => 'addressable/uri'
+gem 'bluecloth'
 gem 'cancan'
 gem 'childprocess'
 gem 'default_value_for'
@@ -35,13 +36,12 @@ gem 'devise',           '>= 2.0.0'
 gem 'devise_invitable', '~> 1.0.0'
 gem 'faraday'
 gem 'grit'
+gem 'hpricot'
 gem 'letter_opener', :git => 'git://github.com/pcg79/letter_opener.git'
-gem 'remotable', '>= 0.2.2', :git => 'git://github.com/boblail/remotable.git'
-gem 'bluecloth'
-
-# For inlining CSS in HTML emails
-gem 'nokogiri'
+# gem 'nokogiri'
 gem 'premailer-rails3'
+gem 'remotable', '>= 0.2.2', :git => 'git://github.com/boblail/remotable.git'
+# gem 'roadie' # for inlining CSS in HTML emails
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
@@ -51,14 +51,12 @@ gem 'premailer-rails3'
 
 # Use unicorn as the app server
 # gem 'unicorn'
+# gem 'hooves', :require => "hooves/default"
 
 # Deploy with Capistrano
 gem 'capistrano'
 gem 'rvm-capistrano'
 
-# To use debugger
-# gem 'ruby-debug19', :require => 'ruby-debug'
-
 group :development do
-  gem 'pry'
+  gem 'pry' # for debugging
 end

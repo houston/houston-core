@@ -97,6 +97,7 @@ GEM
       tilt
     highline (1.6.9)
     hike (1.2.1)
+    hpricot (0.8.3)
     htmlentities (4.3.1)
     i18n (0.6.0)
     journey (1.0.4)
@@ -128,7 +129,6 @@ GEM
     net-ssh (2.2.1)
     net-ssh-gateway (1.1.0)
       net-ssh (>= 1.99.1)
-    nokogiri (1.5.5)
     orm_adapter (0.0.7)
     pg (0.13.2)
     polyglot (0.3.3)
@@ -216,9 +216,9 @@ DEPENDENCIES
   faraday
   grit
   handlebars_assets
+  hpricot
   jquery-rails
   letter_opener!
-  nokogiri
   pg
   premailer-rails3
   pry
