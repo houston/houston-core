@@ -46,6 +46,8 @@ class Release < ActiveRecord::Base
   end
   
   def load_commits!
+    project.git_pull! if project.git_mirrored?
+    
     git_commits.each do |grit_commit|
       commit = commits.find_by_sha(grit_commit.sha)
       if commit
