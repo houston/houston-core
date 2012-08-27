@@ -40,6 +40,7 @@ gem 'letter_opener', :git => 'git://github.com/pcg79/letter_opener.git'
 # gem 'nokogiri'
 gem 'premailer'
 gem 'remotable', '>= 0.2.2', :git => 'git://github.com/boblail/remotable.git'
+gem 'yajl-ruby', :require => 'yajl'
 # gem 'roadie' # for inlining CSS in HTML emails
 
 # To use ActiveModel has_secure_password
