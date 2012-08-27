@@ -202,6 +202,25 @@ class Project < ActiveRecord::Base
   
   
   
+  def git_pull!
+    Project.benchmark("[#{slug}] git remote update") { `cd "#{temp_path}" && git remote update` }
+    update_attribute(:git_last_sync_at, Time.now)
+  end
+  
+  def git_mirrored?
+    git_uri.absolute?
+  end
+  
+  def git_out_of_date?
+    git_time_since_last_sync > 1.day
+  end
+  
+  def git_time_since_last_sync
+    git_last_sync_at.nil? ? (1.0/0) : Time.now - git_last_sync_at
+  end
+  
+  
+  
 private
   
   
@@ -215,24 +234,17 @@ private
   # it to a temp folder and then manipulate it.
   #
   def get_local_git_path
-    if git_uri.absolute?
-      get_local_copy_of_project!
+    if git_mirrored?
+      make_local_copy_of_project!
+      git_pull! if git_out_of_date?
       temp_path
     else
       git_uri
     end
   end
   
-  def get_local_copy_of_project!
-    if File.exists?(temp_path)
-      git_pull!
-    else
-      git_clone!
-    end
-  end
-  
-  def git_pull!
-    Project.benchmark("[#{slug}] git remote update") { `cd "#{temp_path}" && git remote update` }
+  def make_local_copy_of_project!
+    git_clone! if !File.exists?(temp_path)
   end
   
   def git_clone!

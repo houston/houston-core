@@ -3,9 +3,7 @@
 ### Soon
 
  - **Post-Receive:** use update event instead?
- - **Weekly Report:**
-   - Fix layout issues
-   - Optimize (by not always cloning repo?)
+ - **Weekly Report:** fix layout issues
 
 ### Eventually
 
