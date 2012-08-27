@@ -19,7 +19,6 @@ end
 # Sass is required in production (see layouts/email.html.erb)
 gem 'sass-rails',   '~> 3.2.3'
 
-
 # Javascript
 gem 'jquery-rails'
 gem 'sugar-rails'
@@ -39,7 +38,7 @@ gem 'grit'
 gem 'hpricot'
 gem 'letter_opener', :git => 'git://github.com/pcg79/letter_opener.git'
 # gem 'nokogiri'
-gem 'premailer-rails3'
+gem 'premailer'
 gem 'remotable', '>= 0.2.2', :git => 'git://github.com/boblail/remotable.git'
 # gem 'roadie' # for inlining CSS in HTML emails
 

@@ -135,9 +135,6 @@ GEM
     premailer (1.7.3)
       css_parser (>= 1.1.9)
       htmlentities (>= 4.0.0)
-    premailer-rails3 (1.3.1)
-      premailer (~> 1.7)
-      rails (~> 3)
     pry (0.9.9.1)
       coderay (~> 1.0.5)
       method_source (~> 0.7.1)
@@ -220,7 +217,7 @@ DEPENDENCIES
   jquery-rails
   letter_opener!
   pg
-  premailer-rails3
+  premailer
   pry
   rails (= 3.2.2)
   remotable (>= 0.2.2)!
