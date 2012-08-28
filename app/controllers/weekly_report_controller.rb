@@ -5,7 +5,6 @@ class WeeklyReportController < ApplicationController
     monday = @date.beginning_of_week
     @date_range = monday..(6.days.since(monday))
     @projects = Project.scoped
-    @bugs = Bug.during(@date_range)
   end
   
   def prepare_email

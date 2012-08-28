@@ -1,12 +1,18 @@
 # To Do
 
 ### Soon
-
+ - **Kanban:** add a few more levels of darker
+ - **Weekly Report:**
+   - Include tickets
+   - Get rid of "Intelligence"
+   - Add smaller graphs
+     - 6-week exception history
+     - average rate of exception closure
+     - CFD for tickets
 
 ### Eventually
 
  - **Kanban:** optimize rendering tickets on the server
- - **Kanban:** add a few more levels of darker
  - **Release:** allow adding/removing _tickets_ from release notes
  - **Release Email:** add _retest_ group for testing update
  - Log in with your Unfuddle credentials
@@ -20,15 +26,6 @@
    - Send notification for 'none' verdict
    - Give a way of prioritizing / flagging tickets
    - Expland/collapse all
- - **Weekly Report:**
-   - Include tickets
-   - Get rid of "Intelligence"
-   - Add smaller graphs
-     - 6-week commit history
-     - Pie graph of commits / project
-     - 6-week exception history
-     - average rate of exception closure
-     - CFD for tickets
  
 
 ### Refactoring and Configuration

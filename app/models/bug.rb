@@ -14,9 +14,9 @@ class Bug
     
     def from_problem(problem)
       Bug.new(
-        first_notice_at: problem[:first_notice_at],
+        first_notice_at: problem[:first_notice_at].try(:to_time),
         resolved: problem[:resolved],
-        resolved_at: problem[:resolved_at],
+        resolved_at: problem[:resolved_at].try(:to_time),
         errbit_app_id: problem[:app_id]
       )
     end
