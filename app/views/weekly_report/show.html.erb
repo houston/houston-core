@@ -263,11 +263,11 @@
                       <% end %>
                     </td>
                     <td class="score">
-                      <p class="new-bugs">
+                      <p class="new-bugs <%= "zero" if bug_counts["new"].zero? %>">
                         <span class="score-count"><span class="sign">+</span><%= bug_counts["new"] %></span>
                         <span class="score-label">New</span>
                       </p>
-                      <p class="resolved-bugs">
+                      <p class="resolved-bugs <%= "zero" if bug_counts["fixed"].zero? %>">
                         <span class="score-count"><span class="sign">&minus;</span><%= bug_counts["fixed"] %></span>
                         <span class="score-label">Fixed</span>
                       </p>
