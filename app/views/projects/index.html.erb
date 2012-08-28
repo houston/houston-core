@@ -33,7 +33,7 @@
             <% end %>
           </td>
           <td class="project-link project-errbit-link">
-            <% if project.errbit_app_id %>
+            <% unless project.errbit_app_id.blank? %>
               <%= link_to errbit_app_url(project), :target => "_blank" do %>
                 <%= image_tag "/images/favicon-errbit.png", "data-tooltip-placement" => "right", :rel => "tooltip", :title => "View in Errbit", :width => 16, :height => 16 %>
               <% end %>
