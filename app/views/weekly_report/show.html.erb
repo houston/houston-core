@@ -33,7 +33,7 @@
     total_bugs = 0
     commits_by_week_by_project = Hash[@projects.zip]
     
-    weeks_of_commit_history = 30
+    weeks_of_commit_history = 25
     date_range_multiweek = ((weeks_of_commit_history - 1).weeks.before(@date_range.begin))..@date_range.end
     commit_history_weeks = date_range_multiweek.step(7)
     
@@ -124,6 +124,22 @@
     
     
     
+    notices_by_week = Hash[errbit_history_weeks.zip([0]*weeks_of_errbit_history)]
+    
+    benchmark("Preparing data for notices graphs") do
+      
+      notices = Notice.during(date_range_multiweek2)
+      
+      notices.each do |notice|
+        week = notice.created_at.beginning_of_week.to_date
+        next unless notices_by_week.key?(week) # we're getting notices for the monday after the sunday that should end the range
+        notices_by_week[week] += 1
+      end
+      
+    end
+    
+    
+    
     # def rgb(r,g,b); "#{r.to_s(16).rjust(2, '0')}#{g.to_s(16).rjust(2, '0')}#{b.to_s(16).rjust(2, '0')}"; end
     colors = {
       "teal" => "52b3ad",
@@ -183,18 +199,18 @@
       </tr>
       
       <tr>
-        <td width="33%">
+        <td width="40%">
           <%= image_tag Gchart.pie(
                 :data => commits_by_project.values,
                 :bar_colors => commits_by_project.keys.map { |project| colors[project.color] },
-                :size => "260x80",
+                :size => "320x80",
                 :labels => commits_by_project.keys.map(&:name) ),
-              :width => 260,
+              :width => 320,
               :height => 80 %>
           <h5 style="margin-top: 0.25em; text-align: center;">Focus this week</h5>
         </td>
         
-        <td width="67%">
+        <td width="60%">
           <% width = ((14 + 4) * weeks_of_commit_history) + 10 %>
           <%= image_tag Gchart.bar(
                 :data => @projects.map { |project| commits_by_week_by_project[project].values },
@@ -270,6 +286,15 @@
 
         <tr>
           <td width="33%">
+            <% width = ((14 + 4) * weeks_of_errbit_history) + 10 %>
+            <%= image_tag Gchart.bar(
+                  :data => notices_by_week.values,
+                  :bar_colors => '888888',
+                  :bar_width_and_spacing => 14,
+                  :size => "#{width}x80" ) + "&chxs=0,676767,0,0,_,676767|1,676767,0,0,_,676767&chxt=x,y",
+                :width => width,
+                :height => 80 %>
+            <h5 style="margin-top: 0.25em; text-align: center;"><%= weeks_of_errbit_history %>-week notice levels</h5>
           </td>
 
           <td width="33%">
