@@ -285,7 +285,10 @@
         </tr>
 
         <tr>
-          <td width="33%">
+          <td width="20%">
+          </td>
+
+          <td width="40%" align="center">
             <% width = ((14 + 4) * weeks_of_errbit_history) + 10 %>
             <%= image_tag Gchart.bar(
                   :data => notices_by_week.values,
@@ -297,10 +300,7 @@
             <h5 style="margin-top: 0.25em; text-align: center;"><%= weeks_of_errbit_history %>-week notice levels</h5>
           </td>
 
-          <td width="33%">
-          </td>
-
-          <td width="33%">
+          <td width="40%" align="center">
             <% width = ((14 + 4) * weeks_of_errbit_history) + 10 %>
             <%= image_tag Gchart.bar(
                   :data => @projects.map { |project| bugs_by_week_by_project[project].try(:values) || [0]*weeks_of_errbit_history },
