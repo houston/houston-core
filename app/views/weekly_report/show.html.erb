@@ -23,60 +23,138 @@
   </h3>
 
   <%
-  
+    
     weekday_by_wday = %w{Weekend Monday Tuesday Wednesday Thursday Friday Weekend}
     weekdays = %w{Monday Tuesday Wednesday Thursday Friday Weekend}
     commits_by_weekday = Hash[weekdays.zip([[], [], [], [], [], []])]
     projects_with_commits = 0
-    @projects.each do |project|
-      commits = project.commits_during(@date_range)
-      commits.each do |commit|
-        weekday = weekday_by_wday[commit.authored_date.wday]
-        commits_by_weekday[weekday].push({
-          message: commit.message,
-          color: project.color,
-          project: project.name
-        })
+    total_commits = 0
+    commits_by_week_by_project = Hash[@projects.zip]
+    date_range_16_weeks = (15.weeks.before(@date_range.begin))..@date_range.end
+    weeks = date_range_16_weeks.step(7)
+    
+    time_range = @date_range.begin.beginning_of_day.to_time.to_i...@date_range.end.end_of_day.to_time.to_i
+    time_range_16_weeks = date_range_16_weeks.begin.beginning_of_day.to_time.to_i...date_range_16_weeks.end.end_of_day.to_time.to_i
+    
+    benchmark("Preparing data for commits graphs") do
+      @projects.each do |project|
+        
+        commits_by_week = (commits_by_week_by_project[project] ||= Hash[weeks.zip([0]*weeks.length)])
+        commits_this_week = false
+        
+        
+        # commits = benchmark("[#{project.slug}] read commits") {
+        #   `git --git-dir=#{project.git_dir} log --all --pretty='%at'`.split(/\n/).uniq
+        # }
+        commits = `git --git-dir=#{project.git_dir} log --all --pretty='%at'`.split(/\n/).uniq
+        
+        commits.each do |commit|
+          timestamp = commit.to_i
+          
+          if time_range_16_weeks.include?(timestamp)
+            time = Time.at(timestamp)
+            date = time.to_date
+            
+            week = date.beginning_of_week
+            commits_by_week[week] = commits_by_week[week] + 1
+            
+            if time_range.include?(timestamp)
+              weekday = weekday_by_wday[date.wday]
+              
+              commits_by_weekday[weekday].push(color: project.color, project: project.name)
+              commits_this_week = true
+            end
+          end
+        end
+        
+        
+        
+        projects_with_commits += 1 if commits_this_week
       end
-      projects_with_commits += 1 if commits.any?
     end
+    
     total_commits = commits_by_weekday.values.map(&:count).sum
-
+    
+    # def rgb(r,g,b); "#{r.to_s(16).rjust(2, '0')}#{g.to_s(16).rjust(2, '0')}#{b.to_s(16).rjust(2, '0')}"; end
+    colors = {
+      "teal" => "52b3ad",
+      "sky" => "239ce7",
+      "indigo" => "7d63b8",
+      "thistle" => "b35ab8",
+      "tomato" => "e74c23",
+      "hazelnut" => "a4703d",
+      "burnt_sienna" => "df8a3d",
+      "orange" => "e9b84e",
+      "pea" => "8dc63f",
+      "spruce" => "54a043",
+      "slate" => "8d918f"
+    }
+    
+    
   %>
   
   <div class="weekly-report-body">
+    
+    <table class="layout">
+      <tr>
+        <td colspan="3">
+    
+          <table class="commits">
+            <thead>
+              <tr>
+                <% weekdays.each do |weekday| %>
+                  <th width="80"><%= weekday %></th>
+                <% end %>
+                <td></td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <% weekdays.each do |weekday| %>
+                  <td width="80">
+                    <% commits_by_weekday[weekday].each do |commit| %><b class="commit bubble <%= commit[:color] %>" rel="tooltip" title="<%= commit[:project] %>"></b><% end %>
+                  </td>
+                <% end %>
 
-    <table class="commits">
-      <thead>
-        <tr>
-          <% weekdays.each do |weekday| %>
-            <th width="80"><%= weekday %></th>
-          <% end %>
-          <td></td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <% weekdays.each do |weekday| %>
-            <td width="80">
-              <% commits_by_weekday[weekday].each do |commit| %><b class="commit bubble <%= commit[:color] %>" rel="tooltip" title="<%= commit[:project] %>"></b><% end %>
-            </td>
-          <% end %>
-
-          <td class="score">
-            <p class="total-commits">
-              <span class="score-count"><%= total_commits %></span>
-              <span class="score-label"><%= total_commits == 1 ? "Commit" : "Commits" %></span>
-            </p>
-            <p class="total-projects">
-              <span class="score-count"><%= projects_with_commits %></span>
-              <span class="score-label"><%= projects_with_commits == 1 ? "Project" : "Projects" %></span>
-            </p>
-          </td>
-        </tr>
-      </tbody>
+                <td class="score">
+                  <p class="total-commits">
+                    <span class="score-count"><%= total_commits %></span>
+                    <span class="score-label"><%= total_commits == 1 ? "Commit" : "Commits" %></span>
+                  </p>
+                  <p class="total-projects">
+                    <span class="score-count"><%= projects_with_commits %></span>
+                    <span class="score-label"><%= projects_with_commits == 1 ? "Project" : "Projects" %></span>
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        
+        </td>
+      </tr>
+      
+      <tr>
+        <td width="33%">
+        </td>
+        
+        <td width="34%">
+        </td>
+        
+        <td width="34%">
+          <% width = ((14 + 4) * weeks.length) + 10 %>
+          <%= image_tag Gchart.bar(
+                :data => @projects.map { |project| commits_by_week_by_project[project].values },
+                :bar_colors => @projects.map { |project| colors[project.color] },
+                :bar_width_and_spacing => 14,
+                :size => "#{width}x80" ) + "&chxs=0,676767,0,0,_,676767|1,676767,0,0,_,676767&chxt=x,y",
+              :width => width,
+              :height => 80 %>
+          <h5 style="margin-top: 0.25em; text-align: center;">16-week commit history</h5>
+        </td>
+      </tr>
+      
     </table>
-  
+    
   </div>
 
 

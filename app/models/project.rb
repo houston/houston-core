@@ -154,6 +154,10 @@ class Project < ActiveRecord::Base
     @git_path ||= get_local_git_path
   end
   
+  def git_dir
+    @git_dir ||= (git_mirrored? ? git_path : "#{git_path}/.git")
+  end
+  
   def git_uri
     @git_uri ||= Addressable::URI.parse(git_url)
   end
