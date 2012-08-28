@@ -19,6 +19,8 @@ class Notice
     end
     
     def fetch_notices(options={})
+      return fake_fetch_notices(options) if Rails.env.development?
+      
       protocol = Rails.application.config.errbit[:port] == 443 ? "https" : "http"
       root_url = "#{protocol}://#{Rails.application.config.errbit[:host]}"
       path = "#{root_url}/api/v1/notices.json"
@@ -27,6 +29,26 @@ class Notice
       notices = Yajl.load(response.body)
       
       notices.map { |notice| notice.symbolize_keys }
+    end
+    
+    def fake_fetch_notices(options={})
+      project_ids = Project.pluck(:errbit_app_id)
+      
+      start_date = options[:start_date].to_date
+      end_date = options[:end_date].to_date
+      date = start_date
+      
+      notices = []
+      
+      while date <= end_date
+        date = date + 1
+        
+        rand(80).times do
+          notices << {created_at: date.to_time}
+        end
+      end
+      
+      notices
     end
     
   end
