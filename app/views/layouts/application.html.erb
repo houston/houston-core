@@ -62,11 +62,20 @@
           <a class="edit-note">Edit</a>
           <a class="destroy-note">Delete</a>
         </span>
+        {{/if}}
       </div>
-      {{/if}}
+    </script>
+    
+    <script id="commit_template" type="text/x-handlebars-template">
+      <span class="committer-avatar">{{{avatar committer/email 24 committer/name}}}</span>
+      <div class="testing-note-body">
+        <span class="testing-note-timestamp">{{formatTime createdAt}}</span>
+        <span class="tester-comment">{{{markdown message}}}</span>
+      </div>
     </script>
     
     <script id="edit_testing_note_template" type="text/x-handlebars-template">
+      <div class="tester-avatar">{{{avatarImage}}}</div>
       <form accept-charset="UTF-8" action="/tickets/{{ticketId}}/testing_notes/{{id}}" class="testing-note-form" id="edit_testing_note_{{id}}" method="post">
         <p>
           <input data-attr="ticket_id" id="testing_note_{{id}}_ticket_id" name="ticket_id" type="hidden" value="{{ticketId}}" />
@@ -76,6 +85,8 @@
         </p>
         <p>
           <textarea id="testing_note_comment" name="comment">{{comment}}</textarea>
+        </p>
+        <p>
           <input class="btn btn-primary" name="commit" type="submit" value="Save" />
           <input class="btn btn-cancel" name="commit" type="submit" value="Cancel" />
         </p>
@@ -84,6 +95,7 @@
     
     <script id="new_testing_note_template" type="text/x-handlebars-template">
       <li class="testing-note new">
+        <div class="tester-avatar">{{{userAvatar 24}}}</div>
         <form accept-charset="UTF-8" action="/tickets/{{ticketId}}/testing_notes" class="testing-note-form" id="new_testing_note" method="post">
           <p>
             <input data-attr="ticket_id" id="ticket_{{ticketId}}_new_testing_note_ticket_id" name="ticket_id" type="hidden" value="{{ticketId}}" />
@@ -224,10 +236,15 @@
     <%= ft_init :adapter => :jquery %>
     <script type="text/javascript">
       $(function(){
-        window.userId = <%=raw current_user ? current_user.id : "null" %>;
         window.testers = new Testers(<%= raw TesterPresenter.new(User.testers).to_json %>);
         
         <% if current_user %>
+        window.userId = <%= current_user.id %>;
+        window.user = new User(<%= raw({
+          id: current_user.id,
+          email: current_user.email,
+          name: current_user.name
+        }.to_json) %>);
         $('#body .avatar.user-' + window.userId).popover({
           title: 'Changing your Avatar',
           content: 'You can change your avatar by going to <a href="http://gravatar.com/">gravatar.com</a> and associating an image with your email address <b><%= current_user.email %></b>.'

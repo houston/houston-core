@@ -50,11 +50,12 @@ class window.TestingTicketView extends Backbone.View
       if item.constructor == TestingNote
         hasRenderedANote = true
         $testingNotes.appendView @newViewForTestingNote(item)
-      else if hasRenderedANote # Don't render 'release' separators _before_ any testing notes have been entered.
-        $testingNotes.append("<li class=\"ticket-release\">Release</li>")
+      else if item.constructor == Commit && hasRenderedANote # Don't render 'release' separators _before_ any testing notes have been entered.
+        $testingNotes.appendView @newViewForCommit(item)
     
     # Render form for adding a testing note
-    $testingNotes.append @renderNewTestingNote(ticketId: @ticket.get('id'))
+    if window.userId
+      $testingNotes.append @renderNewTestingNote(ticketId: @ticket.get('id'))
     @
   
   beginEditTestingNote: (view)->
@@ -81,6 +82,9 @@ class window.TestingTicketView extends Backbone.View
     view.on 'edit:commit', _.bind(@commitEditTestingNote, @)
     view.on 'destroy', _.bind(@destroyTestingNote, @)
     view
+  
+  newViewForCommit: (commit)->
+    new CommitView(model: commit)
   
   addTestingNote: (testingNote)->  
     @testingNotes.add(testingNote)

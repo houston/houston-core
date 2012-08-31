@@ -94,20 +94,111 @@ ul.tester-names {
   }
 }
 
+.testing-notes {
+  .commit, .testing-note {
+    display: block;
+    position: relative;
+    padding: 15px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    border-width: 2px;
+    border-style: solid;
+    clear: both;
+    
+    .testing-note-timestamp { line-height: 1em; color: #333; display: block; font-size: 0.88em; }
+    
+    .tester-comment {
+      h1 { font-size: 22px; line-height: 30px; }
+      h2 { font-size: 18px; line-height: 23px; }
+      h3 { font-size: 15px; line-height: 20px; }
+      h4 { font-size: 14px; line-height: 18px; }
+    }
+  }
+  
+  .commit {
+    margin: 0.5em 60px 0.5em 40px;
+    background: #e9e9e9;
+    border-color: #a8a8a8;
+    
+    .committer-avatar {
+      float: left;
+      position: relative;
+      left: -57px;
+      margin-right: -40px;
+    }
+    
+    &::before {
+      content: '';
+      position: absolute;
+      border-style: solid;
+      display: block;
+      width: 0;
+      
+      top: 19px;
+      bottom: auto;
+      left: -12px;
+      border-width: 8px 12px 8px 0;
+      border-color: #a8a8a8;
+      border-top-color: transparent;
+      border-bottom-color: transparent;
+    }
+    
+    &::after {
+      content: '';
+      position: absolute;
+      border-style: solid;
+      display: block;
+      width: 0;
+      
+      top: 21px;
+      bottom: auto;
+      left: -7px;
+      border-width: 6px 9px 6px 0;
+      border-color: transparent #e9e9e9;
+    }
+  }
+}
+
+
 .testing-note {
-  display: block;
-  padding: 0.25em 0;
-  clear: both;
+  margin: 0.5em 40px 0.5em 60px;
   
-  .tester-avatar { float: left; }
-  .testing-note-body { margin-left: 40px; padding-top: 1px; }
-  .testing-note-timestamp { line-height: 1em; color: #333; display: block; }
+  &::before {
+    content: '';
+    position: absolute;
+    border-style: solid;
+    display: block;
+    width: 0;
+    
+    top: 19px;
+    bottom: auto;
+    left: auto;
+    right: -12px;
+    border-width: 8px 0 8px 12px;
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+  }
   
-  .tester-comment {
-    h1 { font-size: 22px; line-height: 30px; }
-    h2 { font-size: 18px; line-height: 23px; }
-    h3 { font-size: 15px; line-height: 20px; }
-    h4 { font-size: 14px; line-height: 18px; }
+  &::after {
+    content: '';
+    position: absolute;
+    border-style: solid;
+    display: block;
+    width: 0;
+    
+    top: 21px;
+    bottom: auto;
+    left: auto;
+    right: -7px;
+    border-width: 6px 0 6px 9px;
+    border-color: transparent white;
+  }
+  
+  .tester-avatar {
+    float: right;
+    position: relative;
+    left: 60px;
   }
   
   textarea {
@@ -116,12 +207,13 @@ ul.tester-names {
   }
   
   img {
-    padding: 0.25em;
-    margin-right: 0.5em;
+    border-style: solid;
+    border-width: 2px;
   }
   
-  &.works { img { background-color: #55c832; } color: #0a0; }
-  &.fails { img { background-color: #ff6d6d; } color: #c11; }
+  &.works { img { border-color: #0a0; } color: #0a0; }
+  &.fails { img { border-color: #c11; } color: #c11; }
+  &.none { img { border-color: #666; } color: #666; }
   // no style when verdict is 'none'
 }
 

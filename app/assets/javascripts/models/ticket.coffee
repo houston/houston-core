@@ -6,8 +6,11 @@ class window.Ticket extends Backbone.Model
   releases: ->
     @releasesCollection ||= new Releases(@get('releases'), ticket: @)
   
+  commits: ->
+    @commitsCollection ||= new Commits(@get('commits'), ticket: @)
+  
   activityStream: ->
-    @testingNotes().models.concat(@releases().models).sortBy (item)-> item.get('createdAt')
+    @testingNotes().models.concat(@commits().models).sortBy (item)-> item.get('createdAt')
   
   
   
