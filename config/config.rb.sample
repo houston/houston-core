@@ -3,6 +3,21 @@ Changelog.config do
   # This is the name that will be shown in the banner
   title "Changelog"
   
+  # Colors: these are the colors available for projects
+  colors({
+    "teal"          => "52b3ad",
+    "sky"           => "239ce7",
+    "indigo"        => "7d63b8",
+    "thistle"       => "b35ab8",
+    "tomato"        => "e74c23",
+    "hazelnut"      => "a4703d",
+    "burnt_sienna"  => "df8a3d",
+    "orange"        => "e9b84e",
+    "pea"           => "8dc63f",
+    "spruce"        => "54a043",
+    "slate"         => "8d918f"
+  })
+  
   # The ticketing system that Changelog will interface with.
   # Right now, the only supported system is Unfuddle.
   ticket_system :unfuddle

@@ -1,10 +1,16 @@
 require 'unfuddle/neq'
+require 'color_value'
 
 class Configuration
   include Unfuddle::NeqHelper
   
   def title(value)
     Rails.application.config.title = value
+  end
+  
+  def colors(value)
+    Rails.application.config.colors = \
+      value.each_with_object({}) { |(key, hex), hash| hash[key] = ColorValue.new(hex) }
   end
   
   def ticket_system(value)

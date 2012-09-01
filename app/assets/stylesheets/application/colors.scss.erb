@@ -1,0 +1,38 @@
+<% Rails.application.config.colors.each do |name, value| %>
+  $<%= name %>: <%= value.rgb %>;
+<% end %>
+
+@mixin age($color) {
+  &.young { border-color: lighten($color, 18%); background-color: lighten($color, 40%); }
+  &.adult { border-color: lighten($color, 12%); background-color: lighten($color, 35%); }
+  &.old { border-color: lighten($color, 2%); background-color: lighten($color, 30%); }
+}
+
+#kanban li {
+  <% Rails.application.config.colors.each do |name, value| %>
+    &.<%= name %> { @include age($<%= name %>) }
+  <% end %>
+}
+
+.label {
+  vertical-align: baseline;
+  
+  <% Rails.application.config.colors.each do |name, value| %>
+    &.<%= name %> { background-color: $<%= name %>; }
+  <% end %>
+}
+
+.bubble {
+  display: inline-block;
+  width: 0.92em;
+  height: 0.92em;
+  border-radius: 0.18em;
+  vertical-align: baseline;
+  position: relative;
+  top: 1px;
+  margin-left: 0.25em;
+
+  <% Rails.application.config.colors.each do |name, value| %>
+    &.<%= name %> { background-color: $<%= name %>; }
+  <% end %>
+}

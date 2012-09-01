@@ -140,21 +140,7 @@
     
     
     
-    # def rgb(r,g,b); "#{r.to_s(16).rjust(2, '0')}#{g.to_s(16).rjust(2, '0')}#{b.to_s(16).rjust(2, '0')}"; end
-    colors = {
-      "teal" => "52b3ad",
-      "sky" => "239ce7",
-      "indigo" => "7d63b8",
-      "thistle" => "b35ab8",
-      "tomato" => "e74c23",
-      "hazelnut" => "a4703d",
-      "burnt_sienna" => "df8a3d",
-      "orange" => "e9b84e",
-      "pea" => "8dc63f",
-      "spruce" => "54a043",
-      "slate" => "8d918f"
-    }
-    
+    colors = Rails.application.config.colors
     
   %>
   
