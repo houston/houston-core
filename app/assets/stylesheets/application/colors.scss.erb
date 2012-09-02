@@ -3,9 +3,12 @@
 <% end %>
 
 @mixin age($color) {
-  &.young { border-color: lighten($color, 18%); background-color: lighten($color, 40%); }
-  &.adult { border-color: lighten($color, 12%); background-color: lighten($color, 35%); }
-  &.old { border-color: lighten($color, 2%); background-color: lighten($color, 30%); }
+  &.infant  { border-color: lighten($color, 14%); background-color: lighten($color, 35%); }
+  &.child   { border-color: lighten($color,  8%); background-color: lighten($color, 28%); }
+  &.adult   { border-color: lighten($color,  2%); background-color: lighten($color, 24%); }
+  &.senior  { border-color:  darken($color,  8%); background-color: lighten($color, 20%); }
+  &.old     { border-color:  darken($color, 12%); background-color: lighten($color, 16%); }
+  &.ancient { border-color:  darken($color, 20%); background-color: lighten($color, 12%); }
 }
 
 #kanban li {

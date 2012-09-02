@@ -1,7 +1,6 @@
 # To Do
 
 ### Soon
- - **Kanban:** add a few more levels of darker
  - **Weekly Report:**
    - Include tickets (#s/wk)
      - Tickets created (new to 'to proofread'? tickets' created_at?)

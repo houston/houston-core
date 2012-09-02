@@ -19,18 +19,19 @@ Handlebars.registerHelper 'markdown', (markdown)->
   converter = new Markdown.Converter()
   converter.makeHtml(markdown)
 
-# Tickets that have been in a queue for less than 2 days are 'young';
-# ones that are 3-7 days old are 'adult'; tickets that have been in
-# their queue longer than 7 days are 'old'.
 Handlebars.registerHelper 'classForAge', (seconds)->
-  # i = Math.floor(Math.random() * 3)
-  # ['young', 'adult', 'old'][i]
+  if seconds < (6 * Duration.HOUR)
+    'infant'
   if seconds < (2 * Duration.DAY)
-    'young'
+    'child'
   else if seconds < (7 * Duration.DAY)
     'adult'
-  else
+  else if seconds < (4 * Duration.WEEK)
+    'senior'
+  else if seconds < (26 * Duration.WEEK)
     'old'
+  else
+    'ancient'
 
 Handlebars.registerHelper 'attributesForVerdict', (verdictsByTester)->
   return '' if Object.keys(verdictsByTester).length == 0

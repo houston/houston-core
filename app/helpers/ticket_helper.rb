@@ -50,12 +50,12 @@ module TicketHelper
   end
   
   def class_for_age(seconds)
-    if seconds < (2 * DAY)
-      'young'
-    elsif seconds < (7 * DAY)
-      'adult'
-    else
-      'old'
+    if    seconds < 6.hours;        'infant'
+    elsif seconds < 2.days;         'child'
+    elsif seconds < 7.days;         'adult'
+    elsif seconds < 4.weeks;        'senior'
+    elsif seconds < 26.weeks;       'old'
+    else                            'ancient'
     end
   end
   
