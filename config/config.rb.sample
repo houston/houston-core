@@ -5,17 +5,21 @@ Changelog.config do
   
   # Colors: these are the colors available for projects
   colors({
-    "teal"          => "52b3ad",
+    "teal"          => "39b3aa",
     "sky"           => "239ce7",
+    "sea"           => "335996",
     "indigo"        => "7d63b8",
     "thistle"       => "b35ab8",
     "tomato"        => "e74c23",
+    "bark"          => "756e54",
     "hazelnut"      => "a4703d",
     "burnt_sienna"  => "df8a3d",
     "orange"        => "e9b84e",
     "pea"           => "8dc63f",
-    "spruce"        => "54a043",
-    "slate"         => "8d918f"
+    "leaf"          => "409938",
+    "spruce"        => "307355",
+    "slate"         => "6c7a80",
+    "silver"        => "a2a38b"
   })
   
   # The ticketing system that Changelog will interface with.
