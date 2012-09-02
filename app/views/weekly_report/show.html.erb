@@ -33,11 +33,11 @@
     total_bugs = 0
     commits_by_week_by_project = Hash[@projects.zip]
     
-    weeks_of_commit_history = 25
+    weeks_of_commit_history = 26
     date_range_multiweek = ((weeks_of_commit_history - 1).weeks.before(@date_range.begin))..@date_range.end
     commit_history_weeks = date_range_multiweek.step(7)
     
-    weeks_of_errbit_history = 15
+    weeks_of_errbit_history = 16
     date_range_multiweek2 = ((weeks_of_errbit_history - 1).weeks.before(@date_range.begin))..@date_range.end
     errbit_history_weeks = date_range_multiweek2.step(7)
     
@@ -197,12 +197,12 @@
         </td>
         
         <td width="60%">
-          <% width = ((14 + 4) * weeks_of_commit_history) + 10 %>
+          <% width = ((14 + 4) * weeks_of_commit_history) + 10 + 20 %>
           <%= image_tag Gchart.bar(
                 :data => @projects.map { |project| commits_by_week_by_project[project].values },
                 :bar_colors => @projects.map { |project| colors[project.color] },
                 :bar_width_and_spacing => 14,
-                :size => "#{width}x80" ) + "&chxs=0,676767,0,0,_,676767|1,676767,0,0,_,676767&chxt=x,y",
+                :size => "#{width}x80" ) + "&chxt=y",
               :width => width,
               :height => 80 %>
           <h5 style="margin-top: 0.25em; text-align: center;"><%= weeks_of_commit_history %>-week commit history</h5>
@@ -274,25 +274,25 @@
           <td width="20%">
           </td>
 
-          <td width="40%" align="center">
-            <% width = ((14 + 4) * weeks_of_errbit_history) + 10 %>
+          <td width="40%">
+            <% width = ((14 + 4) * weeks_of_errbit_history) + 10 + 20 %>
             <%= image_tag Gchart.bar(
                   :data => notices_by_week.values,
                   :bar_colors => '888888',
                   :bar_width_and_spacing => 14,
-                  :size => "#{width}x80" ) + "&chxs=0,676767,0,0,_,676767|1,676767,0,0,_,676767&chxt=x,y",
+                  :size => "#{width}x80" ) + "&chxt=y",
                 :width => width,
                 :height => 80 %>
             <h5 style="margin-top: 0.25em; text-align: center;"><%= weeks_of_errbit_history %>-week notice levels</h5>
           </td>
 
           <td width="40%" align="center">
-            <% width = ((14 + 4) * weeks_of_errbit_history) + 10 %>
+            <% width = ((14 + 4) * weeks_of_errbit_history) + 10 + 20 %>
             <%= image_tag Gchart.bar(
                   :data => @projects.map { |project| bugs_by_week_by_project[project].try(:values) || [0]*weeks_of_errbit_history },
                   :bar_colors => @projects.map { |project| colors[project.color] },
                   :bar_width_and_spacing => 14,
-                  :size => "#{width}x80" ) + "&chxs=0,676767,0,0,_,676767|1,676767,0,0,_,676767&chxt=x,y",
+                  :size => "#{width}x80" ) + "&chxt=y",
                 :width => width,
                 :height => 80 %>
             <h5 style="margin-top: 0.25em; text-align: center;"><%= weeks_of_errbit_history %>-week problem count</h5>
