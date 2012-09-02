@@ -22,7 +22,7 @@
         <% master = project.environments.find_by_slug("master") %>
         <tr>
           <td class="project-title">
-            <b class="bubble <%= project.color %>"></b>
+            <b class="bubble <%= project.color %>" rel="tooltip" title="<%= project.color.titleize %>" data-tooltip-placement="right"></b>
             <%= link_to project.name, edit_project_path(project) %>
           </td>
           <td class="project-link project-unfuddle-link">
