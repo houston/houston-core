@@ -58,6 +58,9 @@ gem 'yajl-ruby', :require => 'yajl'
 gem 'capistrano'
 gem 'rvm-capistrano'
 
+# Exception notification
+gem 'airbrake'
+
 group :development do
   gem 'pry' # for debugging
 end

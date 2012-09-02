@@ -45,6 +45,9 @@ GEM
       i18n (~> 0.6)
       multi_json (~> 1.0)
     addressable (2.2.8)
+    airbrake (3.1.2)
+      activesupport
+      builder
     arel (3.0.2)
     backbone-rails (0.9.1)
       rails (>= 3.0.0)
@@ -203,6 +206,7 @@ PLATFORMS
 
 DEPENDENCIES
   addressable
+  airbrake
   backbone-rails
   bluecloth
   cancan
