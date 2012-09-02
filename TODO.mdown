@@ -3,12 +3,22 @@
 ### Soon
  - **Kanban:** add a few more levels of darker
  - **Weekly Report:**
-   - Include tickets
+   - Include tickets (#s/wk)
+     - Tickets created (new to 'to proofread'? tickets' created_at?)
+     - Tickets proofread (exits of 'to proofread')
+     - Tickets improved (exits of 'to improve')
+     - Suggestions considered (exits of 'to consider')
+     ? Tickets scheduled (new to 'scheduled')
+     - Tickets tested (new to 'testing)
+     - Tickets released (tickets' 'closed'?)
    - Get rid of "Intelligence"
    - Add smaller graphs
      - 6-week exception history
      - average rate of exception closure
      - CFD for tickets
+ - Only play sound on first failure
+ - Implement caching
+ 
 
 ### Eventually
 
