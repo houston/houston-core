@@ -18,6 +18,9 @@
       <%= f.label :color, :class => 'control-label' %>
       <div class="controls">
         <%= f.select :color, Rails.application.config.colors.keys.map { |name| [name.titleize, name] }, :class => 'select_field' %>
+        <% if Project.count > 0 %>
+          (Unused colors: <%= (Rails.application.config.colors.keys - Project.pluck(:color).uniq).map(&:titleize).join(", ") %>)
+        <% end %>
       </div>
     </div>
 
