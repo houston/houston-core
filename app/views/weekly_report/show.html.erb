@@ -66,6 +66,7 @@
             date = time.to_date
             
             week = date.beginning_of_week
+            next unless commits_by_week.key?(week)
             commits_by_week[week] = commits_by_week[week] + 1
             
             if time_range.include?(timestamp)
