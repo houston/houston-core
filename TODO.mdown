@@ -15,7 +15,6 @@
      - 6-week exception history
      - average rate of exception closure
      - CFD for tickets
- - Only play sound on first failure
  - Implement caching
  
 

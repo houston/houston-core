@@ -56,6 +56,12 @@ class TestingNote < ActiveRecord::Base
     verdict == "fails"
   end
   
+  def first_fail?
+    return false unless fail?
+    first_fail = ticket.testing_notes_since_last_release.where(verdict: "fails").order("created_at ASC").first
+    first_fail == nil || first_fail.id == self.id
+  end
+  
   
   # !Override fetch_remote_resource, when this is fetched, set its prefix_options
   def fetch_remote_resource
