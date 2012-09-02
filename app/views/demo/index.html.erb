@@ -1,0 +1,64 @@
+<table id="kanban">
+  <thead>
+    <tr>
+      <% KanbanQueue.all.each do |queue| %>
+        <th class="kanban-column" data-queue="<%= queue.slug %>"></th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <% KanbanQueue.all.each do |queue| %>
+        <td class="kanban-column" data-queue="<%= queue.slug %>">
+          <ul id="<%= queue.slug %>">
+            <% density = random_density %>
+            <% @colors.keys.each do |color| %>
+              <% (rand(density)+1).times do %>
+                <% age = random_ticket_age %>
+                <% number = random_ticket_number %>
+                <li class="ticket <%= "demo-#{color}" %> <%= color %> <%= class_for_age age %>" data-number="<%= number %>">
+                  <a>
+                    <h3 class="ticket-number"><%= number %> <span class="ticket-age"><%= format_duration age %></span></h3>
+                    <p class="ticket-summary"></p>
+                  </a>
+                </li>
+              <% end %>
+            <% end %>
+          </ul>
+        </td>
+      <% end %>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr>
+      <% KanbanQueue.all.each do |queue| %>
+        <th class="kanban-column" data-queue="<%= queue.slug %>">
+          <div class="title"><%= queue.name %></div>
+          <p class="small"><%= queue.description.html_safe %></p>
+        </th>
+      <% end %>
+    </tr>
+  </tfoot>
+</table>
+
+<div style="position:absolute; top:92px; right:42px; padding:4px 16px; background: white; border: 1px solid black; border-radius: 10px;">
+  <% @colors.values.each do |value| %>
+    <div style="display:inline-block; margin:8px 4px; text-align: center;">
+      <div style="text-align:center; width:40px; height:34px; margin:0 8px; border-radius:4px; background-color:#<%= value %>;">&nbsp;</div>
+      <div style="text-align:center; font-size:1.1em;">#<%= value %></div>
+    </div>
+  <% end %>
+</div>
+
+<% content_for :scripts do %>
+  <script type="text/javascript">
+    $(function() {
+      
+      window.kanban = new Kanban({
+        projects: <%= raw @colors.keys.map { |color| { slug: "demo-#{color}", color: color } }.to_json %>,
+        queues: <%= raw KanbanQueue.slugs %>
+      });
+      
+    });
+  </script>
+<% end %>

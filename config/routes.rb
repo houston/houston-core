@@ -43,6 +43,11 @@ Changelog::Application.routes.draw do
   match "weekly_report/:year/:month/:day/email", :to => "weekly_report#send_email", :as => :send_weekly_report, :via => :post
   
   
+  # This just renders a fake Kanban:
+  # to give you an idea of what your queues, colors, and ages will look like
+  match "demo", :to => "demo#index", :via => :get
+  
+  
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
