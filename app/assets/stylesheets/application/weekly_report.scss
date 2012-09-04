@@ -74,9 +74,10 @@
       
       th { 
         text-align: left;
-        font-size: 1.5em;
-        min-width: 5em;
+        max-width: 8em;
         padding-right: 1em;
+        font-weight: normal;
+        text-indent: -18px;
       }
     }
   }

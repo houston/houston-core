@@ -237,7 +237,7 @@
                 <% bug_counts = bug_counts_by_project[project] || {} %>
                 <% if bug_counts.values.sum > 0 %>
                   <tr>
-                    <th><%= project.name %></th>
+                    <th><b class="bubble <%= project.color %>"></b>&nbsp;<%= project.name %></th>
                     <td>
                       <% bug_counts["new"].times do %>
                         <%= image_tag(image_url("bug-new-32.png"), size: 32, :class => "bug") %>
