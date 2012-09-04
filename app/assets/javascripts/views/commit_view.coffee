@@ -7,5 +7,8 @@ class window.CommitView extends Backbone.View
   
   render: ->
     $el = $(@el)
-    $el.html @renderer(@model.toJSON())
+    json = @model.toJSON()
+    console.log(json)
+    json['message'] = json['message'].replace(/\[#(\d+)\]/g, '') # remove ticket numbers)
+    $el.html @renderer(json)
     @
