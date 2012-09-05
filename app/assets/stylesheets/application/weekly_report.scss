@@ -43,6 +43,7 @@
   
   
   .weekly-report-body {
+    margin-top: 12px;
     padding-left: 54px;
   }
   
@@ -55,7 +56,7 @@
       th {
         text-align: left;
         width: 80px;
-        padding: 1.25em .75em .5em;
+        padding: 0 .75em .5em;
         color: #333333; // for Gmail
       }
       
@@ -69,7 +70,22 @@
     &.bugs {
       
       td {
-        padding: 1em 0;
+        padding: .75em 0;
+      }
+      
+      th { 
+        text-align: left;
+        max-width: 8em;
+        padding-right: 1em;
+        font-weight: normal;
+        text-indent: -18px;
+      }
+    }
+    
+    &.tickets-report {
+      
+      td {
+        padding: .75em 0;
       }
       
       th { 
@@ -103,6 +119,7 @@
   .bug {
     margin: -2px -4px;
     display: inline-block;
+    width: 28px;
   }
   
   
