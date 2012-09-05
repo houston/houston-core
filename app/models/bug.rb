@@ -35,7 +35,7 @@ class Bug
     end
     
     def fake_fetch_problems(options={})
-      project_ids = Project.pluck(:errbit_app_id)
+      project_ids = Project.pluck(:errbit_app_id).select { |id| !id.blank? }
       
       before_week = 5.days.until(options[:start_date].to_time).to_s
       during_week = 3.days.until(options[:end_date].to_time).to_s
@@ -43,9 +43,9 @@ class Bug
       
       problems = []
       project_ids.each do |project_id|
-        rand(14).times { problems << {first_notice_at: before_week, resolved: true, resolved_at: during_week, app_id: project_id} }  # Resolved
-        rand(50).times { problems << {first_notice_at: before_week, resolved: false, resolved_at: nil, app_id: project_id} }          # Open
-        rand( 8).times { problems << {first_notice_at: during_week, resolved: false, resolved_at: nil, app_id: project_id} }            # New
+        rand(5).times { problems << {first_notice_at: before_week, resolved: true, resolved_at: during_week, app_id: project_id} }  # Resolved
+        rand(25).times { problems << {first_notice_at: before_week, resolved: false, resolved_at: nil, app_id: project_id} }          # Open
+        rand(5).times { problems << {first_notice_at: during_week, resolved: false, resolved_at: nil, app_id: project_id} }            # New
       end
       
       problems
