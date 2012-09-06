@@ -2,8 +2,9 @@ module EmailHelper
   
   def render_scss(relative_path)
     path = Rails.root.join("app/assets/stylesheets", relative_path).to_s
-    sass_engine = Sass::Engine.for_file(path, :syntax => :scss)
-    sass_engine.render
+    stylesheet = File.read(path)
+    stylesheet = ERB.new(stylesheet).result(binding) if File.extname(relative_path) == ".erb"
+    Sass::Engine.new(stylesheet, :syntax => :scss).render
   end
   
   def for_email?
