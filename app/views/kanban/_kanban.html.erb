@@ -9,7 +9,9 @@
   <thead>
     <tr>
       <% KanbanQueue.all.each do |queue| %>
-        <th class="kanban-column" data-queue="<%= queue.slug %>"></th>
+        <th class="kanban-column" data-queue="<%= queue.slug %>">
+          <div class="ticket-count"></div>
+        </th>
       <% end %>
     </tr>
   </thead>

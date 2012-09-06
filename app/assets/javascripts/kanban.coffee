@@ -130,7 +130,7 @@ class window.Kanban
     tickets = $ul.children().length
     
     $count = $("thead .kanban-column[data-queue=\"#{queue}\"]")
-    $count.html("<strong>#{tickets}</strong> tickets")
+    $count.find('.ticket-count').html("<strong>#{tickets}</strong> tickets")
     $count.toggleClass('zero', tickets == 0)
     
     return if tickets == 0
