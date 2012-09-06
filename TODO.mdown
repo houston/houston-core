@@ -1,39 +1,33 @@
 # To Do
 
 ### Soon
- - **Weekly Report:**
-   - Include tickets (#s/wk)
-     - Tickets created (new to 'to proofread'? tickets' created_at?)
-     - Tickets proofread (exits of 'to proofread')
-     - Tickets improved (exits of 'to improve')
-     - Suggestions considered (exits of 'to consider')
-     ? Tickets scheduled (new to 'scheduled')
-     - Tickets tested (new to 'testing)
-     - Tickets released (tickets' 'closed'?)
-   - Add smaller graphs
-     - 6-week exception history
-     - average rate of exception closure
-     - CFD for tickets
+ - **Weekly Report:** do something for tickets
+   - Tickets created (new to 'to proofread'? tickets' created_at?)
+   - Tickets proofread (exits of 'to proofread')
+   - Tickets improved (exits of 'to improve')
+   - Suggestions considered (exits of 'to consider')
+   ? Tickets scheduled (new to 'scheduled')
+   - Tickets tested (new to 'testing)
+   - Tickets released (tickets' 'closed'?)
+ = **Weekly Report:**
+   - add padding on "No bugs! You win!"
+   - put date in email
+   - give max-width to table in email
  - Implement caching
- 
+
 
 ### Eventually
 
  - **Kanban:** optimize rendering tickets on the server
- - **Release:** allow adding/removing _tickets_ from release notes
+ - **Release:**
+   - allow adding/removing _tickets_ from release notes
+   - show ticket/change counts in real time
  - **Release Email:** add _retest_ group for testing update
- - Log in with your Unfuddle credentials
-   - use API GET `users/current` to validate
-   - implement in a modular way: easy to replace if Unfuddle is replaced
-   - activity in Unfuddle is performed as you
-   - icon indicating linkage in Kanban
-   - handle Unfuddle access denied errors like CanCan ones
-   - store password securely!
  - **Testing Report:**
    - Send notification for 'none' verdict
    - Give a way of prioritizing / flagging tickets
    - Expland/collapse all
- 
+
 
 ### Refactoring and Configuration
 
@@ -43,12 +37,20 @@
    - "deployment" for "Production" badge on tickets
    - "goldmine" for Release notes
 
+
 ### Ideas
 
  - **Post-Receive:** use update event instead?
- - Add graphs and reports on trends in Kanban (CFD, etc)
- - **Users** have a way of filtering, grouping, selecting only certain ones
- - **Release:** link commits to diff views (maybe esp. if GitHub integration?)
+ - **Weekly Report:** add more interpretive analytics:
+   - a CFD for tickets
+   - rate of closure for exceptions
  - **Tester Wall**:
    - Show verdicts for finished tickets
    - Implement tickets accordian-style
+ - Log in with your Unfuddle credentials
+   - use API GET `users/current` to validate
+   - implement in a modular way: easy to replace if Unfuddle is replaced
+   - activity in Unfuddle is performed as you
+   - icon indicating linkage in Kanban
+   - handle Unfuddle access denied errors like CanCan ones
+   - store password securely!
