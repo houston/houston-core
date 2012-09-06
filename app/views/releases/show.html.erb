@@ -15,7 +15,10 @@
     <h5>Commits</h5>
     <ul class="commits">
       <% @release.commits.each do |commit| %>
-        <li><%= format_commit(commit) %></li>
+        <li>
+          <%= format_commit(commit) %>
+          <%= link_to_commit(commit) if github_url?(@project) && can?(:read, commit) %>
+        </li>
       <% end %>
     </ul>
     

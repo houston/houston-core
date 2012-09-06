@@ -32,6 +32,10 @@ module UrlHelper
     project.git_url.gsub(/^git@(?:www\.)?github.com:/, "https://github.com/").gsub(/^git:/, "https:").gsub(/\.git$/, "")
   end
   
+  def github_commit_url(commit)
+    "#{github_project_url(commit.project)}/commit/#{commit.sha}"
+  end
+  
   
   
   def kanban_path(*args)

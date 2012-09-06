@@ -25,6 +25,10 @@ module TicketHelper
     end
   end
   
+  def link_to_commit(commit)
+    link_to commit.sha[0...8], github_commit_url(commit), target: "_blank"
+  end
+  
   def attributes_for_ticket_verdict(ticket)
     attributes = {}
     ticket.verdicts_by_tester_index.each do |i, verdict|

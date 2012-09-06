@@ -6,12 +6,14 @@ class Ability
     
     # Everybody can see everything
     can :read, :all
+    cannot :read, Commit
     
     # Developers can manage releases and users and projects
     if user.developer?
       can :manage, Project
       can :manage, Release
       can :manage, User
+      can :read, Commit
     end
     
     # Testers can add testing notes
