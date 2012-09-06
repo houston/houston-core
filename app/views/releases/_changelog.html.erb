@@ -24,7 +24,7 @@
 <% if release.goldmine_numbers.any? %>
   <ul class="goldmine-numbers">
     <% release.goldmine_numbers.each do |number| %>
-      <li><%= number %></li>
+      <li><%= link_to_goldmine_case(number) %></li>
     <% end %>
   </ul>
 <% else %>

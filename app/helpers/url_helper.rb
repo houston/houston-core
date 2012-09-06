@@ -15,6 +15,10 @@ module UrlHelper
     "#{unfuddle_project_url(project)}/tickets/by_number/#{number}"
   end
   
+  def goldmine_case_number_url(number)
+    "http://goldmineweb/DisplayCase.aspx?CaseNumber=#{number}"
+  end
+  
   def errbit_app_url(project)
     protocol = Rails.application.config.errbit[:port] == 443 ? "https" : "http"
     "#{protocol}://#{Rails.application.config.errbit[:host]}/apps/#{project.errbit_app_id}"

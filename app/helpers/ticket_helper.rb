@@ -13,6 +13,10 @@ module TicketHelper
     end
   end
   
+  def link_to_goldmine_case(number)
+    link_to number, goldmine_case_number_url(number), target: "_blank"
+  end
+  
   def link_to_ticket_number(ticket)
     if ticket.project
       link_to "##{ticket.number}", unfuddle_ticket_url(ticket)
