@@ -17,6 +17,7 @@ Changelog::Application.routes.draw do
     resources :environments, :controller => "project_environments" do
       member do
         post 'post_receive'
+        get 'post_receive' if Rails.env.development?
       end
       resources :releases
     end
