@@ -13,9 +13,6 @@ Changelog::Application.routes.draw do
   match "testing_report" => "testing_report#index", :via => :get, :as => :testing_report
   match "testing_report/:slug" => "testing_report#show", :via => :get, :as => :project_testing_report
   
-  match "intelligence" => "intelligence#index", :via => :get, :as => :intelligence
-  match "intelligence/:slug" => "intelligence#show", :via => :get, :as => :project_intelligence
-  
   resources :projects do
     resources :environments, :controller => "project_environments" do
       member do
