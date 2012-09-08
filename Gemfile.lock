@@ -209,6 +209,7 @@ DEPENDENCIES
   airbrake
   backbone-rails
   bluecloth
+  bundler
   cancan
   capistrano
   childprocess

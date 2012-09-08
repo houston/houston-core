@@ -10,6 +10,7 @@
         <th class="project-title">Title</th>
         <th colspan="3" class="project-links">Links</th>
         <th class="project-maintainers">Maintainers</th>
+        <th class="project-platform">Platform</th>
         <th class="project-last-release">Last Testing Update (PRI)</th>
         <th class="project-last-release"></th>
         <th class="project-last-release">Last Release (Production)</th>
@@ -50,6 +51,9 @@
             <% project.maintainers.each do |maintainer| %>
               <span class="project-maintainer"><%= avatar_for(maintainer) %>&nbsp;<%= link_to maintainer.name, user_path(maintainer) %></span>
             <% end %>
+          </td>
+          <td class="project-platform">
+            <%= project.platform %>
           </td>
           <td class="project-last-release">
             <% release = dev && dev.releases.first %>

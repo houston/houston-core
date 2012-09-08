@@ -225,6 +225,24 @@ class Project < ActiveRecord::Base
   
   
   
+  def platform
+    @platform ||= begin
+      return "" unless repo
+      
+      lockfile = repo.tree/'Gemfile.lock'
+      return "" unless lockfile
+      
+      lockfile_contents = lockfile.data
+      locked_gems = Bundler::LockfileParser.new(lockfile_contents)
+      rails = locked_gems.specs.find { |spec| spec.name == "rails" }
+      return "" unless rails
+      
+      "Rails #{rails.version}"
+    end
+  end
+  
+  
+  
 private
   
   
