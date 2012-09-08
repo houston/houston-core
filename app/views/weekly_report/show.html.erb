@@ -344,8 +344,120 @@
   
   <div class="weekly-report-body">
     
-    <h3 style="color: #bbb;">Coming soon</h3>
-  
+    <table class="layout">
+      <tr>
+        <td colspan="2">
+
+          <table class="tickets-report">
+            <%
+                week_ends = (15.weeks.ago(@date_range.end)..@date_range.end).step(7)
+                
+                ticket_queues = TicketQueue.arel_table
+                data = week_ends.map do |week_end|
+                  scope = TicketQueue \
+                    .where(ticket_queues[:created_at].lt(week_end)) \
+                    .where(["destroyed_at IS NULL or destroyed_at > ?", week_end]) \
+                    .joins(:ticket) \
+                    .group("ticket_queues.queue, tickets.project_id") \
+                    .select("ticket_queues.queue, tickets.project_id, COUNT(ticket_queues.id) AS count")
+                  
+                  TicketQueue.connection.select_all(scope.to_sql)
+                end
+                
+                
+                queues = KanbanQueue.all.map(&:slug)
+                ticket_counts_by_project_by_queue = {}
+                max_queue_size = 0
+                
+                queues.each do |queue|
+                  ticket_counts_by_project = ticket_counts_by_project_by_queue[queue] = {}
+                  
+                  cumulative_totals = [0] * week_ends.length
+                  
+                  @projects.each do |project|
+                    ticket_counts = ticket_counts_by_project[project] = []
+                    data.each_with_index do |hashes, i|
+                      hash = hashes.find { |hash| hash["queue"] == queue && hash["project_id"] == project.id.to_s }
+                      count = hash ? hash["count"].to_i : 0
+                      ticket_counts << (cumulative_totals[i] += count)
+                    end
+                  end
+                  
+                  max_queue_size = [max_queue_size, cumulative_totals.max].max
+                end
+                
+                
+                
+                
+                
+                
+                markers = []
+                @projects.reverse.each_with_index do |project, i|
+                  i = @projects.length - i
+                  markers << "B,#{colors[project.color]},#{i},0,0"
+                end
+                markers = "&chm=#{markers.join("|")}"
+                
+                
+                chls = "&chls=" + (["0,4,0"] * (@projects.length+1)).join("|")
+                
+                
+                width = 520
+                height = 100
+                
+            %>
+            <% alt = true %>
+            <% KanbanQueue.all.each do |queue| %>
+              <% 
+                ticket_counts_by_project = ticket_counts_by_project_by_queue[queue.slug]
+                data = @projects.map { |project| ticket_counts_by_project[project] }
+                data.unshift([max_queue_size] * 16)
+                alt = !alt
+              %>
+              
+              <tr class="<%= "alt" if alt %>">
+                <th>
+                  <span style="white-space:nowrap; font-weight:bold;"><%= queue.name %></span><br />
+                  16-week<br />
+                  queue size
+                </th>
+                <td align="center">
+                  <%= image_tag Gchart.line(
+                        :data => data,
+                        :bar_colors => @projects.map { |project| colors[project.color] },
+                        :size => "#{width}x#{height}" ) + chls + markers + "&chxs=0,676767,0,0,_,676767|1,676767,0,0,_,676767&chxt=x,y" + "&chf=bg,s,FFFFFF00",
+                      :width => width,
+                      :height => height %>
+                </td>
+                <td class="score">
+                  <%
+                      this_week = data.last[15]
+                      last_week = data.last[14]
+                      diff = this_week - last_week
+                  %>
+                  <p class="ticket-diff <%= "zero" if diff.zero? %>">
+                    <span class="score-count">
+                      <% if diff < 0 %>
+                        <span class="sign">&minus;</span><%= -diff %>
+                      <% else %>
+                        <span class="sign">+</span><%= diff %>
+                      <% end %>
+                    </span>
+                    <span class="score-label">Change</span>
+                  </p>
+                  <p>
+                    <span class="score-count"><%= this_week %></span>
+                    <span class="score-label">Total</span>
+                  </p>
+                </td>
+              </tr>
+            <% end %>
+          </table>
+
+        </td>
+      </tr>
+    </table>
+    
   </div>
   
 </div>

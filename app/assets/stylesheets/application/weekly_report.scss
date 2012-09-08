@@ -52,6 +52,12 @@
     width: 100%;
     margin-bottom: 6em;
     
+    tr.alt {
+      th, td { 
+        background: #efefef;
+      }
+    }
+    
     &.commits {
       th {
         text-align: left;
@@ -92,8 +98,12 @@
         text-align: left;
         max-width: 8em;
         padding-right: 1em;
+        padding-left: 1em;
         font-weight: normal;
-        text-indent: -18px;
+      }
+      
+      td.score {
+        padding-right: 1em;
       }
     }
   }

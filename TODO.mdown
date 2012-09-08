@@ -1,14 +1,6 @@
 # To Do
 
 ### Soon
- - **Weekly Report:** do something for tickets
-   - Tickets created (new to 'to proofread'? tickets' created_at?)
-   - Tickets proofread (exits of 'to proofread')
-   - Tickets improved (exits of 'to improve')
-   - Suggestions considered (exits of 'to consider')
-   ? Tickets scheduled (new to 'scheduled')
-   - Tickets tested (new to 'testing)
-   - Tickets released (tickets' 'closed'?)
  = **Weekly Report:**
    - add padding on "No bugs! You win!"
    - put date in email
