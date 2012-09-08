@@ -53,7 +53,10 @@
             <% end %>
           </td>
           <td class="project-platform">
-            <%= project.platform %>
+            <% platform = project.platform %>
+            <% unless platform.blank? %>
+              <span rel="tooltip" title="Parsed from Gemfile.lock"><%= platform %></span>
+            <% end %>
           </td>
           <td class="project-last-release">
             <% release = dev && dev.releases.first %>
