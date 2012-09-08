@@ -272,10 +272,9 @@
         </tr>
 
         <tr>
-          <td width="20%">
-          </td>
-
-          <td width="40%">
+          <td width="20%"></td>
+          
+          <td width="40%" align="center">
             <% width = ((14 + 4) * weeks_of_errbit_history) + 10 + 20 %>
             <%= image_tag Gchart.bar(
                   :data => notices_by_week.values,
@@ -286,15 +285,47 @@
                 :height => 80 %>
             <h5 style="margin-top: 0.25em; text-align: center;"><%= weeks_of_errbit_history %>-week notice levels</h5>
           </td>
-
+          
           <td width="40%" align="center">
             <% width = ((14 + 4) * weeks_of_errbit_history) + 10 + 20 %>
-            <%= image_tag Gchart.bar(
-                  :data => @projects.map { |project| bugs_by_week_by_project[project].try(:values) || [0]*weeks_of_errbit_history },
-                  :bar_colors => @projects.map { |project| colors[project.color] },
-                  :bar_width_and_spacing => 14,
-                  :size => "#{width}x80" ) + "&chxt=y",
+            <%
+                cumulative_totals = [0] * weeks_of_errbit_history
+                
+                projects_included = []
+                
+                data = @projects.map do |project|
+                  values = bugs_by_week_by_project[project]
+                  if values
+                    projects_included << project
+                    values = values.values
+                  else
+                    next
+                  end
+                  
+                  values.each_with_index do |value, i|
+                    cumulative_totals[i] += value
+                  end
+                  cumulative_totals.dup
+                end
+                data.compact!
+                
+                colors_included = projects_included.map { |project| colors[project.color] }
+                
+                markers = []
+                colors_included.reverse.each_with_index do |color, i|
+                  markers << "B,#{color},#{i},0,0"
+                end
+                markers = "&chm=#{markers.join("|")}"
+                
+                chls = "&chls=" + (["0,4,0"] * data.length).join("|")
+            
+            %>
+            <%= image_tag Gchart.line(
+                  :data => data.reverse,
+                  :bar_colors => colors_included.reverse,
+                  :size => "#{width}x80" ) + "&chxt=r" + markers + "&chxs=0,676767,0,0,_,676767&chxt=y,r" + chls,
                 :width => width,
+                :alt => "#{weeks_of_errbit_history}-week problem count",
                 :height => 80 %>
             <h5 style="margin-top: 0.25em; text-align: center;"><%= weeks_of_errbit_history %>-week problem count</h5>
           </td>
