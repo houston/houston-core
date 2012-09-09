@@ -173,7 +173,7 @@ class Project < ActiveRecord::Base
   
   
   def repo
-    git_url.blank? ? nil : @repo ||= Grit::Repo.new(git_path)
+    git_url.blank? ? nil : @repo ||= Grit::Repo.new(git_path) rescue nil
   end
   
   
