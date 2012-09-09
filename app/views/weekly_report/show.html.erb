@@ -40,7 +40,7 @@
     weekday_by_wday = %w{Weekend Monday Tuesday Wednesday Thursday Friday Weekend}
     weekdays = %w{Monday Tuesday Wednesday Thursday Friday Weekend}
     commits_by_weekday = Hash[weekdays.zip([[], [], [], [], [], []])]
-    commits_by_project = {}
+    weekday_commits_by_project = {}
     projects_with_commits = 0
     total_commits = 0
     total_bugs = 0
@@ -85,9 +85,10 @@
             if time_range.include?(timestamp)
               weekday = weekday_by_wday[date.wday]
               
-              commits_by_project[project] = commits_by_project.fetch(project, 0) + 1
+              weekday_commits_by_project[project] = weekday_commits_by_project.fetch(project, 0) + 1 unless weekday == "Weekend"
               commits_by_weekday[weekday].push(color: project.color, project: project.name)
               commits_this_week = true
+              total_commits += 1
             end
           end
         end
@@ -96,8 +97,6 @@
         
         projects_with_commits += 1 if commits_this_week
       end
-      
-      total_commits = commits_by_project.values.sum
     end
     
     
@@ -201,10 +200,10 @@
       <tr>
         <td width="40%">
           <%= image_tag Gchart.pie(
-                :data => commits_by_project.values,
-                :bar_colors => commits_by_project.keys.map { |project| colors[project.color] },
+                :data => weekday_commits_by_project.values,
+                :bar_colors => weekday_commits_by_project.keys.map { |project| colors[project.color] },
                 :size => "320x80",
-                :labels => commits_by_project.keys.map(&:name) ),
+                :labels => weekday_commits_by_project.keys.map(&:name) ),
               :width => 320,
               :height => 80 %>
           <h5 style="margin-top: 0.25em; text-align: center;">Focus this week</h5>
