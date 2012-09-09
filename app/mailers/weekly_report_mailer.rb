@@ -9,7 +9,7 @@ class WeeklyReportMailer < ActionMailer::Base
   def _new(args={})
     mail({
       to: args[:recipients],
-      subject: "Weekly Report"
+      subject: args[:subject]
     }) do |format|
       format.html { args[:body] }
     end

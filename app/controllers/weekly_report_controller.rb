@@ -1,5 +1,6 @@
 class WeeklyReportController < ApplicationController
   before_filter :get_date
+  before_filter :get_title
   
   def show
     monday = @date.beginning_of_week
@@ -21,7 +22,7 @@ class WeeklyReportController < ApplicationController
     html = render_to_string(template: "weekly_report/show", layout: "email")
     html_with_inline_css = Premailer.new(html, with_html_string: true).to_inline_css
     
-    WeeklyReportMailer._new(recipients: @recipients, body: html_with_inline_css).deliver!
+    WeeklyReportMailer._new(recipients: @recipients, subject: @title, body: html_with_inline_css).deliver!
   rescue Timeout::Error
     redirect_to send_weekly_report_path, :notice => "Couldn't get a response from the mail server. Is everything OK?"
   end
@@ -38,6 +39,10 @@ private
     end
   rescue
     @date = Date.today
+  end
+  
+  def get_title
+    @title = "Weekly Report for #{@date.strftime("%B %e")}"
   end
   
 end
