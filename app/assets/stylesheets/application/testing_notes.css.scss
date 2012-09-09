@@ -202,9 +202,11 @@ ul.tester-names {
 }
 
 .testing-note-form {
+  margin-bottom: 0;
   label {
     display: inline-block;
     input { display: inline; }
   }
   p { margin: 0; }
 }
+
