@@ -1,7 +1,7 @@
 class ProjectEnvironmentsController < ApplicationController
   include UrlHelper
-  before_filter :find_project
-  before_filter :find_environment, :only => [:show, :edit, :update, :destroy, :post_receive]
+  before_filter :find_project, :except => [:post_receive]
+  before_filter :find_environment, :only => [:show, :edit, :update, :destroy]
   load_resource :environment, :find_by => :slug, :through => :project
   authorize_resource :environment
   
@@ -15,6 +15,18 @@ class ProjectEnvironmentsController < ApplicationController
   end
   
   def post_receive
+    @project = Project.find_by_slug(params[:project_id])
+    unless @project
+      head 404
+      return
+    end
+    
+    @environment = @project.environments.find_by_slug(params[:id])
+    unless @environment
+      head 404
+      return
+    end
+    
     @release = @environment.releases.new(commit0: @environment.last_commit, commit1: params[:commit])
     
     if @release.can_read_commits?
