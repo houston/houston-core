@@ -1,11 +1,17 @@
 # To Do
 
 ### Soon
- = **Weekly Report:**
-   - add padding on "No bugs! You win!"
-   - put date in email
-   - give max-width to table in email
+
  - Implement caching
+ - **Weekly Report:**
+   - add a CFD for tickets
+   - add rate of closure for exceptions
+   - split notice count by project
+   - add achievements
+     - most total commits per week/day
+     - most commits to a project per week/day
+     - most projects committed to per week
+     - first commit to a project per developer
 
 
 ### Eventually
@@ -33,9 +39,6 @@
 ### Ideas
 
  - **Post-Receive:** use update event instead?
- - **Weekly Report:** add more interpretive analytics:
-   - a CFD for tickets
-   - rate of closure for exceptions
  - **Tester Wall**:
    - Show verdicts for finished tickets
    - Implement tickets accordian-style
