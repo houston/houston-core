@@ -225,6 +225,24 @@ class Project < ActiveRecord::Base
   
   
   
+  class Platform
+    
+    def initialize(name, version)
+      @name, @version = name, version
+    end
+    
+    attr_reader :name, :version
+    
+    def to_s
+      "#{name} #{version}"
+    end
+    
+    def blank?
+      false
+    end
+    
+  end
+  
   def platform
     @platform ||= begin
       return "" unless repo
@@ -237,7 +255,7 @@ class Project < ActiveRecord::Base
       rails = locked_gems.specs.find { |spec| spec.name == "rails" }
       return "" unless rails
       
-      "Rails #{rails.version}"
+      Platform.new("Rails", rails.version)
     end
   end
   

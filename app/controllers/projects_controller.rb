@@ -9,6 +9,14 @@ class ProjectsController < ApplicationController
     @title = "Projects"
     @projects = Project.order(:name).all
     
+    rails_versions ||= begin
+      response = Faraday.get("https://rubygems.org/api/v1/versions/rails.json")
+      gems = JSON.load(response.body)
+      gems.map { |hash| Gem::Version.new (hash["number"]) }.sort.reverse
+    end
+    @rails_minor_versions = rails_versions.map { |version| version.to_s[/\d+\.\d+/] }.uniq
+    @rails_version_latest = rails_versions.first
+    
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @projects }

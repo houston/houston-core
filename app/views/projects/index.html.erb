@@ -55,7 +55,18 @@
           <td class="project-platform">
             <% platform = project.platform %>
             <% unless platform.blank? %>
+              <% minor_version = platform.version.to_s[/\d+\.\d+/] %>
+              <% releases_since_version = @rails_minor_versions.index(minor_version) %>
               <span rel="tooltip" title="Parsed from Gemfile.lock"><%= platform %></span>
+              <% if releases_since_version > 1 %>
+                <span class="stoplight red" rel="tooltip" title="<%= releases_since_version %> versions out-of-date"></span>
+              <% elsif releases_since_version == 1 %>
+                <span class="stoplight yellow" rel="tooltip" title="1 version out-of-date"></span>
+              <% elsif platform.version < @rails_version_latest %>
+                <span class="stoplight spring-green" rel="tooltip" title="update for security fixes"></span>
+              <% else %>
+                <span class="stoplight green" rel="tooltip" title="up-to-date"></span>
+              <% end %>
             <% end %>
           </td>
           <td class="project-last-release">
