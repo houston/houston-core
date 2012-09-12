@@ -48,6 +48,7 @@ Handlebars.registerHelper 'radioButton', (object, id, name, value, selectedValue
   "#{input} />"
 
 Handlebars.registerHelper 'formatTicketSummary', (message)->
+  message = Handlebars.Utils.escapeExpression(message)
   [feature, sentence] = message.split(':', 2)
   if sentence then "<b>#{feature}:</b>#{sentence}" else message
 
