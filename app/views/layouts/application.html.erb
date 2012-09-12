@@ -100,12 +100,17 @@
       <li class="testing-note new">
         <div class="tester-avatar">{{{userAvatar 24}}}</div>
         <form accept-charset="UTF-8" action="/tickets/{{ticketId}}/testing_notes" class="testing-note-form" id="new_testing_note" method="post">
+          {{#if tester}}
           <p>
             <input data-attr="ticket_id" id="ticket_{{ticketId}}_new_testing_note_ticket_id" name="ticket_id" type="hidden" value="{{ticketId}}" />
             <label for="ticket_{{ticketId}}_new_testing_note_verdict_works"><input id="ticket_{{ticketId}}_new_testing_note_verdict_works" name="verdict" type="radio" value="works"> Works</label>
             <label for="ticket_{{ticketId}}_new_testing_note_verdict_fails"><input id="ticket_{{ticketId}}_new_testing_note_verdict_fails" name="verdict" type="radio" value="fails"> Fails</label>
             <label for="ticket_{{ticketId}}_new_testing_note_verdict_none"><input id="ticket_{{ticketId}}_new_testing_note_verdict_none" name="verdict" type="radio" value="none"> None</label>
           </p>
+          {{else}}
+          <input data-attr="ticket_id" id="ticket_{{ticketId}}_new_testing_note_ticket_id" name="ticket_id" type="hidden" value="{{ticketId}}" />
+          <input data-attr="ticket_id" id="ticket_{{ticketId}}_new_testing_note_verdict" name="verdict" type="hidden" value="none" />
+          {{/if}}
           <p>
             <textarea id="testing_note_comment" name="comment" value=""></textarea>
             <input class="btn btn-primary" name="commit" type="submit" value="Post" />
@@ -228,7 +233,8 @@
         window.user = new User(<%= raw({
           id: current_user.id,
           email: current_user.email,
-          name: current_user.name
+          name: current_user.name,
+          role: current_user.role
         }.to_json) %>);
         $('#body .avatar.user-' + window.userId).popover({
           title: 'Changing your Avatar',

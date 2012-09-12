@@ -53,7 +53,10 @@ class window.TestingTicketView extends Backbone.View
     
     # Render form for adding a testing note
     if window.userId
-      $testingNotes.append @renderNewTestingNote(ticketId: @ticket.get('id'))
+      params =
+        ticketId: @ticket.get('id')
+        tester: window.user.get('role') == 'Tester'
+      $testingNotes.append @renderNewTestingNote(params)
     @
   
   beginEditTestingNote: (view)->
