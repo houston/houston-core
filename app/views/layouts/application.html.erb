@@ -97,7 +97,7 @@
     </script>
     
     <script id="new_testing_note_template" type="text/x-handlebars-template">
-      <li class="testing-note new">
+      <li class="testing-note{{#if tester}} by-tester{{/if}} new">
         <div class="tester-avatar">{{{userAvatar 24}}}</div>
         <form accept-charset="UTF-8" action="/tickets/{{ticketId}}/testing_notes" class="testing-note-form" id="new_testing_note" method="post">
           {{#if tester}}

@@ -19,6 +19,7 @@ class window.TestingNoteView extends Backbone.View
     renderer = if @isInEditMode then @renderEditTestingNote else @renderTestingNote
     $el.html renderer(_.extend(@model.toJSON(), {editable: @isEditable()}))
     $el.attr('class', "testing-note #{@model.get('verdict')}")
+    $el.addClass('by-tester') if window.testers.get(@model.get('userId'))
     @
   
   isEditable: ->
