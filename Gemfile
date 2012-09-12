@@ -63,5 +63,6 @@ gem 'rvm-capistrano'
 gem 'airbrake'
 
 group :development do
+  gem 'thin'
   gem 'pry' # for debugging
 end
