@@ -6,4 +6,6 @@ class Change < ActiveRecord::Base
   
   attr_accessor :_destroy
   
+  validates_length_of :description, :maximum => 255
+  
 end
