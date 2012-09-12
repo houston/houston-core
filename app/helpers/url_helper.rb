@@ -29,6 +29,7 @@ module UrlHelper
   end
   
   def github_project_url(project)
+    return "" unless github_url?(project)
     project.git_url.gsub(/^git@(?:www\.)?github.com:/, "https://github.com/").gsub(/^git:/, "https:").gsub(/\.git$/, "")
   end
   

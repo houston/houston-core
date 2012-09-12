@@ -69,7 +69,10 @@
     <script id="commit_template" type="text/x-handlebars-template">
       <span class="committer-avatar">{{{avatar committer/email 24 committer/name}}}</span>
       <div class="testing-note-body">
-        <span class="testing-note-timestamp">{{formatTime createdAt}}</span>
+        <span class="testing-note-timestamp">
+          {{formatTime createdAt}}
+          {{{linkToCommit this}}}
+        </span>
         <span class="tester-comment">{{{markdown message}}}</span>
       </div>
     </script>

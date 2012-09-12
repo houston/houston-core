@@ -39,8 +39,9 @@ $.fn.extend
     $(@).append("<img src=\"#{App.relativeRoot()}/images/badge-#{status}.png\" width=\"38\" height=\"38\" style=\"opacity: 0.3;\" />")
   
   appendView: (view)->
+    el = @append(view.el)
     view.render()
-    @append(view.el)
+    el
   
   serializeObject: ->
     o = {}

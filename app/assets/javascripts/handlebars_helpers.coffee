@@ -52,6 +52,13 @@ Handlebars.registerHelper 'formatTicketSummary', (message)->
   [feature, sentence] = message.split(':', 2)
   if sentence then "<b>#{feature}:</b>#{sentence}" else message
 
+Handlebars.registerHelper 'linkToCommit', (commit)->
+  sha = commit.sha[0...8]
+  if commit.github_url
+    "<a href=\"#{commit.github_url}/commit/#{commit.sha}\" target=\"_blank\">#{sha}</a>"
+  else
+    sha
+
 Handlebars.registerHelper 'testerAvatar', (email, size, title)->
   tester = window.testers.findByEmail(email)
   gravatarUrl = "http://www.gravatar.com/avatar/#{MD5(email.toLowerCase().trim())}?r=g&d=identicon&s=#{size}"

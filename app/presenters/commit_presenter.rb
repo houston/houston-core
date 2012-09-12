@@ -21,6 +21,7 @@ class CommitPresenter
       #     call it 'createdAt' for now.
       createdAt: commit.release.created_at, 
       message: commit.message,
+      sha: commit.sha,
       committer: {
         name: commit.committer,
         email: commit.committer_email } }
