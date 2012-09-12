@@ -1,0 +1,15 @@
+<%= render partial: "projects/header", locals: {project: @project, subtitle: "New Release"} %>
+
+<fieldset>
+  <div class="control-group form-actions">
+    <% if @project.git_url.blank? %>
+      <h3 style="margin-bottom: .5em;">No Git URL</h3>
+      <p>To pull release notes from your commit messages, we need to know where to find the project's repo.</p>
+      <p><%= link_to "OK. Let me enter that now.", edit_project_path(@project) %></p>
+    <% else %>
+      <h3 style="margin-bottom: .5em;">Invalid Git URL</h3>
+      <p>Sorry! We can't find your project at <code><%= @project.git_url %></code>. Maybe the system is down...</p>
+      <p><%= link_to "My bad. Let me enter a different one.", edit_project_path(@project) %></p>
+    <% end %>
+  </div>
+</fieldset>

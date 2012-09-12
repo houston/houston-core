@@ -39,6 +39,14 @@ class ReleasesController < ApplicationController
     @commit1 = params[:commit1] || params[:commit]
     @release = @environment.releases.new(commit0: @commit0, commit1: @commit1)
     
+    unless @project.repo
+      respond_to do |format|
+        format.html { render template: "releases/invalid_repo" }
+        format.json { head 422 }
+      end
+      return
+    end
+    
     if @release.can_read_commits?
       @release.load_commits!
       @release.load_tickets!
