@@ -8,9 +8,15 @@
 <table id="kanban">
   <thead>
     <tr>
+      <% now = Time.now %>
       <% KanbanQueue.all.each do |queue| %>
         <th class="kanban-column" data-queue="<%= queue.slug %>">
           <div class="ticket-count"></div>
+          <div class="time-in-queue">
+            <% if @durations.key?(queue.slug) %>
+              Average time in queue: <b><%= distance_of_time_in_words(now, now + @durations[queue.slug].to_d.seconds) %></b>
+            <% end %>
+          </div>
         </th>
       <% end %>
     </tr>

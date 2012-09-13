@@ -7,6 +7,7 @@ class ProjectKanbanController < ApplicationController
     @title = "Kanban: #{@project.name}"
     
     @projects = Project.where("unfuddle_id IS NOT NULL")
+    @durations = TicketQueue.average_time_for_queues_for_project(@project)
   end
   
   
