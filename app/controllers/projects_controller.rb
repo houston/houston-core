@@ -7,7 +7,7 @@ class ProjectsController < ApplicationController
   # GET /projects.json
   def index
     @title = "Projects"
-    @projects = Project.order(:name).all
+    @projects = Project.scoped
     
     rails_versions ||= begin
       response = Faraday.get("https://rubygems.org/api/v1/versions/rails.json")

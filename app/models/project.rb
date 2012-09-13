@@ -14,6 +14,8 @@ class Project < ActiveRecord::Base
   
   after_create :save_default_notifications
   
+  default_scope order(:name)
+  
   
   
   # Later, I hope to support multiple adapters
