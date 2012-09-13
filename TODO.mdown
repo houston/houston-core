@@ -2,7 +2,9 @@
 
 ### Soon
 
+ - Extract WeeklyReport model from WeeklyReports#show
  - Implement caching
+   - start with list of Rails versions from Rubygems
  - **Weekly Report:**
    - add a CFD for tickets
    - add rate of closure for exceptions
