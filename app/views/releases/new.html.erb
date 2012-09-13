@@ -21,13 +21,19 @@
 <% content_for :scripts do %>
 <script type="text/javascript">
   $(function() {
+    App.NewReleaseForm.init();
+    
     $('form.pjax').submit(function(e) {
       e.preventDefault();
       var $form = $(this),
           url = $form.attr('action') + '?' + $form.serialize();
       $.pjax({
         url: url,
-        container: '#new_release_form'
+        container: '#new_release_form',
+        success: function() {
+          FT.updateNestedEditors();
+          App.NewReleaseForm.init();
+        }
       });
       return false;
     });
