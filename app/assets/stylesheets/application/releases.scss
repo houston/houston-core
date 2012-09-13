@@ -27,6 +27,8 @@ textarea#release_message {
 
 .release-detail {
   line-height: 1.5em;
+  padding-top: 20px;
+  margin-top: -20px;
   
   h5 {
     float: left;
@@ -36,8 +38,7 @@ textarea#release_message {
   }
   
   p, ul {
-    float: left;
-    margin: 20px 0 0 0;
+    margin: 20px 0 0 88px;
     
     li {
       list-style-type: none;
