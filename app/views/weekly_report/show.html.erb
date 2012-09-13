@@ -14,27 +14,7 @@
       <% end %>
     </span>
   </h1>
-
-
-
-  <h3 class="heading">
-    <%= image_tag image_url("heading-awardsb-48.png"), size: "48" %>
-    Superlatives
-  </h3>
   
-  <div class="weekly-report-body">
-    
-    <h3 style="color: #bbb;">Coming soon</h3>
-    
-  </div>
-
-
-
-  <h3 class="heading">
-    <%= image_tag image_url("heading-commits-48.png"), size: "48" %>
-    Commits
-  </h3>
-
   <%
     
     weekday_by_wday = %w{Weekend Monday Tuesday Wednesday Thursday Friday Weekend}
@@ -46,6 +26,8 @@
     total_bugs = 0
     commits_by_week_by_project = Hash[@projects.zip]
     
+    testing_notes_by_weekday = Hash[weekdays.zip([[], [], [], [], [], []])]
+    
     weeks_of_commit_history = 26
     date_range_multiweek = ((weeks_of_commit_history - 1).weeks.before(@date_range.begin))..@date_range.end
     commit_history_weeks = date_range_multiweek.step(7)
@@ -56,6 +38,29 @@
     
     time_range = @date_range.begin.beginning_of_day.to_time.to_i...@date_range.end.end_of_day.to_time.to_i
     time_range_multiweek = date_range_multiweek.begin.beginning_of_day.to_time.to_i...date_range_multiweek.end.end_of_day.to_time.to_i
+    
+    
+    
+    fails = 0
+    passes = 0
+    color = "666666"
+    benchmark("Preparing data for testing activity") do
+      testing_notes = TestingNote.where(:created_at => @date_range).where(["verdict != ?", "none"])
+      
+      testing_notes.each do |testing_note|
+        weekday = weekday_by_wday[testing_note.created_at.wday]
+
+        if testing_note.fail?
+          fails += 1
+          color = "BB2121"
+        else
+          passes += 1
+          color = "67C741"
+        end
+        testing_notes_by_weekday[weekday].push(color: color)
+      end
+      
+    end
     
     
     
@@ -157,6 +162,26 @@
     
   %>
   
+  
+  
+  <h3 class="heading">
+    <%= image_tag image_url("heading-awardsb-48.png"), size: "48" %>
+    Superlatives
+  </h3>
+  
+  <div class="weekly-report-body">
+    
+    <h3 style="color: #bbb;">Coming soon</h3>
+    
+  </div>
+  
+  
+  
+  <h3 class="heading">
+    <%= image_tag image_url("heading-commits-48.png"), size: "48" %>
+    Commits
+  </h3>
+  
   <div class="weekly-report-body">
     
     <table class="layout">
@@ -223,9 +248,60 @@
     </table>
     
   </div>
+  
+  
+  
+  <h3 class="heading">
+    <div style="display:inline-block; width: 48px; height:48px;">&nbsp;</div>
+    Testing Notes
+  </h3>
+  
+  <div class="weekly-report-body">
+    
+    <table class="layout">
+      <tr>
+        <td colspan="2">
+    
+          <table class="testing-notes no-bottom-margin">
+            <thead>
+              <tr>
+                <% weekdays.each do |weekday| %>
+                  <th width="80"><%= weekday %></th>
+                <% end %>
+                <td></td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <% weekdays.each do |weekday| %>
+                  <td width="80">
+                    <% testing_notes_by_weekday[weekday].each do |testing_note| %><b class="testing-note bubble" style="background-color:#<%= testing_note[:color] %>"></b><% end %>
+                  </td>
+                <% end %>
 
-
-
+                <td class="score">
+                  <p class="testing-note-passes">
+                    <span class="score-count"><%= passes %></span>
+                    <span class="score-label"><%= passes == 1 ? "Pass" : "Passes" %></span>
+                  </p>
+                  <p class="testing-note-fails">
+                    <span class="score-count"><%= fails %></span>
+                    <span class="score-label"><%= fails == 1 ? "Fail" : "Fails" %></span>
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        
+        </td>
+      </tr>
+      
+    </table>
+    
+  </div>
+  
+  
+  
   <h3 class="heading">
     <%= image_tag image_url("heading-bugs-48.png"), size: "48" %>
     Exceptions
@@ -333,6 +409,7 @@
     
     <% end %>
   </div>
+  
   
   
   <h3 class="heading">

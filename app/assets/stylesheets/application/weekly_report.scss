@@ -58,13 +58,15 @@
     width: 100%;
     margin-bottom: 6em;
     
+    &.no-bottom-margin { margin-bottom: 0; }
+    
     tr.alt {
       th, td { 
         background: #efefef;
       }
     }
     
-    &.commits {
+    &.commits, &.testing-notes {
       th {
         text-align: left;
         width: 80px;
@@ -117,7 +119,7 @@
   }
   
   
-  b.commit {
+  b.commit, b.testing-note {
     display: inline-block;
     width: 14px;
     height: 13px;
@@ -173,11 +175,11 @@
       padding-right: 1px;
     }
     
-    .new-bugs {
+    .testing-note-fails, .new-bugs {
       color: #B50000;
     }
     
-    .resolved-bugs {
+    .testing-note-passes, .resolved-bugs {
       color: #42A800;
     }
     
