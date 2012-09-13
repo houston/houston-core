@@ -52,6 +52,15 @@
     <hr />
 
     <div class="control-group">
+      <%= f.label :new_relic_id, "New Relic App ID", :class => 'control-label' %>
+      <div class="controls">
+        <%= f.text_field :new_relic_id, :class => 'text_field' %>
+      </div>
+    </div>
+
+    <hr />
+
+    <div class="control-group">
       <%= f.label :maintainers, :class => 'control-label' %>
       <div class="controls changes-nested-editor">
         <%= f.nested_editor_for :maintainers do |f| -%>

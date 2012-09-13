@@ -24,6 +24,10 @@ class Configuration
     Unfuddle.config(value)
   end
   
+  def new_relic(value)
+    Rails.application.config.new_relic = value
+  end
+  
   def errbit(value)
     Rails.application.config.errbit = value
   end

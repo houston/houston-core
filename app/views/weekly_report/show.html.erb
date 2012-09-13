@@ -413,6 +413,61 @@
   
   
   <h3 class="heading">
+    <div style="display:inline-block; width: 48px; height:48px;">&nbsp;</div>
+    Performance
+  </h3>
+  
+  <div class="weekly-report-body">
+    
+    <table class="layout">
+      <tr>
+        <td colspan="2">
+
+          <table class="performance-report no-bottom-margin">
+            <% benchmark("Preparing data for performance report") do %>
+              <% alt = true %>
+              <% @projects.where("new_relic_id IS NOT NULL").each do |project| %>
+                <tr class="<%= "alt" if (alt=!alt) %>">
+                  <th><b class="bubble <%= project.color %>"></b>&nbsp;<%= project.name %></th>
+                  <td>
+                    <%
+                        account_id = Rails.application.config.new_relic[:account_id]
+                        api_key = Rails.application.config.new_relic[:api_key]
+                        url = "https://api.newrelic.com/api/v1/accounts/#{account_id}/metrics/data.json"
+                        url << "?begin=#{@date_range.begin.iso8601}&end=#{@date_range.end.iso8601}"
+                        url << "&metrics[]=Apdex&field=score"
+                        url << "&agent_id[]=#{project.new_relic_id}"
+                        
+                        response = Faraday.get(url) { |curl| curl.headers["x-api-key"] = api_key }
+                        json = JSON.load(response.body)
+                        
+                        scores = json.map { |result| result["score"] }
+                        width = 480
+                        height = 80
+                    %>
+                    
+                    <%= image_tag ("http://chart.apis.google.com/chart" <<
+                         "?cht=lc&chs=#{width}x#{height}&chco=6CB7B7&chls=4,4,0&chf=bg,s,FFFFFF00" <<
+                         "&chds=0.5,1&chd=t:#{scores.join(",")}" <<
+                         "&chxt=r&chxr=0,0.5,1" <<
+                         "&chm=r,FEF2F5,0,0.4,0|r,F7F6E2,0,0.7,0.4|r,E8F9E9,0,0.9,0.7|r,D9F9F9,0,1,0.9").html_safe,
+                        width: width,
+                        height: height %>
+                  </td>
+                </tr>
+              <% end %>
+            <% end %>
+          </table>
+
+        </td>
+      </tr>
+    </table>
+    
+  </div>
+  
+  
+  
+  <h3 class="heading">
     <%= image_tag image_url("heading-ideas-48.png"), size: "48" %>
     Tickets
   </h3>
@@ -468,10 +523,9 @@
                 ticket_counts_by_project = ticket_counts_by_project_by_queue[queue.slug]
                 data = @projects.map { |project| ticket_counts_by_project[project] }
                 data.unshift([max_queue_size] * 16)
-                alt = !alt
               %>
               
-              <tr class="<%= "alt" if alt %>">
+              <tr class="<%= "alt" if (alt=!alt) %>">
                 <th>
                   <span style="white-space:nowrap; font-weight:bold;"><%= queue.name %></span><br />
                   16-week<br />

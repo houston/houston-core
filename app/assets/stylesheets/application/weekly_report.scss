@@ -81,7 +81,7 @@
       }
     }
     
-    &.bugs {
+    &.bugs, &.performance-report {
       
       td {
         padding: .75em 0;
@@ -90,6 +90,7 @@
       th { 
         text-align: left;
         max-width: 8em;
+        width: 8em;
         padding-right: 1em;
         font-weight: normal;
         text-indent: -18px;
@@ -107,6 +108,7 @@
       th { 
         text-align: left;
         max-width: 8em;
+        width: 8em;
         padding-right: 1em;
         padding-left: 1em;
         font-weight: normal;
