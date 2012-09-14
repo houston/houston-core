@@ -2,31 +2,38 @@
 
 ### Soon
 
- - Extract WeeklyReport model from WeeklyReports#show
+ - **Testing Report:**
+   - add a way to reset the report (Developers only) (just set `tickets.last_release_at`)
+   - show progress of testing (JavaScript pie graph, updated in real time)
+   - differentiate releases to production and those to testing
+ - **Weekly Report:**
+   - add a tickets-in-testing line graph to **Testing Activity**
+   - get "Tickets" right
+     - Sparkline?
+     - Giant, glorious, CFD?
+   - remove "Queues"
+   - show commits for ledger
+   - create missing icons
+   - show "No bugs!" announcement per project
+   - split notice count by project
+   - Problems history: off by 1 week?
+   - Extract WeeklyReport model from WeeklyReports#show
+   - group into supersections, "Productivity", "Maintenance", "Development" [?]
+ - **Release:**
+   - allow adding/removing _tickets_ from release notes
+   - show ticket/change counts in real time
+ - **Kanban:** allow refreshing a column
+ - **Project:** allow updating a commit
+ - **Release Emails:** have up-to-date commits
  - Implement caching
    - start with list of Rails versions from Rubygems
- - **Weekly Report:**
-   - add a CFD for tickets
-   - add rate of closure for exceptions
-   - split notice count by project
-   - add achievements
-     - most total commits per week/day
-     - most commits to a project per week/day
-     - most projects committed to per week
-     - first commit to a project per developer
+   - and New Relic API calls
 
 
 ### Eventually
 
  - **Kanban:** optimize rendering tickets on the server
- - **Release:**
-   - allow adding/removing _tickets_ from release notes
-   - show ticket/change counts in real time
  - **Release Email:** add _retest_ group for testing update
- - **Testing Report:**
-   - Send notification for 'none' verdict
-   - Give a way of prioritizing / flagging tickets
-   - Expland/collapse all
 
 
 ### Refactoring and Configuration
@@ -41,9 +48,29 @@
 ### Ideas
 
  - **Post-Receive:** use update event instead?
+ - **Weekly Report:**
+   - add a CFD for tickets
+   - add rate of closure for exceptions
+   - add a **Security** [?] section that shows key dependencies (Rails & Devise)
+   
+        key_dependencies do
+          gem "rails"
+          gem "devise"
+        end
+   
+   - add a Customer Satisfaction metric
+   - add "Superlatives"
+     - most total commits per week/day
+     - most commits to a project per week/day
+     - most projects committed to per week
+     - first commit to a project per developer
  - **Tester Wall**:
    - Show verdicts for finished tickets
    - Implement tickets accordian-style
+ - **Testing Report:**
+   - Give a way of prioritizing / flagging tickets
+   - Expland/collapse all
+   - Send notification for 'none' verdict
  - Log in with your Unfuddle credentials
    - use API GET `users/current` to validate
    - implement in a modular way: easy to replace if Unfuddle is replaced
