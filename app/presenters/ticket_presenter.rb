@@ -1,4 +1,5 @@
 class TicketPresenter
+  include UrlHelper
   
   def initialize(tickets)
     @tickets = tickets
@@ -23,6 +24,7 @@ class TicketPresenter
         projectSlug: ticket.project.slug,
         projectTitle: ticket.project.name,
         projectColor: ticket.project.color,
+        unfuddleUrl: unfuddle_ticket_url(ticket),
         number: ticket.number,
         summary: ticket.summary,
         queue: ticket.queue,

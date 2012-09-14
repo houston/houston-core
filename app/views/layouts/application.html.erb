@@ -36,6 +36,7 @@
     <script id="ticket_in_testing_template" type="text/x-handlebars-template">
       <div class="span8">
         <a data-toggle="collapse" data-parent="#tickets" data-target="#ticket_{{id}}_testing_notes" class="testing-notes">[#{{number}}] {{{formatTicketSummary summary}}}</a>
+        <a href="{{unfuddleUrl}}" target="_blank"><%= image_tag "/images/favicon-unfuddle.png", "data-tooltip-placement" => "right", :rel => "tooltip", :title => "View in Unfuddle", :width => 16, :height => 16 %></a>
         {{#committers}} <span class="committer-avatar">{{{avatar email 24 name}}}</span>{{/committers}}
         {{#ifEq deployment "In Production (Released)"}}<span class="label label-inverse">Production</span>{{/ifEq}}
       </div>
