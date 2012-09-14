@@ -37,11 +37,23 @@ th.project-releases,
 }
 
 th, td {
-  &.project-link {
+  &.project-unfuddle-link {
+    padding-right: 2px !important;
+  }
+  &.project-errbit-link {
     padding-left: 2px !important;
     padding-right: 2px !important;
   }
+  &.project-github-link {
+    padding-left: 2px !important;
+    padding-right: 2px !important;
+  }
+  &.project-new-relic-link {
+    padding-left: 2px !important;
+  }
 }
+
+.project-platform { white-space: nowrap; }
 
 .stoplight {
   display: inline-block;
