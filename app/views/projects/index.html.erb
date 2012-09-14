@@ -8,7 +8,7 @@
     <thead>
       <tr>
         <th class="project-title">Title</th>
-        <th colspan="3" class="project-links">Links</th>
+        <th colspan="4" class="project-links">Links</th>
         <th class="project-maintainers">Maintainers</th>
         <th class="project-platform">Platform</th>
         <th class="project-last-release">Last Testing Update (PRI)</th>
@@ -44,6 +44,13 @@
             <% if github_url?(project) %>
               <%= link_to github_project_url(project), :target => "_blank" do %>
                 <%= image_tag "/images/favicon-github.png", "data-tooltip-placement" => "right", :rel => "tooltip", :title => "View in GitHub", :width => 16, :height => 16 %>
+              <% end %>
+            <% end %>
+          </td>
+          <td class="project-link project-new-relic-link">
+            <% unless project.new_relic_id.blank? %>
+              <%= link_to new_relic_project_url(project), :target => "_blank" do %>
+                <%= image_tag "/images/favicon-new-relic.png", "data-tooltip-placement" => "right", :rel => "tooltip", :title => "View in New Relic", :width => 16, :height => 16 %>
               <% end %>
             <% end %>
           </td>

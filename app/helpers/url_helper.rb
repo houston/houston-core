@@ -37,6 +37,11 @@ module UrlHelper
     "#{github_project_url(commit.project)}/commit/#{commit.sha}"
   end
   
+  def new_relic_project_url(project)
+    account_id = Rails.application.config.new_relic[:account_id]
+    "https://rpm.newrelic.com/accounts/#{account_id}/applications/#{project.new_relic_id}"
+  end
+  
   
   
   def kanban_path(*args)
