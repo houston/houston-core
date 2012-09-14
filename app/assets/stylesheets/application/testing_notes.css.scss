@@ -47,11 +47,12 @@ ul.tester-names {
 .tester-verdicts { overflow: hidden; }
 
 .ticket-verdict-summary {
-  text-align: right;
+  text-align: left;
   display: block;
   float: right;
   width: 65px;
   font-weight: bold;
+  padding-left: .5em;
   
   &.pending { opacity: 0.33; }
   &.passing { color: #0a0; }
