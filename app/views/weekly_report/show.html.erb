@@ -511,10 +511,12 @@
           <div class="cfd">
             <%
               
+              unfuddle_projects = @projects.select { |project| !project.unfuddle_id.blank? }
+              
               arrivals_by_week_by_project = {}
               departures_by_week_by_project = {}
               
-              @projects.each do |project|
+              unfuddle_projects.each do |project|
                 
                 arrivals = project.tickets.where(:created_at => date_range_multiweek2).pluck(:created_at)
                 departures = project.tickets.with_closed_at.where("ticket_closures.closed_at" => date_range_multiweek2).pluck("ticket_closures.closed_at")
@@ -538,7 +540,7 @@
               
               # 68 is the height of a score row
               # 18 is the height of the label
-              height = 68 * @projects.length - 22
+              height = 68 * unfuddle_projects.length - 22
               height = 200 if height < 200
               height = 700 if height > 700 # Google limits charts to 300000 pixels
               
@@ -546,7 +548,7 @@
             <%= continuous_flow_diagram({
               arrivals: arrivals_by_week_by_project.values,
               departures: departures_by_week_by_project.values,
-              colors: @projects.map { |project| colors[project.color] },
+              colors: unfuddle_projects.map { |project| colors[project.color] },
               width: 460,
               height: height,
               title: "Continuous Flow Diagram"
@@ -557,7 +559,7 @@
         <td>
 
           <table class="tickets-report">
-            <% @projects.each do |project| %>
+            <% unfuddle_projects.each do |project| %>
               <tr>
                 <th><span class="label <%= project.color %>"><%= project.name %></span></th>
                 <td class="score">
