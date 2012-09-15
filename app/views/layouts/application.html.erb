@@ -71,8 +71,9 @@
       <span class="committer-avatar">{{{avatar committer/email 24 committer/name}}}</span>
       <div class="testing-note-body">
         <span class="testing-note-timestamp">
-          {{formatTime createdAt}}
-          {{{linkToCommit this}}}
+          {{formatTime createdAt}}&nbsp;&nbsp;
+          {{{linkToCommit this}}}&nbsp;&nbsp;
+          Updated in <b>{{environment}}</b>
         </span>
         <span class="tester-comment">{{{markdown message}}}</span>
       </div>
