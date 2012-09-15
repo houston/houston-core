@@ -1,4 +1,11 @@
 class window.Ticket extends Backbone.Model
+  url: ->
+    if @isNew()
+      "#{App.relativeRoot()}/tickets"
+    else
+      "#{App.relativeRoot()}/tickets/#{@get('id')}"
+  
+  
   
   testingNotes: ->
     @testingNotesCollection ||= new TestingNotes(@get('testingNotes'), ticket: @)

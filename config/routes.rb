@@ -31,6 +31,8 @@ Changelog::Application.routes.draw do
     end
   end
   
+  match "tickets/:ticket_id", :to => "tickets#update", :via => :put
+  
   scope "tickets/:ticket_id" do 
     resources :testing_notes
   end

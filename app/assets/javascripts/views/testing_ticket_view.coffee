@@ -4,6 +4,7 @@ class window.TestingTicketView extends Backbone.View
   
   events:
     'submit form#new_testing_note': 'createTestingNote'
+    'click #commit_and_reset': 'createTestingNoteAndResetTicket'
   
   initialize: ->
     @ticket = @options.ticket
@@ -56,6 +57,7 @@ class window.TestingTicketView extends Backbone.View
       params =
         ticketId: @ticket.get('id')
         tester: window.user.get('role') == 'Tester'
+        developer: window.user.get('role') == 'Developer' || window.user.get('role') == 'Administrator'
       $testingNotes.append @renderNewTestingNote(params)
     @
   
@@ -108,3 +110,15 @@ class window.TestingTicketView extends Backbone.View
       error: (model, response)=>
         errors = Errors.fromResponse(response)
         errors.renderToAlert().insertBefore($(@el).find('.testing-note.new')).alert()
+  
+  createTestingNoteAndResetTicket: (e)->
+    params = {lastReleaseAt: new Date()}
+    @ticket.save params,
+      success: (model, response)=>
+        console.log('updated lastReleaseAt', arguments)
+        @render()
+      error: (model, response)=>
+        console.log('failed to update lastReleaseAt', arguments)
+    
+    @createTestingNote(e)
+  

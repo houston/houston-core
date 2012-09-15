@@ -3,7 +3,6 @@
 ### Soon
 
  - **Testing Report:**
-   - add a way to reset the report (Developers only) (just set `tickets.last_release_at`)
    - show progress of testing (JavaScript pie graph, updated in real time)
    - differentiate releases to production and those to testing
  - **Weekly Report:**
