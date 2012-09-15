@@ -539,6 +539,7 @@
               # 18 is the height of the label
               height = 68 * @projects.length - 22
               height = 200 if height < 200
+              height = 700 if height > 700 # Google limits charts to 300000 pixels
               
             %>
             <%= continuous_flow_diagram({
