@@ -10,7 +10,8 @@
     <tr>
       <% KanbanQueue.all.each do |queue| %>
         <th class="kanban-column" data-queue="<%= queue.slug %>">
-          <div class="ticket-count"></div>
+          <span class="ticket-count"></span>
+          <a class="refresh-queue" data-queue="<%= queue.slug %>"><%= image_tag "/images/refresh.png", :rel => "tooltip", :title => "Refresh", :width => 16, :height => 16 %></a>
         </th>
       <% end %>
     </tr>

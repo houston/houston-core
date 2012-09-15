@@ -20,7 +20,6 @@
  - **Release:**
    - allow adding/removing _tickets_ from release notes
    - show ticket/change counts in real time
- - **Kanban:** allow refreshing a column
  - **Project:** allow updating a commit
  - **Release Emails:** have up-to-date commits
  - Implement caching
