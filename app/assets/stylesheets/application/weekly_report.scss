@@ -90,12 +90,18 @@
       
       th { 
         text-align: left;
-        max-width: 8em;
         width: 8em;
         padding-right: 1em;
         font-weight: normal;
-        text-indent: -18px;
-        padding-left: 18px;
+        
+        .label {
+          max-width: 7em;
+          padding: 3px 7px 4px;
+          display: inline-block;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          text-shadow: none;
+        }
       }
       
     }

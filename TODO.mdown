@@ -5,7 +5,6 @@
  - **Testing Report:**
    - show progress of testing (JavaScript pie graph, updated in real time)
  - **Weekly Report:**
-   - add a tickets-in-testing line graph to **Testing Activity**
    - get "Tickets" right
      - Sparkline?
      - Giant, glorious, CFD?

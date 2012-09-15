@@ -279,7 +279,7 @@
                   </td>
                 <% end %>
 
-                <td class="score">
+                <td rowspan="2" class="score">
                   <p class="testing-note-passes">
                     <span class="score-count"><%= passes %></span>
                     <span class="score-label"><%= passes == 1 ? "Pass" : "Passes" %></span>
@@ -288,6 +288,38 @@
                     <span class="score-count"><%= fails %></span>
                     <span class="score-label"><%= fails == 1 ? "Fail" : "Fails" %></span>
                   </p>
+                </td>
+              </tr>
+              
+              <tr>
+                <td colspan="6">
+                  <%
+                    tickets_by_weekday = Hash[weekdays.zip([0, 0, 0, 0, 0, 0])]
+                    
+                    @date_range.each do |date|
+                      weekday = weekday_by_wday[date.wday]
+                      tickets_by_weekday[weekday] = TicketQueue.in_queue(:in_testing).during(date).count
+                    end
+                    
+                    tickets_by_weekday = tickets_by_weekday.values
+                    max = tickets_by_weekday.max
+                    
+                    # binding.pry
+                    
+                    width = 600
+                    height = 100
+                  %>
+                  
+                  <%= image_tag Gchart.line({
+                    data: tickets_by_weekday,
+                    size: "#{width}x#{height}"}) <<
+                    "chf=bg,s,FFFFFF00&chco=3399CC&chm=B,3399CC55,0,0,0&chxt=r&chxr=0,0,#{max}",
+                    width: width,
+                    height: height,
+                    alt: "Tickets in testing each day",
+                    style: "margin-right: -16px; margin-top: 6px;" %><!-- This bumps the labels out to the right -->
+                    
+                    <h5>Tickets in testing each day</h5>
                 </td>
               </tr>
             </tbody>
@@ -323,7 +355,7 @@
                 <% bug_counts = bug_counts_by_project[project] || {} %>
                 <% if bug_counts.values.sum > 0 %>
                   <tr>
-                    <th><b class="bubble <%= project.color %>"></b>&nbsp;<%= project.name %></th>
+                    <th><span class="label <%= project.color %>"><%= project.name %></span></th>
                     <td>
                       <% bug_counts["new"].times do %>
                         <%= image_tag(image_url("bug-new-32.png"), size: 32, :class => "bug") %>
@@ -428,7 +460,7 @@
               <% alt = true %>
               <% @projects.where("new_relic_id IS NOT NULL").each do |project| %>
                 <tr class="<%= "alt" if (alt=!alt) %>">
-                  <th><b class="bubble <%= project.color %>"></b>&nbsp;<%= project.name %></th>
+                  <th><span class="label <%= project.color %>"><%= project.name %></span></th>
                   <td>
                     <%
                         account_id = Rails.application.config.new_relic[:account_id]
@@ -501,7 +533,6 @@
                 scope = TicketQueue \
                   .where(ticket_queues[:created_at].lt(week_end)) \
                   .where(["destroyed_at IS NULL or destroyed_at > ?", week_end]) \
-                  .joins(:ticket) \
                   .group("ticket_queues.queue, tickets.project_id") \
                   .select("ticket_queues.queue, tickets.project_id, COUNT(ticket_queues.id) AS count")
                 

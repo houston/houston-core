@@ -5,8 +5,21 @@ class TicketQueue < ActiveRecord::Base
   validates :ticket, :presence => true
   validates :queue, :presence => true, :inclusion => KanbanQueue.slugs
   
+  default_scope joins(:ticket)
+  
+  
   
   class << self
+    def in_queue(queue)
+      where(queue: queue)
+    end
+    
+    def during(date_or_range)
+      range = date_or_range..date_or_range unless date_or_range.is_a?(Range)
+      where("ticket_queues.created_at <= ? AND (ticket_queues.destroyed_at IS NULL OR ticket_queues.destroyed_at >= ?)", range.end, range.begin)
+    end
+    
+    
     def average_time_for_queue(queue)
       queue = queue.slug if queue.is_a?(KanbanQueue)
       
