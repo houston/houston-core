@@ -47,10 +47,10 @@
               <% end %>
             <% end %>
           </td>
-          <td class="project-link project-new-relic-link">
+          <td class="project-link project-newrelic-link">
             <% unless project.new_relic_id.blank? %>
               <%= link_to new_relic_project_url(project), :target => "_blank" do %>
-                <%= image_tag "/images/favicon-new-relic.png", "data-tooltip-placement" => "right", :rel => "tooltip", :title => "View in New Relic", :width => 16, :height => 16 %>
+                <%= image_tag "/images/favicon-newrelic.png", "data-tooltip-placement" => "right", :rel => "tooltip", :title => "View in New Relic", :width => 16, :height => 16 %>
               <% end %>
             <% end %>
           </td>
