@@ -340,11 +340,6 @@
   </h3>
   
   <div class="weekly-report-body">
-    <% if total_bugs == 0 %>
-      
-      <h3 style="color: #42A800;">No bugs! You win!</h3>
-      
-    <% else %>
       
       <table class="layout">
         <tr>
@@ -353,9 +348,9 @@
             <table class="bugs">
               <% @projects.where("errbit_app_id IS NOT NULL").each do |project| %>
                 <% bug_counts = bug_counts_by_project[project] || {} %>
-                <% if bug_counts.values.sum > 0 %>
-                  <tr>
-                    <th><span class="label <%= project.color %>"><%= project.name %></span></th>
+                <tr>
+                  <th><span class="label <%= project.color %>"><%= project.name %></span></th>
+                  <% if bug_counts.values.sum > 0 %>
                     <td>
                       <% bug_counts["new"].times do %>
                         <%= image_tag(image_url("bug-new-32.png"), size: 32, :class => "bug") %>
@@ -381,65 +376,68 @@
                         <span class="score-label">Open</span>
                       </p>
                     </td>
-                  </tr>
-                <% end %>
+                  <% else %>
+                    <td></td>
+                    <td class="score">
+                      <p class="no-bugs">No bugs!</p>
+                    </td>
+                  <% end %>
+                </tr>
               <% end %>
             </table>
             
-          </td>
-        </tr>
-
-        <tr>
-          <td width="20%"></td>
-          
-          <td width="40%" align="center">
-            <%= bar_graph({
-              data: notices_by_week.values,
-              colors: "888888",
-              count: weeks_of_errbit_history,
-              height: 80,
-              title: "#{weeks_of_errbit_history}-week notice levels"
-            }) %>
-          </td>
-          
-          <td width="40%" align="center">
-            <%
-              width = ((14 + 4) * weeks_of_errbit_history) + 10 + 20
-              cumulative_totals = [0] * weeks_of_errbit_history
-              
-              projects_included = []
-              
-              data = @projects.map do |project|
-                values = bugs_by_week_by_project[project]
-                if values
-                  projects_included << project
-                  values = values.values
-                else
-                  next
-                end
-                
-                values.each_with_index do |value, i|
-                  cumulative_totals[i] += value
-                end
-                cumulative_totals.dup
+        </td>
+      </tr>
+      
+      <tr>
+        <td width="20%"></td>
+        
+        <td width="40%" align="center">
+          <%= bar_graph({
+            data: notices_by_week.values,
+            colors: "888888",
+            count: weeks_of_errbit_history,
+            height: 80,
+            title: "#{weeks_of_errbit_history}-week notice levels"
+          }) %>
+        </td>
+        
+        <td width="40%" align="center">
+          <%
+            width = ((14 + 4) * weeks_of_errbit_history) + 10 + 20
+            cumulative_totals = [0] * weeks_of_errbit_history
+            
+            projects_included = []
+            
+            data = @projects.map do |project|
+              values = bugs_by_week_by_project[project]
+              if values
+                projects_included << project
+                values = values.values
+              else
+                next
               end
-              data.compact!
               
-              colors_included = projects_included.map { |project| colors[project.color] }
-            %>
-            <%= area_graph({
-              data: data,
-              colors: colors_included,
-              width: width,
-              height: 80,
-              title: "#{weeks_of_errbit_history}-week problem count"
-            }) %>
-          </td>
-        </tr>
-
-      </table>
-    
-    <% end %>
+              values.each_with_index do |value, i|
+                cumulative_totals[i] += value
+              end
+              cumulative_totals.dup
+            end
+            data.compact!
+            
+            colors_included = projects_included.map { |project| colors[project.color] }
+          %>
+          <%= area_graph({
+            data: data,
+            colors: colors_included,
+            width: width,
+            height: 80,
+            title: "#{weeks_of_errbit_history}-week problem count"
+          }) %>
+        </td>
+      </tr>
+      
+    </table>
   </div>
   
   

@@ -6,7 +6,6 @@
    - show progress of testing (JavaScript pie graph, updated in real time)
  - **Weekly Report:**
    - show commits for ledger
-   - show "No bugs!" announcement per project
    - split notice count by project
    - Problems history: off by 1 week?
    - Extract WeeklyReport model from WeeklyReports#show
