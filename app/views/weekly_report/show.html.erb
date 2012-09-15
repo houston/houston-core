@@ -346,7 +346,8 @@
           <td colspan="3">
             
             <table class="bugs">
-              <% @projects.where("errbit_app_id IS NOT NULL").each do |project| %>
+              <% @projects.each do |project| %>
+                <% next if project.errbit_app_id.blank? %>
                 <% bug_counts = bug_counts_by_project[project] || {} %>
                 <tr>
                   <th><span class="label <%= project.color %>"><%= project.name %></span></th>
