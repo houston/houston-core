@@ -457,9 +457,8 @@
 
           <table class="performance-report no-bottom-margin">
             <% benchmark("Preparing data for performance report") do %>
-              <% alt = true %>
               <% @projects.where("new_relic_id IS NOT NULL").each do |project| %>
-                <tr class="<%= "alt" if (alt=!alt) %>">
+                <tr>
                   <th><span class="label <%= project.color %>"><%= project.name %></span></th>
                   <td>
                     <%

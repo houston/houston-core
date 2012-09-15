@@ -60,12 +60,6 @@
     
     &.no-bottom-margin { margin-bottom: 0; }
     
-    tr.alt {
-      th, td { 
-        background: #efefef;
-      }
-    }
-    
     &.commits, &.testing-notes {
       th {
         text-align: left;
