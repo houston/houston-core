@@ -60,8 +60,49 @@ module WeeklyReportHelper
   
   
   
+  # Takes a variable number of arrays
+  # Expects at least one array
+  # Expects every array to have same length
+  # Sums the corresponding elements in each array
+  def accumulate(*arrays)
+    (0...arrays[0].length).map do |i|
+      arrays.reduce(0) { |sum, array| sum + array[i] }
+    end
+  end
+  
+  def continuous_flow_diagram(options={})
+    arrivals = options[:arrivals]
+    departures = options[:departures]
+    colors = options[:colors]
+    
+    data = []
+    line = accumulate(*departures)
+    data << line
+    
+    arrivals.each do |project_arrivals|
+      line = accumulate(line, project_arrivals)
+      data << line
+    end
+    
+    data.map! do |line|
+      cumulative = 0
+      line.map { |value| cumulative += value }
+    end
+    
+    area_graph({
+      data: data,
+      width: options[:width],
+      height: options[:height],
+      colors: ["FFFFFF"] + colors,
+      title: options[:title]
+    })
+  end
+  
+  
+  
   def graph_with_subcaptions(src, width, height, title)
-    html = image_tag(src, width: width, height: height, alt: title)
+    Rails.logger.debug "[gcharts] URL length: #{src.length} (#{title})"
+    html = image_tag(src.html_safe, width: width, height: height, alt: title)
     html << content_tag(:h5, title) if title
     html
   end

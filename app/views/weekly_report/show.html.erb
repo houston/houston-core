@@ -500,110 +500,84 @@
   
   
   <h3 class="heading">
-    <div style="display:inline-block; width: 48px; height:48px; text-align: center; color: white; background: #444; border-radius: 1em;">?</div>
+    <%= image_tag image_url("heading-ideas-48.png"), size: "48" %>
     Tickets
-  </h3>
-  
-  <div class="weekly-report-body">
-    
-    <h3 style="color: #bbb;">Coming soon</h3>
-    
-  </div>
-  
-  
-  
-  <h3 class="heading">
-    <div style="display:inline-block; width: 48px; height:48px; text-align: center; color: white; background: #444; border-radius: 1em;">?</div>
-    Queues <span style="font-weight: 100; color: #bbb;">(going away soon)</span>
   </h3>
   
   <div class="weekly-report-body">
     
     <table class="layout">
       <tr>
-        <td colspan="2">
-
-          <table class="tickets-report">
+        <td class="tickets-cfd">
+          
+          <div class="cfd">
             <%
               
-              week_ends = (15.weeks.ago(@date_range.end)..@date_range.end).step(7)
+              arrivals_by_week_by_project = {}
+              departures_by_week_by_project = {}
               
-              ticket_queues = TicketQueue.arel_table
-              data = week_ends.map do |week_end|
-                scope = TicketQueue \
-                  .where(ticket_queues[:created_at].lt(week_end)) \
-                  .where(["destroyed_at IS NULL or destroyed_at > ?", week_end]) \
-                  .group("ticket_queues.queue, tickets.project_id") \
-                  .select("ticket_queues.queue, tickets.project_id, COUNT(ticket_queues.id) AS count")
+              @projects.each do |project|
                 
-                TicketQueue.connection.select_all(scope.to_sql)
-              end
-              
-              queues = KanbanQueue.all.map(&:slug)
-              ticket_counts_by_project_by_queue = {}
-              max_queue_size = 0
-              
-              queues.each do |queue|
-                ticket_counts_by_project = ticket_counts_by_project_by_queue[queue] = {}
+                arrivals = project.tickets.where(:created_at => date_range_multiweek2).pluck(:created_at)
+                departures = project.tickets.with_closed_at.where("ticket_closures.closed_at" => date_range_multiweek2).pluck("ticket_closures.closed_at")
                 
-                cumulative_totals = [0] * week_ends.length
-                
-                @projects.each do |project|
-                  ticket_counts = ticket_counts_by_project[project] = []
-                  data.each_with_index do |hashes, i|
-                    hash = hashes.find { |hash| hash["queue"] == queue && hash["project_id"] == project.id.to_s }
-                    count = hash ? hash["count"].to_i : 0
-                    ticket_counts << (cumulative_totals[i] += count)
-                  end
+                arrivals_by_week = Hash[errbit_history_weeks.zip([0]*weeks_of_errbit_history)]
+                arrivals.each do |arrived_at|
+                  week = arrived_at.to_date.beginning_of_week
+                  arrivals_by_week[week] += 1 if arrivals_by_week.key?(week)
                 end
                 
-                max_queue_size = [max_queue_size, cumulative_totals.max].max
+                departures_by_week = Hash[errbit_history_weeks.zip([0]*weeks_of_errbit_history)]
+                departures.each do |departed_at|
+                  week = departed_at.to_date.beginning_of_week
+                  departures_by_week[week] += 1 if departures_by_week.key?(week)
+                end
+                
+                arrivals_by_week_by_project[project] = arrivals_by_week.values
+                departures_by_week_by_project[project] = departures_by_week.values
+                
               end
               
-            %>
-            <% alt = true %>
-            <% KanbanQueue.all.each do |queue| %>
-              <% 
-                ticket_counts_by_project = ticket_counts_by_project_by_queue[queue.slug]
-                data = @projects.map { |project| ticket_counts_by_project[project] }
-                data.unshift([max_queue_size] * 16)
-              %>
+              # 68 is the height of a score row
+              # 18 is the height of the label
+              height = 68 * @projects.length - 22
+              height = 200 if height < 200
               
-              <tr class="<%= "alt" if (alt=!alt) %>">
-                <th>
-                  <span style="white-space:nowrap; font-weight:bold;"><%= queue.name %></span><br />
-                  16-week<br />
-                  queue size
-                </th>
-                <td align="center">
-                  <%= area_graph({
-                    data: data,
-                    colors: @projects.map { |project| colors[project.color] },
-                    width: 520,
-                    height: 100,
-                    axes: false,
-                    title: nil
-                  }) %>
-                </td>
+            %>
+            <%= continuous_flow_diagram({
+              arrivals: arrivals_by_week_by_project.values,
+              departures: departures_by_week_by_project.values,
+              colors: @projects.map { |project| colors[project.color] },
+              width: 460,
+              height: height,
+              title: "Continuous Flow Diagram"
+            }) %>
+          </div>
+          
+        </td>
+        <td>
+
+          <table class="tickets-report">
+            <% @projects.each do |project| %>
+              <tr>
+                <th><span class="label <%= project.color %>"><%= project.name %></span></th>
                 <td class="score">
                   <%
-                    this_week = data.last[15]
-                    last_week = data.last[14]
-                    diff = this_week - last_week
+                    new_tickets = arrivals_by_week_by_project[project].last
+                    closed_tickets = departures_by_week_by_project[project].last
+                    open_tickets = project.tickets.open_on(@date_range.end).count
                   %>
-                  <p class="ticket-diff <%= "zero" if diff.zero? %>">
-                    <span class="score-count">
-                      <% if diff < 0 %>
-                        <span class="sign">&minus;</span><%= -diff %>
-                      <% else %>
-                        <span class="sign">+</span><%= diff %>
-                      <% end %>
-                    </span>
-                    <span class="score-label">Change</span>
+                  <p class="ticket-count-new <%= "zero" if new_tickets.zero? %>">
+                    <span class="score-count"><span class="sign">+</span><%= new_tickets %></span></span>
+                    <span class="score-label">New</span>
+                  </p>
+                  <p class="ticket-count-closed <%= "zero" if closed_tickets.zero? %>">
+                    <span class="score-count"><span class="sign">&ndash;</span><%= closed_tickets %></span></span>
+                    <span class="score-label">Closed</span>
                   </p>
                   <p>
-                    <span class="score-count"><%= this_week %></span>
-                    <span class="score-label">Total</span>
+                    <span class="score-count"><%= open_tickets %></span>
+                    <span class="score-label">Open</span>
                   </p>
                 </td>
               </tr>
@@ -615,5 +589,7 @@
     </table>
     
   </div>
+  
+  
   
 </div>

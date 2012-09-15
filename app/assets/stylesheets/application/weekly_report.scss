@@ -82,7 +82,7 @@
       }
     }
     
-    &.bugs, &.performance-report {
+    &.bugs, &.performance-report, &.tickets-report {
       
       td {
         padding: .75em 0;
@@ -107,24 +107,14 @@
       
     }
     
-    &.tickets-report {
-      
-      td {
-        padding: .75em 0;
-      }
-      
-      th { 
-        text-align: left;
-        max-width: 8em;
-        width: 8em;
-        padding-right: 1em;
-        padding-left: 1em;
-        font-weight: normal;
-      }
-      
-      td.score {
-        padding-right: 1em;
-      }
+    .tickets-cfd {
+      width: 460px;
+      vertical-align: top;
+    }
+    
+    &.tickets-report th {
+      padding-right: 0 !important;
+      text-align: right !important;
     }
   }
   
