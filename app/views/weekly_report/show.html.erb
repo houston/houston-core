@@ -555,13 +555,13 @@
               height = 700 if height > 700 # Google limits charts to 300000 pixels
               
             %>
-            <%= continuous_flow_diagram({
+            <%= cumulative_flow_diagram({
               arrivals: arrivals_by_week_by_project.values,
               departures: departures_by_week_by_project.values,
               colors: unfuddle_projects.map { |project| colors[project.color] },
               width: 460,
               height: height,
-              title: "Continuous Flow Diagram"
+              title: "Cumulative Flow Diagram"
             }) %>
           </div>
           

@@ -69,7 +69,7 @@ module WeeklyReportHelper
     end
   end
   
-  def continuous_flow_diagram(options={})
+  def cumulative_flow_diagram(options={})
     arrivals = options[:arrivals]
     departures = options[:departures]
     colors = options[:colors]
