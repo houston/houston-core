@@ -135,6 +135,7 @@ GEM
     net-ssh (2.2.1)
     net-ssh-gateway (1.1.0)
       net-ssh (>= 1.99.1)
+    nokogiri (1.5.5)
     orm_adapter (0.0.7)
     pg (0.13.2)
     polyglot (0.3.3)
@@ -230,6 +231,7 @@ DEPENDENCIES
   hpricot
   jquery-rails
   letter_opener!
+  nokogiri
   pg
   premailer
   pry

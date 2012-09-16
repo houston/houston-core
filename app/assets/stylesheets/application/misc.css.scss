@@ -108,3 +108,8 @@ li.column {
   form { margin-bottom: 0; }
 }
 
+form {
+  .help-inline, label.error { color: #a00; }
+  input[type="text"].error { color: #a00; border-color: #a00; }
+}
+

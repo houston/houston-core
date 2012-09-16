@@ -14,6 +14,12 @@ class Project < ActiveRecord::Base
   
   after_create :save_default_notifications
   
+  validates_each :git_url do |project, attr, value|
+    unless value.blank?
+      project.errors.add(attr, "might not be right. Kanban can't seem to connect to it.") if project.repo.nil?
+    end
+  end
+  
   default_scope order(:name)
   
   

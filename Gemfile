@@ -39,7 +39,7 @@ gem 'googlecharts'
 gem 'grit'
 gem 'hpricot'
 gem 'letter_opener', :git => 'git://github.com/pcg79/letter_opener.git'
-# gem 'nokogiri'
+gem 'nokogiri'
 gem 'premailer'
 gem 'remotable', '>= 0.2.2', :git => 'git://github.com/boblail/remotable.git'
 gem 'yajl-ruby', :require => 'yajl/json_gem'
@@ -50,10 +50,6 @@ gem 'yajl-ruby', :require => 'yajl/json_gem'
 
 # To use Jbuilder templates for JSON
 # gem 'jbuilder'
-
-# Use unicorn as the app server
-# gem 'unicorn'
-# gem 'hooves', :require => "hooves/default"
 
 # Deploy with Capistrano
 gem 'capistrano'
