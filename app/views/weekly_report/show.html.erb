@@ -304,8 +304,6 @@
                     tickets_by_weekday = tickets_by_weekday.values
                     max = tickets_by_weekday.max
                     
-                    # binding.pry
-                    
                     width = 600
                     height = 100
                   %>
@@ -515,26 +513,38 @@
               
               arrivals_by_week_by_project = {}
               departures_by_week_by_project = {}
+              open_tickets_by_project = {}
+              
+              tickets = UnfuddleDump.load!.map { |ticket|
+                ticket["created_at"] = ticket["created_at"].to_date
+                ticket["closed_on"] = ticket["closed_on"].try(:to_date)
+                ticket }
               
               unfuddle_projects.each do |project|
                 
-                arrivals = project.tickets.where(:created_at => date_range_multiweek2).pluck(:created_at)
-                departures = project.tickets.with_closed_at.where("ticket_closures.closed_at" => date_range_multiweek2).pluck("ticket_closures.closed_at")
+                tickets_for_project = tickets.select { |ticket| ticket["project_id"] == project.unfuddle_id }
+                arrivals = tickets_for_project.map { |ticket| ticket["created_at"] }.select { |created_at| date_range_multiweek2.cover?(created_at) }
+                departures = tickets_for_project.map { |ticket| ticket["closed_on"] }.select { |closed_on| closed_on && date_range_multiweek2.cover?(closed_on) }
                 
                 arrivals_by_week = Hash[errbit_history_weeks.zip([0]*weeks_of_errbit_history)]
                 arrivals.each do |arrived_at|
-                  week = arrived_at.to_date.beginning_of_week
+                  week = arrived_at.beginning_of_week
                   arrivals_by_week[week] += 1 if arrivals_by_week.key?(week)
                 end
                 
                 departures_by_week = Hash[errbit_history_weeks.zip([0]*weeks_of_errbit_history)]
                 departures.each do |departed_at|
-                  week = departed_at.to_date.beginning_of_week
+                  week = departed_at.beginning_of_week
                   departures_by_week[week] += 1 if departures_by_week.key?(week)
                 end
                 
                 arrivals_by_week_by_project[project] = arrivals_by_week.values
                 departures_by_week_by_project[project] = departures_by_week.values
+                
+                # "Arrive" all the tickets created before the first week and still open
+                arrivals_by_week_by_project[project][0] += tickets_for_project.select { |ticket| ticket["created_at"] < date_range_multiweek2.first && ticket["closed_on"].nil? }.count
+                
+                open_tickets_by_project[project] = tickets_for_project.select { |ticket| ticket["created_at"] <= date_range_multiweek2.end && (ticket["closed_on"].nil? || ticket["closed_on"] > date_range_multiweek2.end) }.count
                 
               end
               
@@ -566,7 +576,7 @@
                   <%
                     new_tickets = arrivals_by_week_by_project[project].last
                     closed_tickets = departures_by_week_by_project[project].last
-                    open_tickets = project.tickets.open_on(@date_range.end).count
+                    open_tickets = open_tickets_by_project[project]
                   %>
                   <p class="ticket-count-new <%= "zero" if new_tickets.zero? %>">
                     <span class="score-count"><span class="sign">+</span><%= new_tickets %></span></span>

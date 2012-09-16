@@ -45,7 +45,6 @@ module WeeklyReportHelper
     src = Gchart.line({
       data: data,
       bar_colors: colors,
-      bar_width_and_spacing: 14,
       size: "#{options[:width]}x#{options[:height]}"
     }) + markers + chls
     
@@ -94,7 +93,8 @@ module WeeklyReportHelper
       width: options[:width],
       height: options[:height],
       colors: ["FFFFFF"] + colors,
-      title: options[:title]
+      title: options[:title],
+      axes: false
     })
   end
   

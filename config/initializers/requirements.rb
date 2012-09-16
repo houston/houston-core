@@ -7,6 +7,7 @@ require 'lail/core_extensions'
 require 'unfuddle'
 require 'grit_patch'
 require 'configuration'
+require 'unfuddle_dump'
 
 # Load configuration
 require Rails.root.join('config', 'config.rb').to_s
