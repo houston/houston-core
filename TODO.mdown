@@ -2,18 +2,17 @@
 
 ### Soon
 
+ - **Project:** allow changing Git URL (have tmp folder deleted or whatever)
  - **Testing Report:**
    - show progress of testing (JavaScript pie graph, updated in real time)
+   - add an option to refresh tickets
  - **Weekly Report:**
-   - show commits for ledger
-   - split notice count by project
    - Problems history: off by 1 week?
    - Extract WeeklyReport model from WeeklyReports#show
-   - group into supersections, "Productivity", "Maintenance", "Development" [?]
+   - split notice count by project
  - **Release:**
    - allow adding/removing _tickets_ from release notes
    - show ticket/change counts in real time
- - **Project:** allow updating a commit
  - **Release Emails:** have up-to-date commits
  - Implement caching
    - start with list of Rails versions from Rubygems
@@ -24,6 +23,10 @@
 
  - **Kanban:** optimize rendering tickets on the server
  - **Release Email:** add _retest_ group for testing update
+ - **Project:** allow manually updating commits
+ - **Weekly Report:** group into supersections
+   - "Productivity", "Maintenance", "Development" [?]
+   - "Effort", "Task" | "Us", "Them" | "Red", "Blue"
 
 
 ### Refactoring and Configuration
