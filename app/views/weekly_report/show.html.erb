@@ -49,7 +49,7 @@
       
       testing_notes.each do |testing_note|
         weekday = weekday_by_wday[testing_note.created_at.wday]
-
+        
         if testing_note.fail?
           fails += 1
           color = "BB2121"
@@ -89,6 +89,7 @@
             
             if time_range.include?(timestamp)
               weekday = weekday_by_wday[date.wday]
+              weekday = "Weekend" unless (6..18).cover?(time.hour)
               
               weekday_commits_by_project[project] = weekday_commits_by_project.fetch(project, 0) + 1 unless weekday == "Weekend"
               commits_by_weekday[weekday].push(color: project.color, project: project.name)
@@ -191,16 +192,16 @@
           <table class="commits">
             <thead>
               <tr>
-                <% weekdays.each do |weekday| %>
-                  <th width="80"><%= weekday %></th>
+                <% weekdays[0...5].each do |weekday| %>
+                  <th width="80" class="<%= weekday.downcase %>"><%= weekday %></th>
                 <% end %>
-                <td></td>
+                <th width="80" class="weekend">Evening,<br />Weekend</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <% weekdays.each do |weekday| %>
-                  <td width="80">
+                  <td width="80" class="<%= weekday.downcase %>">
                     <% commits_by_weekday[weekday].each do |commit| %><b class="commit bubble <%= commit[:color] %>" rel="tooltip" title="<%= commit[:project] %>"></b><% end %>
                   </td>
                 <% end %>
@@ -266,7 +267,7 @@
             <thead>
               <tr>
                 <% weekdays.each do |weekday| %>
-                  <th width="80"><%= weekday %></th>
+                  <th width="80" class="<%= weekday.downcase %>"><%= weekday %></th>
                 <% end %>
                 <td></td>
               </tr>
@@ -274,7 +275,7 @@
             <tbody>
               <tr>
                 <% weekdays.each do |weekday| %>
-                  <td width="80">
+                  <td width="80" class="<%= weekday.downcase %>">
                     <% testing_notes_by_weekday[weekday].each do |testing_note| %><b class="testing-note-bubble bubble" style="background-color:#<%= testing_note[:color] %>"></b><% end %>
                   </td>
                 <% end %>

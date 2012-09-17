@@ -56,7 +56,10 @@
   
   table {
     width: 100%;
-    margin-bottom: 6em;
+    margin-bottom: 1em;
+    
+    &.layout { margin-bottom: 6em; }
+    &.bugs { margin-bottom: 3em; }
     
     &.no-bottom-margin { margin-bottom: 0; }
     
@@ -64,15 +67,20 @@
       thead th {
         text-align: left;
         width: 80px;
-        padding: 0 .75em .5em;
+        padding: .5em .75em;
         color: #333333; // for Gmail
         font-size: 0.88em;
+        line-height: 1.15em;
       }
       
       td {
         vertical-align: top;
-        padding: .25em .75em;
+        padding: .25em .75em .75em .75em;
         line-height: 9px;
+      }
+      
+      .weekend {
+        background-color: #efefef;
       }
     }
     
