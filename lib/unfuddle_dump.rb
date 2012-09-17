@@ -32,7 +32,6 @@ class UnfuddleDump
     
     def fetch!
       requested_fields = %w{created_at closed_on severity}
-      picked_fields = %w{created_at closed_on severity_id id number project_id}
       
       url = "ticket_reports/dynamic.json?fields_string=#{requested_fields.join(",")}"
       response = Unfuddle.get(url)
@@ -41,7 +40,21 @@ class UnfuddleDump
       report = response[1]
       group0 = report.fetch("groups", [])[0] || {}
       tickets = group0.fetch("tickets", [])
-      tickets.map { |ticket| ticket.pick(picked_fields) }
+      
+      process_tickets(tickets)
+    end
+    
+    def process_tickets(tickets)
+      projects = Hash.new { |hash, id| hash[id] = Unfuddle.instance.project(id) }
+      picked_fields = %w{created_at closed_on severity_id id number project_id}
+      
+      tickets.map do |ticket|
+        ticket = ticket.pick(picked_fields)
+        project = projects[ticket["project_id"]]
+        severity = project.severities.find { |severity| severity.id == ticket["severity_id"] }
+        ticket["severity"] = severity.name if severity
+        ticket
+      end
     end
     
     def download!

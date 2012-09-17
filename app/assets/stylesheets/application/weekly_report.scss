@@ -61,7 +61,7 @@
     &.no-bottom-margin { margin-bottom: 0; }
     
     &.commits, &.testing-notes {
-      th {
+      thead th {
         text-align: left;
         width: 80px;
         padding: 0 .75em .5em;
@@ -82,7 +82,7 @@
         padding: .75em 0;
       }
       
-      th { 
+      tbody th {
         text-align: left;
         width: 8em;
         padding-right: 1em;
@@ -98,17 +98,10 @@
           white-space: normal;
         }
       }
-      
     }
     
-    .tickets-cfd {
-      width: 460px;
-      vertical-align: top;
-    }
-    
-    &.tickets-report th {
-      padding-right: 0 !important;
-      text-align: right !important;
+    &.tickets-report tbody th {
+      padding-right: 4em;
     }
   }
   
@@ -134,6 +127,20 @@
     margin: -2px -4px;
     display: inline-block;
     width: 28px;
+  }
+  
+  
+  .pie-graph {
+    padding: 0 !important;
+  }
+  
+  .severities-legend {
+    vertical-align: middle;
+    padding-left: 5em !important;
+    
+    h5 { text-align: left; padding-bottom: 0.5em; }
+    ol { margin: 0; }
+    li { list-style-type: none; }
   }
   
   

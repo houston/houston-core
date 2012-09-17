@@ -344,45 +344,47 @@
           <td colspan="3">
             
             <table class="bugs">
-              <% @projects.each do |project| %>
-                <% next if project.errbit_app_id.blank? %>
-                <% bug_counts = bug_counts_by_project[project] || {} %>
-                <tr>
-                  <th><span class="label <%= project.color %>"><%= project.name %></span></th>
-                  <% if bug_counts.values.sum > 0 %>
-                    <td>
-                      <% bug_counts["new"].times do %>
-                        <%= image_tag(image_url("bug-new-32.png"), size: 32, :class => "bug") %>
-                      <% end %>
-                      <% bug_counts["open"].times do %>
-                        <%= image_tag(image_url("bug-open-32.png"), size: 32, :class => "bug") %>
-                      <% end %>
-                      <% bug_counts["fixed"].times do %>
-                        <%= image_tag(image_url("bug-fixed-32.png"), size: 32, :class => "bug") %>
-                      <% end %>
-                    </td>
-                    <td class="score">
-                      <p class="new-bugs <%= "zero" if bug_counts["new"].zero? %>">
-                        <span class="score-count"><span class="sign">+</span><%= bug_counts["new"] %></span>
-                        <span class="score-label">New</span>
-                      </p>
-                      <p class="resolved-bugs <%= "zero" if bug_counts["fixed"].zero? %>">
-                        <span class="score-count"><span class="sign">&ndash;</span><%= bug_counts["fixed"] %></span>
-                        <span class="score-label">Fixed</span>
-                      </p>
-                      <p class="open-bugs">
-                        <span class="score-count"><%= bug_counts["open"] + bug_counts["new"] %></span>
-                        <span class="score-label">Open</span>
-                      </p>
-                    </td>
-                  <% else %>
-                    <td></td>
-                    <td class="score">
-                      <p class="no-bugs">No bugs!</p>
-                    </td>
-                  <% end %>
-                </tr>
-              <% end %>
+              <tbody>
+                <% @projects.each do |project| %>
+                  <% next if project.errbit_app_id.blank? %>
+                  <% bug_counts = bug_counts_by_project[project] || {} %>
+                  <tr>
+                    <th><span class="label <%= project.color %>"><%= project.name %></span></th>
+                    <% if bug_counts.values.sum > 0 %>
+                      <td>
+                        <% bug_counts["new"].times do %>
+                          <%= image_tag(image_url("bug-new-32.png"), size: 32, :class => "bug") %>
+                        <% end %>
+                        <% bug_counts["open"].times do %>
+                          <%= image_tag(image_url("bug-open-32.png"), size: 32, :class => "bug") %>
+                        <% end %>
+                        <% bug_counts["fixed"].times do %>
+                          <%= image_tag(image_url("bug-fixed-32.png"), size: 32, :class => "bug") %>
+                        <% end %>
+                      </td>
+                      <td class="score">
+                        <p class="new-bugs <%= "zero" if bug_counts["new"].zero? %>">
+                          <span class="score-count"><span class="sign">+</span><%= bug_counts["new"] %></span>
+                          <span class="score-label">New</span>
+                        </p>
+                        <p class="resolved-bugs <%= "zero" if bug_counts["fixed"].zero? %>">
+                          <span class="score-count"><span class="sign">&ndash;</span><%= bug_counts["fixed"] %></span>
+                          <span class="score-label">Fixed</span>
+                        </p>
+                        <p class="open-bugs">
+                          <span class="score-count"><%= bug_counts["open"] + bug_counts["new"] %></span>
+                          <span class="score-label">Open</span>
+                        </p>
+                      </td>
+                    <% else %>
+                      <td></td>
+                      <td class="score">
+                        <p class="no-bugs">No bugs!</p>
+                      </td>
+                    <% end %>
+                  </tr>
+                <% end %>
+              </tbody>
             </table>
             
         </td>
@@ -453,38 +455,40 @@
         <td colspan="2">
 
           <table class="performance-report no-bottom-margin">
-            <% benchmark("Preparing data for performance report") do %>
-              <% @projects.where("new_relic_id IS NOT NULL").each do |project| %>
-                <tr>
-                  <th><span class="label <%= project.color %>"><%= project.name %></span></th>
-                  <td>
-                    <%
-                        account_id = Rails.application.config.new_relic[:account_id]
-                        api_key = Rails.application.config.new_relic[:api_key]
-                        url = "https://api.newrelic.com/api/v1/accounts/#{account_id}/metrics/data.json"
-                        url << "?begin=#{@date_range.begin.iso8601}&end=#{@date_range.end.iso8601}"
-                        url << "&metrics[]=Apdex&field=score"
-                        url << "&agent_id[]=#{project.new_relic_id}"
+            <tbody>
+              <% benchmark("Preparing data for performance report") do %>
+                <% @projects.where("new_relic_id IS NOT NULL").each do |project| %>
+                  <tr>
+                    <th><span class="label <%= project.color %>"><%= project.name %></span></th>
+                    <td>
+                      <%
+                          account_id = Rails.application.config.new_relic[:account_id]
+                          api_key = Rails.application.config.new_relic[:api_key]
+                          url = "https://api.newrelic.com/api/v1/accounts/#{account_id}/metrics/data.json"
+                          url << "?begin=#{@date_range.begin.iso8601}&end=#{@date_range.end.iso8601}"
+                          url << "&metrics[]=Apdex&field=score"
+                          url << "&agent_id[]=#{project.new_relic_id}"
                         
-                        response = Faraday.get(url) { |curl| curl.headers["x-api-key"] = api_key }
-                        json = JSON.load(response.body)
+                          response = Faraday.get(url) { |curl| curl.headers["x-api-key"] = api_key }
+                          json = JSON.load(response.body)
                         
-                        scores = json.map { |result| result["score"] }
-                        width = 480
-                        height = 80
-                    %>
+                          scores = json.map { |result| result["score"] }
+                          width = 480
+                          height = 80
+                      %>
                     
-                    <%= image_tag ("http://chart.apis.google.com/chart" <<
-                         "?cht=lc&chs=#{width}x#{height}&chco=6CB7B7&chls=4,4,0&chf=bg,s,FFFFFF00" <<
-                         "&chds=0.5,1&chd=t:#{scores.join(",")}" <<
-                         "&chxt=r&chxr=0,0.5,1" <<
-                         "&chm=r,FEF2F5,0,0.4,0|r,F7F6E2,0,0.7,0.4|r,E8F9E9,0,0.9,0.7|r,D9F9F9,0,1,0.9").html_safe,
-                        width: width,
-                        height: height %>
-                  </td>
-                </tr>
+                      <%= image_tag ("http://chart.apis.google.com/chart" <<
+                           "?cht=lc&chs=#{width}x#{height}&chco=6CB7B7&chls=4,4,0&chf=bg,s,FFFFFF00" <<
+                           "&chds=0.5,1&chd=t:#{scores.join(",")}" <<
+                           "&chxt=r&chxr=0,0.5,1" <<
+                           "&chm=r,FEF2F5,0,0.4,0|r,F7F6E2,0,0.7,0.4|r,E8F9E9,0,0.9,0.7|r,D9F9F9,0,1,0.9").html_safe,
+                          width: width,
+                          height: height %>
+                    </td>
+                  </tr>
+                <% end %>
               <% end %>
-            <% end %>
+            </tbody>
           </table>
 
         </td>
@@ -500,101 +504,164 @@
     Tickets
   </h3>
   
+  <%
+    
+    unfuddle_projects = @projects.select { |project| !project.unfuddle_id.blank? }
+    
+    severities_colors = {
+      nil                             => "EFEFEF",
+      "0 Suggestion"                  => "92C4AD",
+      "D Development"                 => "3FC1AA",
+      "R Refactor"                    => "98C221",
+      "1 Lack of Polish"              => "EBD94B",
+      "1 Visual Bug"                  => "EBD94B",
+      "P Performance"                 => "EBD94B",
+      "2 Confusing to Users"          => "E9A43F",
+      "3 Design Flaw"                 => "E9A43F",
+      "4 Broken (with work-around)"   => "D65B17",
+      "S Security Hole"               => "D65B17",
+      "5 Broken (no work-around)"     => "C1311E"
+    }
+    
+    arrivals_by_week_by_project = {}
+    departures_by_week_by_project = {}
+    open_tickets_by_project = {}
+    tickets_by_severity_by_project = {}
+    
+    tickets = UnfuddleDump.load!.map { |ticket|
+      ticket["created_at"] = ticket["created_at"].to_date
+      ticket["closed_on"] = ticket["closed_on"].try(:to_date)
+      ticket }
+    
+    unfuddle_projects.each do |project|
+      
+      tickets_for_project = tickets.select { |ticket| ticket["project_id"] == project.unfuddle_id }
+      arrivals = tickets_for_project.map { |ticket| ticket["created_at"] }.select { |created_at| date_range_multiweek2.cover?(created_at) }
+      departures = tickets_for_project.map { |ticket| ticket["closed_on"] }.select { |closed_on| closed_on && date_range_multiweek2.cover?(closed_on) }
+      
+      arrivals_by_week = Hash[errbit_history_weeks.zip([0]*weeks_of_errbit_history)]
+      arrivals.each do |arrived_at|
+        week = arrived_at.beginning_of_week
+        arrivals_by_week[week] += 1 if arrivals_by_week.key?(week)
+      end
+      
+      departures_by_week = Hash[errbit_history_weeks.zip([0]*weeks_of_errbit_history)]
+      departures.each do |departed_at|
+        week = departed_at.beginning_of_week
+        departures_by_week[week] += 1 if departures_by_week.key?(week)
+      end
+      
+      arrivals_by_week_by_project[project] = arrivals_by_week.values
+      departures_by_week_by_project[project] = departures_by_week.values
+      
+      # "Arrive" all the tickets created before the first week and still open
+      arrivals_by_week_by_project[project][0] += tickets_for_project.select { |ticket| ticket["created_at"] < date_range_multiweek2.first && ticket["closed_on"].nil? }.count
+      
+      open_tickets_this_week = tickets_for_project.select { |ticket| ticket["created_at"] <= date_range_multiweek2.end && (ticket["closed_on"].nil? || ticket["closed_on"] > date_range_multiweek2.end) }
+      
+      tickets_by_severity = tickets_by_severity_by_project[project] = Hash[severities_colors.values.zip([0] * severities_colors.values.length)]
+      open_tickets_this_week.each do |ticket|
+        severity = ticket["severity"]
+        severity = nil if severity.blank?
+        color = severities_colors[severity]
+        tickets_by_severity[color] += 1
+      end
+      
+      open_tickets_by_project[project] = open_tickets_this_week.count
+      
+    end
+    
+    # 68 is the height of a score row
+    # 18 is the height of the label
+    # height = 68 * unfuddle_projects.length - 22
+    # height = 200 if height < 200
+    # height = 700 if height > 700 # Google limits charts to 300000 pixels
+    
+    width = 826
+    height = 300
+    
+  %>
+  
   <div class="weekly-report-body">
     
     <table class="layout">
       <tr>
+        <td>
+
+          <table class="tickets-report">
+            <!-- <thead>
+              <tr>
+                <th></th>
+                <th colspan="2">Tickets by Severity</th>
+                <td></td>
+              </tr>
+            </thead> -->
+            <tbody>
+              <% legend = false %>
+              <% unfuddle_projects.each do |project| %>
+                <tr>
+                  <th><span class="label <%= project.color %>"><%= project.name %></span></th>
+                  <td class="pie-graph">
+                    <%= pie_graph({
+                      data: tickets_by_severity_by_project[project].values,
+                      colors: tickets_by_severity_by_project[project].keys,
+                      width: 80,
+                      height: 80
+                    }) %>
+                  </td>
+                  <% unless legend; legend = true %>
+                    <td class="legend severities-legend" rowspan="<%= unfuddle_projects.count %>">
+                      <h5>Tickets by Severity</h5>
+                      <ol>
+                        <% severities_colors.each do |severity, color| %>
+                          <li class="severity">
+                            <b class="bubble" style="background-color: #<%= color %>;"></b>
+                            <%= severity || "<em>None</em>".html_safe %>
+                          </li>
+                        <% end %>
+                      </ol>
+                    </td>
+                  <% end %>
+                  <td class="score">
+                    <%
+                      new_tickets = arrivals_by_week_by_project[project].last
+                      closed_tickets = departures_by_week_by_project[project].last
+                      open_tickets = open_tickets_by_project[project]
+                    %>
+                    <p class="ticket-count-new <%= "zero" if new_tickets.zero? %>">
+                      <span class="score-count"><span class="sign">+</span><%= new_tickets %></span></span>
+                      <span class="score-label">New</span>
+                    </p>
+                    <p class="ticket-count-closed <%= "zero" if closed_tickets.zero? %>">
+                      <span class="score-count"><span class="sign">&ndash;</span><%= closed_tickets %></span></span>
+                      <span class="score-label">Closed</span>
+                    </p>
+                    <p>
+                      <span class="score-count"><%= open_tickets %></span>
+                      <span class="score-label">Open</span>
+                    </p>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+
+        </td>
+      </tr>
+      <tr>
         <td class="tickets-cfd">
           
           <div class="cfd">
-            <%
-              
-              unfuddle_projects = @projects.select { |project| !project.unfuddle_id.blank? }
-              
-              arrivals_by_week_by_project = {}
-              departures_by_week_by_project = {}
-              open_tickets_by_project = {}
-              
-              tickets = UnfuddleDump.load!.map { |ticket|
-                ticket["created_at"] = ticket["created_at"].to_date
-                ticket["closed_on"] = ticket["closed_on"].try(:to_date)
-                ticket }
-              
-              unfuddle_projects.each do |project|
-                
-                tickets_for_project = tickets.select { |ticket| ticket["project_id"] == project.unfuddle_id }
-                arrivals = tickets_for_project.map { |ticket| ticket["created_at"] }.select { |created_at| date_range_multiweek2.cover?(created_at) }
-                departures = tickets_for_project.map { |ticket| ticket["closed_on"] }.select { |closed_on| closed_on && date_range_multiweek2.cover?(closed_on) }
-                
-                arrivals_by_week = Hash[errbit_history_weeks.zip([0]*weeks_of_errbit_history)]
-                arrivals.each do |arrived_at|
-                  week = arrived_at.beginning_of_week
-                  arrivals_by_week[week] += 1 if arrivals_by_week.key?(week)
-                end
-                
-                departures_by_week = Hash[errbit_history_weeks.zip([0]*weeks_of_errbit_history)]
-                departures.each do |departed_at|
-                  week = departed_at.beginning_of_week
-                  departures_by_week[week] += 1 if departures_by_week.key?(week)
-                end
-                
-                arrivals_by_week_by_project[project] = arrivals_by_week.values
-                departures_by_week_by_project[project] = departures_by_week.values
-                
-                # "Arrive" all the tickets created before the first week and still open
-                arrivals_by_week_by_project[project][0] += tickets_for_project.select { |ticket| ticket["created_at"] < date_range_multiweek2.first && ticket["closed_on"].nil? }.count
-                
-                open_tickets_by_project[project] = tickets_for_project.select { |ticket| ticket["created_at"] <= date_range_multiweek2.end && (ticket["closed_on"].nil? || ticket["closed_on"] > date_range_multiweek2.end) }.count
-                
-              end
-              
-              # 68 is the height of a score row
-              # 18 is the height of the label
-              height = 68 * unfuddle_projects.length - 22
-              height = 200 if height < 200
-              height = 700 if height > 700 # Google limits charts to 300000 pixels
-              
-            %>
             <%= cumulative_flow_diagram({
               arrivals: arrivals_by_week_by_project.values,
               departures: departures_by_week_by_project.values,
               colors: unfuddle_projects.map { |project| colors[project.color] },
-              width: 460,
+              width: width,
               height: height,
               title: "Cumulative Flow Diagram"
             }) %>
           </div>
           
-        </td>
-        <td>
-
-          <table class="tickets-report">
-            <% unfuddle_projects.each do |project| %>
-              <tr>
-                <th><span class="label <%= project.color %>"><%= project.name %></span></th>
-                <td class="score">
-                  <%
-                    new_tickets = arrivals_by_week_by_project[project].last
-                    closed_tickets = departures_by_week_by_project[project].last
-                    open_tickets = open_tickets_by_project[project]
-                  %>
-                  <p class="ticket-count-new <%= "zero" if new_tickets.zero? %>">
-                    <span class="score-count"><span class="sign">+</span><%= new_tickets %></span></span>
-                    <span class="score-label">New</span>
-                  </p>
-                  <p class="ticket-count-closed <%= "zero" if closed_tickets.zero? %>">
-                    <span class="score-count"><span class="sign">&ndash;</span><%= closed_tickets %></span></span>
-                    <span class="score-label">Closed</span>
-                  </p>
-                  <p>
-                    <span class="score-count"><%= open_tickets %></span>
-                    <span class="score-label">Open</span>
-                  </p>
-                </td>
-              </tr>
-            <% end %>
-          </table>
-
         </td>
       </tr>
     </table>
