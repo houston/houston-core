@@ -14,6 +14,7 @@
 //= require jquery_ujs
 //= require jquery-ui
 //= require jquery.pjax.js
+//= require highcharts.src.js
 //= require twitter/bootstrap
 //= require freight_train
 //= require sugar

@@ -4,7 +4,6 @@
 
  - **Project:** allow changing Git URL (have tmp folder deleted or whatever)
  - **Testing Report:**
-   - show progress of testing (JavaScript pie graph, updated in real time)
    - add an option to refresh tickets
  - **Weekly Report:**
    - Problems history: off by 1 week?

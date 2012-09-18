@@ -1,4 +1,4 @@
-.testing-report-project {
+.testing-report-project-title {
   margin: 2em 0 8px 0;
   
   &:first-child { margin-top: 0; }
@@ -24,6 +24,20 @@ ul.tester-names {
     margin-left: 0;
   }
 }
+
+.testing-report-project {
+  position: relative;
+  max-width: 825px;
+}
+
+.tickets-testing-progress {
+  position: absolute;
+  right: -94px;
+  top: 4px;
+  width: 70px;
+  height: 70px;
+}
+
 
 .tester-names, .tickets-list { max-width: 800px; }
 

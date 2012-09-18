@@ -72,6 +72,7 @@ class window.TestingTicketView extends Backbone.View
   commitEditTestingNote: (view, testingNote)->
     @viewInEdit = null
     @renderTesterVerdicts()
+    @trigger('testing_note:refresh')
   
   destroyTestingNote: (view, testingNote)->
     @testingNotes.remove(testingNote)
@@ -107,6 +108,7 @@ class window.TestingTicketView extends Backbone.View
         $('.alert').remove()
         $form.reset()
         @addTestingNote(testingNote)
+        @trigger('testing_note:refresh')
       error: (model, response)=>
         errors = Errors.fromResponse(response)
         errors.renderToAlert().insertBefore($(@el).find('.testing-note.new')).alert()
