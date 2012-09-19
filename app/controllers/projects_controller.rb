@@ -26,7 +26,8 @@ class ProjectsController < ApplicationController
   # GET /projects/1
   # GET /projects/1.json
   def show
-    redirect_to project_kanban_path(@project)
+    @project = Project.find_by_slug!(params[:id])
+    @tickets = @project.ticket_system.find_tickets("status-neq-closed")
   end
 
   # GET /projects/new

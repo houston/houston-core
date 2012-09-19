@@ -33,25 +33,28 @@ module WeeklyReportHelper
   def area_graph(options={})
     data = options[:data].reverse
     colors = options[:colors].reverse
+    line_weight = options.fetch(:line_weight, 0)
+    marker_colors = options[:marker_colors] ? options[:marker_colors].reverse : colors
     
     markers = []
-    colors.each_with_index do |color, i|
+    marker_colors.each_with_index do |color, i|
       markers << "B,#{color},#{i},0,0"
     end
     markers = "&chm=#{markers.join("|")}"
     
-    chls = "&chls=" + (["0,4,0"] * data.length).join("|")
+    chls = "&chls=" + (["#{line_weight},0,0"] * (data.length-1)).join("|") + "|0,0,0"
     
     src = Gchart.line({
       data: data,
       bar_colors: colors,
+      bg: options[:bg],
       size: "#{options[:width]}x#{options[:height]}"
     }) + markers + chls
     
     if options.fetch(:axes, true)
       src << "&chxt=r&chxs=0,676767,0,0,_,676767&chxt=y,r"
     else
-      src << "&chxs=0,676767,0,0,_,676767|1,676767,0,0,_,676767&chxt=x,y&chf=bg,s,FFFFFF00"
+      src << "&chxs=0,676767,0,0,_,676767|1,676767,0,0,_,676767&chxt=x,y"
     end
     
     graph_with_subcaptions(src, options[:width], options[:height], options[:title])

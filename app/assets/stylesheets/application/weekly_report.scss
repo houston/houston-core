@@ -142,15 +142,6 @@
     padding: 0 !important;
   }
   
-  .severities-legend {
-    vertical-align: middle;
-    padding-left: 5em !important;
-    
-    h5 { text-align: left; padding-bottom: 0.5em; }
-    ol { margin: 0; }
-    li { list-style-type: none; }
-  }
-  
   
   .score {
     margin: 4px 0 4px 1em;
@@ -203,4 +194,13 @@
       color: #dddddd !important;
     }
   }
+}
+
+.severities-legend {
+  vertical-align: middle;
+  padding-left: 5em !important;
+  
+  h5 { text-align: left; padding-bottom: 0.5em; }
+  ol { margin: 0; }
+  li { list-style-type: none; }
 }

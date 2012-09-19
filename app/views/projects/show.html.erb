@@ -1,0 +1,190 @@
+<%= render partial: "projects/header", locals: {project: @project} %>
+
+<style type="text/css">
+  .stripe {
+    background-color: #efefef;
+    padding: 0.66em 0;
+    margin-bottom: 1em;
+    min-height: 8em;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+  }
+  table.queues {
+    border-collapse: separate;
+    border-spacing: 6px;
+  }
+  .stripe th {
+    width: 108px;
+  }
+  .stripe th span {
+    display: block;
+    font-weight: 100;
+    font-size: 2.5em;
+    -webkit-transform: rotate(-90deg);
+  }
+  #severities_graph {
+    width: 260px;
+    height: 260px;
+  }
+</style>
+
+<% 
+  severities_colors = {
+    "None"                          => "#EFEFEF",
+    "0 Suggestion"                  => "#92C4AD",
+    "D Development"                 => "#3FC1AA",
+    "R Refactor"                    => "#98C221",
+    "1 Lack of Polish"              => "#EBD94B",
+    "1 Visual Bug"                  => "#EBD94B",
+    "P Performance"                 => "#EBD94B",
+    "2 Confusing to Users"          => "#E9A43F",
+    "3 Design Flaw"                 => "#E9A43F",
+    "4 Broken (with work-around)"   => "#D65B17",
+    "S Security Hole"               => "#D65B17",
+    "5 Broken (no work-around)"     => "#C1311E"
+  }
+  
+  tickets_by_severity = Hash[severities_colors.keys.zip([0] * severities_colors.keys.length)]
+  severities = @project.ticket_system.severities
+  @tickets.each do |ticket|
+    severity = severities.find { |severity| severity.id == ticket["severity_id"] }
+    tickets_by_severity[severity ? severity.name : "None"] += 1
+  end
+
+%>
+
+
+<div class="stripe">
+  <table style="height: 200px;">
+    <tbody>
+      <tr>
+        <th><span>Severities</span></th>
+        <td><div id="severities_graph"></div></td>
+        <td class="severities-legend">
+          <ol>
+            <% severities_colors.each do |severity, color|; unless severity == "None" %>
+              <li class="severity">
+                <b class="bubble" style="background-color: <%= color %>;"></b>
+                <%= severity %>
+              </li>
+            <% end; end %>
+          </ol>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<%
+  
+  @projects = [@project]
+  colors = Rails.application.config.colors
+  
+  
+  
+  week_ends = (8.weeks.ago.to_date..Date.today.end_of_week).step(7)
+  
+  ticket_queues = TicketQueue.arel_table
+  data = week_ends.map do |week_end|
+    scope = TicketQueue \
+      .where(ticket_queues[:created_at].lt(week_end)) \
+      .where(["destroyed_at IS NULL or destroyed_at > ?", week_end]) \
+      .group("ticket_queues.queue, tickets.project_id") \
+      .select("ticket_queues.queue, tickets.project_id, COUNT(ticket_queues.id) AS count")
+    
+    TicketQueue.connection.select_all(scope.to_sql)
+  end
+  
+  queues = KanbanQueue.all.map(&:slug)
+  ticket_counts_by_project_by_queue = {}
+  max_queue_size = 0
+  
+  queues.each do |queue|
+    ticket_counts_by_project = ticket_counts_by_project_by_queue[queue] = {}
+    
+    cumulative_totals = [0] * week_ends.length
+    
+    @projects.each do |project|
+      ticket_counts = ticket_counts_by_project[project] = []
+      data.each_with_index do |hashes, i|
+        hash = hashes.find { |hash| hash["queue"] == queue && hash["project_id"] == project.id.to_s }
+        count = hash ? hash["count"].to_i : 0
+        ticket_counts << (cumulative_totals[i] += count)
+      end
+    end
+    
+    max_queue_size = [max_queue_size, cumulative_totals.max].max
+  end
+  
+%>
+
+<div class="stripe">
+  <table class="queues">
+    <tbody>
+      <tr>
+        <th><span>Queues</span></th>
+        <% KanbanQueue.all.each do |queue| %>
+          <% 
+            ticket_counts_by_project = ticket_counts_by_project_by_queue[queue.slug]
+            data = @projects.map { |project| ticket_counts_by_project[project] }
+            data.unshift([max_queue_size] * 16)
+          %>
+          <td>
+            <%= area_graph({
+              data: data,
+              colors: @projects.map { |project| colors[project.color] },
+              marker_colors: @projects.map { |project| "#{colors[project.color]}55" },
+              line_weight: 2,
+              width: 120,
+              height: 260,
+              axes: false
+            }) %>
+            <h5><%= queue.name %></h5>
+          </td>
+        <% end %>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<% content_for :scripts do %>
+  <script type="text/javascript">
+    $(function() {
+      
+      chart = new Highcharts.Chart({
+        chart: {
+          renderTo: 'severities_graph',
+          backgroundColor: null,
+          plotBackgroundColor: null,
+          plotBorderWidth: null,
+          plotShadow: false,
+          marginTop: 0,
+          marginRight: 0,
+          marginBottom: 0,
+          marginLeft: 0 },
+        colors: <%=raw severities_colors.values.to_json %>,
+        credits: {
+          enabled: false },
+        title: {
+          text: null },
+        plotOptions: {
+          pie: {
+            animation: false,
+            shadow: false,
+            dataLabels: {
+              enabled: false },
+            states: {
+              hover: {
+                enabled: false } } } },
+        series: [{
+            type: 'pie',
+            data: <%=raw tickets_by_severity.to_a.to_json %>
+          }],
+        tooltip: {
+          formatter: function() { return '<b>' + this.point.name + '</b><br />' + this.y + ' tickets'; } } });
+      
+    });
+  </script>
+<% end %>
