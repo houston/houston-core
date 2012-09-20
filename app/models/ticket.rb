@@ -148,6 +148,15 @@ class Ticket < ActiveRecord::Base
   
   
   
+  def close_ticket!
+    unfuddle_ticket = Unfuddle::Ticket.new("id" => unfuddle_id, "project_id" => project.unfuddle_id)
+    unfuddle_ticket.update_attributes!("status" => "closed")
+    set_queue! nil
+    self
+  end
+  
+  
+  
   # c.f. app/assets/models/ticket.coffee
   def verdict
     return "" if testers.none?

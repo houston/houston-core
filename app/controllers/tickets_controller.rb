@@ -9,4 +9,12 @@ class TicketsController < ApplicationController
     end
   end
   
+  def close
+    ticket = Ticket.find(params[:id])
+    ticket.close_ticket!
+    render json: [], :status => :ok
+  rescue
+    render json: [$!.message], :status => :unprocessable_entity
+  end
+  
 end

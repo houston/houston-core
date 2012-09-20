@@ -5,6 +5,7 @@ class window.TestingTicketView extends Backbone.View
   events:
     'submit form#new_testing_note': 'createTestingNote'
     'click #commit_and_reset': 'createTestingNoteAndResetTicket'
+    'click .close-button': 'closeTicket'
   
   initialize: ->
     @ticket = @options.ticket
@@ -17,7 +18,11 @@ class window.TestingTicketView extends Backbone.View
   render: ->
     # window.console.log "[ticket] render ##{@ticket.get('number')}", @ticket.toJSON()
     $el = $(@el)
-    $el.html @renderTicket(@ticket.toJSON())
+    $project = $el.closest('.project')
+    maintainerIds = $project.attr('data-maintainers').split(',').map (id)-> +id
+    ticket = @ticket.toJSON()
+    ticket.maintainer = _.include(maintainerIds, window.userId)
+    $el.html @renderTicket(ticket)
     
     @renderTesterVerdicts()
     @renderTestingNotes()
@@ -124,3 +129,12 @@ class window.TestingTicketView extends Backbone.View
     
     @createTestingNote(e)
   
+  closeTicket: (e)->
+    e.preventDefault()
+    $(@el).css(opacity: 0.2)
+    $(e.target).attr('disabled', 'disabled')
+    @ticket.destroy
+      success: (model, response)=>
+        @remove()
+      error: (model, response)=>
+        console.log("failed to close ticket: #{response.responseText}")
