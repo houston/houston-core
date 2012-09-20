@@ -18,11 +18,7 @@ class window.TestingTicketView extends Backbone.View
   render: ->
     # window.console.log "[ticket] render ##{@ticket.get('number')}", @ticket.toJSON()
     $el = $(@el)
-    $project = $el.closest('.project')
-    maintainerIds = $project.attr('data-maintainers').split(',').map (id)-> +id
-    ticket = @ticket.toJSON()
-    ticket.maintainer = _.include(maintainerIds, window.userId)
-    $el.html @renderTicket(ticket)
+    $el.html @renderTicket(@ticket.toJSON())
     
     @renderTesterVerdicts()
     @renderTestingNotes()
@@ -38,15 +34,25 @@ class window.TestingTicketView extends Backbone.View
     @
   
   renderTesterVerdicts: ->
-    $testerVerdicts = $(@el).find('.tester-verdicts')
+    $el = $(@el)
+    
+    $testerVerdicts = $el.find('.tester-verdicts')
     $testerVerdicts.empty()
     @ticket.testerVerdicts().each (verdict)=>
       $testerVerdicts.append @renderTesterVerdict(verdict)
     
     verdict = @ticket.verdict()
-    $(@el).find('.ticket-verdict-summary')
+    verdictHtml = verdict
+    if verdict == 'Passing'
+      $project = $el.closest('.project')
+      maintainerIds = $project.attr('data-maintainers').split(',').map (id)-> +id
+      if _.include(maintainerIds, window.userId)
+        verdictHtml = '<button class="close-button btn btn-success">Close</button>'
+    
+    $el.find('.ticket-verdict-summary')
       .attr('class', "ticket-verdict-summary #{verdict.toLowerCase()}")
-      .html(verdict)
+      .html(verdictHtml)
+    
     @
   
   renderTestingNotes: ->
