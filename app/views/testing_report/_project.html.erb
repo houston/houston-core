@@ -1,0 +1,5 @@
+<div class="project testing-report-project" data-github-url="<%= github_project_url(project) %>" data-maintainers="<%= project.maintainer_ids.join(",") %>">
+  <h4 class="testing-report-project-title"><b class="bubble <%= project.color %>"></b> <%= project.name %>&nbsp;&nbsp;»&nbsp;&nbsp;<span style="font-weight: normal;"><%= pluralize(tickets.count, "tickets") %></span></h4>
+  <div id="project_<%= project.id %>_progress" class="testing-report-progress pie"></div>
+  <ul id="project_<%= project.id %>_tickets" class="tickets tickets-list"></ul>
+</div>
