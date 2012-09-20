@@ -1,11 +1,30 @@
-.testing-report-project-title {
-  margin: 2em 0 8px 0;
-  
-  &:first-child { margin-top: 0; }
+.testing-report-project {
+  position: relative;
+  max-width: 825px;
 }
 
+.testing-report-project-title {
+  margin: 1.5em 0;
+  float: left;
+}
+
+.testing-report-progress {
+  float: left;
+  width: 54px;
+  height: 54px;
+  position: relative;
+  top: 1px;
+  left: 4px;
+}
+
+.tickets-list {
+  clear: both;
+}
+
+
+
 .tickets-list .ticket { 
-  clear: both; 
+  clear: both;
   list-style-type: none;
   line-height: 26px;
   
@@ -23,19 +42,6 @@ ul.tester-names {
     height: 4em; 
     margin-left: 0;
   }
-}
-
-.testing-report-project {
-  position: relative;
-  max-width: 825px;
-}
-
-.tickets-testing-progress {
-  position: absolute;
-  right: -94px;
-  top: 4px;
-  width: 70px;
-  height: 70px;
 }
 
 

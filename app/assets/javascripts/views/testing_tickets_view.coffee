@@ -21,7 +21,6 @@ class window.TestingTicketsView extends Backbone.View
     
     @tickets.each (ticket)=>
       ticket.testerVerdicts().each ({verdict})=>
-        console.log(verdict)
         if verdict == 'failing'
           fails += 1 
         else if verdict == 'passing'
