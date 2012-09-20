@@ -54,4 +54,5 @@ User.create(
   name: "Bob Lail",
   email: "bob.lail@cph.org",
   password: "password",
-  role: "Administrator")
+  administrator: true,
+  role: "Developer")

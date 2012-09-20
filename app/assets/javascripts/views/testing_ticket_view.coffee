@@ -57,7 +57,7 @@ class window.TestingTicketView extends Backbone.View
       params =
         ticketId: @ticket.get('id')
         tester: window.user.get('role') == 'Tester'
-        developer: window.user.get('role') == 'Developer' || window.user.get('role') == 'Administrator'
+        developer: window.user.get('role') == 'Developer'
       $testingNotes.append @renderNewTestingNote(params)
     @
   
