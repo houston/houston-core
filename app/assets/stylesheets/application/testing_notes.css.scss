@@ -242,3 +242,11 @@ ul.tester-names {
   }
   p { margin: 0; }
 }
+
+.close-button {
+  position: absolute;
+  right: -80px;
+  color: #888;
+  
+  &.btn-success { color: white; }
+}

@@ -18,7 +18,11 @@ class window.TestingTicketView extends Backbone.View
   render: ->
     # window.console.log "[ticket] render ##{@ticket.get('number')}", @ticket.toJSON()
     $el = $(@el)
-    $el.html @renderTicket(@ticket.toJSON())
+    $project = $el.closest('.project')
+    maintainerIds = $project.attr('data-maintainers').split(',').map (id)-> +id
+    ticket = @ticket.toJSON()
+    ticket.maintainer = _.include(maintainerIds, window.userId)
+    $el.html @renderTicket(ticket)
     
     @renderTesterVerdicts()
     @renderTestingNotes()
@@ -42,17 +46,11 @@ class window.TestingTicketView extends Backbone.View
       $testerVerdicts.append @renderTesterVerdict(verdict)
     
     verdict = @ticket.verdict()
-    verdictHtml = verdict
-    if verdict == 'Passing'
-      $project = $el.closest('.project')
-      maintainerIds = $project.attr('data-maintainers').split(',').map (id)-> +id
-      if _.include(maintainerIds, window.userId)
-        verdictHtml = '<button class="close-button btn btn-success">Close</button>'
-    
     $el.find('.ticket-verdict-summary')
       .attr('class', "ticket-verdict-summary #{verdict.toLowerCase()}")
-      .html(verdictHtml)
+      .html(verdict)
     
+    $el.find('.close-button').toggleClass('btn-success', verdict == 'Passing')
     @
   
   renderTestingNotes: ->
@@ -137,10 +135,13 @@ class window.TestingTicketView extends Backbone.View
   
   closeTicket: (e)->
     e.preventDefault()
-    $(@el).css(opacity: 0.2)
-    $(e.target).attr('disabled', 'disabled')
-    @ticket.destroy
-      success: (model, response)=>
-        @remove()
-      error: (model, response)=>
-        console.log("failed to close ticket: #{response.responseText}")
+    $btn = $(e.target)
+    
+    if $btn.hasClass('btn-success') || confirm('Are you suuuure? The ticket\'s not passing...')
+      $(@el).css(opacity: 0.2)
+      $btn.attr('disabled', 'disabled')
+      @ticket.destroy
+        success: (model, response)=>
+          @remove()
+        error: (model, response)=>
+          console.log("failed to close ticket: #{response.responseText}")
