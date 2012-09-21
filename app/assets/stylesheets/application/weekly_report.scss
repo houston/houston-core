@@ -97,13 +97,36 @@
         font-weight: normal;
         
         .label {
-          max-width: 7em;
+          
+          // This is the stuff from bootstrap
+          // It's here because not all the bootstrap
+          // stuff gets rendered in the Weekly Report
+          // email; but this does.
+          
+          // padding: 1px 4px 2px;
+          font-size: 10.998px;
+          font-weight: bold;
+          line-height: 13px;
+          color: white;
+          vertical-align: middle;
+          // white-space: nowrap;
+          // text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+          // background-color: #999;
+          -webkit-border-radius: 3px;
+          -moz-border-radius: 3px;
+          border-radius: 3px;
+          -webkit-border-radius: 3px;
+          -moz-border-radius: 3px;
+          
+          /// bootstrap overrides
           padding: 3px 7px 4px;
+          text-shadow: none;
+          white-space: normal;
+          
+          max-width: 7em;
           display: inline-block;
           overflow: hidden;
           text-overflow: ellipsis;
-          text-shadow: none;
-          white-space: normal;
         }
       }
     }
@@ -201,6 +224,6 @@
   padding-left: 5em !important;
   
   h5 { text-align: left; padding-bottom: 0.5em; }
-  ol { margin: 0; }
+  ol { padding: 0; margin: 0; }
   li { list-style-type: none; }
 }
