@@ -107,6 +107,8 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
 
     respond_to do |format|
+      admin = params[:user].delete(:administrator)
+      @user.administrator = admin if admin && current_user.administrator?
       if @user.update_attributes(params[:user])
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
         format.json { head :no_content }
