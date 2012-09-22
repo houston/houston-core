@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120920023251) do
+ActiveRecord::Schema.define(:version => 20120922010212) do
 
   create_table "changes", :force => true do |t|
     t.integer  "release_id"
@@ -158,6 +158,7 @@ ActiveRecord::Schema.define(:version => 20120920023251) do
     t.string   "role",                                 :default => "Developer"
     t.string   "authentication_token"
     t.boolean  "administrator",                        :default => false
+    t.integer  "unfuddle_id"
   end
 
   add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token"
