@@ -2,10 +2,17 @@ class TicketsController < ApplicationController
   
   def index
     @tickets = UnfuddleDump.load!
+    
     users = Unfuddle.instance.get("people.json?removed=true")[1]
     @user_names_by_ids = {}
     users.each do |user|
       @user_names_by_ids[user["id"]] = "#{user["first_name"].strip} #{user["last_name"].strip}"
+    end
+    
+    projects = Unfuddle.instance.get("projects.json?removed=true")[1]
+    @project_names_by_ids = {}
+    projects.each do |project|
+      @project_names_by_ids[project["id"]] = project["title"]
     end
   end
   

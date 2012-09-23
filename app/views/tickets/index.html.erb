@@ -1,16 +1,27 @@
-<h1>Where do Unfuddle Tickets Come From?</h1>
+<h1>Tickets by Reporter</h1>
 
-<div id="container" style="min-width: 600px; height: 720px; margin: 0 auto"></div>
+<div id="tickets_by_reporter" style="min-width: 720px; height: 660px; margin: 0 auto"></div>
+
+<h1>Tickets by Project</h1>
+
+<div id="tickets_by_project" style="min-width: 720px; height: 660px; margin: 0 auto"></div>
 
 <%
   
   tickets_by_user = {}
+  tickets_by_project = {}
   @tickets.each do |ticket|
     user = @user_names_by_ids[ticket["reporter_id"]] || "?"
     tickets_by_user[user] = (tickets_by_user[user] || 0) + 1
+    
+    project = @project_names_by_ids[ticket["project_id"]]
+    tickets_by_project[project] = (tickets_by_project[project] || 0) + 1
   end
   
   tickets_by_user = tickets_by_user.to_a.sort_by { |pair| -pair[1] }
+  tickets_by_project = tickets_by_project.to_a.sort_by { |pair| -pair[1] }
+  
+  
 
 %>
 
@@ -30,14 +41,14 @@
         };
       });
       
-      data = <%=raw tickets_by_user.to_json %>;
+      ticketsByReporter = <%=raw tickets_by_user.to_json %>;
+      ticketsByReporter[1] = {name: 'API', y: ticketsByReporter[1][1], color: '#FFFFFF'} // Replace API with different color
       
-      // Replace API with different color
-      data[1] = {name: 'API', y: data[1][1], color: '#FFFFFF'}
+      ticketsByProject = <%=raw tickets_by_project.to_json %>;
       
       chart = new Highcharts.Chart({
         chart: {
-          renderTo: 'container',
+          renderTo: 'tickets_by_reporter',
           backgroundColor: null,
           plotBackgroundColor: null,
           plotBorderWidth: null,
@@ -59,7 +70,34 @@
           formatter: function() { return '<b>' + this.point.name + '</b><br />' + this.y + ' tickets'; } },
         series: [{
             type: 'pie',
-            data: data
+            data: ticketsByReporter
+          }] });
+      
+      chart = new Highcharts.Chart({
+        chart: {
+          renderTo: 'tickets_by_project',
+          backgroundColor: null,
+          plotBackgroundColor: null,
+          plotBorderWidth: null,
+          plotShadow: false },
+        credits: {
+          enabled: false },
+        title: {
+          text: null },
+        plotOptions: {
+          pie: {
+            animation: false,
+            dataLabels: {
+              formatter: function() { return '<b>'+ this.point.name +'</b>: '+ this.percentage.toFixed(1) +' %'; } },
+            shadow: false,
+            states: {
+              hover: {
+                enabled: false } } } },
+        tooltip: {
+          formatter: function() { return '<b>' + this.point.name + '</b><br />' + this.y + ' tickets'; } },
+        series: [{
+            type: 'pie',
+            data: ticketsByProject
           }] });
       
     });
