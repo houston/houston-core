@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  before_filter :extract_administrator, :only => [:update, :create]
   load_and_authorize_resource
   
   # GET /users
@@ -90,6 +91,8 @@ class UsersController < ApplicationController
       @user.notifications_pairs = notifications_pairs if notifications_pairs
     end
     
+    @user.administrator = @administrator
+    
     respond_to do |format|
       if @user.save
         format.html { redirect_to @user, notice: 'User was successfully invited.' }
@@ -105,10 +108,9 @@ class UsersController < ApplicationController
   # PUT /users/1.json
   def update
     @user = User.find(params[:id])
+    @user.administrator = @administrator
 
     respond_to do |format|
-      admin = params[:user].delete(:administrator)
-      @user.administrator = admin if admin && current_user.administrator?
       if @user.update_attributes(params[:user])
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
         format.json { head :no_content }
@@ -130,4 +132,15 @@ class UsersController < ApplicationController
       format.json { head :no_content }
     end
   end
+  
+  
+private
+  
+  
+  def extract_administrator
+    @administrator = params[:user].delete(:administrator) == "1"
+    @administrator = false unless current_user.administrator?
+  end
+  
+  
 end
