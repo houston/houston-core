@@ -21,6 +21,10 @@
       content: '%';
       font-size: 0.75em;
     }
+    
+    &.percent.nan::after {
+      content: '' !important;
+    }
   }
   
   .score-label {

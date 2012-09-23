@@ -17,23 +17,12 @@
           <%= link_to "Edit", edit_user_path(user), :class => "btn btn-mini" if can?(:update, user) %>
           
           <% if stats = @ticket_stats_by_user[user] %>
-            <div class="score score-small">
-              <p>
-                <span class="score-count"><%= stats[:tickets] %></span>
-                <span class="score-label">Filed</span>
-              </p>
-              <p>
-                <% if stats[:tickets] > 0 %><span class="score-count percent"><%= number_with_precision(stats[:invalid_tickets], precision: 0) %></span><% else %><span class="score-count">&mdash;</span><% end %>
-                <span class="score-label">Duplicate<br /><small>or</small> Invalid</span>
-              </p>
-              <p>
-                <% if stats[:tickets] > 0 %><span class="score-count percent"><%= number_with_precision(stats[:fixed_tickets], precision: 0) %></span><% else %><span class="score-count">&mdash;</span><% end %>
-                <span class="score-label">Fixed</span>
-              </p>
-              <p>
-                <%= pie_graph(data_by_color: stats[:tickets_by_severity], width: 66) %>
-              </p>
-            </div>
+            <%= score_card :small do |s| %>
+              <% s.score "Filed", stats[:tickets] %>
+              <% s.percent "Duplicate<br /><small>or</small> Invalid".html_safe, stats[:invalid_tickets] %>
+              <% s.percent "Fixed", stats[:fixed_tickets] %>
+              <% s.raw pie_graph(data_by_color: stats[:tickets_by_severity], width: 66) %>
+            <% end %>
           <% end %>
         </div>
       <% end %>
