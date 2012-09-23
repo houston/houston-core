@@ -28,6 +28,30 @@ class ProjectsController < ApplicationController
   def show
     @project = Project.find_by_slug!(params[:id])
     @tickets = @project.ticket_system.find_tickets("status-neq-closed")
+    
+    dependencies = %w{rails devise}
+    @dependency_versions = {}
+    dependencies.each do |dependency|
+      
+      response = Faraday.get("https://rubygems.org/api/v1/versions/#{dependency}.json")
+      gems = JSON.load(response.body)
+      versions = gems.map { |hash| Gem::Version.new (hash["number"]) }.sort.reverse
+      stringified_versions = versions.map(&:to_s)
+      latest_version = versions.first
+      current_minor_version = stringified_versions.first[/\d+\.\d+/]
+      rx = /^#{current_minor_version}\.\d+$/
+      patches = stringified_versions.select { |version| version =~ rx }
+      
+      @dependency_versions[dependency] = {
+        name: dependency.titleize,
+        project: @project.dependency_version(dependency),
+        versions: versions,
+        minor_versions: stringified_versions.map { |version| version[/\d+\.\d+/] }.uniq,
+        patches: patches,
+        latest: latest_version
+      }
+      
+    end
   end
 
   # GET /projects/new

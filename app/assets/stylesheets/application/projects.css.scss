@@ -66,3 +66,11 @@ th, td {
   &.spring-green { background-color: #9FBD2A; }
   &.green { background-color: #42A800; }
 }
+
+.project-version {
+  &.red { color: #C1311E; }
+  &.orange { color: #D65B17; }
+  &.yellow { color: #e1c90b; }
+  &.spring-green { color: #94C40C; }
+  &.green { color: #42A800; }
+}

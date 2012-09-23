@@ -5,27 +5,59 @@
     background-color: #efefef;
     padding: 0.66em 0;
     margin-bottom: 1em;
-    min-height: 8em;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
+  }
+  .stripe table {
+    max-height: 600px;
   }
   table.queues {
     border-collapse: separate;
     border-spacing: 6px;
   }
   .stripe th {
-    width: 108px;
+    width: 80px;
+    vertical-align: middle;
   }
   .stripe th span {
+    position: absolute;
     display: block;
     font-weight: 100;
     font-size: 2.5em;
+    width: 600px;
+    -moz-transform: rotate(-90deg);
     -webkit-transform: rotate(-90deg);
+    left: -240px;
   }
   #severities_graph {
     width: 260px;
     height: 260px;
+  }
+  table.dependencies {
+    min-width: 600px;
+  }
+  table.dependencies td,
+  table.dependencies th {
+    font-size: 1.75em;
+    line-height: 0.78em;
+    font-weight: 200;
+    text-align: right;
+    padding: 6px 12px
+  }
+  table.dependencies td.project-name {
+    font-weight: 800;
+    text-align: left;
+  }
+  table.dependencies th.project-name {
+    text-align: left;
+  }
+  table.dependencies th {
+    font-size: 0.88em;
+    font-weight: 600;
+  }
+  table.dependencies td.project-version {
+    font-weight: 800;
   }
 </style>
 
@@ -144,6 +176,73 @@
             <h5><%= queue.name %></h5>
           </td>
         <% end %>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
+
+<div class="stripe">
+  <table style="height: 240px;">
+    <tbody>
+      <tr>
+        <th><span>Dependencies</span></th>
+        <td>
+          
+          <table class="dependencies">
+            <thead>
+              <tr>
+                <th class="project-name">Dependency</th>
+                <th>Version</th>
+                <th>Latest Release</th>
+                <th style="width: 100%; text-align: left; font-weight: 100;">
+              </tr>
+            </thead>
+            <tbody>
+              <% @dependency_versions.each do |dependency, version_info| %>
+                <%
+                  version = version_info[:project]
+                  next unless version
+                  version = version.version
+                  minor_version = version.to_s[/\d+\.\d+/]
+                  releases_since_version = version_info[:minor_versions].index(minor_version)
+                  color = if releases_since_version > 2
+                    "red"
+                  elsif releases_since_version == 2
+                    "orange"
+                  elsif releases_since_version == 1
+                    "yellow"
+                  elsif version < version_info[:latest]
+                    "spring-green"
+                  else
+                    "green"
+                  end
+
+                %>
+                <tr>
+                  <td class="project-name"><%= version_info[:name] %></td>
+                  <td class="project-version <%= color %>"><%= version %></td>
+                  <td><%= version_info[:latest] %></td>
+                  <td style="width: 100%; text-align: left; font-weight: 100;">
+                    <% if releases_since_version > 1 %>
+                      <%= releases_since_version %> versions out-of-date
+                    <% elsif releases_since_version == 1 %>
+                      1 version out-of-date
+                    <% elsif version < version_info[:latest] %>
+                      <% patches_since_version = version_info[:patches].index(version.to_s) %>
+                      <%= pluralize(patches_since_version, "patches") %> out-of-date
+                    <% else %>
+                      up-to-date
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+          
+        </td>
       </tr>
     </tbody>
   </table>
