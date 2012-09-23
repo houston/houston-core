@@ -30,9 +30,9 @@ module ApplicationHelper
     in_columns_of(collection, column_count, &block)
   end
   
-  def in_columns_of(collection, column_count)
+  def in_groups_of(collection, column_count, css_class="column")
     html = collection.in_groups_of(column_count).each_with_object("") do |items_in_column, html|
-      html << "<div class=\"column\">"
+      html << "<div class=\"#{css_class}\">"
       items_in_column.compact.each do |item|
         html << capture { yield (item) }
       end
@@ -40,6 +40,8 @@ module ApplicationHelper
     end
     html.html_safe
   end
+  
+  alias :in_columns_of :in_groups_of
   
   
   
