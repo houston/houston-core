@@ -3,14 +3,22 @@ module WeeklyReportHelper
   
   
   def pie_graph(options={})
+    if options.key?(:data_by_color)
+      hash = options[:data_by_color]
+      options.merge!(data: hash.values, colors: hash.keys)
+    end
+    
+    width = options.fetch(:width, 60)
+    height = options.fetch(:height, width)
+    
     src = Gchart.pie({
       data: options[:data],
       bar_colors: options[:colors],
-      size: "#{options[:width]}x#{options[:height]}",
+      size: "#{width}x#{height}",
       labels: options[:labels]
-    })
+    }) + "&chf=bg,s,FFFFFF00"
     
-    graph_with_subcaptions(src, options[:width], options[:height], options[:title])
+    graph_with_subcaptions(src, width, height, options[:title])
   end
   
   
@@ -105,7 +113,7 @@ module WeeklyReportHelper
   
   def graph_with_subcaptions(src, width, height, title)
     Rails.logger.debug "[gcharts] URL length: #{src.length} (#{title})"
-    html = image_tag(src.html_safe, width: width, height: height, alt: title)
+    html = image_tag(src.html_safe, width: width, height: height, alt: title, :class => "google-chart")
     html << content_tag(:h5, title) if title
     html
   end

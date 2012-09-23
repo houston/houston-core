@@ -206,7 +206,7 @@
                   </td>
                 <% end %>
 
-                <td class="score">
+                <td class="score score-large">
                   <p class="total-commits">
                     <span class="score-count"><%= total_commits %></span>
                     <span class="score-label"><%= total_commits == 1 ? "Commit" : "Commits" %></span>
@@ -280,7 +280,7 @@
                   </td>
                 <% end %>
 
-                <td rowspan="2" class="score">
+                <td rowspan="2" class="score score-large">
                   <p class="testing-note-passes">
                     <span class="score-count"><%= passes %></span>
                     <span class="score-label"><%= passes == 1 ? "Pass" : "Passes" %></span>
@@ -363,7 +363,7 @@
                           <%= image_tag(image_url("bug-fixed-32.png"), size: 32, :class => "bug") %>
                         <% end %>
                       </td>
-                      <td class="score">
+                      <td class="score score-large">
                         <p class="new-bugs <%= "zero" if bug_counts["new"].zero? %>">
                           <span class="score-count"><span class="sign">+</span><%= bug_counts["new"] %></span>
                           <span class="score-label">New</span>
@@ -379,7 +379,7 @@
                       </td>
                     <% else %>
                       <td></td>
-                      <td class="score">
+                      <td class="score score-large">
                         <p class="no-bugs">No bugs!</p>
                       </td>
                     <% end %>
@@ -603,12 +603,7 @@
                 <tr>
                   <th><span class="label <%= project.color %>"><%= project.name %></span></th>
                   <td class="pie-graph">
-                    <%= pie_graph({
-                      data: tickets_by_severity_by_project[project].values,
-                      colors: tickets_by_severity_by_project[project].keys,
-                      width: 80,
-                      height: 80
-                    }) %>
+                    <%= pie_graph(data_by_color: tickets_by_severity_by_project[project], width: 80) %>
                   </td>
                   <% unless legend; legend = true %>
                     <td class="legend severities-legend" rowspan="<%= unfuddle_projects.count %>">
@@ -623,7 +618,7 @@
                       </ol>
                     </td>
                   <% end %>
-                  <td class="score">
+                  <td class="score score-large">
                     <%
                       new_tickets = arrivals_by_week_by_project[project].last
                       closed_tickets = departures_by_week_by_project[project].last

@@ -1,0 +1,58 @@
+.score {
+  text-align: right;
+  vertical-align: top;
+  white-space: nowrap;
+  
+  p {
+    display: inline-block;
+    vertical-align: top;
+    text-align: right;
+    margin: 0 0 0 1.25em;
+    width: 5em;
+  }
+  
+  .score-count {
+    display: block;
+    
+    .sign {
+      font-size: 0.5em;
+      vertical-align: top;
+    }
+    
+    &.percent::after {
+      content: '%';
+      font-size: 0.75em;
+    }
+  }
+  
+  .score-label {
+    display: block;
+    font-size: 0.88em;
+    line-height: 1em;
+  }
+  
+  &.score-small {
+    padding: .75em .5em .25em;
+    
+    .score-count {
+      font-size: 1.3em;
+      line-height: 1.2em;
+      font-weight: 200;
+    }
+  }
+  
+  &.score-large {
+    margin: 4px 0 4px 1em;
+    
+    .score-count {
+      font-size: 3.25em;
+      line-height: 0.78em;
+      font-weight: 100;
+    }
+    
+    .score-label {
+      font-weight: 500;
+      padding-right: 1px;
+    }
+  }
+}

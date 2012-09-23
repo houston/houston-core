@@ -167,36 +167,9 @@
   
   
   .score {
-    margin: 4px 0 4px 1em;
-    text-align: right;
-    white-space: nowrap;
     color: #333333; // for Gmail
     
-    p {
-      display: inline-block;
-      text-align: right;
-      margin: 0 0 0 1.25em;
-      width: 5em;
-    }
-    
-    .score-count {
-      display: block;
-      font-size: 3.25em;
-      line-height: 0.78em;
-      font-weight: 100;
-      
-      .sign {
-        font-size: 0.5em;
-        vertical-align: top;
-      }
-    }
-    
-    .score-label {
-      display: block;
-      font-size: 0.85em;
-      font-weight: 500;
-      padding-right: 1px;
-    }
+    p { width: 5em; }
     
     .no-bugs {
       color: #42A800;

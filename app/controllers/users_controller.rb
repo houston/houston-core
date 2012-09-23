@@ -9,6 +9,48 @@ class UsersController < ApplicationController
     
     @users = User.all
     
+    severities_colors = {
+      nil                             => "EFEFEF",
+      "0 Suggestion"                  => "92C4AD",
+      "D Development"                 => "3FC1AA",
+      "R Refactor"                    => "98C221",
+      "1 Lack of Polish"              => "EBD94B",
+      "1 Visual Bug"                  => "EBD94B",
+      "P Performance"                 => "EBD94B",
+      "2 Confusing to Users"          => "E9A43F",
+      "3 Design Flaw"                 => "E9A43F",
+      "4 Broken (with work-around)"   => "D65B17",
+      "S Security Hole"               => "D65B17",
+      "5 Broken (no work-around)"     => "C1311E"
+    }
+    
+    tickets = UnfuddleDump.load!
+    @ticket_stats_by_user = {}
+    @users.each do |user|
+      next unless user.unfuddle_id
+      
+      tickets_for_user = tickets.select { |ticket| ticket["reporter_id"] == user.unfuddle_id }
+      resolutions = %w{invalid duplicate}
+      invalid_tickets = tickets_for_user.select { |ticket| resolutions.member?(ticket["resolution"]) }.length
+      fixed_tickets = tickets_for_user.select { |ticket| ticket["resolution"] == "fixed" }.length
+      percent = 100.0 / tickets_for_user.length
+      
+      tickets_by_severity = Hash[severities_colors.values.zip([0] * severities_colors.values.length)]
+      tickets_for_user.each do |ticket|
+        severity = ticket["severity"]
+        severity = nil if severity.blank?
+        color = severities_colors[severity]
+        tickets_by_severity[color] += 1
+      end
+      
+      @ticket_stats_by_user[user] = {
+        tickets: tickets_for_user.length,
+        invalid_tickets: invalid_tickets * percent,
+        fixed_tickets: fixed_tickets * percent,
+        tickets_by_severity: tickets_by_severity
+      }
+    end
+    
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @users }
@@ -22,38 +64,59 @@ class UsersController < ApplicationController
     
     @title = @user.name
     
-    respond_to do |format|
-      format.html do
-        
-        template = "show"
-        
-        if @user.tester?
-          template = "tester_wall"
-          tickets_in_testing = Ticket.in_queues "in_testing", "in_testing_production"
-          tickets_tested_by_user = tickets_in_testing.with_testing_notes_by(@user)
-          
-          # These are tickets that are:
-          #  1. In Testing
-          #  2. Where the tester's most recent note is failing
-          #  3. Where the tester's most recent note is before a release
-          @tickets_to_retest = tickets_tested_by_user.to_be_retested_by(@user)
-          
-          # These are tickets that are:
-          #  1. In Testing
-          #  2. Where the tester hasn't created any notes
-          @tickets_to_test = tickets_in_testing.without_testing_notes_by(@user)
-          
-          # These are tickets that are:
-          #  1. In Testing
-          #  2. Where the tester _has_ created a note
-          #  3. That are not in @tickets_to_retest
-          @tickets_already_tested = tickets_tested_by_user - @tickets_to_retest
-        end
-        
-        render template: "users/#{template}"
-      end
-      format.json { render json: @user }
-    end
+    url = "ticket_reports/dynamic.json"
+    url << "?conditions_string=reporter-eq-#{@user.unfuddle_id}"
+    url << "&fields_string=#{%w{project number summary resolution}.join("|")}"
+    url << "&pretty=true&exclude_description=true"
+    response = Unfuddle.get(url)
+    
+    binding.pry unless response[0].to_i == 200
+    report = response[1]
+    group0 = report.fetch("groups", [])[0] || {}
+    tickets = group0.fetch("tickets", [])
+    
+    # binding.pry
+    
+    @tickets = tickets.length
+    resolutions = %w{invalid duplicate}
+    @invalid_tickets = tickets.select { |ticket| resolutions.member?(ticket["resolution"]) }.length
+    @fixed_tickets = tickets.select { |ticket| ticket["resolution"] == "fixed" }.length
+    @percent = 100.0 / @tickets
+    
+    
+    
+    # respond_to do |format|
+    #   format.html do
+    #     
+    #     template = "show"
+    #     
+    #     if @user.tester?
+    #       template = "tester_wall"
+    #       tickets_in_testing = Ticket.in_queues "in_testing", "in_testing_production"
+    #       tickets_tested_by_user = tickets_in_testing.with_testing_notes_by(@user)
+    #       
+    #       # These are tickets that are:
+    #       #  1. In Testing
+    #       #  2. Where the tester's most recent note is failing
+    #       #  3. Where the tester's most recent note is before a release
+    #       @tickets_to_retest = tickets_tested_by_user.to_be_retested_by(@user)
+    #       
+    #       # These are tickets that are:
+    #       #  1. In Testing
+    #       #  2. Where the tester hasn't created any notes
+    #       @tickets_to_test = tickets_in_testing.without_testing_notes_by(@user)
+    #       
+    #       # These are tickets that are:
+    #       #  1. In Testing
+    #       #  2. Where the tester _has_ created a note
+    #       #  3. That are not in @tickets_to_retest
+    #       @tickets_already_tested = tickets_tested_by_user - @tickets_to_retest
+    #     end
+    #     
+    #     render template: "users/#{template}"
+    #   end
+    #   format.json { render json: @user }
+    # end
   end
 
   # GET /users/new
