@@ -24,8 +24,6 @@ class User < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   attr_accessible :name, :email, :role, :password, :password_confirmation, :remember_me, :notifications_pairs, :unfuddle_id
   
-  attr_readonly :role
-  
   ROLES = %w{Developer Tester Stakeholder Guest}
   
   default_value_for :role, ROLES.first
