@@ -30,9 +30,8 @@ class ProjectsController < ApplicationController
     @project = Project.find_by_slug!(params[:id])
     @tickets = @project.ticket_system.find_tickets("status-neq-closed")
     
-    dependencies = %w{rails devise}
     @dependency_versions = {}
-    dependencies.each do |dependency|
+    Changelog.config.key_dependencies.each do |dependency|
       
       @dependency_versions[dependency] = cache "rubygems/#{dependency}/#{Date.today.strftime('%Y%m%d')}/info" do
         
@@ -67,7 +66,7 @@ class ProjectsController < ApplicationController
     @project = Project.new
     @project.environments.build(Rails.configuration.default_environments) if @project.environments.none?
     @project.maintainers << current_user if @project.maintainers.none?
-
+    
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @project }

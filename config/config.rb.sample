@@ -65,6 +65,12 @@ Changelog.config do
     {slug: "master", name: "Production"}
   ])
   
+  # What dependencies to check
+  key_dependencies do
+    gem "rails"
+    gem "devise"
+  end
+  
   # Queues
   # NB: because query is a hash, cannot use a key twice! (as in status-neq-closed & status-neq-resolved)
   queues [ {

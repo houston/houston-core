@@ -40,12 +40,37 @@ class Configuration
     Rails.application.config.action_mailer.smtp_settings = value
   end
   
+  def key_dependencies(&block)
+    if block_given?
+      dependencies = Changelog::Dependencies.new
+      dependencies.instance_eval(&block)
+      @dependencies = dependencies.names
+    end
+    @dependencies || []
+  end
+  
   def queues(value)
     Rails.application.config.queues = value
   end
   
   def on(event, &block)
     Changelog.observer.on(event, &block)
+  end
+  
+end
+
+class Changelog::Dependencies
+  
+  def initialize
+    @values = []
+  end
+  
+  def gem(name)
+    @values << [:gem, name]
+  end
+  
+  def names
+    @values.map { |pair| pair[1] }
   end
   
 end
@@ -77,8 +102,11 @@ private
 end
 
 def Changelog.config(&block)
-  Rails.application.config.obj = Configuration.new
-  Rails.application.config.obj.instance_eval(&block)
+  if block_given?
+    Rails.application.config.obj = Configuration.new
+    Rails.application.config.obj.instance_eval(&block)
+  end
+  Rails.application.config.obj
 end
 
 def Changelog.observer
