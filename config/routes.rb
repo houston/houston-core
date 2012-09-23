@@ -31,6 +31,9 @@ Changelog::Application.routes.draw do
     end
   end
   
+  # Experiment
+  match "tickets", :to => "tickets#index", :via => :get
+  
   match "tickets/:id", :to => "tickets#update", :via => :put
   match "tickets/:id", :to => "tickets#close", :via => :delete
   

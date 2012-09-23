@@ -1,0 +1,67 @@
+<h1>Where do Unfuddle Tickets Come From?</h1>
+
+<div id="container" style="min-width: 600px; height: 720px; margin: 0 auto"></div>
+
+<%
+  
+  tickets_by_user = {}
+  @tickets.each do |ticket|
+    user = @user_names_by_ids[ticket["reporter_id"]] || "?"
+    tickets_by_user[user] = (tickets_by_user[user] || 0) + 1
+  end
+  
+  tickets_by_user = tickets_by_user.to_a.sort_by { |pair| -pair[1] }
+
+%>
+
+
+<% content_for :scripts do %>
+  <script type="text/javascript">
+    $(function() {
+      
+      // Radialize the colors
+      Highcharts.getOptions().colors = $.map(Highcharts.getOptions().colors, function(color) {
+        return {
+          radialGradient: { cx: 0.5, cy: 0.3, r: 0.7 },
+          stops: [
+            [0, color],
+            [1, Highcharts.Color(color).brighten(-0.3).get('rgb')] // darken
+          ]
+        };
+      });
+      
+      data = <%=raw tickets_by_user.to_json %>;
+      
+      // Replace API with different color
+      data[1] = {name: 'API', y: data[1][1], color: '#FFFFFF'}
+      
+      chart = new Highcharts.Chart({
+        chart: {
+          renderTo: 'container',
+          backgroundColor: null,
+          plotBackgroundColor: null,
+          plotBorderWidth: null,
+          plotShadow: false },
+        credits: {
+          enabled: false },
+        title: {
+          text: null },
+        plotOptions: {
+          pie: {
+            animation: false,
+            dataLabels: {
+              formatter: function() { return '<b>'+ this.point.name +'</b>: '+ this.percentage.toFixed(1) +' %'; } },
+            shadow: false,
+            states: {
+              hover: {
+                enabled: false } } } },
+        tooltip: {
+          formatter: function() { return '<b>' + this.point.name + '</b><br />' + this.y + ' tickets'; } },
+        series: [{
+            type: 'pie',
+            data: data
+          }] });
+      
+    });
+  </script>
+<% end %>
