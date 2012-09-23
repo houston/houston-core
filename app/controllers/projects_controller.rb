@@ -9,11 +9,12 @@ class ProjectsController < ApplicationController
     @title = "Projects"
     @projects = Project.scoped
     
-    rails_versions ||= begin
+    gems = cache "rubygems/rails/#{Date.today.strftime('%Y%m%d')}/json" do
       response = Faraday.get("https://rubygems.org/api/v1/versions/rails.json")
-      gems = JSON.load(response.body)
-      gems.map { |hash| Gem::Version.new (hash["number"]) }.sort.reverse
+      JSON.load(response.body)
     end
+    
+    rails_versions = gems.map { |hash| Gem::Version.new (hash["number"]) }.sort.reverse
     @rails_minor_versions = rails_versions.map { |version| version.to_s[/\d+\.\d+/] }.uniq
     @rails_version_latest = rails_versions.first
     
@@ -33,24 +34,28 @@ class ProjectsController < ApplicationController
     @dependency_versions = {}
     dependencies.each do |dependency|
       
-      response = Faraday.get("https://rubygems.org/api/v1/versions/#{dependency}.json")
-      gems = JSON.load(response.body)
-      versions = gems.map { |hash| Gem::Version.new (hash["number"]) }.sort.reverse
-      stringified_versions = versions.map(&:to_s)
-      latest_version = versions.first
-      current_minor_version = stringified_versions.first[/\d+\.\d+/]
-      rx = /^#{current_minor_version}\.\d+$/
-      patches = stringified_versions.select { |version| version =~ rx }
-      
-      @dependency_versions[dependency] = {
-        name: dependency.titleize,
-        project: @project.dependency_version(dependency),
-        versions: versions,
-        minor_versions: stringified_versions.map { |version| version[/\d+\.\d+/] }.uniq,
-        patches: patches,
-        latest: latest_version
-      }
-      
+      @dependency_versions[dependency] = cache "rubygems/#{dependency}/#{Date.today.strftime('%Y%m%d')}/info" do
+        
+        gems = cache "rubygems/#{dependency}/#{Date.today.strftime('%Y%m%d')}/json" do
+          response = Faraday.get("https://rubygems.org/api/v1/versions/#{dependency}.json")
+          JSON.load(response.body)
+        end
+        
+        versions = gems.map { |hash| Gem::Version.new (hash["number"]) }.sort.reverse
+        stringified_versions = versions.map(&:to_s)
+        latest_version = versions.first
+        current_minor_version = stringified_versions.first[/\d+\.\d+/]
+        rx = /^#{current_minor_version}\.\d+$/
+        patches = stringified_versions.select { |version| version =~ rx }
+        
+        {
+          name: dependency.titleize,
+          versions: versions,
+          minor_versions: stringified_versions.map { |version| version[/\d+\.\d+/] }.uniq,
+          patches: patches,
+          latest: latest_version
+        }
+      end
     end
   end
 

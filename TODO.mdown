@@ -14,8 +14,7 @@
    - show ticket/change counts in real time
  - **Release Emails:** have up-to-date commits
  - Implement caching
-   - start with list of Rails versions from Rubygems
-   - and New Relic API calls
+   - New Relic API calls
 
 
 ### Eventually

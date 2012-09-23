@@ -142,7 +142,7 @@
             <tbody>
               <% @dependency_versions.each do |dependency, version_info| %>
                 <%
-                  version = version_info[:project]
+                  version = @project.dependency_version(dependency)
                   next unless version
                   version = version.version
                   minor_version = version.to_s[/\d+\.\d+/]
