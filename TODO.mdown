@@ -56,9 +56,6 @@
      - most commits to a project per week/day
      - most projects committed to per week
      - first commit to a project per developer
- - **Tester Wall**:
-   - Show verdicts for finished tickets
-   - Implement tickets accordian-style
  - **Testing Report:**
    - Give a way of prioritizing / flagging tickets
    - Expland/collapse all

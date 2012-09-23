@@ -1,5 +1,4 @@
 .score {
-  text-align: right;
   vertical-align: top;
   white-space: nowrap;
   
@@ -8,7 +7,6 @@
     vertical-align: top;
     text-align: right;
     margin: 0 0 0 1.25em;
-    width: 5em;
   }
   
   .score-count {
@@ -43,6 +41,8 @@
   
   &.score-large {
     margin: 4px 0 4px 1em;
+    
+    p { min-width: 5em; }
     
     .score-count {
       font-size: 3.25em;
