@@ -1,0 +1,58 @@
+.stripe {
+  background-color: #efefef;
+  padding: 0.66em 0;
+  margin-bottom: 1em;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}
+.stripe table {
+  max-height: 600px;
+}
+table.queues {
+  border-collapse: separate;
+  border-spacing: 6px;
+}
+.stripe th {
+  width: 80px;
+  vertical-align: middle;
+}
+.stripe th span {
+  position: absolute;
+  display: block;
+  font-weight: 100;
+  font-size: 2.5em;
+  width: 600px;
+  -moz-transform: rotate(-90deg);
+  -webkit-transform: rotate(-90deg);
+  left: -240px;
+}
+#severities_graph {
+  width: 260px;
+  height: 260px;
+}
+table.dependencies {
+  min-width: 600px;
+}
+table.dependencies td,
+table.dependencies th {
+  font-size: 1.75em;
+  line-height: 0.78em;
+  font-weight: 200;
+  text-align: right;
+  padding: 6px 12px
+}
+table.dependencies td.project-name {
+  font-weight: 800;
+  text-align: left;
+}
+table.dependencies th.project-name {
+  text-align: left;
+}
+table.dependencies th {
+  font-size: 0.88em;
+  font-weight: 600;
+}
+table.dependencies td.project-version {
+  font-weight: 800;
+}
