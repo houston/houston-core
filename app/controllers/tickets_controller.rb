@@ -2,6 +2,7 @@ class TicketsController < ApplicationController
   
   def index
     @tickets = UnfuddleDump.load!
+    @last_updated = UnfuddleDump.last_updated
     
     users = Unfuddle.instance.get("people.json?removed=true")[1]
     @user_names_by_ids = {}
