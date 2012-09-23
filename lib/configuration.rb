@@ -19,6 +19,10 @@ class Configuration
   def error_tracker(value)
   end
   
+  def default_environments(value)
+    Rails.application.config.default_environments = value
+  end
+  
   def unfuddle(value)
     Rails.application.config.unfuddle = value
     Unfuddle.config(value)

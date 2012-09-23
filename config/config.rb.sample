@@ -33,6 +33,23 @@ Changelog.config do
     password: PASSWORD
   })
   
+  # The error-catching system that Changelog will interface with.
+  # Right now, the only supported system is Errbit.
+  # error_tracker :errbit
+  
+  # Configuration for Errbit
+  # errbit({
+  #   host: HOST,
+  #   port: 80,
+  #   auth_token: AUTH_TOKEN
+  # })
+  
+  # Configuration for New Relic
+  # new_relic({
+  #   api_key: API_KEY,
+  #   account_id: ACCOUNT_ID
+  # })
+  
   # Configuration for Email
   # These options are just passed to
   # action_mailer.smtp_settings.
@@ -41,6 +58,12 @@ Changelog.config do
   #   port: 25,
   #   domain: "10.10.10.10"
   # })
+  
+  # Configuration for Git / CI
+  default_environments([
+    {slug: "dev", name: "Staging"},
+    {slug: "master", name: "Production"}
+  ])
   
   # Queues
   # NB: because query is a hash, cannot use a key twice! (as in status-neq-closed & status-neq-resolved)

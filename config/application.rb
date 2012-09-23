@@ -58,12 +58,7 @@ module Changelog
     
     # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
     config.assets.precompile += %w( print.css )
-
-    def config.default_environments
-      # !todo: read this from a config file
-      [ {slug: "dev", name: "PRI"},
-        {slug: "master", name: "Production"} ]
-    end
+    
   end
 end
 
