@@ -16,6 +16,11 @@ class Configuration
   def ticket_system(value)
   end
   
+  def severities(values=nil)
+    @severities = values if values
+    @severities
+  end
+  
   def error_tracker(value)
   end
   

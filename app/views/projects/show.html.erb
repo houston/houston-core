@@ -1,22 +1,10 @@
 <%= render partial: "projects/header", locals: {project: @project} %>
 
 <% 
-  severities_colors = {
-    "None"                          => "#EFEFEF",
-    "0 Suggestion"                  => "#92C4AD",
-    "D Development"                 => "#3FC1AA",
-    "R Refactor"                    => "#98C221",
-    "1 Lack of Polish"              => "#EBD94B",
-    "1 Visual Bug"                  => "#EBD94B",
-    "P Performance"                 => "#EBD94B",
-    "2 Confusing to Users"          => "#E9A43F",
-    "3 Design Flaw"                 => "#E9A43F",
-    "4 Broken (with work-around)"   => "#D65B17",
-    "S Security Hole"               => "#D65B17",
-    "5 Broken (no work-around)"     => "#C1311E"
-  }
+  severities_colors = Changelog.config.severities
+  severities = severities_colors.keys.map { |name| name || "None" }
   
-  tickets_by_severity = Hash[severities_colors.keys.zip([0] * severities_colors.keys.length)]
+  tickets_by_severity = Hash[severities.zip([0] * severities.length)]
   severities = @project.ticket_system.severities
   @tickets.each do |ticket|
     severity = severities.find { |severity| severity.id == ticket["severity_id"] }
@@ -36,7 +24,7 @@
           <ol>
             <% severities_colors.each do |severity, color|; unless severity == "None" %>
               <li class="severity">
-                <b class="bubble" style="background-color: <%= color %>;"></b>
+                <b class="bubble" style="background-color: #<%= color %>;"></b>
                 <%= severity %>
               </li>
             <% end; end %>
@@ -202,7 +190,7 @@
           marginRight: 0,
           marginBottom: 0,
           marginLeft: 0 },
-        colors: <%=raw severities_colors.values.to_json %>,
+        colors: <%=raw severities_colors.values.map { |color| "##{color}" }.to_json %>,
         credits: {
           enabled: false },
         title: {

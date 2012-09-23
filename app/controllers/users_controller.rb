@@ -9,20 +9,7 @@ class UsersController < ApplicationController
     
     @users = User.all
     
-    severities_colors = {
-      nil                             => "EFEFEF",
-      "0 Suggestion"                  => "92C4AD",
-      "D Development"                 => "3FC1AA",
-      "R Refactor"                    => "98C221",
-      "1 Lack of Polish"              => "EBD94B",
-      "1 Visual Bug"                  => "EBD94B",
-      "P Performance"                 => "EBD94B",
-      "2 Confusing to Users"          => "E9A43F",
-      "3 Design Flaw"                 => "E9A43F",
-      "4 Broken (with work-around)"   => "D65B17",
-      "S Security Hole"               => "D65B17",
-      "5 Broken (no work-around)"     => "C1311E"
-    }
+    severities_colors = Changelog.config.severities
     
     tickets = UnfuddleDump.load!
     @last_updated = UnfuddleDump.last_updated
