@@ -25,6 +25,8 @@ class UsersController < ApplicationController
     }
     
     tickets = UnfuddleDump.load!
+    @last_updated = UnfuddleDump.last_updated
+    
     @ticket_stats_by_user = {}
     @users.each do |user|
       next unless user.unfuddle_id
