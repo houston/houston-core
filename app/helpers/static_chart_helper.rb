@@ -1,4 +1,13 @@
-module WeeklyReportHelper
+# This module provides view helpers for drawing pie, bar, area, and
+# other kinds of graphs.
+#
+# Its current implementation relies on Google Image Charts which has
+# been deprecated. That service will cease in April 2015.
+#
+# Tentatively, I plan to keep the API that this helper publishes but
+# re-implement it to generate SVG charts, server-side.
+#
+module StaticChartHelper
   
   
   
