@@ -205,16 +205,12 @@
                     <% commits_by_weekday[weekday].each do |commit| %><b class="commit bubble <%= commit[:color] %>" rel="tooltip" title="<%= commit[:project] %>"></b><% end %>
                   </td>
                 <% end %>
-
-                <td class="score score-large">
-                  <p class="total-commits">
-                    <span class="score-count"><%= total_commits %></span>
-                    <span class="score-label"><%= total_commits == 1 ? "Commit" : "Commits" %></span>
-                  </p>
-                  <p class="total-projects">
-                    <span class="score-count"><%= projects_with_commits %></span>
-                    <span class="score-label"><%= projects_with_commits == 1 ? "Project" : "Projects" %></span>
-                  </p>
+                
+                <td>
+                  <%= score_card :large do |s| %>
+                    <% s.score (total_commits == 1 ? "Commit" : "Commits"), total_commits, :class => "total-commits" %>
+                    <% s.score (projects_with_commits == 1 ? "Project" : "Projects"), projects_with_commits, :class => "total-projects" %>
+                  <% end %>
                 </td>
               </tr>
             </tbody>
@@ -280,15 +276,11 @@
                   </td>
                 <% end %>
 
-                <td rowspan="2" class="score score-large">
-                  <p class="testing-note-passes">
-                    <span class="score-count"><%= passes %></span>
-                    <span class="score-label"><%= passes == 1 ? "Pass" : "Passes" %></span>
-                  </p>
-                  <p class="testing-note-fails">
-                    <span class="score-count"><%= fails %></span>
-                    <span class="score-label"><%= fails == 1 ? "Fail" : "Fails" %></span>
-                  </p>
+                <td rowspan="2">
+                  <%= score_card :large do |s| %>
+                    <% s.score (passes == 1 ? "Pass" : "Passes"), passes, :class => "testing-note-passes" %>
+                    <% s.score (fails == 1 ? "Fail" : "Fails"), fails, :class => "testing-note-fails" %>
+                  <% end %>
                 </td>
               </tr>
               
@@ -363,19 +355,14 @@
                           <%= image_tag(image_url("bug-fixed-32.png"), size: 32, :class => "bug") %>
                         <% end %>
                       </td>
-                      <td class="score score-large">
-                        <p class="new-bugs <%= "zero" if bug_counts["new"].zero? %>">
-                          <span class="score-count"><span class="sign">+</span><%= bug_counts["new"] %></span>
-                          <span class="score-label">New</span>
-                        </p>
-                        <p class="resolved-bugs <%= "zero" if bug_counts["fixed"].zero? %>">
-                          <span class="score-count"><span class="sign">&ndash;</span><%= bug_counts["fixed"] %></span>
-                          <span class="score-label">Fixed</span>
-                        </p>
-                        <p class="open-bugs">
-                          <span class="score-count"><%= bug_counts["open"] + bug_counts["new"] %></span>
-                          <span class="score-label">Open</span>
-                        </p>
+                      <td>
+                        <%= score_card :large do |s| %>
+                          <% s.score "New", bug_counts["new"], :class => "new-bugs",
+                              :prefix => "<span class=\"sign\">+</span>".html_safe %>
+                          <% s.score "Fixed", bug_counts["fixed"], :class => "resolved-bugs",
+                                  :prefix => "<span class=\"sign\">&ndash;</span>".html_safe %>
+                          <% s.score "Open", bug_counts["open"] + bug_counts["new"], :class => "open-bugs" %>
+                        <% end %>
                       </td>
                     <% else %>
                       <td></td>
@@ -611,18 +598,13 @@
                       closed_tickets = departures_by_week_by_project[project].last
                       open_tickets = open_tickets_by_project[project]
                     %>
-                    <p class="ticket-count-new <%= "zero" if new_tickets.zero? %>">
-                      <span class="score-count"><span class="sign">+</span><%= new_tickets %></span></span>
-                      <span class="score-label">New</span>
-                    </p>
-                    <p class="ticket-count-closed <%= "zero" if closed_tickets.zero? %>">
-                      <span class="score-count"><span class="sign">&ndash;</span><%= closed_tickets %></span></span>
-                      <span class="score-label">Closed</span>
-                    </p>
-                    <p>
-                      <span class="score-count"><%= open_tickets %></span>
-                      <span class="score-label">Open</span>
-                    </p>
+                    <%= score_card :large do |s| %>
+                      <% s.score "New", new_tickets, :class => "ticket-count-new",
+                          :prefix => "<span class=\"sign\">+</span>".html_safe %>
+                      <% s.score "Fixed", closed_tickets, :class => "ticket-count-closed",
+                              :prefix => "<span class=\"sign\">&ndash;</span>".html_safe %>
+                      <% s.score "Open", open_tickets, :class => "ticket-count-open" %>
+                    <% end %>
                   </td>
                 </tr>
               <% end %>

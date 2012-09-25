@@ -175,6 +175,7 @@
       font-weight: 100;
       font-size: 1.5em;
       width: auto !important;
+      margin: 0.5em 0;
     }
     
     .testing-note-fails, .new-bugs {
@@ -185,8 +186,10 @@
       color: #42A800;
     }
     
-    .zero {
-      color: #dddddd !important;
+    .new-bugs, .resolved-bugs, .ticket-count-new, .ticket-count-closed {
+      &.zero {
+        color: #dddddd !important;
+      }
     }
   }
 }

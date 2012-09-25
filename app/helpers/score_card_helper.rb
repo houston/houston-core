@@ -23,7 +23,7 @@ class ScoreCard
     score_count_class = options.delete(:score_count_class)
     precision = options.delete(:precision)
     
-    css = ["score-count"].concat Array(score_count_class)
+    css = Array(options.fetch(:class, []))
     css << "zero" if value == 0
     css << "positive" if value > 0
     css << "negative" if value < 0
@@ -35,8 +35,10 @@ class ScoreCard
       value = @view.number_with_precision(value, precision: precision) if precision
     end
     
-    @scores << @view.content_tag(:p, options) do
-      @view.content_tag(:span, value, :class => css.join(" ")) +
+    prefixed_value = options[:prefix] ? "#{options[:prefix]}#{value}".html_safe : value
+    
+    @scores << @view.content_tag(:p, :class => css.join(" ")) do
+      @view.content_tag(:span, prefixed_value, :class => "score-count") +
       @view.content_tag(:span, label, :class => "score-label")
     end
     
