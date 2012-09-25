@@ -98,7 +98,7 @@
         <table class="notifications-table">
           <thead>
             <tr>
-              <td class="user"></td>
+              <td class="notification-user"></td>
               <% @project.environments.each do |environment| %>
                 <th><%= environment.name %></th>
               <% end %>
@@ -106,7 +106,7 @@
           <thead>
           <tbody>
             <% User.all.group_by(&:role).each do |role, users| %>
-              <tr class="group">
+              <tr class="notification-group">
                 <td colspan="3"><%= role.pluralize %></td>
               </tr>
               <% users.each do |user| %>
