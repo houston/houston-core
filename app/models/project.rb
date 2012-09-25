@@ -28,6 +28,7 @@ class Project < ActiveRecord::Base
   # and make the ticket system choice either part
   # of the config.yml or a project's configuration.
   def ticket_system
+    return nil if unfuddle_id.blank?
     @unfuddle ||= Unfuddle.instance.project(unfuddle_id)
   end
   
@@ -59,8 +60,9 @@ class Project < ActiveRecord::Base
   
   def find_tickets(*query)
     Rails.logger.info "[project.find_tickets] query: #{query.inspect}"
+    return [] if ticket_system.nil?
     
-    unfuddle_tickets = ticket_system.find_tickets(*query)
+    unfuddle_tickets = ticket_system.find_tickets!(*query)
     return [] if unfuddle_tickets.empty?
     
     self.class.benchmark("[project.find_tickets] synchronizing with local tickets") do
@@ -125,7 +127,7 @@ class Project < ActiveRecord::Base
   
   def construct_ticket_query_for_queue(queue)
     key = "#{queue.slug}-#{Digest::MD5::hexdigest(queue.query.inspect)}"
-    find_in_cache_or_execute(key) { ticket_system.construct_ticket_query(queue.query) }
+    find_in_cache_or_execute(key) { ticket_system.construct_ticket_query(queue.query) if ticket_system }
   end
   
   def find_in_cache_or_execute(key)
