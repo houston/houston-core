@@ -24,6 +24,10 @@ module UrlHelper
     "#{protocol}://#{Rails.application.config.errbit[:host]}/apps/#{project.errbit_app_id}"
   end
   
+  def errbit_err_url(project, err)
+    "#{errbit_app_url(project)}/errs/#{err}"
+  end
+  
   def github_url?(project)
     project.git_url =~ /github/
   end

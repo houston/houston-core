@@ -19,6 +19,13 @@ class Commit < ActiveRecord::Base
     @ticket_numbers ||= message.scan(TICKET_PATTERN).flatten
   end
   
+  def extra_attributes
+    @extra_attributes ||= message.scan(EXTRA_ATTRIBUTE_PATTERN).each_with_object({}) do |(key, value), attrs|
+      attrs[key] ||= []
+      attrs[key].push(value)
+    end
+  end
+  
   def skip?
     SKIP_PATTERNS.any? { |pattern| message =~ pattern }
   end
@@ -30,6 +37,8 @@ class Commit < ActiveRecord::Base
   
   
   TICKET_PATTERN = /\[#(\d+)\]/
+  
+  EXTRA_ATTRIBUTE_PATTERN = /\{\{([^:\}]+):([^\}]+)\}\}/
   
   SKIP_PATTERNS = [
     /\[skip\]/,

@@ -13,15 +13,34 @@ module CommitHelper
   end
   
   def format_with_feature_bolded(message)
-    feature, sentence = message.split(":", 2)
-    sentence ? "<b>#{h feature}:</b>#{h sentence}".html_safe : message
+    feature = message.match(/^([^\{:]+):/)
+    if feature
+      feature = "<b>#{h feature[1]}:</b>"
+      message = h(message[feature.length..-1])
+    end
+    "#{feature}#{message}".html_safe
   end
   
   def format_with_tickets_linked(project, message)
-    h(message).gsub Commit::TICKET_PATTERN do |match|
+    message = h(message)
+    
+    message.gsub! Commit::TICKET_PATTERN do |match|
       ticket_number = Commit::TICKET_PATTERN.match(match)[1]
-      link_to match, unfuddle_ticket_url(project, ticket_number)
-    end.html_safe
+      link_to match, unfuddle_ticket_url(project, ticket_number), "target" => "_blank"
+    end
+    
+    message.gsub! Commit::EXTRA_ATTRIBUTE_PATTERN do |match|
+      key, value = match.scan(Commit::EXTRA_ATTRIBUTE_PATTERN).first
+      link_to_err(project, value) if key == "err"
+    end
+    
+    message.html_safe
+  end
+  
+  def link_to_err(project, err)
+    link_to errbit_err_url(project, err), "target" => "_blank" do
+      image_tag image_url("bug-fixed-32.png"), "data-tooltip-placement" => "right", :rel => "tooltip", :title => "View Exception in Errbit", :width => 16, :height => 16
+    end
   end
   
 end
