@@ -13,10 +13,10 @@ module CommitHelper
   end
   
   def format_with_feature_bolded(message)
-    feature = message.match(/^([^\{:]+):/)
+    feature = (message.match(/^([^\{:]+):/) || [])[1]
     if feature
-      feature = "<b>#{h feature[1]}:</b>"
       message = h(message[feature.length..-1])
+      feature = "<b>#{h feature}:</b>"
     end
     "#{feature}#{message}".html_safe
   end
