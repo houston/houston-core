@@ -16,7 +16,7 @@ module CommitHelper
     feature = (message.match(/^([^\{:]+):/) || [])[1]
     if feature
       message = h(message[feature.length..-1])
-      feature = "<b>#{h feature}:</b>"
+      feature = "<b>#{h feature}</b>"
     end
     "#{feature}#{message}".html_safe
   end
