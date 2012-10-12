@@ -26,6 +26,8 @@ class User < ActiveRecord::Base
   
   ROLES = %w{Developer Tester Stakeholder Guest}
   
+  default_scope order("name")
+  
   default_value_for :role, ROLES.first
   
   validates :name, :presence => true, :uniqueness => true

@@ -12,6 +12,9 @@ class window.TestingTicketsView extends Backbone.View
       view = new TestingTicketView(ticket: ticket)
       view.on 'testing_note:refresh', _.bind(@refreshPieGraph, @)
       $el.appendView view
+    
+    $("[data-tester-id=#{window.user.id}]").addClass('current-tester')
+    
     @refreshPieGraph()
   
   refreshPieGraph: ->

@@ -48,20 +48,40 @@ ul.tester-names {
 .tester-names, .tickets-list { max-width: 800px; }
 
 .tester {
+  width: 30px;
   display: inline-block;
   float: right;
-  transform: rotate(-90deg);
-  -ms-transform: rotate(-90deg); /* IE 9 */
-  -moz-transform: rotate(-90deg); /* Firefox */
-  -webkit-transform: rotate(-90deg); /* Safari and Chrome */
-  -o-transform: rotate(-90deg); /* Opera */
-  width: 32px;
-  height: 24px;
-  line-height: 32px;
-  position: relative;
-  top: 4.5em;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  
+  .tester-name {
+    display: block;
+    transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg); /* IE 9 */
+    -moz-transform: rotate(-90deg); /* Firefox */
+    -webkit-transform: rotate(-90deg); /* Safari and Chrome */
+    -o-transform: rotate(-90deg); /* Opera */
+    height: 30px;
+    line-height: 30px;
+    position: relative;
+    top: 4.5em;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  &.current-tester {
+    font-weight: bold;
+  }
+  
+//  &.current-tester::after {
+//    content: '.';
+//    text-indent: 9999em;
+//    position: absolute;
+//    border: 1px solid red;
+//    margin-left: -1px;
+//    width: 30px;
+//    height: 100%;
+//    top: 0;
+//    bottom: 0;
+//  }
 }
 
 .tester-verdicts { overflow: hidden; }
@@ -81,17 +101,19 @@ ul.tester-names {
 
 .ticket-verdict {
   float: right;
+  margin: 1px;
   
   img { 
     border-width: 2px;
     border-style: solid;
     border-color: transparent;
-    margin: 1px;
+    opacity: 0.15;
   }
   
-  &[data-verdict="pending"] img { opacity: 0.33; }
-  &[data-verdict="passing"] img { border-color: #55c832; }
-  &[data-verdict="failing"] img { border-color: #ff3030; }
+  &.current-tester img { opacity: 0.60; }
+  
+  &[data-verdict="passing"] img { opacity: 1.0; border-color: #55c832; }
+  &[data-verdict="failing"] img { opacity: 1.0; border-color: #ff3030; }
 }
 
 .testing-notes {

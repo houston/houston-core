@@ -24,6 +24,7 @@ class window.Ticket extends Backbone.Model
   testerVerdicts: ->
     verdictsByTester = @verdictsByTester(@testingNotesSinceLastRelease())
     window.testers.map (tester)->
+      testerId: tester.id
       email: tester.get('email')
       verdict: verdictsByTester[tester.get('id')] ? 'pending'
   
