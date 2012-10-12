@@ -21,4 +21,5 @@ config/config.rb
 
 REVISION
 .sass-cache
+.rvmrc
 
