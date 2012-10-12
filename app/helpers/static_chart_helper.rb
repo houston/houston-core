@@ -116,8 +116,7 @@ module StaticChartHelper
       width: options[:width],
       height: options[:height],
       colors: ["FFFFFF"] + colors,
-      title: options[:title],
-      axes: false
+      title: options[:title]
     })
   end
   
