@@ -36,7 +36,7 @@ Changelog::Application.configure do
   config.assets.debug = true
 
   # Test emails
-  config.action_mailer.delivery_method = :letter_opener
+  # config.action_mailer.delivery_method = :letter_opener
 
   # So Devise mailers can make links
   server_options = Rack::Server::Options.new.parse!(ARGV.dup)
