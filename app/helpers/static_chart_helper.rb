@@ -35,12 +35,29 @@ module StaticChartHelper
   def bar_graph(options={})
     width = ((14 + 4) * options[:count]) + 10 + 20
     
+    chxt = case options.fetch(:axes, :left)
+    when :left
+      "&chxt=y"
+    when false
+      width -= 20
+      "&chxs=0,676767,0,0,_,676767|1,676767,0,0,_,676767&chxt=x,y"
+    end
+    
+    
     src = Gchart.bar({
       data: options[:data],
       bar_colors: options[:colors],
       bar_width_and_spacing: 14,
       size: "#{width}x#{options[:height]}"
-    }) + "&chxt=y"
+    })
+    
+    case options.fetch(:axes, :left)
+    when :left
+      src << "&chxt=y"
+    when false
+      src << "&chxs=0,676767,0,0,_,676767|1,676767,0,0,_,676767&chxt=x,y"
+    end
+    
     
     graph_with_subcaptions(src, width, options[:height], options[:title])
   end

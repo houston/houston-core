@@ -43,6 +43,23 @@
     }
   }
   
+  &.score-medium {
+    margin: 4px 0 4px 1em;
+    
+    p { min-width: 3.25em; }
+    
+    .score-count {
+      font-size: 2.5em;
+      line-height: 0.78em;
+      font-weight: 100;
+    }
+    
+    .score-label {
+      font-weight: 200;
+      padding-right: 1px;
+    }
+  }
+  
   &.score-large {
     margin: 4px 0 4px 1em;
     

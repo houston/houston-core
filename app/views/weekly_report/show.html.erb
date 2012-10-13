@@ -109,6 +109,9 @@
     
     bug_counts_by_project = {}
     bugs_by_week_by_project = Hash[@projects.zip]
+    bugs_new_this_week = 0
+    bugs_fixed_this_week = 0
+    bugs_change_this_week = 0
     
     benchmark("Preparing data for bugs graphs") do
       
@@ -134,11 +137,12 @@
           bug_counts[status] += 1
           
         end
+        bugs_new_this_week += 1 if bug.first_notice_at < @date_range.end && bug.first_notice_at > @date_range.begin
+        bugs_fixed_this_week += 1 if bug.resolved_at && bug.resolved_at < @date_range.end && bug.resolved_at > @date_range.begin
         
       end
       
-      
-      total_bugs = bug_counts_by_project.values.map(&:values).flatten.sum
+      bugs_change_this_week = bugs_new_this_week - bugs_fixed_this_week
     end
     
     
@@ -331,73 +335,23 @@
   </h3>
   
   <div class="weekly-report-body">
-      
-      <table class="layout">
-        <tr>
-          <td colspan="3">
-            
-            <table class="bugs">
-              <tbody>
-                <% @projects.each do |project| %>
-                  <% next if project.errbit_app_id.blank? %>
-                  <% bug_counts = bug_counts_by_project[project] || {} %>
-                  <tr>
-                    <th><span class="label <%= project.color %>"><%= project.name %></span></th>
-                    <% if bug_counts.values.sum > 0 %>
-                      <td>
-                        <% bug_counts["new"].times do %>
-                          <%= image_tag(image_url("bug-new-32.png"), size: 32, :class => "bug") %>
-                        <% end %>
-                        <% bug_counts["open"].times do %>
-                          <%= image_tag(image_url("bug-open-32.png"), size: 32, :class => "bug") %>
-                        <% end %>
-                        <% bug_counts["fixed"].times do %>
-                          <%= image_tag(image_url("bug-fixed-32.png"), size: 32, :class => "bug") %>
-                        <% end %>
-                      </td>
-                      <td>
-                        <%= score_card :large do |s| %>
-                          <% s.score "New", bug_counts["new"], :class => "new-bugs",
-                              :prefix => "<span class=\"sign\">+</span>".html_safe %>
-                          <% s.score "Fixed", bug_counts["fixed"], :class => "resolved-bugs",
-                                  :prefix => "<span class=\"sign\">&ndash;</span>".html_safe %>
-                          <% s.score "Open", bug_counts["open"] + bug_counts["new"], :class => "open-bugs" %>
-                        <% end %>
-                      </td>
-                    <% else %>
-                      <td></td>
-                      <td class="score score-large">
-                        <p class="no-bugs">No bugs!</p>
-                      </td>
-                    <% end %>
-                  </tr>
-                <% end %>
-              </tbody>
-            </table>
-            
-        </td>
-      </tr>
-      
+    <table class="layout exceptions-report">
       <tr>
-        <td width="20%"></td>
-        
-        <td width="40%" align="center">
-          <%= bar_graph({
-            data: notices_by_week.values,
-            colors: "888888",
-            count: weeks_of_errbit_history,
-            height: 80,
-            title: "#{weeks_of_errbit_history}-week notice levels"
-          }) %>
+        <td class="exceptions-notices-count">
+          <p class="score">
+            <span class="notices-count score-count"><%= notices_by_week.values.last %></span>
+            <span class="notices-label score-label">Notices this week</span>
+          </p>
         </td>
-        
-        <td width="40%" align="center">
+        <td class="exceptions-notices-pie">
+          <div class="notices-by-project-pie"><span style="color: #bbb; font-weight: bold;">Coming soon</span></div>
+        </td>
+        <td class="exceptions-problem-count" rowspan="2">
           <%
-            width = ((14 + 4) * weeks_of_errbit_history) + 10 + 20
             cumulative_totals = [0] * weeks_of_errbit_history
-            
+
             projects_included = []
-            
+
             data = @projects.map do |project|
               values = bugs_by_week_by_project[project]
               if values
@@ -406,26 +360,104 @@
               else
                 next
               end
-              
+
               values.each_with_index do |value, i|
                 cumulative_totals[i] += value
               end
               cumulative_totals.dup
             end
             data.compact!
-            
+          
             colors_included = projects_included.map { |project| colors[project.color] }
           %>
           <%= area_graph({
             data: data,
             colors: colors_included,
-            width: width,
-            height: 80,
+            width: 392,
+            height: 152,
             title: "#{weeks_of_errbit_history}-week problem count"
+          }) %>
+        </td>
+        <td class="exceptions-summary" rowspan="2">
+          <div class="exceptions-bugs-summary-group">
+            <p class="exceptions-bugs-summary new-bugs <%= bugs_new_this_week.zero? ? "zero" : "positive" %>">
+              <span class="bug-count"><span class="sign">+</span><%= bugs_new_this_week %></span> <%= image_tag(image_url("bug-new-32.png"), size: 32, :class => "bug") %>
+            </p>
+            <p class="exceptions-bugs-summary resolved-bugs <%= bugs_fixed_this_week.zero? ? "zero" : "negative" %>">
+              <span class="bug-count"><span class="sign">–</span><%= bugs_fixed_this_week %></span> <%= image_tag(image_url("bug-fixed-32.png"), size: 32, :class => "bug") %>
+            </p>
+          </div>
+          
+          <% if bugs_change_this_week == 0 %>
+            <p class="exceptions-bugs-summary total-bugs zero">
+              <span class="bug-count">0</span><%= image_tag image_url("bug-zero-128.png"), size: 118 %>
+            </p>
+          <% elsif bugs_change_this_week < 0 %>
+            <p class="exceptions-bugs-summary total-bugs negative" style="-webkit-box-shadow: inset 0 0 <%= -bugs_change_this_week * 2 %>px #42A800; <%= "letter-spacing: -0.15em; text-indent: -0.25em;" if (10..19).cover?(-bugs_change_this_week) %>">
+              <span class="bug-count"><%= -bugs_change_this_week %></span><%= image_tag image_url("bug-fixed-128.png"), size: 118 %>
+            </p>
+          <% else %>
+            <p class="exceptions-bugs-summary total-bugs positive" style="-webkit-box-shadow: inset 0 0 <%= bugs_change_this_week * 2 %>px #E00000; <%= "letter-spacing: -0.15em; text-indent: -0.25em;" if (10..19).cover?(bugs_change_this_week) %>">
+              <span class="bug-count"><%= bugs_change_this_week %></span><%= image_tag image_url("bug-new-128.png"), size: 118 %>
+            </p>
+          <% end %>
+          
+          
+        </td>
+      </tr>
+      
+      <tr>
+        <td class="exceptions-notices-history" colspan="2">
+          <%= bar_graph({
+            data: notices_by_week.values,
+            colors: "d0d0d0",
+            count: weeks_of_errbit_history,
+            height: 54,
+            axes: false,
+            title: "#{weeks_of_errbit_history}-week notice levels"
           }) %>
         </td>
       </tr>
       
+    </table>
+    
+    <table class="layout bugs">
+      <tbody>
+        <% @projects.each do |project| %>
+          <% next if project.errbit_app_id.blank? %>
+          <% bug_counts = bug_counts_by_project[project] || {} %>
+          <tr>
+            <th><span class="label <%= project.color %>"><%= project.name %></span></th>
+            <% if bug_counts.values.sum > 0 %>
+              <td>
+                <% bug_counts["new"].times do %>
+                  <%= image_tag(image_url("bug-new-32.png"), size: 32, :class => "bug new-bug") %>
+                <% end %>
+                <% bug_counts["open"].times do %>
+                  <%= image_tag(image_url("bug-open-32.png"), size: 32, :class => "bug open-bug") %>
+                <% end %>
+                <% bug_counts["fixed"].times do %>
+                  <%= image_tag(image_url("bug-fixed-32.png"), size: 32, :class => "bug fixed-bug") %>
+                <% end %>
+              </td>
+              <td>
+                <%= score_card :medium do |s| %>
+                  <% s.score "New", bug_counts["new"], :class => "new-bugs",
+                      :prefix => "<span class=\"sign\">+</span>".html_safe %>
+                  <% s.score "Fixed", bug_counts["fixed"], :class => "resolved-bugs",
+                          :prefix => "<span class=\"sign\">&ndash;</span>".html_safe %>
+                  <% s.score "Open", bug_counts["open"] + bug_counts["new"], :class => "open-bugs" %>
+                <% end %>
+              </td>
+            <% else %>
+              <td></td>
+              <td class="score score-large">
+                <p class="no-bugs">No bugs!</p>
+              </td>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
     </table>
   </div>
   

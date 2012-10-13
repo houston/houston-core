@@ -57,6 +57,7 @@ class ScoreCard
   def generate
     css = ["score"].concat Array(@options.fetch(:class, []))
     css << "score-large" if @size == :large
+    css << "score-medium" if @size == :medium
     css << "score-small" if @size == :small
     @view.content_tag(:div, @scores.join.html_safe, :class => css.join(" "))
   end
