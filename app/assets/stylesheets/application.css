@@ -10,5 +10,7 @@
  *
  *= require_self
  *= require bootstrap_and_overrides
+ *= require rickshaw
+ *= require font-awesome
  *= require_tree ./application
 */

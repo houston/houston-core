@@ -77,6 +77,12 @@ Changelog::Application.routes.draw do
   # Experiment
   match "tickets", :to => "tickets#index", :via => :get
   
+  # Fake out fnord
+  match "fnord", :to => "fnord#index", :via => :get
+  match "myapp/dashboard/Demography", :to => "fnord#demography", :via => :get
+  match "myapp/dashboard/TechStats", :to => "fnord#tech_stats", :via => :get
+  
+  
   # This just renders a fake Kanban:
   # to give you an idea of what your queues, colors, and ages will look like
   match "demo", :to => "demo#index", :via => :get

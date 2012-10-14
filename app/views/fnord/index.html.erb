@@ -1,0 +1,19 @@
+<div class='clearfix' id='app' style='overflow:hidden;'></div>
+<div id='preload'>
+  <img src='/img/loader_white.gif'>
+</div>
+<% content_for :scripts do %>
+<script>
+  //<![CDATA[
+    $(document).ready(function(){
+      FnordMetric.init({
+        "host": "localhost:4242",
+        "hide_overview": true,
+        "hide_active_users": true,
+        "token": "myapp",
+        "title": "myapp"
+      });
+    });
+  //]]>
+</script>
+<% end %>

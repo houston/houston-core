@@ -5,15 +5,15 @@
 // the compiled file.
 //
 //= require ./jquery-ui/jquery.ui.core.js
-//  require ./jquery-ui/jquery.ui.widget.js
-//  require ./jquery-ui/jquery.ui.mouse.js
-//  require ./jquery-ui/jquery.ui.position.js
+//= require ./jquery-ui/jquery.ui.widget.js
+//= require ./jquery-ui/jquery.ui.mouse.js
+//= require ./jquery-ui/jquery.ui.position.js
 //
 //  require ./jquery-ui/jquery.ui.draggable.js
 //  require ./jquery-ui/jquery.ui.droppable.js
 //  require ./jquery-ui/jquery.ui.resizable.js
 //  require ./jquery-ui/jquery.ui.selectable.js
-//  require ./jquery-ui/jquery.ui.sortable.js
+//= require ./jquery-ui/jquery.ui.sortable.js
 //
 //  require ./jquery-ui/jquery.ui.accordian.js
 //  require ./jquery-ui/jquery.ui.autocomplete.js

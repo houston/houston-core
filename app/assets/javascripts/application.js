@@ -25,4 +25,7 @@
 //= require date_format
 //= require md5
 //= require raphael
+//= require d3.v2
+//= require rickshaw.fnordmetric
+//= require fnord
 //= require_tree .
