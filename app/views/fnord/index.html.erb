@@ -7,11 +7,8 @@
   //<![CDATA[
     $(document).ready(function(){
       FnordMetric.init({
-        "host": "localhost:4242",
-        "hide_overview": true,
-        "hide_active_users": true,
-        "token": "myapp",
-        "title": "myapp"
+        "host": "<%= @host %>",
+        "token": "<%= @namespace %>"
       });
     });
   //]]>
