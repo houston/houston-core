@@ -9,12 +9,7 @@ class ProjectsController < ApplicationController
     @title = "Projects"
     @projects = Project.scoped
     
-    gems = cache "rubygems/rails/#{Date.today.strftime('%Y%m%d')}/json" do
-      response = Faraday.get("https://rubygems.org/api/v1/versions/rails.json")
-      JSON.load(response.body)
-    end
-    
-    rails_versions = gems.map { |hash| Gem::Version.new (hash["number"]) }.sort.reverse
+    rails_versions = Rubygems::Gem.new("rails").versions
     @rails_minor_versions = rails_versions.map { |version| version.to_s[/\d+\.\d+/] }.uniq
     @rails_version_latest = rails_versions.first
     
@@ -35,12 +30,9 @@ class ProjectsController < ApplicationController
       
       @dependency_versions[dependency] = cache "rubygems/#{dependency}/#{Date.today.strftime('%Y%m%d')}/info" do
         
-        gems = cache "rubygems/#{dependency}/#{Date.today.strftime('%Y%m%d')}/json" do
-          response = Faraday.get("https://rubygems.org/api/v1/versions/#{dependency}.json")
-          JSON.load(response.body)
-        end
+        versions = Rubygems::Gem.new(dependency).versions
+        next unless versions.any?
         
-        versions = gems.map { |hash| Gem::Version.new (hash["number"]) }.sort.reverse
         stringified_versions = versions.map(&:to_s)
         latest_version = versions.first
         current_minor_version = stringified_versions.first[/\d+\.\d+/]
