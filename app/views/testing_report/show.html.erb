@@ -9,7 +9,7 @@
         <span class="tester-verdicts">
           <ul id="testers">
             <% @project.testers.each do |tester| %>
-              <li class="tester"><%= tester.name %></li>
+              <li class="tester" data-tester-id="<%= tester.id %>"><span class="tester-name"><%= tester.name %></span></li>
             <% end %>
           </ul>
         </span>
