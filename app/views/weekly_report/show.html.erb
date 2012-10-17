@@ -115,7 +115,7 @@
     
     benchmark("Preparing data for bugs graphs") do
       
-      bugs = Bug.during(date_range_multiweek2)
+      bugs = Errbit::Problem.during(date_range_multiweek2)
       
       bugs.each do |bug|
         project = @projects.detect { |project| project.errbit_app_id == bug.errbit_app_id }
@@ -151,7 +151,7 @@
     
     benchmark("Preparing data for notices graphs") do
       
-      notices = Notice.during(date_range_multiweek2)
+      notices = Errbit::Notice.during(date_range_multiweek2)
       
       notices.each do |notice|
         week = notice.created_at.beginning_of_week.to_date
