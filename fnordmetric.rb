@@ -1,48 +1,76 @@
 require "fnordmetric"
 
-STATUS_CODE_TO_GAUGE = Hash[Rack::Utils::SYMBOL_TO_STATUS_CODE.map { |symbol, status_code| [status_code, "#{symbol}_responses".to_sym] }]
+
+
+class FnordMetric::CustomWidget < FnordMetric::TimeseriesWidget
+  
+  def self.execute(namespace, event)
+    return false unless event["cmd"] == "values_at"
+    
+    gkey = event["gauges"].first
+    gauge = namespace.gauges[gkey.to_sym] || raise("#{gkey.to_sym.inspect} is not a recognized gauge")
+    data = data_for(gauge, event)
+    
+    { :class => "widget_response",
+      :widget_key => event["widget_key"],
+      :cmd => :values_at,
+      :data => data }
+  end
+  
+  def self.data_for(gauge)
+    raise NotImplementedError
+  end
+  
+end
+
+class FnordMetric::ResponsetimeWidget < FnordMetric::CustomWidget
+  
+  def self.data_for(gauge, event)
+    {event["widget_key"] => gauge.value_at(event["until"])}
+  end
+  
+end
+
+class FnordMetric::ResponsestatusWidget < FnordMetric::CustomWidget
+  
+  def self.data_for(gauge, event)
+    Hash[gauge.field_values_at(event["until"]).map { |(key, value)| [key, value.to_i] }]
+  end
+
+end
+
+
 
 FnordMetric.namespace :changelog do
   
   gauge :average_response_time, tick: 1.second, average: true
-  
-  STATUS_CODE_TO_GAUGE.values.each do |gauge_name|
-    gauge gauge_name, tick: 1.second
-  end
+  gauge :responses_by_status_code, tick: 1.second, three_dimensional: true
   
   event :response do
-    puts "response_time: #{data[:time]}"
     incr :average_response_time, data[:time].to_i
-    gauge = STATUS_CODE_TO_GAUGE[data[:status].to_i]
-    if gauge
-      incr gauge
-    else
-      puts "[ERROR] unknown status: #{data[:status].inspect}"
-    end
+    incr_field :responses_by_status_code, data[:status]
   end
   
   widget "Dashboard",
     title: "Average Response Time",
-    type: :timeline,
-    width: 100,
+    type: :responsetime,
     gauges: [:average_response_time],
-    include_current: true,
     autoupdate: 1
   
   widget "Dashboard",
     title: "Response Status Codes",
-    type: :timeline,
-    width: 100,
-    gauges: STATUS_CODE_TO_GAUGE.values,
-    include_current: true,
+    type: :responsestatus,
+    gauges: [:responses_by_status_code],
     autoupdate: 1
-
+  
 end
+
+
 
 FnordMetric.options = {
   :event_queue_ttl  => 10, # all data that isn't processed within 10s is discarded to prevent memory overruns
-  :event_data_ttl   => 3600, # event data is stored for one hour (needed for the active users view)
-  :session_data_ttl => 3600, # session data is stored for one hour (needed for the active users view)
+  :event_data_ttl   => 1, # 3600, # event data is stored for one hour (needed for the active users view)
+  :session_data_ttl => 1, # 3600, # session data is stored for one hour (needed for the active users view)
   :redis_prefix => "fnordmetric"
 }
 

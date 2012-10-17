@@ -81,6 +81,8 @@ Changelog::Application.routes.draw do
   match "fnord", :to => "fnord#index", :via => :get
   match ":namespace/dashboard/:dashboard", :to => "fnord#dashboard", :via => :get
   
+  match "dashboard", :to => "dashboard#index", :via => :get
+  
   
   # This just renders a fake Kanban:
   # to give you an idea of what your queues, colors, and ages will look like

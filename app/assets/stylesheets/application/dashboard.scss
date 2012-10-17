@@ -24,4 +24,55 @@
     text-align: center;
   }
   
+  .rickshaw-chart { margin: 6px; width: 360px; height: 180px; padding-right: 50px; position: relative; }
+  .y-axis { position: absolute; top: 0; bottom: 0; right: 0; width: 50px; }
+}
+  
+.flash-message-over {
+  background-color: rgba(0,0,0,0.9);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 99999999999;
+  opacity:0;
+  -webkit-transition: opacity .3s linear;
+  -moz-transition: opacity .3s linear;
+  -ms-transition: opacity .3s linear;
+  -o-transition: opacity .3s linear;
+  transition: opacity .3s linear;
+  
+  &.visible { opacity:1; }
+  
+  .inner {
+    position:fixed;
+    width:600px;
+    height:300px;
+    left:50%;
+    margin-left:-300px;
+    text-align:center;
+    top:30%;
+  }
+  
+  h1 {
+    margin-top: 37px;
+    font-weight: bold;
+    font-size: 26px;
+    color:#444;
+  }
+  
+  h2 {
+    font-weight: normal;
+    font-size: 18px;
+    color: #aaa;
+    margin-top: 60px;
+  }
+  
+  .loader_white {
+    height: 32px;
+    width: auto;
+    background: url('/img/loader_white.gif') no-repeat center center;
+    margin-top:26px;
+  }
 }

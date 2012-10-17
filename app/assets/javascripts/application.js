@@ -27,5 +27,6 @@
 //= require raphael
 //= require d3.v2
 //= require rickshaw.fnordmetric
+//= require rickshaw
 //= require fnord
 //= require_tree .
