@@ -1,4 +1,12 @@
 GIT
+  remote: git://github.com/boblail/changelog-notifier.git
+  revision: 5cb06db836a6f4f7857199774771028b29983bf6
+  specs:
+    changelog-notifier (0.0.1)
+      activesupport
+      fnord-client
+
+GIT
   remote: git://github.com/boblail/remotable.git
   revision: bd94bb537b01dc012c14d3d90ec6db9e9315e1b9
   specs:
@@ -258,13 +266,13 @@ DEPENDENCIES
   bundler
   cancan
   capistrano
+  changelog-notifier!
   childprocess
   coffee-rails (~> 3.2.1)
   default_value_for
   devise (>= 2.0.0)
   devise_invitable (~> 1.0.0)
   faraday
-  fnord-client
   fnordmetric (~> 1.0.0)
   googlecharts
   grit

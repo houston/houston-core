@@ -43,7 +43,7 @@ gem 'nokogiri'
 gem 'premailer'
 gem 'remotable', '>= 0.2.2', :git => 'git://github.com/boblail/remotable.git'
 gem 'yajl-ruby', :require => 'yajl/json_gem'
-gem 'fnord-client'
+gem 'changelog-notifier', :git => 'git://github.com/boblail/changelog-notifier.git'
 gem 'fnordmetric', '~> 1.0.0', :require => false
 # gem 'roadie' # for inlining CSS in HTML emails
 
