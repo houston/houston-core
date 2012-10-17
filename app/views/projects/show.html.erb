@@ -1,14 +1,16 @@
 <%= render partial: "projects/header", locals: {project: @project} %>
 
-<% 
+<%
   severities_colors = Changelog.config.severities
   severities = severities_colors.keys.map { |name| name || "None" }
   
-  tickets_by_severity = Hash[severities.zip([0] * severities.length)]
-  severities = @project.ticket_system.severities
-  @tickets.each do |ticket|
-    severity = severities.find { |severity| severity.id == ticket["severity_id"] }
-    tickets_by_severity[severity ? severity.name : "None"] += 1
+  if @project.ticket_system
+    tickets_by_severity = Hash[severities.zip([0] * severities.length)]
+    severities = @project.ticket_system.severities
+    @tickets.each do |ticket|
+      severity = severities.find { |severity| severity.id == ticket["severity_id"] }
+      tickets_by_severity[severity ? severity.name : "None"] += 1
+    end
   end
 
 %>
@@ -19,7 +21,15 @@
     <tbody>
       <tr>
         <th><span>Severities</span></th>
-        <td><div id="severities_graph"></div></td>
+        <td>
+          <% if @project.ticket_system %>
+            <div id="severities_graph"></div>
+          <% else %>
+            <div id="severities_graph" class="placeholder">
+              No ticket system is configured
+            </div>
+          <% end %>
+        </td>
         <td class="severities-legend">
           <ol>
             <% severities_colors.each do |severity, color|; unless severity == "None" %>
@@ -179,38 +189,39 @@
   <script type="text/javascript">
     $(function() {
       
-      chart = new Highcharts.Chart({
-        chart: {
-          renderTo: 'severities_graph',
-          backgroundColor: null,
-          plotBackgroundColor: null,
-          plotBorderWidth: null,
-          plotShadow: false,
-          marginTop: 0,
-          marginRight: 0,
-          marginBottom: 0,
-          marginLeft: 0 },
-        colors: <%=raw severities_colors.values.map { |color| "##{color}" }.to_json %>,
-        credits: {
-          enabled: false },
-        title: {
-          text: null },
-        plotOptions: {
-          pie: {
-            animation: false,
-            shadow: false,
-            dataLabels: {
-              enabled: false },
-            states: {
-              hover: {
-                enabled: false } } } },
-        series: [{
-            type: 'pie',
-            data: <%=raw tickets_by_severity.to_a.to_json %>
-          }],
-        tooltip: {
-          formatter: function() { return '<b>' + this.point.name + '</b><br />' + this.y + ' tickets'; } } });
-      
+      if(!$('#severities_graph').hasClass('placeholder')) {
+        chart = new Highcharts.Chart({
+          chart: {
+            renderTo: 'severities_graph',
+            backgroundColor: null,
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            marginTop: 0,
+            marginRight: 0,
+            marginBottom: 0,
+            marginLeft: 0 },
+          colors: <%=raw severities_colors.values.map { |color| "##{color}" }.to_json %>,
+          credits: {
+            enabled: false },
+          title: {
+            text: null },
+          plotOptions: {
+            pie: {
+              animation: false,
+              shadow: false,
+              dataLabels: {
+                enabled: false },
+              states: {
+                hover: {
+                  enabled: false } } } },
+          series: [{
+              type: 'pie',
+              data: <%=raw tickets_by_severity.to_a.to_json %>
+            }],
+          tooltip: {
+            formatter: function() { return '<b>' + this.point.name + '</b><br />' + this.y + ' tickets'; } } });
+      }
     });
   </script>
 <% end %>

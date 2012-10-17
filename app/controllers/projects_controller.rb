@@ -23,7 +23,8 @@ class ProjectsController < ApplicationController
   # GET /projects/1.json
   def show
     @project = Project.find_by_slug!(params[:id])
-    @tickets = @project.ticket_system.find_tickets!("status-neq-closed")
+    @tickets = []
+    @tickets = @project.ticket_system.find_tickets!("status-neq-closed") if @project.ticket_system
     
     @dependency_versions = {}
     Changelog.config.key_dependencies.each do |dependency|

@@ -30,6 +30,13 @@ table.queues {
 #severities_graph {
   width: 260px;
   height: 260px;
+  
+  &.placeholder {
+    border: 1px solid #aaa;
+    border-radius: 600px;
+    text-align: center;
+    line-height: 260px;
+  }
 }
 table.dependencies {
   min-width: 600px;
