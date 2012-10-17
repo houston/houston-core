@@ -77,10 +77,6 @@ Changelog::Application.routes.draw do
   # Experiment
   match "tickets", :to => "tickets#index", :via => :get
   
-  # Fake out fnord
-  match "fnord", :to => "fnord#index", :via => :get
-  match ":namespace/dashboard/:dashboard", :to => "fnord#dashboard", :via => :get
-  
   match "dashboard", :to => "dashboard#index", :via => :get
   
   
