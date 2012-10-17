@@ -21,4 +21,8 @@
 //= require underscore
 //= require backbone
 //= require handlebars
+//= require Markdown.Converter
+//= require date_format
+//= require md5
+//= require raphael
 //= require_tree .
