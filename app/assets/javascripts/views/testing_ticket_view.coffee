@@ -31,7 +31,7 @@ class window.TestingTicketView extends Backbone.View
     $el.find('[data-toggle="collapse"]')
       .collapse
         toggle: true
-        parent: '#tickets'
+        parent: '.tickets-list'
     $el.find('.testing-notes')
       .on('show', -> $(@).closest('.ticket').addClass('expanded'))
       .on('hide', -> $(@).closest('.ticket').removeClass('expanded'))

@@ -38,8 +38,11 @@ class window.Kanban
     
     # Allow refreshing a single column
     $('.refresh-queue').click ->
-      queueName = $(@).attr('data-queue')
-      self.loadQueues [queueName]
+      $a = $(@)
+      queueName = $a.attr('data-queue')
+      $a.addClass('in-progress')
+      self.loadQueues [queueName], =>
+        $a.removeClass('in-progress')
     
     # Make the Kanban fill the browser window and scale tickets
     @window.resize(_.bind(@resize, @))
@@ -47,7 +50,7 @@ class window.Kanban
   observe: (name, func)-> @observer.observe(name, func)
   unobserve: (name, func)-> @observer.unobserve(name, func)
   
-  loadQueues: (queuesNames=@queues)->
+  loadQueues: (queuesNames=@queues, callback)->
     requests = []
     for queueName in queuesNames
       for project in @projects
@@ -58,10 +61,12 @@ class window.Kanban
       if request
         [project, queueName] = request
         @loadQueue(project, queueName, nextRequest)
+      else
+        callback() if callback
     
     # Send two requests at a time
-    nextRequest()
-    nextRequest()
+    nextRequest() if requests.length > 0
+    nextRequest() if requests.length > 0
   
   loadQueue: (project, queueName, callback)->
     $queue = $("##{queueName}")

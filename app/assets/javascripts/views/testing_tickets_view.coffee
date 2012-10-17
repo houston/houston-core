@@ -3,19 +3,40 @@ class window.TestingTicketsView extends Backbone.View
   
   initialize: ->
     @tickets = @options.tickets
+    
     @render()
+    
+    view = @
+    $(@el).delegate 'a.refresh-queue', 'click', ->
+      view.refreshQueue($(@))
   
   render: ->
     $el = $(@el)
-    $el.empty()
+    $ul = $el.find('ul.tickets-list')
+    $ul.empty()
     @tickets.each (ticket)=>
       view = new TestingTicketView(ticket: ticket)
       view.on 'testing_note:refresh', _.bind(@refreshPieGraph, @)
-      $el.appendView view
+      $ul.appendView view
     
     $("[data-tester-id=#{window.user.id}]").addClass('current-tester')
     
     @refreshPieGraph()
+  
+  refreshQueue: ($a)->
+    return if $a.hasClass('in-progress')
+    
+    projectSlug = $a.attr('data-project')
+    queue = $a.attr('data-queue')
+    
+    $a.addClass('in-progress')
+    
+    xhr = $.get "#{App.relativeRoot()}/kanban/#{projectSlug}/#{queue}.json"
+    xhr.success (tickets)=>
+      @tickets = new Tickets(tickets)
+      @render()
+    xhr.complete =>
+      $a.removeClass('in-progress')
   
   refreshPieGraph: ->
     passes = 0
@@ -31,7 +52,7 @@ class window.TestingTicketsView extends Backbone.View
         else
           gaps += 1
     
-    id = $(@el).attr('id').replace('tickets', 'progress')
+    id = $(@el).attr('id').replace('testing_report', 'progress')
     chart = new Highcharts.Chart
       chart:
         renderTo: id

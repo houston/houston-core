@@ -66,13 +66,6 @@ body.with-kanban { padding-top: 40px; }
     padding: 1em 0 0 0;
     line-height: 16px;
     
-    a.refresh-queue {
-      cursor: pointer;
-      opacity: 0.12;
-      
-      &:hover { opacity: 1; }
-    }
-    
     &.zero { color: rgba(0, 0, 0, 0.25); }
   }
   

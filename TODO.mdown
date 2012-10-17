@@ -3,8 +3,6 @@
 ### Soon
 
  - **Project:** allow changing Git URL (have tmp folder deleted or whatever)
- - **Testing Report:**
-   - add an option to refresh tickets
  - **Weekly Report:**
    - Problems history: off by 1 week?
    - Extract WeeklyReport model from WeeklyReports#show
