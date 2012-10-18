@@ -204,7 +204,12 @@
               </li>
               
               <% if can?(:read, Project) %>
-                <li><%= link_to "Weekly Report", weekly_report_path %></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reports <b class="caret"></b></a>
+                <ul class="dropdown-menu reports-menu">
+                  <li><%= link_to "Weekly Report", weekly_report_path %></li>
+                </ul>
+              </li>
               <% end %>
               
               
