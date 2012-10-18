@@ -60,7 +60,7 @@
       
       <td id="project_tickets_by_severity" class="column-3">
         <%
-          severities_colors = Changelog.config.severities
+          severities_colors = Changelog.config.severities.dup
           severities_colors[nil] = "212121"
           severities = severities_colors.keys.map { |name| name || "None" }
           
