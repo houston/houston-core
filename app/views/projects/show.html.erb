@@ -1,188 +1,187 @@
-<%= render partial: "projects/header", locals: {project: @project} %>
-
-<%
-  severities_colors = Changelog.config.severities
-  severities = severities_colors.keys.map { |name| name || "None" }
-  
-  if @project.ticket_system
-    tickets_by_severity = Hash[severities.zip([0] * severities.length)]
-    severities = @project.ticket_system.severities
-    @tickets.each do |ticket|
-      severity = severities.find { |severity| severity.id == ticket["severity_id"] }
-      tickets_by_severity[severity ? severity.name : "None"] += 1
-    end
-  end
-
-%>
-
-
-<div class="stripe">
-  <table style="height: 200px;">
-    <tbody>
-      <tr>
-        <th><span>Severities</span></th>
-        <td>
-          <% if @project.ticket_system %>
-            <div id="severities_graph"></div>
-          <% else %>
-            <div id="severities_graph" class="placeholder">
-              No ticket system is configured
-            </div>
+<div id="project_dashboard" class="dashboard">
+  <table>
+    <tr>
+      <td rowspan="2" class="column-1">
+        <h1><%= @project.name %></h1>
+        
+        <div class="graph coming-soon">
+          <p class="description">Real-time responses</p>
+          <p class="coming-soon">Coming soon</p>
+        </div>
+        
+        <div class="graph coming-soon">
+          <p class="description">Real-time statuses</p>
+          <p class="coming-soon">Coming soon</p>
+        </div>
+      </td>
+      
+      <td id="project_dependencies" class="column-2">
+        <ul class="dependencies">
+          <% @dependency_versions.each do |dependency, version_info| %>
+            <%
+              version = @project.dependency_version(dependency)
+              next unless version
+              version = version.version
+              minor_version = version.to_s[/\d+\.\d+/]
+              releases_since_version = version_info[:minor_versions].index(minor_version)
+              color = if releases_since_version > 2
+                "red"
+              elsif releases_since_version == 2
+                "orange"
+              elsif releases_since_version == 1
+                "yellow"
+              elsif version < version_info[:latest]
+                "spring-green"
+              else
+                "green"
+              end
+            %>
+            <li class="dependency <%= color %>">
+              <span class="dependency-name"><%= version_info[:name] %></span>
+              <span class="dependency-version">
+                <%= version.to_s.split(".").join('<span class="period">.</span>').html_safe %>
+              </span>
+              <span class="dependency-message">
+                <% if releases_since_version > 1 %>
+                  <%= releases_since_version %> versions out-of-date
+                <% elsif releases_since_version == 1 %>
+                  1 version out-of-date
+                <% elsif version < version_info[:latest] %>
+                  <% patches_since_version = version_info[:patches].index(version.to_s) %>
+                  <%= pluralize(patches_since_version, "patches") %> out-of-date
+                <% else %>
+                  up-to-date
+                <% end %>
+              </span>
+            </li>
           <% end %>
-        </td>
-        <td class="severities-legend">
+        </ul>
+      </td>
+      
+      <td id="project_tickets_by_severity" class="column-3">
+        <%
+          severities_colors = Changelog.config.severities
+          severities_colors[nil] = "212121"
+          severities = severities_colors.keys.map { |name| name || "None" }
+          
+          if @project.ticket_system
+            tickets_by_severity = Hash[severities.zip([0] * severities.length)]
+            severities = @project.ticket_system.severities
+            @tickets.each do |ticket|
+              severity = severities.find { |severity| severity.id == ticket["severity_id"] }
+              tickets_by_severity[severity ? severity.name : "None"] += 1
+            end
+          end
+          
+        %>
+
+        <% if @project.ticket_system %>
+          <div id="severities_graph"></div>
+        <% else %>
+          <div id="severities_graph" class="placeholder">
+            No ticket system is configured
+          </div>
+        <% end %>
+
+        <div class="severities-legend">
           <ol>
-            <% severities_colors.each do |severity, color|; unless severity == "None" %>
+            <% severities_colors.each do |severity, color|; unless severity.blank? %>
               <li class="severity">
                 <b class="bubble" style="background-color: #<%= color %>;"></b>
                 <%= severity %>
               </li>
             <% end; end %>
           </ol>
-        </td>
-      </tr>
-    </tbody>
+        </div>
+      </td>
+      
+    </tr>
+    
+    <tr>
+      
+      <td colspan="2">
+        <%
+
+          @projects = [@project]
+          colors = Rails.application.config.colors
+
+
+
+          week_ends = (8.weeks.ago.to_date..Date.today.end_of_week).step(7)
+
+          ticket_queues = TicketQueue.arel_table
+          data = week_ends.map do |week_end|
+            scope = TicketQueue \
+              .where(ticket_queues[:created_at].lt(week_end)) \
+              .where(["destroyed_at IS NULL or destroyed_at > ?", week_end]) \
+              .group("ticket_queues.queue, tickets.project_id") \
+              .select("ticket_queues.queue, tickets.project_id, COUNT(ticket_queues.id) AS count")
+
+            TicketQueue.connection.select_all(scope.to_sql)
+          end
+
+          queues = KanbanQueue.all.map(&:slug)
+          ticket_counts_by_project_by_queue = {}
+          max_queue_size = 0
+
+          queues.each do |queue|
+            ticket_counts_by_project = ticket_counts_by_project_by_queue[queue] = {}
+
+            cumulative_totals = [0] * week_ends.length
+
+            @projects.each do |project|
+              ticket_counts = ticket_counts_by_project[project] = []
+              data.each_with_index do |hashes, i|
+                hash = hashes.find { |hash| hash["queue"] == queue && hash["project_id"] == project.id.to_s }
+                count = hash ? hash["count"].to_i : 0
+                ticket_counts << (cumulative_totals[i] += count)
+              end
+            end
+
+            max_queue_size = [max_queue_size, cumulative_totals.max].max
+          end
+
+        %>
+
+        <table id="project_ticket_queues">
+          <tr>
+            <% KanbanQueue.all.each do |queue| %>
+              <% 
+                ticket_counts_by_project = ticket_counts_by_project_by_queue[queue.slug]
+                data = @projects.map { |project| ticket_counts_by_project[project] }
+                data.unshift([max_queue_size] * 16)
+              %>
+              <td>
+                <%= area_graph({
+                  data: data,
+                  colors: @projects.map { |project| colors[project.color] },
+                  marker_colors: @projects.map { |project| "#{colors[project.color]}55" },
+                  bg: "212121",
+                  line_weight: 2,
+                  width: 110,
+                  height: 240,
+                  axes: false
+                }) %>
+                <h5><%= queue.name %></h5>
+              </td>
+            <% end %>
+          </tr>
+        </table>
+      </td>
+      
+      <!-- <td id="project_top_bugs" class="column-2"></td>
+      
+      <td id="project_top_tickets" class="column-3"></td> -->
+    
+    </tr>
+    
   </table>
-</div>
-
-
-<%
-  
-  @projects = [@project]
-  colors = Rails.application.config.colors
   
   
-  
-  week_ends = (8.weeks.ago.to_date..Date.today.end_of_week).step(7)
-  
-  ticket_queues = TicketQueue.arel_table
-  data = week_ends.map do |week_end|
-    scope = TicketQueue \
-      .where(ticket_queues[:created_at].lt(week_end)) \
-      .where(["destroyed_at IS NULL or destroyed_at > ?", week_end]) \
-      .group("ticket_queues.queue, tickets.project_id") \
-      .select("ticket_queues.queue, tickets.project_id, COUNT(ticket_queues.id) AS count")
-    
-    TicketQueue.connection.select_all(scope.to_sql)
-  end
-  
-  queues = KanbanQueue.all.map(&:slug)
-  ticket_counts_by_project_by_queue = {}
-  max_queue_size = 0
-  
-  queues.each do |queue|
-    ticket_counts_by_project = ticket_counts_by_project_by_queue[queue] = {}
-    
-    cumulative_totals = [0] * week_ends.length
-    
-    @projects.each do |project|
-      ticket_counts = ticket_counts_by_project[project] = []
-      data.each_with_index do |hashes, i|
-        hash = hashes.find { |hash| hash["queue"] == queue && hash["project_id"] == project.id.to_s }
-        count = hash ? hash["count"].to_i : 0
-        ticket_counts << (cumulative_totals[i] += count)
-      end
-    end
-    
-    max_queue_size = [max_queue_size, cumulative_totals.max].max
-  end
-  
-%>
-
-<div class="stripe">
-  <table class="queues">
-    <tbody>
-      <tr>
-        <th><span>Queues</span></th>
-        <% KanbanQueue.all.each do |queue| %>
-          <% 
-            ticket_counts_by_project = ticket_counts_by_project_by_queue[queue.slug]
-            data = @projects.map { |project| ticket_counts_by_project[project] }
-            data.unshift([max_queue_size] * 16)
-          %>
-          <td>
-            <%= area_graph({
-              data: data,
-              colors: @projects.map { |project| colors[project.color] },
-              marker_colors: @projects.map { |project| "#{colors[project.color]}55" },
-              line_weight: 2,
-              width: 120,
-              height: 260,
-              axes: false
-            }) %>
-            <h5><%= queue.name %></h5>
-          </td>
-        <% end %>
-      </tr>
-    </tbody>
-  </table>
-</div>
 
 
 
-
-<div class="stripe">
-  <table style="height: 240px;">
-    <tbody>
-      <tr>
-        <th><span>Dependencies</span></th>
-        <td>
-          
-          <table class="dependencies">
-            <thead>
-              <tr>
-                <th class="project-name">Dependency</th>
-                <th>Version</th>
-                <th>Latest Release</th>
-                <th style="width: 100%; text-align: left; font-weight: 100;">
-              </tr>
-            </thead>
-            <tbody>
-              <% @dependency_versions.each do |dependency, version_info| %>
-                <%
-                  version = @project.dependency_version(dependency)
-                  next unless version
-                  version = version.version
-                  minor_version = version.to_s[/\d+\.\d+/]
-                  releases_since_version = version_info[:minor_versions].index(minor_version)
-                  color = if releases_since_version > 2
-                    "red"
-                  elsif releases_since_version == 2
-                    "orange"
-                  elsif releases_since_version == 1
-                    "yellow"
-                  elsif version < version_info[:latest]
-                    "spring-green"
-                  else
-                    "green"
-                  end
-
-                %>
-                <tr>
-                  <td class="project-name"><%= version_info[:name] %></td>
-                  <td class="project-version <%= color %>"><%= version %></td>
-                  <td><%= version_info[:latest] %></td>
-                  <td style="width: 100%; text-align: left; font-weight: 100;">
-                    <% if releases_since_version > 1 %>
-                      <%= releases_since_version %> versions out-of-date
-                    <% elsif releases_since_version == 1 %>
-                      1 version out-of-date
-                    <% elsif version < version_info[:latest] %>
-                      <% patches_since_version = version_info[:patches].index(version.to_s) %>
-                      <%= pluralize(patches_since_version, "patches") %> out-of-date
-                    <% else %>
-                      up-to-date
-                    <% end %>
-                  </td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
-          
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  
 </div>
 
 <% content_for :scripts do %>
@@ -210,6 +209,7 @@
             pie: {
               animation: false,
               shadow: false,
+              size: '85%',
               dataLabels: {
                 enabled: false },
               states: {
@@ -217,7 +217,7 @@
                   enabled: false } } } },
           series: [{
               type: 'pie',
-              data: <%=raw tickets_by_severity.to_a.to_json %>
+              data: <%=raw tickets_by_severity.to_a.map { |pair| pair[0] == "None" ? {"y" => pair[1], "visible" => false} : pair }.to_json %>
             }],
           tooltip: {
             formatter: function() { return '<b>' + this.point.name + '</b><br />' + this.y + ' tickets'; } } });
