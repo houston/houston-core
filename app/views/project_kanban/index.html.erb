@@ -1,44 +1,31 @@
-<a id="full_screen_link">Full Screen</a>
-
 <%= render partial: "kanban/kanban", locals: {projects: [@project]} %>
 
 <% content_for :scripts do %>
   <script type="text/javascript">
     $(function() {
       
-      window.kanban = new Kanban({
+      window.kanbanObj = new Kanban({
         projects: [{slug: '<%= @project.slug %>', color: '<%= @project.color %>'}],
         queues: <%= raw KanbanQueue.slugs %>
       });
       
-      kanban.loadQueues();
+      kanbanObj.loadQueues();
+      
+      var $body = $('body');
       
       function autoUpdate() {
-        kanban.el.addClass('auto-update');
         $('#auto_update').remove();
         $('#timer_wrapper').fadeIn();
-        new Refresher({time: 300000, callback: kanban.loadQueues.bind(kanban)}); // 5 minutes
+        new Refresher({time: 300000, callback: kanbanObj.loadQueues.bind(kanbanObj)}); // 5 minutes
       }
       
       $('#auto_update').click(function() {
+        $body.addClass('auto-update');
+        window.location.hash = $body.attr('class');
         autoUpdate();
-        window.location.hash = kanban.el.attr('class');
-      });
-      
-      $('#full_screen_link').click(function() {
-        kanban.showFullScreen();
-        window.location.hash = kanban.el.attr('class');
-      });
-      
-      $(document).keydown(function(e) {
-        if(e.keyCode == 27) {
-          kanban.showNormal();
-          window.location.hash = kanban.el.attr('class');
-        }
       });
       
       var options = window.location.hash.substring(1).split(' ');
-      if(_.include(options, 'full-screen')) kanban.showFullScreen();
       if(_.include(options, 'auto-update')) autoUpdate();
       
       

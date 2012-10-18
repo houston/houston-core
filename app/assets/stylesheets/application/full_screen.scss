@@ -1,0 +1,13 @@
+body.full-screen {
+  
+  .dashboard {
+    top: 0;
+    z-index: 2000;
+  }
+  
+  #kanban {
+    z-index: 2000 !important;
+    tfoot .small { display: none !important; }
+  }
+  
+}

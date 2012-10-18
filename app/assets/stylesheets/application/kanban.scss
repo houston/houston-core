@@ -176,11 +176,6 @@ body.with-kanban { padding-top: 40px; }
   
 }
 
-.full-screen {
-  z-index: 2000 !important;
-  tfoot .small { display: none !important; }
-}
-
 .kanban-column.hover {  color: #08C; }
 .kanban-column.clickable { cursor: pointer; }
 

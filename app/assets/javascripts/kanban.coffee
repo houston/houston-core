@@ -102,18 +102,6 @@ class window.Kanban
       App.checkRevision(jqXHR)
       callback(data)
   
-  showFullScreen: ->
-    window.console.log('full screen')
-    @top = 0
-    @el.addClass('full-screen')
-    @setKanbanHeight()
-  
-  showNormal: ->
-    window.console.log('normal')
-    @top = @naturalTop
-    @el.removeClass('full-screen')
-    @setKanbanHeight()
-  
   urlFor: (path)->
     "#{App.relativeRoot()}/kanban/#{path}.json"
   
@@ -132,6 +120,7 @@ class window.Kanban
       self.resizeColumn $(@)
   
   setKanbanHeight: ->
+    @top = if $('body').hasClass('full-screen') then 0 else @naturalTop
     height = @window.height() - @top
     @el.css(height: "#{height}px")
   
