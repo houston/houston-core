@@ -28,7 +28,11 @@ private
   def check_failing_verdict
     verdict = params[:testing_note][:verdict]
     if verdict == "fails"
-      NotificationMailer.on_fail_verdict(@testing_note).deliver
+      begin
+        NotificationMailer.on_fail_verdict(@testing_note).deliver
+      rescue
+        notify_airbrake($!)
+      end
     end
   end
   
