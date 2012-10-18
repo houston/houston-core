@@ -102,16 +102,30 @@ class Project < ActiveRecord::Base
   end
   
   def get_custom_ticket_attribute(unfuddle_ticket, custom_field_name)
-    custom_field_key = custom_field_name.underscore.gsub(/\s/, "_")
-    
-    key = find_in_cache_or_execute("#{custom_field_key}_field") do
-      ticket_system.get_ticket_attribute_for_custom_value_named!(custom_field_name) rescue "undefined"
-    end
-    
-    value_id = unfuddle_ticket[key]
-    return nil if value_id.blank?
-    find_in_cache_or_execute("#{custom_field_key}_value_#{value_id}") do
-      ticket_system.find_custom_field_value_by_id!(custom_field_name, value_id).value
+    retried_once = false
+    begin
+      custom_field_key = custom_field_name.underscore.gsub(/\s/, "_")
+      
+      key = find_in_cache_or_execute("#{custom_field_key}_field") do
+        ticket_system.get_ticket_attribute_for_custom_value_named!(custom_field_name) rescue "undefined"
+      end
+      
+      value_id = unfuddle_ticket[key]
+      return nil if value_id.blank?
+      find_in_cache_or_execute("#{custom_field_key}_value_#{value_id}") do
+        ticket_system.find_custom_field_value_by_id!(custom_field_name, value_id).value
+      end
+    rescue
+      if retried_once
+        raise
+      else
+        
+        # If an error occurred above, it may be because
+        # we cached the wrong value for something.
+        retried_once = true
+        invalidate_cache!("#{custom_field_key}_field", "#{custom_field_key}_value_#{value_id}")
+        retry
+      end
     end
   end
   
@@ -128,6 +142,13 @@ class Project < ActiveRecord::Base
   def construct_ticket_query_for_queue(queue)
     key = "#{queue.slug}-#{Digest::MD5::hexdigest(queue.query.inspect)}"
     find_in_cache_or_execute(key) { ticket_system.construct_ticket_query(queue.query) if ticket_system }
+  end
+  
+  def invalidate_cache!(*keys)
+    keys.flatten.each do |key|
+      self.cached_queries[key] = nil
+    end
+    save
   end
   
   def find_in_cache_or_execute(key)
