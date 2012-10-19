@@ -1,20 +1,5 @@
-<div class="dashboard">
+<div class="dashboard coming-soon">
   
-  <div id="response_time_graph"></div>
-  
-  <div id="status_code_graph"></div>
+  Coming Soon
   
 </div>
-
-<% content_for :scripts do %>
-  <script>
-    //<![CDATA[
-      $(document).ready(function(){
-        window.dashboard = new Dashboard({
-          "host": "<%= @host %>",
-          "namespace": "<%= @namespace %>"
-        });
-      });
-    //]]>
-  </script>
-<% end %>

@@ -28,23 +28,27 @@ class window.FnordMetric.TimeseriesGauge extends window.FnordMetric.Gauge
   
   createGraph: (options)->
     el = $('<div class="graph">').appendTo(@el)
-    new Rickshaw.Graph
-      element: el[0]
-      width: options.width ? @el.width()
-      height: options.height ? @el.height()
-      renderer: options.renderer ? 'line'
-      series: new Rickshaw.Series.FixedDuration(@createSeries(options), undefined, {
-        timeInterval: @interval,
-        maxDataPoints: options.timeSpan ? 60, # 1 minute
-        timeBase: @now()
-      })
+    options.width ?= @el.width()
+    options.height ?= @el.height()
+    graphOptions = Object.merge(@graphOptions(options), {element: el[0]})
+    new Rickshaw.Graph(graphOptions)
+  
+  graphOptions: (options)->
+    width: options.width
+    height: options.height
+    renderer: options.renderer ? 'line'
+    series: new Rickshaw.Series.FixedDuration(@createSeries(options), undefined, {
+      timeInterval: @interval,
+      maxDataPoints: options.timeSpan ? 60, # 1 minute
+      timeBase: @now()
+    })
   
   createSeries: (options)->
-    [{ name: @widgetKey }]
+    [{ name: @widgetKey, color: 'rgba(255, 255, 255, 0.05)', stroke: 'rgba(255, 255, 255, 0.40)' }]
   
   createYAxis: (options)->
     el = $('<div class="y-axis">').appendTo(@el)
-    @yAxis = new Rickshaw.Graph.Axis.Y
+    @yAxis = window.yAxis = new Rickshaw.Graph.Axis.Y
       element: el[0]
       orientation: options.orientation ? 'right'
       tickFormat: options.formatter ? Rickshaw.Fixtures.Number.formatDuration

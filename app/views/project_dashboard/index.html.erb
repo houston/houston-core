@@ -4,15 +4,9 @@
       <td rowspan="2" class="column-1">
         <h1><%= @project.name %></h1>
         
-        <div class="graph coming-soon">
-          <p class="description">Real-time responses</p>
-          <p class="coming-soon">Coming soon</p>
-        </div>
+        <div id="response_time_graph" class="graph"></div>
         
-        <div class="graph coming-soon">
-          <p class="description">Real-time statuses</p>
-          <p class="coming-soon">Coming soon</p>
-        </div>
+        <div id="status_code_graph" class="graph"></div>
       </td>
       
       <td id="project_dependencies" class="column-2">
@@ -188,6 +182,14 @@
   <script type="text/javascript">
     $(function() {
       
+      
+      window.dashboard = new ProjectDashboard({
+        project: '<%= @project.slug %>',
+        host: 'localhost:4242',
+        namespace: 'changelog'
+      });
+      
+      
       if(!$('#severities_graph').hasClass('placeholder')) {
         chart = new Highcharts.Chart({
           chart: {
@@ -225,3 +227,4 @@
     });
   </script>
 <% end %>
+
