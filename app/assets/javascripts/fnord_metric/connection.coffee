@@ -33,7 +33,7 @@ class window.FnordMetric.Connection
   
   socketOpen: ->
     window.console.log('connected...')
-    $('.flash_msg_over').fadeOut -> $(this).remove()
+    $('.flash-message-over').fadeOut -> $(this).remove()
   
   socketClose: ->
     window.console.log('socket closed')

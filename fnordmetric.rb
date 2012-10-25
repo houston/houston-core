@@ -43,6 +43,7 @@ end
 
 FnordMetric.namespace :changelog do
   
+  # average of 25s response and a 25ms response waters down the severity of the 25s one
   gauge :average_response_time, tick: 1.second, average: true
   gauge :responses_by_status_code, tick: 1.second, three_dimensional: true
   

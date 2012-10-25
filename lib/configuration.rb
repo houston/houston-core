@@ -54,6 +54,16 @@ class Configuration
     @dependencies || []
   end
   
+  def websocket_server_port(*args)
+    @websocket_server_port = args.first if args.length == 1
+    @websocket_server_port
+  end
+  
+  def upd_acceptor_port(*args)
+    @upd_acceptor_port = args.first if args.length == 1
+    @upd_acceptor_port
+  end
+  
   def queues(value)
     Rails.application.config.queues = value
   end
