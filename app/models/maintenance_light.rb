@@ -60,7 +60,8 @@ class MaintenanceLight
       "1 version out-of-date"
     elsif version < key_dependency.latest_version
       patches_since_version = key_dependency.patches.index(version.to_s)
-      "#{pluralize(patches_since_version, "patches")} out-of-date"
+      noun = patches_since_version == 1 ? "patch" : "patches"
+      "#{patches_since_version} #{noun} out-of-date"
     else
       "up-to-date"
     end
