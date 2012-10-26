@@ -237,9 +237,7 @@
     </div>
 
     <div class="container-fluid" id="body">
-      <%= flash[:alert] %>
-      <%= flash[:notice] %>
-      <%= flash[:error] %>
+      <%= flash_messages :alert, :notice, :error %>
       <%= yield %>
 
       <!-- <footer>

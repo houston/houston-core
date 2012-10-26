@@ -4,6 +4,7 @@ $:.unshift Rails.root.join("lib", "unfuddle", "lib").to_s
 
 require 'freight_train'
 require 'lail/core_extensions'
+require 'lail/helpers/flash_message_helper'
 require 'unfuddle'
 require 'grit_patch'
 require 'configuration'

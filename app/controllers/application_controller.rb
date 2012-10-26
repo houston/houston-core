@@ -2,6 +2,9 @@ class ApplicationController < ActionController::Base
   include FreightTrain
   include UrlHelper
   protect_from_forgery
+  helper Lail::Helpers::FlashMessageHelper
+  
+  
   
   rescue_from CanCan::AccessDenied do |exception|
     if current_user
@@ -12,6 +15,8 @@ class ApplicationController < ActionController::Base
       require_login
     end
   end
+  
+  
   
   def require_login
     redirect_to new_user_session_path
