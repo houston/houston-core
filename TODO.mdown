@@ -1,18 +1,57 @@
 # To Do
 
+
 ### Soon
 
- - **Project:** allow changing Git URL (have tmp folder deleted or whatever)
+ - Move "Houston" to status.cphepdev.com
+ - Use Whenever to actually send emails
+ - Use Resque to do expensive fetches in background jobs
+ - Use Foreman to manage other processes
+ - Move "new release trigger" to "deploys"
  - **Weekly Report:**
-   - Problems history: off by 1 week?
-   - Extract WeeklyReport model from WeeklyReports#show
-   - split notice count by project
+   ! **Exceptions:** problems history is off by 1 week?
+   - **Releases:** show deploys
+   - **Exceptions:** show notice-count pie
+   - **Performance:** Replace "apdex" graphs with histogram of response times
+   - ?> Pair projects with colors somewhere (then don't for "Focus this week")
+ - **Releases:**
+   - Turn tags in commit messages into visual tags (skip by default)
+     - _Tags_ can be public or private
+   - Render timeline-style
+ - **Project Dashboard:**
+   - Implement real-time graphs:
+     - Solve for multiple apps (multiple gauges? multiple fields?)
+     - Solve running background jobs
+   - Real-time graph of exception notices
+   - Figure out how to show queue history; show more weeks
+   - Show deploys _on_ real-time graphs
+ - **Project:**
+   ! allow changing Git URL (have tmp folder deleted or whatever)
+   ! fix setting notifications
+   - faster way for checking notifications!
  - **Release:**
    - allow adding/removing _tickets_ from release notes
    - show ticket/change counts in real time
  - **Release Emails:** have up-to-date commits
+ - **Dashboard:**
+   - Solve replacing Kanban (refresh tickets)
+   - Design dashboard
+ - **Daily Report:**
+   - Send daily report to project maintainers with news
+     - Recent new tickets
+     - Recent new exceptions
+     - Maintenance lights
+ - Refactoring:
+   - Extract WeeklyReport model from WeeklyReports#show
+   - Duplicate code in `users_controller#index` and `users_controller#show`
+   - Duplicate code in Projects#show and WeeklyReport#show
  - Implement caching
+   - Cache Google Chart images in emails
    - New Relic API calls
+ - **Global:** redesign section headings with links
+ - Write tests :l
+ ! **Testing Notes:** edit a failing testing note at home, SMTP fail, timeout takes 30 seconds!
+ ! **Global:** disable buttons when working! (e.g. what saving a very slow testing note)
 
 
 ### Eventually
@@ -20,39 +59,43 @@
  - **Kanban:** optimize rendering tickets on the server
  - **Release Email:** add _retest_ group for testing update
  - **Project:** allow manually updating commits
- - **Weekly Report:** group into supersections
-   - "Productivity", "Maintenance", "Development" [?]
-   - "Effort", "Task" | "Us", "Them" | "Red", "Blue"
 
 
 ### Refactoring and Configuration
 
- - Get rid of "environments"; have two hard-coded ones, Testing and Production, or make them user-configurable
+ - Turn on or off features via config.rb
+ - Should "environments" be like queues: defined for all projects in config.rb?
+ - Should "key_dependencies" be defined per-project rather than in config.rb?
  - Refactor hard-coded knowledge about Unfuddle/EP into configuration
    - "in_testing" queue for "Testing Report"
    - "deployment" for "Production" badge on tickets
    - "goldmine" for Release notes
+   - "mailer_sender" in `devise.rb`
+   - what counts as invalid or duplicate in `users_controller.rb`
 
 
 ### Ideas
 
+ - ?? Need to include testing metrics: code coverage? test runs?
  - **Post-Receive:** use update event instead?
+ - Report on health of tickets
  - **Weekly Report:**
-   - add a CFD for tickets
-   - add rate of closure for exceptions
-   - add a **Security** [?] section that shows key dependencies (Rails & Devise)
-   
-        key_dependencies do
-          gem "rails"
-          gem "devise"
-        end
-   
+   - **Exceptions:** split bar graph?
+   - time-to-close [bug] ticket
+   - time-to-close exception
+   - group into supersections
+     - "Productivity", "Maintenance", "Development" [?]
+     - "Effort", "Task" | "Us", "Them" | "Red", "Blue"
    - add a Customer Satisfaction metric
    - add "Superlatives"
      - most total commits per week/day
      - most commits to a project per week/day
      - most projects committed to per week
      - first commit to a project per developer
+ - **Project Dashboard:**
+   - ?? New tickets
+   - ?? New problems
+ - **User:** Compare personal severity with average
  - **Testing Report:**
    - Give a way of prioritizing / flagging tickets
    - Expland/collapse all
