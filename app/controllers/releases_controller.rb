@@ -89,17 +89,21 @@ class ReleasesController < ApplicationController
     @release = @environment.releases.new(params[:release])
     @release.user = current_user
     
-    respond_to do |format|
-      if @release.save
-        @release.update_tickets_in_unfuddle! if params[:update_tickets_in_unfuddle]
-        NotificationMailer.on_release(@release).deliver! if params[:send_release_email]
-        
-        format.html { redirect_to @release, notice: 'Release was successfully created.' }
-        format.json { render json: @release, status: :created, location: @release }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @release.errors, status: :unprocessable_entity }
+    if @release.save
+      @release.update_tickets_in_unfuddle! if params[:update_tickets_in_unfuddle]
+      NotificationMailer.on_release(@release).deliver! if params[:send_release_email]
+      
+      redirect_to @release, notice: 'Release was successfully created.'
+    else
+      @commit0 = @release.commit0
+      @commit1 = @release.commit1
+      
+      if @release.can_read_commits?
+        @release.load_commits!
+        @release.load_tickets!
       end
+      
+      render action: "new"
     end
   end
 
