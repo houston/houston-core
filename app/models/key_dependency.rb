@@ -1,33 +1,37 @@
 class KeyDependency
   
   
-  def self.versions
-    @dependency_versions ||= {}.tap do |hash|
-      
-      Houston.config.key_dependencies.each do |dependency|
-        hash[dependency] = Rails.cache.fetch "key_dependencies/#{dependency}/#{Date.today.strftime('%Y%m%d')}/info" do
-          
-          versions = Rubygems::Gem.new(dependency).versions
-          next unless versions.any?
-          
-          stringified_versions = versions.map(&:to_s)
-          latest_version = versions.first
-          current_minor_version = stringified_versions.first[/\d+\.\d+/]
-          rx = /^#{current_minor_version}\.\d+$/
-          patches = stringified_versions.select { |version| version =~ rx }
-          
-          {
-            name: dependency.titleize,
-            versions: versions,
-            minor_versions: stringified_versions.map { |version| version[/\d+\.\d+/] }.uniq,
-            patches: patches,
-            latest: latest_version
-          }
-          
-        end
-      end
-      
+  def initialize(dependency)
+    @slug = dependency
+    @name = dependency.titleize
+    
+    @versions = KeyDependency.versions_for(dependency)
+    @latest_version = versions.first
+    
+    stringified_versions = versions.map(&:to_s)
+    current_minor_version = stringified_versions.first[/\d+\.\d+/]
+    rx = /^#{current_minor_version}\.\d+$/
+    @patches = stringified_versions.select { |version| version =~ rx }
+    @minor_versions = stringified_versions.map { |version| version[/\d+\.\d+/] }.uniq
+  end
+  
+  
+  attr_reader :slug, :name, :versions, :latest_version, :minor_versions, :patches
+  
+  
+  def self.all
+    @dependency_versions ||= Houston.config.key_dependencies.map do |dependency|
+      KeyDependency.new(dependency)
     end
+  end
+  
+  
+  def self.versions_for(dependency)
+    
+    # Right now the only supported dependencies are Ruby Gems
+    # In the future, as other kinds of dependencies are supported,
+    # we'll support different adapters to fetch their version info
+    Rubygems::Gem.new(dependency).versions
   end
   
   

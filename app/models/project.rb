@@ -259,9 +259,9 @@ class Project < ActiveRecord::Base
   
   def platform
     @platform ||= begin
-      rails = dependency_version("rails")
-      return "" unless rails
-      Dependency.new("Rails", rails.version)
+      if dependency_version("rails") then "rails"
+      else ""
+      end
     end
   end
   

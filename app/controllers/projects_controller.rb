@@ -9,10 +9,6 @@ class ProjectsController < ApplicationController
     @title = "Projects"
     @projects = Project.scoped
     
-    rails_versions = Rubygems::Gem.new("rails").versions
-    @rails_minor_versions = rails_versions.map { |version| version.to_s[/\d+\.\d+/] }.uniq
-    @rails_version_latest = rails_versions.first
-    
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @projects }

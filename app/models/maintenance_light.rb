@@ -1,30 +1,35 @@
 class MaintenanceLight
   
   
-  def self.for(project)
-    [].tap do |maintenance_lights|
-      KeyDependency.versions.each do |dependency, version_info|
-        project_version = project.dependency_version(dependency)
-        next unless project_version
-        maintenance_lights << self.new(project_version.version, version_info)
-      end
-    end
+  def initialize(project, key_dependency)
+    @project = project
+    @key_dependency = key_dependency
+    
+    project_version = project.dependency_version(key_dependency.slug)
+    @version = project_version && project_version.version
   end
   
   
-  attr_reader :version
+  def self.for(project)
+    KeyDependency.all.map { |dependency| self.new(project, dependency) }.select(&:valid?)
+  end
+  
+  
+  attr_reader :version, :key_dependency
+  
+  delegate :slug, :name, :to => :key_dependency
+  
+  
+  def valid?
+    version && key_dependency.versions.any?
+  end
   
   
   def releases_since_version
     @releases_since_version ||= begin
       minor_version = version.to_s[/\d+\.\d+/]
-      version_info[:minor_versions].index(minor_version)
+      key_dependency.minor_versions.index(minor_version)
     end
-  end
-  
-  
-  def name
-    version_info[:name]
   end
   
   
@@ -35,7 +40,7 @@ class MaintenanceLight
       "orange"
     elsif releases_since_version == 1
       "yellow"
-    elsif version < version_info[:latest]
+    elsif version < key_dependency.latest_version
       "spring-green"
     else
       "green"
@@ -48,25 +53,13 @@ class MaintenanceLight
       "#{releases_since_version} versions out-of-date"
     elsif releases_since_version == 1
       "1 version out-of-date"
-    elsif version < version_info[:latest]
-      patches_since_version = version_info[:patches].index(version.to_s)
+    elsif version < key_dependency.latest_version
+      patches_since_version = key_dependency.patches.index(version.to_s)
       "#{pluralize(patches_since_version, "patches")} out-of-date"
     else
       "up-to-date"
     end
   end
-  
-  
-private
-  
-  
-  def initialize(version, version_info)
-    @version = version
-    @version_info = version_info
-  end
-  
-  
-  attr_reader :version_info
   
   
 end
