@@ -22,15 +22,17 @@ class User < ActiveRecord::Base
          :invitable
   
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :email, :role, :password, :password_confirmation, :remember_me, :notifications_pairs, :unfuddle_id
+  attr_accessible :first_name, :last_name, :email, :role, :password,
+                  :password_confirmation, :remember_me, :notifications_pairs,
+                  :unfuddle_id
   
   ROLES = %w{Developer Tester Stakeholder Guest}
   
-  default_scope order("name")
+  default_scope order("last_name, first_name")
   
   default_value_for :role, ROLES.first
   
-  validates :name, :presence => true, :uniqueness => true
+  validates :first_name, :last_name, :presence => true, :uniqueness => true
   validates :role, :presence => true, :inclusion => ROLES
   
   ROLES.each do |role|
@@ -43,6 +45,12 @@ class User < ActiveRecord::Base
       where(:role => "#{role}")
     end
     RUBY
+  end
+  
+  
+  
+  def name
+    "#{first_name} #{last_name}"
   end
   
   
