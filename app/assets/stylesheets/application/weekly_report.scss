@@ -335,7 +335,7 @@
     display: block;
     padding: 4px 0;
     
-    .label { max-width: 999em; }
+    .label { max-width: 999em; overflow: visible; }
     
     .dependency-name { font-weight: 800; }
     .dependency-version {
