@@ -1,4 +1,4 @@
-Changelog::Application.routes.draw do
+Houston::Application.routes.draw do
   
   devise_for :users
   

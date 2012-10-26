@@ -6,7 +6,7 @@ class ProjectDashboardController < ApplicationController
     @tickets = @project.ticket_system.find_tickets!("status-neq-closed") if @project.ticket_system
     
     @dependency_versions = {}
-    Changelog.config.key_dependencies.each do |dependency|
+    Houston.config.key_dependencies.each do |dependency|
       
       @dependency_versions[dependency] = cache "rubygems/#{dependency}/#{Date.today.strftime('%Y%m%d')}/info" do
         

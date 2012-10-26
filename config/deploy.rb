@@ -1,7 +1,7 @@
-set :application, "changelog"
+set :application, "houston"
 load File.expand_path("~/epic.cap")
 
-set :repository, "git://github.com/boblail/changelog.git"
+set :repository, "git://github.com/houstonmc/houston.git"
 set :branch, "master"
 
 before "bundler:install", "deploy:symlink_config"

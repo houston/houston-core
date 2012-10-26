@@ -9,7 +9,7 @@ class UsersController < ApplicationController
     
     @users = User.all
     
-    severities_colors = Changelog.config.severities
+    severities_colors = Houston.config.severities
     
     tickets = UnfuddleDump.load!
     @last_updated = UnfuddleDump.last_updated

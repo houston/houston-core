@@ -1,6 +1,6 @@
 class TestingNote < ActiveRecord::Base
   
-  after_create { Changelog.observer.fire "testing_note:create", self }
+  after_create { Houston.observer.fire "testing_note:create", self }
   
   belongs_to :user
   belongs_to :ticket

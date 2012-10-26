@@ -47,7 +47,7 @@ class Configuration
   
   def key_dependencies(&block)
     if block_given?
-      dependencies = Changelog::Dependencies.new
+      dependencies = Houston::Dependencies.new
       dependencies.instance_eval(&block)
       @dependencies = dependencies.names
     end
@@ -59,12 +59,12 @@ class Configuration
   end
   
   def on(event, &block)
-    Changelog.observer.on(event, &block)
+    Houston.observer.on(event, &block)
   end
   
 end
 
-class Changelog::Dependencies
+class Houston::Dependencies
   
   def initialize
     @values = []
@@ -80,7 +80,7 @@ class Changelog::Dependencies
   
 end
 
-class Changelog::Observer
+class Houston::Observer
   
   def on(event, &block)
     observers_of(event).push(block)
@@ -106,7 +106,7 @@ private
 
 end
 
-def Changelog.config(&block)
+def Houston.config(&block)
   if block_given?
     Rails.application.config.obj = Configuration.new
     Rails.application.config.obj.instance_eval(&block)
@@ -114,6 +114,6 @@ def Changelog.config(&block)
   Rails.application.config.obj
 end
 
-def Changelog.observer
-  @observer ||= Changelog::Observer.new
+def Houston.observer
+  @observer ||= Houston::Observer.new
 end

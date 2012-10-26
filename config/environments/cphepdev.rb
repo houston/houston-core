@@ -1,6 +1,6 @@
 ENV['RAILS_RELATIVE_URL_ROOT'] = '/sandbox/changelog'
 
-Changelog::Application.configure do
+Houston::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
   # Code is not reloaded between requests

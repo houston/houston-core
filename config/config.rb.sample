@@ -1,7 +1,7 @@
-Changelog.config do
+Houston.config do
   
   # This is the name that will be shown in the banner
-  title "Changelog"
+  title "Mission Control"
   
   # Colors: these are the colors available for projects
   colors({
@@ -22,7 +22,7 @@ Changelog.config do
     "silver"        => "a2a38b"
   })
   
-  # The ticketing system that Changelog will interface with.
+  # The ticketing system that Houston will interface with.
   # Right now, the only supported system is Unfuddle.
   ticket_system :unfuddle
   
@@ -49,7 +49,7 @@ Changelog.config do
     "5 Broken (no work-around)"     => "C1311E"
   })
   
-  # The error-catching system that Changelog will interface with.
+  # The error-catching system that Houston will interface with.
   # Right now, the only supported system is Errbit.
   # error_tracker :errbit
   

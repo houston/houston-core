@@ -35,10 +35,10 @@ tsatsiki_release2.load_commits!
 
 
 
-changelog = Project.create(name: "Change Log", slug: "changelog", color: "red", git_url: Rails.root.to_s)
+houston = Project.create(name: "Houston", slug: "houston", color: "red", git_url: Rails.root.to_s)
 
-changelog_dev = changelog.environments.create(name: "PRI", slug: "dev")
-changelog_master = changelog.environments.create(name: "Production", slug: "master")
+houston_dev = houston.environments.create(name: "PRI", slug: "dev")
+houston_master = houston.environments.create(name: "Production", slug: "master")
 
 
 church_360 = Project.create(

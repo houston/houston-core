@@ -528,7 +528,7 @@
     
     unfuddle_projects = @projects.select { |project| !project.unfuddle_id.blank? }
     
-    severities_colors = Changelog.config.severities
+    severities_colors = Houston.config.severities
     
     arrivals_by_week_by_project = {}
     departures_by_week_by_project = {}
