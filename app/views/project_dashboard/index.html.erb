@@ -17,42 +17,11 @@
       
       <td id="project_dependencies" class="column-2">
         <ul class="dependencies">
-          <% @dependency_versions.each do |dependency, version_info| %>
-            <%
-              version = @project.dependency_version(dependency)
-              next unless version
-              version = version.version
-              minor_version = version.to_s[/\d+\.\d+/]
-              releases_since_version = version_info[:minor_versions].index(minor_version)
-              color = if releases_since_version > 2
-                "red"
-              elsif releases_since_version == 2
-                "orange"
-              elsif releases_since_version == 1
-                "yellow"
-              elsif version < version_info[:latest]
-                "spring-green"
-              else
-                "green"
-              end
-            %>
-            <li class="dependency <%= color %>">
-              <span class="dependency-name"><%= version_info[:name] %></span>
-              <span class="dependency-version">
-                <%= version.to_s.split(".").join('<span class="period">.</span>').html_safe %>
-              </span>
-              <span class="dependency-message">
-                <% if releases_since_version > 1 %>
-                  <%= releases_since_version %> versions out-of-date
-                <% elsif releases_since_version == 1 %>
-                  1 version out-of-date
-                <% elsif version < version_info[:latest] %>
-                  <% patches_since_version = version_info[:patches].index(version.to_s) %>
-                  <%= pluralize(patches_since_version, "patches") %> out-of-date
-                <% else %>
-                  up-to-date
-                <% end %>
-              </span>
+          <% MaintenanceLight.for(@project).each do |indicator| %>
+            <li class="dependency <%= indicator.color %>">
+              <span class="dependency-name"><%= indicator.name %></span>
+              <span class="dependency-version"><%= format_version(indicator.version) %></span>
+              <span class="dependency-message"><%= indicator.message %></span>
             </li>
           <% end %>
         </ul>
