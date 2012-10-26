@@ -6,6 +6,7 @@ class Project < ActiveRecord::Base
   serialize :cached_queries
   
   has_many :environments, :dependent => :destroy
+  has_many :releases, :through => :environments, :dependent => :destroy
   has_many :tickets, :dependent => :destroy
   has_many :notifications, :class_name => "UserNotification"
   has_and_belongs_to_many :maintainers, :join_table => "projects_maintainers", :class_name => "User"

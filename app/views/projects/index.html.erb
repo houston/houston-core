@@ -11,16 +11,13 @@
         <th colspan="4" class="project-links">Links</th>
         <th class="project-maintainers">Maintainers</th>
         <th class="project-platform">Platform</th>
-        <th class="project-last-release">Last Testing Update (PRI)</th>
-        <th class="project-last-release"></th>
-        <th class="project-last-release">Last Release (Production)</th>
-        <th class="project-last-release"></th>
+        <th class="project-last-release">Last Release</th>
+        <th class="project-new-release"></th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
       <% @projects.each do |project| %>
-        <% dev = project.environments.find_by_slug("dev") %>
-        <% master = project.environments.find_by_slug("master") %>
         <tr>
           <td class="project-title">
             <b class="bubble <%= project.color %>" rel="tooltip" title="<%= project.color.titleize %>" data-tooltip-placement="right"></b>
@@ -77,25 +74,31 @@
             <% end %>
           </td>
           <td class="project-last-release">
-            <% release = dev && dev.releases.first %>
-            <%= link_to format_release_date(release), project_environment_release_path(project, dev, release) if release %>
-          </td>
-          <td class="project-last-release">
-            <% if dev %>
-              <%= link_to "(View Releases)", project_releases_path(project, environment_id: dev) %>
-              &nbsp;&nbsp;&nbsp;<%= link_to "New Update", new_project_environment_release_path(project, dev), :class => 'btn btn-primary btn-mini btn-new-release' if can?(:create, Release) %>
+            <% if release = project.releases.first %>
+              <%= link_to format_release_age(release), project_environment_release_path(project, release.environment, release) %>
+              <span class="label label-inverse"><%= release.environment.name %></span>
             <% end %>
           </td>
-          <td class="project-last-release">
-            <% release = master && master.releases.first %>
-            <%= link_to format_release_date(release), project_environment_release_path(project, master, release) if release %>
-          </td>
-          <td class="project-last-release">
-            <% if master %>
-              <%= link_to "(View Releases)", project_environment_releases_path(project, master) %>
-              &nbsp;&nbsp;&nbsp;<%= link_to "New Release", new_project_environment_release_path(project, master), :class => 'btn btn-primary btn-mini btn-new-release' if can?(:create, Release) %>
+          <td class="project-new-release">
+            <% if can?(:create, Release) %>
+              <% if project.environments.any? %>
+                <div class="btn-group">
+                  <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+                    New Release
+                    <span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <% project.environments.each do |environment| %>
+                      <li><%= link_to environment.name, new_project_environment_release_path(project, environment) %></li>
+                    <% end %>
+                  </ul>
+                </div>
+              <% else %>
+                <%= project.name %> has no release targets
+              <% end %>
             <% end %>
           </td>
+          <td></td>
         </tr>
       <% end %>
     </tbody>
