@@ -20,7 +20,7 @@ class ScoreCard
   end
   
   def score(label, value, options={})
-    score_count_class = options.delete(:score_count_class)
+    score_count_class = Array(options.delete(:score_count_class)) << "score-count"
     precision = options.delete(:precision)
     
     css = Array(options.fetch(:class, []))
@@ -38,7 +38,7 @@ class ScoreCard
     prefixed_value = options[:prefix] ? "#{options[:prefix]}#{value}".html_safe : value
     
     @scores << @view.content_tag(:p, :class => css.join(" ")) do
-      @view.content_tag(:span, prefixed_value, :class => "score-count") +
+      @view.content_tag(:span, prefixed_value, :class => score_count_class.join(" ")) +
       @view.content_tag(:span, label, :class => "score-label")
     end
     
