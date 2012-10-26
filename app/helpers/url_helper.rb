@@ -89,7 +89,7 @@ module UrlHelper
   
   
   def releases_path(*args)
-    project_environment_releases_path(*args)
+    project_releases_path(*args)
   end
   
   def release_path(release, options={})
@@ -103,7 +103,7 @@ module UrlHelper
   
   
   def releases_url(*args)
-    project_environment_releases_url(*args)
+    project_releases_url(*args)
   end
   
   def release_url(release, options={})

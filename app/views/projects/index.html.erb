@@ -82,7 +82,7 @@
           </td>
           <td class="project-last-release">
             <% if dev %>
-              <%= link_to "(View Releases)", project_environment_releases_path(project, dev) %>
+              <%= link_to "(View Releases)", project_releases_path(project, environment_id: dev) %>
               &nbsp;&nbsp;&nbsp;<%= link_to "New Update", new_project_environment_release_path(project, dev), :class => 'btn btn-primary btn-mini btn-new-release' if can?(:create, Release) %>
             <% end %>
           </td>

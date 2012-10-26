@@ -195,7 +195,7 @@
                 <ul class="dropdown-menu releases-menu">
                 <% Project.all.each do |project| %>
                   <li class="project">
-                    <%= link_to project_environment_releases_path(project, "master") do %>
+                    <%= link_to project_releases_path(project) do %>
                       <%= project.name %> <b class="bubble <%= project.color %>"></b>
                     <% end %>
                   </li>

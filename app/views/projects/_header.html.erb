@@ -6,7 +6,7 @@
   <small>
     <%= custom_link_unless_current "Kanban", project_kanban_path(project) %>
     <%= custom_link_unless_current "Testing Reports", project_kanban_queue_path(project, "in_testing") %>
-    <%= custom_link_unless_current "Releases", project_environment_releases_path(project, "master") %>
+    <%= custom_link_unless_current "Releases", project_releases_path(project, "master") %>
     <%= custom_link_unless_current "Edit", edit_project_path(project) %>
   </small>
 </h1>

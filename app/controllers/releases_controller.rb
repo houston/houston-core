@@ -135,7 +135,7 @@ private
   
   def get_project_and_environment
     @project = Project.find_by_slug!(params[:project_id])
-    @environment = @project.environments.find_by_slug!(params[:environment_id])
+    @environment = @project.environments.find_by_slug(params[:environment_id]) || @project.environments.first
   end
   
   def get_deployment_and_recipients

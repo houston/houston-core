@@ -1,5 +1,13 @@
 <%= render partial: "projects/header", locals: {project: @project, subtitle: "Releases"} %>
 
+<ul class="nav nav-pills">
+  <% @project.environments.each do |environment| %>
+    <%= content_tag :li, :class => (@environment.id == environment.id ? "active" : nil) do %>
+      <% link_to environment.name, project_releases_path(@project, environment_id: environment.slug) %>
+    <% end %>
+  <% end %>
+</ul>
+
 <% if @releases.any? %>
   <table class="table table-striped">
     <thead>

@@ -49,12 +49,13 @@ Houston::Application.routes.draw do
   # Projects
   
   resources :projects do
+    match "releases", :to => "releases#index", :as => :releases
     resources :environments, :controller => "project_environments" do
       member do
         post 'post_receive'
         get 'post_receive' if Rails.env.development?
       end
-      resources :releases
+      resources :releases, :except => [:index]
     end
   end
   

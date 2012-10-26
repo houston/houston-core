@@ -1,4 +1,4 @@
-<%= form_for @release, :html => { :class => 'form-horizontal' } do |f| %>
+<%= form_for @release, :url => @release.new_record? ? project_environment_releases_path(@project, @environment) : project_release_path(@release), :html => { :class => 'form-horizontal' } do |f| %>
   <%= f.hidden_field :commit0 %>
   <%= f.hidden_field :commit1 %>
 
