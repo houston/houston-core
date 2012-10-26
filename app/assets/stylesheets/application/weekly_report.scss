@@ -56,6 +56,40 @@
   }
   
   
+  .label {
+    
+    // This is the stuff from bootstrap
+    // It's here because not all the bootstrap
+    // stuff gets rendered in the Weekly Report
+    // email; but this does.
+    
+    // padding: 1px 4px 2px;
+    font-size: 10.998px;
+    font-weight: bold;
+    line-height: 13px;
+    color: white;
+    vertical-align: middle;
+    // white-space: nowrap;
+    // text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    // background-color: #999;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    
+    /// bootstrap overrides
+    padding: 3px 7px 4px;
+    text-shadow: none;
+    white-space: normal;
+    
+    max-width: 9em;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  
   table {
     width: 100%;
     margin-bottom: 1em;
@@ -86,7 +120,7 @@
       }
     }
     
-    &.bugs, &.performance-report, &.tickets-report {
+    &.bugs, &.performance-report, &.tickets-report, &.maintenance-lights {
       
       td {
         padding: .75em 0;
@@ -97,39 +131,6 @@
         width: 10em;
         padding-right: 1em;
         font-weight: normal;
-        
-        .label {
-          
-          // This is the stuff from bootstrap
-          // It's here because not all the bootstrap
-          // stuff gets rendered in the Weekly Report
-          // email; but this does.
-          
-          // padding: 1px 4px 2px;
-          font-size: 10.998px;
-          font-weight: bold;
-          line-height: 13px;
-          color: white;
-          vertical-align: middle;
-          // white-space: nowrap;
-          // text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-          // background-color: #999;
-          -webkit-border-radius: 3px;
-          -moz-border-radius: 3px;
-          border-radius: 3px;
-          -webkit-border-radius: 3px;
-          -moz-border-radius: 3px;
-          
-          /// bootstrap overrides
-          padding: 3px 7px 4px;
-          text-shadow: none;
-          white-space: normal;
-          
-          max-width: 9em;
-          display: inline-block;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
       }
     }
     
@@ -324,6 +325,30 @@
   }
   
   
+  
+  .maintenance-lights {
+    margin: 0;
+    padding: 0;
+  }
+  
+  .maintenance-light {
+    display: block;
+    padding: 4px 0;
+    
+    .label { max-width: 999em; }
+    
+    .dependency-name { font-weight: 800; }
+    .dependency-version {
+      font-weight: 200;
+      font-size: 1.15em;
+      display: inline-block;
+      -webkit-border-radius: 2px;
+      -moz-border-radius: 2px;
+      border-radius: 2px;
+      background-color: #efefef;
+      padding: 1px 4px;
+    }
+  }
   
   
   

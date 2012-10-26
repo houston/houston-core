@@ -39,3 +39,15 @@
     &.<%= name %> { background-color: $<%= name %>; }
   <% end %>
 }
+
+.stoplight {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 8px;
+  
+  &.red { background-color: #B50000; }
+  &.yellow { background-color: #D6B21F; }
+  &.spring-green { background-color: #9FBD2A; }
+  &.green { background-color: #42A800; }
+}

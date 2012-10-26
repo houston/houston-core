@@ -17,11 +17,16 @@ class MaintenanceLight
   
   attr_reader :version, :key_dependency
   
-  delegate :slug, :name, :to => :key_dependency
+  delegate :slug, :name, :latest_version, :to => :key_dependency
   
   
   def valid?
     version && key_dependency.versions.any?
+  end
+  
+  
+  def update_to_date?
+    color == "green"
   end
   
   
