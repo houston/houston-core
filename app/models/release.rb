@@ -6,6 +6,7 @@ class Release < ActiveRecord::Base
   
   belongs_to :environment
   belongs_to :user
+  belongs_to :deploy
   has_many :changes, :dependent => :destroy
   has_many :commits, :dependent => :destroy, :autosave => true
   
@@ -19,6 +20,23 @@ class Release < ActiveRecord::Base
   delegate :maintainers, :to => :project
   
   validates_presence_of :user_id
+  validates_presence_of :deploy_id, :on => :create
+  validates_uniqueness_of :deploy_id, :allow_nil => true
+  
+  
+  
+  def self.new_for_deploy(deploy)
+    self.new({
+      environment: deploy.environment,
+      commit0: deploy.environment.last_commit,
+      commit1: deploy.commit,
+      deploy: deploy
+    })
+  end
+  
+  def self.for_deploy(deploy)
+    where(:deploy_id => deploy.id)
+  end
   
   
   

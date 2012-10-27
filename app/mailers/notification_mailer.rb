@@ -6,8 +6,15 @@ class NotificationMailer < ActionMailer::Base
   helper MarkdownHelper
   
   
-  def on_post_receive(release, maintainer)
+  def on_deploy(release, maintainer)
     @release = release
+    
+    if release.commits.empty? && release.can_read_commits?
+      release.load_commits!
+      release.load_tickets!
+      release.build_changes_from_commits
+    end
+    
     @maintainer = maintainer
     @maintainer.reset_authentication_token!
     mail({

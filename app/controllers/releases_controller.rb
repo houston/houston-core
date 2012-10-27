@@ -36,9 +36,10 @@ class ReleasesController < ApplicationController
   def new
     @title = "#{@project.name}: New Release (#{@environment.name})"
     
+    @deploy = Deploy.find_by_id(params[:deploy_id])
     @commit0 = params[:commit0] || @environment.last_commit
-    @commit1 = params[:commit1] || params[:commit]
-    @release = @environment.releases.new(commit0: @commit0, commit1: @commit1)
+    @commit1 = @deploy.try(:commit) || params[:commit1] || params[:commit]
+    @release = @environment.releases.new(commit0: @commit0, commit1: @commit1, deploy: @deploy)
     
     unless @project.repo
       respond_to do |format|

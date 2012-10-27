@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121027160548) do
+ActiveRecord::Schema.define(:version => 20121027171215) do
 
   create_table "changes", :force => true do |t|
     t.integer  "release_id"
@@ -91,7 +91,10 @@ ActiveRecord::Schema.define(:version => 20121027160548) do
     t.datetime "updated_at",                     :null => false
     t.integer  "user_id",                        :null => false
     t.text     "message",        :default => "", :null => false
+    t.integer  "deploy_id"
   end
+
+  add_index "releases", ["deploy_id"], :name => "index_releases_on_deploy_id"
 
   create_table "releases_tickets", :id => false, :force => true do |t|
     t.integer "release_id"

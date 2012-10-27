@@ -115,7 +115,7 @@ module UrlHelper
   end
   
   def new_release_url(release, options={})
-    new_project_environment_release_url(release.project.to_param, release.environment.to_param, options.merge(:commit => release.commit1))
+    new_project_environment_release_url(release.project.to_param, release.environment.to_param, options.merge(:deploy_id => release.deploy_id))
   end
   
   
