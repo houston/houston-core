@@ -50,6 +50,17 @@ class Release < ActiveRecord::Base
   
   
   
+  def released_at
+    deploy ? deploy.created_at : created_at
+  end
+  
+  def release_date
+    released_at.to_date
+  end
+  alias :date :release_date
+  
+  
+  
   def git_commits
     return [] unless can_read_commits?
     

@@ -8,4 +8,10 @@ class Change < ActiveRecord::Base
   
   validates_length_of :description, :maximum => 255
   
+  
+  def tag
+    Struct.new(:slug, :text).new("tag", "Tag")
+  end
+  
+  
 end

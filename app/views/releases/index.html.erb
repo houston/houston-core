@@ -8,28 +8,8 @@
   <% end %>
 </ul>
 
-<% if @releases.any? %>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Tickets Resolved</th>
-        <th>Commits</th>
-        <th>Release Date</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @releases.each do |release| %>
-        <tr>
-          <td><%= link_to release.name, release %></td>
-          <td><%= release.tickets.map { |ticket| link_to_ticket_number(ticket) }.join(", ").html_safe %></td>
-          <td><%= release.commits.count %></td>
-          <td><%= format_release_date(release) %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-<% else %>
+<% if @releases.none? %>
+
   <div class="alert alert-info">
     There have been no releases of <b><%= @project.name %></b>
     <% if @environment %>
@@ -37,6 +17,41 @@
     <% end %>
     recorded.
   </div>
+
+<% else %>
+
+   <% date = nil %>
+   <div id="<%= @project.slug %>_changelog" class="-houston-changelog">
+    <% @releases.each do |release| %>
+      
+      <% if date.nil? || date != release.date %>
+        <% if date %></div><% end %><%# end .-houston-changelog-day %>
+        <div class="-houston-changelog-day">
+          <h4><%= format_release_date(date = release.date) %></h4>
+      <% end %>
+      
+      <%= div_for(release) do %>
+        <p class="release-header">
+          <%= release.released_at.strftime("%l:%M %p") %>
+          <%= link_to "details &rarr;".html_safe, release %>
+        </p>
+        
+        <div class="release-changes">
+          <% release.changes.each do |change| %>
+            
+            <%= div_for(change) do %>
+              <span class="change-tag -tag-<%= change.tag.slug %>"><%= change.tag.text %></span>
+              <span class="change-summary"><%= format_change(change) %></span>
+            <% end %>
+            
+          <% end %>
+        </div>
+      <% end %>
+      
+    <% end %>
+    <% if date %></div><% end %><%# end .-houston-changelog-day %>
+  </div>
+
 <% end %>
 
 <%= link_to "New Release", new_project_environment_release_path(@project, @environment), :class => 'btn btn-primary' if @environment && can?(:create, Release) %>

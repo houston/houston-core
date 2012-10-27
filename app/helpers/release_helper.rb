@@ -1,11 +1,7 @@
 module ReleaseHelper
   
-  def format_release_date(release)
-    if release
-      release.created_at.strftime("%A, %b %e, %Y")
-    else
-      "&mdash;".html_safe
-    end
+  def format_release_date(date)
+    "<span class=\"weekday\">#{date.strftime("%A")}</span> #{date.strftime("%b %e, %Y")}".html_safe
   end
   
   def format_release_age(release)

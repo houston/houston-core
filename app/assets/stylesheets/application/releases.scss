@@ -45,3 +45,81 @@ textarea#release_message {
     }
   }
 }
+
+.-houston-changelog {
+  h4 {
+    position: relative;
+    margin: 0 0 14px 0;
+    padding: 10px 14px 8px;
+    background: #efefef;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    font-size: 16px;
+    line-height: 20px;
+    text-transform: uppercase;
+    
+    .weekday {
+      font-weight: 200;
+      color: #666;
+    }
+  }
+  
+  .-houston-changelog-day {
+    margin-bottom: 28px;
+  }
+  
+  .release-changes {
+    margin-left: 1em;
+  }
+  
+  .release-header {
+    margin-left: 3px;
+  }
+  
+  .change {
+    margin: 0 0 10px 0;
+    
+    &::after {
+      content: '.';
+      clear: both;
+      text-indent: -9999em;
+      display: block;
+      line-height: 0;
+      height: 0;
+      visibility: hidden;
+    }
+    
+    .change-tag {
+      display: block;
+      float: left;
+      width: 100px;
+      margin: 2px 6px 0 0;
+      padding: 3px 6px 2px;
+      text-align: right;
+      vertical-align: top;
+      text-transform: uppercase;
+      text-shadow: none;
+      font-size: 11px;
+      font-weight: 200;
+      line-height: 16px;
+      letter-spacing: 1px;
+      -webkit-border-radius: 3px;
+      -moz-border-radius: 3px;
+      border-radius: 3px;
+      background-color: #888;
+      color: white;
+    }
+    
+    .change-summary {
+      margin-left: 124px;
+      display: block;
+      word-wrap: break-word;
+      font-size: 1.12em;
+      line-height: 19px; // height of .change-tag
+      padding-top: 3px; // padding on .change-tag
+    }
+  }
+  
+  
+}
+
