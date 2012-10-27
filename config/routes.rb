@@ -50,14 +50,19 @@ Houston::Application.routes.draw do
   
   resources :projects do
     match "releases", :to => "releases#index", :as => :releases
+    
     resources :environments, :controller => "project_environments" do
-      member do
-        post 'post_receive'
-        get 'post_receive' if Rails.env.development?
-      end
       resources :releases, :except => [:index]
     end
   end
+  
+  
+  
+  # Deploys
+  
+  # !todo: constrain :environment to be a valid slug
+  match "projects/:project/environments/:environment/post_receive", :to => "project_deploys#create", :via => :post
+  match "projects/:project/environments/:environment/post_receive", :to => "project_deploys#create", :via => :get if Rails.env.development?
   
   
   

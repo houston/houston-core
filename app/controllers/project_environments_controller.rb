@@ -14,34 +14,6 @@ class ProjectEnvironmentsController < ApplicationController
     end
   end
   
-  def post_receive
-    @project = Project.find_by_slug(params[:project_id])
-    unless @project
-      head 404
-      return
-    end
-    
-    @environment = @project.environments.find_by_slug(params[:id])
-    unless @environment
-      head 404
-      return
-    end
-    
-    @release = @environment.releases.new(commit0: @environment.last_commit, commit1: params[:commit])
-    
-    if @release.can_read_commits?
-      @release.load_commits!
-      @release.load_tickets!
-      @release.build_changes_from_commits
-    end
-    
-    @release.maintainers.each do |maintainer|
-      NotificationMailer.on_post_receive(@release, maintainer).deliver!
-    end
-  rescue Timeout::Error
-    render text: "Couldn't get a response from the mail server. Is everything OK?", status: 500
-  end
-  
   def show
     @releases = @environment.releases
     

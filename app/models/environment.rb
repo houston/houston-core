@@ -2,6 +2,11 @@ class Environment < ActiveRecord::Base
   
   belongs_to :project
   has_many :releases, :dependent => :destroy
+  has_many :deploys, :dependent => :destroy
+  
+  validates :slug, :name, :presence => true
+  
+  before_validation :set_default_name
   
   def to_param
     slug
@@ -18,6 +23,14 @@ class Environment < ActiveRecord::Base
     when "master";  "In Production (Released)"
     else; nil
     end
+  end
+  
+  
+private
+  
+  
+  def set_default_name
+    self.name ||= slug.titleize
   end
   
   

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121026014457) do
+ActiveRecord::Schema.define(:version => 20121027160548) do
 
   create_table "changes", :force => true do |t|
     t.integer  "release_id"
@@ -37,6 +37,14 @@ ActiveRecord::Schema.define(:version => 20121026014457) do
   end
 
   add_index "commits_tickets", ["commit_id", "ticket_id"], :name => "index_commits_tickets_on_commit_id_and_ticket_id", :unique => true
+
+  create_table "deploys", :force => true do |t|
+    t.integer  "project_id"
+    t.integer  "environment_id"
+    t.string   "commit"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
 
   create_table "environments", :force => true do |t|
     t.string   "slug"
