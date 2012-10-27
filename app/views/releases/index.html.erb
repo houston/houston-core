@@ -30,7 +30,13 @@
     </tbody>
   </table>
 <% else %>
-  <div class="alert alert-info">There have been no releases of <b><%= @project.name %></b> recorded.</div>
+  <div class="alert alert-info">
+    There have been no releases of <b><%= @project.name %></b>
+    <% if @environment %>
+     to <b><%= @environment.name %></b>
+    <% end %>
+    recorded.
+  </div>
 <% end %>
 
-<%= link_to "New Release", new_project_environment_release_path(@project, @environment), :class => 'btn btn-primary' if can?(:create, Release) %>
+<%= link_to "New Release", new_project_environment_release_path(@project, @environment), :class => 'btn btn-primary' if @environment && can?(:create, Release) %>

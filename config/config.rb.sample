@@ -75,12 +75,6 @@ Houston.config do
   #   domain: "10.10.10.10"
   # })
   
-  # Configuration for Git / CI
-  default_environments([
-    {slug: "dev", name: "Staging"},
-    {slug: "master", name: "Production"}
-  ])
-  
   # What dependencies to check
   key_dependencies do
     gem "rails"

@@ -7,9 +7,10 @@ class ReleasesController < ApplicationController
   # GET /releases
   # GET /releases.json
   def index
-    @title = "#{@project.name}: Releases (#{@environment.name})"
+    @title = "#{@project.name}: Releases"
+    @title << " (#{@environment.name})" if @environment
     
-    @releases = @environment.releases.all
+    @releases = @environment ? @environment.releases.all : []
     
     respond_to do |format|
       format.html # index.html.erb

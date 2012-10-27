@@ -27,7 +27,6 @@ class ProjectsController < ApplicationController
     @title = "New Project"
     
     @project = Project.new
-    @project.environments.build(Rails.configuration.default_environments) if @project.environments.none?
     @project.maintainers << current_user if @project.maintainers.none?
     
     respond_to do |format|

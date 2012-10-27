@@ -25,7 +25,7 @@ class Configuration
   end
   
   def default_environments(value)
-    Rails.application.config.default_environments = value
+    Rails.logger.info "DEPRECATION NOTICE: Houston.config.default_environments is deprecated and will be removed"
   end
   
   def unfuddle(value)
