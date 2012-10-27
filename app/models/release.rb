@@ -41,7 +41,7 @@ class Release < ActiveRecord::Base
   
   
   def can_read_commits?
-    (commit0.blank? || valid_sha?(commit0)) && valid_sha?(commit1)
+    valid_sha?(commit0) && valid_sha?(commit1)
   end
   
   def valid_sha?(sha)
