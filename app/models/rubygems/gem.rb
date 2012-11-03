@@ -3,8 +3,9 @@ module Rubygems
   
   class Gem
     
-    def initialize(name)
+    def initialize(name, options={})
       @name = name
+      @include_prerelease = options.fetch(:prerelease, false)
     end
     
     attr_reader :name
@@ -37,7 +38,11 @@ module Rubygems
     end
     
     def versions
-      @versions ||= releases.map { |release| ::Gem::Version.new(release["number"]) }.sort.reverse
+      @versions ||= begin
+        versions = releases.map { |release| ::Gem::Version.new(release["number"]) }
+        versions = versions.reject(&:prerelease?) unless @include_prerelease
+        versions.sort.reverse
+      end
     end
     
     
