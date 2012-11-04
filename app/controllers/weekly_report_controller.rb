@@ -13,15 +13,8 @@ class WeeklyReportController < ApplicationController
   end
   
   def send_email
-    show
-    @for_email = true
-    
-    @recipients = params[:recipients].split
-    
-    html = render_to_string(template: "weekly_report/show", layout: "email")
-    html_with_inline_css = Premailer.new(html, with_html_string: true).to_inline_css
-    
-    WeeklyReportMailer._new(recipients: @recipients, subject: @title, body: html_with_inline_css).deliver!
+    @recipients = params[:recipients].split(/[\r\n]+|;/)
+    WeeklyReportMailer._new(@weekly_report, @recipients).deliver!
   rescue Timeout::Error
     redirect_to send_weekly_report_path, :notice => "Couldn't get a response from the mail server. Is everything OK?"
   end

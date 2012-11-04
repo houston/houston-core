@@ -4,14 +4,26 @@ class WeeklyReportMailer < ActionMailer::Base
   helper CommitHelper
   helper TicketHelper
   helper MarkdownHelper
+  helper EmailHelper
+  helper ScoreCardHelper
+  helper StaticChartHelper
   
   
-  def _new(args={})
+  def _new(weekly_report, recipients)
     mail({
-      to: args[:recipients],
-      subject: args[:subject]
+      to: recipients,
+      subject: weekly_report.title
     }) do |format|
-      format.html { args[:body] }
+      format.html do
+        @date_range = weekly_report.date_range
+        @projects = Project.scoped
+        @title = weekly_report.title
+        @date = weekly_report.date
+        @for_email = true
+        
+        html = render_to_string(template: "weekly_report/show", layout: "email")
+        Premailer.new(html, with_html_string: true).to_inline_css
+      end
     end
     
   end
