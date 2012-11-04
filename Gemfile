@@ -40,16 +40,9 @@ gem 'grit'
 gem 'hpricot'
 gem 'letter_opener', :git => 'git://github.com/pcg79/letter_opener.git'
 gem 'nokogiri'
-gem 'premailer'
+gem 'premailer' # for inlining CSS in HTML emails
 gem 'remotable', '>= 0.2.2', :git => 'git://github.com/boblail/remotable.git'
 gem 'yajl-ruby', :require => 'yajl/json_gem'
-# gem 'roadie' # for inlining CSS in HTML emails
-
-# To use ActiveModel has_secure_password
-# gem 'bcrypt-ruby', '~> 3.0.0'
-
-# To use Jbuilder templates for JSON
-# gem 'jbuilder'
 gem 'whenever' # a DSL for writing CRON jobs
 
 # Deploy with Capistrano
@@ -60,6 +53,6 @@ gem 'rvm-capistrano'
 gem 'airbrake'
 
 group :development do
-  gem 'thin'
+  gem 'thin' # for prettier tests
   gem 'pry' # for debugging
 end
