@@ -10,7 +10,7 @@ class Change < ActiveRecord::Base
   
   
   def self.attributes_from_commit(commit)
-    { description: commit.message[0..255] }
+    { description: commit.clean_message[0..255] }
   end
   
   
