@@ -1,10 +1,9 @@
 class WeeklyReportController < ApplicationController
   before_filter :get_date
-  before_filter :get_title
+  before_filter :get_weekly_report
   
   def show
-    monday = @date.beginning_of_week
-    @date_range = monday..(6.days.since(monday))
+    @date_range = @weekly_report.date_range
     @projects = Project.scoped
   end
   
@@ -41,8 +40,9 @@ private
     @date = Date.today
   end
   
-  def get_title
-    @title = "Weekly Report for #{@date.strftime("%B %e")}"
+  def get_weekly_report
+    @weekly_report = WeeklyReport.new(@date)
+    @title = @weekly_report.title
   end
   
 end
