@@ -53,6 +53,11 @@ gem 'rvm-capistrano'
 gem 'airbrake'
 
 group :development do
-  gem 'thin' # for prettier tests
+  gem 'thin'
+end
+
+group :development, :test do
+  gem "minitest"
+  gem "turn", :require => false # for prettier tests
   gem 'pry' # for debugging
 end
