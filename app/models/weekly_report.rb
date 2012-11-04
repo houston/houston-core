@@ -16,7 +16,7 @@ class WeeklyReport
   
   
   def deliver_to!(recipients)
-    WeeklyReportMailer._new(self, recipients).deliver!
+    ViewMailer.weekly_report(self, recipients).deliver!
   end
   
   class << self
