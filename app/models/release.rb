@@ -12,8 +12,6 @@ class Release < ActiveRecord::Base
   
   default_scope order("created_at DESC")
   
-  default_value_for :name do; Time.now.strftime("%A, %b %e, %Y %H:%M:%S"); end
-  
   accepts_nested_attributes_for :changes, :allow_destroy => true
   
   delegate :project, :to => :environment
@@ -49,6 +47,12 @@ class Release < ActiveRecord::Base
     released_at.to_date
   end
   alias :date :release_date
+  
+  
+  
+  def name
+    release_date.strftime("%A, %b %e, %Y")
+  end
   
   
   
