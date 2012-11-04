@@ -3,6 +3,53 @@ Houston.config do
   # This is the name that will be shown in the banner
   title "Mission Control"
   
+  
+  
+  # The ticketing system that Houston will interface with.
+  # Right now, the only supported system is Unfuddle.
+  ticket_system :unfuddle do
+    subdomain SUBDOMAIN
+    username USERNAME
+    password PASSWORD
+  end
+  
+  
+  
+  # The error-catching system that Houston will interface with.
+  # Right now, the only supported system is Errbit.
+  error_tracker :errbit do
+    host HOST
+    port 443
+    auth_token TOKEN
+  end
+  
+  
+  
+  # Configuration for New Relic
+  new_relic do
+    api_key API_KEY
+    account_id ACCOUNT_ID
+  end
+  
+  
+  
+  # What dependencies to check
+  key_dependencies do
+    gem "rails"
+    gem "devise"
+  end
+  
+  
+  
+  # Configuration for Email
+  smtp do
+    address "10.10.10.10"
+    port 25
+    domain "10.10.10.10"
+  end
+  
+  
+  
   # Colors: these are the colors available for projects
   colors({
     "teal"          => "39b3aa",
@@ -22,17 +69,6 @@ Houston.config do
     "silver"        => "a2a38b"
   })
   
-  # The ticketing system that Houston will interface with.
-  # Right now, the only supported system is Unfuddle.
-  ticket_system :unfuddle
-  
-  # Configuration for Unfuddle
-  unfuddle({
-    subdomain: SUBDOMAIN,
-    username: USERNAME,
-    password: PASSWORD
-  })
-  
   # List of ticket severities and their colors
   severities({
     nil                             => "EFEFEF",
@@ -49,69 +85,39 @@ Houston.config do
     "5 Broken (no work-around)"     => "C1311E"
   })
   
-  # The error-catching system that Houston will interface with.
-  # Right now, the only supported system is Errbit.
-  # error_tracker :errbit
   
-  # Configuration for Errbit
-  # errbit({
-  #   host: HOST,
-  #   port: 80,
-  #   auth_token: AUTH_TOKEN
-  # })
-  
-  # Configuration for New Relic
-  # new_relic({
-  #   api_key: API_KEY,
-  #   account_id: ACCOUNT_ID
-  # })
-  
-  # Configuration for Email
-  # These options are just passed to
-  # action_mailer.smtp_settings.
-  # smtp({
-  #   address: "10.10.10.10",
-  #   port: 25,
-  #   domain: "10.10.10.10"
-  # })
-  
-  # What dependencies to check
-  key_dependencies do
-    gem "rails"
-    gem "devise"
-  end
   
   # Queues
   # NB: because query is a hash, cannot use a key twice! (as in status-neq-closed & status-neq-resolved)
   queues [ {
       name: "To Proofread",
       slug: "assign_health",
-      description: "Make sure these tickets are healthy, not duplicates, and that you can reproduce the problem with the supplied Steps to Test",
+      description: "Make sure these tickets are healthy, unique, and that you can reproduce the problem with the supplied Steps to Test.",
       query: {:status => neq(:closed), :resolution => 0, "Health" => 0}
     }, {
       name: "To Improve",
       slug: "to_fix",
-      description: "These tickets do not contain enough information. Follow up with the ticket author and see that they are clarified.",
+      description: "These tickets do not contain enough information. Follow up with the reporter and see that they are clarified.",
       query: {:status => neq(:closed), :resolution => 0, "Health" => ["Summary and Description need work", "Summary needs work"]}
     }, {
       name: "To Consider",
       slug: "suggestions",
-      description: "These ideas may or may not be belong in this product. They to be considered",
+      description: "These tickets may or may not belong to the vision of this product. Consider them as a team and close them or change their severity.",
       query: {:status => neq(:closed), :resolution => 0, "Health" => ["Good", "Description needs work"], :milestone => 0, :severity => "0 Suggestion"}
     }, {
       name: "To Plan",
       slug: "to_do",
-      description: "",
+      description: "These are open tickets that have not been scheduled to a milestone.",
       query: {:status => neq(:closed), :resolution => 0, "Health" => ["Good", "Description needs work"], :milestone => 0, :severity => neq("0 Suggestion")}
     }, {
       name: "Scheduled",
       slug: "assigned_tickets",
-      description: "",
+      description: "These are open tickets that have been scheduled in a milestone.",
       query: {:status => neq(:closed), :resolution => 0, "Health" => ["Good", "Description needs work"], :milestone => neq(0)}
     }, {
       name: "Queued",
       slug: "staged_for_testing",
-      description: "These tickets have been resolved, but are waiting for the current batch to be released before they enter testing",
+      description: "These tickets have been resolved, but are waiting for the current batch to be released before they enter testing.",
       query: {:status => neq(:closed), :resolution => :fixed, "Fixed in" => 0}
     }, {
       name: "To Test",
@@ -119,5 +125,19 @@ Houston.config do
       description: "These tickets are ready to test. Click on <b>Testing Reports</b> to record your testing notes.",
       query: {:status => neq(:closed), :resolution => :fixed, "Fixed in" => ["In Testing (PRI)", "In Production (Released)"]}
   } ]
+  
+  
+  
+  # Callbacks
+  # on "release:create" do |release|
+  # end
+  # 
+  # on "testing_note:create" do |testing_note|
+  # end
+  # 
+  # on "boot" do
+  # end
+  
+  
   
 end

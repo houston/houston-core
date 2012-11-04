@@ -1,7 +1,7 @@
 class DemoController < ApplicationController
   
   def index
-    @colors = Rails.application.config.colors
+    @colors = Houston.config.colors
     @ages = %w{young adult old}
   end
   

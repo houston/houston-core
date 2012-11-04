@@ -13,7 +13,7 @@ class KanbanQueue
   
   class << self
     def all
-      @queues ||= create(Rails.application.config.queues)
+      @queues ||= create(Houston.config.queues)
     end
     
     def slugs

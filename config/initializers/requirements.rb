@@ -10,5 +10,7 @@ require 'grit_patch'
 require 'configuration'
 require 'unfuddle_dump'
 
-# Load configuration
-require Rails.root.join('config', 'config.rb').to_s
+# Apply Houston configuration
+Rails.application.config.action_mailer.smtp_settings = Houston.config.smtp
+Unfuddle.config(Houston.config.ticket_system_configuration)
+Houston.observer.fire "boot"

@@ -20,8 +20,8 @@ module UrlHelper
   end
   
   def errbit_app_url(project)
-    protocol = Rails.application.config.errbit[:port] == 443 ? "https" : "http"
-    "#{protocol}://#{Rails.application.config.errbit[:host]}/apps/#{project.errbit_app_id}"
+    protocol = Houston.config.errbit[:port] == 443 ? "https" : "http"
+    "#{protocol}://#{Houston.config.errbit[:host]}/apps/#{project.errbit_app_id}"
   end
   
   def errbit_err_url(project, err)
@@ -42,7 +42,7 @@ module UrlHelper
   end
   
   def new_relic_project_url(project)
-    account_id = Rails.application.config.new_relic[:account_id]
+    account_id = Houston.config.new_relic[:account_id]
     "https://rpm.newrelic.com/accounts/#{account_id}/applications/#{project.new_relic_id}"
   end
   

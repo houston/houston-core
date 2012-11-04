@@ -1,119 +1,203 @@
+# !todo: remove this requirement
+$:.unshift File.expand_path("./lib/unfuddle/lib")
 require 'unfuddle/neq'
-require 'color_value'
 
-class Configuration
-  include Unfuddle::NeqHelper
-  
-  def title(value)
-    Rails.application.config.title = value
-  end
-  
-  def colors(value)
-    Rails.application.config.colors = \
-      value.each_with_object({}) { |(key, hex), hash| hash[key] = ColorValue.new(hex) }
-  end
-  
-  def ticket_system(value)
-  end
-  
-  def severities(values=nil)
-    @severities = values if values
-    @severities
-  end
-  
-  def error_tracker(value)
-  end
-  
-  def default_environments(value)
-    Rails.logger.info "DEPRECATION NOTICE: Houston.config.default_environments is deprecated and will be removed"
-  end
-  
-  def unfuddle(value)
-    Rails.application.config.unfuddle = value
-    Unfuddle.config(value)
-  end
-  
-  def new_relic(value)
-    Rails.application.config.new_relic = value
-  end
-  
-  def errbit(value)
-    Rails.application.config.errbit = value
-  end
-  
-  def smtp(value)
-    Rails.application.config.action_mailer.smtp_settings = value
-  end
-  
-  def key_dependencies(&block)
-    if block_given?
-      dependencies = Houston::Dependencies.new
-      dependencies.instance_eval(&block)
-      @dependencies = dependencies.names
+module Houston
+  class Configuration
+    include Unfuddle::NeqHelper
+    
+    def title(*args)
+      @title = args.first if args.any?
+      @title ||= "Houston"
     end
-    @dependencies || []
-  end
-  
-  def queues(value)
-    Rails.application.config.queues = value
-  end
-  
-  def on(event, &block)
-    Houston.observer.on(event, &block)
-  end
-  
-end
-
-class Houston::Dependencies
-  
-  def initialize
-    @values = []
-  end
-  
-  def gem(name)
-    @values << [:gem, name]
-  end
-  
-  def names
-    @values.map { |pair| pair[1] }
-  end
-  
-end
-
-class Houston::Observer
-  
-  def on(event, &block)
-    observers_of(event).push(block)
-    nil
-  end
-  
-  def fire(event, *args)
-    observers_of(event).each do |block|
-      block.call(*args)
+    
+    
+    
+    # Components
+    
+    def ticket_system(*args, &block)
+      @ticket_system_configuration = HashDsl.hash_from_block(block) if block_given?
+      
+      # Currently Unfuddle is the only supported ticket system
+      :unfuddle
     end
-    nil
+    attr_reader :ticket_system_configuration
+    
+    def error_tracker(*args, &block)
+      @error_tracker_configuration = HashDsl.hash_from_block(block) if block_given?
+      
+      # Currently Errbit is the only supported error tracker
+      :errbit
+    end
+    attr_reader :error_tracker_configuration
+    alias :errbit :error_tracker_configuration
+    
+    
+    
+    
+    
+    
+    def new_relic(&block)
+      @new_relic_configuration = HashDsl.hash_from_block(block) if block_given?
+      @new_relic_configuration ||= {}
+    end
+    
+    def smtp(&block)
+      @smtp = HashDsl.hash_from_block(block) if block_given?
+      @smtp ||= {}
+    end
+    
+    
+    
+    # Configuration
+    
+    def key_dependencies(&block)
+      if block_given?
+        dependencies = Houston::Dependencies.new
+        dependencies.instance_eval(&block)
+        @dependencies = dependencies.names
+      end
+      @dependencies || []
+    end
+    
+    def queues(*args)
+      @queues = args.first if args.any?
+      @queues ||= []
+    end
+    
+    def colors(*args)
+      @colors = args.first.each_with_object({}) { |(key, hex), hash| hash[key] = ColorValue.new(hex) } if args.any?
+      @colors ||= []
+    end
+    
+    def severities(*args)
+      @severities = args.first if args.any?
+      @severities ||= []
+    end
+    
+    
+    
+    # Events
+    
+    def on(event, &block)
+      Houston.observer.on(event, &block)
+    end
+    
   end
   
-private
   
-  def observers_of(event)
-    observers[event] ||= []
+  
+  class Dependencies
+    
+    def initialize
+      @values = []
+    end
+    
+    def gem(name)
+      @values << [:gem, name]
+    end
+    
+    def names
+      @values.map { |pair| pair[1] }
+    end
+    
   end
   
-  def observers
-    @observers ||= {}
+  
+  
+  class HashDsl
+    
+    def initialize
+      @hash = {}
+    end
+    
+    attr_reader :hash
+    alias :to_hash :hash
+    
+    def self.from_block(block)
+      HashDsl.new.tap { |dsl| dsl.instance_eval(&block) }
+    end
+    
+    def self.hash_from_block(block)
+      from_block(block).to_hash
+    end
+    
+    def method_missing(method_name, *args, &block)
+      if block_given?
+        @hash[method_name] = HashDsl.hash_from_block(block)
+      elsif args.length == 1
+        @hash[method_name] = args.first
+      else
+        super
+      end
+    end
+    
   end
-
-end
-
-def Houston.config(&block)
-  if block_given?
-    Rails.application.config.obj = Configuration.new
-    Rails.application.config.obj.instance_eval(&block)
+  
+  
+  
+  class ColorValue
+    
+    def initialize(hex)
+      @hex = hex
+    end
+    
+    def to_s
+      @hex
+    end
+    
+    def rgb
+      "rgb(#{@hex.scan(/../).map { |s| s.to_i(16) }.join(", ")})"
+    end
+    
   end
-  Rails.application.config.obj
+  
+  
+  
+  class Observer
+    
+    def on(event, &block)
+      observers_of(event).push(block)
+      nil
+    end
+    
+    def fire(event, *args)
+      observers_of(event).each do |block|
+        block.call(*args)
+      end
+      nil
+    end
+    
+  private
+    
+    def observers_of(event)
+      observers[event] ||= []
+    end
+    
+    def observers
+      @observers ||= {}
+    end
+    
+  end
+  
+  
+  
+module_function
+  
+  def config(&block)
+    @configuration ||= Configuration.new
+    @configuration.instance_eval(&block) if block_given?
+    @configuration
+  end
+  
+  def observer
+    @observer ||= Observer.new
+  end
+  
 end
 
-def Houston.observer
-  @observer ||= Houston::Observer.new
-end
+
+
+# Load configuration file
+require File.expand_path("./config/config.rb")
+# require Rails.root.join('config', 'config.rb').to_s

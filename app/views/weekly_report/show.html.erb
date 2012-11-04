@@ -163,7 +163,7 @@
     
     
     
-    colors = Rails.application.config.colors
+    colors = Houston.config.colors
     
   %>
   
@@ -482,8 +482,8 @@
                     <th><span class="label <%= project.color %>"><%= project.name %></span></th>
                     <td>
                       <%
-                          account_id = Rails.application.config.new_relic[:account_id]
-                          api_key = Rails.application.config.new_relic[:api_key]
+                          account_id = Houston.config.new_relic[:account_id]
+                          api_key = Houston.config.new_relic[:api_key]
                           url = "https://api.newrelic.com/api/v1/accounts/#{account_id}/metrics/data.json"
                           url << "?begin=#{@date_range.begin.iso8601}&end=#{@date_range.end.iso8601}"
                           url << "&metrics[]=Apdex&field=score"

@@ -1,7 +1,7 @@
 module ApplicationHelper
   
   def title
-    @title || Rails.configuration.title
+    @title || Houston.config.title
   end
   
   def revision

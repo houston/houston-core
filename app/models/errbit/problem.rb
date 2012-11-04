@@ -25,10 +25,10 @@ module Errbit
       def fetch_problems(options={})
         return fake_fetch_problems(options) if Rails.env.development?
         
-        protocol = Rails.application.config.errbit[:port] == 443 ? "https" : "http"
-        root_url = "#{protocol}://#{Rails.application.config.errbit[:host]}"
+        protocol = Houston.config.errbit[:port] == 443 ? "https" : "http"
+        root_url = "#{protocol}://#{Houston.config.errbit[:host]}"
         path = "#{root_url}/api/v1/problems.json"
-        url = "#{path}?start_date=#{options[:start_date].strftime("%Y-%m-%d")}&end_date=#{options[:end_date].strftime("%Y-%m-%d")}&auth_token=#{Rails.application.config.errbit[:auth_token]}"
+        url = "#{path}?start_date=#{options[:start_date].strftime("%Y-%m-%d")}&end_date=#{options[:end_date].strftime("%Y-%m-%d")}&auth_token=#{Houston.config.errbit[:auth_token]}"
         response = Project.benchmark("[errbit] fetch \"#{url}\"") { Faraday.get(url) }
         problems = Yajl.load(response.body)
         
