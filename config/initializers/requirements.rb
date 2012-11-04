@@ -7,10 +7,4 @@ require 'lail/core_extensions'
 require 'lail/helpers/flash_message_helper'
 require 'unfuddle'
 require 'grit_patch'
-require 'configuration'
 require 'unfuddle_dump'
-
-# Apply Houston configuration
-Rails.application.config.action_mailer.smtp_settings = Houston.config.smtp
-Unfuddle.config(Houston.config.ticket_system_configuration)
-Houston.observer.fire "boot"

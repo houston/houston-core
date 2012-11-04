@@ -1,5 +1,5 @@
 class WeeklyReportMailer < ActionMailer::Base
-  default from: "EPDeveloper@cph.org"
+  default from: Houston.config.mailer_sender
   helper UrlHelper
   helper CommitHelper
   helper TicketHelper

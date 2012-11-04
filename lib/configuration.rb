@@ -11,6 +11,11 @@ module Houston
       @title ||= "Houston"
     end
     
+    def mailer_sender(*args)
+      @mailer_sender = args.first if args.any?
+      @mailer_sender ||= nil
+    end
+    
     
     
     # Components
@@ -41,6 +46,10 @@ module Houston
       @new_relic_configuration = HashDsl.hash_from_block(block) if block_given?
       @new_relic_configuration ||= {}
     end
+    
+    
+    
+    # Email
     
     def smtp(&block)
       @smtp = HashDsl.hash_from_block(block) if block_given?
@@ -86,6 +95,21 @@ module Houston
     def cron(&block)
       @whenever_configuration = block if block_given?
       @whenever_configuration ||= nil
+    end
+    
+    
+    
+    # Validation
+    
+    def validate!
+      raise MissingConfiguration, <<-ERROR unless mailer_sender
+        
+        Houston requires a default email address to be supplied for mailers
+        You can set the address by adding the following line to config/config.rb:
+          
+          mailer_sender "houston@my-company.com"
+        
+        ERROR
     end
     
   end
@@ -187,12 +211,25 @@ module Houston
   
   
   
+  class NotConfigured < RuntimeError
+    def initialize(message = "Houston has not been configured. Please load config/config.rb before calling Houston.config")
+      super
+    end
+  end
+  
+  class MissingConfiguration < RuntimeError; end
+  
+  
+  
 module_function
   
   def config(&block)
-    @configuration ||= Configuration.new
-    @configuration.instance_eval(&block) if block_given?
-    @configuration
+    if block_given?
+      @configuration = Configuration.new
+      @configuration.instance_eval(&block)
+      @configuration.validate!
+    end
+    @configuration || (raise NotConfigured)
   end
   
   def observer

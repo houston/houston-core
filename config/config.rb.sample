@@ -3,6 +3,9 @@ Houston.config do
   # This is the name that will be shown in the banner
   title "Mission Control"
   
+  # This is the email address Houston will send emails from by default
+  mailer_sender "houston@my-company.com"
+  
   
   
   # The ticketing system that Houston will interface with.

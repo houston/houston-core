@@ -9,6 +9,10 @@ if defined?(Bundler)
   # Bundler.require(:default, :assets, Rails.env)
 end
 
+# Load Houston configuration early, so that it
+# can be used throughout Rails' initialization.
+require './lib/configuration'
+
 module Houston
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
@@ -49,6 +53,9 @@ module Houston
     # in your app. As such, your models will need to explicitly whitelist or blacklist accessible
     # parameters by using an attr_accessible or attr_protected declaration.
     # config.active_record.whitelist_attributes = true
+
+    # SMTP settings
+    config.action_mailer.smtp_settings = Houston.config.smtp
 
     # Enable the asset pipeline
     config.assets.enabled = true
