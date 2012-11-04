@@ -36,16 +36,8 @@
           <%= link_to "details &rarr;".html_safe, release %>
         </p>
         
-        <div class="release-changes">
-          <% release.changes.each do |change| %>
-            
-            <%= div_for(change) do %>
-              <span class="change-tag -tag-<%= change.tag.slug %>"><%= change.tag.text %></span>
-              <span class="change-summary"><%= format_change(change) %></span>
-            <% end %>
-            
-          <% end %>
-        </div>
+        <%= render partial: "releases/changes", locals: {changes: release.changes} %>
+        
       <% end %>
       
     <% end %>

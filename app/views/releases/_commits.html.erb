@@ -1,0 +1,11 @@
+<div class="release-detail-section release-commits">
+  <h5>Commits</h5>
+  <ul class="commits">
+    <% commits.each do |commit| %>
+      <%= content_tag :li, :id => "commit_#{commit.id}" do %>
+        <%= format_commit(commit) %>
+        <%= link_to_commit(commit) if github_url?(@project) && can?(:read, commit) %>
+      <% end %>
+    <% end %>
+  </ul>
+</div>

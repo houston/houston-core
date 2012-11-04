@@ -1,27 +1,25 @@
 <%= render partial: "releases/header", locals: {release: @release} %>
 
-<div class="release">
+<div id="<%= @project.slug %>_changelog" class="-houston-changelog">
   
-  <h3><%= @release.name %></h3>
-  
-  <div class="release-message">
-    <%= mdown(@release.message) %>
+  <div class="-houston-changelog-day">
+    <h4><%= format_release_date(@release.date) %></h4>
   </div>
   
-  <div class="release-detail">
+  <%= div_for(@release) do %>
     
-    <%= render partial: "releases/changelog", locals: {release: @release} %>
+    <div class="release-message">
+      <%= mdown(@release.message) %>
+    </div>
     
-    <h5>Commits</h5>
-    <ul class="commits">
-      <% @release.commits.each do |commit| %>
-        <%= content_tag :li, :id => "commit_#{commit.id}" do %>
-          <%= format_commit(commit) %>
-          <%= link_to_commit(commit) if github_url?(@project) && can?(:read, commit) %>
-        <% end %>
-      <% end %>
-    </ul>
+    <%= render partial: "releases/changes", locals: {changes: @release.changes} %>
     
-  </div>
+    <div class="release-detail">
+      <%= render partial: "releases/tickets", locals: {tickets: @release.tickets} %>
+      <%= render partial: "releases/goldmine_numbers", locals: {goldmine_numbers: @release.goldmine_numbers} %>
+      <%= render partial: "releases/commits", locals: {commits: @release.commits} %>
+    </div>
+    
+  <% end %>
   
 </div>

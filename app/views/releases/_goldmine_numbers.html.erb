@@ -1,0 +1,12 @@
+<div class="release-detail-section release-goldmine">
+  <h5>Goldmine No.</h5>
+  <% if goldmine_numbers.any? %>
+    <ul class="goldmine-numbers">
+      <% goldmine_numbers.each do |number| %>
+        <li><%= link_to_goldmine_case(number) %></li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="no-items">No goldmine numbers were associated with this release.</p>
+  <% end %>
+</div>

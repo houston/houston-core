@@ -4,11 +4,6 @@
 
 .no-items { font-style: italic; }
 
-.release .commits {
-  font-size: 0.88em;
-  line-height: 1em;
-}
-
 .controls > ul {
   margin: 0 0 5px 0;
   padding: 5px 0 0 0;
@@ -21,30 +16,7 @@ textarea#release_message {
   height: 120px;
 }
 
-.release-message {
-  margin: 1.5em;
-}
 
-.release-detail {
-  line-height: 1.5em;
-  padding-top: 20px;
-  margin-top: -20px;
-  
-  h5 {
-    float: left;
-    clear: left;
-    width: 88px;
-    margin: 20px 0 0 0;
-  }
-  
-  p, ul {
-    margin: 20px 0 0 88px;
-    
-    li {
-      list-style-type: none;
-    }
-  }
-}
 
 .-houston-changelog {
   h4 {
@@ -68,13 +40,11 @@ textarea#release_message {
     margin-bottom: 28px;
   }
   
-  .release-changes {
-    margin-left: 1em;
-  }
-  
   .release-header {
     margin-left: 3px;
   }
+  
+  .release { padding-left: 1em; }
   
   .change {
     margin: 0 0 10px 0;
@@ -120,6 +90,38 @@ textarea#release_message {
     }
   }
   
-  
 }
 
+
+
+.release-message { margin: 1.5em 1.5em 2.5em 1.5em; }
+
+.release-detail {
+  line-height: 1.5em;
+  
+  .release-detail-section {
+    border-top: 1px solid #dedede;
+    padding-top: 1.5em;
+    margin-top: 1.5em;
+  }
+  
+  .release-commits ul {
+    font-size: 0.88em;
+    line-height: 1em;
+  }
+  
+  h5 {
+    float: left;
+    clear: left;
+    width: 100px;
+    margin: 0;
+  }
+  
+  p, ul {
+    margin: 0 0 0 124px;
+    
+    li {
+      list-style-type: none;
+    }
+  }
+}

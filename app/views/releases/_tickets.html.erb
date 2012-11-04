@@ -1,0 +1,12 @@
+<div class="release-detail-section release-tickets">
+  <h5>Tickets</h5>
+  <% if tickets.any? %>
+    <ul class="tickets">
+      <% tickets.each do |ticket| %>
+        <li><%= link_to_ticket(ticket) %></li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="no-items">No tickets were mentioned in this release.</p>
+  <% end %>
+</div>
