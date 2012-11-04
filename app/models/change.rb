@@ -6,7 +6,7 @@ class Change < ActiveRecord::Base
   
   attr_accessor :_destroy
   
-  validates_length_of :description, :maximum => 255
+  validates :description, :length => 1...255
   
   
   def self.attributes_from_commit(commit)
