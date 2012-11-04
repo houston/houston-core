@@ -12,11 +12,19 @@ class Deploy < ActiveRecord::Base
   after_create :prompt_maintainers_to_create_release
   
   
+  def build_release
+    Release.new({
+      environment: environment,
+      commit0: environment.last_commit,
+      commit1: commit,
+      deploy: self
+    })
+  end
+  
+  
   def prompt_maintainers_to_create_release
-    release = Release.new_for_deploy(self)
-    
     project.maintainers.each do |maintainer|
-      NotificationMailer.on_deploy(release, maintainer).deliver!
+      NotificationMailer.on_deploy(build_release, maintainer).deliver!
     end
   # rescue Timeout::Error
   #   render text: "Couldn't get a response from the mail server. Is everything OK?", status: 500

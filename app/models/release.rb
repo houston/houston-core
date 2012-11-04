@@ -25,15 +25,6 @@ class Release < ActiveRecord::Base
   
   
   
-  def self.new_for_deploy(deploy)
-    self.new({
-      environment: deploy.environment,
-      commit0: deploy.environment.last_commit,
-      commit1: deploy.commit,
-      deploy: deploy
-    })
-  end
-  
   def self.for_deploy(deploy)
     where(:deploy_id => deploy.id)
   end
