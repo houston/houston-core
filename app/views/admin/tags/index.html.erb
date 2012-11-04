@@ -1,0 +1,30 @@
+<h2>Tags</h2>
+<p>Click to edit</p>
+
+<%= list :tags, partial: "admin/tags/tag", path: admin_tags_path do |tags| %>
+  <%= tags.editor do |f| %>
+    <div class="tag-name">
+      <label for="edit_tag_name">Name</label>
+      <%= f.text_field :name, :size => 50, :id => "edit_tag_name" %>
+    </div>
+    <div class="tag-color">
+      <label for="edit_tag_color">Color</label>
+      <%= f.text_field :color, :size => 6, :id => "edit_tag_color" %>
+    </div>
+    <% f.last_child do %>
+      <button class="btn btn-primary" title="Save" name="submit" type="submit">Save</button>
+      <button class="btn" title="Cancel" onclick="window.FT.InlineEditor.close();return false;">Cancel</button>
+    <% end %>
+  <% end %>
+<% end %>
+
+<% content_for :scripts do %>
+<script type="text/javascript">
+  $(function() {
+    FT.init({
+      token: 'afd',
+      adapter: 'jquery'
+    });
+  });
+</script>
+<% end %>

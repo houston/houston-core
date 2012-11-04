@@ -1,0 +1,39 @@
+.row {
+  
+  & > div { margin-right: .25em; }
+  
+  .tag-color-block {
+    display: block;
+    float: left;
+    width: 100px;
+    margin: 2px 6px 0 0;
+    padding: 3px 6px 2px;
+    text-align: right;
+    vertical-align: top;
+    text-transform: uppercase;
+    text-shadow: none;
+    font-size: 11px;
+    font-weight: 200;
+    line-height: 16px;
+    letter-spacing: 1px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    background-color: #888;
+    color: white;
+  }
+
+  &.editor {
+    .tag-color, .tag-name {
+      
+      &.tag-name input { width: 14em; }
+      &.tag-color input { width: 6em; }
+      
+      label { 
+        display: block;
+        margin-bottom: 1px;
+        font-size: 0.75em;
+      }
+    }
+  }
+}

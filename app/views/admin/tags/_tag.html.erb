@@ -1,0 +1,5 @@
+<%= row_for tag do |row| %>
+  <div class="tag-color-block" attr="tag[color]" value="<%= tag.color %>" style="background-color:#<%= tag.color %>;">
+    <div class="tag-name" attr="tag[name]"><%= tag.name %></div>
+  </div>
+<% end %>

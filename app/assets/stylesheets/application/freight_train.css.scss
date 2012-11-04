@@ -22,7 +22,27 @@
 }
 
 
-.add-link, .delete-link { 
+.freight_train {
+  ol { margin: 0; }
+  
+  .row {
+    display: block;
+    margin: .5em 0;
+    
+    & > div { display: inline-block; }
+    
+    &.editor {
+      input { margin-bottom: 0; }
+    }
+    
+    &.in-edit { display: none; }
+    
+    .delete-command { vertical-align: middle; }
+  }
+}
+
+
+.add-link, .delete-link {
   opacity: 0.2;
   display: inline-block;
   width: 14px;

@@ -79,6 +79,14 @@ Houston::Application.routes.draw do
   
   
   
+  # Admin
+  
+  namespace :admin do
+    resources :tags
+  end
+  
+  
+  
   # Other
   
   # Experiment
