@@ -1,6 +1,6 @@
-.change-description input {
-  width: 40em;
-}
+.change-tag select { width: 10em; }
+.change-tag .help-inline { display: none; }
+.change-description input { width: 40em; }
 
 .no-items { font-style: italic; }
 
@@ -78,6 +78,8 @@ textarea#release_message {
       border-radius: 3px;
       background-color: #888;
       color: white;
+      
+      &.change-null-tag { background-color: #ccc; }
     }
     
     .change-summary {

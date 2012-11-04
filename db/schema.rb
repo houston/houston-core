@@ -11,13 +11,23 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121027171215) do
+ActiveRecord::Schema.define(:version => 20121104180714) do
+
+  create_table "change_tags", :force => true do |t|
+    t.string   "name"
+    t.string   "color",      :limit => 6
+    t.datetime "created_at",              :null => false
+    t.datetime "updated_at",              :null => false
+  end
+
+  add_index "change_tags", ["name"], :name => "index_change_tags_on_name"
 
   create_table "changes", :force => true do |t|
     t.integer  "release_id"
     t.string   "description"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+    t.integer  "tag_id"
   end
 
   create_table "commits", :force => true do |t|
