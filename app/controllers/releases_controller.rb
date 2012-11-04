@@ -83,6 +83,7 @@ class ReleasesController < ApplicationController
     end
     
     @release.changes.build if @release.changes.select { |change| !change._destroy }.none?
+    @release.valid?
   end
 
   # POST /releases

@@ -20,6 +20,7 @@ class Release < ActiveRecord::Base
   validates_presence_of :user_id
   # validates_presence_of :deploy_id, :on => :create
   validates_uniqueness_of :deploy_id, :allow_nil => true
+  validates_associated :changes
   
   
   
