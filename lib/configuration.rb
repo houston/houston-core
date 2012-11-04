@@ -83,6 +83,11 @@ module Houston
       Houston.observer.on(event, &block)
     end
     
+    def cron(&block)
+      @whenever_configuration = block if block_given?
+      @whenever_configuration ||= nil
+    end
+    
   end
   
   

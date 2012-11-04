@@ -1,6 +1,6 @@
 class WeeklyReport
   
-  def initialize(date)
+  def initialize(date=Date.today)
     @date = date
     
     monday = @date.beginning_of_week
@@ -17,6 +17,10 @@ class WeeklyReport
   
   def deliver_to!(recipients)
     WeeklyReportMailer._new(self, recipients).deliver!
+  end
+  
+  class << self
+    delegate :deliver_to!, :to => "self.new"
   end
   
 end

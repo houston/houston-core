@@ -41,6 +41,7 @@ Houston::Application.routes.draw do
   
   match "weekly_report", :to => "weekly_report#show"
   match "weekly_report/:year/:month/:day", :to => "weekly_report#show", :as => :weekly_report
+  match "weekly_report/email", :to => "weekly_report#send_email", :via => :post
   match "weekly_report/:year/:month/:day/email", :to => "weekly_report#prepare_email", :as => :send_weekly_report, :via => :get
   match "weekly_report/:year/:month/:day/email", :to => "weekly_report#send_email", :as => :send_weekly_report, :via => :post
   

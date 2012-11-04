@@ -50,6 +50,7 @@ gem 'yajl-ruby', :require => 'yajl/json_gem'
 
 # To use Jbuilder templates for JSON
 # gem 'jbuilder'
+gem 'whenever' # a DSL for writing CRON jobs
 
 # Deploy with Capistrano
 gem 'capistrano'

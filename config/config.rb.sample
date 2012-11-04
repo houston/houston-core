@@ -140,4 +140,19 @@ Houston.config do
   
   
   
+  # Cron jobs
+  cron do
+    # In this block, use the DSL defined by the Whenever gem.
+    # Learn more: http://github.com/javan/whenever
+    
+    # RECIPIENTS = %w{...}
+    # 
+    # every :monday, :at => "6am" do
+    #   runner "WeeklyReport.deliver_to!(#{RECIPIENTS.inspect})"
+    # end
+    
+  end
+  
+  
+  
 end
