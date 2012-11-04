@@ -15,23 +15,36 @@ class Commit < ActiveRecord::Base
       :committer_email => grit_commit.author.email }
   end
   
+  def grit_commit
+    project.repo.commit(sha)
+  end
+  
+  
+  
+  def skip?
+    merge? || tags.member?("skip")
+  end
+  
+  def merge?
+    message =~ MERGE_COMMIT_PATTERN
+  end
+  
+  
+  
+  def tags
+    parsed_message[:tags]
+  end
+  
+  def clean_message
+    parsed_message[:clean_message]
+  end
+  
   def ticket_numbers
-    @ticket_numbers ||= message.scan(TICKET_PATTERN).flatten
+    parsed_message[:tickets]
   end
   
   def extra_attributes
-    @extra_attributes ||= message.scan(EXTRA_ATTRIBUTE_PATTERN).each_with_object({}) do |(key, value), attrs|
-      attrs[key] ||= []
-      attrs[key].push(value)
-    end
-  end
-  
-  def skip?
-    SKIP_PATTERNS.any? { |pattern| message =~ pattern }
-  end
-  
-  def grit_commit
-    project.repo.commit(sha)
+    parsed_message[:attributes]
   end
   
   
@@ -40,16 +53,32 @@ class Commit < ActiveRecord::Base
   
   EXTRA_ATTRIBUTE_PATTERN = /\{\{([^:\}]+):([^\}]+)\}\}/
   
-  SKIP_PATTERNS = [
-    /\[skip\]/,
-    /\[testfix\]/,
-    /\[refactor\]/,
-    /^Merge (remote-tracking )?branch/
-  ]
+  TAG_PATTERN = /^\s*\[([^\]]+)\]\s*/
+  
+  MERGE_COMMIT_PATTERN = /^Merge (remote-tracking )?branch/
   
   
   
 private
+  
+  
+  
+  def parsed_message
+    @parsed_message ||= parse_message!
+  end
+  
+  def parse_message!
+    tags = []
+    tickets = []
+    attributes = {}
+    clean_message = message.dup
+    
+    clean_message.gsub!(TICKET_PATTERN) { tickets << $1; "" }
+    clean_message.gsub!(EXTRA_ATTRIBUTE_PATTERN) { (attributes[$1] ||= []).push($2); "" }
+    while clean_message.gsub!(TAG_PATTERN) { tags << $1; "" }; end
+    
+    {tags: tags, tickets: tickets, attributes: attributes, clean_message: clean_message.strip}
+  end
   
   
   
