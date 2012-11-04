@@ -14,7 +14,7 @@ class WeeklyReportController < ApplicationController
   
   def send_email
     @recipients = params[:recipients].split(/[\r\n]+|;/)
-    WeeklyReportMailer._new(@weekly_report, @recipients).deliver!
+    @weekly_report.deliver_to!(@recipients)
   rescue Timeout::Error
     redirect_to send_weekly_report_path, :notice => "Couldn't get a response from the mail server. Is everything OK?"
   end

@@ -13,4 +13,10 @@ class WeeklyReport
     "Weekly Report for #{date.strftime("%B %e")}"
   end
   
+  
+  
+  def deliver_to!(recipients)
+    WeeklyReportMailer._new(self, recipients).deliver!
+  end
+  
 end
