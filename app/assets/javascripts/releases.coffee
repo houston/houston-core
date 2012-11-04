@@ -2,8 +2,7 @@ window.App.NewReleaseForm =
   
   init: ->
     $nestedEditor = $('.changes-nested-editor')
-    $nestedEditor.find('.add-link').attr('tabindex', '-1').html('<i class="icon-plus-sign"></i>')
-    $nestedEditor.find('.delete-link').attr('tabindex', '-1').html('<i class="icon-minus-sign"></i>')
+    $nestedEditor.find('.add-link, .delete-link').attr('tabindex', '-1')
     $nestedEditor.delegate '.change-description input', 'keypress', (e)->
       if e.keyCode == 13
         e.preventDefault()

@@ -24,5 +24,18 @@
 
 .add-link, .delete-link { 
   opacity: 0.2;
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  line-height: 14px;
+  vertical-align: text-top;
+  background-image: url("/assets/twitter/bootstrap/glyphicons-halflings.png");
+  background-position: 14px 14px;
+  background-repeat: no-repeat;
+  text-indent: 9999em;
+  
+  &.add-link { background-position: 0 -96px; }
+  &.delete-link { background-position: -24px -96px; }
+  
   &:hover { opacity: 1; }
 }
