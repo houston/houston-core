@@ -1,6 +1,6 @@
-<%= render partial: "releases/header", locals: {release: @release} %>
+<%= render partial: "releases/header", locals: {release: @release} unless for_email? %>
 
-<div id="<%= @project.slug %>_changelog" class="-houston-changelog">
+<div id="<%= @release.project.slug %>_changelog" class="-houston-changelog">
   
   <div class="-houston-changelog-day">
     <h4><%= format_release_date(@release.date) %></h4>
@@ -17,7 +17,7 @@
     <div class="release-detail">
       <%= render partial: "releases/tickets", locals: {tickets: @release.tickets} %>
       <%= render partial: "releases/goldmine_numbers", locals: {goldmine_numbers: @release.goldmine_numbers} %>
-      <%= render partial: "releases/commits", locals: {commits: @release.commits} %>
+      <%= render partial: "releases/commits", locals: {commits: @release.commits} unless for_email? %>
     </div>
     
   <% end %>

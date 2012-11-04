@@ -93,7 +93,7 @@ class ReleasesController < ApplicationController
     
     if @release.save
       @release.update_tickets_in_unfuddle! if params[:update_tickets_in_unfuddle]
-      NotificationMailer.on_release(@release).deliver! if params[:send_release_email]
+      ViewMailer.release(@release).deliver! if params[:send_release_email]
       
       redirect_to @release, notice: 'Release was successfully created.'
     else
