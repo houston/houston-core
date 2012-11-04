@@ -20,7 +20,7 @@ class Release < ActiveRecord::Base
   delegate :maintainers, :to => :project
   
   validates_presence_of :user_id
-  validates_presence_of :deploy_id, :on => :create
+  # validates_presence_of :deploy_id, :on => :create
   validates_uniqueness_of :deploy_id, :allow_nil => true
   
   
