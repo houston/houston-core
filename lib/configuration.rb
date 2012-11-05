@@ -84,6 +84,27 @@ module Houston
       @severities ||= []
     end
     
+    def tags(*args)
+      if args.any?
+        @tag_map = {}
+        args.flatten.each do |hash|
+          Tag.new(hash.slice(:name, :color).merge(slug: hash[:as])).tap do |tag|
+            @tag_map[tag.slug] = tag
+            hash.fetch(:aliases, []).each do |slug|
+              @tag_map[slug] = tag
+            end
+          end
+        end
+      end
+      (@tag_map ||= {}).values.uniq
+    end
+    
+    def fetch_tag(slug)
+      tag_map.fetch(slug, NullTag.instance)
+    end
+    
+    attr_reader :tag_map
+    
     
     
     # Events
@@ -237,6 +258,55 @@ module_function
   end
   
 end
+
+
+
+class Tag
+  
+  def initialize(options={})
+    @name = options[:name]
+    @slug = options[:slug]
+    @color = options[:color]
+  end
+  
+  attr_reader :name
+  attr_reader :slug
+  attr_reader :color
+  
+  def to_partial_path
+    "tags/tag"
+  end
+  
+end
+
+class NullTag
+  
+  def self.instance
+    @instance ||= self.new
+  end
+  
+  def nil?
+    true
+  end
+  
+  def slug
+    nil
+  end
+  
+  def color
+    "EFEFEF"
+  end
+  
+  def name
+    "&mdash;".html_safe
+  end
+  
+  def to_partial_path
+    "tags/null_tag"
+  end
+  
+end
+
 
 
 

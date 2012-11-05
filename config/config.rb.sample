@@ -88,6 +88,16 @@ Houston.config do
     "5 Broken (no work-around)"     => "C1311E"
   })
   
+  # Tags: these are the tags available for Change Log entries
+  tags([
+    {name: "Bugfix", as: "fix", color: "C64537", aliases: %w{bugfix}},
+    {name: "Improvement", as: "improvement", color: "3383A8", aliases: %w{enhancement}},
+    {name: "New Feature", as: "feature", color: "8DB500"},
+    {name: "Refactor", as: "refactor", color: "909090"},
+    {name: "Testfix", as: "testfix", color: "909090"},
+    {name: "CI Fix", as: "ci", color: "909090", aliases: %w{cifix ciskip}}
+  ])
+  
   
   
   # Queues

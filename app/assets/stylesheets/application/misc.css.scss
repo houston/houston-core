@@ -111,6 +111,7 @@ li.column {
 form {
   .help-inline, label.error { color: #a00; }
   input[type="text"].error { color: #a00; border-color: #a00; }
+  select.error { border-color: #a00; }
 }
 
 small { font-size: 0.88em; }

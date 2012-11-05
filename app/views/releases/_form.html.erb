@@ -17,6 +17,7 @@
       <%= f.label :changes, :class => 'control-label' %>
       <div class="controls changes-nested-editor">
         <%= f.nested_editor_for :changes do |f| -%>
+          <div class="change-tag"><%= f.collection_select :tag_slug, [NullTag.instance] + Houston.config.tags, :slug, :name %></div>
           <div class="change-description"><%= f.text_field :description, maxlength: 255 %></div>
         <% end -%>
       </div>

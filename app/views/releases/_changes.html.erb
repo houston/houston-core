@@ -1,7 +1,7 @@
 <div class="release-changes">
   <% changes.each do |change| %>
     <%= div_for(change) do %>
-      <span class="change-tag -tag-<%= change.tag.slug %>"><%= change.tag.text %></span>
+      <%= render change.tag %>
       <span class="change-summary"><%= format_change(change) %></span>
     <% end %>
   <% end %>
