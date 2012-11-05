@@ -1,7 +1,7 @@
 class WeeklyReport
   
   def initialize(date=Date.today)
-    @date = date
+    @date = date.to_date
     
     monday = @date.beginning_of_week
     @date_range = monday..(6.days.since(monday))
