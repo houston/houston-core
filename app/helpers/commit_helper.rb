@@ -1,13 +1,13 @@
 module CommitHelper
   
   def format_commit(commit)
-    message = format_with_feature_bolded(commit.message)
+    message = commit.message
     message = format_with_tickets_linked(commit.project, message)
     message
   end
   
   def format_change(change)
-    message = format_with_feature_bolded(change.description)
+    message = change.description
     message = format_with_tickets_linked(change.project, message)
     message
   end
