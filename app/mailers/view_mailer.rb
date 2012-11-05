@@ -33,7 +33,7 @@ class ViewMailer < ActionMailer::Base
       from: format_email_address(release.user),
       to: release.notification_recipients.map(&method(:format_email_address)),
       cc: release.maintainers.map(&method(:format_email_address)),
-      subject: release_announcement_for(release),
+      subject: "#{release.project.name} Update: changes have been deployed to #{release.environment.name}",
       template: "releases/show"
     })
   end
@@ -53,14 +53,6 @@ private
           Premailer.new(html, with_html_string: true).to_inline_css
         end
       end
-    end
-  end
-  
-  
-  def release_announcement_for(release)
-    case release.environment.slug # <-- knowledge of environments
-    when "dev"; "Testing updates for #{release.project.name}"
-    when "master"; "Release notice for #{release.project.name}"
     end
   end
   
