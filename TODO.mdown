@@ -1,54 +1,77 @@
 # To Do
 
 
-### Soon
+## Projects
 
- - Move "Houston" to status.cphepdev.com
- - Use Whenever to actually send emails
- - Use Resque to do expensive fetches in background jobs
- - Use Foreman to manage other processes
- - Move "new release trigger" to "deploys"
- - **Weekly Report:**
-   ! **Exceptions:** problems history is off by 1 week?
-   - **Releases:** show deploys
-   - **Exceptions:** show notice-count pie
-   - **Performance:** Replace "apdex" graphs with histogram of response times
-   - ?> Pair projects with colors somewhere (then don't for "Focus this week")
- - **Releases:**
-   - Turn tags in commit messages into visual tags (skip by default)
-     - _Tags_ can be public or private
-   - Render timeline-style
+
+### Allowing Customers to Subscribe to Release Notes
+
+ 1. **Releases:** set levels for tags (Customer, Internal, All) 
+ 2. Rethink notifications --- has something to do with releases
+   - **Project:** fix setting notifications
+   - **Project:** faster way for checking notifications!
+   - **Release Emails:** send one-off (so can be sent to customers)
+ 3. Create embeddable front-end
+
+
+### Show Real-Time Analytics
+
+ 1. Move to houston.prd
+ 2. Use Foreman to manage other processes, http://blog.daviddollar.org/2011/05/06/introducing-foreman.html, http://ddollar.github.com/foreman/, http://michaelvanrooijen.com/articles/2011/06/08-managing-and-monitoring-your-ruby-application-with-foreman-and-upstart/
+ 3. Use Resque to do expensive fetches in background jobs (--> unfuddle.json)
+ 4. Solve replacing Kanban (refresh tickets) (with resque?)
+ 5. Release Real-Time graphs
+   - Solve for multiple apps (multiple gauges? multiple fields?)
  - **Project Dashboard:**
-   - Implement real-time graphs:
-     - Solve for multiple apps (multiple gauges? multiple fields?)
-     - Solve running background jobs
    - Real-time graph of exception notices
    - Figure out how to show queue history; show more weeks
    - Show deploys _on_ real-time graphs
- - **Project:**
-   ! allow changing Git URL (have tmp folder deleted or whatever)
-   ! fix setting notifications
-   - faster way for checking notifications!
+
+
+### Related to Errbit
+
+ - **Errbit:** modify API to include project for notices
+   - **Exceptions:** show notice-count pie
+ - **Errbit:** add web hooks
+   - Trigger sound effects
+
+
+## Loose
+
+
+### Soon
+
+ - **Global:** redesign section headings with links
+ - Retire a project
+ - allow changing Git URL (have tmp folder deleted or whatever)
+ - **Deploy Emails:**
+   - have up-to-date commits
+   - are styled like view (=> can get rid of releases/changelog partial, et al then)
+ - **Weekly Report:**
+   - ?> Pair projects with colors somewhere (then don't for "Focus this week")
+   - **Exceptions:** problems history is off by 1 week?
+   - New Section: **Deploys** or **Releases**
+   - New Section: **Test Coverage** (add Jenkins as a CI adapter)
+   - Fix a few rendering glitches
+   - **Performance:** Replace "apdex" graphs with histogram of response times
+     - Refactor NewRelic part
+       - Cache API calls
+
+
+### After that
+
+ - **Weekly Report:**
+   - Cache Google Chart images in emails and/or implement server-side SVG library
  - **Release:**
    - allow adding/removing _tickets_ from release notes
    - show ticket/change counts in real time
- - **Release Emails:** have up-to-date commits
  - **Dashboard:**
-   - Solve replacing Kanban (refresh tickets)
    - Design dashboard
- - **Daily Report:**
-   - Send daily report to project maintainers with news
-     - Recent new tickets
-     - Recent new exceptions
-     - Maintenance lights
  - Refactoring:
    - Extract WeeklyReport model from WeeklyReports#show
    - Duplicate code in `users_controller#index` and `users_controller#show`
    - Duplicate code in Projects#show and WeeklyReport#show
- - Implement caching
-   - Cache Google Chart images in emails
    - New Relic API calls
- - **Global:** redesign section headings with links
  - Write tests :l
  ! **Testing Notes:** edit a failing testing note at home, SMTP fail, timeout takes 30 seconds!
  ! **Global:** disable buttons when working! (e.g. what saving a very slow testing note)
@@ -64,20 +87,27 @@
 ### Refactoring and Configuration
 
  - Turn on or off features via config.rb
- - Should "environments" be like queues: defined for all projects in config.rb?
+ - Make mobile site
  - Should "key_dependencies" be defined per-project rather than in config.rb?
  - Refactor hard-coded knowledge about Unfuddle/EP into configuration
    - "in_testing" queue for "Testing Report"
-   - "deployment" for "Production" badge on tickets
+   - "deployment" for "Production" badge on tickets (Testing Report?)
    - "goldmine" for Release notes
-   - "mailer_sender" in `devise.rb`
+   - "dev" and "master" environments
    - what counts as invalid or duplicate in `users_controller.rb`
+   - how feature prefixes are boldened for Unfuddle tickets
 
 
 ### Ideas
 
+ - **Daily Report:**
+   - Send daily report to project maintainers with news
+     - Recent new tickets
+     - Recent new exceptions
+     - Maintenance lights
+ - **Release:** cache `deploy.created_at` as `deployed_at`
+ - **Releases:** Support RSS
  - ?? Need to include testing metrics: code coverage? test runs?
- - **Post-Receive:** use update event instead?
  - Report on health of tickets
  - **Weekly Report:**
    - **Exceptions:** split bar graph?
