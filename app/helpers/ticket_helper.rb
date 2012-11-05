@@ -13,21 +13,22 @@ module TicketHelper
     end
   end
   
+  def format_with_feature_bolded(message)
+    feature = (message.match(/^([^\{:]+):/) || [])[1]
+    if feature
+      message = h(message[feature.length..-1])
+      feature = "<b>#{h feature}</b>"
+    end
+    "#{feature}#{message}".html_safe
+  end
+  
+  
+  
   def link_to_goldmine_case(number)
     link_to number, goldmine_case_number_url(number), target: "_blank"
   end
   
-  def link_to_ticket_number(ticket)
-    if ticket.project
-      link_to "##{ticket.number}", unfuddle_ticket_url(ticket)
-    else
-      "##{ticket.number}"
-    end
-  end
   
-  def link_to_commit(commit)
-    link_to commit.sha[0...8], github_commit_url(commit), target: "_blank"
-  end
   
   def attributes_for_ticket_verdict(ticket)
     attributes = {}

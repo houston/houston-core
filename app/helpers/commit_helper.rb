@@ -6,19 +6,14 @@ module CommitHelper
     message
   end
   
+  def link_to_commit(commit)
+    link_to commit.sha[0...8], github_commit_url(commit), target: "_blank"
+  end
+  
   def format_change(change)
     message = change.description
     message = format_with_tickets_linked(change.project, message)
     message
-  end
-  
-  def format_with_feature_bolded(message)
-    feature = (message.match(/^([^\{:]+):/) || [])[1]
-    if feature
-      message = h(message[feature.length..-1])
-      feature = "<b>#{h feature}</b>"
-    end
-    "#{feature}#{message}".html_safe
   end
   
   def format_with_tickets_linked(project, message)
