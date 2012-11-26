@@ -50,6 +50,10 @@ Houston::Application.routes.draw do
   # Projects
   
   resources :projects do
+    member do
+      put :retire
+    end
+    
     match "releases", :to => "releases#index", :as => :releases
     
     resources :environments, :controller => "project_environments" do

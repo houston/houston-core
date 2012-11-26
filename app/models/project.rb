@@ -25,6 +25,19 @@ class Project < ActiveRecord::Base
   
   
   
+  default_scope where(:retired_at => nil)
+  
+  def retire!
+    update_attributes!(:retired_at => Time.now)
+    freeze
+  end
+  
+  def unretire!
+    update_attributes!(:retired_at => nil)
+  end
+  
+  
+  
   # Later, I hope to support multiple adapters
   # and make the ticket system choice either part
   # of the config.yml or a project's configuration.

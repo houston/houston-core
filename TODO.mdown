@@ -42,7 +42,6 @@
 ### Soon
 
  - **Global:** redesign section headings with links
- - Retire a project
  - allow changing Git URL (have tmp folder deleted or whatever)
  - **Deploy Emails:**
    - have up-to-date commits
@@ -82,6 +81,7 @@
  - **Kanban:** optimize rendering tickets on the server
  - **Release Email:** add _retest_ group for testing update
  - **Project:** allow manually updating commits
+ - **Projects:** show retired projects and allow "unretiring" them
 
 
 ### Refactoring and Configuration

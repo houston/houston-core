@@ -130,7 +130,8 @@
     <div class="form-actions">
       <%= f.submit nil, :class => 'btn btn-primary' %>
       <%= link_to 'Cancel', projects_path, :class => 'btn' %>
-      <%= link_to 'Delete', project_path(@project), :method => 'delete', :confirm => 'Are you sure?', :class => 'btn btn-danger btn-delete' if @project.persisted? && can?(:destroy, @project) %>
+      <%= link_to 'Retire', retire_project_path(@project), :method => 'put', :class => 'btn btn-danger' if @project.persisted? && can?(:destroy, @project) %>
+      <%# link_to 'Delete', project_path(@project), :method => 'delete', :confirm => 'Are you sure?', :class => 'btn btn-danger btn-delete' if @project.persisted? && can?(:destroy, @project) %>
     </div>
   </fieldset>
 <% end %>

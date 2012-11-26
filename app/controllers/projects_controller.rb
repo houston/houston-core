@@ -74,7 +74,16 @@ class ProjectsController < ApplicationController
       end
     end
   end
-
+  
+  
+  # PUT /projects/1/retire
+  def retire
+    @project = Project.find_by_slug!(params[:id])
+    @project.retire!
+    redirect_to projects_path, notice: "#{@project.name} was successfully retired."
+  end
+  
+  
   # DELETE /projects/1
   # DELETE /projects/1.json
   def destroy
