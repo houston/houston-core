@@ -36,7 +36,7 @@ module Errbit
       end
       
       def fake_fetch_problems(options={})
-        project_ids = Project.pluck(:errbit_app_id).select { |id| !id.blank? }
+        project_ids = Project.pluck(:errbit_app_id).select { |id| !id.blank? } + [-56, -1231]
         
         before_week = 5.days.until(options[:start_date].to_time).to_s
         during_week = 3.days.until(options[:end_date].to_time).to_s

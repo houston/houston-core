@@ -119,6 +119,8 @@
       
       bugs.each do |bug|
         project = @projects.detect { |project| project.errbit_app_id == bug.errbit_app_id }
+        next unless project
+        
         bugs_by_week = (bugs_by_week_by_project[project] ||= Hash[errbit_history_weeks.zip([0]*weeks_of_errbit_history)])
         bug_counts = (bug_counts_by_project[project] ||= {"fixed" => 0, "new" => 0, "open" => 0})
         
