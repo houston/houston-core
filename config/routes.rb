@@ -1,3 +1,5 @@
+require 'resque/server'
+
 Houston::Application.routes.draw do
   
   devise_for :users
@@ -87,6 +89,9 @@ Houston::Application.routes.draw do
   
   # Experiment
   match "tickets", :to => "tickets#index", :via => :get
+  
+  # Resque
+  mount Resque::Server.new, :at => "/resque"
   
   # This just renders a fake Kanban:
   # to give you an idea of what your queues, colors, and ages will look like

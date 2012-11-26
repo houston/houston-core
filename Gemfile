@@ -46,6 +46,7 @@ gem 'letter_opener', :git => 'git://github.com/pcg79/letter_opener.git'
 gem 'nokogiri'
 gem 'premailer' # for inlining CSS in HTML emails
 gem 'remotable', '>= 0.2.2', :git => 'git://github.com/boblail/remotable.git'
+gem 'resque'
 gem 'yajl-ruby', :require => 'yajl/json_gem'
 gem 'whenever' # a DSL for writing CRON jobs
 
@@ -61,7 +62,8 @@ group :development do
 end
 
 group :development, :test do
-  gem "minitest"
-  gem "turn", :require => false # for prettier tests
+  gem 'minitest'
+  gem 'turn', :require => false # for prettier tests
   gem 'pry' # for debugging
+  gem 'pry-remote'
 end

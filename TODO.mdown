@@ -16,9 +16,9 @@
 
 ### Show Real-Time Analytics
 
- 1. Move to houston.prd
- 2. Use Foreman to manage other processes, http://blog.daviddollar.org/2011/05/06/introducing-foreman.html, http://ddollar.github.com/foreman/, http://michaelvanrooijen.com/articles/2011/06/08-managing-and-monitoring-your-ruby-application-with-foreman-and-upstart/
- 3. Use Resque to do expensive fetches in background jobs (--> unfuddle.json)
+ X  Move to houston.prd
+ X  Use Foreman to manage other processes, http://blog.daviddollar.org/2011/05/06/introducing-foreman.html, http://ddollar.github.com/foreman/, http://michaelvanrooijen.com/articles/2011/06/08-managing-and-monitoring-your-ruby-application-with-foreman-and-upstart/
+ X  Use Resque to do expensive fetches in background jobs (--> unfuddle.json)
  4. Solve replacing Kanban (refresh tickets) (with resque?)
  5. Release Real-Time graphs
    - Solve for multiple apps (multiple gauges? multiple fields?)
