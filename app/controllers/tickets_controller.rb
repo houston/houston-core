@@ -17,6 +17,11 @@ class TicketsController < ApplicationController
     end
   end
   
+  def show
+    ticket = Ticket.find(params[:id])
+    render :json => TicketPresenter.new(ticket).with_testing_notes
+  end
+  
   def update
     ticket = Ticket.find(params[:id])
     if ticket.update_attributes(last_release_at: params[:lastReleaseAt])
