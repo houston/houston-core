@@ -382,12 +382,12 @@
         </td>
         <td class="exceptions-summary" rowspan="2">
           <div class="exceptions-bugs-summary-group">
-            <p class="exceptions-bugs-summary new-bugs <%= bugs_new_this_week.zero? ? "zero" : "positive" %>">
-              <span class="bug-count"><span class="sign">+</span><%= bugs_new_this_week %></span> <%= image_tag(image_url("bug-new-32.png"), size: 32, :class => "bug") %>
-            </p>
-            <p class="exceptions-bugs-summary resolved-bugs <%= bugs_fixed_this_week.zero? ? "zero" : "negative" %>">
-              <span class="bug-count"><span class="sign">–</span><%= bugs_fixed_this_week %></span> <%= image_tag(image_url("bug-fixed-32.png"), size: 32, :class => "bug") %>
-            </p>
+            <div class="exceptions-bugs-summary new-bugs <%= bugs_new_this_week.zero? ? "zero" : "positive" %>">
+              <div class="bug-count"><span class="sign">+</span><%= bugs_new_this_week %> <%= image_tag(image_url("bug-new-32.png"), size: 32, :class => "bug") %></div>
+            </div>
+            <div class="exceptions-bugs-summary resolved-bugs <%= bugs_fixed_this_week.zero? ? "zero" : "negative" %>">
+              <div class="bug-count"><span class="sign">–</span><%= bugs_fixed_this_week %> <%= image_tag(image_url("bug-fixed-32.png"), size: 32, :class => "bug") %></div>
+            </div>
           </div>
           
           <% if bugs_change_this_week == 0 %>
