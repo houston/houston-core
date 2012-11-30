@@ -116,6 +116,16 @@ form {
 
 small { font-size: 0.88em; }
 
+// Render .nav pills in one line
+.nav-pills > li { 
+  float: none; 
+  display: inline-block;
+}
+
+.nav-pills.inline { 
+  display: inline-block;
+}
+
 a.refresh-queue {
   color: #333;
   text-decoration: none;

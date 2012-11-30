@@ -1,12 +1,15 @@
 <%= render partial: "projects/header", locals: {project: @project, subtitle: "Releases"} %>
 
-<ul class="nav nav-pills">
+<ul class="nav nav-pills inline">
   <% @project.environments.each do |environment| %>
     <%= content_tag :li, :class => (@environment.id == environment.id ? "active" : nil) do %>
       <% link_to environment.name, project_releases_path(@project, environment_id: environment.slug) %>
     <% end %>
   <% end %>
 </ul>
+
+<%= link_to "New Release", new_project_environment_release_path(@project, @environment), :class => 'btn btn-primary' if @environment && can?(:create, Release) %>
+
 
 <% if @releases.none? %>
 
@@ -45,5 +48,3 @@
   </div>
 
 <% end %>
-
-<%= link_to "New Release", new_project_environment_release_path(@project, @environment), :class => 'btn btn-primary' if @environment && can?(:create, Release) %>
