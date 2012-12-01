@@ -8,11 +8,16 @@ class KeyDependency
     @versions = KeyDependency.versions_for(dependency)
     @latest_version = versions.first
     
-    stringified_versions = versions.map(&:to_s)
-    current_minor_version = stringified_versions.first[/\d+\.\d+/]
-    rx = /^#{current_minor_version}\.\d+$/
-    @patches = stringified_versions.select { |version| version =~ rx }
-    @minor_versions = stringified_versions.map { |version| version[/\d+\.\d+/] }.uniq
+    if versions.any?
+      stringified_versions = versions.map(&:to_s)
+      current_minor_version = stringified_versions.first[/\d+\.\d+/]
+      rx = /^#{current_minor_version}\.\d+$/
+      @patches = stringified_versions.select { |version| version =~ rx }
+      @minor_versions = stringified_versions.map { |version| version[/\d+\.\d+/] }.uniq
+    else
+      @patches = []
+      @minor_versions = []
+    end
   end
   
   
