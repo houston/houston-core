@@ -3,8 +3,23 @@
   padding: 0;
 }
 
+.user-row {
+  clear: left;
+  overflow: hidden;
+
+  &:after {
+    content: ".";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    line-height: 0;
+    height: 0;
+  }
+}
+
 .user {
-  display: inline-block;
+  display: block;
+  float: left;
   list-style-type: none;
   margin: 1em .25em 1em;
   overflow: hidden;
