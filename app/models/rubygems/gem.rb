@@ -49,7 +49,7 @@ module Rubygems
     
     def fetch_releases_from_previous_cache_on_error
       yield
-    rescue Rubygems::Error
+    rescue Rubygems::Error, Faraday::Error::ClientError
       Rails.logger.error "[rubygems] an error occurred fetching releases for '#{name}': #{$!}"
       Houston.report_exception $!
       
