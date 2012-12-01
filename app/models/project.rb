@@ -77,9 +77,13 @@ class Project < ActiveRecord::Base
     return [] if ticket_system.nil?
     
     unfuddle_tickets = ticket_system.find_tickets!(*query)
+    tickets_from_unfuddle_tickets(unfuddle_tickets)
+  end
+  
+  def tickets_from_unfuddle_tickets(unfuddle_tickets)
     return [] if unfuddle_tickets.empty?
     
-    self.class.benchmark("[project.find_tickets] synchronizing with local tickets") do
+    self.class.benchmark("[project.tickets_from_unfuddle_tickets] synchronizing with local tickets") do
       numbers = unfuddle_tickets.map { |unfuddle_ticket| unfuddle_ticket["number"] }
       tickets = self.tickets.where(number: numbers).includes(:testing_notes).includes(:commits)
       

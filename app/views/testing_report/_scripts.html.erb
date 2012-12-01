@@ -1,0 +1,35 @@
+<% content_for :scripts do %>
+  <script type="text/javascript">
+    $(function() {
+      
+      var loadViews = function(ticketsByProjectId) {
+        for(projectId in ticketsByProjectId) {
+          var tickets = new Tickets(ticketsByProjectId[projectId]);
+          var id = '#project_' + projectId + '_testing_report';
+          new TestingTicketsView({el: id, tickets: tickets});
+        }
+      }
+      
+      var $refresh = $('#refresh_testing_report');
+      $refresh.click(function(e) {
+        e.preventDefault();
+        
+        $refresh.attr('disabled', 'disabled').html('Loading...');
+        
+        $.get(window.location.href)
+          .error(function() {
+            window.console.log('error', arguments);
+          })
+          .success(function(ticketsByProjectId) {
+            loadViews(ticketsByProjectId);
+          })
+          .complete(function() {
+            $refresh.removeAttr('disabled').html('Refresh');
+          });
+      });
+      
+      loadViews(<%= raw tickets_by_project_id.to_json %>);
+      
+    });
+  </script>
+<% end %>

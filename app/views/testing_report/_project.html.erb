@@ -2,11 +2,7 @@
   <h4 class="testing-report-project-title">
     <b class="bubble <%= project.color %>"></b>
     <%= project.name %>&nbsp;&nbsp;»&nbsp;&nbsp;
-    <a class="refresh-queue" data-queue="in_testing" data-project="<%= project.slug %>" rel="tooltip" title="Refresh" data-placement="bottom">
-      <span class="testing-report-ticket-count"><%= pluralize(tickets.count, "tickets") %></span>
-      <%= image_tag "/images/refresh.png", width: 16, height: 16, :class => "refresh-icon" %>
-      <%= image_tag "/images/preloader.gif", width: 16, height: 16, :class => "preloader-icon" %>
-    </a>
+    <span class="testing-report-ticket-count"></span>
   </h4>
 
   <div id="project_<%= project.id %>_progress" class="testing-report-progress pie"></div>

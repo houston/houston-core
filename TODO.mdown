@@ -90,7 +90,6 @@
  - Make mobile site
  - Should "key_dependencies" be defined per-project rather than in config.rb?
  - Refactor hard-coded knowledge about Unfuddle/EP into configuration
-   - "in_testing" queue for "Testing Report"
    - "deployment" for "Production" badge on tickets (Testing Report?)
    - "goldmine" for Release notes
    - "dev" and "master" environments

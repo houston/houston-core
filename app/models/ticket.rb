@@ -148,6 +148,12 @@ class Ticket < ActiveRecord::Base
   
   
   
+  def in_development?
+    deployment.blank?
+  end
+  
+  
+  
   def close_ticket!
     unfuddle_ticket = Unfuddle::Ticket.new("id" => unfuddle_id, "project_id" => project.unfuddle_id)
     unfuddle_ticket.update_attributes!("status" => "closed")

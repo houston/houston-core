@@ -3,12 +3,7 @@ class window.TestingTicketsView extends Backbone.View
   
   initialize: ->
     @tickets = @options.tickets
-    
     @render()
-    
-    view = @
-    $(@el).delegate 'a.refresh-queue', 'click', ->
-      view.refreshQueue($(@))
   
   render: ->
     $el = $(@el)
@@ -19,24 +14,12 @@ class window.TestingTicketsView extends Backbone.View
       view.on 'testing_note:refresh', _.bind(@refreshPieGraph, @)
       $ul.appendView view
     
+    $count = $el.find('.testing-report-ticket-count')
+    $count.html "#{@tickets.length} #{if @tickets.length == 1 then 'ticket' else 'tickets'}"
+    
     $("[data-tester-id=#{window.userId}]").addClass('current-tester') if window.userId
     
     @refreshPieGraph()
-  
-  refreshQueue: ($a)->
-    return if $a.hasClass('in-progress')
-    
-    projectSlug = $a.attr('data-project')
-    queue = $a.attr('data-queue')
-    
-    $a.addClass('in-progress')
-    
-    xhr = $.get "#{App.relativeRoot()}/kanban/#{projectSlug}/#{queue}.json"
-    xhr.success (tickets)=>
-      @tickets = new Tickets(tickets)
-      @render()
-    xhr.complete =>
-      $a.removeClass('in-progress')
   
   refreshPieGraph: ->
     passes = 0

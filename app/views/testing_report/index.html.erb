@@ -1,5 +1,7 @@
 <h1 class="space-below">
   Testing Report
+  
+  <button class="btn" id="refresh_testing_report">Refresh</button>
 </h1>
 
 <ul class="tester-names">
@@ -20,19 +22,8 @@
 
 <div class="testing-reports-projects">
   <% @projects.each do |project, tickets| %>
-    <%= render partial: "testing_report/project", locals: {project: project, tickets: tickets} %>
+    <%= render partial: "testing_report/project", locals: {project: project} %>
   <% end %>
 </div>
 
-<% content_for :scripts do %>
-  <script type="text/javascript">
-    $(function() {
-      var tickets, view;
-      
-      <% @projects.each do |project, tickets| %>
-      tickets = new Tickets(<%= raw TicketPresenter.new(tickets).with_testing_notes.to_json %>);
-      view = new TestingTicketsView({el: '#project_<%= project.id %>_testing_report', tickets: tickets});
-      <% end %>
-    });
-  </script>
-<% end %>
+<%= render partial: "testing_report/scripts", locals: {tickets_by_project_id: @tickets_by_project_id} %>
