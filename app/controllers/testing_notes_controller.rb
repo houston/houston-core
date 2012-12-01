@@ -31,7 +31,7 @@ private
       begin
         NotificationMailer.on_fail_verdict(@testing_note).deliver
       rescue
-        notify_airbrake($!)
+        Houston.report_exception $!
       end
     end
   end
