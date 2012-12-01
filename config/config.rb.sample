@@ -40,6 +40,8 @@ Houston.config do
   key_dependencies do
     gem "rails"
     gem "devise"
+    gem "backbone-rails", as: "Backbone.js"
+    gem "jquery-rails", as: "jQuery"
   end
   
   

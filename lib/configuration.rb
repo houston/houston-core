@@ -64,7 +64,7 @@ module Houston
       if block_given?
         dependencies = Houston::Dependencies.new
         dependencies.instance_eval(&block)
-        @dependencies = dependencies.names
+        @dependencies = dependencies.values
       end
       @dependencies || []
     end
@@ -143,12 +143,10 @@ module Houston
       @values = []
     end
     
-    def gem(name)
-      @values << [:gem, name]
-    end
+    attr_reader :values
     
-    def names
-      @values.map { |pair| pair[1] }
+    def gem(slug, options={})
+      @values << options.merge(type: :gem, slug: slug)
     end
     
   end

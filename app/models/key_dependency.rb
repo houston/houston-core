@@ -1,11 +1,11 @@
 class KeyDependency
   
   
-  def initialize(dependency)
-    @slug = dependency
-    @name = dependency.titleize
+  def initialize(attributes={})
+    @slug = attributes[:slug]
+    @name = attributes.fetch(:as, @slug.titleize)
     
-    @versions = KeyDependency.versions_for(dependency)
+    @versions = KeyDependency.versions_for(self)
     @latest_version = versions.first
     
     if versions.any?
@@ -36,7 +36,7 @@ class KeyDependency
     # Right now the only supported dependencies are Ruby Gems
     # In the future, as other kinds of dependencies are supported,
     # we'll support different adapters to fetch their version info
-    Rubygems::Gem.new(dependency).versions
+    Rubygems::Gem.new(dependency.slug).versions
   end
   
   
