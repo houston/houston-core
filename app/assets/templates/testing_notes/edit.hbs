@@ -1,0 +1,16 @@
+<div class="tester-avatar">{{{avatarImage}}}</div>
+<form accept-charset="UTF-8" action="/tickets/{{ticketId}}/testing_notes/{{id}}" class="testing-note-form" id="edit_testing_note_{{id}}" method="post">
+  <p>
+    <input data-attr="ticket_id" id="testing_note_{{id}}_ticket_id" name="ticket_id" type="hidden" value="{{ticketId}}" />
+    <label for="testing_note_{{id}}_verdict_works">{{{radioButton "testing_note" id "verdict" "works" verdict}}} Works</label>
+    <label for="testing_note_{{id}}_verdict_fails">{{{radioButton "testing_note" id "verdict" "fails" verdict}}} Fails</label>
+    <label for="testing_note_{{id}}_verdict_none">{{{radioButton "testing_note" id "verdict" "none" verdict}}} None</label>
+  </p>
+  <p>
+    <textarea id="testing_note_comment" name="comment">{{comment}}</textarea>
+  </p>
+  <p>
+    <input class="btn btn-primary" name="commit" type="submit" value="Save" />
+    <input class="btn btn-cancel" name="commit" type="submit" value="Cancel" />
+  </p>
+</form>

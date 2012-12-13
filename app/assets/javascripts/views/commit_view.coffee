@@ -3,7 +3,7 @@ class window.CommitView extends Backbone.View
   className: 'commit'
   
   initialize: ->
-    @renderer = Handlebars.compile($('#commit_template').html())
+    @renderer = HandlebarsTemplates['commit']
   
   render: ->
     $el = $(@el)

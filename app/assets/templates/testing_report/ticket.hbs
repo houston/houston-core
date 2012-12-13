@@ -1,0 +1,20 @@
+<div class="span8">
+  <a data-toggle="collapse" data-parent="#tickets" data-target="#ticket_{{id}}_testing_notes" class="testing-notes">[#{{number}}] {{{formatTicketSummary summary}}}</a>
+  <a href="{{unfuddleUrl}}" target="_blank">
+    <img alt="Favicon-unfuddle" data-tooltip-placement="right" height="16" rel="tooltip" src="/images/favicon-unfuddle.png" width="16" data-original-title="View in Unfuddle">
+  </a>
+  {{#ifEq deployment "In Production (Released)"}}<span class="label label-inverse">Production</span>{{/ifEq}}
+  {{#committers}} <span class="committer-avatar">{{{avatar email 24 name}}}</span>{{/committers}}
+</div>
+<div class="span4">
+  <span class="ticket-verdict-summary"></span>
+  <span class="tester-verdicts"></span>
+  {{#if maintainer}}
+    <button class="close-button btn">Close</button>
+  {{/if}}
+</div>
+<ol id="ticket_{{id}}_testing_notes" class="testing-notes collapse span8">
+  {{#if description}}
+    <li class='ticket-description'>{{{description}}}</li>
+  {{/if}}
+</ol>

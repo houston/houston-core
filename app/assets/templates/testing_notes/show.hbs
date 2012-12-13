@@ -1,0 +1,11 @@
+<div class="tester-avatar">{{{avatarImage}}}</div>
+<div class="testing-note-body">
+  <span class="testing-note-timestamp">{{formatTime createdAt}}</span>
+  <span class="tester-comment">{{{markdown comment}}}</span>
+  {{#if editable}}
+  <span class="tester-controls">
+    <a class="edit-note">Edit</a>
+    <a class="destroy-note">Delete</a>
+  </span>
+  {{/if}}
+</div>

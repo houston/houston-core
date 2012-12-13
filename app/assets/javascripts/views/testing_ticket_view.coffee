@@ -10,9 +10,9 @@ class window.TestingTicketView extends Backbone.View
   initialize: ->
     @ticket = @options.ticket
     @testingNotes = @ticket.testingNotes()
-    @renderTicket = Handlebars.compile($('#ticket_in_testing_template').html())
-    @renderTesterVerdict = Handlebars.compile($('#ticket_tester_verdict_template').html())
-    @renderNewTestingNote = Handlebars.compile($('#new_testing_note_template').html())
+    @renderTicket = HandlebarsTemplates['testing_report/ticket']
+    @renderTesterVerdict = HandlebarsTemplates['testing_report/verdict']
+    @renderNewTestingNote = HandlebarsTemplates['testing_notes/new']
     @viewInEdit = null
   
   render: ->

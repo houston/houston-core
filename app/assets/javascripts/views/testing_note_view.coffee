@@ -9,8 +9,8 @@ class window.TestingNoteView extends Backbone.View
   
   initialize: ->
     @isInEditMode = false
-    @renderTestingNote = Handlebars.compile($('#testing_note_template').html())
-    @renderEditTestingNote = Handlebars.compile($('#edit_testing_note_template').html())
+    @renderTestingNote = HandlebarsTemplates['testing_notes/show']
+    @renderEditTestingNote = HandlebarsTemplates['testing_notes/edit']
     $(@el).delegate 'form', 'submit', _.bind(@commit, @)
   
   render: ->

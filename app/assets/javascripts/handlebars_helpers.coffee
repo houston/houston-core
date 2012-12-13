@@ -75,7 +75,7 @@ Handlebars.registerHelper 'avatar', (email, size, title)->
   
 Handlebars.registerHelper 'ifEq', (v1, v2, block)->
   if v1 == v2
-    block(@)
+    block.fn(@)
   else
     block.inverse(@)
   # if context == options.hash.compare

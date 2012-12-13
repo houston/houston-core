@@ -25,4 +25,5 @@
 //= require date_format
 //= require md5
 //= require raphael
+//= require_tree ../templates
 //= require_tree .
