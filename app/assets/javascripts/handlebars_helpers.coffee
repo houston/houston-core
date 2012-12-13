@@ -22,7 +22,7 @@ Handlebars.registerHelper 'markdown', (markdown)->
 Handlebars.registerHelper 'classForAge', (seconds)->
   if seconds < (6 * Duration.HOUR)
     'infant'
-  if seconds < (2 * Duration.DAY)
+  else if seconds < (2 * Duration.DAY)
     'child'
   else if seconds < (7 * Duration.DAY)
     'adult'
