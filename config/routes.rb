@@ -2,7 +2,7 @@ require 'resque/server'
 
 Houston::Application.routes.draw do
   
-  devise_for :users
+  devise_for :users, :controllers => { :sessions => "sessions" }
   
   root :to => "kanban#index", :via => :get
   

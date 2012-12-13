@@ -24,16 +24,13 @@ class ApplicationController < ActionController::Base
   
   
   
+  # !todo: abstract to adapters
   def unfuddle
     @unfuddle ||= Unfuddle.new
   end
   
   def after_sign_in_path_for(user)
-    if session["user.return_to"].present?
-      session["user.return_to"]
-    else
-      default_path_for(user)
-    end
+    session["user_redirect_to"] || stored_location_for(user) || default_path_for(user)
   end
   
   
