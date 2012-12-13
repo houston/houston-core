@@ -72,7 +72,7 @@ GEM
     coffee-script (2.2.0)
       coffee-script-source
       execjs
-    coffee-script-source (1.2.0)
+    coffee-script-source (1.4.0)
     commonjs (0.2.5)
     css_parser (1.2.6)
       addressable
@@ -103,7 +103,7 @@ GEM
     grit (2.4.1)
       diff-lcs (~> 1.1)
       mime-types (~> 1.15)
-    handlebars_assets (0.4.1)
+    handlebars_assets (0.7.1)
       execjs (>= 1.2.9)
       sprockets (>= 2.0.3)
       tilt
@@ -193,7 +193,7 @@ GEM
       vegas (~> 0.1.2)
     rvm-capistrano (1.2.2)
       capistrano (>= 2.0.0)
-    sass (3.1.15)
+    sass (3.2.3)
     sass-rails (3.2.5)
       railties (~> 3.2.0)
       sass (>= 3.1.10)

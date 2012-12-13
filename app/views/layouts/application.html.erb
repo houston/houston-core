@@ -16,6 +16,7 @@
     <!-- Le styles -->
     <%= stylesheet_link_tag "application", :media => "all" %>
     <%= stylesheet_link_tag "print", :media => "print" %>
+    <%= yield :stylesheets %><%# so that Engines can hook in and add styles %>
 
     <!-- Le fav and touch icons -->
     <link rel="icon" type="image/x-icon" href="<%= ENV['RAILS_RELATIVE_URL_ROOT'] %>/favicon.png" />
@@ -43,7 +44,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <%= link_to Houston.config.title, root_url, class: "brand" %>
+          <%= link_to Houston.config.title, main_app.root_url, class: "brand" %>
           <div class="container-fluid nav-collapse">
             <ul class="nav">
               
@@ -51,11 +52,11 @@
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dashboard <b class="caret"></b></a>
                 <ul class="dropdown-menu releases-menu">
-                  <li><%= link_to "All Projects", dashboard_path %></li>
+                  <li><%= link_to "All Projects", main_app.dashboard_path %></li>
                   <li class="divider"></li>
                 <% Project.all.each do |project| %>
                   <li class="project">
-                    <%= link_to project_dashboard_path(project) do %>
+                    <%= link_to main_app.project_dashboard_path(project) do %>
                       <%= project.name %> <b class="bubble <%= project.color %>"></b>
                     <% end %>
                   </li>
@@ -71,7 +72,7 @@
                   <li class="divider"></li>
                 <% Project.all.each do |project| %>
                   <li class="project">
-                    <%= link_to project_kanban_path(project) do %>
+                    <%= link_to main_app.project_kanban_path(project) do %>
                       <%= project.name %> <b class="bubble <%= project.color %>"></b>
                     <% end %>
                   </li>
@@ -83,11 +84,11 @@
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Testing Reports <b class="caret"></b></a>
                 <ul class="dropdown-menu testing-reports-menu">
-                  <li><%= link_to "All Projects", testing_report_path %></li>
+                  <li><%= link_to "All Projects", main_app.testing_report_path %></li>
                   <li class="divider"></li>
                 <% Project.all.each do |project| %>
                   <li class="project">
-                    <%= link_to project_testing_report_path(project) do %>
+                    <%= link_to main_app.project_testing_report_path(project) do %>
                       <%= project.name %> <b class="bubble <%= project.color %>"></b>
                     <% end %>
                   </li>
@@ -101,7 +102,7 @@
                 <ul class="dropdown-menu releases-menu">
                 <% Project.all.each do |project| %>
                   <li class="project">
-                    <%= link_to project_releases_path(project) do %>
+                    <%= link_to main_app.project_releases_path(project) do %>
                       <%= project.name %> <b class="bubble <%= project.color %>"></b>
                     <% end %>
                   </li>
@@ -113,7 +114,7 @@
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reports <b class="caret"></b></a>
                 <ul class="dropdown-menu reports-menu">
-                  <li><%= link_to "Weekly Report", weekly_report_path %></li>
+                  <li><%= link_to "Weekly Report", "/weekly_report" %></li>
                 </ul>
               </li>
               <% end %>
@@ -122,10 +123,10 @@
               
               <li class="divider-vertical"></li>
               
-              <li><%= link_to "Projects", projects_path %></li>
+              <li><%= link_to "Projects", main_app.projects_path %></li>
 
               <% if can?(:read, User) %>
-                <li><%= link_to "Team", users_path %></li>
+                <li><%= link_to "Team", main_app.users_path %></li>
               <% end %>
               
               <% if current_user && current_user.administrator? %>
@@ -135,10 +136,10 @@
             </ul>
             <ul class="nav pull-right">
               <% if current_user %>
-                <li><%= link_to user_path(current_user) do %><span class="avatar-24" style="margin-right: 0"><%= avatar_for(current_user, size: 38) %></span><% end %></li>
-                <li><%= link_to "Sign out", destroy_user_session_path %></li>
+                <li><%= link_to main_app.user_path(current_user) do %><span class="avatar-24" style="margin-right: 0"><%= avatar_for(current_user, size: 38) %></span><% end %></li>
+                <li><%= link_to "Sign out", main_app.destroy_user_session_path %></li>
               <% else %>
-                <li><%= link_to "Sign in", new_user_session_path %></li>
+                <li><%= link_to "Sign in", main_app.new_user_session_path %></li>
               <% end %>
             </ul>
           </div><!--/.nav-collapse -->

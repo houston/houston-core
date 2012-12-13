@@ -1,10 +1,18 @@
 # !todo: remove this requirement
 $:.unshift File.expand_path("./lib/unfuddle/lib")
 require 'unfuddle/neq'
+require File.join(File.dirname(__FILE__), 'core_ext/hash')
 
 module Houston
   class Configuration
     include Unfuddle::NeqHelper
+    
+    
+    def initialize
+      @modules = []
+    end
+    
+    
     
     def title(*args)
       @title = args.first if args.any?
@@ -39,6 +47,17 @@ module Houston
     
     
     
+    # Modules
+    
+    def use(module_name, *args, &block)
+      @modules << ::Houston::Module.new(module_name, *args, &block)
+    end
+    attr_reader :modules
+    
+    def uses?(module_name)
+      module_name = module_name.to_s
+      modules.any? { |mod| mod.name == module_name }
+    end
     
     
     
@@ -88,7 +107,7 @@ module Houston
       if args.any?
         @tag_map = {}
         args.flatten.each do |hash|
-          Tag.new(hash.slice(:name, :color).merge(slug: hash[:as])).tap do |tag|
+          Tag.new(hash.pick(:name, :color).merge(slug: hash[:as])).tap do |tag|
             @tag_map[tag.slug] = tag
             hash.fetch(:aliases, []).each do |slug|
               @tag_map[slug] = tag
@@ -131,6 +150,32 @@ module Houston
           mailer_sender "houston@my-company.com"
         
         ERROR
+    end
+    
+  end
+  
+  
+  
+  class Module
+    
+    def initialize(module_name, *gemconfig, &moduleconfig)
+      @name = module_name.to_s
+      gem_name = "houston-#{name}"
+      @gemspec = [gem_name] + gemconfig
+    end
+    
+    attr_reader :name, :gemspec
+    
+    def engine
+      namespace::Engine
+    end
+    
+    def path
+      "/#{name}"
+    end
+    
+    def namespace
+      @namespace ||= "houston/#{name}".classify.constantize
     end
     
   end

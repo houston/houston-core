@@ -86,6 +86,14 @@ Houston::Application.routes.draw do
   
   
   
+  # Modules
+  
+  Houston.config.modules.each do |mod|
+    mount mod.engine => mod.path
+  end
+  
+  
+  
   # Other
   
   # Experiment

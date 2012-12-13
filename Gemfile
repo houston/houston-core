@@ -50,6 +50,19 @@ gem 'resque'
 gem 'yajl-ruby', :require => 'yajl/json_gem'
 gem 'whenever' # a DSL for writing CRON jobs
 
+
+
+# Modules
+#
+# Here modules are dynamically included in the Gemfile
+#
+require "./lib/configuration.rb" # Loads Houston's configuration
+Houston.config.modules.each do |mod|
+  gem *mod.gemspec
+end
+
+
+
 # Deploy with Capistrano
 gem 'capistrano'
 gem 'rvm-capistrano'
