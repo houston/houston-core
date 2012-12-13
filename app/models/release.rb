@@ -66,7 +66,7 @@ class Release < ActiveRecord::Base
   
   def build_changes_from_commits
     commits.each do |commit|
-      changes.build Change.attributes_from_commit(commit) unless commit.skip?
+      changes.build Change.attributes_from_commit(commit).merge(release: self) unless commit.skip?
     end
   end
   
