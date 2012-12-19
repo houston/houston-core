@@ -107,7 +107,9 @@ class Ticket < ActiveRecord::Base
     end
     
     def attributes_from_unfuddle_ticket(unfuddle_ticket)
-      unfuddle_ticket.pick("number", "summary", "description").merge("unfuddle_id" => unfuddle_ticket["id"])
+      unfuddle_ticket.pick("number", "summary", "description").merge(
+        "estimated_effort" => unfuddle_ticket["hours_estimate_current"],
+        "unfuddle_id" => unfuddle_ticket["id"] )
     end
   end
   
