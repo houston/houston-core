@@ -24,6 +24,11 @@ module Houston
       @mailer_sender ||= nil
     end
     
+    def project_categories(*args)
+      @project_categories = args if args.any?
+      @project_categories ||= []
+    end
+    
     
     
     # Components

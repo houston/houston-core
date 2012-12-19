@@ -4,98 +4,108 @@
 </h1>
 
 <% if @projects.any? %>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th class="project-title">Title</th>
-        <th colspan="4" class="project-links">Links</th>
-        <th class="project-maintainers">Maintainers</th>
-        <th class="project-platform">Platform</th>
-        <th class="project-last-release">Last Release</th>
-        <th class="project-new-release"></th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @projects.each do |project| %>
-        <tr>
-          <td class="project-title">
-            <b class="bubble <%= project.color %>" rel="tooltip" title="<%= project.color.titleize %>" data-tooltip-placement="right"></b>
-            <%= link_to project.name, edit_project_path(project) %>
-          </td>
-          <td class="project-link project-unfuddle-link">
-            <% if project.unfuddle_id %>
-              <%= link_to unfuddle_project_url(project), :target => "_blank" do %>
-                <%= image_tag "/images/favicon-unfuddle.png", "data-tooltip-placement" => "right", :rel => "tooltip", :title => "View in Unfuddle", :width => 16, :height => 16 %>
-              <% end %>
-            <% end %>
-          </td>
-          <td class="project-link project-errbit-link">
-            <% unless project.errbit_app_id.blank? %>
-              <%= link_to errbit_app_url(project), :target => "_blank" do %>
-                <%= image_tag "/images/favicon-errbit.png", "data-tooltip-placement" => "right", :rel => "tooltip", :title => "View in Errbit", :width => 16, :height => 16 %>
-              <% end %>
-            <% end %>
-          </td>
-          <td class="project-link project-github-link">
-            <% if github_url?(project) %>
-              <%= link_to github_project_url(project), :target => "_blank" do %>
-                <%= image_tag "/images/favicon-github.png", "data-tooltip-placement" => "right", :rel => "tooltip", :title => "View in GitHub", :width => 16, :height => 16 %>
-              <% end %>
-            <% end %>
-          </td>
-          <td class="project-link project-newrelic-link">
-            <% unless project.new_relic_id.blank? %>
-              <%= link_to new_relic_project_url(project), :target => "_blank" do %>
-                <%= image_tag "/images/favicon-newrelic.png", "data-tooltip-placement" => "right", :rel => "tooltip", :title => "View in New Relic", :width => 16, :height => 16 %>
-              <% end %>
-            <% end %>
-          </td>
-          <td class="project-maintainers">
-            <% project.maintainers.each do |maintainer| %>
-              <span class="project-maintainer"><%= avatar_for(maintainer) %>&nbsp;<%= link_to maintainer.name, user_path(maintainer) %></span>
-            <% end %>
-          </td>
-          <td class="project-platform">
-            <% platform = project.platform %>
-            <% unless platform.blank? %>
-              <% indicator = MaintenanceLight.new(project, KeyDependency.new(slug: platform)) %>
-              <% if indicator.valid? %>
-                <span class="stoplight <%= indicator.color %>" rel="tooltip" title="<%= indicator.message %>"></span>
-                <span rel="tooltip" title="Parsed from Gemfile.lock"><%= platform.titleize %> <%= indicator.version %></span>
-              <% end %>
-            <% end %>
-          </td>
-          <td class="project-last-release">
-            <% if release = project.releases.first %>
-              <%= link_to format_release_age(release), project_environment_release_path(project, release.environment, release) %>
-              <span class="label label-inverse"><%= release.environment.name %></span>
-            <% end %>
-          </td>
-          <td class="project-new-release">
-            <% if can?(:create, Release) %>
-              <% if project.environments.any? %>
-                <div class="btn-group">
-                  <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
-                    New Release
-                    <span class="caret"></span>
-                  </a>
-                  <ul class="dropdown-menu">
-                    <% project.environments.each do |environment| %>
-                      <li><%= link_to environment.name, new_project_environment_release_path(project, environment) %></li>
-                    <% end %>
-                  </ul>
-                </div>
-              <% else %>
-                <%= project.name %> has no release targets
-              <% end %>
-            <% end %>
-          </td>
-          <td></td>
-        </tr>
+  <% projects_by_category = @projects.group_by(&:category) %>
+  <% projects_by_category.each do |category, projects| %>
+    <% unless projects_by_category.length == 1 %>
+      <% if category %>
+        <h2><%= category %></h2>
+      <% else %>
+        <h2 class="uncategorized">Uncategorized</h2>
       <% end %>
-    </tbody>
-  </table>
+    <% end %>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th class="project-title">Title</th>
+          <th colspan="4" class="project-links">Links</th>
+          <th class="project-maintainers">Maintainers</th>
+          <th class="project-platform">Platform</th>
+          <th class="project-last-release">Last Release</th>
+          <th class="project-new-release"></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% projects.each do |project| %>
+          <tr>
+            <td class="project-title">
+              <b class="bubble <%= project.color %>" rel="tooltip" title="<%= project.color.titleize %>" data-tooltip-placement="right"></b>
+              <%= link_to project.name, edit_project_path(project) %>
+            </td>
+            <td class="project-link project-unfuddle-link">
+              <% if project.unfuddle_id %>
+                <%= link_to unfuddle_project_url(project), :target => "_blank" do %>
+                  <%= image_tag "/images/favicon-unfuddle.png", "data-tooltip-placement" => "right", :rel => "tooltip", :title => "View in Unfuddle", :width => 16, :height => 16 %>
+                <% end %>
+              <% end %>
+            </td>
+            <td class="project-link project-errbit-link">
+              <% unless project.errbit_app_id.blank? %>
+                <%= link_to errbit_app_url(project), :target => "_blank" do %>
+                  <%= image_tag "/images/favicon-errbit.png", "data-tooltip-placement" => "right", :rel => "tooltip", :title => "View in Errbit", :width => 16, :height => 16 %>
+                <% end %>
+              <% end %>
+            </td>
+            <td class="project-link project-github-link">
+              <% if github_url?(project) %>
+                <%= link_to github_project_url(project), :target => "_blank" do %>
+                  <%= image_tag "/images/favicon-github.png", "data-tooltip-placement" => "right", :rel => "tooltip", :title => "View in GitHub", :width => 16, :height => 16 %>
+                <% end %>
+              <% end %>
+            </td>
+            <td class="project-link project-newrelic-link">
+              <% unless project.new_relic_id.blank? %>
+                <%= link_to new_relic_project_url(project), :target => "_blank" do %>
+                  <%= image_tag "/images/favicon-newrelic.png", "data-tooltip-placement" => "right", :rel => "tooltip", :title => "View in New Relic", :width => 16, :height => 16 %>
+                <% end %>
+              <% end %>
+            </td>
+            <td class="project-maintainers">
+              <% project.maintainers.each do |maintainer| %>
+                <span class="project-maintainer"><%= avatar_for(maintainer) %>&nbsp;<%= link_to maintainer.name, user_path(maintainer) %></span>
+              <% end %>
+            </td>
+            <td class="project-platform">
+              <% platform = project.platform %>
+              <% unless platform.blank? %>
+                <% indicator = MaintenanceLight.new(project, KeyDependency.new(slug: platform)) %>
+                <% if indicator.valid? %>
+                  <span class="stoplight <%= indicator.color %>" rel="tooltip" title="<%= indicator.message %>"></span>
+                  <span rel="tooltip" title="Parsed from Gemfile.lock"><%= platform.titleize %> <%= indicator.version %></span>
+                <% end %>
+              <% end %>
+            </td>
+            <td class="project-last-release">
+              <% if release = project.releases.first %>
+                <%= link_to format_release_age(release), project_environment_release_path(project, release.environment, release) %>
+                <span class="label label-inverse"><%= release.environment.name %></span>
+              <% end %>
+            </td>
+            <td class="project-new-release">
+              <% if can?(:create, Release) %>
+                <% if project.environments.any? %>
+                  <div class="btn-group">
+                    <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+                      New Release
+                      <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <% project.environments.each do |environment| %>
+                        <li><%= link_to environment.name, new_project_environment_release_path(project, environment) %></li>
+                      <% end %>
+                    </ul>
+                  </div>
+                <% else %>
+                  <%= project.name %> has no release targets
+                <% end %>
+              <% end %>
+            </td>
+            <td></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
 <% else %>
   <div class="alert alert-info">There are no projects yet. Click <b>New Project</b> to create one.</div>
 <% end %>

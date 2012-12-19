@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121214025558) do
+ActiveRecord::Schema.define(:version => 20121219202734) do
 
   create_table "changes", :force => true do |t|
     t.integer  "release_id"
@@ -75,6 +75,7 @@ ActiveRecord::Schema.define(:version => 20121214025558) do
     t.datetime "git_last_sync_at"
     t.integer  "new_relic_id"
     t.datetime "retired_at"
+    t.string   "category"
   end
 
   create_table "projects_maintainers", :id => false, :force => true do |t|

@@ -6,6 +6,9 @@ Houston.config do
   # This is the email address Houston will send emails from by default
   mailer_sender "houston@my-company.com"
   
+  # (Optional) These are the categories you can organize your projects by
+  project_categories "Products", "Tools"
+  
   
   
   # The ticketing system that Houston will interface with.
