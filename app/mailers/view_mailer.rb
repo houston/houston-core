@@ -25,14 +25,17 @@ class ViewMailer < ActionMailer::Base
   end
   
   
-  def release(release)
+  def release(release, options={})
     @release = release
     @for_email = true
     
+    to = options.fetch :to, release.notification_recipients.map(&method(:format_email_address))
+    cc = options.fetch :cc, release.notification_recipients.map(&method(:format_email_address))
+    
     mail({
       from: format_email_address(release.user),
-      to: release.notification_recipients.map(&method(:format_email_address)),
-      cc: release.maintainers.map(&method(:format_email_address)),
+      to: to,
+      cc: cc,
       subject: "#{release.project.name} Update: changes have been deployed to #{release.environment.name}",
       template: "releases/show"
     })
