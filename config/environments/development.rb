@@ -52,9 +52,10 @@ Houston::Application.configure do
     response = payload[:result]
     notice = ["  [active_resource]:"]
     notice << "    #{payload[:method].upcase} #{payload[:request_uri]}"
-    response.each_header {|key, value| notice << "    #{key}: #{value}"} if response
-    notice << ("  " << "-"*80)
-    notice << response.body if response
+    notice << "    headers:"
+    response.each_header {|key, value| notice << "      #{key}: #{value}"} if response
+    notice << "    body: #{response.body.inspect}" if response
+    notice << "-" * 80
     
     Rails.logger.debug notice.join("\n")
   end
