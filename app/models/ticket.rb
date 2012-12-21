@@ -13,9 +13,31 @@ class Ticket < ActiveRecord::Base
   validates :number, presence: true
   validates_uniqueness_of :number, scope: :project_id, on: :create
   
+  remote_model Unfuddle::RemoteTicket
+  attr_remote :id => :unfuddle_id,
+              :project_id => :unfuddle_project_id,
+              :hours_estimate_current => :estimated_effort
+  remote_key [:project_id, :id], :path => "/projects/:unfuddle_project_id/tickets/:unfuddle_id"
+  expires_after 100.years
+  
+  # !Override fetch_remote_resource, when this is fetched, set its prefix_options
+  def fetch_remote_resource
+    super.tap do |resource|
+      resource.prefix_options = {project_id: unfuddle_project_id} if resource
+    end
+  end
+  
+  
+  
   attr_readonly :number, :project_id
   
   delegate :testers, :maintainers, to: :project
+  
+  
+  def unfuddle_project_id
+    project.unfuddle_id
+  end
+  attr_writer :unfuddle_project_id
   
   
   class << self

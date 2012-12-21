@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121219202734) do
+ActiveRecord::Schema.define(:version => 20121220031008) do
 
   create_table "changes", :force => true do |t|
     t.integer  "release_id"
@@ -141,6 +141,7 @@ ActiveRecord::Schema.define(:version => 20121219202734) do
     t.string   "goldmine"
     t.decimal  "estimated_effort", :precision => 9,  :scale => 2
     t.decimal  "estimated_value",  :precision => 11, :scale => 2
+    t.datetime "expires_at"
   end
 
   create_table "user_notifications", :force => true do |t|

@@ -24,7 +24,9 @@ class TicketsController < ApplicationController
   
   def update
     ticket = Ticket.find(params[:id])
-    if ticket.update_attributes(last_release_at: params[:lastReleaseAt])
+    params[:last_release_at] = params.fetch(:lastReleaseAt, params[:last_release_at])
+    attributes = params.pick(:estimated_effort, :estimated_value, :last_release_at)
+    if ticket.update_attributes(attributes)
       render json: [], :status => :ok
     else
       render json: ticket.errors, :status => :unprocessable_entity
