@@ -1,8 +1,8 @@
 GIT
   remote: git://github.com/boblail/remotable.git
-  revision: bd94bb537b01dc012c14d3d90ec6db9e9315e1b9
+  revision: 764eed5f1febf207ab51025d152c59bf95bc01ff
   specs:
-    remotable (0.2.2)
+    remotable (0.2.3)
       activerecord
       activeresource
       activesupport
