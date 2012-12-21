@@ -49,7 +49,7 @@ module UrlHelper
   
   
   def kanban_path(*args)
-    root_path(*args)
+    main_app.root_path(*args)
   end
   
   def default_path_for(user)

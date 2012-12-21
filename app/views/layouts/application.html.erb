@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
     <%= csrf_meta_tags %>
-    <meta name="relative_url_root" value="<%= root_url %>" />
+    <meta name="relative_url_root" value="<%= main_app.root_url %>" />
     <meta name="revision" value="<%= revision %>" />
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -109,6 +109,30 @@
                 <% end %>
                 </ul>
               </li>
+              
+              <%# Modules %>
+              <% Houston.config.modules.each do |mod| %>
+                <% menu_items = mod.namespace.respond_to?(:menu_items) ? mod.namespace.menu_items : [] %>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= mod.name.humanize %> <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                  <% menu_items.each do |(name, path)| %>
+                    <li><%= link_to name, path %></li>
+                  <% end %>
+                  <% if menu_items.any? %>
+                    <li class="divider"></li>
+                  <% end %>
+                  <% Project.all.each do |project| %>
+                    <li class="project">
+                      <%= link_to mod.namespace.menu_item_for_project(project) do %>
+                        <%= project.name %> <b class="bubble <%= project.color %>"></b>
+                      <% end %>
+                    </li>
+                  <% end %>
+                  </ul>
+                </li>
+              <% end %>
+              
               
               <% if can?(:read, Project) %>
               <li class="dropdown">
