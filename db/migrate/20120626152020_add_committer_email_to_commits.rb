@@ -3,7 +3,7 @@ class AddCommitterEmailToCommits < ActiveRecord::Migration
     add_column :commits, :committer_email, :string
     
     Commit.all.each do |commit|
-      commit.update_attribute(:committer_email, commit.grit_commit.committer.email) if commit.grit_commit
+      commit.update_attribute(:committer_email, commit.native_commit.committer.email) if commit.native_commit
     end
   end
   

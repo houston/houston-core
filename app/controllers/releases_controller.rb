@@ -41,7 +41,7 @@ class ReleasesController < ApplicationController
     @commit1 = @deploy.try(:commit) || params[:commit1] || params[:commit]
     @release = @environment.releases.new(commit0: @commit0, commit1: @commit1, deploy: @deploy)
     
-    unless @project.repo
+    if @project.repo.nil?
       respond_to do |format|
         format.html { render template: "releases/invalid_repo" }
         format.json { head 422 }

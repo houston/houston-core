@@ -20,7 +20,7 @@ unite_master = unite.environments.create(name: "Production", slug: "master")
 
 
 
-tsatsiki = Project.create(name: "Tsatsiki", slug: "tsatsiki", color: "blue", git_url: "git://github.com/boblail/tsatsiki.git")
+tsatsiki = Project.create(name: "Tsatsiki", slug: "tsatsiki", color: "blue", version_control_location: "git://github.com/boblail/tsatsiki.git")
 
 tsatsiki_dev = tsatsiki.environments.create(name: "PRI", slug: "dev")
 
@@ -35,7 +35,7 @@ tsatsiki_release2.load_commits!
 
 
 
-houston = Project.create(name: "Houston", slug: "houston", color: "red", git_url: Rails.root.to_s)
+houston = Project.create(name: "Houston", slug: "houston", color: "red", version_control_location: Rails.root.to_s)
 
 houston_dev = houston.environments.create(name: "PRI", slug: "dev")
 houston_master = houston.environments.create(name: "Production", slug: "master")

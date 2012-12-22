@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121220031008) do
+ActiveRecord::Schema.define(:version => 20121222170917) do
 
   create_table "changes", :force => true do |t|
     t.integer  "release_id"
@@ -60,9 +60,9 @@ ActiveRecord::Schema.define(:version => 20121220031008) do
     t.string   "name"
     t.string   "slug"
     t.integer  "unfuddle_id"
-    t.string   "git_url"
-    t.datetime "created_at",          :null => false
-    t.datetime "updated_at",          :null => false
+    t.string   "version_control_location"
+    t.datetime "created_at",                                   :null => false
+    t.datetime "updated_at",                                   :null => false
     t.string   "color"
     t.string   "kanban_field"
     t.integer  "development_id"
@@ -76,6 +76,7 @@ ActiveRecord::Schema.define(:version => 20121220031008) do
     t.integer  "new_relic_id"
     t.datetime "retired_at"
     t.string   "category"
+    t.string   "version_control_adapter",  :default => "None", :null => false
   end
 
   create_table "projects_maintainers", :id => false, :force => true do |t|

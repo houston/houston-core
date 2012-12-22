@@ -7,16 +7,18 @@ class Commit < ActiveRecord::Base
   
   delegate :project, :to => :release
   
-  def self.attributes_from_grit_commit(grit_commit)
-    { :sha => grit_commit.sha,
-      :message => grit_commit.message,
-      :date => grit_commit.committed_date,
-      :committer => grit_commit.author.name,
-      :committer_email => grit_commit.author.email }
+  
+  
+  def self.attributes_from_native_commit(native)
+    { :sha => native.sha,
+      :message => native.message,
+      :date => native.date,
+      :committer => native.author_name,
+      :committer_email => native.author_email }
   end
   
-  def grit_commit
-    project.repo.commit(sha)
+  def native_commit
+    project.repo.native_commit(sha)
   end
   
   
@@ -49,6 +51,19 @@ class Commit < ActiveRecord::Base
   
   
   
+  def self.parse_message(message)
+    tags = []
+    tickets = []
+    attributes = {}
+    clean_message = message.dup
+    
+    clean_message.gsub!(TICKET_PATTERN) { tickets << $1; "" }
+    clean_message.gsub!(EXTRA_ATTRIBUTE_PATTERN) { (attributes[$1] ||= []).push($2); "" }
+    while clean_message.gsub!(TAG_PATTERN) { tags << $1; "" }; end
+    
+    {tags: tags, tickets: tickets, attributes: attributes, clean_message: clean_message.strip}
+  end
+  
   TICKET_PATTERN = /\[#(\d+)\]/
   
   EXTRA_ATTRIBUTE_PATTERN = /\{\{([^:\}]+):([^\}]+)\}\}/
@@ -64,20 +79,7 @@ private
   
   
   def parsed_message
-    @parsed_message ||= parse_message!
-  end
-  
-  def parse_message!
-    tags = []
-    tickets = []
-    attributes = {}
-    clean_message = message.dup
-    
-    clean_message.gsub!(TICKET_PATTERN) { tickets << $1; "" }
-    clean_message.gsub!(EXTRA_ATTRIBUTE_PATTERN) { (attributes[$1] ||= []).push($2); "" }
-    while clean_message.gsub!(TAG_PATTERN) { tags << $1; "" }; end
-    
-    {tags: tags, tickets: tickets, attributes: attributes, clean_message: clean_message.strip}
+    @parsed_message ||= self.class.parse_message(message)
   end
   
   

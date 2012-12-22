@@ -15,11 +15,7 @@ class Project < ActiveRecord::Base
   
   after_create :save_default_notifications
   
-  validates_each :git_url do |project, attr, value|
-    unless value.blank?
-      project.errors.add(attr, "might not be right. Kanban can't seem to connect to it.") if project.repo.nil?
-    end
-  end
+  validate :version_control_location_is_valid
   
   default_scope order(:name)
   
@@ -194,49 +190,42 @@ class Project < ActiveRecord::Base
   
   
   
-  
   def to_param
     slug
   end
   
-  def git_path
-    @git_path ||= get_local_git_path
-  end
-  
-  def git_dir
-    @git_dir ||= (git_mirrored? ? git_path : "#{git_path}/.git")
-  end
-  
-  def git_uri
-    @git_uri ||= Addressable::URI.parse(git_url)
-  end
-  
-  def temp_path
-    @temp_path ||= Rails.root.join("tmp", "#{slug}.git").to_s
-  end
-  
-  def git_url_valid?
-    !git_url.blank?
-  end
   
   
   
-  def repo
-    git_url.blank? ? nil : @repo ||= Grit::Repo.new(git_path) rescue nil
-  end
   
+  # Version Control
+  # ------------------------------------------------------------------------- #
   
-  
-  def commits_during(range)
-    if repo
-      Project.benchmark("[#{slug}] get commits") { 
-        commits = Grit::Commit.find_all(repo, nil, {after: range.begin, before: range.end})
-        commits.uniq { |commit| "#{commit.authored_date}#{commit.author.email}"}
-      }
-    else
-      []
+  def version_control_location_is_valid
+    version_control_system.problems_with_location(
+      version_control_location,
+      version_control_temp_path).each do |message|
+      errors.add :version_control_location, message
     end
   end
+  
+  def repo
+    @repo ||= version_control_system.create_repo(
+      version_control_location,
+      version_control_temp_path)
+  end
+  
+  def version_control_system
+    Houston::VersionControl.adapter(version_control_adapter)
+  end
+  
+  def version_control_temp_path
+    Rails.root.join("tmp", "#{slug}.git").to_s # <-- the .git here is misleading; could be any kind of VCS
+  end
+  
+  # ------------------------------------------------------------------------- #
+  
+  
   
   
   
@@ -255,25 +244,6 @@ class Project < ActiveRecord::Base
   
   
   
-  def git_pull!
-    Project.benchmark("[#{slug}] git remote update") { `cd "#{temp_path}" && git remote update` }
-    update_attribute(:git_last_sync_at, Time.now)
-  end
-  
-  def git_mirrored?
-    git_uri.absolute?
-  end
-  
-  def git_out_of_date?
-    git_time_since_last_sync > 1.day
-  end
-  
-  def git_time_since_last_sync
-    git_last_sync_at.nil? ? (1.0/0) : Time.now - git_last_sync_at
-  end
-  
-  
-  
   def platform
     @platform ||= begin
       if dependency_version("rails") then "rails"
@@ -285,7 +255,7 @@ class Project < ActiveRecord::Base
   def dependency_version(dependency)
     return nil unless repo
     
-    lockfile = repo.tree/'Gemfile.lock'
+    lockfile = repo.read_file("Gemfile.lock")
     return nil unless lockfile
     
     lockfile_contents = lockfile.data
@@ -296,34 +266,6 @@ class Project < ActiveRecord::Base
   
   
 private
-  
-  
-  
-  # Git repositories can be located on the local
-  # machine (e.g. /path/to/repo) or they can be
-  # located on remotely (e.g. git@host:repo.git).
-  #
-  # If the repo is local, we don't need to check
-  # out a copy. If it is remote, we want to clone
-  # it to a temp folder and then manipulate it.
-  #
-  def get_local_git_path
-    if git_mirrored?
-      make_local_copy_of_project!
-      git_pull! if git_out_of_date?
-      temp_path
-    else
-      git_uri
-    end
-  end
-  
-  def make_local_copy_of_project!
-    git_clone! if !File.exists?(temp_path)
-  end
-  
-  def git_clone!
-    Project.benchmark("[#{slug}] git clone") { `cd "#{Rails.root.join("tmp").to_s}" && git clone --mirror #{git_url} #{temp_path}` }
-  end
   
   
   

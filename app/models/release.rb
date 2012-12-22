@@ -57,13 +57,6 @@ class Release < ActiveRecord::Base
   
   
   
-  def git_commits
-    return [] unless can_read_commits?
-    
-    Rails.logger.info "[git] getting commits: #{commit0}..#{commit1}"
-    project.repo.commits_between(commit0, commit1)
-  end
-  
   def build_changes_from_commits
     commits.each do |commit|
       changes.build Change.attributes_from_commit(commit).merge(release: self) unless commit.skip?
@@ -71,14 +64,13 @@ class Release < ActiveRecord::Base
   end
   
   def load_commits!
-    project.git_pull! if project.git_mirrored?
-    
-    git_commits.each do |grit_commit|
-      commit = commits.find_by_sha(grit_commit.sha)
+    native_commits!.each do |native|
+      commit = commits.find_by_sha(native.sha)
+      attributes = Commit.attributes_from_native_commit(native).merge(release: self)
       if commit
-        commit.update_attributes Commit.attributes_from_grit_commit(grit_commit)
+        commit.update_attributes(attributes)
       else
-        commits.build Commit.attributes_from_grit_commit(grit_commit).merge(release: self)
+        commits.build(attributes)
       end
     end
   end
@@ -86,9 +78,8 @@ class Release < ActiveRecord::Base
   
   
   def ticket_numbers
-    [].tap do |ticket_numbers|
-      commits.each { |commit| ticket_numbers.concat commit.ticket_numbers }
-    end
+    commits.each_with_object([]) { |commit, ticket_numbers|
+      ticket_numbers.concat commit.ticket_numbers }
   end
   
   def load_tickets!
@@ -130,6 +121,14 @@ class Release < ActiveRecord::Base
 private
   
   
+  def native_commits!
+    project.repo.refresh!
+    native_commits
+  end
+  
+  def native_commits
+    project.repo.commits_between(commit0, commit1)
+  end
   
   def associate_tickets_with_self
     tickets.each do |ticket|

@@ -71,10 +71,7 @@
         commits_this_week = false
         
         
-        # commits = benchmark("[#{project.slug}] read commits") {
-        #   `git --git-dir=#{project.git_dir} log --all --pretty='%at'`.split(/\n/).uniq
-        # }
-        commits = `git --git-dir=#{project.git_dir} log --all --pretty='%at'`.split(/\n/).uniq
+        commits = project.repo.all_commit_times
         
         commits.each do |commit|
           timestamp = commit.to_i

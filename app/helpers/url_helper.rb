@@ -29,12 +29,12 @@ module UrlHelper
   end
   
   def github_url?(project)
-    project.git_url =~ /github/
+    project.version_control_location =~ /github/
   end
   
   def github_project_url(project)
     return "" unless github_url?(project)
-    project.git_url.gsub(/^git@(?:www\.)?github.com:/, "https://github.com/").gsub(/^git:/, "https:").gsub(/\.git$/, "")
+    project.version_control_location.gsub(/^git@(?:www\.)?github.com:/, "https://github.com/").gsub(/^git:/, "https:").gsub(/\.git$/, "")
   end
   
   def github_commit_url(commit)

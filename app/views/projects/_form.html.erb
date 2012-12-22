@@ -34,9 +34,16 @@
     </div>
 
     <div class="control-group">
-      <%= f.label :git_url, "Git URL", :class => 'control-label' %>
+      <%= f.label :version_control_location, "Version Control", :class => 'control-label' %>
       <div class="controls">
-        <%= f.text_field :git_url, :class => 'text_field' %>
+        <p>
+          <% Houston::VersionControl.adapters.each do |name| %>
+            <%= f.label "version_control_adapter_#{name.to_s.underscore}" do %>
+              <%= f.radio_button :version_control_adapter, name %> <%= name %>
+            <% end %>
+          <% end %>
+        </p>
+        <%= f.text_field :version_control_location, :class => 'text_field' %>
       </div>
     </div>
     

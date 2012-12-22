@@ -1,15 +1,10 @@
-<% if !@project.git_url_valid? %>
-  <div class="alert alert-error">
-    Your project's <b>git_url</b> is blank or does not point to a Git repository.
-    <%= link_to "Edit", edit_project_path(@project) %>
-  </div>
-<% elsif @commit0.blank? || @commit1.blank? %>
+<% if @commit0.blank? || @commit1.blank? %>
   <div class="alert alert-info">
     Please enter a range of commits for this release.
   </div>
 <% elsif @release.commits.none? && @release.changes.none? %>
   <div class="alert alert-error">
-    There are no commits in the repo <code><%= @project.git_url %></code> that match <code><%= @commit0 %>...<%= @commit1 %></code>
+    There are no commits in the repo <code><%= @project.version_control_location %></code> that match <code><%= @commit0 %>...<%= @commit1 %></code>
   </div>
 <% else %>
   <%= render partial: "form" %>
