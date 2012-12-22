@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121222170917) do
+ActiveRecord::Schema.define(:version => 20121222223325) do
 
   create_table "changes", :force => true do |t|
     t.integer  "release_id"
@@ -64,15 +64,8 @@ ActiveRecord::Schema.define(:version => 20121222170917) do
     t.datetime "created_at",                                   :null => false
     t.datetime "updated_at",                                   :null => false
     t.string   "color"
-    t.string   "kanban_field"
-    t.integer  "development_id"
-    t.integer  "testing_id"
-    t.integer  "production_id"
-    t.string   "assign_health_query"
-    t.string   "new_tickets_query"
     t.text     "cached_queries"
     t.string   "errbit_app_id"
-    t.datetime "git_last_sync_at"
     t.integer  "new_relic_id"
     t.datetime "retired_at"
     t.string   "category"
