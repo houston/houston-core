@@ -2,6 +2,10 @@ require 'test_helper'
 
 class TicketTest < ActiveSupport::TestCase
   
+  setup do
+    Ticket.nosync = true
+  end
+  
   
   test "creating a valid ticket" do
     ticket = Ticket.new(project_id: 1, number: 1, summary: "Test summary")

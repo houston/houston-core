@@ -95,7 +95,8 @@ class Project < ActiveRecord::Base
           ticket.assign_attributes(attributes)
           ticket.save if ticket.changed?
         else
-          ticket = self.tickets.create(attributes)
+          # !todo: this is a bad idea ... more complection!
+          ticket = Ticket.nosync { self.tickets.create(attributes) }
         end
         
         # There's no reason why this shouldn't be set,
