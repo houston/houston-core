@@ -1,7 +1,7 @@
 module Houston
   module VersionControl
     module Adapter
-      class Git
+      class GitAdapter
         
         class << self
           

@@ -1,3 +1,5 @@
+Dir["#{Rails.root}/app/models/houston/version_control/adapter/*_adapter.rb"].each(&method(:require_dependency))
+
 module Houston
   
   # Classes in this namespace are assumed to implement
@@ -48,17 +50,14 @@ module Houston
   module VersionControl
     
     def self.adapters
-      @adapters ||= begin
-        # Ensure that Rails has loaded the classes
-        Dir["#{Rails.root}/app/models/houston/version_control/adapter/**/*.rb"].each(&method(:require))
-        
-        # Lookup constants
-        Adapter.constants.map(&:to_s)
-      end
+      @adapters ||= 
+        Adapter.constants
+          .map { |sym| sym[/^.*(?=Adapter)/] }
+          .sort_by { |name| name == "None" ? "" : name }
     end
     
     def self.adapter(name)
-      Adapter.const_get(name)
+      Adapter.const_get(name + "Adapter")
     end
     
   end

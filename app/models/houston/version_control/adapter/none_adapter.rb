@@ -1,7 +1,7 @@
 module Houston
   module VersionControl
     module Adapter
-      class None
+      class NoneAdapter
         
         def self.problems_with_location(*args)
           []

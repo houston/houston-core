@@ -1,7 +1,7 @@
 module Houston
   module VersionControl
     module Adapter
-      class Git
+      class GitAdapter
         class Repo
           
           def initialize(connection, options={})
@@ -56,11 +56,11 @@ module Houston
           end
           
           def pull!
-            Git.pull!(connection.path)
+            GitAdapter.pull!(connection.path)
           end
           
           def updated_at
-            mirrored? ? Git.time_of_last_pull(git_dir) : Time.now
+            mirrored? ? GitAdapter.time_of_last_pull(git_dir) : Time.now
           end
           
           
