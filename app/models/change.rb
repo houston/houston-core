@@ -14,7 +14,7 @@ class Change < ActiveRecord::Base
     
     def attributes_from_commit(commit)
       { description: commit.clean_message[0..255],
-        tag_slug: commit.tags.first }
+        tag: Houston.config.fetch_tag(commit.tags.first) }
     end
     
   end
@@ -23,6 +23,10 @@ class Change < ActiveRecord::Base
   
   def tag
     Houston.config.fetch_tag(tag_slug)
+  end
+  
+  def tag=(value)
+    self.tag_slug = value.slug
   end
   
   
