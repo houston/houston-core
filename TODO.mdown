@@ -1,104 +1,110 @@
 # To Do
 
+### Troubleshooting
 
-## Projects
+ - Does the deploy endpoint require login --- so deploys don't register if user is logged out? Should use token authentication.
+ - **Project:** allow changing Version Control Location (have tmp folder deleted or whatever)
+ - **Weekly Report/Exceptions:** problems history is off by 1 week?
+ - **Weekly Report:** why no weekly reports?
 
+### Fixes
 
-### Allowing Customers to Subscribe to Release Notes
+ - Handle InvalidQueryError (when Unfuddle project doesn't have "Health", etc)
+ - **Testing Report:** block quotes have the wrong CSS
+ - **Testing Notes:** edit a failing testing note at home, SMTP fail, timeout takes 30 seconds!
 
- 1. **Releases:** set levels for tags (Customer, Internal, All) 
- 2. Rethink notifications --- has something to do with releases
-   - **Project:** fix setting notifications
-   - **Project:** faster way for checking notifications!
-   - **Release Emails:** send one-off (so can be sent to customers)
- 3. Create embeddable front-end
+### Small Projects
 
-
-### Show Real-Time Analytics
-
- X  Move to houston.prd
- X  Use Foreman to manage other processes, http://blog.daviddollar.org/2011/05/06/introducing-foreman.html, http://ddollar.github.com/foreman/, http://michaelvanrooijen.com/articles/2011/06/08-managing-and-monitoring-your-ruby-application-with-foreman-and-upstart/
- X  Use Resque to do expensive fetches in background jobs (--> unfuddle.json)
- 4. Solve replacing Kanban (refresh tickets) (with resque?)
- 5. Release Real-Time graphs
-   - Solve for multiple apps (multiple gauges? multiple fields?)
- - **Project Dashboard:**
-   - Real-time graph of exception notices
-   - Figure out how to show queue history; show more weeks
-   - Show deploys _on_ real-time graphs
-
-
-### Related to Errbit
-
- - **Errbit:** modify API to include project for notices
-   - **Exceptions:** show notice-count pie
- - **Errbit:** add web hooks
-   - Trigger sound effects
-
-
-## Loose
-
-
-### Soon
-
- - **Global:** redesign section headings with links
- - allow changing Git URL (have tmp folder deleted or whatever)
- - **Deploy Emails:**
+ - **Kanban:** fetch ticket queue status in the background in case Kanban isn't default screen
+ - **Global:** replace "Kanban" as root_url
+ - **Testing Report:** add priority options (to left of ticket): high/low, exclusive checkboxes
+ - **Testing Report:** show status and send notification for 'none' verdict
+ - **Releases:** set levels for tags (Customer, Internal, All)
+ - **Releases:** allow adding/removing _tickets_ from release notes
+ - **Releases/Deploy Emails:**
    - have up-to-date commits
    - are styled like view (=> can get rid of releases/changelog partial, et al then)
- - **Weekly Report:**
-   - ?> Pair projects with colors somewhere (then don't for "Focus this week")
-   - **Exceptions:** problems history is off by 1 week?
-   - New Section: **Deploys** or **Releases**
-   - New Section: **Test Coverage** (add Jenkins as a CI adapter)
-   - Fix a few rendering glitches
-   - **Performance:** Replace "apdex" graphs with histogram of response times
-     - Refactor NewRelic part
-       - Cache API calls
+   - "Create Release" is a big button
+ - **Weekly Report:** remove 'Superlatives' and 'Performance' sections [for now]
+ - **Weekly Report:** cache Google Chart images in emails and/or implement server-side SVG library
+ - **Weekly Report/Exceptions:** break down notices by project
+ - **Weekly Report/Exceptions:** show average time to close problem
+ - **Global:** disable buttons when working! (e.g. what saving a very slow testing note)
 
+### Bigger Projecst
 
-### After that
+ - **Houston-Scheduler**
+ - **Notifications**:
+   - Notes
+     - GitHub style
+       - Users can "watch" a project
+       - Users have a notification center where they choose what kind of notifications they see for a project
+       - Admin can see these settings and set good defaults, change them
+       - NB: would have to give CTS credentials
+         - Requires more robust permissions system?
+           - In config.rb, activate modules per role?
+     - **Project:** fix setting notifications
+     - **Release Emails:** send one-off (so can be sent to customers)
+       - Include unsubscribe link
+ - **Houston-Fnord**: (show real-time analytics)
+   - Solve for multiple apps (multiple gauges? multiple fields?)
+   - **Project Dashboard:**
+     - Real-time graph of exception notices
+     - Figure out how to show queue history; show more weeks
+     - Show deploys _on_ real-time graphs
+    
+   
+### Refactoring
 
- - **Weekly Report:**
-   - Cache Google Chart images in emails and/or implement server-side SVG library
- - **Release:**
-   - allow adding/removing _tickets_ from release notes
-   - show ticket/change counts in real time
- - **Dashboard:**
-   - Design dashboard
- - Refactoring:
+ - **Engines:**
+   - Engines need to supply configuration objects, plug in to config.rb
+   - Create a Rails Engine generator for Houston plugins based on Houston::Scheduler
+ - **Modularity:**
+   - Use Postgres Hstore for extended attributes (c.f. http://railscasts.com/episodes/345-hstore)
+   - Extract **Errbit** and **NewRelic** knowledge
+   - Refactor hard-coded knowledge about Unfuddle/EP into configuration
+     - "tickets.deployment"
+       - `Project#ticket_attributes_from_unfuddle_ticket`
+         - `Project#get_custom_ticket_attribute`
+       - `Release#update_tickets_in_unfuddle!`
+       - `Ticket#set_unfuddle_kanban_field_to`
+       - `Environment#resulting_kanban_field_id`
+       - "Production" badge on tickets in Kanban, Testing Report
+       - "dev" and "master" environments
+     - "tickets.goldmine"
+       - `Project#ticket_attributes_from_unfuddle_ticket`
+       - `Release#goldmine_numbers`
+     - Unfuddle-specific knowledge of severities (Weekly Report, Project Dashboard)
+     - Unfuddle-specific knowledge re: invalid or duplicate in `users_controller.rb`
+   - Turn on or off features via config.rb
+   - Extract **houston-releases**
+   - Extract **houston-testing-report**
+   - Extract **houston-kanban** (rename)
+ - **Clean Code:**
    - Extract WeeklyReport model from WeeklyReports#show
    - Duplicate code in `users_controller#index` and `users_controller#show`
    - Duplicate code in Projects#show and WeeklyReport#show
    - New Relic API calls
  - Write tests :l
- ! **Testing Notes:** edit a failing testing note at home, SMTP fail, timeout takes 30 seconds!
- ! **Global:** disable buttons when working! (e.g. what saving a very slow testing note)
-
-
-### Eventually
-
- - **Kanban:** optimize rendering tickets on the server
- - **Release Email:** add _retest_ group for testing update
- - **Project:** allow manually updating commits
- - **Projects:** show retired projects and allow "unretiring" them
-
-
-### Refactoring and Configuration
-
- - Turn on or off features via config.rb
- - Make mobile site
- - Should "key_dependencies" be defined per-project rather than in config.rb?
- - Refactor hard-coded knowledge about Unfuddle/EP into configuration
-   - "deployment" for "Production" badge on tickets (Testing Report?)
-   - "goldmine" for Release notes
-   - "dev" and "master" environments
-   - what counts as invalid or duplicate in `users_controller.rb`
-   - how feature prefixes are boldened for Unfuddle tickets
-
 
 ### Ideas
 
+ - **Deploys:** add a list of deploys; allow creating releases for old deploys
+ - **Releases:** create embeddable front-end for releases
+ - **Global:** redesign section headings with links
+ - **Release:** auto-resolve errors on releases
+ - **Weekly Report:**
+   - Pair projects with colors somewhere (then don't for "Focus this week")
+   - New Section: **Deploys** or **Releases**
+   - New Section: **Test Coverage** (add Jenkins as a CI adapter)
+   - New Section: **Performance** (shows _histogram_ of response times)
+   - New Section: **Superlatives**
+ - **Releases:** show ticket/change counts in real time when editing a release
+ - **Kanban:** optimize rendering tickets on the server
+ - **Projects:** show retired projects and allow "unretiring" them
+ - **Global:** make mobile site
+ - **Testing Report:** allow creating tickets right there!
+ - **Testing Report:** allow editing tickets!
  - **Daily Report:**
    - Send daily report to project maintainers with news
      - Recent new tickets
@@ -106,12 +112,10 @@
      - Maintenance lights
  - **Release:** cache `deploy.created_at` as `deployed_at`
  - **Releases:** Support RSS
- - ?? Need to include testing metrics: code coverage? test runs?
  - Report on health of tickets
  - **Weekly Report:**
    - **Exceptions:** split bar graph?
    - time-to-close [bug] ticket
-   - time-to-close exception
    - group into supersections
      - "Productivity", "Maintenance", "Development" [?]
      - "Effort", "Task" | "Us", "Them" | "Red", "Blue"
@@ -124,15 +128,3 @@
  - **Project Dashboard:**
    - ?? New tickets
    - ?? New problems
- - **User:** Compare personal severity with average
- - **Testing Report:**
-   - Give a way of prioritizing / flagging tickets
-   - Expland/collapse all
-   - Send notification for 'none' verdict
- - Log in with your Unfuddle credentials
-   - use API GET `users/current` to validate
-   - implement in a modular way: easy to replace if Unfuddle is replaced
-   - activity in Unfuddle is performed as you
-   - icon indicating linkage in Kanban
-   - handle Unfuddle access denied errors like CanCan ones
-   - store password securely!
