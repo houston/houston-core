@@ -57,20 +57,15 @@ Houston::Application.routes.draw do
       put :retire
     end
     
+    match "deploy", :to => "project_deploys#create", :via => :post
+    match "deploy", :to => "project_deploys#create", :via => :get if Rails.env.development?
+    
     match "releases", :to => "releases#index", :as => :releases
     
     resources :environments, :controller => "project_environments" do
       resources :releases, :except => [:index]
     end
   end
-  
-  
-  
-  # Deploys
-  
-  # !todo: constrain :environment to be a valid slug
-  match "projects/:project/environments/:environment/post_receive", :to => "project_deploys#create", :via => :post
-  match "projects/:project/environments/:environment/post_receive", :to => "project_deploys#create", :via => :get if Rails.env.development?
   
   
   
