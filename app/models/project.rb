@@ -15,6 +15,7 @@ class Project < ActiveRecord::Base
   
   after_create :save_default_notifications
   
+  validate :ticket_tracking_id_is_valid
   validate :version_control_location_is_valid
   
   default_scope order(:name)
@@ -33,14 +34,6 @@ class Project < ActiveRecord::Base
   end
   
   
-  
-  # Later, I hope to support multiple adapters
-  # and make the ticket system choice either part
-  # of the config.yml or a project's configuration.
-  def ticket_system
-    return nil if unfuddle_id.blank?
-    @unfuddle ||= Unfuddle.instance.project(unfuddle_id)
-  end
   
   
   
@@ -70,7 +63,6 @@ class Project < ActiveRecord::Base
   
   def find_tickets(*query)
     Rails.logger.info "[project.find_tickets] query: #{query.inspect}"
-    return [] if ticket_system.nil?
     
     unfuddle_tickets = ticket_system.find_tickets!(*query)
     tickets_from_unfuddle_tickets(unfuddle_tickets)
@@ -156,7 +148,8 @@ class Project < ActiveRecord::Base
   
   def construct_ticket_query_for_queue(queue)
     key = "#{queue.slug}-#{Digest::MD5::hexdigest(queue.query.inspect)}"
-    find_in_cache_or_execute(key) { ticket_system.construct_ticket_query(queue.query) if ticket_system }
+    find_in_cache_or_execute(key) { ticket_system.construct_ticket_query(queue.query) }
+  # !todo: rescue from Houston::TicketTracking::InvalidQueryError with ... ?
   end
   
   def invalidate_cache!(*keys)
@@ -199,8 +192,47 @@ class Project < ActiveRecord::Base
   
   
   
+  # Ticket Tracking
+  # ------------------------------------------------------------------------- #
+  
+  def self.with_ticket_tracking
+    where Project.arel_table[:ticket_tracking_adapter].not_eq("None")
+  end
+  
+  def ticket_tracking_id_is_valid
+    ticket_tracking_system.problems_with_project_id(ticket_tracking_id).each do |message|
+      errors.add :ticket_tracking_id, message
+    end
+  end
+  
+  def ticket_system_project_url
+    ticket_system.project_url
+  end
+  
+  def ticket_system_ticket_url(ticket_number)
+    ticket_system.ticket_url(ticket_number)
+  end
+  
+  def ticket_system
+    @ticket_system ||= ticket_tracking_system.create_connection(ticket_tracking_id)
+  end
+  
+  def ticket_tracking_system
+    Houston::TicketTracking.adapter(ticket_tracking_adapter)
+  end
+  
+  # ------------------------------------------------------------------------- #  
+  
+  
+  
+  
+  
   # Version Control
   # ------------------------------------------------------------------------- #
+  
+  def self.with_version_control
+    where Project.arel_table[:version_control_adapter].not_eq("None")
+  end
   
   def version_control_location_is_valid
     version_control_system.problems_with_location(

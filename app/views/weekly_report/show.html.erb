@@ -525,7 +525,7 @@
   
   <%
     
-    unfuddle_projects = @projects.select { |project| !project.unfuddle_id.blank? }
+    unfuddle_projects = @projects.select { |project| project.ticket_tracking_adapter == "Unfuddle" }
     
     severities_colors = Houston.config.severities
     
@@ -541,7 +541,7 @@
     
     unfuddle_projects.each do |project|
       
-      tickets_for_project = tickets.select { |ticket| ticket["project_id"] == project.unfuddle_id }
+      tickets_for_project = tickets.select { |ticket| ticket["project_id"] == project.ticket_tracking_id }
       arrivals = tickets_for_project.map { |ticket| ticket["created_at"] }.select { |created_at| date_range_multiweek2.cover?(created_at) }
       departures = tickets_for_project.map { |ticket| ticket["closed_on"] }.select { |closed_on| closed_on && date_range_multiweek2.cover?(closed_on) }
       

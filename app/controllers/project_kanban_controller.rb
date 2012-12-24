@@ -6,7 +6,7 @@ class ProjectKanbanController < ApplicationController
   def index
     @title = "Kanban: #{@project.name}"
     
-    @projects = Project.where("unfuddle_id IS NOT NULL")
+    @projects = Project.with_ticket_tracking
   end
   
   
@@ -22,7 +22,11 @@ class ProjectKanbanController < ApplicationController
       format.json do
         
         # Always render the freshest tickets
-        @tickets = @project.tickets_in_queue(@queue)
+        begin
+          @tickets = @project.tickets_in_queue(@queue)
+        rescue Unfuddle::UnauthorizedError
+          @tickets = []
+        end
         response.headers["X-Revision"] = revision
         render :json => TicketPresenter.new(@tickets).with_testing_notes
       end

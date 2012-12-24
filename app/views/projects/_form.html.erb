@@ -32,7 +32,9 @@
         <% end %>
       </div>
     </div>
-
+    
+    <hr />
+    
     <div class="control-group">
       <%= f.label :version_control_location, "Version Control", :class => 'control-label' %>
       <div class="controls">
@@ -50,9 +52,16 @@
     <hr />
 
     <div class="control-group">
-      <%= f.label :unfuddle_id, :class => 'control-label' %>
+      <%= f.label :ticket_tracking_id, :class => 'control-label' %>
       <div class="controls">
-        <%= f.number_field :unfuddle_id, :class => 'number_field' %>
+        <p>
+          <% Houston::TicketTracking.adapters.each do |name| %>
+            <%= f.label "ticket_tracking_adapter_#{name.to_s.underscore}" do %>
+              <%= f.radio_button :ticket_tracking_adapter, name %> <%= name %>
+            <% end %>
+          <% end %>
+        </p>
+        <%= f.text_field :ticket_tracking_id, :class => 'text_field' %>
       </div>
     </div>
 

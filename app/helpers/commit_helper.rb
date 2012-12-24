@@ -21,7 +21,7 @@ module CommitHelper
     
     message.gsub! Commit::TICKET_PATTERN do |match|
       ticket_number = Commit::TICKET_PATTERN.match(match)[1]
-      link_to match, unfuddle_ticket_url(project, ticket_number), "target" => "_blank"
+      link_to match, project.ticket_system_ticket_url(ticket_number), "target" => "_blank"
     end
     
     message.gsub! Commit::EXTRA_ATTRIBUTE_PATTERN do |match|

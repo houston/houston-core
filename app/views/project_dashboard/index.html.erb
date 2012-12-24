@@ -33,7 +33,7 @@
           severities_colors[nil] = "212121"
           severities = severities_colors.keys.map { |name| name || "None" }
           
-          if @project.ticket_system
+          if @project.ticket_system_adapter == "Unfuddle"
             tickets_by_severity = Hash[severities.zip([0] * severities.length)]
             severities = @project.ticket_system.severities
             @tickets.each do |ticket|
@@ -44,11 +44,11 @@
           
         %>
 
-        <% if @project.ticket_system %>
+        <% if @project.ticket_system_adapter == "Unfuddle" %>
           <div id="severities_graph"></div>
         <% else %>
           <div id="severities_graph" class="placeholder">
-            No ticket system is configured
+            This view only works when the project is configured to use Unfuddle
           </div>
         <% end %>
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121222223325) do
+ActiveRecord::Schema.define(:version => 20121222223635) do
 
   create_table "changes", :force => true do |t|
     t.integer  "release_id"
@@ -59,7 +59,7 @@ ActiveRecord::Schema.define(:version => 20121222223325) do
   create_table "projects", :force => true do |t|
     t.string   "name"
     t.string   "slug"
-    t.integer  "unfuddle_id"
+    t.integer  "ticket_tracking_id"
     t.string   "version_control_location"
     t.datetime "created_at",                                   :null => false
     t.datetime "updated_at",                                   :null => false
@@ -70,6 +70,7 @@ ActiveRecord::Schema.define(:version => 20121222223325) do
     t.datetime "retired_at"
     t.string   "category"
     t.string   "version_control_adapter",  :default => "None", :null => false
+    t.string   "ticket_tracking_adapter",  :default => "None", :null => false
   end
 
   create_table "projects_maintainers", :id => false, :force => true do |t|

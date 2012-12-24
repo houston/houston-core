@@ -28,7 +28,7 @@ class TestingNote < ActiveRecord::Base
   attr_writer :unfuddle_ticket_id
   
   def unfuddle_project_id
-    project.unfuddle_id
+    project.ticket_tracking_id
   end
   attr_writer :unfuddle_project_id
   

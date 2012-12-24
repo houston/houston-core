@@ -10,7 +10,7 @@ class TestingReportController < ApplicationController
     @tickets_by_project_id = {}
     
     Project.all.each do |project|
-      tickets_for_project = unfuddle_tickets.select { |ticket| ticket["project_id"] == project.unfuddle_id }
+      tickets_for_project = unfuddle_tickets.select { |ticket| ticket["project_id"] == project.ticket_tracking_id }
       tickets = project
         .tickets_from_unfuddle_tickets(tickets_for_project)
         .reject(&:in_development?)

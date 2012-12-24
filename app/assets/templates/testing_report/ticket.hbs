@@ -1,7 +1,7 @@
 <div class="span8">
   <a data-toggle="collapse" data-parent="#tickets" data-target="#ticket_{{id}}_testing_notes" class="testing-notes">[#{{number}}] {{{formatTicketSummary summary}}}</a>
-  <a href="{{unfuddleUrl}}" target="_blank">
-    <img alt="Favicon-unfuddle" data-tooltip-placement="right" height="16" rel="tooltip" src="/images/favicon-unfuddle.png" width="16" data-original-title="View in Unfuddle">
+  <a href="{{ticketUrl}}" target="_blank">
+    <img alt="Favicon-unfuddle" data-tooltip-placement="right" height="16" rel="tooltip" src="/images/favicon-unfuddle.png" width="16" data-original-title="View in {{ticketSystem}}">
   </a>
   {{#ifEq deployment "In Production (Released)"}}<span class="label label-inverse">Production</span>{{/ifEq}}
   <span class="ticket-age {{classForAge age}}">{{formatDuration age}}</span>

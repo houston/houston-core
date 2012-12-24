@@ -2,19 +2,6 @@ module UrlHelper
   
   
   
-  def unfuddle_project_url(project)
-    "https://#{Unfuddle.instance.subdomain}.unfuddle.com/a#/projects/#{project.unfuddle_id}"
-  end
-  
-  def unfuddle_ticket_url(*args)
-    project, number = args
-    if project.is_a?(Ticket)
-      ticket = project
-      project, number = ticket.project, ticket.number
-    end
-    "#{unfuddle_project_url(project)}/tickets/by_number/#{number}"
-  end
-  
   def goldmine_case_number_url(number)
     "http://goldmineweb/DisplayCase.aspx?CaseNumber=#{number}"
   end

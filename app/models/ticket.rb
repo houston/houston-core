@@ -35,7 +35,7 @@ class Ticket < ActiveRecord::Base
   
   
   def unfuddle_project_id
-    project.unfuddle_id
+    project.ticket_tracking_id
   end
   attr_writer :unfuddle_project_id
   
@@ -114,6 +114,12 @@ class Ticket < ActiveRecord::Base
   
   
   
+  def ticket_system_ticket_url
+    project.ticket_system_ticket_url(number)
+  end
+  
+  
+  
   def in_development?
     deployment.blank?
   end
@@ -121,7 +127,7 @@ class Ticket < ActiveRecord::Base
   
   
   def close_ticket!
-    unfuddle_ticket = Unfuddle::Ticket.new("id" => unfuddle_id, "project_id" => project.unfuddle_id)
+    unfuddle_ticket = Unfuddle::Ticket.new("id" => unfuddle_id, "project_id" => project.ticket_tracking_id)
     unfuddle_ticket.update_attributes!("status" => "closed")
     set_queue! nil
     self

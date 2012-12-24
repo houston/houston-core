@@ -14,7 +14,8 @@ unite = Project.create(
   name: "Unite",
   slug: "unite",
   color: "teal",
-  unfuddle_id: 25)
+  ticket_tracking_adapter: "Unfuddle",
+  ticket_tracking_id: 25)
 unite_dev = unite.environments.create(name: "PRI", slug: "dev")
 unite_master = unite.environments.create(name: "Production", slug: "master")
 
@@ -45,7 +46,8 @@ church_360 = Project.create(
   name: "Church360",
   slug: "360",
   color: "orange",
-  unfuddle_id: 1)
+  ticket_tracking_adapter: "Unfuddle",
+  ticket_tracking_id: 1)
 
 
 
