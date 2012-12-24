@@ -17,21 +17,10 @@ class Environment < ActiveRecord::Base
     last_release ? last_release.commit1 : initial_commit
   end
   
-  def resulting_kanban_field_id
-    case slug # <-- NB! knowledge about environments
-    when "dev";     "In Testing (PRI)"
-    when "master";  "In Production (Released)"
-    else; nil
-    end
-  end
-  
-  
 private
-  
   
   def set_default_name
     self.name ||= slug.titleize
   end
-  
   
 end

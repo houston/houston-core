@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121222223635) do
+ActiveRecord::Schema.define(:version => 20121224212623) do
 
   create_table "changes", :force => true do |t|
     t.integer  "release_id"

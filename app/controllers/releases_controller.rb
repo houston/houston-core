@@ -1,7 +1,6 @@
 class ReleasesController < ApplicationController
   include UrlHelper
   before_filter :get_project_and_environment
-  before_filter :get_deployment_and_recipients, only: [:new, :create]
   load_and_authorize_resource
   
   # GET /releases
@@ -93,7 +92,7 @@ class ReleasesController < ApplicationController
     @release.user = current_user
     
     if @release.save
-      @release.update_tickets_in_unfuddle! if params[:update_tickets_in_unfuddle]
+      @release.update_tickets_deployment! if params[:update_tickets_deployment]
       ViewMailer.release(@release).deliver! if params[:send_release_email]
       
       redirect_to @release, notice: 'Release was successfully created.'
@@ -143,14 +142,6 @@ private
   def get_project_and_environment
     @project = Project.find_by_slug!(params[:project_id])
     @environment = @project.environments.find_by_slug(params[:environment_id]) || @project.environments.first
-  end
-  
-  def get_deployment_and_recipients
-    if @environment.slug == "dev" # <-- knowledge about environments!
-      @deployment = "Testing"
-    elsif @environment.slug == "master"
-      @deployment = "Production"
-    end
   end
   
 end

@@ -98,12 +98,10 @@ class Release < ActiveRecord::Base
   
   
   
-  def update_tickets_in_unfuddle!
-    kanban_field_id = environment.resulting_kanban_field_id
-    if kanban_field_id
-      tickets.each do |ticket|
-        ticket.set_unfuddle_kanban_field_to(kanban_field_id)
-      end
+  def update_tickets_deployment!
+    environment_name = environment.name
+    tickets.each do |ticket|
+      ticket.set_unfuddle_kanban_field_to(environment_name)
     end
   end
   

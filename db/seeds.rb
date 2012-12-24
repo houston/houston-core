@@ -16,14 +16,14 @@ unite = Project.create(
   color: "teal",
   ticket_tracking_adapter: "Unfuddle",
   ticket_tracking_id: 25)
-unite_dev = unite.environments.create(name: "PRI", slug: "dev")
-unite_master = unite.environments.create(name: "Production", slug: "master")
+unite_dev = unite.environments.create(name: "Staging", slug: "staging")
+unite_master = unite.environments.create(name: "Production", slug: "production")
 
 
 
 tsatsiki = Project.create(name: "Tsatsiki", slug: "tsatsiki", color: "blue", version_control_location: "git://github.com/boblail/tsatsiki.git")
 
-tsatsiki_dev = tsatsiki.environments.create(name: "PRI", slug: "dev")
+tsatsiki_dev = tsatsiki.environments.create(name: "Staging", slug: "staging")
 
 tsatsiki_release1 = tsatsiki_dev.releases.create(name: "Upgrade Rails to 3.1",
   commit0: "8e0f2f6d32cfcbd2ee39a10da1dc568e9dcb30d1",
@@ -38,8 +38,8 @@ tsatsiki_release2.load_commits!
 
 houston = Project.create(name: "Houston", slug: "houston", color: "red", version_control_location: Rails.root.to_s)
 
-houston_dev = houston.environments.create(name: "PRI", slug: "dev")
-houston_master = houston.environments.create(name: "Production", slug: "master")
+houston_dev = houston.environments.create(name: "Staging", slug: "staging")
+houston_master = houston.environments.create(name: "Production", slug: "production")
 
 
 church_360 = Project.create(

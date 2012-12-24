@@ -56,15 +56,13 @@
       </div>
     </div>
     
-    <% if @deployment %>
     <div class="control-group">
       <div class="controls">
-        <label for="update_tickets_in_unfuddle">
-          <input type="checkbox" id="update_tickets_in_unfuddle" name="update_tickets_in_unfuddle" value="1" checked="checked" /> Change tickets' <b>Deployment</b> to <b><%= @deployment %></b>
+        <label for="update_tickets_deployment">
+          <input type="checkbox" id="update_tickets_deployment" name="update_tickets_deployment" value="1" checked="checked" /> Change tickets' <b>Fixed in</b> to <b><%= @release.environment.name %></b>
         </label>
       </div>
     </div>
-    <% end %>
     
     <% if @release.new_record? %>
     <div class="control-group">

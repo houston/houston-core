@@ -63,14 +63,15 @@
    - Use Postgres Hstore for extended attributes (c.f. http://railscasts.com/episodes/345-hstore)
    - Extract **Errbit** and **NewRelic** knowledge
    - Refactor hard-coded knowledge about Unfuddle/EP into configuration
-     - "tickets.deployment"
-       - `Project#ticket_attributes_from_unfuddle_ticket`
+     - "tickets.deployment", "dev" and "master"
+       - Notifications:
+         - `users/_form.html.erb:63, 70` (knows about 'dev' and 'master' for notifications)
+         - `User.default_notifications_environments` (knows about 'dev' and 'master')
+       - TicketTracking Adapter, name of "Fixed in" field
+         - `Project#ticket_attributes_from_unfuddle_ticket`
          - `Project#get_custom_ticket_attribute`
-       - `Release#update_tickets_in_unfuddle!`
-       - `Ticket#set_unfuddle_kanban_field_to`
-       - `Environment#resulting_kanban_field_id`
-       - "Production" badge on tickets in Kanban, Testing Report
-       - "dev" and "master" environments
+         - Name of "Fixed in" field in Unfuddle (`releases/_form.html.erb:62`)
+         - `Ticket#set_unfuddle_kanban_field_to`
      - "tickets.goldmine"
        - `Project#ticket_attributes_from_unfuddle_ticket`
        - `Release#goldmine_numbers`

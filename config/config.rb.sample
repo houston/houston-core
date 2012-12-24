@@ -141,7 +141,7 @@ Houston.config do
       name: "To Test",
       slug: "in_testing",
       description: "These tickets are ready to test. Click on <b>Testing Reports</b> to record your testing notes.",
-      query: {:status => neq(:closed), :resolution => :fixed, "Fixed in" => ["In Testing (PRI)", "In Production (Released)"]}
+      query: {:status => neq(:closed), :resolution => :fixed, "Fixed in" => ["Staging", "Production"]}
   } ]
   
   
