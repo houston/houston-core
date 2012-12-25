@@ -10,7 +10,6 @@
 ### Fixes
 
  - Handle InvalidQueryError (when Unfuddle project doesn't have "Health", etc)
- - **Testing Report:** block quotes have the wrong CSS
  - **Testing Notes:** edit a failing testing note at home, SMTP fail, timeout takes 30 seconds!
 
 ### Small Projects
