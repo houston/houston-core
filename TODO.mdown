@@ -24,7 +24,6 @@
    - have up-to-date commits
    - are styled like view (=> can get rid of releases/changelog partial, et al then)
    - "Create Release" is a big button
- - **Weekly Report:** remove 'Superlatives' and 'Performance' sections [for now]
  - **Weekly Report:** cache Google Chart images in emails and/or implement server-side SVG library
  - **Weekly Report/Exceptions:** break down notices by project
  - **Weekly Report/Exceptions:** show average time to close problem
