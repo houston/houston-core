@@ -33,6 +33,7 @@
   background-position: 14px 14px;
   background-repeat: no-repeat;
   text-indent: 9999em;
+  overflow: hidden;
   
   &.add-link { background-position: 0 -96px; }
   &.delete-link { background-position: -24px -96px; }
