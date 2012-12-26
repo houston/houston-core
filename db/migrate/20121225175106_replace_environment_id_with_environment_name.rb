@@ -4,7 +4,7 @@ class ReplaceEnvironmentIdWithEnvironmentName < ActiveRecord::Migration
     "master" => "Production" }
   
   class Environment < ActiveRecord::Base; end
-    
+  
   def up
     add_column :deploys, :environment_name, :string, null: false, default: "Production"
     add_index :deploys, :environment_name
