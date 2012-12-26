@@ -11,6 +11,11 @@ Houston.config do
   
   
   
+  # These are the environments you deploy projects to
+  environments "Staging", "Production"
+  
+  
+  
   # The ticketing system that Houston will interface with.
   # Right now, the only supported system is Unfuddle.
   ticket_system :unfuddle do

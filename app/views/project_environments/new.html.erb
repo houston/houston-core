@@ -1,7 +1,0 @@
-<%= header do |p| %>
-  <%= p.breadcrumbs "Projects" => projects_path,
-                    @project => Project.all,
-                    "New" => nil %>
-<% end %>
-
-<%= render partial: "form" %>

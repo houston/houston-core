@@ -5,13 +5,10 @@ class Project < ActiveRecord::Base
   
   serialize :cached_queries
   
-  has_many :environments, :dependent => :destroy
-  has_many :releases, :through => :environments, :dependent => :destroy
+  has_many :releases, :dependent => :destroy
   has_many :tickets, :dependent => :destroy
   has_many :notifications, :class_name => "UserNotification"
   has_and_belongs_to_many :maintainers, :join_table => "projects_maintainers", :class_name => "User"
-  
-  accepts_nested_attributes_for :environments, :allow_destroy => true
   
   after_create :save_default_notifications
   
@@ -271,7 +268,7 @@ class Project < ActiveRecord::Base
   def notifications_pairs=(pairs)
     self.notifications = pairs.map do |pair|
       user_id, environment = pair.split(",")
-      find_or_create_notification(user_id: user_id.to_i, environment: environment)
+      find_or_create_notification(user_id: user_id.to_i, environment_name: environment)
     end
   end
   
@@ -306,7 +303,7 @@ private
     User.all.each do |user|
       environments = user.default_notifications_environments
       environments.each do |environment|
-        self.notifications.push find_or_create_notification(user_id: user.id, environment: environment)
+        self.notifications.push find_or_create_notification(user_id: user.id, environment_name: environment)
       end
     end
   end

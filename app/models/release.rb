@@ -4,7 +4,7 @@ class Release < ActiveRecord::Base
   after_create :associate_tickets_with_self
   after_create { Houston.observer.fire "release:create", self }
   
-  belongs_to :environment
+  belongs_to :project
   belongs_to :user
   belongs_to :deploy
   has_many :changes, :dependent => :destroy
@@ -14,7 +14,6 @@ class Release < ActiveRecord::Base
   
   accepts_nested_attributes_for :changes, :allow_destroy => true
   
-  delegate :project, :to => :environment
   delegate :maintainers, :to => :project
   
   validates_presence_of :user_id
@@ -24,8 +23,16 @@ class Release < ActiveRecord::Base
   
   
   
+  def self.to_environment(environment_name)
+    where(environment_name: environment_name)
+  end
+  
   def self.for_deploy(deploy)
-    where(:deploy_id => deploy.id)
+    where(deploy_id: deploy.id)
+  end
+  
+  def self.most_recent_commit
+    (release = first) && release.commit1
   end
   
   
@@ -99,7 +106,6 @@ class Release < ActiveRecord::Base
   
   
   def update_tickets_deployment!
-    environment_name = environment.name
     tickets.each do |ticket|
       ticket.set_unfuddle_kanban_field_to(environment_name)
     end
@@ -109,7 +115,7 @@ class Release < ActiveRecord::Base
   
   def notification_recipients
     @notification_recipients ||= begin
-      user_ids = project.notifications.where(environment: environment.slug).pluck(:user_id)
+      user_ids = project.notifications.where(environment_name: environment_name).pluck(:user_id)
       User.where(id: user_ids)
     end
   end

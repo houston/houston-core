@@ -33,6 +33,15 @@
       </div>
     </div>
     
+    <div class="control-group">
+      <%= f.label :maintainers, :class => 'control-label' %>
+      <div class="controls changes-nested-editor">
+        <%= f.nested_editor_for :maintainers do |f| -%>
+          <%= f.select :id, User.where(role: %w{Developer}).map { |user| [user.name, user.id] } %>
+        <% end -%>
+      </div>
+    </div>
+    
     <hr />
     
     <div class="control-group">
@@ -40,7 +49,7 @@
       <div class="controls">
         <p>
           <% Houston::VersionControl.adapters.each do |name| %>
-            <%= f.label "version_control_adapter_#{name.to_s.underscore}" do %>
+            <%= f.label "version_control_adapter_#{name.to_s.underscore}", :class => "inline-label" do %>
               <%= f.radio_button :version_control_adapter, name %> <%= name %>
             <% end %>
           <% end %>
@@ -56,7 +65,7 @@
       <div class="controls">
         <p>
           <% Houston::TicketTracking.adapters.each do |name| %>
-            <%= f.label "ticket_tracking_adapter_#{name.to_s.underscore}" do %>
+            <%= f.label "ticket_tracking_adapter_#{name.to_s.underscore}", :class => "inline-label" do %>
               <%= f.radio_button :ticket_tracking_adapter, name %> <%= name %>
             <% end %>
           <% end %>
@@ -84,38 +93,6 @@
     </div>
 
     <hr />
-
-    <div class="control-group">
-      <%= f.label :maintainers, :class => 'control-label' %>
-      <div class="controls changes-nested-editor">
-        <%= f.nested_editor_for :maintainers do |f| -%>
-          <%= f.select :id, User.where(role: %w{Developer}).map { |user| [user.name, user.id] } %>
-        <% end -%>
-      </div>
-    </div>
-
-    <hr />
-    
-    <%# !todo: warn before deleting an environment %>
-    <div class="control-group" style="display: none;">
-      <%= f.label :environments, :class => 'control-label' %>
-      <div class="controls changes-nested-editor">
-        <div class="nested editor headings">
-          <ol>
-            <li>
-              <div class="environment-name">Environment Name<small>&nbsp;</small></div>
-              <div class="environment-slug">Git Branch<small>May be a URL or local path</small></div>
-              <div class="environment-initial-commit">Initial Commit (SHA)<small>Leave blank for first commit</small></div>
-            </li>
-          </ol>
-        </div>
-        <%= f.nested_editor_for :environments do |f| -%>
-          <div class="environment-name"><%= f.text_field :name %></div>
-          <div class="environment-slug"><%= f.text_field :slug %></div>
-          <div class="environment-initial-commit"><%= f.text_field :initial_commit %></div>
-        <% end -%>
-      </div>
-    </div>
     
     <div class="control-group">
       <%= f.label :notifications, :class => 'control-label' %>
@@ -124,8 +101,8 @@
           <thead>
             <tr>
               <td class="notification-user"></td>
-              <% @project.environments.each do |environment| %>
-                <th><%= environment.name %></th>
+              <% Houston.config.environments.each do |environment| %>
+                <th><%= environment %></th>
               <% end %>
             </tr>
           <thead>
@@ -137,10 +114,10 @@
               <% users.each do |user| %>
                 <tr>
                   <td class="notification-user"><span class="avatar-32"><%= avatar_for(user, size: 32) %></span> <%= user.name %></td>
-                  <% @project.environments.each do |environment| %>
+                  <% Houston.config.environments.each do |environment| %>
                   <td class="notification-checkbox">
-                    <%= label_tag "project_#{environment.slug}_#{user.id}_notification" do %>
-                      <%= check_box_tag "project[notifications_pairs][]", "#{user.id},#{environment.slug}", @project.notifications.where(environment: environment.slug, user_id: user.id).any?, :id => "project_#{environment.slug}_#{user.id}_notification" %>
+                    <%= label_tag "project_#{environment}_#{user.id}_notification" do %>
+                      <%= check_box_tag "project[notifications_pairs][]", "#{user.id},#{environment}", @project.notifications.where(environment_name: environment, user_id: user.id).any?, :id => "project_#{environment}_#{user.id}_notification" %>
                     <% end %>
                   </td>
                   <% end %>

@@ -58,21 +58,19 @@
           <thead>
             <tr>
               <td class="project"></td>
-              <%# !<-- knowledge of environments encoded %>
-              <th>PRI</th>
-              <th>Production</th>
+              <% Houston.config.environments.each do |environment| %>
+                <th><%= environment %></th>
+              <% end %>
             </tr>
           </thead>
           <tbody>
             <% Project.all.each do |project| %>
               <tr>
                 <td class="notification-project"><b class="bubble <%= project.color %>"></b> <%= project.name %></td>
-                <% %w{dev master}.each do |slug| %>
+                <% Houston.config.environments.each do |environment| %>
                   <td class="notification-checkbox">
-                    <% if project.environments.where(slug: slug).any? %>
-                      <%= label_tag "user_#{slug}_#{project.id}_notification" do %>
-                        <%= check_box_tag "user[notifications_pairs][]", "#{project.id},#{slug}", @user.notifications.where(environment: slug, project_id: project.id).any?, :id => "user_#{slug}_#{project.id}_notification", :class => "#{slug}-notification" %>
-                      <% end %>
+                    <%= label_tag "user_#{environment}_#{project.id}_notification" do %>
+                      <%= check_box_tag "user[notifications_pairs][]", "#{project.id},#{environment}", @user.notifications.where(environment_name: environment, project_id: project.id).any?, :id => "user_#{environment}_#{project.id}_notification", :class => "#{environment}-notification" %>
                     <% end %>
                   </td>
                 <% end %>
@@ -82,15 +80,12 @@
           <tfoot>
             <tr>
               <td class="project"></td>
-              <%# !<-- knowledge of environments encoded %>
-              <th>
-                <a id="select_all_dev">All</a> /
-                <a id="select_none_dev">None</a>
-              </th>
-              <th>
-                <a id="select_all_master">All</a> /
-                <a id="select_none_master">None</a>
-              </th>
+              <% Houston.config.environments.each do |environment| %>
+                <th>
+                  <a class="select-all" data-environment="<%= environment %>">All</a> /
+                  <a class="select-none" data-environment="<%= environment %>">None</a>
+                </th>
+              <% end %>
             </tr>
           </tfoot>
         </table>
@@ -120,20 +115,13 @@
 <% content_for :javascripts do %>
 <script type="text/javascript">
   $(function() {
-    $('#select_all_dev').click(function() {
-      $('.dev-notification').attr('checked', 'checked');
+    $('.select-all').click(function() {
+      var environment = $(this).attr('data-environment');
+      $('.' + environment + '-notification').attr('checked', 'checked');
     });
-    
-    $('#select_none_dev').click(function() {
-      $('.dev-notification').removeAttr('checked');
-    });
-    
-    $('#select_all_master').click(function() {
-      $('.master-notification').attr('checked', 'checked');
-    });
-    
-    $('#select_none_master').click(function() {
-      $('.master-notification').removeAttr('checked');
+    $('.select-none').click(function() {
+      var environment = $(this).attr('data-environment');
+      $('.' + environment + '-notification').removeAttr('checked');
     });
   });
 </script>

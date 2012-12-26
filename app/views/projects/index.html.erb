@@ -77,27 +77,23 @@
             </td>
             <td class="project-last-release">
               <% if release = project.releases.first %>
-                <%= link_to format_release_age(release), project_environment_release_path(project, release.environment, release) %>
-                <span class="label label-inverse"><%= release.environment.name %></span>
+                <%= link_to format_release_age(release), release_path(release) %>
+                <span class="label label-inverse"><%= release.environment_name %></span>
               <% end %>
             </td>
             <td class="project-new-release">
               <% if can?(:create, Release) %>
-                <% if project.environments.any? %>
-                  <div class="btn-group">
-                    <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
-                      New Release
-                      <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                      <% project.environments.each do |environment| %>
-                        <li><%= link_to environment.name, new_project_environment_release_path(project, environment) %></li>
-                      <% end %>
-                    </ul>
-                  </div>
-                <% else %>
-                  <%= project.name %> has no release targets
-                <% end %>
+                <div class="btn-group">
+                  <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+                    New Release
+                    <span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <% Houston.config.environments.each do |environment| %>
+                      <li><%= link_to environment, new_release_path(project, environment) %></li>
+                    <% end %>
+                  </ul>
+                </div>
               <% end %>
             </td>
             <td></td>

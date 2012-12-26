@@ -102,7 +102,7 @@
                 <ul class="dropdown-menu releases-menu">
                 <% Project.all.each do |project| %>
                   <li class="project">
-                    <%= link_to main_app.project_releases_path(project) do %>
+                    <%= link_to main_app.releases_path(project) do %>
                       <%= project.name %> <b class="bubble <%= project.color %>"></b>
                     <% end %>
                   </li>

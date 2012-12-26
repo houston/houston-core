@@ -20,7 +20,7 @@ class CommitPresenter
       #     _actually_ represents 'releasedAt', we'll
       #     call it 'createdAt' for now.
       createdAt: commit.release.created_at, 
-      environment: commit.release.environment.name,
+      environment: commit.release.environment_name,
       message: commit.message,
       sha: commit.sha,
       committer: {

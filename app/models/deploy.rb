@@ -2,11 +2,10 @@ class Deploy < ActiveRecord::Base
   
   
   belongs_to :project
-  belongs_to :environment
   has_one :release
   
   
-  validates :project_id, :environment_id, :commit, :presence => true
+  validates :project_id, :environment_name, :commit, :presence => true
   
   
   after_create :prompt_maintainers_to_create_release
@@ -14,8 +13,8 @@ class Deploy < ActiveRecord::Base
   
   def build_release
     Release.new({
-      environment: environment,
-      commit0: environment.last_commit,
+      environment_name: environment_name,
+      commit0: project.releases.to_environment(environment_name).most_recent_commit,
       commit1: commit,
       deploy: self
     })

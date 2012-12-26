@@ -62,20 +62,19 @@
    - Use Postgres Hstore for extended attributes (c.f. http://railscasts.com/episodes/345-hstore)
    - Extract **Errbit** and **NewRelic** knowledge
    - Refactor hard-coded knowledge about Unfuddle/EP into configuration
-     - "tickets.deployment", "dev" and "master"
-       - Notifications:
-         - `users/_form.html.erb:63, 70` (knows about 'dev' and 'master' for notifications)
-         - `User.default_notifications_environments` (knows about 'dev' and 'master')
-       - TicketTracking Adapter, name of "Fixed in" field
-         - `Project#ticket_attributes_from_unfuddle_ticket`
-         - `Project#get_custom_ticket_attribute`
-         - Name of "Fixed in" field in Unfuddle (`releases/_form.html.erb:62`)
-         - `Ticket#set_unfuddle_kanban_field_to`
+     - Environments
+       - `User#default_notifications_environments`
+     - "tickets.deployment"; TicketTracking Adapter; name of "Fixed in" field
+       - `Project#ticket_attributes_from_unfuddle_ticket`
+       - `Project#get_custom_ticket_attribute`
+       - Name of "Fixed in" field in Unfuddle (`releases/_form.html.erb:62`)
+       - `Ticket#set_unfuddle_kanban_field_to`
      - "tickets.goldmine"
        - `Project#ticket_attributes_from_unfuddle_ticket`
        - `Release#goldmine_numbers`
      - Unfuddle-specific knowledge of severities (Weekly Report, Project Dashboard)
      - Unfuddle-specific knowledge re: invalid or duplicate in `users_controller.rb`
+     - Unfuddle::NeqHelper
    - Turn on or off features via config.rb
    - Extract **houston-releases**
    - Extract **houston-testing-report**

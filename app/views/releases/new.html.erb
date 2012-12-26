@@ -9,7 +9,7 @@
 
 <% else %>
 
-  <form accept-charset="UTF-8" action="<%= new_project_environment_release_path(@project, @environment) %>" class="form-horizontal pjax" method="get">
+  <form accept-charset="UTF-8" action="<%= new_release_path(@project, @environment) %>" class="form-horizontal pjax" method="get">
     <fieldset>
       <div class="control-group form-actions">
         <h3>Create a New Release for the following commits</h3>

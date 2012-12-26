@@ -36,7 +36,7 @@ class ViewMailer < ActionMailer::Base
       from: format_email_address(release.user),
       to: to,
       cc: cc,
-      subject: "#{release.project.name} Update: changes have been deployed to #{release.environment.name}",
+      subject: "#{release.project.name} Update: changes have been deployed to #{release.environment_name}",
       template: "releases/show"
     })
   end

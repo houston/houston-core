@@ -57,8 +57,8 @@ class User < ActiveRecord::Base
   
   def notifications_pairs=(pairs)
     self.notifications = pairs.map do |pair|
-      project_id, environment = pair.split(",")
-      find_or_create_notification(project_id: project_id.to_i, environment: environment)
+      project_id, environment_name = pair.split(",")
+      find_or_create_notification(project_id: project_id.to_i, environment_name: environment_name)
     end
   end
   
@@ -66,8 +66,8 @@ class User < ActiveRecord::Base
   
   def default_notifications_environments
     case role # <-- knowledge of environments
-    when "Tester";      %w{dev master}
-    when "Stakeholder"; %w{master}
+    when "Tester";      %w{Staging Production}
+    when "Stakeholder"; %w{Production}
     else                []
     end
   end
@@ -81,7 +81,7 @@ protected
     environments = default_notifications_environments
     Project.all.each do |project|
       environments.each do |environment|
-        self.notifications.push find_or_create_notification(project_id: project.id, environment: environment)
+        self.notifications.push find_or_create_notification(project_id: project.id, environment_name: environment)
       end
     end
     nil

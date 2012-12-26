@@ -29,6 +29,11 @@ module Houston
       @project_categories ||= []
     end
     
+    def environments(*args)
+      @environments = args if args.any?
+      @environments ||= []
+    end
+    
     
     
     # Components

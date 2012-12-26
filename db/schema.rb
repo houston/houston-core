@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121224212623) do
+ActiveRecord::Schema.define(:version => 20121225175106) do
 
   create_table "changes", :force => true do |t|
     t.integer  "release_id"
@@ -43,9 +43,13 @@ ActiveRecord::Schema.define(:version => 20121224212623) do
     t.integer  "project_id"
     t.integer  "environment_id"
     t.string   "commit"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.datetime "created_at",                                 :null => false
+    t.datetime "updated_at",                                 :null => false
+    t.string   "environment_name", :default => "Production", :null => false
   end
+
+  add_index "deploys", ["environment_name"], :name => "index_deploys_on_environment_name"
+  add_index "deploys", ["project_id", "environment_name"], :name => "index_deploys_on_project_id_and_environment_name"
 
   create_table "environments", :force => true do |t|
     t.string   "slug"
@@ -85,14 +89,18 @@ ActiveRecord::Schema.define(:version => 20121224212623) do
     t.string   "name"
     t.string   "commit0"
     t.string   "commit1"
-    t.datetime "created_at",                     :null => false
-    t.datetime "updated_at",                     :null => false
-    t.integer  "user_id",                        :null => false
-    t.text     "message",        :default => "", :null => false
+    t.datetime "created_at",                                 :null => false
+    t.datetime "updated_at",                                 :null => false
+    t.integer  "user_id",                                    :null => false
+    t.text     "message",          :default => "",           :null => false
     t.integer  "deploy_id"
+    t.integer  "project_id",       :default => -1,           :null => false
+    t.string   "environment_name", :default => "Production", :null => false
   end
 
   add_index "releases", ["deploy_id"], :name => "index_releases_on_deploy_id"
+  add_index "releases", ["project_id", "environment_name"], :name => "index_releases_on_project_id_and_environment_name"
+  add_index "releases", ["project_id"], :name => "index_releases_on_project_id"
 
   create_table "releases_tickets", :id => false, :force => true do |t|
     t.integer "release_id"
@@ -142,9 +150,9 @@ ActiveRecord::Schema.define(:version => 20121224212623) do
   create_table "user_notifications", :force => true do |t|
     t.integer  "user_id"
     t.integer  "project_id"
-    t.string   "environment"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.string   "environment_name"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
   end
 
   create_table "users", :force => true do |t|

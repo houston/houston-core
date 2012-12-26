@@ -57,12 +57,17 @@ Houston::Application.routes.draw do
       put :retire
     end
     
-    match "deploy", :to => "project_deploys#create", :via => :post
-    match "deploy", :to => "project_deploys#create", :via => :get if Rails.env.development?
-    
+    match "deploy", :to => "deploys#create", :via => :post
+    match "deploy", :to => "deploys#create", :via => :get if Rails.env.development?
+  end
+  
+  
+  
+  # Releases
+  
+  scope "projects/:project_id" do
     match "releases", :to => "releases#index", :as => :releases
-    
-    resources :environments, :controller => "project_environments" do
+    scope "environments/:environment" do
       resources :releases, :except => [:index]
     end
   end

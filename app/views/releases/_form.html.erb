@@ -1,4 +1,4 @@
-<%= form_for @release, :url => @release.new_record? ? project_environment_releases_path(@project, @environment) : release_path(@release), :html => { :class => 'form-horizontal' } do |f| %>
+<%= form_for @release, :url => @release.new_record? ? releases_path(@project, @environment) : release_path(@release), :html => { :class => 'form-horizontal' } do |f| %>
   <%= f.hidden_field :commit0 %>
   <%= f.hidden_field :commit1 %>
   <%= f.hidden_field :deploy_id %>
@@ -59,7 +59,7 @@
     <div class="control-group">
       <div class="controls">
         <label for="update_tickets_deployment">
-          <input type="checkbox" id="update_tickets_deployment" name="update_tickets_deployment" value="1" checked="checked" /> Change tickets' <b>Fixed in</b> to <b><%= @release.environment.name %></b>
+          <input type="checkbox" id="update_tickets_deployment" name="update_tickets_deployment" value="1" checked="checked" /> Change tickets' <b>Fixed in</b> to <b><%= @release.environment_name %></b>
         </label>
       </div>
     </div>
