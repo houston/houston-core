@@ -48,6 +48,16 @@ module UrlHelper
   
   
   
+  def releases_path(project, *args)
+    options = args.extract_options!
+    environment_name = args.first
+    if environment_name
+      "/projects/#{project.to_param}/environments/#{environment_name}/releases"
+    else
+      super(project, options)
+    end
+  end
+  
   def release_path(release, options={})
     super(release.project.to_param, release.environment_name, release, options)
   end

@@ -66,9 +66,9 @@ Houston::Application.routes.draw do
   # Releases
   
   scope "projects/:project_id" do
-    match "releases", :to => "releases#index", :as => :releases
+    match "releases", :to => "releases#index"
     scope "environments/:environment" do
-      resources :releases, :except => [:index]
+      resources :releases
     end
   end
   
