@@ -41,6 +41,13 @@ th.project-releases,
   margin: 1px;
 }
 
+.inline-label { 
+  display: inline;
+  display: inline-block;
+  
+  input[type="image"], input[type="checkbox"], input[type="radio"] { margin: 0; }
+}
+
 th, td {
   &.project-unfuddle-link {
     padding-right: 2px !important;
