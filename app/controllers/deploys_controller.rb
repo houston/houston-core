@@ -1,10 +1,11 @@
 class DeploysController < ApplicationController
+  skip_before_filter :verify_authenticity_token
   
   
   def create
-    @project = Project.find_by_slug(params[:project])
+    @project = Project.find_by_slug(params[:project_id])
     unless @project
-      render text: "A project with the slug '#{params[:project]}' could not be found", status: 404
+      render text: "A project with the slug '#{params[:project_id]}' could not be found", status: 404
       return
     end
     
