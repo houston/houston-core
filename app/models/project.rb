@@ -19,17 +19,22 @@ class Project < ActiveRecord::Base
   
   
   
-  default_scope where(:retired_at => nil)
+  
+  # Retirement
+  # ------------------------------------------------------------------------- #
+  
+  default_scope where(retired_at: nil)
   
   def retire!
-    update_attributes!(:retired_at => Time.now)
+    update_attributes!(retired_at: Time.now)
     freeze
   end
   
   def unretire!
-    update_attributes!(:retired_at => nil)
+    update_attributes!(retired_at: nil)
   end
   
+  # ------------------------------------------------------------------------- #
   
   
   
@@ -84,7 +89,6 @@ class Project < ActiveRecord::Base
           ticket.assign_attributes(attributes)
           ticket.save if ticket.changed?
         else
-          # !todo: this is a bad idea ... more complection!
           ticket = Ticket.nosync { self.tickets.create(attributes) }
         end
         
