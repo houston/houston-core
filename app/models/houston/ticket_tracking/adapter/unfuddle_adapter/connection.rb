@@ -14,6 +14,7 @@ module Houston
           # !todo: do these belong in the public interface for a Ticket Tracking System?
           delegate :get_ticket_attribute_for_custom_value_named!,
                    :find_custom_field_value_by_id!,
+                   :find_custom_field_value_by_value!,
                    :severities,
                    :to => :unfuddle
           
