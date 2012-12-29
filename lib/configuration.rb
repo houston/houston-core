@@ -34,6 +34,10 @@ module Houston
       @environments ||= []
     end
     
+    def web_hooks
+      %w{post_receive}
+    end
+    
     
     
     # Components
