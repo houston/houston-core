@@ -30,7 +30,7 @@ class ViewMailer < ActionMailer::Base
     @for_email = true
     
     to = options.fetch :to, release.notification_recipients.map(&method(:format_email_address))
-    cc = options.fetch :cc, release.notification_recipients.map(&method(:format_email_address))
+    cc = options.fetch :cc, release.maintainers.map(&method(:format_email_address))
     
     mail({
       from: format_email_address(release.user),
