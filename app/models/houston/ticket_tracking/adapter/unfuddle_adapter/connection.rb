@@ -15,6 +15,7 @@ module Houston
           delegate :get_ticket_attribute_for_custom_value_named!,
                    :find_custom_field_value_by_id!,
                    :find_custom_field_value_by_value!,
+                   :ticket,
                    :severities,
                    :to => :unfuddle
           

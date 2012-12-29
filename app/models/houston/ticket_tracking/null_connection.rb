@@ -32,6 +32,10 @@ module Houston
       def find_custom_field_value_by_value!(*args)
       end
       
+      def ticket(*args)
+        nil
+      end
+      
       def get_ticket_attribute_for_custom_value_named!(custom_field_name)
       end
       
