@@ -1,6 +1,7 @@
 source "http://rubygems.org"
 
 gem 'rails', '3.2.9'
+gem 'activerecord-postgres-hstore' # remove when Rails 4.0
 
 # Database
 gem 'pg'
