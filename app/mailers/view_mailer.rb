@@ -56,7 +56,7 @@ class ViewMailer < ActionMailer::Base
   end
   
   
-private
+protected
   
   
   def mail(options={})

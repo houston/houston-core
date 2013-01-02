@@ -3,14 +3,9 @@ class TestRun < ActiveRecord::Base
   belongs_to :project
   
   validates_presence_of :project_id, :commit
+  validates :results_url, :presence => true, :if => :completed?
   
-  after_create :trigger_build!
-  
-  
-  
-  def self.for(commit)
-    where(commit: commit).first_or_initialize
-  end
+  before_create :trigger_build!
   
   
   
@@ -29,11 +24,29 @@ class TestRun < ActiveRecord::Base
   end
   
   def trigger_build!
-    Rails.logger.warn "[test-run] POST #{trigger_build_url}"
-    Faraday.post(trigger_build_url)
-  # rescue Project Doesn't Exist
-  #  create the job in Jenkins
-  #  https://github.com/john-griffin/jenkins-client
+    Rails.logger.info "[test-run] POST #{trigger_build_url}"
+    response = Faraday.post(trigger_build_url)
+    if response.status == 404
+      Rails.logger.info "[test-run] Attempting to create a job on http://ci.cphepdev.com for #{project.slug}"
+      create_job_or_fail!
+      
+      Rails.logger.info "[test-run] POST #{trigger_build_url}"
+      response = Faraday.post(trigger_build_url)
+      raise Houston::CI::Error unless response.status == 200
+    end
+  end
+  
+  def create_job_or_fail!
+    client = Jenkins::Client.new
+    client.url = "http://ci.cphepdev.com"
+    
+    template = ERB.new(File.read(Rails.root.join("config.xml.erb")))
+    git_url = project.version_control_location
+    config = template.result(binding)
+    
+    job = Jenkins::Client::Job.new(name: project.slug, client: client)
+    success = job.create!(config)
+    raise Houston::CI::Error unless success
   end
   
   def trigger_build_url

@@ -43,6 +43,7 @@ gem 'foreman'
 gem 'googlecharts'
 gem 'grit'
 gem 'hpricot'
+gem 'jenkins-client', :git => 'git://github.com/john-griffin/jenkins-client.git'
 gem 'letter_opener', :git => 'git://github.com/pcg79/letter_opener.git'
 gem 'nokogiri'
 gem 'premailer' # for inlining CSS in HTML emails

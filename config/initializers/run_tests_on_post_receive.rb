@@ -56,7 +56,28 @@ Houston.observer.on "hooks:post_receive" do |payload|
     return
   end
   
-  project.test_runs.for(commit).save!
+  test_run = project.test_runs.find_by_commit(commit)
+  
+  if test_run
+    Rails.logger.info "[hooks:post_receive] a test run exists for #{test_run.short_commit}; doing nothing"
+    return
+  end
+  
+  # Does the CI server exist?
+  unless Faraday.get("http://ci.cphepdev.com").status == 200
+    message = "Houston is not configured to build #{project.name}."
+    instructions = "Houston was looking for an instance of Jenkins at http://ci.cphepdev.com, but it could not find Jenkins at that URL."
+    ProjectMailer.configuration_error(project, message, additional_info: instructions).deliver!
+    return
+  end
+  
+  begin
+    TestRun.create!(project: project, commit: commit)
+  rescue Houston::CI::Error
+    message = "Jenkins is not configured to build #{project.name}."
+    instructions = "Houston attempted to create a job named \"#{project.slug}\" at ci.cphepdev.com, but it was unable to do so."
+    ProjectMailer.configuration_error(project, message, additional_info: instructions).deliver!
+  end
 end
 
 # 6. Houston updates the Test Run.
@@ -94,7 +115,7 @@ Houston.observer.on "test_run:complete" do |test_run|
   # http://developer.github.com/v3/repos/statuses/#create-a-status
   path = Addressable::URI.parse(project.version_control_location).path[0...-4]
   github_status_url = "https://api.github.com/#{path}/statuses/#{test_run.commit}"
-  Rails.logger.info "[test_run:complete] POST #{url}"
+  Rails.logger.info "[test_run:complete] POST #{github_status_url}"
   Faraday.post(github_status_url, {
     status: test_run.result,
     target_url: test_run.results_url
@@ -106,7 +127,7 @@ Houston.observer.on "test_run:complete" do |test_run|
   project = test_run.project
   branches = project.repo.branches_at(test_run.commit)
   
-  Rails.logger.info "[test_run:complete] Ran tests for #{test_run.short_commit}; branches at #{test_run.short_commit}: #{branches.join(", ")}"
+  Rails.logger.info "[test_run:complete] Ran tests for #{test_run.short_commit}; branches at #{test_run.short_commit}: [#{branches.join(", ")}]"
   
   # if branches.member?("master")
   #   Rails.logger.warn "[test_run:complete] DEPLOY TO PRODUCTION"

@@ -1,0 +1,9 @@
+<h1 class="project-banner <%= @project.color %>">
+  <small>Configuration Needed for</small> <%= @project.name %>
+</h1>
+
+<h3><%= @message %></h3>
+
+<% unless @additional_info.blank? %>
+<p><%= @additional_info %></p>
+<% end %>
