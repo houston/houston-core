@@ -2,12 +2,12 @@
   <small>New Release for</small> <%= @project.name %>
 </h1>
 
-<div style="position:relative; border: 1px solid #ccc; padding: .66em 1.5em; background-color: #efefef; overflow:hidden;">
-  <h3 style="color: rgba(0,0,0,0.15); font-size: 6.66em; position: absolute; top: 0.5em; left: 0.25em; margin: 0; padding: 0; -webkit-transform:rotate(-30deg); -moz-transform:rotate(-30deg); -ms-transform:rotate(-30deg); transform:rotate(-30deg);">Sample</h3>
-  
-  <%= render partial: "releases/changelog", locals: {release: @release} %>
+<p>Commits: <span class="commit-range"><span class="commit"><%= @release.commit0 || "&nbsp;".html_safe %></span>...<span class="commit"><%= @release.commit1 || "&nbsp;".html_safe %></span></span></p>
+
+<div style="overflow: hidden;">
+  <%= render partial: "releases/changelog" %>
 </div>
 
-<%= link_to "Create Release",
+<p><%= link_to "Edit and Publish Release",
   new_release_url(@release, auth_token: @maintainer.authentication_token),
-  :class => "btn btn-primary btn-large" %>
+  :class => "btn btn-primary btn-large" %></p>

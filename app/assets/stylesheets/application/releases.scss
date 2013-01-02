@@ -4,6 +4,18 @@
 
 .no-items { font-style: italic; }
 
+.commit-range {
+  font-family: consolas, fixed;
+  
+  .commit {
+    background-color: #EFEFEF;
+    display: inline-block;
+    border-radius: 2px;
+    padding: 4px 2px 1px 4px;
+    line-height: 1em;
+  }
+}
+
 .controls > ul {
   margin: 0 0 5px 0;
   padding: 5px 0 0 0;
