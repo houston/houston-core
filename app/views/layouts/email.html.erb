@@ -1,30 +1,31 @@
-<style type="text/css">
-  #email_body {
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
-    font-size: 13px;
-    line-height: 18px;
-    color: #333 !important;
-  }
-  
-  a {
-    color: #08C;
-    text-decoration: none;
-  }
-  
-  a:hover {
-    color: #005580;
-    text-decoration: underline;
-  }
-  
-  table { font-size: inherit; border-collapse: collapse; }
-  
-  <%= render_scss "application/colors.scss.erb" %>
-  <%= render_scss "application/scores.scss" %>
-  <%= render_scss "application/weekly_report.scss" %>
-  <%= render_scss "application/releases.scss" %>
-</style>
-
 <html>
+<head>
+  <style type="text/css">
+    #email_body {
+      font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+      font-size: 13px;
+      line-height: 18px;
+      color: #333 !important;
+    }
+
+    a {
+      color: #08C;
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: #005580;
+      text-decoration: underline;
+    }
+
+    table { font-size: inherit; border-collapse: collapse; }
+
+    <%= render_scss "application/colors.scss.erb" %>
+    <%= render_scss "application/scores.scss" %>
+    <%= render_scss "application/weekly_report.scss" %>
+    <%= render_scss "application/releases.scss" %>
+  </style>
+</head>
 <body>
   <div id="email_body">
     <%= yield %>

@@ -1,6 +1,8 @@
 class TestingNote < ActiveRecord::Base
   
   after_create { Houston.observer.fire "testing_note:create", self }
+  after_update { Houston.observer.fire "testing_note:update", self }
+  after_save   { Houston.observer.fire "testing_note:save", self }
   
   belongs_to :user
   belongs_to :ticket

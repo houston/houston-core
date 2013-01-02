@@ -1,0 +1,9 @@
+<h1 class="project-banner <%= @project.color %>">
+  <small>Failing Verdict for</small> <%= @project.name %>
+</h1>
+
+<h3><%= @tester.name %> put a failing verdict on ticket #<%= @ticket.number %>:</h3>
+
+<p><%= @note.comment %></p>
+
+<p><%= link_to_ticket(@ticket) %></p>
