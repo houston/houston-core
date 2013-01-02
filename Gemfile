@@ -86,5 +86,4 @@ group :development, :test do
   gem "ci_reporter", :require => false
   
   gem 'pry' # for debugging
-  gem 'pry-remote'
 end
