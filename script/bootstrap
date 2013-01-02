@@ -1,108 +1,71 @@
 #!/usr/bin/env ruby
+# encoding: UTF-8
 
-#************************************************************
-# Run git submodule init and git submodule update
+### Bootstrap DSL (todo: extract to a library?)
 
-def git_step(step)
-  puts  "",
-        "Running " + step + "...",
-        "="*80
-  system(step)
+def run(command, options={})
+  with_exception_handling(options[:or]) do
+    puts "→ #{command}"
+    %x{#{command}}
+  end
 end
 
+def exists?(file_path)
+  File.exists?(File.expand_path(file_path))
+end
 
-#************************************************************
-# check if Bundler, Postgres, and MySQL are installed
-
-def check(key)
-  puts ""
-  if system("which #{key}")
-    if key == 'bundle'
-      puts  "Bundler is installed! Checking for Postgres...",
-            "="*80
-    elsif key == 'postgres'
-      puts  "Postgres is installed! Checking for MySQL...",
-            "="*80 
-    else
-      puts  "MySQL is installed!",
-            "="*80 
-    end
+def with_exception_handling(handler)
+  yield
+rescue Errno::ENOENT
+  if handler
+    send(handler)
   else
-    if key == 'bundle'
-      puts "Bundler missing, installing...",
-         "="*80
-      system("gem install bundler")
-      puts  "Bundler is installed!  Checking for Postgres...",
-         "="*80
-    else
-      puts  "You don't have " + key + " :(  Please install it and rerun this script.",
-         "="*80
-      exit(1)
-    end
+    raise
   end
 end
 
 
-#************************************************************
-# Commands for database_setup
 
-def command(input)
-  puts  "",
-        "Setting up database with " + input + "...",
-        "="*80
-  system(input)
+### Bootstrap helpers
+
+def you_need_bundler!
+  puts "This application requires 'bundler'.",
+       "Don't worry, it's not hard to install.",
+       "",
+       "Just run this:",
+       "  gem install bundler"
+  exit -1
+end
+
+def you_need_git!
+  puts "You need git to work here.",
+       "Hey! What are you doing here, anyway?",
+       "",
+       "Visit http://git-scm.com/downloads"
+  open "http://git-scm.com/downloads"
+  exit -1
+end
+
+def you_need_a_database_yml_file!
+  puts "Rails projects need a database.yml file.",
+       "We didn't give you one with all our secrets",
+       "when you cloned this repo because we're not",
+       "that dumb.",
+       "",
+       "Copy database.sample.yml as a starting point"
+  exit -1
 end
 
 
-#************************************************************
-# Rake the database!!
 
-def database_setup
-  if system("cp config/database.yml.sample config/database.yml")
-    if command('rake db:create')
-      if command('rake db:migrate')
-        puts  "="*80,
-              "",
-              "******   All done!  You can haz teh codez!   ******",
-              "",
-              "="*80
-      else
-        puts  "="*80,
-              "",
-              "******   Something bad happened with the migration                    ******",
-              "******   Check the errors above for more details on what to do next   ******",
-              "",
-              "="*80
-      end
-    else
-      puts  "="*80,
-            "",
-            "******   Something bad happened with the creation of your databases   ******",
-            "******   Check the errors above for more details on what to do next   ******",
-            "",
-            "="*80
-    end
-  else
-    puts  "="*80,
-          "",
-          "******   Error :( The script can't find your database.yml.sample file, so please ask one of the other developers for a copy :)",
-          "",
-          "="*80
-    exit(1)
-  end
-end
+### Houston-specific stuff
 
+# !todo:
+#  - require postgres
 
-#************************************************************
-# The Script!!!
-
-git_step('git submodule init')
-git_step('git submodule update')
-check('bundle')
-check('postgres')
-check('mysql')
-puts  "",
-      "You have postgres and mysql! Good job!  Now copying the database.yml.sample file...",
-      "="*80
-command('bundle install')
-database_setup
+run "bundle install", :or => :you_need_bundler!
+run "git submodule update --init", :or => :you_need_git!
+you_need_a_database_yml_file! unless exists? "config/database.yml"
+puts "If this is your first time working with this application,",
+     "you might want to run this command now:",
+     "  bundle exec rake db:setup"

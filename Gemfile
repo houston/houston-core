@@ -78,6 +78,12 @@ end
 group :development, :test do
   gem 'minitest'
   gem 'turn', :require => false # for prettier tests
+  
+  # For Jenkins
+  gem "simplecov", :require => false
+  gem "simplecov-rcov", :require => false
+  gem "ci_reporter", :require => false
+  
   gem 'pry' # for debugging
   gem 'pry-remote'
 end

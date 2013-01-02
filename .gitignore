@@ -23,3 +23,7 @@ REVISION
 .sass-cache
 .rvmrc
 
+# Ignore test artifacts
+coverage
+test/reports
+
