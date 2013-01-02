@@ -130,8 +130,8 @@ module Houston
     def tags(*args)
       if args.any?
         @tag_map = {}
-        args.flatten.each do |hash|
-          Tag.new(hash.pick(:name, :color).merge(slug: hash[:as])).tap do |tag|
+        args.flatten.each_with_index do |hash, position|
+          Tag.new(hash.pick(:name, :color).merge(slug: hash[:as], position: position)).tap do |tag|
             @tag_map[tag.slug] = tag
             hash.fetch(:aliases, []).each do |slug|
               @tag_map[slug] = tag
@@ -334,11 +334,13 @@ class Tag
     @name = options[:name]
     @slug = options[:slug]
     @color = options[:color]
+    @position = options[:position]
   end
   
   attr_reader :name
   attr_reader :slug
   attr_reader :color
+  attr_reader :position
   
   def to_partial_path
     "tags/tag"
