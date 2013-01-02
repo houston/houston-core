@@ -10,6 +10,10 @@ module Houston
         []
       end
       
+      def branches_at(sha)
+        []
+      end
+      
       def commits_between(sha1, sha2)
         []
       end

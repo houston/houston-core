@@ -9,7 +9,14 @@ class ProjectHooksController < ApplicationController
       return
     end
     
-    Houston.observer.fire "hooks:#{params[:hook]}", params.dup
+    payload = params.except(:action, :controller).merge({
+      sender: {
+        ip: request.remote_ip,
+        agent: request.user_agent
+      }
+    })
+    
+    Houston.observer.fire "hooks:#{params[:hook]}", payload
     
     head 200
   end

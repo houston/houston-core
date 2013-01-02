@@ -15,6 +15,10 @@ module UrlHelper
     "#{errbit_app_url(project)}/errs/#{err}"
   end
   
+  
+  
+  # !nb: this is now very similar to code in `config/initializers/run_tests_on_post_receive.rb`
+  
   def github_url?(project)
     project.version_control_location =~ /github/
   end
@@ -27,6 +31,8 @@ module UrlHelper
   def github_commit_url(commit)
     "#{github_project_url(commit.project)}/commit/#{commit.sha}"
   end
+  
+  
   
   def new_relic_project_url(project)
     account_id = Houston.config.new_relic[:account_id]

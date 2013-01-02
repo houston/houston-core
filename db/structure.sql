@@ -717,6 +717,46 @@ CREATE TABLE schema_migrations (
 
 
 --
+-- Name: test_runs; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE test_runs (
+    id integer NOT NULL,
+    project_id integer NOT NULL,
+    commit character varying(255) NOT NULL,
+    completed_at timestamp without time zone,
+    results_url character varying(255),
+    result character varying(255),
+    duration integer,
+    fail_count integer,
+    pass_count integer,
+    skip_count integer,
+    details hstore,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: test_runs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE test_runs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: test_runs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE test_runs_id_seq OWNED BY test_runs.id;
+
+
+--
 -- Name: testing_notes; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -958,6 +998,13 @@ ALTER TABLE releases ALTER COLUMN id SET DEFAULT nextval('releases_id_seq'::regc
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE test_runs ALTER COLUMN id SET DEFAULT nextval('test_runs_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE testing_notes ALTER COLUMN id SET DEFAULT nextval('testing_notes_id_seq'::regclass);
 
 
@@ -1035,6 +1082,14 @@ ALTER TABLE ONLY projects
 
 ALTER TABLE ONLY releases
     ADD CONSTRAINT releases_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: test_runs_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY test_runs
+    ADD CONSTRAINT test_runs_pkey PRIMARY KEY (id);
 
 
 --
@@ -1131,6 +1186,20 @@ CREATE INDEX index_releases_on_project_id_and_environment_name ON releases USING
 --
 
 CREATE UNIQUE INDEX index_releases_tickets_on_release_id_and_ticket_id ON releases_tickets USING btree (release_id, ticket_id);
+
+
+--
+-- Name: index_test_runs_on_commit; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_test_runs_on_commit ON test_runs USING btree (commit);
+
+
+--
+-- Name: index_test_runs_on_project_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_test_runs_on_project_id ON test_runs USING btree (project_id);
 
 
 --
@@ -1292,3 +1361,5 @@ INSERT INTO schema_migrations (version) VALUES ('20121224212623');
 INSERT INTO schema_migrations (version) VALUES ('20121225175106');
 
 INSERT INTO schema_migrations (version) VALUES ('20121230173644');
+
+INSERT INTO schema_migrations (version) VALUES ('20121230174234');

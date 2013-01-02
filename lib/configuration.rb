@@ -35,7 +35,7 @@ module Houston
     end
     
     def web_hooks
-      %w{post_receive}
+      %w{post_receive post_build}
     end
     
     

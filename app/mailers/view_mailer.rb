@@ -10,21 +10,6 @@ class ViewMailer < ActionMailer::Base
   helper UrlHelper
   
   
-  def weekly_report(weekly_report, recipients)
-    @date_range = weekly_report.date_range
-    @projects = Project.scoped
-    @title = weekly_report.title
-    @date = weekly_report.date
-    @for_email = true
-    
-    mail({
-      to: recipients,
-      subject: weekly_report.title,
-      template: "weekly_report/show"
-    })
-  end
-  
-  
   def release(release, options={})
     @release = release
     @for_email = true
@@ -38,6 +23,35 @@ class ViewMailer < ActionMailer::Base
       cc: cc,
       subject: "#{release.project.name} Update: changes have been deployed to #{release.environment_name}",
       template: "releases/show"
+    })
+  end
+  
+  
+  def test_results(test_run, options={})
+    @test_run = test_run
+    @project = test_run.project
+    
+    to = options.fetch :to, @project.maintainers.map(&method(:format_email_address))
+    
+    mail({
+      to: to,
+      subject: "#{@project.name}: test results",
+      template: "test_runs/show"
+    })
+  end
+  
+  
+  def weekly_report(weekly_report, recipients)
+    @date_range = weekly_report.date_range
+    @projects = Project.scoped
+    @title = weekly_report.title
+    @date = weekly_report.date
+    @for_email = true
+    
+    mail({
+      to: recipients,
+      subject: weekly_report.title,
+      template: "weekly_report/show"
     })
   end
   

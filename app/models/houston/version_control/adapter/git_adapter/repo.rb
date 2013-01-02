@@ -18,6 +18,14 @@ module Houston
             `git --git-dir=#{git_dir} log --all --pretty='%at'`.split(/\n/).uniq
           end
           
+          def branches_at(sha)
+            refs = `git show-ref --heads`
+            branches_by_sha = Hash[refs.split(/\n/).map { |line|
+              sha, ref = line.split
+              [File.basename(ref), sha] }]
+            branches_by_sha[sha]
+          end
+          
           def commits_between(sha1, sha2)
             connection
               .commits_between(sha1, sha2)
