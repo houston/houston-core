@@ -38,12 +38,7 @@ class TestRun < ActiveRecord::Base
   
   def callback_url
     Rails.application.routes.url_helpers
-      .web_hook_url(project_id: project.slug, hook: "post_build")
-  end
-  
-  def callback_path
-    Rails.application.routes.url_helpers
-      .web_hook_path(project_id: project.slug, hook: "post_build")
+      .web_hook_url(host: Houston.config.host, project_id: project.slug, hook: "post_build")
   end
   
   def completed!(results_url)

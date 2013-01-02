@@ -34,9 +34,19 @@ module Houston
       @environments ||= []
     end
     
+    
+    
+    # !todo: move to config.rb
+    
     def web_hooks
       %w{post_receive post_build}
     end
+    
+    def host
+      "status.cphepdev.com"
+    end
+    
+    
     
     
     

@@ -34,4 +34,8 @@ Houston::Application.configure do
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
+  
+  # So we can send emails
+  config.action_mailer.default_url_options = { host: Houston.config.host }
+  
 end

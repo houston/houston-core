@@ -66,7 +66,6 @@ Houston::Application.configure do
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
   
   # So we can send emails
-  # !todo: pull this out into Houston's config file!
-  config.action_mailer.default_url_options = { host: "status.cphepdev.com" }
+  config.action_mailer.default_url_options = { host: Houston.config.host }
   
 end
