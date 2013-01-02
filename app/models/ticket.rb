@@ -88,7 +88,7 @@ class Ticket < ActiveRecord::Base
     
     Ticket.transaction do
       ticket_queue.destroy if ticket_queue
-      create_ticket_queue!(ticket: self, queue: value) if value
+      self.ticket_queue = TicketQueue.create!(ticket: self, queue: value) if value
     end
     
     value
