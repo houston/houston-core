@@ -62,11 +62,14 @@ end
 # 6. Houston updates the Test Run.
 Houston.observer.on "hooks:post_build" do |params|
   commit, results_url = params.values_at(:commit, :results_url)
+  test_run = TestRun.find_by_commit(commit)
   
-  test_run = TestRun.find_by_commit!(commit)
-  return unless test_run
+  unless test_run
+    Rails.logger.warn "[hooks:post_build] no test run found for commit '#{commit}'"
+    return
+  end
   
-  test_run.complete!(results_url)
+  test_run.completed!(results_url)
 end
 
 # 7. Houston emails results.
@@ -90,8 +93,9 @@ Houston.observer.on "test_run:complete" do |test_run|
   
   # http://developer.github.com/v3/repos/statuses/#create-a-status
   path = Addressable::URI.parse(project.version_control_location).path[0...-4]
-  url = "https://api.github.com/#{path}/statuses/#{test_run.commit}"
-  Faraday.post(url, {
+  github_status_url = "https://api.github.com/#{path}/statuses/#{test_run.commit}"
+  Rails.logger.info "[test_run:complete] POST #{url}"
+  Faraday.post(github_status_url, {
     status: test_run.result,
     target_url: test_run.results_url
   })

@@ -23,7 +23,7 @@ module Houston
             branches_by_sha = Hash[refs.split(/\n/).map { |line|
               sha, ref = line.split
               [File.basename(ref), sha] }]
-            branches_by_sha[sha]
+            branches_by_sha.fetch(sha, [])
           end
           
           def commits_between(sha1, sha2)

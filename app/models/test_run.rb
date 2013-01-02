@@ -9,7 +9,7 @@ class TestRun < ActiveRecord::Base
   
   
   def self.for(commit)
-    first_or_initialize(commit: commit)
+    where(commit: commit).first_or_initialize
   end
   
   
@@ -20,20 +20,24 @@ class TestRun < ActiveRecord::Base
     commit[0...8]
   end
   
-  def finished?
-    response.present?
+  def completed?
+    completed_at.present?
+  end
+  
+  def has_results?
+    result.present?
   end
   
   def trigger_build!
-    Faraday.post(trigger_build_url, {"COMMIT_SHA" => commit, "CALLBACK_URL" => callback_url})
+    Rails.logger.warn "[test-run] POST #{trigger_build_url}"
+    Faraday.post(trigger_build_url)
   # rescue Project Doesn't Exist
   #  create the job in Jenkins
   #  https://github.com/john-griffin/jenkins-client
   end
   
   def trigger_build_url
-    "http://ci.cphepdev.com/job/#{project.slug}/buildWithParameters"
-    # "http://ci.cphepdev.com/job/#{project.slug}/buildWithParameters?COMMIT_SHA=#{commit}&CALLBACK_URL=#{callback_url}"
+    "http://ci.cphepdev.com/job/#{project.slug}/buildWithParameters?COMMIT_SHA=#{commit}&CALLBACK_URL=#{callback_url}"
   end
   
   def callback_url
@@ -42,20 +46,29 @@ class TestRun < ActiveRecord::Base
   end
   
   def completed!(results_url)
-    update_attributes!(completed_at: Time.now, results_url: results_url)
-    fetch_results!
+    self.completed_at = Time.now unless completed?
+    self.results_url = results_url
+    save!
+    fetch_results! unless has_results?
   end
   
   def fetch_results!
+    Rails.logger.warn "[test-run] GET #{results_url}"
     response = Faraday.get(results_url)
     
     # Assumes structure of Jenkins testReport
     results = JSON.parse(response.body)
-    self.duration = results[:duration] * 1000 # convert seconds to milliseconds
-    self.fail_count = results[:failCount]
-    self.pass_count = results[:passCount]
-    self.skip_count = results[:skipCount]
-    self.details = results[:suites]
+    self.duration = results["duration"] * 1000 # convert seconds to milliseconds
+    self.fail_count = results["failCount"]
+    self.pass_count = results["passCount"]
+    self.skip_count = results["skipCount"]
+    self.details = results["suites"].each_with_index.each_with_object({}) { |(item, i), hash| hash[i.to_s] = item }
+    
+    if fail_count > 0
+      self.result = "fail"
+    elsif pass_count > 0
+      self.result = "pass"
+    end
     
     self.save!
     

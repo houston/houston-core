@@ -1,5 +1,5 @@
-<h1 class="project-banner <%= release.project.color %>">
-  <small>Updates for</small> <%= release.project.name %>
+<h1 class="project-banner <%= @project.color %>">
+  <small>Test Results for</small> <%= @project.name %>
 </h1>
 
-<h2><%= @test_run.result %></h2>
+<h2 class="test-result-banner tests-<%= @test_run.result %>"><%= @test_run.result %></h2>
