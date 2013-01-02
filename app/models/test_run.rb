@@ -9,7 +9,7 @@ class TestRun < ActiveRecord::Base
   
   
   def self.for(commit)
-    find_or_instantiate_by_commit(commit)
+    first_or_initialize(commit: commit)
   end
   
   

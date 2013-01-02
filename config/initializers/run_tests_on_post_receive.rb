@@ -25,13 +25,16 @@
 
 module PostReceiveHook
   
-  GITHUB_WEBHOOK_IP_ADDRESSES = %w{207.97.227.253 50.57.128.197 108.171.174.178}
+  GITHUB_WEBHOOK_IPS = %w{207.97.227.253 50.57.128.197 108.171.174.178}
   
   def self.commit_from_payload(params)
-    case params.fetch(:sender, {})[:ip]
-    when *GITHUB_WEBHOOK_IP_ADDRESSES
-      payload = JSON.parse params[:payload]
-      payload[:after]
+    ip = params.fetch(:sender, {})[:ip]
+    case ip
+    when *GITHUB_WEBHOOK_IPS
+      payload = JSON.parse params["payload"]
+      payload["after"]
+    else
+      Rails.logger.warn "[post-receive-hook] did not recognize remote IP: '#{ip}'"
     end
   end
   
@@ -39,9 +42,21 @@ end
 
 # 3. Houston creates a Test Run.
 Houston.observer.on "hooks:post_receive" do |payload|
+  project = Project.find_by_slug(payload[:project_id])
+  
+  unless project
+    Rails.logger.warn "[hooks:post_receive] no project found for slug '#{payload[:project_id]}'"
+    return
+  end
+  
   commit = PostReceiveHook.commit_from_payload(payload)
   
-  TestRun.for(commit).save!
+  unless commit
+    Rails.logger.warn "[hooks:post_receive] no commit found in payload"
+    return
+  end
+  
+  project.test_runs.for(commit).save!
 end
 
 # 6. Houston updates the Test Run.
