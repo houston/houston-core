@@ -56,6 +56,13 @@ def you_need_a_database_yml_file!
   exit -1
 end
 
+def you_need_a_database_yml_file!
+  puts "Houston needs a config.rb file.",
+       "",
+       "Copy config.rb.sample as a starting point"
+  exit -1
+end
+
 
 
 ### Houston-specific stuff
@@ -66,6 +73,7 @@ end
 run "bundle install", :or => :you_need_bundler!
 run "git submodule update --init", :or => :you_need_git!
 you_need_a_database_yml_file! unless exists? "config/database.yml"
+you_need_a_config_rb_file! unless exists? "config/config.rb"
 puts "If this is your first time working with this application,",
      "you might want to run this command now:",
      "  bundle exec rake db:setup"

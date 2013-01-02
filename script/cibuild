@@ -2,5 +2,6 @@
 
 export RAILS_ENV=test
 cp ./config/database.yml.jenkins ./config/database.yml
+cp ./config/config.rb.jenkins ./config/config.rb
 ./script/bootstrap
 bundle exec rake ci:setup:minitest test:all COVERAGE=on
