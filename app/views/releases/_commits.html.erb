@@ -4,7 +4,7 @@
     <% commits.each do |commit| %>
       <%= content_tag :li, :id => "commit_#{commit.id}" do %>
         <%= format_commit(commit) %>
-        <%= link_to_commit(commit) if github_url?(@project) && can?(:read, commit) %>
+        <%= link_to_commit(commit) if github_url?(@project) && !for_email? && can?(:read, commit) %>
       <% end %>
     <% end %>
   </ul>
