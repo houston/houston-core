@@ -19,7 +19,7 @@ module Houston
           end
           
           def branches_at(sha)
-            refs = `git show-ref --heads`
+            refs = `git --git-dir=#{git_dir} show-ref --heads`
             branches_by_sha = Hash[refs.split(/\n/).map { |line|
               sha, ref = line.split
               [File.basename(ref), sha] }]
