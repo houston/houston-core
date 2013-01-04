@@ -40,6 +40,8 @@ module PostReceiveHook
   
 end
 
+
+
 # 3. Houston creates a Test Run.
 Houston.observer.on "hooks:post_receive" do |payload|
   project = Project.find_by_slug(payload[:project_id])
@@ -80,6 +82,8 @@ Houston.observer.on "hooks:post_receive" do |payload|
   end
 end
 
+
+
 # 6. Houston updates the Test Run.
 Houston.observer.on "hooks:post_build" do |params|
   commit, results_url = params.values_at(:commit, :results_url)
@@ -93,10 +97,14 @@ Houston.observer.on "hooks:post_build" do |params|
   test_run.completed!(results_url)
 end
 
+
+
 # 7. Houston emails results.
 Houston.observer.on "test_run:complete" do |test_run|
   ViewMailer.test_results(test_run).deliver!
 end
+
+
 
 # 8. Houston publishes results to GitHub
 Houston.observer.on "test_run:complete" do |test_run|
@@ -121,6 +129,8 @@ Houston.observer.on "test_run:complete" do |test_run|
     target_url: test_run.results_url
   })
 end
+
+
 
 # 9. Houston automatically deploys the project
 Houston.observer.on "test_run:complete" do |test_run|
