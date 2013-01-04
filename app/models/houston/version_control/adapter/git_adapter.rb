@@ -53,13 +53,13 @@ module Houston
             target = File.basename(temp_path)
             
             ActiveRecord::Base.benchmark("[git:clone] #{origin_uri} => #{temp_path}") do
-              `cd "#{local_path}" && git clone --mirror #{origin_uri} #{target}`
+              `git --git-dir=#{local_path} clone --mirror #{origin_uri} #{target}`
             end
           end
           
           def pull!(local_path)
             ActiveRecord::Base.benchmark("[git:pull] #{local_path}") do
-             `cd "#{local_path}" && git remote update`
+             `git --git-dir=#{local_path} remote update`
             end
           end
           
