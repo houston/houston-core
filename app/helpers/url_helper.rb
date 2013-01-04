@@ -32,6 +32,10 @@ module UrlHelper
     "#{github_project_url(project)}/commit/#{sha}"
   end
   
+  def github_commit_range_url(project, sha0, sha1)
+    "#{github_project_url(project)}/compare/#{sha0}...#{sha1}"
+  end
+  
   
   
   def new_relic_project_url(project)

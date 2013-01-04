@@ -6,23 +6,25 @@ module CommitHelper
     message
   end
   
-  def link_to_commit(*args)
-    project, sha = []
+  def link_to_commit(commit)
+    project = commit.project
+    short_sha = commit.sha[0...8]
+    return short_sha unless github_url?(project)
     
-    if args.length == 1
-      commit = args.first
-      project = commit.project
-      sha = commit.sha
-    elsif args.length == 2
-      project, sha = args
-    else
-      raise ArgumentError, "expected to receive [commit] or [project, sha] as arguments"
-    end
+    link_to short_sha, github_commit_url(project, commit.sha), target: "_blank"
+  end
+  
+  def link_to_commit_range(project, commit0, commit1)
+    range = "#{format_sha(commit0)}...#{format_sha(commit1)}"
+    return range unless github_url?(project)
+    return range if commit0.blank? or commit1.blank?
     
-    return "&nbsp;".html_safe unless sha
-    return sha[0...8] unless github_url?(project)
-    
-    link_to sha[0...8], github_commit_url(project, sha), target: "_blank"
+    link_to range, github_commit_range_url(project, commit0, commit1), target: "_blank", title: "Compare"
+  end
+  
+  def format_sha(sha)
+    return "_"*8 if sha.blank?
+    sha[0...8]
   end
   
   def format_change(change)

@@ -11,5 +11,7 @@
     new_release_url(@release, auth_token: @maintainer.authentication_token),
     :class => "btn btn-primary" %>
   &nbsp;
-  <span style="color: #888;">(Commit range: <span class="commit-range"><span class="commit"><%= link_to_commit @project, @release.commit0 %></span>...<span class="commit"><%= link_to_commit @project, @release.commit1 %></span></span>)</span>
+  <span style="color: #888;">(Commit range:
+    <span class="commit-range"><%= link_to_commit_range(@project, @release.commit0, @release.commit1) %></span>)
+  </span>
 </p>
