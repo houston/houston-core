@@ -28,8 +28,8 @@ module UrlHelper
     project.version_control_location.gsub(/^git@(?:www\.)?github.com:/, "https://github.com/").gsub(/^git:/, "https:").gsub(/\.git$/, "")
   end
   
-  def github_commit_url(commit)
-    "#{github_project_url(commit.project)}/commit/#{commit.sha}"
+  def github_commit_url(project, sha)
+    "#{github_project_url(project)}/commit/#{sha}"
   end
   
   

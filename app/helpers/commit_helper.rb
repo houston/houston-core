@@ -6,8 +6,23 @@ module CommitHelper
     message
   end
   
-  def link_to_commit(commit)
-    link_to commit.sha[0...8], github_commit_url(commit), target: "_blank"
+  def link_to_commit(*args)
+    project, sha = []
+    
+    if args.length == 1
+      commit = args.first
+      project = commit.project
+      sha = commit.sha
+    elsif args.length == 2
+      project, sha = args
+    else
+      raise ArgumentError, "expected to receive [commit] or [project, sha] as arguments"
+    end
+    
+    return "&nbsp;".html_safe unless sha
+    return sha[0...8] unless github_url?(project)
+    
+    link_to sha[0...8], github_commit_url(project, sha), target: "_blank"
   end
   
   def format_change(change)

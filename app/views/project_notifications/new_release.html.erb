@@ -2,12 +2,14 @@
   <small>New Release for</small> <%= @project.name %>
 </h1>
 
-<p>Commits: <span class="commit-range"><span class="commit"><%= @release.commit0 || "&nbsp;".html_safe %></span>...<span class="commit"><%= @release.commit1 || "&nbsp;".html_safe %></span></span></p>
-
 <div style="overflow: hidden;">
   <%= render partial: "releases/changelog" %>
 </div>
 
-<p><%= link_to "Edit and Publish Release",
-  new_release_url(@release, auth_token: @maintainer.authentication_token),
-  :class => "btn btn-primary btn-large" %></p>
+<p style="margin-top: 3em;">
+  <%= link_to "Edit and Publish Release",
+    new_release_url(@release, auth_token: @maintainer.authentication_token),
+    :class => "btn btn-primary" %>
+  &nbsp;
+  <span style="color: #888;">(Commit range: <span class="commit-range"><span class="commit"><%= link_to_commit @project, @release.commit0 %></span>...<span class="commit"><%= link_to_commit @project, @release.commit1 %></span></span>)</span>
+</p>
