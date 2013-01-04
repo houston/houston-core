@@ -32,7 +32,7 @@ class User < ActiveRecord::Base
   
   default_value_for :role, ROLES.first
   
-  validates :first_name, :last_name, :presence => true, :uniqueness => true
+  validates :first_name, :last_name, :presence => true
   validates :role, :presence => true, :inclusion => ROLES
   
   ROLES.each do |role|
