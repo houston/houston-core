@@ -370,6 +370,10 @@ class NullTag
     "&mdash;".html_safe
   end
   
+  def position
+    999
+  end
+  
   def to_partial_path
     "tags/null_tag"
   end
