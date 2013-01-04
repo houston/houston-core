@@ -6,6 +6,7 @@ class ProjectMailer < ViewMailer
     @tester = testing_note.user
     @ticket = testing_note.ticket
     @project = testing_note.project
+    
     mail({
       from: format_email_address(@tester),
       to: @ticket.committers.map { |committer| "#{committer[:name]} <#{committer[:email]}>" },

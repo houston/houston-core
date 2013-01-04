@@ -1,4 +1,6 @@
 class ViewMailer < ActionMailer::Base
+  include AbstractController::Callbacks
+  
   default from: Houston.config.mailer_sender
   helper CommitHelper
   helper EmailHelper
@@ -9,10 +11,11 @@ class ViewMailer < ActionMailer::Base
   helper TicketHelper
   helper UrlHelper
   
+  before_filter { @for_email = true }
+  
   
   def release(release, options={})
     @release = release
-    @for_email = true
     
     to = options.fetch :to, release.notification_recipients.map(&method(:format_email_address))
     cc = options.fetch :cc, release.maintainers.map(&method(:format_email_address))
@@ -46,7 +49,6 @@ class ViewMailer < ActionMailer::Base
     @projects = Project.scoped
     @title = weekly_report.title
     @date = weekly_report.date
-    @for_email = true
     
     mail({
       to: recipients,
