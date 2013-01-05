@@ -3,7 +3,7 @@ require 'test_helper'
 class GitAdapterTest < ActiveSupport::TestCase
   
   test "#git_dir should return path when the repo is bare" do
-    path = Rails.root.join("tmp", "unite.git")
+    path = Rails.root.join("test", "data", "bare_repo.git")
     repo = Houston::VersionControl::Adapter::GitAdapter.create_repo(path)
     assert_equal path.to_s, repo.git_dir
   end
