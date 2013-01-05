@@ -48,21 +48,26 @@ Houston.observer.on "hooks:post_receive" do |payload|
   
   unless project
     Rails.logger.warn "[hooks:post_receive] no project found for slug '#{payload[:project_id]}'"
-    return
+    next
+  end
+  
+  if project.ci_adapter == "None"
+    Rails.logger.debug "[hooks:post_receive] the project #{project.name} is not configured to be used with a Continuous Integration server"
+    next
   end
   
   commit = PostReceiveHook.commit_from_payload(payload)
   
   unless commit
     Rails.logger.warn "[hooks:post_receive] no commit found in payload"
-    return
+    next
   end
   
   test_run = project.test_runs.find_by_commit(commit)
   
   if test_run
     Rails.logger.info "[hooks:post_receive] a test run exists for #{test_run.short_commit}; doing nothing"
-    return
+    next
   end
   
   # Does the CI server exist?
@@ -70,7 +75,7 @@ Houston.observer.on "hooks:post_receive" do |payload|
     message = "Houston is not configured to build #{project.name}."
     instructions = "Houston was looking for an instance of Jenkins at http://ci.cphepdev.com, but it could not find Jenkins at that URL."
     ProjectNotification.configuration_error(project, message, additional_info: instructions).deliver!
-    return
+    next
   end
   
   begin
@@ -91,7 +96,7 @@ Houston.observer.on "hooks:post_build" do |params|
   
   unless test_run
     Rails.logger.warn "[hooks:post_build] no test run found for commit '#{commit}'"
-    return
+    next
   end
   
   test_run.completed!(results_url)
@@ -112,12 +117,12 @@ Houston.observer.on "test_run:complete" do |test_run|
   
   unless project.version_control_adapter == "Git"
     Rails.logger.warn "[test_run:complete] #{project.slug} does not use git"
-    return
+    next
   end
   
   unless project.version_control_location =~ /github/
     Rails.logger.warn "[test_run:complete] #{project.slug} is not at GitHub"
-    return
+    next
   end
   
   # http://developer.github.com/v3/repos/statuses/#create-a-status
