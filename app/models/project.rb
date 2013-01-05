@@ -264,6 +264,19 @@ class Project < ActiveRecord::Base
   
   
   
+  # Continuous Integration
+  # ------------------------------------------------------------------------- #
+  
+  def self.with_ci_server
+    where Project.arel_table[:ci_adapter].not_eq("None")
+  end
+  
+  # ------------------------------------------------------------------------- #
+  
+  
+  
+  
+  
   def testers
     @testers ||= User.testers
   end

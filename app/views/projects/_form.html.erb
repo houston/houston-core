@@ -77,6 +77,21 @@
     <hr />
 
     <div class="control-group">
+      <%= f.label :ci_adapter, "Continuous Integration", :class => 'control-label' %>
+      <div class="controls">
+        <p>
+          <% Houston::CI.adapters.each do |name| %>
+            <%= f.label "ci_adapter_#{name.to_s.underscore}", :class => "inline-label" do %>
+              <%= f.radio_button :ci_adapter, name %> <%= name %>
+            <% end %>
+          <% end %>
+        </p>
+      </div>
+    </div>
+
+    <hr />
+
+    <div class="control-group">
       <%= f.label :errbit_app_id, "Errbit App ID", :class => 'control-label' %>
       <div class="controls">
         <%= f.text_field :errbit_app_id, :class => 'text_field' %>

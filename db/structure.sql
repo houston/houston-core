@@ -625,7 +625,8 @@ CREATE TABLE projects (
     retired_at timestamp without time zone,
     category character varying(255),
     version_control_adapter character varying(255) DEFAULT 'None'::character varying NOT NULL,
-    ticket_tracking_adapter character varying(255) DEFAULT 'None'::character varying NOT NULL
+    ticket_tracking_adapter character varying(255) DEFAULT 'None'::character varying NOT NULL,
+    ci_adapter character varying(255) DEFAULT 'None'::character varying NOT NULL
 );
 
 
@@ -1363,3 +1364,5 @@ INSERT INTO schema_migrations (version) VALUES ('20121225175106');
 INSERT INTO schema_migrations (version) VALUES ('20121230173644');
 
 INSERT INTO schema_migrations (version) VALUES ('20121230174234');
+
+INSERT INTO schema_migrations (version) VALUES ('20130105200429');
