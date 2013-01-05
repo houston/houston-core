@@ -70,20 +70,11 @@ Houston.observer.on "hooks:post_receive" do |payload|
     next
   end
   
-  # Does the CI server exist?
-  unless Faraday.get("http://ci.cphepdev.com").status == 200
-    message = "Houston is not configured to build #{project.name}."
-    instructions = "Houston was looking for an instance of Jenkins at http://ci.cphepdev.com, but it could not find Jenkins at that URL."
-    ProjectNotification.configuration_error(project, message, additional_info: instructions).deliver!
-    next
-  end
-  
   begin
     TestRun.create!(project: project, commit: commit)
   rescue Houston::CI::Error
     message = "Jenkins is not configured to build #{project.name}."
-    instructions = "Houston attempted to create a job named \"#{project.slug}\" at ci.cphepdev.com, but it was unable to do so."
-    ProjectNotification.configuration_error(project, message, additional_info: instructions).deliver!
+    ProjectNotification.configuration_error(project, message, additional_info: $!.message).deliver!
   end
 end
 

@@ -60,6 +60,14 @@ module Houston
     end
     attr_reader :ticket_system_configuration
     
+    def ci_server(*args, &block)
+      @ci_server_configuration = HashDsl.hash_from_block(block) if block_given?
+      
+      # Currently Jenkins is the only supported ticket system
+      :jenkins
+    end
+    attr_reader :ci_server_configuration
+    
     def error_tracker(*args, &block)
       @error_tracker_configuration = HashDsl.hash_from_block(block) if block_given?
       

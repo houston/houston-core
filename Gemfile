@@ -79,6 +79,7 @@ end
 group :development, :test do
   gem 'minitest'
   gem 'turn', :require => false # for prettier tests
+  gem 'rr'
   
   # For Jenkins
   gem "simplecov", :require => false

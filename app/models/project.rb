@@ -271,6 +271,10 @@ class Project < ActiveRecord::Base
     where Project.arel_table[:ci_adapter].not_eq("None")
   end
   
+  def ci_job
+    @ci_job ||= ci_server.job_for_project(self)
+  end
+  
   def ci_server
     Houston::CI.adapter(ci_adapter)
   end

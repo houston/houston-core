@@ -24,38 +24,7 @@ class TestRun < ActiveRecord::Base
   end
   
   def trigger_build!
-    Rails.logger.info "[test-run] POST #{trigger_build_url}"
-    response = Faraday.post(trigger_build_url)
-    if response.status == 404
-      Rails.logger.info "[test-run] Attempting to create a job on http://ci.cphepdev.com for #{project.slug}"
-      create_job_or_fail!
-      
-      Rails.logger.info "[test-run] POST #{trigger_build_url}"
-      response = Faraday.post(trigger_build_url)
-      raise Houston::CI::Error unless response.status == 200
-    end
-  end
-  
-  def create_job_or_fail!
-    client = Jenkins::Client.new
-    client.url = "http://ci.cphepdev.com"
-    
-    template = ERB.new(File.read(Rails.root.join("config.xml.erb")))
-    git_url = project.version_control_location
-    config = template.result(binding)
-    
-    job = Jenkins::Client::Job.new(name: project.slug, client: client)
-    success = job.create!(config)
-    raise Houston::CI::Error unless success
-  end
-  
-  def trigger_build_url
-    "http://ci.cphepdev.com/job/#{project.slug}/buildWithParameters?COMMIT_SHA=#{commit}&CALLBACK_URL=#{callback_url}"
-  end
-  
-  def callback_url
-    Rails.application.routes.url_helpers
-      .web_hook_url(host: Houston.config.host, project_id: project.slug, hook: "post_build")
+    project.ci_job.build!(commit)
   end
   
   def completed!(results_url)

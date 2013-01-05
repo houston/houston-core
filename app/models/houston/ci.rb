@@ -23,5 +23,14 @@ module Houston
       Adapter.const_get(name + "Adapter")
     end
     
+    
+    
+    def self.post_build_callback_url(project)
+      Rails.application.routes.url_helpers.web_hook_url(
+        host: Houston.config.host,
+        project_id: project.slug,
+        hook: "post_build")
+    end
+    
   end
 end
