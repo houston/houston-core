@@ -45,10 +45,6 @@ module UrlHelper
   
   
   
-  def kanban_path(*args)
-    main_app.root_path(*args)
-  end
-  
   def default_path_for(user)
     case user.role
     when "Tester"; user_path(user)

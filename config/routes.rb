@@ -4,7 +4,7 @@ Houston::Application.routes.draw do
   
   devise_for :users, :controllers => { :sessions => "sessions" }
   
-  root :to => "kanban#index", :via => :get
+  root :to => "projects#index", :via => :get
   
   
   
@@ -17,6 +17,7 @@ Houston::Application.routes.draw do
   
   # Kanban
   
+  match "kanban" => "kanban#index", :via => :get, :as => :kanban
   match "kanban/:slug" => "project_kanban#index", :via => :get, :as => :project_kanban
   
   constraints :queue => Regexp.new(KanbanQueue.slugs.join("|")) do
