@@ -19,10 +19,9 @@ module Houston
           end
           
           def branches_at(sha)
-            refs = `git --git-dir=#{git_dir} show-ref --heads`
-            branches_by_sha = Hash[refs.split(/\n/).map { |line|
-              sha, ref = line.split
-              [File.basename(ref), sha] }]
+            branches_by_sha = connection.heads.each_with_object({}) do |branch, hash|
+              (hash[branch.commit.sha] ||= []).push(branch.name)
+            end
             branches_by_sha.fetch(sha, [])
           end
           
