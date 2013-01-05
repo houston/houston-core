@@ -273,6 +273,10 @@ module Houston
   
   class Observer
     
+    def initialize
+      clear!
+    end
+    
     def on(event, &block)
       observers_of(event).push(block)
       nil
@@ -285,15 +289,17 @@ module Houston
       nil
     end
     
+    def clear!
+      @observers = {}
+    end
+    
   private
     
     def observers_of(event)
       observers[event] ||= []
     end
     
-    def observers
-      @observers ||= {}
-    end
+    attr_reader :observers
     
   end
   

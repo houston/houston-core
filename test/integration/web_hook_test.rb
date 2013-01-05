@@ -4,6 +4,18 @@ require "test_helper"
 class WebHookTest < ActionController::IntegrationTest
   
   
+  # !warning: knows an _awful_ lot about Houston::Observer's implementation!
+  # Intended to keep Houston from firing the _actual_ post_receive hooks
+  setup do
+    @observers = Houston.observer.instance_variable_get(:@observers)
+    Houston.observer.clear!
+  end
+  
+  teardown do
+    Houston.observer.instance_variable_set(:@observers, @observers)
+  end
+  
+  
   test "should trigger the corresponding event" do
     project = Project.create!(name: "Test", slug: "test")
     
