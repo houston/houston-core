@@ -62,7 +62,7 @@
             </td>
             <td class="project-maintainers">
               <% project.maintainers.each do |maintainer| %>
-                <span class="project-maintainer"><%= avatar_for(maintainer) %>&nbsp;<%= link_to maintainer.name, user_path(maintainer) %></span>
+                <span class="project-maintainer"><%= avatar_for(maintainer) %>&nbsp;<%= link_to maintainer.first_name, user_path(maintainer) %></span>
               <% end %>
             </td>
             <td class="project-platform">
