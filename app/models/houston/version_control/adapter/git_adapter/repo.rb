@@ -54,6 +54,8 @@ module Houston
           
           
           
+        private
+          
           def git_dir
             connection.path
           end
@@ -69,10 +71,6 @@ module Houston
           def updated_at
             mirrored? ? GitAdapter.time_of_last_pull(git_dir) : Time.now
           end
-          
-          
-          
-        private
           
           attr_reader :connection
           
