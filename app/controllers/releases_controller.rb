@@ -64,7 +64,7 @@ class ReleasesController < ApplicationController
     
     if @release.save
       @release.update_tickets_deployment! if params[:update_tickets_deployment]
-      ViewMailer.release(@release).deliver! if params[:send_release_email]
+      ProjectNotification.release(@release).deliver! if params[:send_release_email]
       
       redirect_to @release, notice: 'Release was successfully created.'
     else

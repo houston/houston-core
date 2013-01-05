@@ -69,7 +69,7 @@ Houston.observer.on "hooks:post_receive" do |payload|
   unless Faraday.get("http://ci.cphepdev.com").status == 200
     message = "Houston is not configured to build #{project.name}."
     instructions = "Houston was looking for an instance of Jenkins at http://ci.cphepdev.com, but it could not find Jenkins at that URL."
-    ProjectMailer.configuration_error(project, message, additional_info: instructions).deliver!
+    ProjectNotification.configuration_error(project, message, additional_info: instructions).deliver!
     return
   end
   
@@ -78,7 +78,7 @@ Houston.observer.on "hooks:post_receive" do |payload|
   rescue Houston::CI::Error
     message = "Jenkins is not configured to build #{project.name}."
     instructions = "Houston attempted to create a job named \"#{project.slug}\" at ci.cphepdev.com, but it was unable to do so."
-    ProjectMailer.configuration_error(project, message, additional_info: instructions).deliver!
+    ProjectNotification.configuration_error(project, message, additional_info: instructions).deliver!
   end
 end
 
@@ -101,7 +101,7 @@ end
 
 # 7. Houston emails results.
 Houston.observer.on "test_run:complete" do |test_run|
-  ViewMailer.test_results(test_run).deliver!
+  ProjectNotification.test_results(test_run).deliver!
 end
 
 
