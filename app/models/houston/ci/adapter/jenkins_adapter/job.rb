@@ -36,6 +36,34 @@ module Houston
             end
           end
           
+          def fetch_results!(results_url)
+            Rails.logger.warn "[jenkins] GET #{results_url}"
+            response = Faraday.get(results_url)
+            
+            # Assumes structure of Jenkins testReport
+            results = JSON.parse(response.body)
+            
+            duration = results["duration"] * 1000 # convert seconds to milliseconds
+            fail_count = results["failCount"]
+            pass_count = results["passCount"]
+            skip_count = results["skipCount"]
+            details = results["suites"].each_with_index.each_with_object({}) { |(item, i), hash| hash[i.to_s] = item }
+            
+            result = nil
+            if fail_count > 0
+              result = "fail"
+            elsif pass_count > 0
+              result = "pass"
+            end
+            
+            { duration: duration,
+              fail_count: fail_count,
+              pass_count: pass_count,
+              skip_count: skip_count,
+              details: details,
+              result: result }
+          end
+          
           
           
           def create_job_or_fail!

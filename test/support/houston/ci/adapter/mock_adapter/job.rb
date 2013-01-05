@@ -11,6 +11,10 @@ module Houston
           def build!(commit)
           end
           
+          def fetch_results!(results_url)
+            {}
+          end
+          
         end
       end
     end

@@ -19,6 +19,7 @@ class CIAdatersApiTest < ActiveSupport::TestCase
       job = adapter.job_for_project(project)
       
       assert_respond_to job, :build!
+      assert_respond_to job, :fetch_results!
     end
   end
   
