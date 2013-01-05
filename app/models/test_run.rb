@@ -37,6 +37,7 @@ class TestRun < ActiveRecord::Base
   def fetch_results!
     attributes = project.ci_job.fetch_results!(results_url)
     update_attributes! attributes
+    Houston.observer.fire "test_run:complete", self if has_results?
   end
   
   

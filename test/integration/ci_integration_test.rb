@@ -43,18 +43,31 @@ class CIIntegrationTest < ActionController::IntegrationTest
   end
   
   test "should fetch results_url when the hooks:post_build event is fired" do
-    expected_commit = "whatever"
-    expected_results_url = "http://example.com/results"
+    commit = "whatever"
+    results_url = "http://example.com/results"
     @project = Project.create!(name: "Test", slug: "test", ci_adapter: "Mock")
-    @test_run = TestRun.create!(project: @project, commit: expected_commit)
+    @test_run = TestRun.create!(project: @project, commit: commit)
     
     any_instance_of(Houston::CI::Adapter::MockAdapter::Job) do |job|
-      mock(job).fetch_results!(expected_results_url)
+      mock(job).fetch_results!(results_url)
     end
     
     assert_no_difference "TestRun.count" do
-      post "/projects/#{@project.slug}/hooks/post_build", {commit: expected_commit, results_url: expected_results_url}
+      post "/projects/#{@project.slug}/hooks/post_build", {commit: commit, results_url: results_url}
       assert_response :success
+    end
+  end
+  
+  test "should fire test_run:complete when the results of the test run are saved" do
+    @project = Project.create!(name: "Test", slug: "test", ci_adapter: "Mock")
+    test_run = TestRun.new(project: @project, commit: "whatever")
+    
+    any_instance_of(Houston::CI::Adapter::MockAdapter::Job) do |job|
+      stub(job).fetch_results! { |results_url| {result: "success"} }
+    end
+    
+    assert_triggered "test_run:complete" do
+      test_run.completed!("http://jenkins.com/results")
     end
   end
   
