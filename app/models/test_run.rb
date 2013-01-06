@@ -5,11 +5,14 @@ class TestRun < ActiveRecord::Base
   validates_presence_of :project_id, :commit
   validates :results_url, :presence => true, :if => :completed?
   
-  before_create :trigger_build!
+  serialize :tests
   
   
   
-  alias_method :start!, :save!
+  def start!
+    trigger_build!
+    save!
+  end
   
   def short_commit
     commit[0...8]

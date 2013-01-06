@@ -36,32 +36,91 @@ module Houston
             end
           end
           
-          def fetch_results!(results_url)
-            Rails.logger.warn "[jenkins] GET #{results_url}"
-            response = Faraday.get(results_url)
+          def fetch_results!(build_url)
+            result_url = "#{build_url}/api/json?tree=result"
+            test_report_url = "#{build_url}/testReport/api/json"
             
-            # Assumes structure of Jenkins testReport
-            results = JSON.parse(response.body)
+            results = {}
             
-            duration = results["duration"] * 1000 # convert seconds to milliseconds
-            fail_count = results["failCount"]
-            pass_count = results["passCount"]
-            skip_count = results["skipCount"]
-            details = results["suites"].each_with_index.each_with_object({}) { |(item, i), hash| hash[i.to_s] = item }
+            Rails.logger.debug "[jenkins] GET #{result_url}"
+            response = Faraday.get(result_url)
+            raise Houston::CI::Error unless response.status == 200
+            response = JSON.parse(response.body)
             
-            result = nil
-            if fail_count > 0
-              result = "fail"
-            elsif pass_count > 0
-              result = "pass"
+            results[:result] = translate_result(response["result"])
+            
+            Rails.logger.debug "[jenkins] GET #{test_report_url}"
+            response = Faraday.get(test_report_url)
+            raise Houston::CI::Error unless response.status == 200
+            response = JSON.parse(response.body)
+            
+            tests = translate_suites(response["suites"])
+            results[:duration] = translate_duration(response["duration"])
+            results[:total_count] = tests.count
+            results[:fail_count] = response["failCount"]
+            results[:pass_count] = response["passCount"]
+            results[:skip_count] = response["skipCount"]
+            results[:tests] = tests
+            
+            return results
+          end
+          
+          def translate_result(result)
+            { "FAILURE" => :fail,
+              "SUCCESS" => :pass }[result] ||
+              (raise NotImplementedError.new("#{result} is not a mapped result from Jenkins"))
+          end
+          
+          def translate_duration(seconds)
+            seconds * 1000 # milliseconds!
+          end
+          
+          def translate_suites(suites)
+            tests = []
+            suites.each do |suite|
+              suite_name = suite["name"]
+              suite["cases"].each do |test_case|
+                test = {
+                  suite: suite_name,
+                  name:  translate_test_name(test_case["name"])
+                }
+                
+                if test_case["skipped"]
+                  test[:status]   = :skip
+                else
+                  test[:status]   = translate_status(test_case["status"])
+                  test[:duration] = translate_duration(test_case["duration"])
+                  test[:age]      = test_case["age"]
+                  
+                  error_message, error_backtrace = translate_stack_trace(test_case["errorStackTrace"])
+                  if error_message
+                    test[:status] = :error
+                    test[:error_message] = error_message
+                    test[:error_backtrace] = error_backtrace
+                  end
+                end
+                
+                tests << test
+              end
             end
-            
-            { duration: duration,
-              fail_count: fail_count,
-              pass_count: pass_count,
-              skip_count: skip_count,
-              details: details,
-              result: result }
+            tests
+          end
+          
+          def translate_test_name(name)
+            name.gsub(/^test_/, "").gsub("_", " ")
+          end
+          
+          def translate_status(status)
+            { "FAILED" => :fail,
+              "PASSED" => :pass }[status] ||
+              (raise NotImplementedError.new("#{status} is not a mapped status from Jenkins"))
+          end
+          
+          def translate_stack_trace(stack_trace)
+            lines = stack_trace.to_s.split("\n").map(&:strip).reject(&:blank?)
+            message = lines[0]
+            backtrace = lines[1..-1]
+            [message, backtrace]
           end
           
           

@@ -732,9 +732,10 @@ CREATE TABLE test_runs (
     fail_count integer,
     pass_count integer,
     skip_count integer,
-    details hstore,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    tests text,
+    total_count integer
 );
 
 
@@ -1366,3 +1367,7 @@ INSERT INTO schema_migrations (version) VALUES ('20121230173644');
 INSERT INTO schema_migrations (version) VALUES ('20121230174234');
 
 INSERT INTO schema_migrations (version) VALUES ('20130105200429');
+
+INSERT INTO schema_migrations (version) VALUES ('20130106184327');
+
+INSERT INTO schema_migrations (version) VALUES ('20130106185425');
