@@ -1,0 +1,67 @@
+@mixin badge-style($color) {
+  background-color: $color;
+  -moz-box-shadow: 0 0 8px $color;
+  -webkit-box-shadow: 0 0 8px $color;
+  box-shadow: 0 0 8px $color;
+}
+
+.test-result-banner {
+  display: block;
+  width: 360px;
+  height: 180px;
+  line-height: 180px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  font-weight: 100;
+  font-size: 7em;
+  text-align: center;
+  color: white;
+  margin: 0 18px;
+  padding: 0;
+  
+  &.pass  { @include badge-style(#5DB64C); } // grass
+  &.fail  { @include badge-style(#E24E32); } // tomato
+}
+
+.tests-detail {
+  margin-top: 48px;
+  padding-left: 12px;
+  border-top: 1px solid #e6e6e6;
+  
+  .tests {
+    margin: 0;
+    padding: 0 0 0 1.25em;
+  }
+  
+  .test {
+    display: block;
+    margin: 3px 0;
+    padding: 0;
+  }
+  
+  .test-suite-name {
+    padding: 0;
+    margin: 1.5em 0 0.75em 0;
+    font-size: 1em;
+    font-weight: 500;
+    color: #686868;
+  }
+  
+  .test-duration {
+    font-size: 0.88em;
+    color: #aaa;
+  }
+}
+
+.test-status {
+  display: inline-block;
+  width: 4em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  color: white;
+  font-weight: 800;
+  &.pass  { color: #5DB64C; } // grass
+  &.fail  { color: #E24E32; } // tomato
+  &.error { color: #DFCC3D; }
+  &.skip  { }
+}

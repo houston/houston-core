@@ -2,4 +2,20 @@
   <small>Test Results for</small> <%= @project.name %>
 </h1>
 
-<h2 class="test-result-banner tests-<%= @test_run.result %>"><%= @test_run.result %></h2>
+<h2 class="test-result-banner <%= @test_run.result %>"><%= @test_run.result %></h2>
+
+<div class="tests-detail">
+  <% @test_run.tests.group_by { |test| test[:suite] }.each do |suite, tests| %>
+    <div class="test-suite">
+      <h3 class="test-suite-name"><%= suite %></h3>
+      <ul class="tests">
+        <% tests.each do |test| %>
+          <li class="test">
+            <span class="test-status <%= test[:status] %>"><%= test[:status] %></span><span class="test-name"><%= test[:name] %></span>&nbsp;
+            <span class="test-duration">( <%= test[:duration].round(1) %>ms )</span>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+</div>
