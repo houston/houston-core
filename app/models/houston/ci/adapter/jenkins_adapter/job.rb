@@ -94,7 +94,7 @@ module Houston
                   
                   error_message, error_backtrace = translate_stack_trace(test_case["errorStackTrace"])
                   if error_message
-                    test[:status] = :error
+                    # test[:status] = :error # <-- until we can differentiate errors and fails, call them fails
                     test[:error_message] = error_message
                     test[:error_backtrace] = error_backtrace
                   end
