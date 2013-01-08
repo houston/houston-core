@@ -7,6 +7,10 @@ class TestRun < ActiveRecord::Base
   
   serialize :tests
   
+  def self.for_commit(sha)
+    where(["commit LIKE ?", "#{sha}%"])
+  end
+  
   
   
   def start!
