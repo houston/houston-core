@@ -36,7 +36,8 @@
   .test {
     display: block;
     margin: 3px 0;
-    padding: 0;
+    padding: 0 0 0 4em;
+    text-indent: -4em;
   }
   
   .test-suite-name {
@@ -60,6 +61,8 @@
   border-radius: 2px;
   color: white;
   font-weight: 800;
+  text-indent: 0;
+  
   &.pass  { color: #5DB64C; } // grass
   &.fail  { color: #E24E32; } // tomato
   &.error { color: #DFCC3D; }
