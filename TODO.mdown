@@ -5,33 +5,36 @@
  - Does the deploy endpoint require login --- so deploys don't register if user is logged out? Should use token authentication.
  - **Project:** allow changing Version Control Location (have tmp folder deleted or whatever)
  - **Weekly Report/Exceptions:** problems history is off by 1 week?
- - **Weekly Report:** why no weekly reports?
 
 ### Fixes
 
  - Handle InvalidQueryError (when Unfuddle project doesn't have "Health", etc)
  - **Testing Notes:** edit a failing testing note at home, SMTP fail, timeout takes 30 seconds!
+ - **Releases/Deploy Emails:** have up-to-date commits
+ - **Testing Report:** ticket ages make no sense
+ - **CI Results:** fails are reported as errors!
 
 ### Small Projects
 
- - **Kanban:** fetch ticket queue status in the background in case Kanban isn't default screen
- - **Global:** replace "Kanban" as root_url
  - **Testing Report:** add priority options (to left of ticket): high/low, exclusive checkboxes
  - **Testing Report:** show status and send notification for 'none' verdict
+ - **Kanban:** fetch ticket queue status in the background in case Kanban isn't default screen
  - **Releases:** set levels for tags (Customer, Internal, All)
  - **Releases:** allow adding/removing _tickets_ from release notes
- - **Releases/Deploy Emails:**
-   - have up-to-date commits
-   - are styled like view (=> can get rid of releases/changelog partial, et al then)
-   - "Create Release" is a big button
  - **Weekly Report:** cache Google Chart images in emails and/or implement server-side SVG library
  - **Weekly Report/Exceptions:** break down notices by project
  - **Weekly Report/Exceptions:** show average time to close problem
  - **Global:** disable buttons when working! (e.g. what saving a very slow testing note)
 
-### Bigger Projecst
+### Bigger Projects
 
  - **Houston-Scheduler**
+ - **Houston-CI**:
+   - **CI Results:** implement graphs
+   - **CI Results:** incorporate coverage information
+   - Deploy if dev or master
+   - Disabled for projects with local repos
+   - Secure (c.f. http://fourkitchens.com/blog/2011/09/20/trigger-jenkins-builds-pushing-github, )
  - **Notifications**:
    - Notes
      - GitHub style
@@ -50,8 +53,7 @@
      - Real-time graph of exception notices
      - Figure out how to show queue history; show more weeks
      - Show deploys _on_ real-time graphs
-    
-   
+
 ### Refactoring
 
  - **Engines:**
@@ -59,7 +61,7 @@
    - Create a Rails Engine generator for Houston plugins based on Houston::Scheduler
  - **Modularity:**
    - Use Postgres Hstore for extended attributes (c.f. http://railscasts.com/episodes/345-hstore)
-   - Extract **Errbit** and **NewRelic** knowledge
+   - Extract **Errbit**, **NewRelic**, and **GitHub** knowledge
    - Refactor hard-coded knowledge about Unfuddle/EP into configuration
      - Environments
        - `User#default_notifications_environments`
@@ -75,6 +77,7 @@
      - Unfuddle-specific knowledge re: invalid or duplicate in `users_controller.rb`
      - Unfuddle::NeqHelper
    - Turn on or off features via config.rb
+   - Extract **houston-ci**
    - Extract **houston-releases**
    - Extract **houston-testing-report**
    - Extract **houston-kanban** (rename)
@@ -83,18 +86,21 @@
    - Duplicate code in `users_controller#index` and `users_controller#show`
    - Duplicate code in Projects#show and WeeklyReport#show
    - New Relic API calls
- - Write tests :l
+   - Use [actionmailer_inline_css](https://github.com/ndbroadbent/actionmailer_inline_css)?
+ - Write tests
+   - Socketable configuration
 
 ### Ideas
 
+ - **Releases:** incorporate GitHub commit-range link more places
+ - **Releases:** search [e.g. for commit]
  - **Deploys:** add a list of deploys; allow creating releases for old deploys
  - **Releases:** create embeddable front-end for releases
- - **Global:** redesign section headings with links
  - **Release:** auto-resolve errors on releases
  - **Weekly Report:**
    - Pair projects with colors somewhere (then don't for "Focus this week")
    - New Section: **Deploys** or **Releases**
-   - New Section: **Test Coverage** (add Jenkins as a CI adapter)
+   - New Section: **Test Coverage**
    - New Section: **Performance** (shows _histogram_ of response times)
    - New Section: **Superlatives**
  - **Releases:** show ticket/change counts in real time when editing a release
@@ -126,3 +132,4 @@
  - **Project Dashboard:**
    - ?? New tickets
    - ?? New problems
+ - **Global:** employ Twitter Bootstrap in emails
