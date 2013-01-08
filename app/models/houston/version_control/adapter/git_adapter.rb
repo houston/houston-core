@@ -14,6 +14,8 @@ module Houston
             connect_to_repo!(repo_location.to_s, temp_path)
             []
           rescue
+            Rails.logger.error $!.message
+            Rails.logger.error $!.backtrace
             ["might not be right. Houston can't seem to connect to it."]
           end
           
