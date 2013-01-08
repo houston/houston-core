@@ -18,7 +18,7 @@ module ApplicationHelper
   end
   
   def custom_link_unless_current(link_text, url)
-    "| #{link_to(link_text, url)}".html_safe unless current_page?(url)
+    "<li>#{link_to(link_text, url)}</li>".html_safe unless current_page?(url)
   end
   
   

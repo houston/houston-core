@@ -122,8 +122,12 @@ small { font-size: 0.88em; }
   display: inline-block;
 }
 
-.nav-pills.inline { 
+.inline { 
   display: inline-block;
+}
+
+h1 .dropdown .caret {
+  margin-top: 16px;
 }
 
 a.refresh-queue {
