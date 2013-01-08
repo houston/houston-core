@@ -71,7 +71,7 @@ Houston.observer.on "hooks:post_receive" do |payload|
   end
   
   begin
-    TestRun.create!(project: project, commit: commit)
+    TestRun.new(project: project, commit: commit).start!
   rescue Houston::CI::Error
     message = "Jenkins is not configured to build #{project.name}."
     ProjectNotification.configuration_error(project, message, additional_info: $!.message).deliver!
