@@ -70,7 +70,9 @@ module Houston
           end
           
           def time_of_last_pull(git_dir)
-            File.mtime File.join(git_dir, "FETCH_HEAD")
+            fetch_head = File.join(git_dir, "FETCH_HEAD")
+            return 100.years.ago unless File.exists?(fetch_head)
+            File.mtime fetch_head
           end
           
         end
