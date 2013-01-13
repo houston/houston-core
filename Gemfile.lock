@@ -8,16 +8,6 @@ GIT
       activesupport
 
 GIT
-  remote: git://github.com/john-griffin/jenkins-client.git
-  revision: 705fb341515185a0275114430354228867e4fe41
-  specs:
-    jenkins-client (0.0.1)
-      clamp (~> 0.4.0)
-      faraday (~> 0.8.0)
-      faraday_middleware (~> 0.8.4)
-      rash (~> 0.3.2)
-
-GIT
   remote: git://github.com/pcg79/letter_opener.git
   revision: 770282bc220d5ed7427d5cc316711fe0423ab67b
   specs:
@@ -291,7 +281,6 @@ DEPENDENCIES
   grit
   handlebars_assets
   hpricot
-  jenkins-client!
   jquery-rails
   letter_opener!
   minitest
