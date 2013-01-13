@@ -2,7 +2,7 @@
   <%= release.project.name %>
   <span class="subtitle">Release</span>
   <small>
-    <%= custom_link_unless_current "Show", release_path(release) %>
-    <%= custom_link_unless_current "Edit", edit_release_path(release) %>
+    <%= link_to "Show", release_path(release) unless current_page?(release_path(release)) %>
+    <%= link_to "Edit", edit_release_path(release) unless current_page?(edit_release_path(release)) %>
   </small>
 </h1>
