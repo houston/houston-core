@@ -78,10 +78,17 @@ end
 # 6. Houston updates the Test Run.
 Houston.observer.on "hooks:post_build" do |project, params|
   commit, results_url = params.values_at(:commit, :results_url)
-  test_run = TestRun.find_by_commit(commit)
+  test_run = project.test_runs.find_by_commit(commit)
   
   unless test_run
-    Rails.logger.warn "[hooks:post_build] no test run found for commit '#{commit}'"
+    Rails.logger.warn "[hooks:post_build] no test run found for project '#{project.slug}' and commit '#{commit}'"
+    next
+  end
+  
+  if results_url.blank?
+    message = "#{project.ci_adapter} is not appropriately configured to build #{project.name}."
+    additional_info = "#{project.ci_adapter} did not supply 'results_url' when it triggered the post_build hook"
+    ProjectNotification.configuration_error(project, message, additional_info: additional_info).deliver!
     next
   end
   

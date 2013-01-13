@@ -59,10 +59,8 @@ class CIIntegrationTest < ActionController::IntegrationTest
       mock(job).fetch_results!(results_url)
     end
     
-    assert_no_difference "TestRun.count" do
-      post "/projects/#{@project.slug}/hooks/post_build", {commit: commit, results_url: results_url}
-      assert_response :success
-    end
+    post "/projects/#{@project.slug}/hooks/post_build", {commit: commit, results_url: results_url}
+    assert_response :success
   end
   
   test "should alert maintainers when a build cannot be processed" do
@@ -72,7 +70,7 @@ class CIIntegrationTest < ActionController::IntegrationTest
     @test_run = TestRun.create!(project: @project, commit: commit)
     
     any_instance_of(Houston::CI::Adapter::MockAdapter::Job) do |job|
-      stub(job).fetch_results! { |commit| raise Houston::CI::Error }
+      mock(job).fetch_results!(results_url) { raise Houston::CI::Error }
     end
     
     assert_difference "ActionMailer::Base.deliveries.count", +1 do
