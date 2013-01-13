@@ -44,14 +44,14 @@ module Houston
             
             Rails.logger.debug "[jenkins] GET #{result_url}"
             response = Faraday.get(result_url)
-            raise Houston::CI::Error unless response.status == 200
+            raise Houston::CI::Error, "Houston could not get the result of the build from the URL #{result_url}" unless response.status == 200
             response = JSON.parse(response.body)
             
             results[:result] = translate_result(response["result"])
             
             Rails.logger.debug "[jenkins] GET #{test_report_url}"
             response = Faraday.get(test_report_url)
-            raise Houston::CI::Error unless response.status == 200
+            raise Houston::CI::Error, "Houston could not get detailed test results from the URL #{test_report_url}. Most likely the build failed before the tests could be run." unless response.status == 200
             response = JSON.parse(response.body)
             
             tests = translate_suites(response["suites"])
