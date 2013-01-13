@@ -52,7 +52,7 @@ class Project < ActiveRecord::Base
       if numbers_to_fetch.any?
         begin
           tickets.concat find_tickets(:number => numbers_to_fetch)
-        rescue SocketError # !todo: replace this with a custom error that represents all remote failures
+        rescue Unfuddle::Error
           # We couldn't fetch remote tickets, let's just return what we've got for now
         end
       end
