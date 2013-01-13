@@ -3,8 +3,8 @@ class ProjectHooksController < ApplicationController
   
   
   def trigger
-    @project = Project.find_by_slug(params[:project_id])
-    unless @project
+    project = Project.find_by_slug(params[:project_id])
+    unless project
       render text: "A project with the slug '#{params[:project_id]}' could not be found", status: 404
       return
     end
@@ -16,7 +16,7 @@ class ProjectHooksController < ApplicationController
       }
     })
     
-    Houston.observer.fire "hooks:#{params[:hook]}", payload
+    Houston.observer.fire "hooks:#{params[:hook]}", project, payload
     
     head 200
   end

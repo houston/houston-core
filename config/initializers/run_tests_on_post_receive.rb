@@ -44,13 +44,7 @@ end
 
 
 # 3. Houston creates a Test Run.
-Houston.observer.on "hooks:post_receive" do |payload|
-  project = Project.find_by_slug(payload[:project_id])
-  
-  unless project
-    Rails.logger.error "[hooks:post_receive] no project found for slug '#{payload[:project_id]}'"
-    next
-  end
+Houston.observer.on "hooks:post_receive" do |project, payload|
   
   if project.ci_adapter == "None"
     Rails.logger.warn "[hooks:post_receive] the project #{project.name} is not configured to be used with a Continuous Integration server"
@@ -74,7 +68,7 @@ Houston.observer.on "hooks:post_receive" do |payload|
   begin
     TestRun.new(project: project, commit: commit).start!
   rescue Houston::CI::Error
-    message = "Jenkins is not configured to build #{project.name}."
+    message = "#{project.ci_adapter} is not appropriately configured to build #{project.name}."
     ProjectNotification.configuration_error(project, message, additional_info: $!.message).deliver!
   end
 end
@@ -82,7 +76,7 @@ end
 
 
 # 6. Houston updates the Test Run.
-Houston.observer.on "hooks:post_build" do |params|
+Houston.observer.on "hooks:post_build" do |project, params|
   commit, results_url = params.values_at(:commit, :results_url)
   test_run = TestRun.find_by_commit(commit)
   
@@ -91,7 +85,12 @@ Houston.observer.on "hooks:post_build" do |params|
     next
   end
   
-  test_run.completed!(results_url)
+  begin
+    test_run.completed!(results_url)
+  rescue Houston::CI::Error
+    message = "#{project.ci_adapter} is not appropriately configured to build #{project.name}."
+    ProjectNotification.configuration_error(project, message, additional_info: $!.message).deliver!
+  end
 end
 
 
