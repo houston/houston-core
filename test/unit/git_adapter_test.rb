@@ -2,6 +2,11 @@ require 'test_helper'
 
 class GitAdapterTest < ActiveSupport::TestCase
   
+  setup do
+    path = Rails.root.join("test", "data", "bare_repo.git")
+    @test_repo = Houston::VersionControl::Adapter::GitAdapter.create_repo(path)
+  end
+  
   
   test "#git_dir should return path when the repo is bare" do
     path = Rails.root.join("test", "data", "bare_repo.git")
@@ -17,16 +22,14 @@ class GitAdapterTest < ActiveSupport::TestCase
   
   
   test "#branches_at should return the names of the branches that point to a given commit" do
-    sha = "a0491e92b8cd13ccebec622f8594eab3c89d9ef7"
-    repo = Houston::VersionControl::Adapter::GitAdapter.create_repo(Rails.root)
-    branches = repo.branches_at(sha)
+    sha = "b62c3f32f72423b81a0282a1a4b97cad2cf129d4"
+    branches = @test_repo.branches_at(sha)
     assert branches.member?("for-testing"), "'for-testing' was expected to point at '#{sha}'; but Houston found these branches: [#{branches.join(", ")}]"
   end
   
   test "#branches_at should return an empty array if no branches point to a given commit" do
     sha = "whatever"
-    repo = Houston::VersionControl::Adapter::GitAdapter.create_repo(Rails.root)
-    assert_equal [], repo.branches_at(sha)
+    assert_equal [], @test_repo.branches_at(sha)
   end
   
   

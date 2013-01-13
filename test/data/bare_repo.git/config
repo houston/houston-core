@@ -3,3 +3,7 @@
 	filemode = true
 	bare = true
 	ignorecase = true
+[remote "origin"]
+	fetch = +refs/*:refs/*
+	mirror = true
+	url = git@github.com:houstonmc/fixture.git
