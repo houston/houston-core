@@ -7,8 +7,8 @@ class TestRun < ActiveRecord::Base
   
   serialize :tests
   
-  def self.for_commit(sha)
-    where(["commit LIKE ?", "#{sha}%"])
+  def self.find_by_commit(sha)
+    where(["commit LIKE ?", "#{sha}%"]).first
   end
   
   
