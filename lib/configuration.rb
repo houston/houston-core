@@ -292,7 +292,11 @@ module Houston
     
     def fire(event, *args)
       observers_of(event).each do |block|
-        block.call(*args)
+        begin
+          block.call(*args)
+        rescue
+          Houston.report_exception($!)
+        end
       end
       nil
     end
