@@ -48,26 +48,26 @@ Houston.observer.on "hooks:post_receive" do |payload|
   project = Project.find_by_slug(payload[:project_id])
   
   unless project
-    Rails.logger.warn "[hooks:post_receive] no project found for slug '#{payload[:project_id]}'"
+    Rails.logger.error "[hooks:post_receive] no project found for slug '#{payload[:project_id]}'"
     next
   end
   
   if project.ci_adapter == "None"
-    Rails.logger.debug "[hooks:post_receive] the project #{project.name} is not configured to be used with a Continuous Integration server"
+    Rails.logger.warn "[hooks:post_receive] the project #{project.name} is not configured to be used with a Continuous Integration server"
     next
   end
   
   commit = PostReceiveHook.commit_from_payload(payload)
   
   unless commit
-    Rails.logger.warn "[hooks:post_receive] no commit found in payload"
+    Rails.logger.error "[hooks:post_receive] no commit found in payload"
     next
   end
   
   test_run = project.test_runs.find_by_commit(commit)
   
   if test_run
-    Rails.logger.info "[hooks:post_receive] a test run exists for #{test_run.short_commit}; doing nothing"
+    Rails.logger.warn "[hooks:post_receive] a test run exists for #{test_run.short_commit}; doing nothing"
     next
   end
   
