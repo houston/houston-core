@@ -25,7 +25,7 @@
 
 module PostReceiveHook
   
-  GITHUB_WEBHOOK_IPS = %w{207.97.227.253 50.57.128.197 108.171.174.178}
+  GITHUB_WEBHOOK_IPS = %w{207.97.227.253 50.57.128.197 108.171.174.178 50.57.231.61}
   
   def self.commit_from_payload(params)
     ip = params.fetch(:sender, {})[:ip]
@@ -35,6 +35,7 @@ module PostReceiveHook
       payload["after"]
     else
       Rails.logger.warn "[post-receive-hook] did not recognize remote IP: '#{ip}'"
+      nil
     end
   end
   
