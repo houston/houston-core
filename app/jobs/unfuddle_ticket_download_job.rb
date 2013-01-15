@@ -33,8 +33,8 @@ class UnfuddleTicketDownloadJob
     url = "ticket_reports/dynamic.json?fields_string=#{requested_fields.join(",")}&exclude_description=true"
     response = Unfuddle.get(url)
     
-    binding.pry unless response[0].to_i == 200
-    report = response[1]
+    binding.pry unless response.status == 200
+    report = response.json
     group0 = report.fetch("groups", [])[0] || {}
     tickets = group0.fetch("tickets", [])
     

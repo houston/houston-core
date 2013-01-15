@@ -13,7 +13,7 @@ module Houston
             rescue Unfuddle::UnauthorizedError
               return ["is not a project that you have permission to access"]
             rescue Unfuddle::InvalidResponseError => e
-              return ["is not a valid project"] if e.response[0] == 404
+              return ["is not a valid project"] if e.response.status == 404
               raise $!
             end
             []

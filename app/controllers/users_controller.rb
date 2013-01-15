@@ -59,8 +59,8 @@ class UsersController < ApplicationController
     url << "&pretty=true&exclude_description=true"
     response = Unfuddle.get(url)
     
-    binding.pry unless response[0].to_i == 200
-    report = response[1]
+    binding.pry unless response.status == 200
+    report = response.json
     group0 = report.fetch("groups", [])[0] || {}
     tickets_for_user = group0.fetch("tickets", [])
     
