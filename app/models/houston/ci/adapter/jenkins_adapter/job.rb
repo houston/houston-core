@@ -17,7 +17,7 @@ module Houston
             url = build_url(commit)
             Rails.logger.info "[jenkins] POST #{url}"
             response = Faraday.post(url)
-            unless response.status == 200
+            unless [200, 201, 302].member?(response.status)
               raise Houston::CI::Error.new("Houston was unable to trigger a build for #{project.name} with the URL #{url}.")
             end
           end
