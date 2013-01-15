@@ -295,6 +295,7 @@ module Houston
         begin
           block.call(*args)
         rescue
+          raise if Rails.env.test? || Rails.env.development?
           Houston.report_exception($!)
         end
       end
