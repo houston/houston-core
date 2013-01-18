@@ -22,6 +22,8 @@ module Rubygems
       raise Rubygems::Error, "Unexpected response from rubygems. Status: #{response.status}" unless response.status == 200
       
       JSON.load(response.body)
+    rescue Faraday::Error::ConnectionFailed
+      raise Rubygems::Error, "Unable to connect to rubygems.org: #{$!.message}"
     end
     
     def self.cache_key(name, date)
@@ -49,7 +51,7 @@ module Rubygems
     
     def fetch_releases_from_previous_cache_on_error
       yield
-    rescue Rubygems::Error, Faraday::Error::ClientError
+    rescue Rubygems::Error
       Rails.logger.error "[rubygems] an error occurred fetching releases for '#{name}': #{$!}"
       Houston.report_exception $!
       
