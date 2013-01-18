@@ -28,8 +28,10 @@ module Houston
           end
           
           def find_tickets!(*args)
-            unfuddle.find_tickets!(*args)
-          rescue # !todo: be more selective here
+            unfuddle.find_tickets!(*args).map do |attributes|
+              Houston::TicketTracking::Adapter::UnfuddleAdapter::Ticket.new(self, attributes)
+            end
+          rescue Unfuddle::Error
             raise Houston::TicketTracking::PassThroughError.new($!)
           end
           

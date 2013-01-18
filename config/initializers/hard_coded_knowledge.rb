@@ -6,6 +6,7 @@ module Houston
   module TMI
     
     NAME_OF_DEPLOYMENT_FIELD = "Fixed in"
+    NAME_OF_GOLDMINE_FIELD = "Goldmine"
     
   end
 end

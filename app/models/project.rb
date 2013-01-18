@@ -75,12 +75,12 @@ class Project < ActiveRecord::Base
     return [] if unfuddle_tickets.empty?
     
     self.class.benchmark("[project.tickets_from_unfuddle_tickets] synchronizing with local tickets") do
-      numbers = unfuddle_tickets.map { |unfuddle_ticket| unfuddle_ticket["number"] }
+      numbers = unfuddle_tickets.map(&:number)
       tickets = self.tickets.where(number: numbers).includes(:testing_notes).includes(:commits)
       
       unfuddle_tickets.map do |unfuddle_ticket|
-        ticket = tickets.detect { |ticket| ticket.number == unfuddle_ticket["number"] }
-        attributes = ticket_attributes_from_unfuddle_ticket(unfuddle_ticket)
+        ticket = tickets.detect { |ticket| ticket.number == unfuddle_ticket.number }
+        attributes = unfuddle_ticket.attributes
         if ticket
           
           # This is essentially a call to update_attributes,
@@ -98,42 +98,6 @@ class Project < ActiveRecord::Base
         # to the cache and a bunch of log output...
         ticket.project = self
         ticket
-      end
-    end
-  end
-  
-  def ticket_attributes_from_unfuddle_ticket(unfuddle_ticket)
-    attributes = Ticket.attributes_from_unfuddle_ticket(unfuddle_ticket)
-    attributes.merge(
-      "deployment" => get_custom_ticket_attribute(unfuddle_ticket, Houston::TMI::NAME_OF_DEPLOYMENT_FIELD),
-      "goldmine" => get_custom_ticket_attribute(unfuddle_ticket, "Goldmine")
-    )
-  end
-  
-  def get_custom_ticket_attribute(unfuddle_ticket, custom_field_name)
-    retried_once = false
-    begin
-      custom_field_key = custom_field_name.underscore.gsub(/\s/, "_")
-      
-      key = find_in_cache_or_execute("#{custom_field_key}_field") do
-        ticket_system.get_ticket_attribute_for_custom_value_named!(custom_field_name) rescue "undefined"
-      end
-      
-      value_id = unfuddle_ticket[key]
-      return nil if value_id.blank?
-      find_in_cache_or_execute("#{custom_field_key}_value_#{value_id}") do
-        ticket_system.find_custom_field_value_by_id!(custom_field_name, value_id).value
-      end
-    rescue
-      if retried_once
-        raise
-      else
-        
-        # If an error occurred above, it may be because
-        # we cached the wrong value for something.
-        retried_once = true
-        invalidate_cache!("#{custom_field_key}_field", "#{custom_field_key}_value_#{value_id}")
-        retry
       end
     end
   end

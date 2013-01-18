@@ -41,6 +41,7 @@ class Ticket < ActiveRecord::Base
   
   
   class << self
+    
     def for_projects(*projects)
       ids = projects.flatten.map { |project| project.is_a?(Project) ? project.id : project }
       where(project_id: ids)
@@ -70,11 +71,6 @@ class Ticket < ActiveRecord::Base
       where(:number => numbers)
     end
     
-    def attributes_from_unfuddle_ticket(unfuddle_ticket)
-      unfuddle_ticket.pick("number", "summary", "description").merge(
-        "estimated_effort" => unfuddle_ticket["hours_estimate_current"],
-        "unfuddle_id" => unfuddle_ticket["id"] )
-    end
   end
   
   
