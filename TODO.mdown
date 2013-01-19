@@ -60,19 +60,13 @@
    - Engines need to supply configuration objects, plug in to config.rb
    - Create a Rails Engine generator for Houston plugins based on Houston::Scheduler
  - **Modularity:**
-   - Use Postgres Hstore for extended attributes (c.f. http://railscasts.com/episodes/345-hstore)
    - Extract **Errbit**, **NewRelic**, and **GitHub** knowledge
    - Refactor hard-coded knowledge about Unfuddle/EP into configuration
-     - Environments
-       - `User#default_notifications_environments`
-     - "tickets.deployment"; TicketTracking Adapter; name of "Fixed in" field
-       - `Project#ticket_attributes_from_unfuddle_ticket`
-       - `Project#get_custom_ticket_attribute`
-       - Name of "Fixed in" field in Unfuddle (`releases/_form.html.erb:62`)
-       - `Ticket#set_unfuddle_kanban_field_to`
-     - "tickets.goldmine"
-       - `Project#ticket_attributes_from_unfuddle_ticket`
-       - `Release#goldmine_numbers`
+     - Replace `config/initializers/hard_coded_knowledge.rb`
+     - Replace `Ticket#close_ticket!` and `Ticket#set_unfuddle_kanban_field_to` with Remotable
+     - Replace `User#default_notifications_environments` with configuration
+     - Replace `tickets.goldmine`, `Ticket#goldmine_numbers`, `Release#goldmine_numbers` with "antecedents"
+     - Add `tickets.status` or `tickets.closed`
      - Unfuddle-specific knowledge of severities (Weekly Report, Project Dashboard)
      - Unfuddle-specific knowledge re: invalid or duplicate in `users_controller.rb`
      - Unfuddle::NeqHelper
