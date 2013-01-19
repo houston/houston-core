@@ -12,22 +12,22 @@ module Houston
             @number           = attributes["number"]
             @summary          = attributes["summary"]
             @description      = attributes["description"]
-            @unfuddle_id      = attributes["id"]  # <-- !todo: replace this with remote_id or whatever
+            @remote_id        = attributes["id"]
             @deployment       = get_custom_value(Houston::TMI::NAME_OF_DEPLOYMENT_FIELD, attributes)
             @goldmine         = get_custom_value(Houston::TMI::NAME_OF_GOLDMINE_FIELD, attributes)
           end
           
           
-          attr_reader :number, :summary, :description, :unfuddle_id, :deployment, :goldmine
+          attr_reader :remote_id, :number, :summary, :description, :deployment, :goldmine
           
           
           def attributes
-            { number:           number,
-              summary:          summary,
-              description:      description,
-              unfuddle_id:      unfuddle_id,
-              deployment:       deployment,
-              goldmine:         goldmine }
+            { remote_id:      remote_id,
+              number:         number,
+              summary:        summary,
+              description:    description,
+              deployment:     deployment,
+              goldmine:       goldmine }
           end
           
           
@@ -40,11 +40,11 @@ module Houston
               attribute = unfuddle.get_ticket_attribute_for_custom_value_named!(Houston::TMI::NAME_OF_DEPLOYMENT_FIELD) # e.g. field2_value_id
               id = unfuddle.find_custom_field_value_by_value!(Houston::TMI::NAME_OF_DEPLOYMENT_FIELD, value).id
               
-              ticket = unfuddle.ticket(unfuddle_id)
+              ticket = unfuddle.ticket(remote_id)
               ticket.update_attributes!(attribute => id)
               
             when :closed
-              ticket = unfuddle.ticket(unfuddle_id)
+              ticket = unfuddle.ticket(remote_id)
               ticket.update_attributes!("status" => "closed")
               
             else

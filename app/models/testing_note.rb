@@ -25,7 +25,7 @@ class TestingNote < ActiveRecord::Base
   delegate :project, :to => :ticket
   
   def unfuddle_ticket_id
-    ticket.unfuddle_id
+    ticket.remote_id
   end
   attr_writer :unfuddle_ticket_id
   

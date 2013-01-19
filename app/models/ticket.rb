@@ -16,9 +16,9 @@ class Ticket < ActiveRecord::Base
   # This ActiveResource object is failing to handle \u0000 but Unfuddle::Ticket can...
   remote_model Unfuddle::RemoteTicket
   # remote_model Houston::TicketTracking::Adapter::UnfuddleAdapter::Ticket
-  attr_remote :id => :unfuddle_id,
+  attr_remote :id => :remote_id,
               :project_id => :unfuddle_project_id
-  remote_key [:project_id, :id], :path => "/projects/:unfuddle_project_id/tickets/:unfuddle_id"
+  remote_key [:project_id, :id], :path => "/projects/:unfuddle_project_id/tickets/:remote_id"
   expires_after 100.years
   
   # !Override fetch_remote_resource, when this is fetched, set its prefix_options
@@ -130,7 +130,7 @@ class Ticket < ActiveRecord::Base
   
   
   def close_ticket!
-    ticket = project.ticket_system.find_ticket(unfuddle_id)
+    ticket = project.ticket_system.find_ticket(remote_id)
     ticket.update_attribute(:closed, true) if ticket
     
     set_queue! nil
@@ -138,7 +138,7 @@ class Ticket < ActiveRecord::Base
   end
   
   def set_unfuddle_kanban_field_to(value)
-    ticket = project.ticket_system.find_ticket(unfuddle_id)
+    ticket = project.ticket_system.find_ticket(remote_id)
     ticket.update_attribute(:deployment, value) if ticket
   end
   

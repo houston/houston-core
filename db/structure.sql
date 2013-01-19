@@ -838,7 +838,7 @@ CREATE TABLE tickets (
     description text,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    unfuddle_id integer,
+    remote_id integer,
     deployment character varying(255),
     last_release_at timestamp without time zone,
     goldmine character varying(255),
@@ -1375,3 +1375,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130119203853');
 INSERT INTO schema_migrations (version) VALUES ('20130119204608');
 
 INSERT INTO schema_migrations (version) VALUES ('20130119211540');
+
+INSERT INTO schema_migrations (version) VALUES ('20130119212008');

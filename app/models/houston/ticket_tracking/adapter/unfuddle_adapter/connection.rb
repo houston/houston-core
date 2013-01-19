@@ -26,15 +26,17 @@ module Houston
             raise Houston::TicketTracking::InvalidQueryError.new($!)
           end
           
+          def build_ticket(attributes)
+            Houston::TicketTracking::Adapter::UnfuddleAdapter::Ticket.new(self, attributes)
+          end
+          
           def find_ticket(ticket_id)
             attributes = unfuddle.find_ticket(ticket_id) unless ticket_id.blank?
-            Houston::TicketTracking::Adapter::UnfuddleAdapter::Ticket.new(self, attributes) if attributes
+            build_ticket(attributes) if attributes
           end
           
           def find_tickets!(*args)
-            unfuddle.find_tickets!(*args).map do |attributes|
-              Houston::TicketTracking::Adapter::UnfuddleAdapter::Ticket.new(self, attributes)
-            end
+            unfuddle.find_tickets!(*args).map(&method(:build_ticket))
           rescue Unfuddle::Error
             raise Houston::TicketTracking::PassThroughError.new($!)
           end
