@@ -842,9 +842,8 @@ CREATE TABLE tickets (
     deployment character varying(255),
     last_release_at timestamp without time zone,
     goldmine character varying(255),
-    estimated_effort numeric(9,2),
-    estimated_value numeric(11,2),
-    expires_at timestamp without time zone
+    expires_at timestamp without time zone,
+    extended_attributes hstore
 );
 
 
@@ -1372,3 +1371,7 @@ INSERT INTO schema_migrations (version) VALUES ('20130106184327');
 INSERT INTO schema_migrations (version) VALUES ('20130106185425');
 
 INSERT INTO schema_migrations (version) VALUES ('20130119203853');
+
+INSERT INTO schema_migrations (version) VALUES ('20130119204608');
+
+INSERT INTO schema_migrations (version) VALUES ('20130119211540');

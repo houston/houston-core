@@ -17,8 +17,7 @@ class Ticket < ActiveRecord::Base
   remote_model Unfuddle::RemoteTicket
   # remote_model Houston::TicketTracking::Adapter::UnfuddleAdapter::Ticket
   attr_remote :id => :unfuddle_id,
-              :project_id => :unfuddle_project_id,
-              :hours_estimate_current => :estimated_effort
+              :project_id => :unfuddle_project_id
   remote_key [:project_id, :id], :path => "/projects/:unfuddle_project_id/tickets/:unfuddle_id"
   expires_after 100.years
   
@@ -120,6 +119,12 @@ class Ticket < ActiveRecord::Base
   
   def in_development?
     deployment.blank?
+  end
+  
+  
+  
+  def extended_attributes
+    super || {}
   end
   
   

@@ -12,21 +12,19 @@ module Houston
             @number           = attributes["number"]
             @summary          = attributes["summary"]
             @description      = attributes["description"]
-            @estimated_effort = attributes["hours_estimate_current"]
             @unfuddle_id      = attributes["id"]  # <-- !todo: replace this with remote_id or whatever
             @deployment       = get_custom_value(Houston::TMI::NAME_OF_DEPLOYMENT_FIELD, attributes)
             @goldmine         = get_custom_value(Houston::TMI::NAME_OF_GOLDMINE_FIELD, attributes)
           end
           
           
-          attr_reader :number, :summary, :description, :estimated_effort, :unfuddle_id, :deployment, :goldmine
+          attr_reader :number, :summary, :description, :unfuddle_id, :deployment, :goldmine
           
           
           def attributes
             { number:           number,
               summary:          summary,
               description:      description,
-              estimated_effort: estimated_effort,
               unfuddle_id:      unfuddle_id,
               deployment:       deployment,
               goldmine:         goldmine }

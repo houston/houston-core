@@ -5,6 +5,7 @@
 module Houston
   module TMI
     
+    EXTENDED_ATTRIBUTES = [:estimated_effort, :estimated_value]
     NAME_OF_DEPLOYMENT_FIELD = "Fixed in"
     NAME_OF_GOLDMINE_FIELD = "Goldmine"
     
