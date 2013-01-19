@@ -25,10 +25,7 @@ class TicketTrackingAdatersApiTest < ActiveSupport::TestCase
       assert_respond_to connection, :find_tickets!
       assert_respond_to connection, :project_url
       assert_respond_to connection, :ticket_url
-      assert_respond_to connection, :find_custom_field_value_by_id!
-      assert_respond_to connection, :find_custom_field_value_by_value!
-      assert_respond_to connection, :ticket
-      assert_respond_to connection, :get_ticket_attribute_for_custom_value_named!
+      assert_respond_to connection, :find_ticket
     end
   end
   

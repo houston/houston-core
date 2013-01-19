@@ -174,14 +174,8 @@ class Ticket < ActiveRecord::Base
   
   
   def set_unfuddle_kanban_field_to(value)
-    return false if unfuddle_id.blank?
-    
-    unfuddle = project.ticket_system
-    attribute = unfuddle.get_ticket_attribute_for_custom_value_named!(Houston::TMI::NAME_OF_DEPLOYMENT_FIELD) # e.g. field2_value_id
-    id = unfuddle.find_custom_field_value_by_value!(Houston::TMI::NAME_OF_DEPLOYMENT_FIELD, value).id
-    
-    ticket = unfuddle.ticket(unfuddle_id)
-    ticket.update_attribute(attribute, id)
+    ticket = project.ticket_system.find_ticket(unfuddle_id)
+    ticket.update_attribute(:deployment, value) if ticket
   end
   
   

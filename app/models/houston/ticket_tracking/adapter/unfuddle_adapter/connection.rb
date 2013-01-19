@@ -11,7 +11,6 @@ module Houston
           
           attr_reader :project_id
           
-          # !todo: do these belong in the public interface for a Ticket Tracking System?
           delegate :get_ticket_attribute_for_custom_value_named!,
                    :find_custom_field_value_by_id!,
                    :find_custom_field_value_by_value!,
@@ -25,6 +24,11 @@ module Houston
             unfuddle.construct_ticket_query(*args)
           rescue Unfuddle::UndefinedCustomField, Unfuddle::UndefinedCustomFieldValue, Unfuddle::UndefinedSeverity
             raise Houston::TicketTracking::InvalidQueryError.new($!)
+          end
+          
+          def find_ticket(ticket_id)
+            attributes = unfuddle.find_ticket(ticket_id) unless ticket_id.blank?
+            Houston::TicketTracking::Adapter::UnfuddleAdapter::Ticket.new(self, attributes) if attributes
           end
           
           def find_tickets!(*args)

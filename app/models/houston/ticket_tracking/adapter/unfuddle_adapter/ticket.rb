@@ -33,6 +33,17 @@ module Houston
           end
           
           
+          # !stupid: this method assumes the attribute is "deployment" !!
+          def update_attribute(attribute, value)
+            unfuddle = connection
+            attribute = unfuddle.get_ticket_attribute_for_custom_value_named!(Houston::TMI::NAME_OF_DEPLOYMENT_FIELD) # e.g. field2_value_id
+            id = unfuddle.find_custom_field_value_by_value!(Houston::TMI::NAME_OF_DEPLOYMENT_FIELD, value).id
+            
+            ticket = unfuddle.ticket(unfuddle_id)
+            ticket.update_attribute(attribute, id)
+          end
+          
+          
         private
           
           attr_reader :connection
