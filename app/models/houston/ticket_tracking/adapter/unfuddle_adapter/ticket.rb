@@ -33,14 +33,25 @@ module Houston
           end
           
           
-          # !stupid: this method assumes the attribute is "deployment" !!
+          # !todo: refactor this method to be more generic and abstract
           def update_attribute(attribute, value)
             unfuddle = connection
-            attribute = unfuddle.get_ticket_attribute_for_custom_value_named!(Houston::TMI::NAME_OF_DEPLOYMENT_FIELD) # e.g. field2_value_id
-            id = unfuddle.find_custom_field_value_by_value!(Houston::TMI::NAME_OF_DEPLOYMENT_FIELD, value).id
             
-            ticket = unfuddle.ticket(unfuddle_id)
-            ticket.update_attribute(attribute, id)
+            case attribute
+            when :deployment
+              attribute = unfuddle.get_ticket_attribute_for_custom_value_named!(Houston::TMI::NAME_OF_DEPLOYMENT_FIELD) # e.g. field2_value_id
+              id = unfuddle.find_custom_field_value_by_value!(Houston::TMI::NAME_OF_DEPLOYMENT_FIELD, value).id
+              
+              ticket = unfuddle.ticket(unfuddle_id)
+              ticket.update_attributes!(attribute => id)
+              
+            when :closed
+              ticket = unfuddle.ticket(unfuddle_id)
+              ticket.update_attributes!("status" => "closed")
+              
+            else
+              raise NotImplementedError
+            end
           end
           
           

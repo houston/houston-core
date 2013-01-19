@@ -13,7 +13,9 @@ class Ticket < ActiveRecord::Base
   validates :number, presence: true
   validates_uniqueness_of :number, scope: :project_id, on: :create
   
+  # This ActiveResource object is failing to handle \u0000 but Unfuddle::Ticket can...
   remote_model Unfuddle::RemoteTicket
+  # remote_model Houston::TicketTracking::Adapter::UnfuddleAdapter::Ticket
   attr_remote :id => :unfuddle_id,
               :project_id => :unfuddle_project_id,
               :hours_estimate_current => :estimated_effort
@@ -123,10 +125,16 @@ class Ticket < ActiveRecord::Base
   
   
   def close_ticket!
-    unfuddle_ticket = Unfuddle::Ticket.new("id" => unfuddle_id, "project_id" => project.ticket_tracking_id)
-    unfuddle_ticket.update_attributes!("status" => "closed")
+    ticket = project.ticket_system.find_ticket(unfuddle_id)
+    ticket.update_attribute(:closed, true) if ticket
+    
     set_queue! nil
     self
+  end
+  
+  def set_unfuddle_kanban_field_to(value)
+    ticket = project.ticket_system.find_ticket(unfuddle_id)
+    ticket.update_attribute(:deployment, value) if ticket
   end
   
   
@@ -169,13 +177,6 @@ class Ticket < ActiveRecord::Base
   
   def testing_notes_since_last_release
     last_release_at ? testing_notes.where(["created_at > ?", last_release_at]) : testing_notes
-  end
-  
-  
-  
-  def set_unfuddle_kanban_field_to(value)
-    ticket = project.ticket_system.find_ticket(unfuddle_id)
-    ticket.update_attribute(:deployment, value) if ticket
   end
   
   
