@@ -3,8 +3,6 @@ require 'unfuddle/neq'
 
 class Project < ActiveRecord::Base
   
-  serialize :cached_queries
-  
   has_many :releases, :dependent => :destroy
   has_many :tickets, :dependent => :destroy
   has_many :test_runs, :dependent => :destroy
@@ -118,25 +116,6 @@ class Project < ActiveRecord::Base
   # !todo: rescue from Houston::TicketTracking::InvalidQueryError with ... ?
   end
   
-  def invalidate_cache!(*keys)
-    keys.flatten.each do |key|
-      self.cached_queries[key] = nil
-    end
-    save
-  end
-  
-  def find_in_cache_or_execute(key)
-    raise ArgumentError unless block_given?
-    key = key.to_s
-    
-    value = (self.cached_queries ||= {})[key]
-    unless value
-      value = self.cached_queries[key] = yield
-      save
-    end
-    value
-  end
-  
   def update_tickets_in_queue(tickets, queue)
     tickets.each { |ticket| ticket.queue = queue.slug }
     
@@ -150,8 +129,28 @@ class Project < ActiveRecord::Base
   
   
   
+  
+  
   def to_param
     slug
+  end
+  
+  
+  
+  
+  
+  def find_in_cache_or_execute(key, &block)
+    Rails.cache.fetch(cache_key(key), &block)
+  end
+  
+  def invalidate_cache!(*keys)
+    keys.each do |key|
+      Rails.cache.delete(key)
+    end
+  end
+  
+  def cache_key(key)
+    "active_record/projects/#{id}/#{key}"
   end
   
   

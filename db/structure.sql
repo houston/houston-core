@@ -619,7 +619,6 @@ CREATE TABLE projects (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     color character varying(255),
-    cached_queries text,
     errbit_app_id character varying(255),
     new_relic_id integer,
     retired_at timestamp without time zone,
@@ -1371,3 +1370,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130105200429');
 INSERT INTO schema_migrations (version) VALUES ('20130106184327');
 
 INSERT INTO schema_migrations (version) VALUES ('20130106185425');
+
+INSERT INTO schema_migrations (version) VALUES ('20130119203853');
