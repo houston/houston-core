@@ -130,16 +130,16 @@ class Ticket < ActiveRecord::Base
   
   
   def close_ticket!
-    ticket = project.ticket_system.find_ticket(remote_id)
-    ticket.update_attribute(:closed, true) if ticket
+    remote_ticket = project.ticket_system.find_ticket(remote_id)
+    remote_ticket.update_attribute(:closed, true) if remote_ticket
     
     set_queue! nil
     self
   end
   
   def set_deployment_to!(environment_name)
-    ticket = project.ticket_system.find_ticket(remote_id)
-    ticket.update_attribute(:deployment, environment_name) if ticket
+    remote_ticket = project.ticket_system.find_ticket(remote_id)
+    remote_ticket.update_attribute(:deployment, environment_name) if remote_ticket
     
     update_attribute(:deployment, environment_name)
   end
