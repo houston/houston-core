@@ -1,3 +1,5 @@
+require_dependency "houston/ticket_tracking/adapter/unfuddle_adapter/ticket"
+
 module Houston
   module TicketTracking
     module Adapter
