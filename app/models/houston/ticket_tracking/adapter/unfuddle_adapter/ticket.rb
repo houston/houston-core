@@ -7,6 +7,7 @@ module Houston
         class Ticket
           
           
+          
           def initialize(connection, attributes)
             @connection       = connection
             @number           = attributes["number"]
@@ -15,11 +16,16 @@ module Houston
             @remote_id        = attributes["id"]
             @deployment       = get_custom_value(Houston::TMI::NAME_OF_DEPLOYMENT_FIELD, attributes)
             @goldmine         = get_custom_value(Houston::TMI::NAME_OF_GOLDMINE_FIELD, attributes)
+            @prerequisites    = parse_prerequisites(attributes["associations"])
           end
           
-          
-          attr_reader :remote_id, :number, :summary, :description, :deployment, :goldmine
-          
+          attr_reader :remote_id,
+                      :number,
+                      :summary,
+                      :description,
+                      :deployment,
+                      :goldmine,
+                      :prerequisites
           
           def attributes
             { remote_id:      remote_id,
@@ -27,8 +33,10 @@ module Houston
               summary:        summary,
               description:    description,
               deployment:     deployment,
-              goldmine:       goldmine }
+              goldmine:       goldmine,
+              prerequisites:  prerequisites }
           end
+          
           
           
           # !todo: refactor this method to be more generic and abstract
@@ -51,6 +59,7 @@ module Houston
               raise NotImplementedError
             end
           end
+          
           
           
         private
@@ -84,6 +93,16 @@ module Houston
               end
             end
           end
+          
+          
+          
+          def parse_prerequisites(associations)
+            associations
+              .select { |assocation| assocation["relationship"] == "parent" }
+              .map { |assocation| assocation["ticket"]["number"] }
+          end
+          
+          
           
           def find_in_cache_or_execute(key, &block)
             Rails.cache.fetch(cache_key(key), &block)

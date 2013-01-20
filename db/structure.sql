@@ -794,6 +794,39 @@ ALTER SEQUENCE testing_notes_id_seq OWNED BY testing_notes.id;
 
 
 --
+-- Name: ticket_prerequisites; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE ticket_prerequisites (
+    id integer NOT NULL,
+    ticket_id integer,
+    project_id integer,
+    prerequisite_ticket_number integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: ticket_prerequisites_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE ticket_prerequisites_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: ticket_prerequisites_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE ticket_prerequisites_id_seq OWNED BY ticket_prerequisites.id;
+
+
+--
 -- Name: ticket_queues; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1012,6 +1045,13 @@ ALTER TABLE testing_notes ALTER COLUMN id SET DEFAULT nextval('testing_notes_id_
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ticket_prerequisites ALTER COLUMN id SET DEFAULT nextval('ticket_prerequisites_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ticket_queues ALTER COLUMN id SET DEFAULT nextval('ticket_queues_id_seq'::regclass);
 
 
@@ -1098,6 +1138,14 @@ ALTER TABLE ONLY test_runs
 
 ALTER TABLE ONLY testing_notes
     ADD CONSTRAINT testing_notes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: ticket_prerequisites_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY ticket_prerequisites
+    ADD CONSTRAINT ticket_prerequisites_pkey PRIMARY KEY (id);
 
 
 --
@@ -1214,6 +1262,13 @@ CREATE INDEX index_testing_notes_on_ticket_id ON testing_notes USING btree (tick
 --
 
 CREATE INDEX index_testing_notes_on_user_id ON testing_notes USING btree (user_id);
+
+
+--
+-- Name: index_ticket_prerequisites_on_ticket_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_ticket_prerequisites_on_ticket_id ON ticket_prerequisites USING btree (ticket_id);
 
 
 --
@@ -1377,3 +1432,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130119204608');
 INSERT INTO schema_migrations (version) VALUES ('20130119211540');
 
 INSERT INTO schema_migrations (version) VALUES ('20130119212008');
+
+INSERT INTO schema_migrations (version) VALUES ('20130120182026');
