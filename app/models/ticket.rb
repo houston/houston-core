@@ -13,32 +13,10 @@ class Ticket < ActiveRecord::Base
   validates :number, presence: true
   validates_uniqueness_of :number, scope: :project_id, on: :create
   
-  # This ActiveResource object is failing to handle \u0000 but Unfuddle::Ticket can...
-  remote_model Unfuddle::RemoteTicket
-  # remote_model Houston::TicketTracking::Adapter::UnfuddleAdapter::Ticket
-  attr_remote :id => :remote_id,
-              :project_id => :unfuddle_project_id
-  remote_key [:project_id, :id], :path => "/projects/:unfuddle_project_id/tickets/:remote_id"
-  expires_after 100.years
-  
-  # !Override fetch_remote_resource, when this is fetched, set its prefix_options
-  def fetch_remote_resource
-    super.tap do |resource|
-      resource.prefix_options = {project_id: unfuddle_project_id} if resource
-    end
-  end
-  
-  
-  
   attr_readonly :number, :project_id
   
   delegate :testers, :maintainers, to: :project
   
-  
-  def unfuddle_project_id
-    project.ticket_tracking_id
-  end
-  attr_writer :unfuddle_project_id
   
   
   class << self
@@ -185,6 +163,15 @@ class Ticket < ActiveRecord::Base
   def testing_notes_since_last_release
     last_release_at ? testing_notes.where(["created_at > ?", last_release_at]) : testing_notes
   end
+  
+  
+  
+  # Not certain if it will be best to use Remotable with Tickets or not
+  # By putting this here, dependent code won't have to change if we add
+  # Remotable to Tickets again.
+  def self.nosync; yield; end
+  def self.nosync=(value); end
+  def self.nosync?; true; end
   
   
   
