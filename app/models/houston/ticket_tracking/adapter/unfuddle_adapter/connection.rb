@@ -36,7 +36,8 @@ module Houston
           end
           
           def find_tickets!(*args)
-            unfuddle.find_tickets!(*args).map(&method(:build_ticket))
+            remote_tickets = unfuddle.find_tickets!(*args)
+            remote_tickets.map { |attributes | build_ticket(attributes) }
           rescue Unfuddle::Error
             raise Houston::TicketTracking::PassThroughError.new($!)
           end
