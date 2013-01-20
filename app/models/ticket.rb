@@ -137,9 +137,11 @@ class Ticket < ActiveRecord::Base
     self
   end
   
-  def set_unfuddle_kanban_field_to(value)
+  def set_deployment_to!(environment_name)
     ticket = project.ticket_system.find_ticket(remote_id)
-    ticket.update_attribute(:deployment, value) if ticket
+    ticket.update_attribute(:deployment, environment_name) if ticket
+    
+    update_attribute(:deployment, environment_name)
   end
   
   

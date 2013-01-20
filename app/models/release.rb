@@ -107,7 +107,7 @@ class Release < ActiveRecord::Base
   
   def update_tickets_deployment!
     tickets.each do |ticket|
-      ticket.set_unfuddle_kanban_field_to(environment_name)
+      ticket.set_deployment_to!(environment_name)
     end
   end
   

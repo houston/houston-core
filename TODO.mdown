@@ -63,7 +63,6 @@
    - Extract **Errbit**, **NewRelic**, and **GitHub** knowledge
    - Refactor hard-coded knowledge about Unfuddle/EP into configuration
      - Replace `config/initializers/hard_coded_knowledge.rb`
-     - Replace `Ticket#close_ticket!` and `Ticket#set_unfuddle_kanban_field_to` with Remotable
      - Replace `User#default_notifications_environments` with configuration
      - Replace `tickets.goldmine`, `Ticket#goldmine_numbers`, `Release#goldmine_numbers` with "antecedents"
      - Add `tickets.status` or `tickets.closed`
