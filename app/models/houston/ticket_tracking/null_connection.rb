@@ -6,10 +6,6 @@ module Houston
       # Public API for a TicketTracking connection
       # ------------------------------------------------------------------------- #
       
-      def construct_ticket_query(*args)
-        nil
-      end
-      
       def build_ticket(attributes)
         NullTicket
       end

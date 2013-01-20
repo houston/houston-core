@@ -66,6 +66,12 @@ module Houston
           
           attr_reader :connection
           
+          delegate :find_in_cache_or_execute,
+                   :invalidate_cache,
+                   :to => :connection
+          
+          
+          
           def get_custom_value(custom_field_name, unfuddle_ticket)
             retried_once = false
             begin
@@ -103,20 +109,6 @@ module Houston
           end
           
           
-          
-          def find_in_cache_or_execute(key, &block)
-            Rails.cache.fetch(cache_key(key), &block)
-          end
-          
-          def invalidate_cache!(*keys)
-            keys.each do |key|
-              Rails.cache.delete(key)
-            end
-          end
-          
-          def cache_key(key)
-            "unfuddle/projects/#{connection.project_id}/#{key}"
-          end
           
         end
       end

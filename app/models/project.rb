@@ -104,16 +104,9 @@ class Project < ActiveRecord::Base
   
   def tickets_in_queue(queue)
     queue = KanbanQueue.find_by_slug(queue) unless queue.is_a?(KanbanQueue)
-    query = construct_ticket_query_for_queue(queue)
-    find_tickets(query).tap do |tickets|
+    find_tickets(queue.query).tap do |tickets|
       update_tickets_in_queue(tickets, queue)
     end
-  end
-  
-  def construct_ticket_query_for_queue(queue)
-    key = "#{queue.slug}-#{Digest::MD5::hexdigest(queue.query.inspect)}"
-    find_in_cache_or_execute(key) { ticket_system.construct_ticket_query(queue.query) }
-  # !todo: rescue from Houston::TicketTracking::InvalidQueryError with ... ?
   end
   
   def update_tickets_in_queue(tickets, queue)
@@ -133,24 +126,6 @@ class Project < ActiveRecord::Base
   
   def to_param
     slug
-  end
-  
-  
-  
-  
-  
-  def find_in_cache_or_execute(key, &block)
-    Rails.cache.fetch(cache_key(key), &block)
-  end
-  
-  def invalidate_cache!(*keys)
-    keys.each do |key|
-      Rails.cache.delete(key)
-    end
-  end
-  
-  def cache_key(key)
-    "active_record/projects/#{id}/#{key}"
   end
   
   
