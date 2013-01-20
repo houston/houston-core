@@ -43,6 +43,12 @@ body.with-kanban { padding-top: 40px; }
 
 .no-feature { font-style:italic; }
 
+.kanban-alerts {
+  padding: 12px;
+  position: absolute;
+  z-index: 2000;
+}
+
 #kanban {
   table-layout: fixed;
   width: 100%;

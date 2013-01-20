@@ -10,6 +10,7 @@ class window.Kanban
     
     $('body').addClass('with-kanban')
     @el = $('#kanban')
+    @alerts = $('<div class="kanban-alerts"></div>').appendTo('body')
     @window = $(window)
     @top = @naturalTop = @el.offset().top
     @setKanbanHeight()
@@ -70,7 +71,7 @@ class window.Kanban
   
   loadQueue: (project, queueName, callback)->
     $queue = $("##{queueName}")
-    @fetchQueue project, queueName, (tickets)=>
+    fetchCallback = (tickets)=>
       
       # Remove existing tickets
       $queue.find(".#{project.slug}").remove()
@@ -82,6 +83,12 @@ class window.Kanban
       
       @observer.fire('queueLoaded', [queueName, project])
       callback() if callback
+    
+    fetchErrback = (errors)=>
+      @showErrors(errors)
+      callback() if callback
+    
+    @fetchQueue project, queueName, fetchCallback, fetchErrback
   
   refreshQueue: ($queue, ticketSelector)->
     ticketSelector ?= '.ticket'
@@ -94,13 +101,16 @@ class window.Kanban
     
     @resizeColumn $queue
   
-  fetchQueue: (project, queueName, callback)->
+  fetchQueue: (project, queueName, callback, errback)->
     xhr = @get "#{project.slug}/#{queueName}"
     xhr.error ->
       window.console.log('error', arguments)
     xhr.success (data, textStatus, jqXHR)->
       App.checkRevision(jqXHR)
-      callback(data)
+      if data.errors
+        errback(data.errors)
+      else
+        callback(data)
   
   urlFor: (path)->
     "#{App.relativeRoot()}/kanban/#{path}.json"
@@ -112,6 +122,13 @@ class window.Kanban
     url = @urlFor(path)
     $.ajax url,
       method: method
+  
+  showErrors: (errors)->
+    for error in errors
+      window.console.log("[error] #{error}")
+      $("<div class=\"alert alert-error small-alert\">#{error}</div>")
+        .appendTo(@alerts)
+        .delay(1500).fadeOut()
   
   resize: ->
     self = @

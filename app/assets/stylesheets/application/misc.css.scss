@@ -130,6 +130,13 @@ h1 .dropdown .caret {
   margin-top: 16px;
 }
 
+.alert.small-alert {
+  font-size: 11px;
+  line-height: 11px;
+  padding: 7px 10px;
+  margin-bottom: 4px;
+}
+
 a.refresh-queue {
   color: #333;
   text-decoration: none;
