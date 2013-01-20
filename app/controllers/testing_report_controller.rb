@@ -4,13 +4,16 @@ class TestingReportController < ApplicationController
   def index
     @title = "Testing Report"
     
+    # Faster; one fetch to Unfuddle for all projects
     unfuddle_tickets = Unfuddle.instance.find_tickets!(status: :resolved, resolution: :fixed)
     
     @projects = []
     @tickets_by_project_id = {}
     
     Project.all.each do |project|
-      tickets_for_project = unfuddle_tickets.select { |ticket| ticket["project_id"] == project.ticket_tracking_id }
+      tickets_for_project = unfuddle_tickets
+        .select { |ticket| ticket["project_id"] == project.ticket_tracking_id }
+        .map { | attributes| project.ticket_system.build_ticket(attributes) }
       tickets = project
         .tickets_from_unfuddle_tickets(tickets_for_project)
         .reject(&:in_development?)
