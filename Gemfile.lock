@@ -1,4 +1,11 @@
 GIT
+  remote: git://github.com/LewisJA/foreman-export-initscript.git
+  revision: 173e41ba4435dd728ca8fe6ba7ed584815c5101c
+  specs:
+    foreman-export-initscript (0.0.1)
+      foreman
+
+GIT
   remote: git://github.com/boblail/remotable.git
   revision: 764eed5f1febf207ab51025d152c59bf95bc01ff
   specs:
@@ -70,15 +77,9 @@ GEM
     bluecloth (2.2.0)
     builder (3.0.4)
     cancan (1.6.7)
-    capistrano (2.9.0)
-      highline
-      net-scp (>= 1.0.0)
-      net-sftp (>= 2.0.0)
-      net-ssh (>= 2.0.14)
-      net-ssh-gateway (>= 1.1.0)
     childprocess (0.3.2)
       ffi (~> 1.0.6)
-    chronic (0.6.7)
+    chronic (0.9.0)
     ci_reporter (1.8.3)
       builder (>= 2.1.2)
     coderay (1.0.8)
@@ -123,7 +124,6 @@ GEM
       execjs (>= 1.2.9)
       sprockets (>= 2.0.3)
       tilt
-    highline (1.6.9)
     hike (1.2.1)
     hpricot (0.8.3)
     htmlentities (4.3.1)
@@ -151,13 +151,6 @@ GEM
     minitest (3.2.0)
     multi_json (1.5.0)
     multipart-post (1.1.5)
-    net-scp (1.0.4)
-      net-ssh (>= 1.99.1)
-    net-sftp (2.0.5)
-      net-ssh (>= 2.0.9)
-    net-ssh (2.2.1)
-    net-ssh-gateway (1.1.0)
-      net-ssh (>= 1.99.1)
     nokogiri (1.5.5)
     orm_adapter (0.0.7)
     pg (0.13.2)
@@ -205,8 +198,6 @@ GEM
       sinatra (>= 0.9.2)
       vegas (~> 0.1.2)
     rr (1.0.4)
-    rvm-capistrano (1.2.2)
-      capistrano (>= 2.0.0)
     sass (3.2.5)
     sass-rails (3.2.6)
       railties (~> 3.2.0)
@@ -241,6 +232,9 @@ GEM
     treetop (1.4.12)
       polyglot
       polyglot (>= 0.3.1)
+    turbo-sprockets-rails3 (0.3.6)
+      railties (> 3.2.8, < 4.0.0)
+      sprockets (>= 2.0.0)
     turn (0.9.6)
       ansi
     twitter-bootstrap-rails (2.0.4)
@@ -255,9 +249,9 @@ GEM
       rack (>= 1.0.0)
     warden (1.1.1)
       rack (>= 1.0)
-    whenever (0.7.3)
+    whenever (0.8.2)
       activesupport (>= 2.3.4)
-      chronic (~> 0.6.3)
+      chronic (>= 0.6.3)
     yajl-ruby (1.1.0)
 
 PLATFORMS
@@ -271,7 +265,6 @@ DEPENDENCIES
   bluecloth
   bundler
   cancan
-  capistrano
   childprocess
   ci_reporter
   coffee-rails (~> 3.2.1)
@@ -281,6 +274,7 @@ DEPENDENCIES
   faraday
   font-awesome-rails
   foreman
+  foreman-export-initscript!
   googlecharts
   grit
   handlebars_assets
@@ -297,13 +291,13 @@ DEPENDENCIES
   remotable (>= 0.2.2)!
   resque
   rr
-  rvm-capistrano
   sass-rails (~> 3.2.3)
   simplecov
   simplecov-rcov
   sugar-rails
   therubyracer
   thin
+  turbo-sprockets-rails3 (>= 0.3.6)
   turn
   twitter-bootstrap-rails
   uglifier (>= 1.0.3)

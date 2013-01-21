@@ -18,6 +18,8 @@ group :assets do
   gem 'coffee-rails', '~> 3.2.1'
   gem 'therubyracer' # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   gem 'uglifier', '>= 1.0.3'
+  
+  gem 'turbo-sprockets-rails3', '>= 0.3.6'
 end
 
 # Sass is required in production (see layouts/email.html.erb)
@@ -40,6 +42,7 @@ gem 'devise',           '>= 2.0.0'
 gem 'devise_invitable', '~> 1.0.0'
 gem 'faraday'
 gem 'foreman'
+gem 'foreman-export-initscript', :git => 'git://github.com/LewisJA/foreman-export-initscript.git'
 gem 'googlecharts'
 gem 'grit'
 gem 'hpricot'
@@ -63,10 +66,6 @@ Houston.config.modules.each do |mod|
 end
 
 
-
-# Deploy with Capistrano
-gem 'capistrano'
-gem 'rvm-capistrano'
 
 # Exception notification
 gem 'airbrake'
