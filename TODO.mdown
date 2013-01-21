@@ -1,29 +1,26 @@
 # To Do
 
-### Troubleshooting
-
- - Does the deploy endpoint require login --- so deploys don't register if user is logged out? Should use token authentication.
- - **Project:** allow changing Version Control Location (have tmp folder deleted or whatever)
- - **Weekly Report/Exceptions:** problems history is off by 1 week?
-
 ### Fixes
 
- - **Testing Notes:** edit a failing testing note at home, SMTP fail, timeout takes 30 seconds!
- - **Releases/Deploy Emails:** have up-to-date commits
- - **Testing Report:** ticket ages make no sense
- - **CI Results:** fails are reported as errors!
+ - 2 **Global:** Handle Timeout::Error
+ - 3 **Releases/Deploy Emails:** have up-to-date commits
+ - 4 **Weekly Report/Exceptions:** problems history is off by 1 week?
+ - 5 **CI Results:** fails are reported as errors!
+ - 5 **Project:** allow changing Version Control Location (have tmp folder deleted or whatever)
+ - 5 **Testing Notes:** edit a failing testing note at home, SMTP fail, timeout takes 30 seconds!
 
 ### Small Projects
 
- - **Testing Report:** add priority options (to left of ticket): high/low, exclusive checkboxes
- - **Testing Report:** show status and send notification for 'none' verdict
- - **Kanban:** fetch ticket queue status in the background in case Kanban isn't default screen
- - **Releases:** set levels for tags (Customer, Internal, All)
- - **Releases:** allow adding/removing _tickets_ from release notes
- - **Weekly Report:** cache Google Chart images in emails and/or implement server-side SVG library
- - **Weekly Report/Exceptions:** break down notices by project
- - **Weekly Report/Exceptions:** show average time to close problem
- - **Global:** disable buttons when working! (e.g. what saving a very slow testing note)
+ - 2 **Weekly Report/Exceptions:** show average time to close problem
+ - 3 **Testing Report:** add priority options (to left of ticket): high/low, exclusive checkboxes
+ - 3 **Testing Report:** redesign view to be tabular so you can sort by due date or what I've tested
+ - 3 **Testing Report:** show status and send notification for 'none' verdict
+ - 4 **Kanban:** fetch ticket queue status in the background in case Kanban isn't default screen
+ - 4 **Weekly Report:** cache Google Chart images in emails and/or implement server-side SVG library
+ - 4 **Weekly Report/Exceptions:** break down notices by project
+ - 4 **Global:** disable buttons when working! (e.g. what saving a very slow testing note)
+ - 5 **Releases:** set levels for tags (Customer, Internal, All)
+ - 5 **Releases:** allow adding/removing _tickets_ from release notes
 
 ### Bigger Projects
 
