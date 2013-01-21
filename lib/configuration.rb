@@ -10,6 +10,9 @@ module Houston
     
     def initialize
       @modules = []
+      @ticket_system_configuration = {}
+      @ci_server_configuration = {}
+      @error_tracker_configuration = {}
     end
     
     
