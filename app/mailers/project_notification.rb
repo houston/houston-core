@@ -19,9 +19,14 @@ class ProjectNotification < ViewMailer
     @test_run = test_run
     @project = test_run.project
     
+    subject = {
+      "pass" => "#{test_run.total_count} tests passed!",
+      "fail" => "#{test_run.fail_count} of #{test_run.total_count} tests failed"
+    }[test_run.result.to_s]
+    
     mail({
       to:       options.fetch(:to, @project.maintainers),
-      subject:  "test results",
+      subject:  subject,
       template: "test_run"
     })
   end
