@@ -112,7 +112,7 @@ module Houston
           
           
           def parse_prerequisites(associations)
-            associations
+            Array.wrap(associations)
               .select { |assocation| assocation["relationship"] == "parent" }
               .map { |assocation| assocation["ticket"]["number"] }
           end
