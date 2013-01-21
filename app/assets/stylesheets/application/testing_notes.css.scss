@@ -36,15 +36,24 @@
   background-position: 0 7px;
   background-repeat: no-repeat;
   
-  .ticket-age {
-    font-weight: bold;
+  .ticket-due-date {
+    white-space: nowrap;
+    color: #B50000;
+    font-size: 0.8333em;
     
-    &.infant { color: #42A800; } // green
-    &.child { background-color: #9FBD2A; } // spring-green
-    &.adult { color: #D6B21F; } // yellow
-    &.senior { color: #DF8A3D; } // orange
-    &.old, &.ancient { color: #B50000; }
+    &::before { content: '('; }
+    &::after { content: ')'; }
   }
+  
+//  .ticket-age {
+//    font-weight: bold;
+//    
+//    &.infant { color: #42A800; } // green
+//    &.child { color: #9FBD2A; } // spring-green
+//    &.adult { color: #D6B21F; } // yellow
+//    &.senior { color: #DF8A3D; } // orange
+//    &.old, &.ancient { color: #B50000; }
+//  }
 }
 
 ul.tester-names { 

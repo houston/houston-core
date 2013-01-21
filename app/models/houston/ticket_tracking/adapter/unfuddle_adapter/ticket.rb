@@ -10,31 +10,40 @@ module Houston
           
           def initialize(connection, attributes)
             @connection       = connection
+            
+            # required
+            @remote_id        = attributes["id"]
             @number           = attributes["number"]
             @summary          = attributes["summary"]
             @description      = attributes["description"]
-            @remote_id        = attributes["id"]
+            
+            # optional
             @deployment       = get_custom_value(Houston::TMI::NAME_OF_DEPLOYMENT_FIELD, attributes)
             @goldmine         = get_custom_value(Houston::TMI::NAME_OF_GOLDMINE_FIELD, attributes)
             @prerequisites    = parse_prerequisites(attributes["associations"])
+            @due_date         = attributes["due_on"]
           end
           
           attr_reader :remote_id,
                       :number,
                       :summary,
                       :description,
+                      
                       :deployment,
                       :goldmine,
-                      :prerequisites
+                      :prerequisites,
+                      :due_date
           
           def attributes
             { remote_id:      remote_id,
               number:         number,
               summary:        summary,
               description:    description,
+              
               deployment:     deployment,
               goldmine:       goldmine,
-              prerequisites:  prerequisites }
+              prerequisites:  prerequisites,
+              due_date:       due_date }
           end
           
           

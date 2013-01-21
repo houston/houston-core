@@ -36,6 +36,7 @@ class TicketPresenter
         committers: ticket.committers,
         deployment: ticket.deployment,
         age: ticket.age,
+        dueDate: ticket.due_date,
         ticketSystem: ticket.project.ticket_tracking_adapter,
         ticketUrl: ticket.ticket_system_ticket_url }
     end
@@ -56,6 +57,7 @@ class TicketPresenter
         committers: ticket.committers,
         deployment: ticket.deployment,
         age: ticket.age,
+        dueDate: ticket.due_date,
         ticketSystem: ticket.project.ticket_tracking_adapter,
         ticketUrl: ticket.ticket_system_ticket_url,
         

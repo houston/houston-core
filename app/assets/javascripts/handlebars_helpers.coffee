@@ -12,6 +12,9 @@ Handlebars.registerHelper 'formatDuration', (seconds)->
     unit = if days == 1 then 'day' else 'days'
     "#{days} #{unit}"
 
+Handlebars.registerHelper 'formatDate', (timestamp)->
+  Date.create(timestamp).format('ddd mmm d')
+
 Handlebars.registerHelper 'formatTime', (timestamp)->
   Date.create(timestamp).format('ddd mmm d, yyyy h:mmt')
 

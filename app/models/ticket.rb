@@ -78,6 +78,17 @@ class Ticket < ActiveRecord::Base
   
   
   
+  def due_date
+    extended_attributes["due_date"]
+  end
+  
+  def due_date=(value)
+    extended_attributes["due_date"] = value
+    extended_attributes_will_change!
+  end
+  
+  
+  
   def in_queue?(name)
     self.queue == name
   end
@@ -128,7 +139,7 @@ class Ticket < ActiveRecord::Base
   
   
   def extended_attributes
-    super || {}
+    super || (self.extended_attributes = {})
   end
   
   
