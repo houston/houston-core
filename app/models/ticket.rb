@@ -9,6 +9,8 @@ class Ticket < ActiveRecord::Base
   
   default_scope order(:number).includes(:ticket_queue).includes(:ticket_prerequisites)
   
+  serialize :extended_attributes, ActiveRecord::Coders::Hstore
+  
   validates :project_id, presence: true
   validates :summary, presence: true
   validates :number, presence: true
