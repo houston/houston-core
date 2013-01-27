@@ -1,12 +1,15 @@
 Houston.config do
   
-  # This is the name that will be shown in the banner
+  # (Optional) The name that will be shown in the banner
   title "Mission Control"
   
-  # This is the email address Houston will send emails from by default
+  # (Required) The host name where Houston will be running
+  host "houston.my-company.com"
+  
+  # (Required) The email address from which Houston's emails will be sent
   mailer_sender "houston@my-company.com"
   
-  # (Optional) These are the categories you can organize your projects by
+  # (Optional) Categories you can organize your projects by
   project_categories "Products", "Tools"
   
   

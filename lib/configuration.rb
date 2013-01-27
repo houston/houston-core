@@ -22,6 +22,11 @@ module Houston
       @title ||= "Houston"
     end
     
+    def host(*args)
+      @host = args.first if args.any?
+      @host ||= nil
+    end
+    
     def mailer_sender(*args)
       @mailer_sender = args.first if args.any?
       @mailer_sender ||= nil
@@ -35,14 +40,6 @@ module Houston
     def environments(*args)
       @environments = args if args.any?
       @environments ||= []
-    end
-    
-    
-    
-    # !todo: move to config.rb
-    
-    def host
-      "status.cphepdev.com"
     end
     
     
