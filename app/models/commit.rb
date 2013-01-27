@@ -45,6 +45,10 @@ class Commit < ActiveRecord::Base
     parsed_message[:tickets]
   end
   
+  def hours_worked
+    parsed_message[:hours_worked]
+  end
+  
   def extra_attributes
     parsed_message[:attributes]
   end
@@ -55,20 +59,24 @@ class Commit < ActiveRecord::Base
     tags = []
     tickets = []
     attributes = {}
+    hours = 0
     clean_message = message.dup
     
     clean_message.gsub!(TICKET_PATTERN) { tickets << $1; "" }
+    clean_message.gsub!(TIME_PATTERN) { hours = $1.to_f; hours /= 60 if $2.starts_with?("m"); "" }
     clean_message.gsub!(EXTRA_ATTRIBUTE_PATTERN) { (attributes[$1] ||= []).push($2); "" }
     while clean_message.gsub!(TAG_PATTERN) { tags << $1; "" }; end
     
-    {tags: tags, tickets: tickets, attributes: attributes, clean_message: clean_message.strip}
+    {tags: tags, tickets: tickets, hours_worked: hours, attributes: attributes, clean_message: clean_message.strip}
   end
+  
+  TAG_PATTERN = /^\s*\[([^\]]+)\]\s*/
   
   TICKET_PATTERN = /\[#(\d+)\]/
   
-  EXTRA_ATTRIBUTE_PATTERN = /\{\{([^:\}]+):([^\}]+)\}\}/
+  TIME_PATTERN = /\((\d*\.?\d+) ?(h|hrs?|hours?|m|min|minutes?)\)/
   
-  TAG_PATTERN = /^\s*\[([^\]]+)\]\s*/
+  EXTRA_ATTRIBUTE_PATTERN = /\{\{([^:\}]+):([^\}]+)\}\}/
   
   MERGE_COMMIT_PATTERN = /^Merge (remote-tracking )?branch/
   

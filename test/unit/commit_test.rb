@@ -24,11 +24,13 @@ class CommitTest < ActiveSupport::TestCase
   
   test "should extract an array of tickets from the end of a commit" do
     commits = [
-      "I did some work [#1347]"
+      "I did some work [#1347]",
+      "Two birds, one stone [#45] [#88]"
     ]
     
     expectations = [
-      ["1347"]
+      ["1347"],
+      ["45", "88"]
     ]
     
     commits.zip(expectations) do |commit_message, expectation|
@@ -52,9 +54,29 @@ class CommitTest < ActiveSupport::TestCase
     end
   end
   
+  test "should extract time from a commit" do
+    commits = [
+      "I did some work (45m)",
+      "I did some work (6 min)",
+      "I did some work (.2hrs)",
+      "I did some work (1hr)"
+    ]
+    
+    expectations = [
+      0.75,
+      0.1,
+      0.2,
+      1
+    ]
+    
+    commits.zip(expectations) do |commit_message, expectation|
+      assert_equal expectation, Commit.new(message: commit_message).hours_worked
+    end
+  end
+  
   test "should extract a clean message from a commit" do
     commits = [
-      "[tag] I did some work {{attr:value}} [#45]"
+      "[tag] I did some work {{attr:value}} [#45] (18m)"
     ]
     
     expectations = [
