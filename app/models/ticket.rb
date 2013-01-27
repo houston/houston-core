@@ -146,8 +146,18 @@ class Ticket < ActiveRecord::Base
   
   
   
+  def remote_ticket
+    @remote_ticket ||= project && project.ticket_system.find_ticket(remote_id)
+  end
+  
+  def release!(release)
+    self.releases << release unless self.releases.exists?(release.id)
+    update_attribute(:last_release_at, release.created_at)
+    set_deployment_to!(release.environment_name)
+    Houston.observer.fire "ticket:release", self, release
+  end
+  
   def close_ticket!
-    remote_ticket = project.ticket_system.find_ticket(remote_id)
     remote_ticket.update_attribute(:closed, true) if remote_ticket
     
     set_queue! nil
@@ -155,7 +165,6 @@ class Ticket < ActiveRecord::Base
   end
   
   def set_deployment_to!(environment_name)
-    remote_ticket = project.ticket_system.find_ticket(remote_id)
     remote_ticket.update_attribute(:deployment, environment_name) if remote_ticket
     
     update_attribute(:deployment, environment_name)

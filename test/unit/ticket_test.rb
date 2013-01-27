@@ -1,6 +1,7 @@
 require 'test_helper'
 
 class TicketTest < ActiveSupport::TestCase
+  include RR::Adapters::TestUnit
   
   setup do
     Ticket.nosync = true
@@ -66,6 +67,18 @@ class TicketTest < ActiveSupport::TestCase
       ticket.update_attributes(queue: "in_testing")
     end
     assert_equal "in_testing", ticket.ticket_queue(true).queue
+  end
+  
+  
+  
+  
+  test "invoking `release!` triggers the ticket:release event" do
+    ticket = Ticket.create!(project_id: 1, number: 1, summary: "Test summary")
+    release = Release.new
+    
+    assert_triggered "ticket:release" do
+      ticket.release!(release)
+    end
   end
   
   

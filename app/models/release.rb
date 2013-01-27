@@ -1,7 +1,7 @@
 class Release < ActiveRecord::Base
   
   after_create :load_commits!, :if => :can_read_commits?
-  after_create :associate_tickets_with_self
+  after_create :release_each_ticket
   after_create { Houston.observer.fire "release:create", self }
   
   belongs_to :project
@@ -105,14 +105,6 @@ class Release < ActiveRecord::Base
   
   
   
-  def update_tickets_deployment!
-    tickets.each do |ticket|
-      ticket.set_deployment_to!(environment_name)
-    end
-  end
-  
-  
-  
   def notification_recipients
     @notification_recipients ||= begin
       user_ids = project.notifications.where(environment_name: environment_name).pluck(:user_id)
@@ -134,10 +126,9 @@ private
     project.repo.commits_between(commit0, commit1)
   end
   
-  def associate_tickets_with_self
+  def release_each_ticket
     tickets.each do |ticket|
-      ticket.releases << self unless ticket.releases.exists?(id)
-      ticket.update_attribute(:last_release_at, self.created_at)
+      ticket.release!(self)
     end
   end
   

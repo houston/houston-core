@@ -63,7 +63,6 @@ class ReleasesController < ApplicationController
     @release.user = current_user
     
     if @release.save
-      @release.update_tickets_deployment! if params[:update_tickets_deployment]
       ProjectNotification.release(@release).deliver! if params[:send_release_email]
       
       redirect_to @release, notice: 'Release was successfully created.'
