@@ -41,10 +41,6 @@ module Houston
     
     # !todo: move to config.rb
     
-    def web_hooks
-      %w{post_receive post_build}
-    end
-    
     def host
       "status.cphepdev.com"
     end
@@ -291,6 +287,10 @@ module Houston
     def on(event, &block)
       observers_of(event).push(block)
       nil
+    end
+    
+    def observed?(event)
+      observers_of(event).any?
     end
     
     def fire(event, *args)

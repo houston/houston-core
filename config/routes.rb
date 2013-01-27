@@ -67,7 +67,7 @@ Houston::Application.routes.draw do
   # Web Hooks
   
   scope "projects/:project_id" do
-    constraints :hook => Regexp.new(Houston.config.web_hooks.join("|")) do
+    constraints :hook => /[\w\d\-_]+/ do
       match "hooks/:hook", :to => "project_hooks#trigger", :via => :post, :as => :web_hook
     end
   end
