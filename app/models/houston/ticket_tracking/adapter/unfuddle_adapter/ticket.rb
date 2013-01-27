@@ -10,6 +10,7 @@ module Houston
           
           def initialize(connection, attributes)
             @connection       = connection
+            @raw_attributes   = attributes
             
             # required
             @remote_id        = attributes["id"]
@@ -48,10 +49,17 @@ module Houston
           
           
           
+          def resolve!
+            unless %w{resolved closed}.member? @raw_attributes["status"]
+              ticket = unfuddle.ticket(remote_id)
+              ticket.update_attributes!("status" => "resolved")
+            end
+          end
+          
+          
+          
           # !todo: refactor this method to be more generic and abstract
           def update_attribute(attribute, value)
-            unfuddle = connection
-            
             case attribute
             when :deployment
               attribute = unfuddle.get_ticket_attribute_for_custom_value_named!(Houston::TMI::NAME_OF_DEPLOYMENT_FIELD) # e.g. field2_value_id
@@ -74,6 +82,7 @@ module Houston
         private
           
           attr_reader :connection
+          alias :unfuddle :connection
           
           delegate :find_in_cache_or_execute,
                    :invalidate_cache,
