@@ -110,6 +110,9 @@ Houston::Application.routes.draw do
   # Experiment
   match "tickets", :to => "tickets#index", :via => :get
   
+  # Tester Bar
+  match "tester_bar/:action", :controller => "tester_bar" if Rails.env.development?
+  
   # Resque
   mount Resque::Server.new, :at => "/resque"
   
