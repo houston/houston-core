@@ -46,7 +46,6 @@ gem 'foreman-export-initscript', :git => 'git://github.com/LewisJA/foreman-expor
 gem 'googlecharts'
 gem 'grit'
 gem 'hpricot'
-gem 'letter_opener', :git => 'git://github.com/pcg79/letter_opener.git'
 gem 'nokogiri'
 gem 'premailer' # for inlining CSS in HTML emails
 gem 'remotable', '>= 0.2.2', :git => 'git://github.com/boblail/remotable.git'
@@ -72,6 +71,12 @@ gem 'airbrake'
 
 group :development do
   gem 'thin'
+  gem 'letter_opener', :git => 'git://github.com/pcg79/letter_opener.git'
+  
+  # Better error messages
+  gem "better_errors"
+  gem "binding_of_caller"
+  gem "meta_request"
 end
 
 group :development, :test do
