@@ -6,7 +6,7 @@
         for(projectId in ticketsByProjectId) {
           var tickets = new Tickets(ticketsByProjectId[projectId]);
           var id = '#project_' + projectId + '_testing_report';
-          new TestingTicketsView({el: id, tickets: tickets});
+          new TestingReportView({el: id, tickets: tickets});
         }
       }
       

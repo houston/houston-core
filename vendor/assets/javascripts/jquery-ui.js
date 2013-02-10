@@ -36,5 +36,5 @@
 //  require ./jquery-ui/jquery.effects.pulsate.js
 //  require ./jquery-ui/jquery.effects.scale.js
 //  require ./jquery-ui/jquery.effects.shake.js
-//  require ./jquery-ui/jquery.effects.slide.js
+//= require ./jquery-ui/jquery.effects.slide.js
 //  require ./jquery-ui/jquery.effects.transfer.js

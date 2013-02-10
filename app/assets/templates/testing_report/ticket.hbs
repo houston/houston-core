@@ -1,21 +1,16 @@
-<div class="span8">
-  <a data-toggle="collapse" data-parent="#tickets" data-target="#ticket_{{id}}_testing_notes" class="testing-notes">[#{{number}}] {{{formatTicketSummary summary}}}</a>
-  <a href="{{ticketUrl}}" target="_blank">
-    <img alt="Favicon-unfuddle" data-tooltip-placement="right" height="16" rel="tooltip" src="/images/favicon-unfuddle.png" width="16" data-original-title="View in {{ticketSystem}}">
-  </a>
-  {{#if deployment}}<span class="label label-inverse">{{deployment}}</span>{{/if}}
-  {{#if dueDate}}<span class="ticket-due-date">Due: <b>{{formatDate dueDate}}</b></span>{{/if}}
-  {{#committers}} <span class="committer-avatar">{{{avatar email 24 name}}}</span>{{/committers}}
-</div>
-<div class="span4">
-  <span class="ticket-verdict-summary"></span>
-  <span class="tester-verdicts"></span>
+<td class="table-margin"></td>
+<td class="ticket-project"><b class="bubble {{projectColor}}"></b> {{projectTitle}}</td>
+<td class="ticket-summary">
+  {{{formatTicketSummary summary}}}
+  <a href="{{ticketUrl}}" target="_blank" rel="tooltip" data-tooltip-placement="right" data-original-title="View in {{ticketSystem}}">[#{{number}}]</a>
   {{#if maintainer}}
-    <button class="close-button btn">Close</button>
+    <button class="close-button btn btn-mini">Close</button>
   {{/if}}
-</div>
-<ol id="ticket_{{id}}_testing_notes" class="testing-notes collapse span8">
-  {{#if description}}
-    <li class='ticket-description'>{{{description}}}</li>
-  {{/if}}
-</ol>
+</td>
+<td class="ticket-deployment">{{#if deployment}}<span class="label label-inverse">{{deployment}}</span>{{/if}}</td>
+<td class="ticket-due-date">{{#if dueDate}}<span class="ticket-due-date">{{formatDate dueDate}}</span>{{/if}}</td>
+<td class="ticket-participants">{{#committers}} <span class="committer-avatar">{{{avatar email 24 name}}}</span>{{/committers}}</td>
+{{#testerVerdicts}}
+  <td class="ticket-participants">{{> testerVerdict}}</td>
+{{/testerVerdicts}}
+<td class="table-margin"></td>

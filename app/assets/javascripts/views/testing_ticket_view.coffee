@@ -1,60 +1,77 @@
 class window.TestingTicketView extends Backbone.View
-  tagName: 'li'
-  className: 'ticket row-fluid'
+  tagName: 'tr'
+  className: 'ticket'
   
   events:
-    'submit form#new_testing_note': 'createTestingNote'
-    'click #commit_and_reset': 'createTestingNoteAndResetTicket'
+    'click': 'showOrHideTestingNotes'
     'click .close-button': 'closeTicket'
   
   initialize: ->
     @ticket = @options.ticket
     @testingNotes = @ticket.testingNotes()
+    
     @renderTicket = HandlebarsTemplates['testing_report/ticket']
+    @renderTicketDescription = HandlebarsTemplates['testing_report/description']
     @renderTesterVerdict = HandlebarsTemplates['testing_report/verdict']
     @renderNewTestingNote = HandlebarsTemplates['testing_notes/new']
+    Handlebars.registerPartial 'testerVerdict', @renderTesterVerdict
+    
+    @numColumns = window.testers.length
     @viewInEdit = null
   
   render: ->
-    # window.console.log "[ticket] render ##{@ticket.get('number')}", @ticket.toJSON()
+    ticket = @ticket.toJSON()
+    # window.console.log "[ticket] render ##{ticket.number}", ticket
+    
     $el = $(@el)
     $project = $el.closest('.project')
-    maintainerIds = $project.attr('data-maintainers').split(',').map (id)-> +id
-    ticket = @ticket.toJSON()
+    maintainers = $project.attr('data-maintainers') ? ''
+    maintainerIds = maintainers.split(',').map (id)-> +id
     ticket.maintainer = _.include(maintainerIds, window.userId)
+    ticket.testerVerdicts = @ticket.testerVerdicts()
+    ticket.verdict = @ticket.verdict()
+    ticket.passing = ticket.verdict == 'Passing'
+    ticket.failing = ticket.verdict == 'Failing'
     $el.html @renderTicket(ticket)
     
-    @renderTesterVerdicts()
-    @renderTestingNotes()
-    
-    # Wire up the ticket in an accordian control
-    $el.find('[data-toggle="collapse"]')
-      .collapse
-        toggle: true
-        parent: '.tickets-list'
-    $el.find('.testing-notes')
-      .on('show', -> $(@).closest('.ticket').addClass('expanded'))
-      .on('hide', -> $(@).closest('.ticket').removeClass('expanded'))
+    $el.toggleClass('failing', ticket.failing)
+    $el.toggleClass('passing', ticket.passing)
+    $el.find('.close-button').toggleClass('btn-success', ticket.passing)
     @
   
-  renderTesterVerdicts: ->
-    $el = $(@el)
+  showOrHideTestingNotes: (e)->
+    return if @$el.hasClass('in-transition')
+    return if $(e.target).is('button, a, input')
     
-    $testerVerdicts = $el.find('.tester-verdicts')
-    $testerVerdicts.empty()
-    @ticket.testerVerdicts().each (verdict)=>
-      $testerVerdicts.append @renderTesterVerdict(verdict)
+    if @$el.hasClass('expanded')
+      @hideTestingNotes()
+    else
+      @showTestingNotes()
+      
+  showTestingNotes: ->
+    @$el.addClass('expanded in-transition')
+    @$testingNotes = @renderTestingNotes()
+    @$testingNotes.slideDown =>
+      @$el.removeClass('in-transition')
+  
+  hideTestingNotes: ->
+    @$el.addClass('in-transition')
+    return unless @$testingNotes
     
-    verdict = @ticket.verdict()
-    $el.find('.ticket-verdict-summary')
-      .attr('class', "ticket-verdict-summary #{verdict.toLowerCase()}")
-      .html(verdict)
-    
-    $el.find('.close-button').toggleClass('btn-success', verdict == 'Passing')
-    @
+    @$testingNotes.slideUp =>
+      @$el.removeClass('expanded in-transition')
+      @$testingNotes.closest('tr').remove()
+      @$testingNotes = null
   
   renderTestingNotes: ->
-    $testingNotes = $(@el).find('ol.testing-notes')
+    id = "ticket_#{@ticket.get('id')}_testing_notes"
+    $tr = $ @renderTicketDescription(@ticket.toJSON())
+    $tr.find('.white-space').attr('colspan', @numColumns)
+    
+    @$el.after $tr
+    
+    $testingNotes = $tr.find('ol.testing-notes')
+    
     @ticket.activityStream().each (item)=>
       if item.constructor == TestingNote
         $testingNotes.appendView @newViewForTestingNote(item)
@@ -68,7 +85,11 @@ class window.TestingTicketView extends Backbone.View
         tester: window.user.get('role') == 'Tester'
         developer: window.user.get('role') == 'Developer'
       $testingNotes.append @renderNewTestingNote(params)
-    @
+      
+      $tr.find('form#new_testing_note').submit _.bind(@createTestingNote, @)
+      $tr.find('.btn-post-and-reset').click _.bind(@createTestingNoteAndResetTicket, @)
+    
+    $testingNotes
   
   beginEditTestingNote: (view)->
     window.console.log('beginEditTestingNote', view, @viewInEdit, @)
@@ -99,16 +120,21 @@ class window.TestingTicketView extends Backbone.View
   newViewForCommit: (commit)->
     new CommitView(model: commit)
   
-  addTestingNote: (testingNote)->  
+  addTestingNote: (testingNote)->
     @testingNotes.add(testingNote)
+    
+    return unless @$testingNotes
     view = @newViewForTestingNote(testingNote)
     view.render()
-    $(view.el).insertBefore($(@el).find('.testing-note.new')).highlight()
+    $(view.el).insertBefore(@$testingNotes.find('.testing-note.new')).highlight()
     @renderTesterVerdicts()
+  
+  renderTesterVerdicts: ->
+    @render()
   
   createTestingNote: (e)->
     e.preventDefault()
-    $form = $(@el).find('form')
+    $form = $(e.target).closest('form')
     params = $form.serializeObject()
     testingNote = new TestingNote
       ticketId: @ticket.get('id')

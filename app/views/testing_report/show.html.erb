@@ -1,28 +1,29 @@
 <%= render partial: "projects/header", locals: {project: @project, subtitle: "Testing Report"} %>
 
-<button class="btn" id="refresh_testing_report">Refresh</button>
-
 <% if @tickets.any? %>
-  <ul class="tester-names">
-    <li class="row-fluid">
-      <div class="span8">&nbsp;</div>
-      <div class="span4">
-        <span class="ticket-verdict-summary">&nbsp;</span>
-        <span class="tester-verdicts">
-          <ul id="testers">
-            <% @project.testers.each do |tester| %>
-              <li class="tester" data-tester-id="<%= tester.id %>"><span class="tester-name"><%= tester.first_name %></span></li>
-            <% end %>
-          </ul>
-        </span>
-      </div>
-    </li>
-  </ul>
-<% end %>
+  <button class="btn" id="refresh_testing_report">Refresh</button>
   
-<% if @tickets.any? %>
-  <div class="testing-reports-projects">
-    <%= render partial: "testing_report/project", locals: {project: @project, tickets: @tickets} %>
+  <div id="project_<%= @project.id %>_progress" class="testing-report-progress pie"></div>
+  
+  <div class="nomargin">
+    <table class="table table-striped testing-report-table testing-reports-projects">
+      <thead>
+        <tr>
+          <td class="table-margin"></td>
+          <th class="ticket-project">Project</th>
+          <th class="ticket-summary">Ticket</th>
+          <th class="ticket-deployment">Environment</th>
+          <th class="ticket-due-date">Due Date</th>
+          <th class="ticket-participants"><span class="participant-name">Committers</span></th>
+          <% User.testers.each do |tester| %>
+            <th class="ticket-participants tester" data-tester-id="<%= tester.id %>"><span class="participant-name"><%= tester.first_name %></span></th>
+          <% end %>
+          <td class="table-margin"></td>
+        </tr>
+      </thead>
+      
+      <%= render partial: "testing_report/project", locals: {project: @project, tickets: @tickets} %>
+    </table>
   </div>
   
   <%= render partial: "testing_report/scripts", locals: {tickets_by_project_id: @tickets_by_project_id} %>

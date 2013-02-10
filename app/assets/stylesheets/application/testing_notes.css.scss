@@ -1,145 +1,122 @@
-.testing-report-project {
-  position: relative;
-  max-width: 825px;
-}
-
-.testing-report-project-title {
-  margin: 1.5em 0;
-  float: left;
-}
-
-.testing-report-ticket-count { 
-  font-weight: normal;
-}
 
 .testing-report-progress {
-  float: left;
-  width: 54px;
-  height: 54px;
-  position: relative;
-  top: 1px;
-  left: 4px;
+  width: 72px;
+  height: 72px;
+  
+  position: absolute;
+  top: 54px;
+  right: 22px;
 }
 
-.tickets-list {
-  clear: both;
-}
+.nomargin { margin: 0 -20px; }
 
-
-
-.tickets-list .ticket { 
-  clear: both;
-  list-style-type: none;
-  line-height: 26px;
+.testing-report-table {
+  margin-bottom: 4em;
   
-  padding-left: 16px;
-  background-position: 0 7px;
-  background-repeat: no-repeat;
+  tbody + tbody { border-top: none; }
   
-  .ticket-due-date {
-    white-space: nowrap;
-    color: #B50000;
-    font-size: 0.8333em;
-    
-    &::before { content: '('; }
-    &::after { content: ')'; }
-  }
-  
-//  .ticket-age {
-//    font-weight: bold;
-//    
-//    &.infant { color: #42A800; } // green
-//    &.child { color: #9FBD2A; } // spring-green
-//    &.adult { color: #D6B21F; } // yellow
-//    &.senior { color: #DF8A3D; } // orange
-//    &.old, &.ancient { color: #B50000; }
-//  }
-}
-
-ul.tester-names { 
-  > li { 
-    list-style-type: none;
-    padding-left: 16px;
-  }
-  #testers {
-    height: 3em; 
-    margin-left: 0;
-  }
-}
-
-
-.tester-names, .tickets-list { max-width: 800px; }
-
-.tester {
-  width: 30px;
-  display: inline-block;
-  float: right;
-  
-  .tester-name {
-    display: block;
-    transform: rotate(-90deg);
-    -ms-transform: rotate(-90deg); /* IE 9 */
-    -moz-transform: rotate(-90deg); /* Firefox */
-    -webkit-transform: rotate(-90deg); /* Safari and Chrome */
-    -o-transform: rotate(-90deg); /* Opera */
-    height: 30px;
-    line-height: 30px;
-    position: relative;
-    top: 4.5em;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  
-  &.current-tester {
+  th {
     font-weight: bold;
+    text-align: left;
+    height: 6em;
+    
+    &.ticket-participants { padding: 0 0 8px 0; }
   }
   
-//  &.current-tester::after {
-//    content: '.';
-//    text-indent: 9999em;
-//    position: absolute;
-//    border: 1px solid red;
-//    margin-left: -1px;
-//    width: 30px;
-//    height: 100%;
-//    top: 0;
-//    bottom: 0;
-//  }
+  td { vertical-align: top; }
+  
+  tbody {
+    tr:hover td { background-color: rgba(128, 212, 255, 0.1); }
+    tr.passing td {
+      background-color: rgba(26, 223, 18, 0.18);
+      
+      &.ticket-summary { color: rgb(70, 156, 44); }
+      &.ticket-due-date { color: rgb(70, 156, 44); text-decoration: line-through; }
+      .label-inverse { background-color: rgb(70, 156, 44); }
+    }
+    //tr.failing td { background-color: rgba(223, 92, 18, 0.10); }
+    tr.expanded td {
+      color: #eee !important;
+      border-top: 2px solid #222;
+      a:hover { color: rgb(2, 160, 240); }
+      .label-inverse { background-color: black; }
+      &.ticket-due-date { text-decoration: none; }
+    }
+    tr.ticket-testing-notes td { border-top: none; border-bottom: 2px solid #222; }
+    tr.expanded, tr.ticket-testing-notes { 
+      td { background-color: #505050; }
+    }
+  }
+  
+  .ticket-project { white-space: nowrap; font-weight: bold; }
+  .ticket-due-date { white-space: nowrap; }
+  td.ticket-due-date { color: #B50000; font-size: 0.8333em; }
+  .ticket-participants {
+    width: 28px;
+    max-width: 28px;
+    padding: 4px 0;
+    
+    .participant-name {
+      display: block;
+      writing-mode: tb-rl;
+      filter: flipv fliph;
+      transform: rotate(-90deg);
+      -ms-transform: rotate(-90deg); /* IE 9 */
+      -moz-transform: rotate(-90deg); /* Firefox */
+      -webkit-transform: rotate(-90deg); /* Safari and Chrome */
+      -o-transform: rotate(-90deg); /* Opera */
+      width: 3em;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      
+      position: relative;
+      left: -4px;
+      top: -15px;
+    }
+    
+    &.current-tester {
+      font-weight: bold;
+    }
+    
+  //  &.current-tester::after {
+  //    content: '.';
+  //    text-indent: 9999em;
+  //    position: absolute;
+  //    border: 1px solid red;
+  //    margin-left: -1px;
+  //    width: 30px;
+  //    height: 100%;
+  //    top: 0;
+  //    bottom: 0;
+  //  }
+  }
 }
 
 .tester-verdicts { overflow: hidden; }
 
-.ticket-verdict-summary {
-  text-align: left;
-  display: block;
-  float: right;
-  width: 65px;
-  font-weight: bold;
-  padding-left: .5em;
-  
-  &.pending { opacity: 0.33; }
-  &.passing { color: #0a0; }
-  &.failing { color: #c11; }
-}
-
 .ticket-verdict {
-  float: right;
+  display: block;
   margin: 1px;
   
   img { 
-    border-width: 2px;
-    border-style: solid;
-    border-color: transparent;
+    background-color: white;
+    margin: 2px;
     opacity: 0.15;
   }
   
   &.current-tester img { opacity: 0.60; }
   
-  &[data-verdict="passing"] img { opacity: 1.0; border-color: #55c832; }
-  &[data-verdict="failing"] img { opacity: 1.0; border-color: #ff3030; }
+  &[data-verdict="passing"] img { opacity: 1.0; margin: 0; border: solid 2px #55c832; }
+  &[data-verdict="failing"] img { opacity: 1.0; margin: 0; border: solid 2px #ff3030; }
 }
 
 .testing-notes {
+  display: block;
+  max-width: 895px;
+  margin-bottom: 2em;
+  
+  &.collapse { display: none; }
+  
   .commit, .testing-note, .ticket-description {
     display: block;
     position: relative;
@@ -164,9 +141,12 @@ ul.tester-names {
   
   .ticket-description {
     background: #e9e9e9;
-    border-color: #a8a8a8;
+    border-color: #222;
     margin: 0.5em 0;
-    word-wrap:break-word;
+    word-wrap: break-word;
+    color: #333;
+    
+    hr { border-top-color: #ccc; }
   }
   
   .commit, .testing-note {
@@ -178,6 +158,7 @@ ul.tester-names {
       position: relative;
       left: -57px;
       margin-right: -40px;
+      background-color: white;
     }
     
     &::before {
@@ -236,6 +217,8 @@ ul.tester-names {
   }
   
   .testing-note {
+    background-color: white;
+    
     &::after {
       border-left-color: white;
       border-right-color: white;
@@ -262,6 +245,7 @@ ul.tester-names {
         position: relative;
         left: 60px;
         margin-right: auto;
+        background-color: white;
       }
     }
     
@@ -272,7 +256,7 @@ ul.tester-names {
     
     &.works { img { border-color: #0a0; } color: #0a0; }
     &.fails { img { border-color: #c11; } color: #c11; }
-    &.none { img { border-color: #666; } color: #666; }
+    &.none { img { border-color: #222; } color: #222; }
   }
 }
 
@@ -291,10 +275,4 @@ ul.tester-names {
   p { margin: 0; }
 }
 
-.close-button {
-  position: absolute;
-  right: -80px;
-  color: #888;
-  
-  &.btn-success { color: white; }
-}
+.close-button { color: #888; &.btn-success { color: white; } }

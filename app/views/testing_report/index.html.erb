@@ -1,29 +1,30 @@
-<h1 class="space-below">
+<h1>
   Testing Report
   
   <button class="btn" id="refresh_testing_report">Refresh</button>
 </h1>
 
-<ul class="tester-names">
-  <li class="row-fluid">
-    <div class="span8">&nbsp;</div>
-    <div class="span4">
-      <span class="ticket-verdict-summary">&nbsp;</span>
-      <span class="tester-verdicts">
-        <ul id="testers">
-          <% User.testers.each do |tester| %>
-            <li class="tester" data-tester-id="<%= tester.id %>"><span class="tester-name"><%= tester.first_name %></span></li>
-          <% end %>
-        </ul>
-      </span>
-    </div>
-  </li>
-</ul>
-
-<div class="testing-reports-projects">
-  <% @projects.each do |project, tickets| %>
-    <%= render partial: "testing_report/project", locals: {project: project} %>
-  <% end %>
+<div class="nomargin">
+  <table class="table table-striped testing-report-table testing-reports-projects">
+    <thead>
+      <tr>
+        <td class="table-margin"></td>
+        <th class="ticket-project">Project</th>
+        <th class="ticket-summary">Ticket</th>
+        <th class="ticket-deployment">Environment</th>
+        <th class="ticket-due-date">Due Date</th>
+        <th class="ticket-participants"><span class="participant-name">Committers</span></th>
+        <% User.testers.each do |tester| %>
+          <th class="ticket-participants tester" data-tester-id="<%= tester.id %>"><span class="participant-name"><%= tester.first_name %></span></th>
+        <% end %>
+        <td class="table-margin"></td>
+      </tr>
+    </thead>
+      
+    <% @projects.each do |project, tickets| %>
+      <%= render partial: "testing_report/project", locals: {project: project} %>
+    <% end %>
+  </table>
 </div>
 
 <%= render partial: "testing_report/scripts", locals: {tickets_by_project_id: @tickets_by_project_id} %>
