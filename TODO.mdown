@@ -13,8 +13,8 @@
 
  - 2 **Weekly Report/Exceptions:** show average time to close problem
  - 3 **Testing Report:** add priority options (to left of ticket): high/low, exclusive checkboxes
- - 3 **Testing Report:** redesign view to be tabular so you can sort by due date or what I've tested
- - 3 **Testing Report:** show status and send notification for 'none' verdict
+ - 4 **Releases:** add "What's in the pipe?" view that shows what _would_ be released to production if it were released now
+ - 4 **Testing Report:** add additional vevrdicts (pass-with-suggestions? unable-to-test?)
  - 4 **Kanban:** fetch ticket queue status in the background in case Kanban isn't default screen
  - 4 **Weekly Report:** cache Google Chart images in emails and/or implement server-side SVG library
  - 4 **Weekly Report/Exceptions:** break down notices by project
