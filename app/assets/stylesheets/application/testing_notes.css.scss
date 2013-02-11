@@ -10,22 +10,36 @@
 
 .nomargin { margin: 0 -20px; }
 
+.hidden-text { 
+  display: block;
+  height: 0;
+  visibility: collapse;
+}
+
 .testing-report-table {
   margin-bottom: 4em;
-  
-  tbody + tbody { border-top: none; }
   
   th {
     font-weight: bold;
     text-align: left;
-    height: 6em;
+    height: 7.5em;
+    white-space: nowrap;
     
-    &.ticket-participants { padding: 0 0 8px 0; }
+    &.ticket-participants {
+      padding: 0 0 8px 0;
+      
+      &::after { 
+        display: inline-block;
+        width: 28px;
+        text-align: center;
+      }
+    }
   }
   
   td { vertical-align: top; }
   
   tbody {
+    tr.ticket { cursor: pointer; }
     tr:hover td { background-color: rgba(128, 212, 255, 0.1); }
     tr.passing td {
       background-color: rgba(26, 223, 18, 0.18);
@@ -94,6 +108,17 @@
 
 .tester-verdicts { overflow: hidden; }
 
+.tester-avatar,
+.committer-avatar {
+  display: block;
+  margin: 1px;
+  
+  img { 
+    background-color: white;
+    border: 2px solid black;
+  }
+}
+
 .ticket-verdict {
   display: block;
   margin: 1px;
@@ -112,7 +137,7 @@
 
 .testing-notes {
   display: block;
-  max-width: 895px;
+  max-width: 600px;
   margin-bottom: 2em;
   
   &.collapse { display: none; }
@@ -194,20 +219,15 @@
       right: auto;
       border-width: 6px 9px 6px 0;
     }
-    
-    img {
-      border-style: solid;
-      border-width: 2px;
-    }
   }
   
   .commit {
     background: #e9e9e9;
-    border-color: #a8a8a8;
+    border-color: #333;
     
     &::before {
-      border-left-color: #a8a8a8;
-      border-right-color: #a8a8a8;
+      border-left-color: #333;
+      border-right-color: #333;
     }
     
     &::after {

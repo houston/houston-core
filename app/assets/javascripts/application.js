@@ -14,6 +14,7 @@
 //= require jquery_ujs
 //= require jquery-ui
 //= require jquery.pjax.js
+//= require jquery.tablesorter.js
 //= require highcharts.src.js
 //= require twitter/bootstrap
 //= require freight_train
@@ -27,3 +28,6 @@
 //= require raphael
 //= require_tree ../templates
 //= require_tree .
+
+$.tablesorter.defaults.cssAsc = 'sort-asc';
+$.tablesorter.defaults.cssDesc = 'sort-desc';

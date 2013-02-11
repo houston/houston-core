@@ -57,8 +57,8 @@ Handlebars.registerHelper 'formatTicketSummary', (message)->
 
 Handlebars.registerHelper 'linkToCommit', (commit)->
   sha = commit.sha[0...8]
-  if commit.github_url
-    "<a href=\"#{commit.github_url}/commit/#{commit.sha}\" target=\"_blank\">#{sha}</a>"
+  if commit.linkTo
+    "<a href=\"#{commit.linkTo}\" target=\"_blank\">#{sha}</a>"
   else
     sha
 

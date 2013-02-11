@@ -49,6 +49,8 @@ class TicketPresenter
         projectSlug: ticket.project.slug,
         projectTitle: ticket.project.name,
         projectColor: ticket.project.color,
+        projectTestThreshold: 3,
+        projectMaintainers: ticket.project.maintainer_ids,
         number: ticket.number,
         summary: ticket.summary,
         verdict: ticket.verdict.downcase,

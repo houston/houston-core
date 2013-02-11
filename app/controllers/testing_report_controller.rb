@@ -7,8 +7,7 @@ class TestingReportController < ApplicationController
     # Faster; one fetch to Unfuddle for all projects
     unfuddle_tickets = Unfuddle.instance.find_tickets!(status: :resolved, resolution: :fixed)
     
-    @projects = []
-    @tickets_by_project_id = {}
+    @tickets = []
     
     Project.all.each do |project|
       tickets_for_project = unfuddle_tickets
@@ -18,13 +17,11 @@ class TestingReportController < ApplicationController
         .tickets_from_unfuddle_tickets(tickets_for_project)
         .reject(&:in_development?)
       
-      next unless tickets.any?
-      
-      @projects << project
-      @tickets_by_project_id[project.id] = TicketPresenter.new(tickets).with_testing_notes
+      @tickets.concat tickets
     end
     
-    render json: @tickets_by_project_id if request.xhr?
+    @tickets = TicketPresenter.new(@tickets).with_testing_notes
+    render json: @tickets if request.xhr?
   end
   
   
@@ -35,9 +32,8 @@ class TestingReportController < ApplicationController
     @tickets = @project.find_tickets(status: :resolved, resolution: :fixed)
      .reject(&:in_development?)
     
-    @tickets_by_project_id = {@project.id => TicketPresenter.new(@tickets).with_testing_notes}
-    
-    render json: @tickets_by_project_id if request.xhr?
+   @tickets = TicketPresenter.new(@tickets).with_testing_notes
+   render json: @tickets if request.xhr?
   end
   
   

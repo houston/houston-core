@@ -5,11 +5,11 @@
 </h1>
 
 <div class="nomargin">
-  <table class="table table-striped testing-report-table testing-reports-projects">
+  <table class="table table-sortable table-striped testing-report-table testing-reports-projects">
     <thead>
       <tr>
         <td class="table-margin"></td>
-        <th class="ticket-project">Project</th>
+        <th class="ticket-project sort-asc"><b class="bubble"></b> Project</th>
         <th class="ticket-summary">Ticket</th>
         <th class="ticket-deployment">Environment</th>
         <th class="ticket-due-date">Due Date</th>
@@ -20,11 +20,9 @@
         <td class="table-margin"></td>
       </tr>
     </thead>
-      
-    <% @projects.each do |project, tickets| %>
-      <%= render partial: "testing_report/project", locals: {project: project} %>
-    <% end %>
+    
+    <tbody id="testing_report"><tbody>
   </table>
 </div>
 
-<%= render partial: "testing_report/scripts", locals: {tickets_by_project_id: @tickets_by_project_id} %>
+<%= render partial: "testing_report/scripts", locals: {tickets: @tickets} %>

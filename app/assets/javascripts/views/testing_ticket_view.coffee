@@ -24,10 +24,7 @@ class window.TestingTicketView extends Backbone.View
     # window.console.log "[ticket] render ##{ticket.number}", ticket
     
     $el = $(@el)
-    $project = $el.closest('.project')
-    maintainers = $project.attr('data-maintainers') ? ''
-    maintainerIds = maintainers.split(',').map (id)-> +id
-    ticket.maintainer = _.include(maintainerIds, window.userId)
+    ticket.maintainer = _.include(ticket.projectMaintainers, window.userId)
     ticket.testerVerdicts = @ticket.testerVerdicts()
     ticket.verdict = @ticket.verdict()
     ticket.passing = ticket.verdict == 'Passing'
@@ -44,24 +41,31 @@ class window.TestingTicketView extends Backbone.View
     return if $(e.target).is('button, a, input')
     
     if @$el.hasClass('expanded')
-      @hideTestingNotes()
+      @collapse()
     else
-      @showTestingNotes()
+      @expand()
       
-  showTestingNotes: ->
+  expand: ->
+    @trigger('expanding')
     @$el.addClass('expanded in-transition')
     @$testingNotes = @renderTestingNotes()
     @$testingNotes.slideDown =>
       @$el.removeClass('in-transition')
+      @trigger('expanded')
   
-  hideTestingNotes: ->
-    @$el.addClass('in-transition')
+  collapse: (speed)->
     return unless @$testingNotes
     
-    @$testingNotes.slideUp =>
+    finish = =>
       @$el.removeClass('expanded in-transition')
       @$testingNotes.closest('tr').remove()
       @$testingNotes = null
+    
+    if speed == 'fast'
+      finish()
+    else
+      @$el.addClass('in-transition')
+      @$testingNotes.slideUp(finish)
   
   renderTestingNotes: ->
     id = "ticket_#{@ticket.get('id')}_testing_notes"

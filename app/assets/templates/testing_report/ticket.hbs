@@ -8,7 +8,10 @@
   {{/if}}
 </td>
 <td class="ticket-deployment">{{#if deployment}}<span class="label label-inverse">{{deployment}}</span>{{/if}}</td>
-<td class="ticket-due-date">{{#if dueDate}}<span class="ticket-due-date">{{formatDate dueDate}}</span>{{/if}}</td>
+<td class="ticket-due-date">{{#if dueDate}}
+  <span class="hidden-text">{{dueDate}}</span>
+  <span class="ticket-due-date">{{formatDate dueDate}}</span>
+{{/if}}</td>
 <td class="ticket-participants">{{#committers}} <span class="committer-avatar">{{{avatar email 24 name}}}</span>{{/committers}}</td>
 {{#testerVerdicts}}
   <td class="ticket-participants">{{> testerVerdict}}</td>

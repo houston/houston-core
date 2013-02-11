@@ -8,7 +8,6 @@ class window.CommitView extends Backbone.View
   render: ->
     $el = $(@el)
     json = @model.toJSON()
-    json['github_url'] = $el.closest('.project').attr('data-github-url')
     json['message'] = json['message'].replace(/\[#(\d+)\]/g, '') # remove ticket numbers)
     $el.html @renderer(json)
     @
