@@ -212,6 +212,10 @@ class Ticket < ActiveRecord::Base
     last_release_at ? testing_notes.where(["created_at > ?", last_release_at]) : testing_notes
   end
   
+  def min_passing_verdicts
+    project.min_passing_verdicts
+  end
+  
   
   
   # Not certain if it will be best to use Remotable with Tickets or not

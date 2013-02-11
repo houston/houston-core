@@ -110,6 +110,15 @@
     <hr />
     
     <div class="control-group">
+      <%= f.label :min_passing_verdicts, "Min. Passing Verdicts", :class => 'control-label' %>
+      <div class="controls">
+        <%= f.text_field :min_passing_verdicts, :class => 'text_field' %>
+      </div>
+    </div>
+
+    <hr />
+    
+    <div class="control-group">
       <%= f.label :notifications, :class => 'control-label' %>
       <div class="controls changes-nested-editor">
         <table class="notifications-table">

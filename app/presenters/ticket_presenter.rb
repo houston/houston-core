@@ -49,7 +49,6 @@ class TicketPresenter
         projectSlug: ticket.project.slug,
         projectTitle: ticket.project.name,
         projectColor: ticket.project.color,
-        projectTestThreshold: 3,
         projectMaintainers: ticket.project.maintainer_ids,
         number: ticket.number,
         summary: ticket.summary,
@@ -63,6 +62,7 @@ class TicketPresenter
         ticketSystem: ticket.project.ticket_tracking_adapter,
         ticketUrl: ticket.ticket_system_ticket_url,
         
+        minPassingVerdicts: ticket.min_passing_verdicts,
         testingNotes: TestingNotePresenter.new(ticket.testing_notes).as_json,
         commits: CommitPresenter.new(ticket.commits).as_json,
         releases: ReleasePresenter.new(ticket.releases).as_json,

@@ -33,8 +33,10 @@ class window.Ticket extends Backbone.Model
     return 'Failing' if _.include verdicts, 'failing'
     return 'Pending' if window.testers.length == 0
     
-    percentOfTestersPassingTicket = verdicts.length / window.testers.length
-    return 'Passing' if percentOfTestersPassingTicket >= 0.6 # If you've got at least 3/5 responses...
+    minPassingVerdicts = @get('minPassingVerdicts') ? window.testers.length
+    passingVerdicts = _.filter(verdicts, (verdict)=> verdict == 'passing').length
+    return 'Passing' if passingVerdicts >= minPassingVerdicts
+    
     'Pending'
   
   verdictsByTester: (notes)->
