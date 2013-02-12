@@ -67,7 +67,7 @@ end
 
 
 # Exception notification
-gem 'airbrake'
+gem 'airbrake_user_attributes'
 
 group :development do
   gem 'thin'

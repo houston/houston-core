@@ -66,9 +66,12 @@ GEM
       i18n (~> 0.6)
       multi_json (~> 1.0)
     addressable (2.2.8)
-    airbrake (3.1.2)
+    airbrake (3.1.8)
       activesupport
       builder
+      json
+    airbrake_user_attributes (0.1.6)
+      airbrake (~> 3.1.0)
     ansi (1.4.3)
     arel (3.0.2)
     backbone-rails (0.9.1)
@@ -269,7 +272,7 @@ PLATFORMS
 DEPENDENCIES
   activerecord-postgres-hstore
   addressable
-  airbrake
+  airbrake_user_attributes
   backbone-rails
   better_errors
   binding_of_caller
