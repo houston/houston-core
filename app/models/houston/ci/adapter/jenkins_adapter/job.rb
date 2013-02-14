@@ -98,6 +98,7 @@ module Houston
           
           def translate_status(status)
             { "FAILED" => :fail,
+              "REGRESSION" => :fail,
               "PASSED" => :pass,
               "FIXED"  => :pass }[status] ||
               (raise NotImplementedError.new("#{status} is not a mapped status from Jenkins"))
