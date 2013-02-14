@@ -1,4 +1,4 @@
-# Houston
+# Houston [![Code Climate](https://codeclimate.com/github/houstonmc/houston.png)](https://codeclimate.com/github/houstonmc/houston)
 
 ### Mission Control for your projects and teammates.
 
