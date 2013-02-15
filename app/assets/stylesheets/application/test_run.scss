@@ -28,16 +28,23 @@
   padding-left: 12px;
   border-top: 1px solid #e6e6e6;
   
+  font-size: 15px;
+  line-height: 1.38em;
+  
   .tests {
     margin: 0;
-    padding: 0 0 0 1.25em;
+    padding: 0;
   }
   
   .test {
     display: block;
-    margin: 3px 0;
-    padding: 0 0 0 4em;
+    margin: 0;
+    padding: 0.18em 0 0.18em 5.25em;
     text-indent: -4em;
+    
+    &.fail  { background-color: rgb(253, 233, 229); }
+    &.error { background-color: rgb(252, 247, 207); }
+    &.skip  { }
   }
   
   .test-suite-name {
