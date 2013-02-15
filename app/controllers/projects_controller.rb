@@ -7,7 +7,7 @@ class ProjectsController < ApplicationController
   # GET /projects.json
   def index
     @title = "Projects"
-    @projects = Project.reorder("category ASC, name ASC")
+    @projects = Project.all
     
     respond_to do |format|
       format.html # index.html.erb
