@@ -25,7 +25,9 @@ module Houston
             @due_date         = attributes["due_on"]
           end
           
-          attr_reader :remote_id,
+          attr_reader :raw_attributes,
+                      
+                      :remote_id,
                       :number,
                       :summary,
                       :description,
