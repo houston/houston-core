@@ -20,7 +20,11 @@ Handlebars.registerHelper 'formatTime', (timestamp)->
 
 Handlebars.registerHelper 'markdown', (markdown)->
   converter = new Markdown.Converter()
-  converter.makeHtml(markdown)
+  html = converter.makeHtml(markdown)
+  App.emojify(html)
+
+Handlebars.registerHelper 'emojify', (string)->
+  App.emojify(string)
 
 Handlebars.registerHelper 'classForAge', (seconds)->
   if seconds < (6 * Duration.HOUR)

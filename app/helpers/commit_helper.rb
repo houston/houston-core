@@ -3,6 +3,7 @@ module CommitHelper
   def format_commit(commit)
     message = commit.message
     message = format_with_tickets_linked(commit.project, message)
+    message = emojify(message)
     message
   end
   
@@ -30,6 +31,7 @@ module CommitHelper
   def format_change(change)
     message = change.description
     message = format_with_tickets_linked(change.project, message)
+    message = emojify(message)
     message
   end
   

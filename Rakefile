@@ -11,6 +11,9 @@ require "ci/reporter/rake/minitest" if ENV["RAILS_ENV"] == "test"
 
 Houston::Application.load_tasks
 
+# gemoji
+load 'tasks/emoji.rake'
+
 # db/structure.sql is always written out after db:migrate is run.
 # It be checked into the repo and always used to create the database
 # structure in test environment.

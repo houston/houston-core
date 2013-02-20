@@ -4,6 +4,6 @@
 
 <h3><%= @tester.name %> put a <%= @noun.downcase %> on ticket #<%= @ticket.number %>:</h3>
 
-<p><%= @note.comment %></p>
+<p><%= mdown @note.comment %></p>
 
 <p><%= link_to_ticket(@ticket) %></p>
