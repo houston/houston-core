@@ -46,6 +46,11 @@ h5.test-result-banner {
   display: inline-block;
 }
 
+.test-result-banner.pending {
+  background: rgba(0, 0, 0, 0.02);
+  border: 2px dotted #bbb;
+}
+
 .test-run-commit { font-size: 0.75em; }
 
 .project-maintainer {
