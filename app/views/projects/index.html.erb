@@ -14,6 +14,7 @@
           <th class="project-maintainers">Maintainers</th>
           <th class="project-platform">Platform</th>
           <th class="project-category">Category</th>
+          <th class="project-last-build">Last Build</th>
           <th class="project-last-release">Last Release</th>
           <td class="project-new-release"></td>
           <td class="table-margin"></td>
@@ -72,6 +73,12 @@
             </td>
             <td class="project-category">
               <%= project.category %>
+            </td>
+            <td class="project-last-build">
+              <% if test_run = project.last_test_run %>
+                <h5 class="test-result-banner <%= test_run.result %>" rel="tooltip" title="<%= test_run_summary(test_run) %>"><%= test_run.result %></h5>
+                <span class="test-run-commit">(<%= link_to_commit(OpenStruct.new(project: project, sha: test_run.commit)) %>)</span>
+              <% end %>
             </td>
             <td class="project-last-release">
               <% if release = project.releases.first %>

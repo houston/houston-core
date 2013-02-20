@@ -16,6 +16,10 @@ class Project < ActiveRecord::Base
   
   default_scope order(:name)
   
+  def last_test_run
+    test_runs.order("created_at DESC").first
+  end
+  
   
   
   

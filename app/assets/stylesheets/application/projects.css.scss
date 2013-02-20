@@ -1,3 +1,9 @@
+#projects {
+  th, td {
+    vertical-align: middle;
+  }
+}
+
 h2.uncategorized {
   font-style: italic;
   font-weight: normal;
@@ -34,6 +40,13 @@ th.project-releases,
     }
   }
 }
+
+h5.test-result-banner {
+  border-radius: 3px;
+  display: inline-block;
+}
+
+.test-run-commit { font-size: 0.75em; }
 
 .project-maintainer {
   white-space: nowrap;

@@ -1,26 +1,29 @@
 @mixin badge-style($color) {
   background-color: $color;
-  -moz-box-shadow: 0 0 8px $color;
-  -webkit-box-shadow: 0 0 8px $color;
-  box-shadow: 0 0 8px $color;
+  -moz-box-shadow: 0 0 0.22em $color;
+  -webkit-box-shadow: 0 0 0.22em $color;
+  box-shadow: 0 0 0.22em $color;
+}
+
+h2.test-result-banner {
+  font-size: 7em; // ~90px
+  border-radius: 12px;
 }
 
 .test-result-banner {
   display: block;
-  width: 360px;
-  height: 180px;
-  line-height: 180px;
-  border-radius: 6px;
+  width: 4em;
+  height: 2em;
+  line-height: 2em;
   text-transform: uppercase;
   font-weight: 100;
-  font-size: 7em;
   text-align: center;
   color: white;
-  margin: 0 18px;
+  margin: 0 0.2em;
   padding: 0;
   
-  &.pass  { @include badge-style(#5DB64C); } // grass
-  &.fail  { @include badge-style(#E24E32); } // tomato
+  &.pass  { @include badge-style(#5DB64C); letter-spacing: 0.088em; } // grass
+  &.fail  { @include badge-style(#E24E32); letter-spacing: 0.160em; } // tomato
 }
 
 .tests-detail {
