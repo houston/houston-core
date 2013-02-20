@@ -1,11 +1,8 @@
 <h1 class="space-below">
   <%= avatar_for(user, size: 256) %>
   <%= user.name %>
-  <% if defined?(subtitle) %>
-    <span class="subtitle"><%= subtitle %></span>
-  <% end %>
   <small>
-    <%= custom_link_unless_current "Show", user_path(user) %>
-    <%= custom_link_unless_current "Edit", edit_user_path(user) if can?(:update, User) %>
+    <%= link_to("Show", user_path(user)) unless current_page?(user_path(user)) %>
+    <%= link_to("Edit", edit_user_path(user)) if can?(:update, User) && !current_page?(edit_user_path(user)) %>
   </small>
 </h1>
