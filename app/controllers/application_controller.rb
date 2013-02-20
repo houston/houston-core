@@ -2,7 +2,6 @@ class ApplicationController < ActionController::Base
   include FreightTrain
   include UrlHelper
   protect_from_forgery
-  helper Lail::Helpers::FlashMessageHelper
   
   
   
