@@ -17,6 +17,7 @@ gem 'font-awesome-rails'
 group :assets do
   gem 'coffee-rails', '~> 3.2.1'
   gem 'therubyracer' # See https://github.com/sstephenson/execjs#readme for more supported runtimes
+  gem "less-rails" # For Twitter Bootstrap
   gem 'uglifier', '>= 1.0.3'
   
   gem 'turbo-sprockets-rails3', '>= 0.3.6'
