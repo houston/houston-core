@@ -58,7 +58,8 @@
             </td>
             <td class="project-maintainers">
               <% project.maintainers.each do |maintainer| %>
-                <span class="project-maintainer"><%= avatar_for(maintainer) %>&nbsp;<%= link_to maintainer.first_name, user_path(maintainer) %></span>
+                <%= link_to avatar_for(maintainer), user_path(maintainer), :class => "project-maintainer", :rel => "tooltip", :title => maintainer.name, "data-placement" => "right" %>
+                <span class="hidden-text"><%= maintainer.first_name %></span><!-- so sort works -->
               <% end %>
             </td>
             <td class="project-platform">
