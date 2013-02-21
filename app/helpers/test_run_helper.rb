@@ -1,4 +1,5 @@
 module TestRunHelper
+  include ActionView::Helpers::DateHelper
   
   def test_run_summary(test_run)
     subject = {
