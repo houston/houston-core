@@ -16,20 +16,20 @@ unite = Project.create(
   color: "teal",
   ticket_tracking_adapter: "Unfuddle",
   ticket_tracking_id: 25)
-unite_dev = unite.environments.create(name: "Staging", slug: "staging")
-unite_master = unite.environments.create(name: "Production", slug: "production")
 
 
 
 tsatsiki = Project.create(name: "Tsatsiki", slug: "tsatsiki", color: "blue", version_control_location: "git://github.com/boblail/tsatsiki.git")
 
-tsatsiki_dev = tsatsiki.environments.create(name: "Staging", slug: "staging")
-
-tsatsiki_release1 = tsatsiki_dev.releases.create(name: "Upgrade Rails to 3.1",
+tsatsiki_release1 = tsatsiki.releases.create(
+  name: "Upgrade Rails to 3.1",
+  environment_name: "Production",
   commit0: "8e0f2f6d32cfcbd2ee39a10da1dc568e9dcb30d1",
   commit1: "7cb53278a8f3577f43c38335793d88b992715839")
 tsatsiki_release1.load_commits!
-tsatsiki_release2 = tsatsiki_dev.releases.create(name: "Specification",
+tsatsiki_release2 = tsatsiki.releases.create(
+  name: "Specification",
+  environment_name: "Production",
   commit0: "7cb53278a8f3577f43c38335793d88b992715839",
   commit1: "d3d1e7d9b40292071016b19fded67d051bf38615")
 tsatsiki_release2.load_commits!
@@ -37,9 +37,6 @@ tsatsiki_release2.load_commits!
 
 
 houston = Project.create(name: "Houston", slug: "houston", color: "red", version_control_location: Rails.root.to_s)
-
-houston_dev = houston.environments.create(name: "Staging", slug: "staging")
-houston_master = houston.environments.create(name: "Production", slug: "production")
 
 
 church_360 = Project.create(
@@ -52,9 +49,10 @@ church_360 = Project.create(
 
 
 
-User.create(
-  name: "Bob Lail",
-  email: "bob.lail@cph.org",
+admin = User.create(
+  first_name: "Example",
+  last_name: "User",
+  email: "user@example.com",
   password: "password",
-  administrator: true,
   role: "Developer")
+admin.update_attribute(:administrator, true)
