@@ -168,7 +168,7 @@
     var $name = $('#project_name'),
         $slug = $('#project_slug'),
         prevSlug = $name.val().dasherize();
-    $name.keydown(function() {
+    $name.keyup(function() {
       var name = $name.val(),
           slug = name.dasherize();
       if($slug.val() == prevSlug) {
