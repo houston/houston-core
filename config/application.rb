@@ -68,3 +68,5 @@ module Houston
     
   end
 end
+
+Houston.observer.fire "boot"
