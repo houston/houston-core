@@ -8,6 +8,8 @@ class UnfuddleTicketDownloadJob
     return if Resque.working.any? { |worker| worker.job["queue"] == @queue }
     
     Resque.enqueue(self)
+  rescue Redis::CannotConnectError
+    Houston.report_exception($!)
   end
   
   def self.perform
