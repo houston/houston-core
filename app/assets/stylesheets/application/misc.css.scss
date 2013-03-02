@@ -24,6 +24,13 @@ button.close {
   display: none !important;
 }
 
+.hidden-text { 
+  display: block;
+  height: 0;
+  width: 0;
+  visibility: collapse;
+}
+
 .changes-nested-editor ol {
   margin: 3px 0;
   padding: 0;
