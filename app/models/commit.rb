@@ -60,7 +60,7 @@ class Commit < ActiveRecord::Base
     tickets = []
     attributes = {}
     hours = 0
-    clean_message = message.dup
+    clean_message = normalize_commit_message(message)
     
     clean_message.gsub!(TICKET_PATTERN) { tickets << $1; "" }
     clean_message.gsub!(TIME_PATTERN) { hours = $1.to_f; hours /= 60 if $2.starts_with?("m"); "" }
@@ -68,6 +68,11 @@ class Commit < ActiveRecord::Base
     while clean_message.gsub!(TAG_PATTERN) { tags << $1; "" }; end
     
     {tags: tags, tickets: tickets, hours_worked: hours, attributes: attributes, clean_message: clean_message.strip}
+  end
+  
+  def self.normalize_commit_message(message)
+    message = message[/^.*(?=\n\n)/] || message # just take the first paragraph of the commit message
+    message = message.gsub(/[\n\s]+/, ' ') # normalize white space within the message
   end
   
   

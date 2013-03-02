@@ -102,4 +102,26 @@ class CommitTest < ActiveSupport::TestCase
     end
   end
   
+  
+  
+  test "should omit manual line breaks" do
+    # Many committers follow a convention where a commit message is manually
+    # broken to fit within 80-character lines. When this convention is used,
+    # we will remove the manual line breaks and let the commit message be 
+    # wrapped in whatever context it is used.
+    commit_message = "Long line that might\nexceed 80 characters"
+    
+    assert_equal "Long line that might exceed 80 characters", Commit.new(message: commit_message).clean_message, "Should remove manual line breaks from commit messages"
+  end
+  
+  test "should omit descriptions" do
+    # Git Tower follows a convention where a commit can have a shorter summary
+    # and a longer detailed description. It puts two line breaks between the summary
+    # and the description when composing the commit message. When this convention
+    # is used, we are interested in just the summary
+    commit_message = "Short summary\n\nDetailed Description"
+    
+    assert_equal "Short summary", Commit.new(message: commit_message).clean_message, "Should omit the detailed description from commit messages"
+  end
+  
 end
