@@ -78,7 +78,7 @@ module Houston
             Houston::VersionControl::Commit.new({
               sha: grit_commit.sha,
               message: grit_commit.message,
-              date: grit_commit.committed_date,
+              date: grit_commit.authored_date,
               author_name: grit_commit.author.name,
               author_email: grit_commit.author.email
             })
