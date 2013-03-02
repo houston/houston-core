@@ -63,6 +63,19 @@ h2.test-result-banner {
     color: #aaa;
     white-space: nowrap;
   }
+  
+  .test-backtrace {
+    font-size: 0.88em;
+    margin: 0.5em 0;
+    padding: 0 0 0 2em;
+  }
+  
+  .test-backtrace-line {
+    list-style-type: none;
+    text-indent: -2em;
+    line-height: 1.18em;
+    padding: 0.18em 0;
+  }
 }
 
 .test-status {
