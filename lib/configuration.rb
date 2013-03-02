@@ -10,6 +10,8 @@ module Houston
     
     def initialize
       @modules = []
+      @authentication_strategy = :database
+      @authentication_strategy_configuration = {}
       @ticket_system_configuration = {}
       @ci_server_configuration = {}
       @error_tracker_configuration = {}
@@ -40,6 +42,39 @@ module Houston
     def environments(*args)
       @environments = args if args.any?
       @environments ||= []
+    end
+    
+    
+    
+    
+    
+    # Authentication options
+    
+    def authentication_strategy(strategy=nil, &block)
+      @authentication_strategy = strategy if strategy
+      @authentication_strategy_configuration = HashDsl.hash_from_block(block) if block_given?
+      
+      @authentication_strategy
+    end
+    attr_reader :authentication_strategy_configuration
+    
+    def devise_configuration
+      # Include default devise modules. Others available are:
+      #      :registerable,
+      #      :encryptable,
+      #      :confirmable,
+      #      :lockable,
+      #      :timeoutable,
+      #      :omniauthable
+      
+      configuration = [:database_authenticatable, :token_authenticatable]
+      configuration << :ldap_authenticatable if authentication_strategy == :ldap
+      configuration.concat [
+       :recoverable,
+       :rememberable,
+       :trackable,
+       :validatable,
+       :invitable ]
     end
     
     

@@ -958,7 +958,7 @@ CREATE TABLE users (
     invitation_limit integer,
     invited_by_id integer,
     invited_by_type character varying(255),
-    role character varying(255) DEFAULT 'Developer'::character varying,
+    role character varying(255) DEFAULT 'Guest'::character varying,
     authentication_token character varying(255),
     administrator boolean DEFAULT false,
     unfuddle_id integer,
@@ -1437,3 +1437,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130119212008');
 INSERT INTO schema_migrations (version) VALUES ('20130120182026');
 
 INSERT INTO schema_migrations (version) VALUES ('20130211015046');
+
+INSERT INTO schema_migrations (version) VALUES ('20130302205014');

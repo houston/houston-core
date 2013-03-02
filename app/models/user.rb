@@ -6,33 +6,19 @@ class User < ActiveRecord::Base
   
   after_create :save_default_notifications
   
-  # Include default devise modules. Others available are:
-  #      :registerable,
-  #      :encryptable,
-  #      :confirmable,
-  #      :lockable,
-  #      :timeoutable,
-  #      :omniauthable
-  devise :database_authenticatable,
-         :token_authenticatable,
-         :recoverable,
-         :rememberable,
-         :trackable,
-         :validatable,
-         :invitable
+  devise *Houston.config.devise_configuration
   
-  # Setup accessible (or protected) attributes for your model
-  attr_accessible :first_name, :last_name, :email, :role, :password,
-                  :password_confirmation, :remember_me, :notifications_pairs,
-                  :unfuddle_id
+  attr_accessible :first_name, :last_name, :email,
+                  :role, :password, :password_confirmation,
+                  :remember_me, :notifications_pairs, :unfuddle_id
   
   ROLES = %w{Developer Tester Stakeholder Guest}
   
   default_scope order("last_name, first_name")
   
-  default_value_for :role, ROLES.first
+  default_value_for :role, "Guest"
   
-  validates :first_name, :last_name, :presence => true
+  validates :first_name, :last_name, :email, :presence => true, :length => {:minimum => 2}
   validates :role, :presence => true, :inclusion => ROLES
   
   ROLES.each do |role|
@@ -70,6 +56,29 @@ class User < ActiveRecord::Base
     when "Stakeholder"; %w{Production}
     else                []
     end
+  end
+  
+  
+  
+  
+  # LDAP Overrides
+  
+  def self.find_ldap_entry(ldap_connection, auth_key_value)
+    filter = Net::LDAP::Filter.eq(Houston::TMI::FIELD_USED_FOR_LDAP_LOGIN, auth_key_value)
+    ldap_connection.ldap.search(filter: filter).first
+  end
+  
+  def self.find_for_ldap_authentication(attributes, entry)
+    email = entry.mail.first.downcase
+    user = where(email: email).first
+  end
+  
+  def self.create_from_ldap_entry(attributes, entry)
+    create!(
+      email: entry.mail.first.downcase,
+      password: attributes[:password],
+      first_name: entry.givenname.first,
+      last_name: entry.sn.first )
   end
   
   

@@ -8,6 +8,8 @@ module Houston
     EXTENDED_ATTRIBUTES = [:estimated_effort, :estimated_value]
     NAME_OF_DEPLOYMENT_FIELD = "Fixed in"
     NAME_OF_GOLDMINE_FIELD = "Goldmine"
+    FIELD_USED_FOR_LDAP_LOGIN = "samaccountname"
+    INSTRUCTIONS_FOR_LOGIN = "You can log in with your CPH domain account"
     
   end
 end

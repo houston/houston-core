@@ -31,6 +31,14 @@ GIT
     letter_opener (0.0.2)
       launchy
 
+GIT
+  remote: https://github.com/houstonmc/devise_ldap_authenticatable.git
+  revision: add6b13f927ff3cccb58e34f7c0eb88efc8e8ea9
+  specs:
+    devise_ldap_authenticatable (0.7.0)
+      devise (~> 2.0)
+      net-ldap (~> 0.2)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -161,6 +169,7 @@ GEM
     minitest (3.2.0)
     multi_json (1.6.1)
     multipart-post (1.1.5)
+    net-ldap (0.3.1)
     nokogiri (1.5.5)
     orm_adapter (0.0.7)
     pg (0.13.2)
@@ -287,6 +296,7 @@ DEPENDENCIES
   default_value_for
   devise (>= 2.0.0)
   devise_invitable (~> 1.0.0)
+  devise_ldap_authenticatable!
   faraday
   font-awesome-rails
   foreman

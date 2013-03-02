@@ -24,7 +24,9 @@ class ApplicationController < ActionController::Base
   
   
   def after_sign_in_path_for(user)
-    session["user_redirect_to"] || stored_location_for(user) || default_path_for(user)
+    path = session["user_redirect_to"] || stored_location_for(user) || default_path_for(user)
+    path = root_path if path =~ /\/users\/sign_in/
+    path
   end
   
   

@@ -1,6 +1,7 @@
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
+  
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class with default "from" parameter.
@@ -240,4 +241,18 @@ Devise.setup do |config|
   #   manager.intercept_401 = false
   #   manager.default_strategies(:scope => :user).unshift :some_external_strategy
   # end
+  
+  # ==> LDAP Configuration 
+  if Houston.config.authentication_strategy == :ldap
+    config.ldap_logger = true
+    config.ldap_create_user = true
+    config.ldap_update_password = false
+    config.ldap_configuration = Houston.config.authentication_strategy_configuration.stringify_keys
+    config.ldap_check_group_membership = false
+    # config.ldap_check_attributes = false
+    config.ldap_use_admin_to_bind = false
+    config.ldap_ad_group_check = false
+    config.ldap_auth_username_builder = Houston.config.authentication_strategy_configuration[:username_builder]
+  end
+  
 end
