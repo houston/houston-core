@@ -29,6 +29,16 @@ Houston.config do
   
   
   
+  # The CI server that Houston will interface with.
+  # Right now, the only supported system is Jenkins.
+  ci_server :jenkins do
+    host HOSTNAME
+    username USERNAME # (optional)
+    password PASSWORD # (optional)
+  end
+  
+  
+  
   # The error-catching system that Houston will interface with.
   # Right now, the only supported system is Errbit.
   error_tracker :errbit do

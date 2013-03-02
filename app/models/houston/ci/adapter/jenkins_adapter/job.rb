@@ -6,17 +6,20 @@ module Houston
           
           def initialize(project)
             @project = project
-            @host = "http://" << Houston.config.ci_server_configuration[:host]
+            
+            config = Houston.config.ci_server_configuration
+            @connection = Faraday.new(url: "http://" << config[:host])
+            @connection.basic_auth config[:username], config[:password] if config[:username] && config[:password]
           end
           
-          attr_reader :project, :host
+          attr_reader :project, :connection
           
           
           
           def build!(commit)
-            url = build_url(commit)
+            url = build_path(commit)
             Rails.logger.info "[jenkins] POST #{url}"
-            response = Faraday.post(url)
+            response = connection.post(url)
             unless [200, 201, 302].member?(response.status)
               raise Houston::CI::Error.new("Houston was unable to trigger a build for #{project.name} with the URL #{url}.")
             end
@@ -29,14 +32,14 @@ module Houston
             results = {}
             
             Rails.logger.debug "[jenkins] GET #{result_url}"
-            response = Faraday.get(result_url)
+            response = connection.get(result_url)
             raise Houston::CI::Error, "Houston could not get the result of the build from the URL #{result_url}" unless response.status == 200
             response = JSON.parse(response.body)
             
             results[:result] = translate_result(response["result"])
             
             Rails.logger.debug "[jenkins] GET #{test_report_url}"
-            response = Faraday.get(test_report_url)
+            response = connection.get(test_report_url)
             raise Houston::CI::Error, "Houston could not get detailed test results from the URL #{test_report_url}. Most likely the build failed before the tests could be run." unless response.status == 200
             response = JSON.parse(response.body)
             
@@ -113,13 +116,13 @@ module Houston
           
           
           
-          def job_url
-            "#{host}/job/#{project.slug}"
+          def job_path
+            "/job/#{project.slug}"
           end
           
-          def build_url(commit)
+          def build_path(commit)
             callback_url = Houston::CI.post_build_callback_url(project)
-            "#{job_url}/buildWithParameters?COMMIT_SHA=#{commit}&CALLBACK_URL=#{callback_url}"
+            "#{job_path}/buildWithParameters?COMMIT_SHA=#{commit}&CALLBACK_URL=#{callback_url}"
           end
           
         end

@@ -35,7 +35,7 @@ class JenkinsAdapterTest < ActiveSupport::TestCase
     project = Project.new
     jenkins = Houston::CI::Adapter::JenkinsAdapter::Job.new(project)
     
-    mock(Faraday).get(anything).twice do |url|
+    mock(jenkins.connection).get(anything).twice do |url|
       OpenStruct.new(status: 200, body: (url == result_url) ? result_response : test_report_response)
     end
     
