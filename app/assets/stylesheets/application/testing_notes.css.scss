@@ -37,12 +37,18 @@
     tr:hover td { background-color: rgba(128, 212, 255, 0.1); }
     tr.passing td {
       background-color: rgba(26, 223, 18, 0.18);
+      color: rgb(70, 156, 44);
+      color: rgba(70, 156, 44, 0.66);
       
-      &.ticket-summary { color: rgb(70, 156, 44); }
-      &.ticket-due-date { color: rgb(70, 156, 44); text-decoration: line-through; }
+      &.ticket-due-date { text-decoration: line-through; }
       .label-inverse { background-color: rgb(70, 156, 44); }
     }
-    //tr.failing td { background-color: rgba(223, 92, 18, 0.10); }
+    tr.failing td {
+      background-color: rgba(223, 92, 18, 0.18);
+      
+      &.ticket-summary { color: #B50000; }
+      .label-inverse { background-color: #B50000; }
+    }
     tr.expanded td {
       color: #eee !important;
       border-top: 2px solid #222;
