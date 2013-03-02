@@ -14,7 +14,12 @@
       <%= in_groups_of(users, 2, "user-row") do |user| %>
         <div class="user">
           <span class="user-avatar avatar-54"><%= avatar_for(user, size: 112) %></span>
-          <h3 class="user-name"><%= link_to user.name, user_path(user) %></h3>
+          <h3 class="user-name">
+            <%= link_to user.name, user_path(user) %>
+            <% if user.administrator? %>
+              <small>(Admin)</small>
+            <% end %>
+          </h3>
           <span class="user-email"><%= mail_to user.email, user.email %></span>
           <%= link_to "Edit", edit_user_path(user), :class => "btn btn-mini" if can?(:update, user) %>
           
