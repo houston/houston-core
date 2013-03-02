@@ -12,22 +12,21 @@ class User < ActiveRecord::Base
                   :role, :password, :password_confirmation,
                   :remember_me, :notifications_pairs, :unfuddle_id
   
-  ROLES = %w{Developer Tester Stakeholder Guest}
-  
   default_scope order("last_name, first_name")
   
-  default_value_for :role, "Guest"
+  default_value_for :role, Houston.default_role
   
   validates :first_name, :last_name, :email, :presence => true, :length => {:minimum => 2}
-  validates :role, :presence => true, :inclusion => ROLES
+  validates :role, :presence => true, :inclusion => Houston.roles
   
-  ROLES.each do |role|
+  Houston.roles.each do |role|
+    method_name = role.downcase.gsub(' ', '_')
     class_eval <<-RUBY
-    def #{role.downcase}?
+    def #{method_name}?
       role == "#{role}"
     end
     
-    def self.#{role.downcase.pluralize}
+    def self.#{method_name.pluralize}
       where(:role => "#{role}")
     end
     RUBY
