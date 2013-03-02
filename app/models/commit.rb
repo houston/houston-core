@@ -28,7 +28,7 @@ class Commit < ActiveRecord::Base
   end
   
   def merge?
-    message =~ MERGE_COMMIT_PATTERN
+    (message =~ MERGE_COMMIT_PATTERN).present?
   end
   
   
@@ -70,6 +70,8 @@ class Commit < ActiveRecord::Base
     {tags: tags, tickets: tickets, hours_worked: hours, attributes: attributes, clean_message: clean_message.strip}
   end
   
+  
+  
   TAG_PATTERN = /^\s*\[([^\]]+)\]\s*/
   
   TICKET_PATTERN = /\[#(\d+)\]/
@@ -78,7 +80,7 @@ class Commit < ActiveRecord::Base
   
   EXTRA_ATTRIBUTE_PATTERN = /\{\{([^:\}]+):([^\}]+)\}\}/
   
-  MERGE_COMMIT_PATTERN = /^Merge (remote-tracking )?branch/
+  MERGE_COMMIT_PATTERN = /^Merge\b/
   
   
   

@@ -88,4 +88,18 @@ class CommitTest < ActiveSupport::TestCase
     end
   end
   
+  
+  
+  test "should skip merge commits" do
+    merge_commits = [
+      "Merge branch example",
+      "Merge remote-tracking branch example",
+      "Merge pull request"
+    ]
+    
+    merge_commits.each do |commit_message|
+      assert_equal true, Commit.new(message: commit_message).skip?, "Was supposed to recognize #{commit_message.inspect} as a merge commit"
+    end
+  end
+  
 end
