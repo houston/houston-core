@@ -15,16 +15,6 @@ GIT
       activesupport
 
 GIT
-  remote: git://github.com/houstonmc/houston-scheduler.git
-  revision: 0c0358fc4bfb26819be3b5208f78ac4caef84618
-  specs:
-    houston-scheduler (0.0.1)
-      coffee-rails (~> 3.2.1)
-      handlebars_assets
-      rails (~> 3.2.9)
-      sass-rails (~> 3.2.3)
-
-GIT
   remote: git://github.com/pcg79/letter_opener.git
   revision: 770282bc220d5ed7427d5cc316711fe0423ab67b
   specs:
@@ -38,6 +28,15 @@ GIT
     devise_ldap_authenticatable (0.7.0)
       devise (~> 2.0)
       net-ldap (~> 0.2)
+
+PATH
+  remote: ../houston-scheduler
+  specs:
+    houston-scheduler (0.0.1)
+      coffee-rails (~> 3.2.1)
+      handlebars_assets
+      rails (~> 3.2.9)
+      sass-rails (~> 3.2.3)
 
 GEM
   remote: http://rubygems.org/
