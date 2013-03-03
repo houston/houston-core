@@ -17,8 +17,17 @@ class ViewMailer < ActionMailer::Base
   helper TicketHelper
   helper UrlHelper
   
-  before_filter { @for_email = true }
   
+  helper_method :can?, :cannot?, :current_ability
+  delegate :can?, :cannot?, :to => :current_ability
+  
+  # c.f. https://github.com/ryanb/cancan/blob/1.6.7/lib/cancan/controller_additions.rb#L348-L350
+  def current_ability
+    @current_ability ||= ::Ability.new(User.new) # Treat email recipients as Guests, not Customers
+  end
+  
+  
+  before_filter { @for_email = true }
   
   
   def weekly_report(weekly_report, recipients)

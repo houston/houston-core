@@ -1,8 +1,10 @@
 <div class="release-changes">
   <% ordered_by_tag(changes).each do |change| %>
-    <%= div_for(change) do %>
-      <%= render change.tag %>
-      <span class="change-summary"><%= format_change(change) %></span>
+    <% if can?(:read, change) %>
+      <%= div_for(change) do %>
+        <%= render change.tag %>
+        <span class="change-summary"><%= format_change(change) %></span>
+      <% end %>
     <% end %>
   <% end %>
 </div>

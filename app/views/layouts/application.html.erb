@@ -49,82 +49,15 @@
             <ul class="nav">
               
               <%# Dashboards %>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dashboard <b class="caret"></b></a>
-                <ul class="dropdown-menu releases-menu">
-                  <li><%= link_to "All Projects", main_app.dashboard_path %></li>
-                  <li class="divider"></li>
-                <% Project.all.each do |project| %>
-                  <li class="project">
-                    <%= link_to main_app.project_dashboard_path(project) do %>
-                      <%= project.name %> <b class="bubble <%= project.color %>"></b>
-                    <% end %>
-                  </li>
-                <% end %>
-                </ul>
-              </li>
-              
-              <%# Kanban %>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Kanban <b class="caret"></b></a>
-                <ul class="dropdown-menu kanban-menu">
-                  <li><%= link_to "All Projects", main_app.kanban_path %></li>
-                  <li class="divider"></li>
-                <% Project.all.each do |project| %>
-                  <li class="project">
-                    <%= link_to main_app.project_kanban_path(project) do %>
-                      <%= project.name %> <b class="bubble <%= project.color %>"></b>
-                    <% end %>
-                  </li>
-                <% end %>
-                </ul>
-              </li>
-              
-              <%# Testing Reports %>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Testing Reports <b class="caret"></b></a>
-                <ul class="dropdown-menu testing-reports-menu">
-                  <li><%= link_to "All Projects", main_app.testing_report_path %></li>
-                  <li class="divider"></li>
-                <% Project.all.each do |project| %>
-                  <li class="project">
-                    <%= link_to main_app.project_testing_report_path(project) do %>
-                      <%= project.name %> <b class="bubble <%= project.color %>"></b>
-                    <% end %>
-                  </li>
-                <% end %>
-                </ul>
-              </li>
-              
-              <%# Releases %>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Releases <b class="caret"></b></a>
-                <ul class="dropdown-menu releases-menu">
-                <% Project.all.each do |project| %>
-                  <li class="project">
-                    <%= link_to main_app.releases_path(project) do %>
-                      <%= project.name %> <b class="bubble <%= project.color %>"></b>
-                    <% end %>
-                  </li>
-                <% end %>
-                </ul>
-              </li>
-              
-              <%# Modules %>
-              <% Houston.config.modules.each do |mod| %>
-                <% menu_items = mod.namespace.respond_to?(:menu_items) ? mod.namespace.menu_items : [] %>
+              <% if can?(:read, Project) %>
                 <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= mod.name.humanize %> <b class="caret"></b></a>
-                  <ul class="dropdown-menu">
-                  <% menu_items.each do |(name, path)| %>
-                    <li><%= link_to name, path %></li>
-                  <% end %>
-                  <% if menu_items.any? %>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dashboard <b class="caret"></b></a>
+                  <ul class="dropdown-menu releases-menu">
+                    <li><%= link_to "All Projects", main_app.dashboard_path %></li>
                     <li class="divider"></li>
-                  <% end %>
                   <% Project.all.each do |project| %>
                     <li class="project">
-                      <%= link_to mod.namespace.menu_item_for_project(project) do %>
+                      <%= link_to main_app.project_dashboard_path(project) do %>
                         <%= project.name %> <b class="bubble <%= project.color %>"></b>
                       <% end %>
                     </li>
@@ -133,8 +66,88 @@
                 </li>
               <% end %>
               
+              <%# Kanban %>
+              <% if can?(:read, Ticket) %>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Kanban <b class="caret"></b></a>
+                  <ul class="dropdown-menu kanban-menu">
+                    <li><%= link_to "All Projects", main_app.kanban_path %></li>
+                    <li class="divider"></li>
+                  <% Project.all.each do |project| %>
+                    <li class="project">
+                      <%= link_to main_app.project_kanban_path(project) do %>
+                        <%= project.name %> <b class="bubble <%= project.color %>"></b>
+                      <% end %>
+                    </li>
+                  <% end %>
+                  </ul>
+                </li>
+              <% end %>
               
+              <%# Testing Reports %>
+              <% if can?(:read, Ticket) && can?(:read, TestingNote) %>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Testing Reports <b class="caret"></b></a>
+                  <ul class="dropdown-menu testing-reports-menu">
+                    <li><%= link_to "All Projects", main_app.testing_report_path %></li>
+                    <li class="divider"></li>
+                  <% Project.all.each do |project| %>
+                    <li class="project">
+                      <%= link_to main_app.project_testing_report_path(project) do %>
+                        <%= project.name %> <b class="bubble <%= project.color %>"></b>
+                      <% end %>
+                    </li>
+                  <% end %>
+                  </ul>
+                </li>
+              <% end %>
+              
+              <%# Releases %>
+              <% if can?(:read, Release) %>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Releases <b class="caret"></b></a>
+                  <ul class="dropdown-menu releases-menu">
+                  <% Project.all.each do |project| %>
+                    <% if can?(:read, project.releases.build) %>
+                      <li class="project">
+                        <%= link_to main_app.releases_path(project) do %>
+                          <%= project.name %> <b class="bubble <%= project.color %>"></b>
+                        <% end %>
+                      </li>
+                    <% end %>
+                  <% end %>
+                  </ul>
+                </li>
+              <% end %>
+              
+              <%# Modules %>
+              <%# !todo: Refactor to ask modules what abilities are required to show navigation %>
               <% if can?(:read, Project) %>
+                <% Houston.config.modules.each do |mod| %>
+                  <% menu_items = mod.namespace.respond_to?(:menu_items) ? mod.namespace.menu_items : [] %>
+                  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= mod.name.humanize %> <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    <% menu_items.each do |(name, path)| %>
+                      <li><%= link_to name, path %></li>
+                    <% end %>
+                    <% if menu_items.any? %>
+                      <li class="divider"></li>
+                    <% end %>
+                    <% Project.all.each do |project| %>
+                      <li class="project">
+                        <%= link_to mod.namespace.menu_item_for_project(project) do %>
+                          <%= project.name %> <b class="bubble <%= project.color %>"></b>
+                        <% end %>
+                      </li>
+                    <% end %>
+                    </ul>
+                  </li>
+                <% end %>
+              <% end %>
+              
+              
+              <% if can?(:read, Ticket) && can?(:read, Commit) && can?(:read, TestingNote) %>
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reports <b class="caret"></b></a>
                 <ul class="dropdown-menu reports-menu">
@@ -147,7 +160,9 @@
               
               <li class="divider-vertical"></li>
               
-              <li><%= link_to "Projects", main_app.projects_path %></li>
+              <% if can?(:read, Project) %>
+                <li><%= link_to "Projects", main_app.projects_path %></li>
+              <% end %>
 
               <% if can?(:read, User) %>
                 <li><%= link_to "Team", main_app.users_path %></li>

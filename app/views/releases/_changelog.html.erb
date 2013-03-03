@@ -13,9 +13,9 @@
     <%= render partial: "releases/changes", locals: {changes: @release.changes} %>
     
     <div class="release-detail">
-      <%= render partial: "releases/tickets", locals: {tickets: @release.tickets} %>
-      <%= render partial: "releases/goldmine_numbers", locals: {goldmine_numbers: @release.goldmine_numbers} %>
-      <%= render partial: "releases/commits", locals: {commits: @release.commits} unless for_email? %>
+      <%= render partial: "releases/tickets", locals: {tickets: @release.tickets} if can?(:read, Ticket) %>
+      <%= render partial: "releases/goldmine_numbers", locals: {goldmine_numbers: @release.goldmine_numbers} if can?(:read, Ticket) %>
+      <%= render partial: "releases/commits", locals: {commits: @release.commits} if can?(:read, Commit) && !for_email? %>
     </div>
     
   <% end %>

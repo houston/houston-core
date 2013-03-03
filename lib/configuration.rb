@@ -81,6 +81,20 @@ module Houston
     
     
     
+    # Permissions
+    
+    def abilities(&block)
+      @abilities_block = block
+    end
+    
+    def configure_abilities(context, user)
+      context.instance_exec(user, &@abilities_block)
+    end
+    
+    
+    
+    
+    
     # Components
     
     def ticket_system(*args, &block)

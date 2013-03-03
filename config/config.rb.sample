@@ -12,10 +12,78 @@ Houston.config do
   # (Optional) Categories you can organize your projects by
   project_categories "Products", "Tools"
   
-  
-  
   # These are the environments you deploy projects to
   environments "Staging", "Production"
+  
+  # These are the tags available for Change Log entries
+  tags( {name: "New Feature", as: "feature", color: "8DB500"},
+        {name: "Improvement", as: "improvement", color: "3383A8", aliases: %w{enhancement}},
+        {name: "Bugfix", as: "fix", color: "C64537", aliases: %w{bugfix}},
+        {name: "Refactor", as: "refactor", color: "909090"},
+        {name: "Testfix", as: "testfix", color: "909090"},
+        {name: "CI Fix", as: "ci", color: "909090", aliases: %w{cifix ciskip}} )
+  
+  # Abilities:
+  # In this block, use the DSL defined by CanCan.
+  # Learn more: https://github.com/ryanb/cancan/wiki/Defining-Abilities
+  abilities do |user|
+    if user.nil?
+      
+      # Customers are allowed to see Release Notes of products, for production
+      can :read, Release do |release|
+        release.project.category == "Products" &&
+        (release.environment_name.blank? || release.environment_name == "Production")
+      end
+      
+      # Customers are allowed to see Features, Improvements, and Bugfixes
+      can :read, Change, tag_slug: %w{feature improvement fix}
+      
+    else
+      
+      # Everyone can see Releases to staging
+      can :read, Release
+      
+      # Everyone is allowed to see Features, Improvements, and Bugfixes
+      can :read, Change, tag_slug: %w{feature improvement fix}
+      
+      # Everyone can see Projects
+      can :read, Project
+      
+      # Everyone can see Tickets
+      can :read, Ticket
+      
+      # Everyone can see Users and update themselves
+      can :read, User
+      can :update, user
+      
+      
+      
+      if user.developer? or user.tester? or user.product_owner?
+        
+        # Developers, Testers, and Project Owners can see and comment on Testing Reports
+        # They can also edit their own notes
+        can [:create, :read], TestingNote
+        can [:update, :destroy], TestingNote, user_id: user.id
+        
+      end
+      
+      
+      
+      if user.developer?
+        
+        # Developers see the other kinds of changes: Test Fixes and Refactors
+        can :read, Change
+        
+        # Developers also see commit info
+        can :read, Commit
+        
+        # Developers can manage projects and releases
+        can :manage, Project
+        can :manage, Release
+        
+      end
+    end
+  end
   
   
   
@@ -110,16 +178,6 @@ Houston.config do
     "S Security Hole"               => "D65B17",
     "5 Broken (no work-around)"     => "C1311E"
   })
-  
-  # Tags: these are the tags available for Change Log entries
-  tags([
-    {name: "Bugfix", as: "fix", color: "C64537", aliases: %w{bugfix}},
-    {name: "Improvement", as: "improvement", color: "3383A8", aliases: %w{enhancement}},
-    {name: "New Feature", as: "feature", color: "8DB500"},
-    {name: "Refactor", as: "refactor", color: "909090"},
-    {name: "Testfix", as: "testfix", color: "909090"},
-    {name: "CI Fix", as: "ci", color: "909090", aliases: %w{cifix ciskip}}
-  ])
   
   
   
