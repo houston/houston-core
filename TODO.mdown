@@ -1,56 +1,85 @@
 # To Do
 
-### Fixes
+# Fixes & Refinements
+=====================================================================
 
- - 2 **Global:** Handle Timeout::Error
- - 3 **Releases/Deploy Emails:** have up-to-date commits
- - 4 **Weekly Report/Exceptions:** problems history is off by 1 week?
- - 5 **CI Results:** fails are reported as errors!
- - 5 **Project:** allow changing Version Control Location (have tmp folder deleted or whatever)
- - 5 **Testing Notes:** edit a failing testing note at home, SMTP fail, timeout takes 30 seconds!
+ 1. **Kanban:** fetch ticket queue status in the background in case Kanban isn't default screen
+ 2. **Test Results:** Add duration
+ 2. **Test Results:** Add coverage info
+ 3. **Releases/Deploy Emails:** have up-to-date commits
+ 3. **Test Results**, **Deploy**: add branch name to test run emails; to deploy complete emails
+ 
+ 4. **Global:** Handle Timeout::Error
+ 4. **Weekly Report/Exceptions:** problems history is off by 1 week?
+ 4. **Weekly Report:** cache Google Chart images in emails and/or implement server-side SVG library
+ 5. **Global:** disable buttons when working! (e.g. what saving a very slow testing note)
+ 5. **CI Results:** fails are reported as errors
+ 5. **Project:** allow changing Version Control Location (have tmp folder deleted or whatever)
+ 5. **Testing Notes:** edit a failing testing note at home, SMTP fail, timeout takes 30 seconds!
 
-### Small Projects
 
- - 2 **Weekly Report/Exceptions:** show average time to close problem
- - 3 **Testing Report:** add priority options (to left of ticket): high/low, exclusive checkboxes
- - 4 **Releases:** add "What's in the pipe?" view that shows what _would_ be released to production if it were released now
- - 4 **Testing Report:** add additional vevrdicts (pass-with-suggestions? unable-to-test?)
- - 4 **Kanban:** fetch ticket queue status in the background in case Kanban isn't default screen
- - 4 **Weekly Report:** cache Google Chart images in emails and/or implement server-side SVG library
- - 4 **Weekly Report/Exceptions:** break down notices by project
- - 4 **Global:** disable buttons when working! (e.g. what saving a very slow testing note)
- - 5 **Releases:** set levels for tags (Customer, Internal, All)
- - 5 **Releases:** allow adding/removing _tickets_ from release notes
 
-### Bigger Projects
 
- - **Houston-Scheduler**
- - Daily Reports
- - **Houston-CI**:
-   - **CI Results:** implement graphs
-   - **CI Results:** incorporate coverage information
-   - Deploy if dev or master
-   - Disabled for projects with local repos
-   - Secure (c.f. http://fourkitchens.com/blog/2011/09/20/trigger-jenkins-builds-pushing-github, )
- - **Notifications**:
-   - Notes
-     - GitHub style
-       - Users can "watch" a project
-       - Users have a notification center where they choose what kind of notifications they see for a project
-       - Admin can see these settings and set good defaults, change them
-       - NB: would have to give CTS credentials
-         - Requires more robust permissions system?
-           - In config.rb, activate modules per role?
-     - **Project:** fix setting notifications
-     - **Release Emails:** send one-off (so can be sent to customers)
-       - Include unsubscribe link
- - **Houston-Fnord**: (show real-time analytics)
-   - Solve for multiple apps (multiple gauges? multiple fields?)
-   - **Project Dashboard:**
-     - Real-time graph of exception notices
-     - Figure out how to show queue history; show more weeks
-     - Show deploys _on_ real-time graphs
+# Horizon 1
+=====================================================================
 
+Goals:
+ - Measure exception turn time
+ - Prioritize project backlogs
+
+Questions:
+ - Is it possible prioritize w/ drag-and-drop Story cards? (How to deal with scale? Prerequisites?)
+
+Tasks:
+ - **Weekly Report/Exceptions:** show average time to close problem
+ - **Weekly Report/Exceptions:** break down notices by project
+ - **Houston-Scheduler:** show severities
+ - **Houston-Scheduler:** expand tickets like Testing Report does
+ - **Houston-Scheduler:** allow editing prerequisites
+ - **Houston-Scheduler:** Queuing Discipline takes prerequisites into account
+
+
+
+
+# Horizon 2
+=====================================================================
+
+Goals:
+ - Close loop on releases
+ - Consolidate information for developers
+
+Questions:
+ - What is the right role for managers, bosses, leadership?
+ - How to to _interpret_ out-of-date-ness? Assign a grade? What about urgency of patches? OK button?
+
+Projects:
+ - Reinvent Notifications:
+   - Send one-off emails that can take advantage of the abilities of each recipient
+   - Put a link in emails to user's notifications options (automatically logging them in)
+   - Allow people to follow projects
+   - Users have a notification center where they choose what kind of notifications they see for a project
+   - [idea] Remove add-but-dont-invite
+   - [idea] Project screen: participants (avatars) min/max width | Maintainers = special kind of participant
+   - [idea] Have modules define permissions needed
+   - **Project:** fix setting notifications
+ - Daily Report:
+   - Recent new tickets
+   - Recent new exceptions
+   - Maintenance lights
+ - Antecedents:
+   - Houston: Implement Antecedents with Goldmine hacked in
+   - Auto-resolve exception antecedents
+   - Send support notifications on problem antecedents
+
+
+
+
+# Horizon 3: Ideas
+=====================================================================
+
+Goals:
+ - Make Houston flexible enough to use in other contexts
+ 
 ### Refactoring
 
  - **Engines:**
@@ -99,11 +128,6 @@
  - **Global:** make mobile site
  - **Testing Report:** allow creating tickets right there!
  - **Testing Report:** allow editing tickets!
- - **Daily Report:**
-   - Send daily report to project maintainers with news
-     - Recent new tickets
-     - Recent new exceptions
-     - Maintenance lights
  - **Release:** cache `deploy.created_at` as `deployed_at`
  - **Releases:** Support RSS
  - Report on health of tickets
@@ -123,3 +147,14 @@
    - ?? New tickets
    - ?? New problems
  - **Global:** employ Twitter Bootstrap in emails
+ - **Testing Report:** add priority options (to left of ticket): high/low, exclusive checkboxes
+ - **Testing Report:** add additional vevrdicts (pass-with-suggestions? unable-to-test?)
+ - **Releases:** add "What's in the pipe?" view that shows what _would_ be released to production if it were released now
+ - **Releases:** allow adding/removing _tickets_ from release notes
+ - **Houston-CI**: incorporate Deploy into Houston
+ - **Houston-Fnord**: (show real-time analytics)
+   - Solve for multiple apps (multiple gauges? multiple fields?)
+   - **Project Dashboard:**
+     - Real-time graph of exception notices
+     - Figure out how to show queue history; show more weeks
+     - Show deploys _on_ real-time graphs
