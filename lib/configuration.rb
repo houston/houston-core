@@ -87,6 +87,10 @@ module Houston
       @abilities_block = block
     end
     
+    def defines_abilities?
+      @abilities_block.present?
+    end
+    
     def configure_abilities(context, user)
       context.instance_exec(user, &@abilities_block)
     end
