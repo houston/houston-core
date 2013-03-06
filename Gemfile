@@ -1,4 +1,4 @@
-source "http://rubygems.org"
+source 'http://rubygems.org'
 
 gem 'rails', '3.2.12'
 gem 'activerecord-postgres-hstore' # remove when Rails 4.0
@@ -17,7 +17,7 @@ gem 'font-awesome-rails'
 group :assets do
   gem 'coffee-rails', '~> 3.2.1'
   gem 'therubyracer' # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  gem "less-rails" # For Twitter Bootstrap
+  gem 'less-rails' # For Twitter Bootstrap
   gem 'uglifier', '>= 1.0.3'
   
   gem 'turbo-sprockets-rails3', '>= 0.3.6'
@@ -39,8 +39,8 @@ gem 'bundler' # used to parse Gemfiles
 gem 'cancan'
 gem 'childprocess'
 gem 'default_value_for'
-gem 'devise',           '>= 2.0.0'
-gem 'devise_invitable', '~> 1.0.0'
+gem 'devise',           '~> 2.2.3'
+gem 'devise_invitable', '~> 1.1.6'
 gem 'devise_ldap_authenticatable', :git => 'https://github.com/houstonmc/devise_ldap_authenticatable.git'
 gem 'faraday'
 gem 'foreman'
@@ -62,7 +62,7 @@ gem 'whenever' # a DSL for writing CRON jobs
 #
 # Here modules are dynamically included in the Gemfile
 #
-require "./lib/configuration.rb" # Loads Houston's configuration
+require './lib/configuration.rb' # Loads Houston's configuration
 Houston.config.modules.each do |mod|
   gem *mod.gemspec
 end
@@ -74,11 +74,11 @@ gem 'airbrake_user_attributes'
 
 group :development do
   gem 'thin'
-  gem 'letter_opener', :git => 'git://github.com/pcg79/letter_opener.git'
+  gem 'letter_opener'
   
   # Better error messages
-  gem "better_errors"
-  gem "meta_request"
+  gem 'better_errors'
+  gem 'meta_request'
 end
 
 group :development, :test do
@@ -87,9 +87,9 @@ group :development, :test do
   gem 'rr'
   
   # For Jenkins
-  gem "simplecov", :require => false
-  gem "simplecov-rcov", :require => false
-  gem "ci_reporter", :require => false
+  gem 'simplecov', :require => false
+  gem 'simplecov-rcov', :require => false
+  gem 'ci_reporter', :require => false
   
   gem 'pry' # for debugging
 end
