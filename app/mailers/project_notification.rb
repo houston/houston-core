@@ -20,8 +20,10 @@ class ProjectNotification < ViewMailer
     @test_run = test_run
     @project = test_run.project
     
+    recipients = ([test_run.agent_email] + options.fetch(:to, @project.maintainers)).compact
+    
     mail({
-      to:       options.fetch(:to, @project.maintainers),
+      to:       recipients,
       subject:  test_run_summary(test_run),
       template: "test_run"
     })
