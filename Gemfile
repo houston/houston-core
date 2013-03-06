@@ -89,7 +89,7 @@ group :development, :test do
   
   # For Jenkins
   gem 'simplecov', :require => false
-  gem 'simplecov-rcov', :require => false
+  gem 'simplecov-json', :require => false
   gem 'ci_reporter', :require => false
   
   gem 'pry' # for debugging
