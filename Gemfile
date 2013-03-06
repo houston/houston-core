@@ -30,7 +30,7 @@ gem 'sass-rails',   '~> 3.2.3'
 gem 'jquery-rails'
 gem 'sugar-rails'
 gem 'backbone-rails'
-gem 'handlebars_assets'
+gem 'handlebars_assets', '0.8.2'
 
 # Helpers
 gem 'addressable', :require => 'addressable/uri'
