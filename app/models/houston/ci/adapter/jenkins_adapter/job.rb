@@ -8,7 +8,7 @@ module Houston
             @project = project
             
             config = Houston.config.ci_server_configuration
-            @connection = Faraday.new(url: "http://" << config[:host])
+            @connection = Faraday.new(url: "https://" << config[:host])
             @connection.basic_auth config[:username], config[:password] if config[:username] && config[:password]
           end
           
