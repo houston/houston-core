@@ -75,6 +75,7 @@ gem 'airbrake_user_attributes'
 group :development do
   gem 'thin'
   gem 'letter_opener'
+  gem 'rack-mini-profiler'
   
   # Better error messages
   gem 'better_errors'
