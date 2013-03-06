@@ -23,29 +23,33 @@
 #      tests passed and the push was to dev or master.
 #
 
-module PostReceiveHook
+class PostReceivePayload
   
-  GITHUB_WEBHOOK_IPS = %w{207.97.227.253
-                          50.57.128.197
-                          108.171.174.178
-                          50.57.231.61
-                          54.235.183.49
-                          54.235.183.23
-                          54.235.118.251
-                          54.235.120.57
-                          54.235.120.61
-                          54.235.120.62}
+  def initialize(params)
+    parse_params(params)
+  end
   
-  def self.commit_from_payload(params)
-    ip = params.fetch(:sender, {})[:ip]
-    case ip
-    when *GITHUB_WEBHOOK_IPS
-      payload = JSON.parse params["payload"]
-      payload["after"]
-    else
-      Rails.logger.warn "[post-receive-hook] did not recognize remote IP: '#{ip}'"
-      nil
-    end
+  attr_accessor :agent_email, :commit, :branch
+  
+  def parsed?
+    commit.present?
+  end
+  
+  def parse_params(params)
+    json_payload = params.key?("payload") && JSON.parse(params["payload"]) rescue nil
+    parse_github_style_params(json_payload) if json_payload
+  end
+  
+  def parse_github_style_params(params)
+    self.commit = params["after"]
+    self.agent_email = parse_github_style_agent(params["pusher"])
+    self.branch = params["ref"].split("/").last if params.key?("ref")
+  end
+  
+  def parse_github_style_agent(params)
+    return nil unless params.key?("email")
+    return params["email"] unless params.key?("name")
+    "#{params["name"].inspect} <#{params["email"]}>"
   end
   
 end
@@ -53,21 +57,21 @@ end
 
 
 # 3. Houston creates a Test Run.
-Houston.observer.on "hooks:post_receive" do |project, payload|
+Houston.observer.on "hooks:post_receive" do |project, params|
   
   if project.ci_adapter == "None"
     Rails.logger.warn "[hooks:post_receive] the project #{project.name} is not configured to be used with a Continuous Integration server"
     next
   end
   
-  commit = PostReceiveHook.commit_from_payload(payload)
+  payload = PostReceivePayload.new(params)
   
-  unless commit
+  unless payload.commit
     Rails.logger.error "[hooks:post_receive] no commit found in payload"
     next
   end
   
-  test_run = project.test_runs.find_by_commit(commit)
+  test_run = project.test_runs.find_by_commit(payload.commit)
   
   if test_run
     Rails.logger.warn "[hooks:post_receive] a test run exists for #{test_run.short_commit}; doing nothing"
@@ -75,7 +79,11 @@ Houston.observer.on "hooks:post_receive" do |project, payload|
   end
   
   begin
-    TestRun.new(project: project, commit: commit).start!
+    TestRun.new(
+      project: project,
+      commit: payload.commit,
+      agent_email: payload.agent_email,
+      branch: payload.branch).start!
   rescue Houston::CI::Error
     message = "#{project.ci_adapter} is not appropriately configured to build #{project.name}."
     ProjectNotification.configuration_error(project, message, additional_info: $!.message).deliver!

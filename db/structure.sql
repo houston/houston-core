@@ -735,7 +735,9 @@ CREATE TABLE test_runs (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     tests text,
-    total_count integer
+    total_count integer,
+    agent_email character varying(255),
+    branch character varying(255)
 );
 
 
@@ -1439,3 +1441,7 @@ INSERT INTO schema_migrations (version) VALUES ('20130120182026');
 INSERT INTO schema_migrations (version) VALUES ('20130211015046');
 
 INSERT INTO schema_migrations (version) VALUES ('20130302205014');
+
+INSERT INTO schema_migrations (version) VALUES ('20130306023456');
+
+INSERT INTO schema_migrations (version) VALUES ('20130306023613');

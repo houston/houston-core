@@ -11,7 +11,7 @@ class CIIntegrationTest < ActionController::IntegrationTest
   test "should trigger a build when the hooks:post_receive event is fired for a project that uses a CI server" do
     @project = Project.create!(name: "Test", slug: "test", ci_adapter: "Mock")
     
-    stub(PostReceiveHook).commit_from_payload { |params| "63cd1ef" }
+    stub.instance_of(PostReceivePayload).commit { "63cd1ef" }
     
     assert_difference "TestRun.count", +1 do
       post "/projects/#{@project.slug}/hooks/post_receive"
@@ -35,7 +35,7 @@ class CIIntegrationTest < ActionController::IntegrationTest
       stub(job).build! { |commit| raise Houston::CI::Error }
     end
     
-    stub(PostReceiveHook).commit_from_payload { |params| "63cd1ef" }
+    stub.instance_of(PostReceivePayload).commit { "63cd1ef" }
     
     assert_no_difference "TestRun.count" do
       post "/projects/#{@project.slug}/hooks/post_receive"
