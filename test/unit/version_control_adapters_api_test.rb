@@ -24,7 +24,6 @@ class VersionControlAdatersApiTest < ActiveSupport::TestCase
       assert_respond_to repo, :all_commit_times
       assert_respond_to repo, :branches_at
       assert_respond_to repo, :commits_between
-      assert_respond_to repo, :commits_during
       assert_respond_to repo, :native_commit
       assert_respond_to repo, :read_file
       assert_respond_to repo, :refresh!

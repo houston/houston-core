@@ -18,10 +18,6 @@ module Houston
         []
       end
       
-      def commits_during(range)
-        []
-      end
-      
       def native_commit(sha)
         nil
       end

@@ -28,10 +28,6 @@ module Houston
   #   - `all_commit_times`:
   #       returns the timestamps of every commit made to this project.
   #
-  #   - `commits_during`:
-  #       accepts a Range and returns an array of commits that were made
-  #       within that date range.
-  #
   #   - `commits_between`:
   #       accepts two SHAs and returns an array of commits that were made
   #       between those two.
