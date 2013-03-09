@@ -90,7 +90,14 @@ class Project < ActiveRecord::Base
           # transaction if we don't have any changes to save.
           # This is pretty much just to reduce log verbosity.
           ticket.assign_attributes(attributes)
-          ticket.save if ticket.changed?
+          
+          # hstore thinks it has always changed
+          has_legitimate_changes = ticket.changed?
+          if has_legitimate_changes && ticket.changed == %w{extended_attributes}
+            before, after = ticket.changes["extended_attributes"]
+            has_legitimate_changes = false if before == after
+          end
+          ticket.save if has_legitimate_changes
         else
           ticket = Ticket.nosync { self.tickets.create(attributes) }
         end
