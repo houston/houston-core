@@ -19,31 +19,29 @@ module Houston
           end
           
           def branches_at(sha)
-            branches_by_sha = connection.heads.each_with_object({}) do |branch, hash|
-              (hash[branch.commit.sha] ||= []).push(branch.name)
-            end
-            branches_by_sha.fetch(sha, [])
+            Rugged::Branch.each(connection, :local)
+              .select { |branch| branch.tip.oid.start_with?(sha) }
+              .map(&:name)
           end
           
           def commits_between(sha1, sha2)
-            connection
-              .commits_between(sha1, sha2)
-              .map(&method(:to_commit))
-          end
-          
-          def commits_during(range)
-            Grit::Commit
-              .find_all(connection, nil, {after: range.begin, before: range.end})
-              .uniq { |grit_commit| "#{grit_commit.authored_date}#{grit_commit.author.email}" }
+            repo.walk(sha1).take_until { |commit| commit.oid.start_with?(sha1) }
               .map(&method(:to_commit))
           end
           
           def native_commit(sha)
-            connection.commit(sha)
+            connection.lookup(sha)
           end
           
           def read_file(file_path)
-            connection.tree/file_path
+            head = native_commit(connection.head.target)
+            tree = head.tree
+            file_path.split("/").each do |segment|
+              object = tree[segment]
+              return nil unless object
+              tree = connection.lookup object[:oid]
+            end
+            tree.content
           end
           
           def refresh!
@@ -57,7 +55,7 @@ module Houston
         private
           
           def git_dir
-            connection.path
+            connection.path.chomp("/")
           end
           
           def mirrored?
@@ -74,13 +72,13 @@ module Houston
           
           attr_reader :connection
           
-          def to_commit(grit_commit)
+          def to_commit(rugged_commit)
             Houston::VersionControl::Commit.new({
-              sha: grit_commit.sha,
-              message: grit_commit.message,
-              date: grit_commit.authored_date,
-              author_name: grit_commit.author.name,
-              author_email: grit_commit.author.email
+              sha: rugged_commit.oid,
+              message: rugged_commit.message,
+              date: rugged_commit.author[:time],
+              author_name: rugged_commit.author[:name],
+              author_email: rugged_commit.author[:email]
             })
           end
           

@@ -47,12 +47,12 @@ gem 'foreman'
 gem 'foreman-export-initscript', :git => 'git://github.com/LewisJA/foreman-export-initscript.git'
 gem 'gemoji'
 gem 'googlecharts'
-gem 'grit'
 gem 'hpricot'
 gem 'nokogiri'
 gem 'premailer' # for inlining CSS in HTML emails
 gem 'remotable', '>= 0.2.2', :git => 'git://github.com/boblail/remotable.git'
 gem 'resque'
+gem 'rugged', '0.17.0.b7'
 gem 'yajl-ruby', :require => 'yajl/json_gem'
 gem 'whenever' # a DSL for writing CRON jobs
 

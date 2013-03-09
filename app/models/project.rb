@@ -256,8 +256,7 @@ class Project < ActiveRecord::Base
     lockfile = repo.read_file("Gemfile.lock")
     return nil unless lockfile
     
-    lockfile_contents = lockfile.data
-    locked_gems = Bundler::LockfileParser.new(lockfile_contents)
+    locked_gems = Bundler::LockfileParser.new(lockfile)
     locked_gems.specs.find { |spec| spec.name == dependency }
   end
   

@@ -25,7 +25,7 @@ module Houston
             begin
               connection = connect_to_repo!(repo_location.to_s, temp_path)
               self::Repo.new(connection, local: (connection.path == temp_path))
-            rescue Grit::InvalidGitRepositoryError, Grit::NoSuchPathError
+            rescue Rugged::RepositoryError, Rugged::OSError
               Houston::VersionControl::NullRepo
             end
           end
@@ -37,7 +37,7 @@ module Houston
           def connect_to_repo!(repo_location, temp_path)
             repo_uri = Addressable::URI.parse(repo_location)
             git_path = get_local_path_to_repo(repo_uri, temp_path)
-            Grit::Repo.new(git_path)
+            Rugged::Repository.new(git_path)
           end
           
           def get_local_path_to_repo(repo_uri, temp_path)
@@ -46,7 +46,7 @@ module Houston
               pull!(temp_path) if stale?(temp_path)
               temp_path
             else
-              repo_uri
+              repo_uri.to_s
             end
           end
           

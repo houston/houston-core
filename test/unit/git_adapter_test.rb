@@ -33,4 +33,32 @@ class GitAdapterTest < ActiveSupport::TestCase
   end
   
   
+  test "#read_file should return the contents of a named file" do
+    readme = <<-STR
+fixture
+=======
+
+This repo is a fixture for Houston's tests
+STR
+    assert_equal readme, @test_repo.read_file("README.md")
+  end
+  
+  test "#read_file should return nil for files that don't exist" do
+    assert_equal nil, @test_repo.read_file("NOPE.md")
+  end
+  
+  
+  test "Commit messages should be UTF-8" do
+    commit = @test_repo.native_commit("22924bbf4378f83cab93bfd5fa7d7777cbc1f3b4")
+    assert_equal "UTF-8", commit.message.encoding.name
+  end
+  
+  
+  test "should return a NullRepo if you give it an invalid path" do
+    path = Rails.root.join("nope")
+    repo = Houston::VersionControl::Adapter::GitAdapter.create_repo(path)
+    assert_equal Houston::VersionControl::NullRepo, repo
+  end
+  
+  
 end
