@@ -48,6 +48,15 @@ STR
   end
   
   
+  test "#commits_between should return an array of commits excluding the first and including the last" do
+    sha0 = "b62c3f32f72423b81a0282a1a4b97cad2cf129d4"
+    sha1 = "22924bbf4378f83cab93bfd5fa7d7777cbc1f3b4"
+    commits = @test_repo.commits_between(sha0, sha1)
+    assert_equal 2, commits.length
+    assert_instance_of Houston::VersionControl::Commit, commits.first
+  end
+  
+  
   test "Commit messages should be UTF-8" do
     commit = @test_repo.native_commit("22924bbf4378f83cab93bfd5fa7d7777cbc1f3b4")
     assert_equal "UTF-8", commit.message.encoding.name

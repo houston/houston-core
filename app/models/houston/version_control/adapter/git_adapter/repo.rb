@@ -4,6 +4,7 @@ module Houston
       class GitAdapter
         class Repo
           
+          
           def initialize(connection, options={})
             @connection = connection
             @local = options.fetch(:local, false)
@@ -25,7 +26,7 @@ module Houston
           end
           
           def commits_between(sha1, sha2)
-            repo.walk(sha1).take_until { |commit| commit.oid.start_with?(sha1) }
+            connection.walk(sha2).take_until { |commit| commit.oid.start_with?(sha1) }
               .map(&method(:to_commit))
           end
           
