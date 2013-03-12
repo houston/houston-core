@@ -7,6 +7,7 @@ class Project < ActiveRecord::Base
   has_many :tickets, :dependent => :destroy
   has_many :test_runs, :dependent => :destroy
   has_many :notifications, :class_name => "UserNotification"
+  has_many :errors
   has_and_belongs_to_many :maintainers, :join_table => "projects_maintainers", :class_name => "User"
   
   after_create :save_default_notifications
