@@ -44,18 +44,18 @@ module TicketHelper
   
   def format_duration(seconds)
     if seconds < HOUR
-      minutes = (seconds / MINUTE).floor
-      unit = minutes == 1 ? 'minute' : 'minutes'
-      "#{minutes} #{unit}"
+      format_duration_with_units(seconds / MINUTE, 'minute')
     elsif seconds < DAY
-      hours = (seconds / HOUR).floor
-      unit = hours == 1 ? 'hour' : 'hours'
-      "#{hours} #{unit}"
+      format_duration_with_units(seconds / HOUR, 'hour')
     else
-      days = (seconds / DAY).floor
-      unit = days == 1 ? 'day' : 'days'
-      "#{days} #{unit}"
+      format_duration_with_units(seconds / DAY, 'day')
     end
+  end
+  
+  def format_duration_with_units(quantity, unit)
+    quantity = quantity.floor
+    unit << 's' unless quantity == 1
+    "#{quantity} #{unit}"
   end
   
   def class_for_age(seconds)
