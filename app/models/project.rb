@@ -1,6 +1,3 @@
-require 'unfuddle/neq'
-
-
 class Project < ActiveRecord::Base
   
   has_many :releases, :dependent => :destroy
