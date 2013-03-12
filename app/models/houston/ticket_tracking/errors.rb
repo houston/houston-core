@@ -11,6 +11,9 @@ module Houston
       attr_reader :original_error
     end
     
+    class ConnectionError < PassThroughError
+    end
+    
     class InvalidQueryError < PassThroughError
     end
     

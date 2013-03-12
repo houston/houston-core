@@ -1,31 +1,37 @@
 class UpdateKanbanQueueJob
   
+  class QuitAll < RuntimeError; end
+  class QuitProject < RuntimeError; end
+  
   
   def self.run!
     new.run!
   end
   
   def run!
-    next_query!
-  end
-  
-  def next_query!
-    request = next_request!
-    return unless request
-    
-    project, queue = request
-    begin
-      project.tickets_in_queue(queue)
-    rescue
-      Houston.report_exception($!)
-    ensure
-      sleep 2 # give Unfuddle a break
-      next_query!
+    Project.with_ticket_tracking.each do |project|
+      update_tickets_for_project!(project)
     end
+  rescue QuitAll
   end
   
-  def next_request!
-    requests.pop
+  def update_tickets_for_project!(project)
+    KanbanQueue.all.each do |queue|
+      update_tickets_for_project_and_queue!(project, queue)
+    end
+  rescue QuitProject
+  end
+  
+  def update_tickets_for_project_and_queue!(project, queue)
+    project.tickets_in_queue(queue)
+    
+  rescue Houston::TicketTracking::ConnectionError
+    retry if (!connection_retry_count += 1) < 3
+    connection_error!(project)
+  rescue Houston::TicketTracking::InvalidQueryError
+    query_error!(project)
+  ensure
+    sleep 2 # give Unfuddle a break
   end
   
   
@@ -33,16 +39,28 @@ private
   
   
   def initialize
-    setup_requests!
+    @connection_retry_count = 0
   end
   
-  def setup_requests!
-    projects = Project.with_ticket_tracking.to_a
-    queues = KanbanQueue.all
-    @requests = projects.product(queues)
-  end
+  attr_reader :connection_retry_count
   
-  attr_reader :requests
+  
+  def connection_error!(project)
+    Error.create(
+      category: project.ticket_tracking_adapter.downcase,
+      message: $!.message,
+      backtrace: $!.backtrace)
+    raise QuitAll
+  end
+    
+  def query_error!(project)
+    Error.create(
+      project: project,
+      category: "configuration",
+      message: $!.message,
+      backtrace: $!.backtrace)
+    raise QuitProject
+  end
   
   
 end

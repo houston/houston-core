@@ -35,6 +35,8 @@ module Houston
             query = find_in_cache_or_execute(query_key(args)) { construct_ticket_query(*args) }
             remote_tickets = unfuddle.find_tickets!(*query)
             remote_tickets.map { |attributes | build_ticket(attributes) }
+          rescue Unfuddle::ConnectionError
+            raise Houston::TicketTracking::ConnectionError.new($!)
           rescue Unfuddle::Error
             raise Houston::TicketTracking::PassThroughError.new($!)
           end
