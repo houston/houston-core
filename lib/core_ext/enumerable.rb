@@ -17,3 +17,4 @@ module CoreExt
 end
 
 Enumerable.send :include, CoreExt::Enumerable
+Enumerator.send :include, CoreExt::Enumerable
