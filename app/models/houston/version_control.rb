@@ -1,4 +1,5 @@
 Dir["#{Rails.root}/app/models/houston/version_control/adapter/*_adapter.rb"].each(&method(:require_dependency))
+require_dependency "houston/version_control/errors"
 
 module Houston
   

@@ -8,7 +8,7 @@ class ReleaseTest < ActiveSupport::TestCase
     release = Release.new(user_id: 1)
     a_ticket = Object.new
     
-    stub(release).native_commits! { nil }
+    stub(release).native_commits { nil }
     mock(release).tickets { [a_ticket] }
     mock(a_ticket).release!(release)
     

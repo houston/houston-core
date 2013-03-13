@@ -26,12 +26,17 @@ module Houston
           end
           
           def commits_between(sha1, sha2)
-            connection.walk(sha2).take_until { |commit| commit.oid.start_with?(sha1) }
-              .map(&method(:to_commit))
+            pull_and_retry(1) do
+              walker = connection.walk(sha2)
+              walker.take_until { |commit| commit.oid.start_with?(sha1) }
+                    .map(&method(:to_commit))
+            end
           end
           
           def native_commit(sha)
-            connection.lookup(sha)
+            pull_and_retry(1) do
+              connection.lookup(sha)
+            end
           end
           
           def read_file(file_path)
@@ -61,6 +66,22 @@ module Houston
           
           def mirrored?
             @local
+          end
+          
+          def pull_and_retry(retries)
+            begin
+              yield
+            rescue Rugged::OdbError
+              if retries > 0
+                retries -= 1
+                pull!
+                retry
+              else
+                raise Houston::VersionControl::CommitNotFound.new($!)
+              end
+            rescue Rugged::InvalidError
+              raise Houston::VersionControl::CommitNotFound.new($!)
+            end
           end
           
           def pull!

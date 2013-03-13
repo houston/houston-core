@@ -71,7 +71,7 @@ class Release < ActiveRecord::Base
   end
   
   def load_commits!
-    native_commits!.each do |native|
+    native_commits.each do |native|
       commit = commits.find_by_sha(native.sha)
       attributes = Commit.attributes_from_native_commit(native).merge(release: self)
       if commit
@@ -117,13 +117,10 @@ class Release < ActiveRecord::Base
 private
   
   
-  def native_commits!
-    project.repo.refresh!
-    native_commits
-  end
-  
   def native_commits
     project.repo.commits_between(commit0, commit1)
+  rescue Houston::VersionControl::CommitNotFound
+    []
   end
   
   def release_each_ticket
