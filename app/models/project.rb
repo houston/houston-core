@@ -112,7 +112,7 @@ class Project < ActiveRecord::Base
   
   def tickets_in_queue(queue)
     queue = KanbanQueue.find_by_slug(queue) unless queue.is_a?(KanbanQueue)
-    find_tickets(queue.query).tap do |tickets|
+    find_tickets(*queue.query).tap do |tickets|
       update_tickets_in_queue(tickets, queue)
     end
   end
