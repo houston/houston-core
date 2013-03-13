@@ -1,0 +1,25 @@
+#daily_report {
+  
+  .ticket-queue {
+    display: inline-block;
+    border-radius: 3px;
+    background-color: #e6e6e6;
+    color: #333;
+    font-weight: bold;
+    padding: 1px 3px;
+    margin: 0 6px;
+    font-size: 0.88em;
+  }
+  
+  .tickets {
+    margin: 0;
+    padding: 0;
+  }
+  
+  .ticket {
+    display: block;
+    margin: 2px 0;
+    padding: 0;
+  }
+  
+}

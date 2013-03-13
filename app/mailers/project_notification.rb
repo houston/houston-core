@@ -94,6 +94,20 @@ class ProjectNotification < ViewMailer
   end
   
   
+  def daily_report(daily_report, recipients)
+    @report = daily_report
+    @project = daily_report.project
+    @title = daily_report.title
+    @date = daily_report.date
+    
+    mail({
+      to: recipients,
+      subject: daily_report.title,
+      template: "daily_report"
+    })
+  end
+  
+  
 protected
   
   

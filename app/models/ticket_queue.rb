@@ -14,10 +14,17 @@ class TicketQueue < ActiveRecord::Base
       where(queue: queue)
     end
     
+    def for_project(project)
+      where(["tickets.project_id = ?", project.id])
+    end
+    
     def during(date_or_range)
       range = date_or_range..date_or_range unless date_or_range.is_a?(Range)
       where("ticket_queues.created_at <= ? AND (ticket_queues.destroyed_at IS NULL OR ticket_queues.destroyed_at >= ?)", range.end, range.begin)
     end
+    alias :on :during
+    alias :at :during
+    
     
     
     def average_time_for_queue(queue)
