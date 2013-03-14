@@ -45,6 +45,8 @@ class Release < ActiveRecord::Base
     sha.present?
   end
   
+  attr_reader :commit_not_found_error_message
+  
   
   
   def released_at
@@ -120,6 +122,7 @@ private
   def native_commits
     project.repo.commits_between(commit0, commit1)
   rescue Houston::VersionControl::CommitNotFound
+    @commit_not_found_error_message = $!.message
     []
   end
   

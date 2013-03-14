@@ -27,9 +27,18 @@ module Houston
           
           def commits_between(sha1, sha2)
             pull_and_retry(1) do
+              
+              # Assert the presence of both commits
+              native_commit(sha1)
+              native_commit(sha2)
+              
+              found = false
               walker = connection.walk(sha2)
-              walker.take_until { |commit| commit.oid.start_with?(sha1) }
-                    .map(&method(:to_commit))
+              commits = walker.take_until { |commit| found = commit.oid.start_with?(sha1) }
+              
+              raise CommitNotFound, "#{sha1} is not an ancestor of #{sha2}" unless found
+              
+              commits.map(&method(:to_commit))
             end
           end
           
@@ -37,6 +46,9 @@ module Houston
             pull_and_retry(1) do
               connection.lookup(sha)
             end
+          rescue CommitNotFound
+            $!.message = "#{sha} is not a commit"
+            raise
           end
           
           def read_file(file_path)
