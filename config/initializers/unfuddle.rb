@@ -1,1 +1,3 @@
-Unfuddle.config(Houston.config.ticket_system_configuration.merge(include_associations: true))
+Unfuddle.config(Houston.config.ticket_system_configuration.merge(
+  logger: Rails.logger,
+  include_associations: true ))
