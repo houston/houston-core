@@ -1,7 +1,15 @@
 module MarkdownHelper
+  include EmojiHelper
+  
+  def markdown
+    @markdown ||= Redcarpet::Markdown.new(Redcarpet::Render::HTML,
+      :autolink => true,
+      :no_intra_emphasis => true)
+  end
   
   def mdown(text)
-    emojify BlueCloth::new(text).to_html.html_safe
+    return "" if text.blank?
+    emojify markdown.render(text).html_safe
   end
   
 end

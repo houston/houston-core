@@ -34,7 +34,7 @@ gem 'handlebars_assets', '0.8.2'
 
 # Helpers
 gem 'addressable', :require => 'addressable/uri'
-gem 'bluecloth'
+gem 'redcarpet'
 gem 'bundler' # used to parse Gemfiles
 gem 'cancan'
 gem 'childprocess'

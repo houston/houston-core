@@ -81,7 +81,6 @@ GEM
     better_errors (0.7.0)
       coderay (>= 1.0.0)
       erubis (>= 2.6.6)
-    bluecloth (2.2.0)
     builder (3.0.4)
     cancan (1.6.9)
     childprocess (0.3.9)
@@ -204,6 +203,7 @@ GEM
     rake (10.0.3)
     rdoc (3.12.2)
       json (~> 1.4)
+    redcarpet (2.2.2)
     redis (3.0.3)
     redis-namespace (1.2.1)
       redis (~> 3.0.0)
@@ -282,7 +282,6 @@ DEPENDENCIES
   airbrake_user_attributes
   backbone-rails
   better_errors
-  bluecloth
   bundler
   cancan
   childprocess
@@ -312,6 +311,7 @@ DEPENDENCIES
   pry
   rack-mini-profiler
   rails (= 3.2.12)
+  redcarpet
   remotable (>= 0.2.2)!
   resque
   rr

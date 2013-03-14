@@ -1,5 +1,6 @@
 class TicketPresenter
   include UrlHelper
+  include MarkdownHelper
   
   class OneOrMany
     
@@ -67,7 +68,7 @@ class TicketPresenter
         commits: CommitPresenter.new(ticket.commits).as_json,
         releases: ReleasePresenter.new(ticket.releases).as_json,
         lastReleaseAt: ticket.last_release_at,
-        description: BlueCloth::new(ticket.description).to_html }
+        description: mdown(ticket.description) }
     end
   end
   

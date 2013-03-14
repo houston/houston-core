@@ -121,12 +121,16 @@ textarea#release_message {
     margin: 0;
   }
   
-  p, ul {
+  p.no-items { margin: 0 0 0 124px; }
+  
+  ul {
     margin: 0 0 0 124px;
     padding: 0;
     
     li {
       list-style-type: none;
+      
+      p { display: inline; }
     }
   }
 }
