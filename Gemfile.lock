@@ -99,7 +99,7 @@ GEM
       addressable
       rdoc
     daemons (1.1.9)
-    default_value_for (2.0.1)
+    default_value_for (2.0.2)
     devise (2.2.3)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
