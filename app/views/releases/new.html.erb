@@ -9,14 +9,15 @@
 
 <% else %>
 
-  <form accept-charset="UTF-8" action="<%= new_release_path(@project, @environment) %>" class="form-horizontal pjax" method="get">
+  <form accept-charset="UTF-8" action="<%= new_release_path(@project, @environment) %>" class="form-horizontal pjax" method="get" id="new_release_commit_range_form">
     <fieldset>
       <div class="control-group form-actions">
-        <h3>Create a New Release for the following commits</h3>
+        <h3>New Release to <%= @environment %></h3>
+        <p>Create a new release for the following commits</p>
         <%= hidden_field_tag :deploy_id, params[:deploy_id] %>
-        <%= text_field_tag :commit0, @commit0, :class => "text_field" %>
+        <%= text_field_tag :commit0, @commit0, :class => "text_field", size: 8 %>
         ...
-        <%= text_field_tag :commit1, @commit1, :class => "text_field" %>
+        <%= text_field_tag :commit1, @commit1, :class => "text_field", size: 8 %>
         <%= submit_tag "Continue", :name => nil, :class => "btn btn-primary" %>
       </div>
     </fieldset>

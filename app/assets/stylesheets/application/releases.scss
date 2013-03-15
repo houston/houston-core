@@ -91,6 +91,8 @@ textarea#release_message {
       font-size: 1.12em;
       line-height: 19px; // height of .change-tag
       padding-top: 3px; // padding on .change-tag
+      
+      p { margin: 0; }
     }
   }
   
@@ -133,4 +135,11 @@ textarea#release_message {
       p { display: inline; }
     }
   }
+}
+
+
+
+#new_release_commit_range_form {
+  h3 { margin-bottom: 0; }
+  .text_field { width: 8em; }
 }
