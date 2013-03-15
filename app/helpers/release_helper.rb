@@ -16,8 +16,8 @@ module ReleaseHelper
     end
   end
   
-  def format_shas(string)
-    h(string).gsub(/\b[0-9a-f]{7,40}\b/i, '<code>\0</code>').html_safe
+  def replace_quotes(string)
+    h(string).gsub(/&quot;(.+?)&quot;/, '<code>\1</code>').html_safe
   end
   
 end

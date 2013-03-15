@@ -4,8 +4,7 @@
   </div>
 <% elsif @release.commit_not_found_error_message %>
   <div class="alert alert-error">
-    <%= format_shas(@release.commit_not_found_error_message) %>
-    in the repo <code><%= @project.version_control_location %></code>
+    <%= replace_quotes(@release.commit_not_found_error_message) %>
   </div>
 <% elsif @release.commits.none? && @release.changes.none? %>
   <div class="alert alert-error">

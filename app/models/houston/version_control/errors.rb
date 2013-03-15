@@ -22,5 +22,8 @@ module Houston
     class CommitNotFound < PassThroughError
     end
     
+    class InvalidShaError < ArgumentError
+    end
+    
   end
 end

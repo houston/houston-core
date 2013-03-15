@@ -36,18 +36,19 @@ module Houston
               walker = connection.walk(sha2)
               commits = walker.take_until { |commit| found = commit.oid.start_with?(sha1) }
               
-              raise CommitNotFound, "#{sha1} is not an ancestor of #{sha2}" unless found
+              raise CommitNotFound, "\"#{sha1}\" is not an ancestor of \"#{sha2}\"" unless found
               
               commits.map(&method(:to_commit))
             end
           end
           
           def native_commit(sha)
+            normalize_sha!(sha)
             pull_and_retry(1) do
               connection.lookup(sha)
             end
           rescue CommitNotFound
-            $!.message = "#{sha} is not a commit"
+            $!.message = "\"#{sha}\" is not a commit"
             raise
           end
           
@@ -71,6 +72,18 @@ module Houston
           
           
         private
+          
+          def normalize_sha!(sha)
+            sha.strip!
+            sha.slice!(40)
+            validate_sha!(sha)
+          end
+          
+          def validate_sha!(sha)
+            unless sha =~ /^[0-9a-f]+$/i
+              raise InvalidShaError, "\"#{sha}\" is not a valid SHA"
+            end
+          end
           
           def git_dir
             connection.path.chomp("/")
