@@ -10,9 +10,14 @@ class TicketQueue < ActiveRecord::Base
   
   
   class << self
+    def for_kanban
+      in_queues(KanbanQueue.slugs)
+    end
+    
     def in_queue(queue)
       where(queue: queue)
     end
+    alias :in_queues :in_queue
     
     def for_project(project)
       where(["tickets.project_id = ?", project.id])

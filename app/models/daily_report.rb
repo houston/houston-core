@@ -92,7 +92,7 @@ private
   end
   
   def ticket_queues
-    TicketQueue.for_project(project)
+    TicketQueue.for_project(project).for_kanban
   end
   
   def select_ticket_id_and_queue(scope)
