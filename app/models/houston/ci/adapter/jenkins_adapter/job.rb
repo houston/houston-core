@@ -29,19 +29,11 @@ module Houston
             result_url = "#{build_url}/api/json?tree=result"
             test_report_url = "#{build_url}/testReport/api/json"
             
-            results = {}
+            response = fetch_json(result_url, resource_name: "the result of the build")
+            results = {result: translate_result(response["result"])}
             
-            Rails.logger.debug "[jenkins] GET #{result_url}"
-            response = connection.get(result_url)
-            raise Houston::CI::Error, "Houston could not get the result of the build from the URL #{result_url}" unless response.status == 200
-            response = JSON.parse(response.body)
-            
-            results[:result] = translate_result(response["result"])
-            
-            Rails.logger.debug "[jenkins] GET #{test_report_url}"
-            response = connection.get(test_report_url)
-            raise Houston::CI::Error, "Houston could not get detailed test results from the URL #{test_report_url}. Most likely the build failed before the tests could be run." unless response.status == 200
-            response = JSON.parse(response.body)
+            response = fetch_json(test_report_url, resource_name: "detailed test results",
+              additional_error_info: "Most likely the build failed before the tests could be run.")
             
             tests = translate_suites(response["suites"])
             results[:duration] = translate_duration(response["duration"])
@@ -51,8 +43,31 @@ module Houston
             results[:skip_count] = response["skipCount"]
             results[:tests] = tests
             
-            return results
+            results
           end
+          
+          def fetch_json(url, options)
+            resource = options.fetch(:resource_name, "the resource")
+            
+            Rails.logger.debug "[jenkins] GET #{url}"
+            response = connection.get(url)
+            unless response.status == 200
+              error_message = "Houston could not get #{resource} from the URL #{result_url.inspect}."
+              error_message << " " << options[:additional_error_info] if options.key?(:additional_error_info)
+              raise Houston::CI::Error, error_message
+            end
+            
+            JSON.parse(response.body)
+            
+          rescue JSON::ParserError
+            error_message = "Houston could not parse #{resource} from the URL #{result_url.inspect}."
+            error_message << " [#{$!.message}]"
+            error_message << " " << options[:additional_error_info] if options.key?(:additional_error_info)
+            raise Houston::CI::Error, error_message
+          end
+            
+          
+          
           
           def translate_result(result)
             { "FAILURE" => :fail,
