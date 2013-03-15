@@ -205,10 +205,6 @@
           name: current_user.name,
           role: current_user.role
         }.to_json) %>);
-        $('#body .avatar.user-' + window.userId).popover({
-          title: 'Changing your Avatar',
-          content: 'You can change your avatar by going to <a href="http://gravatar.com/">gravatar.com</a> and associating an image with your email address <b><%= current_user.email %></b>.'
-        });
         <% end %>
         
         var $body = $('body');
