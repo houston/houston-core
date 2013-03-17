@@ -3,7 +3,7 @@
     <% if can?(:read, change) %>
       <%= div_for(change) do %>
         <%= render change.tag %>
-        <span class="change-summary"><%= format_change(change) %></span>
+        <div class="change-summary"><%= format_change(change) %></div>
       <% end %>
     <% end %>
   <% end %>

@@ -62,7 +62,6 @@ textarea#release_message {
     }
     
     .change-tag {
-      display: block;
       float: left;
       width: 100px;
       margin: 2px 6px 0 0;
@@ -86,7 +85,6 @@ textarea#release_message {
     
     .change-summary {
       margin-left: 124px;
-      display: block;
       word-wrap: break-word;
       font-size: 1.12em;
       line-height: 19px; // height of .change-tag
