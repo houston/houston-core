@@ -192,12 +192,12 @@ class Ticket < ActiveRecord::Base
     verdicts_by_tester = Hash[testers.map(&:id).zip([nil])]
     notes.each do |note|
       tester_id = note.user_id
-      if verdicts_by_tester.key?(tester_id)
-        if note.verdict == "fails"
-          verdicts_by_tester[tester_id] = "failing"
-        elsif note.verdict == "works"
-          verdicts_by_tester[tester_id] ||= "passing"
-        end
+      next unless verdicts_by_tester.key?(tester_id) # not was not by a tester
+      
+      if note.fail?
+        verdicts_by_tester[tester_id] = "failing"
+      elsif note.pass?
+        verdicts_by_tester[tester_id] ||= "passing"
       end
     end
     verdicts_by_tester
