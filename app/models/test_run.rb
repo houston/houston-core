@@ -13,6 +13,22 @@ class TestRun < ActiveRecord::Base
   
   
   
+  class << self
+    def completed
+      where(arel_table[:completed_at].not_eq(nil))
+    end
+    
+    def passed
+      where(result: "pass")
+    end
+    
+    def failed
+      where(result: "fail")
+    end
+  end
+  
+  
+  
   def start!
     trigger_build!
     save!
