@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.2.12'
+gem 'rails', '3.2.13'
 gem 'activerecord-postgres-hstore' # remove when Rails 4.0
 
 # Database
@@ -90,7 +90,7 @@ group :development, :test do
   
   # For Jenkins
   gem 'simplecov', :require => false
-  gem 'simplecov-json', :require => false, :git => "git://github.com/houstonmc/simplecov-json.git"
+  gem 'simplecov-json', :require => false, :git => 'git://github.com/houstonmc/simplecov-json.git'
   gem 'ci_reporter', :require => false
   
   gem 'pry' # for debugging
