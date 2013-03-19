@@ -52,7 +52,7 @@ module Houston
             Rails.logger.debug "[jenkins] GET #{url}"
             response = connection.get(url)
             unless response.status == 200
-              error_message = "Houston could not get #{resource} from the URL #{result_url.inspect}."
+              error_message = "Houston could not get #{resource} from the URL #{url.inspect}."
               error_message << " " << options[:additional_error_info] if options.key?(:additional_error_info)
               raise Houston::CI::Error, error_message
             end
@@ -60,7 +60,7 @@ module Houston
             JSON.parse(response.body)
             
           rescue JSON::ParserError
-            error_message = "Houston could not parse #{resource} from the URL #{result_url.inspect}."
+            error_message = "Houston could not parse #{resource} from the URL #{url.inspect}."
             error_message << " [#{$!.message}]"
             error_message << " " << options[:additional_error_info] if options.key?(:additional_error_info)
             raise Houston::CI::Error, error_message
