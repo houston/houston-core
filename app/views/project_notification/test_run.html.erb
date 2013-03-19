@@ -2,7 +2,9 @@
   <small>Test Results for</small> <%= @project.name %>
 </h1>
 
-<h2 class="test-result-banner <%= @test_run.result %>"><%= @test_run.result %></h2>
+<h2 class="test-result-banner <%= @test_run.result %>">
+  <%= link_to @test_run.result, @test_run.results_url, target: "_blank" %>
+</h2>
 
 <div class="tests-detail">
   <% if @test_run.tests.nil? %>
@@ -32,3 +34,5 @@
     <% end %>
   <% end %>
 </div>
+
+<p style="text-align: right;"><%= link_to @test_run.results_url, @test_run.results_url, target: "_blank" %></p>

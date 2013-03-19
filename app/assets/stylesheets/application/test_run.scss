@@ -11,7 +11,7 @@ h2.test-result-banner {
 }
 
 .test-result-banner {
-  display: block;
+  display: inline-block;
   width: 4em;
   height: 2em;
   line-height: 2em;
@@ -24,12 +24,24 @@ h2.test-result-banner {
   
   &.pass  { @include badge-style(#5DB64C); letter-spacing: 0.088em; } // grass
   &.fail  { @include badge-style(#E24E32); letter-spacing: 0.160em; } // tomato
+  
+  a {
+    display: block;
+    height: 100%;
+    width: 100%;
+    color: white !important;
+    text-decoration: none !important;
+  }
 }
 
 .tests-detail {
   margin-top: 48px;
   padding-left: 12px;
   border-top: 1px solid #e6e6e6;
+  
+  margin-bottom: 48px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e6e6e6;
   
   font-size: 15px;
   line-height: 1.38em;
