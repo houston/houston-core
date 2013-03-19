@@ -90,7 +90,7 @@ group :development, :test do
   
   # For Jenkins
   gem 'simplecov', :require => false
-  gem 'simplecov-json', :require => false
+  gem 'simplecov-json', :require => false, :git => "git://github.com/houstonmc/simplecov-json.git"
   gem 'ci_reporter', :require => false
   
   gem 'pry' # for debugging

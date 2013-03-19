@@ -25,6 +25,14 @@ GIT
       sass-rails (~> 3.2.3)
 
 GIT
+  remote: git://github.com/houstonmc/simplecov-json.git
+  revision: ad09e37eebbbb177fbc5e65bdd3db80cc997c6a6
+  specs:
+    simplecov-json (0.1.1)
+      json
+      simplecov
+
+GIT
   remote: https://github.com/houstonmc/devise_ldap_authenticatable.git
   revision: add6b13f927ff3cccb58e34f7c0eb88efc8e8ea9
   specs:
@@ -155,7 +163,7 @@ GEM
     method_source (0.8.1)
     mime-types (1.21)
     minitest (4.6.2)
-    multi_json (1.6.1)
+    multi_json (1.7.1)
     multipart-post (1.2.0)
     net-ldap (0.3.1)
     nokogiri (1.5.6)
@@ -222,9 +230,6 @@ GEM
       multi_json (~> 1.0)
       simplecov-html (~> 0.7.1)
     simplecov-html (0.7.1)
-    simplecov-json (0.1.1)
-      json
-      simplecov
     sinatra (1.3.5)
       rack (~> 1.4)
       rack-protection (~> 1.3)
@@ -316,7 +321,7 @@ DEPENDENCIES
   rugged (= 0.17.0.b7)
   sass-rails (~> 3.2.3)
   simplecov
-  simplecov-json
+  simplecov-json!
   sugar-rails
   therubyracer
   thin
