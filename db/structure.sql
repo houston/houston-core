@@ -771,7 +771,10 @@ CREATE TABLE test_runs (
     tests text,
     total_count integer,
     agent_email character varying(255),
-    branch character varying(255)
+    branch character varying(255),
+    coverage text,
+    covered_percent numeric(6,5),
+    covered_strength numeric(6,5)
 );
 
 
@@ -1496,3 +1499,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130306023456');
 INSERT INTO schema_migrations (version) VALUES ('20130306023613');
 
 INSERT INTO schema_migrations (version) VALUES ('20130312224911');
+
+INSERT INTO schema_migrations (version) VALUES ('20130319003918');

@@ -6,6 +6,7 @@ class TestRun < ActiveRecord::Base
   validates :results_url, :presence => true, :if => :completed?
   
   serialize :tests
+  serialize :coverage
   
   def self.find_by_commit(sha)
     where(["commit LIKE ?", "#{sha}%"]).first

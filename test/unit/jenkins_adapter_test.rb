@@ -8,6 +8,8 @@ class JenkinsAdapterTest < ActiveSupport::TestCase
     build_url = "http://jenkins.com/job/houston/18"
     result_url = "#{build_url}/api/json?tree=result"
     test_report_url = "#{build_url}/testReport/api/json"
+    coverage_report_url = "#{build_url}/artifact/coverage/coverage.json"
+    
     expected_results = {
       result:       :fail,
       duration:     884.9784,
@@ -29,14 +31,37 @@ class JenkinsAdapterTest < ActiveSupport::TestCase
       }, {
         suite: "GitAdapterTest", name: "#git dir should return the .git subdirectory when the repo is not bare",
         status: :pass, duration: 0.9480, age: 0
-      }]
+      }],
+      coverage:     [{
+        filename: "app/presenters/release_presenter.rb",
+        coverage: [1, nil, 1, 0, nil, nil, 1, 0, 0, nil, 0, nil, nil, nil, 1, nil, 0, nil, nil, nil]
+      }, {
+        filename: "app/presenters/tester_presenter.rb",
+        coverage: [1, nil, 1, 0, nil, nil, 1, 0, nil, nil, 0, nil, nil, nil, nil]
+      }, {
+        filename: "app/presenters/testing_note_presenter.rb",
+        coverage: [1, 1, nil, 1, 0, nil, nil, 1, 0, 0, nil, 0, nil, nil, nil, 1, nil, nil, nil, nil, nil, nil, 0, nil, nil, nil]
+      }, {
+        filename: "app/presenters/ticket_presenter.rb",
+        coverage: [1, 1, 1, nil, 1, nil, 1, 0, nil, nil, 1, 0, 0, nil, 0, nil, nil, nil, nil, nil, 1, 0, nil, nil, 1, 0, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, 0, nil, nil, nil, 1, 0, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, 0, nil, nil, nil, nil]
+      }],
+      covered_percent: 0.4877472689695896,
+      covered_strength: 0.007832890463537053
     }
     
     project = Project.new
     jenkins = Houston::CI::Adapter::JenkinsAdapter::Job.new(project)
     
-    mock(jenkins.connection).get(anything).twice do |url|
-      OpenStruct.new(status: 200, body: (url == result_url) ? result_response : test_report_response)
+    mock(jenkins.connection).get(result_url) do |url|
+      OpenStruct.new(status: 200, body: result_response)
+    end
+    
+    mock(jenkins.connection).get(test_report_url) do |url|
+      OpenStruct.new(status: 200, body: test_report_response)
+    end
+    
+    mock(jenkins.connection).get(coverage_report_url) do |url|
+      OpenStruct.new(status: 200, body: coverage_report_response)
     end
     
     actual_results = jenkins.fetch_results!(build_url)
@@ -123,6 +148,34 @@ private
         "stdout": "\\n  ",
         "timestamp": null
       }]
+    }
+    JSON
+  end
+  
+  def coverage_report_response
+    <<-JSON
+    {
+      "timestamp": 1363652897,
+      "command_name": "Functional Tests",
+      "files": [{
+        "filename": "/var/lib/jenkins/home/jobs/houston/workspace/app/presenters/release_presenter.rb",
+        "coverage": [1, null, 1, 0, null, null, 1, 0, 0, null, 0, null, null, null, 1, null, 0, null, null, null]
+      }, {
+        "filename": "/var/lib/jenkins/home/jobs/houston/workspace/app/presenters/tester_presenter.rb",
+        "coverage": [1, null, 1, 0, null, null, 1, 0, null, null, 0, null, null, null, null]
+      }, {
+        "filename": "/var/lib/jenkins/home/jobs/houston/workspace/app/presenters/testing_note_presenter.rb",
+        "coverage": [1, 1, null, 1, 0, null, null, 1, 0, 0, null, 0, null, null, null, 1, null, null, null, null, null, null, 0, null, null, null]
+      }, {
+        "filename": "/var/lib/jenkins/home/jobs/houston/workspace/app/presenters/ticket_presenter.rb",
+        "coverage": [1, 1, 1, null, 1, null, 1, 0, null, null, 1, 0, 0, null, 0, null, null, null, null, null, 1, 0, null, null, 1, 0, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 0, null, null, null, 1, 0, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 0, null, null, null, null]
+      }],
+      "metrics": {
+        "covered_percent": 48.77472689695896,
+        "covered_strength": 0.7832890463537053,
+        "covered_lines": 1652,
+        "total_lines": 3387
+      }
     }
     JSON
   end

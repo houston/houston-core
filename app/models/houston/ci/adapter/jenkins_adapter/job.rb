@@ -28,13 +28,15 @@ module Houston
           def fetch_results!(build_url)
             result_url = "#{build_url}/api/json?tree=result"
             test_report_url = "#{build_url}/testReport/api/json"
+            coverage_report_url = "#{build_url}/artifact/coverage/coverage.json"
+            
             
             response = fetch_json(result_url, resource_name: "the result of the build")
             results = {result: translate_result(response["result"])}
             
+            
             response = fetch_json(test_report_url, resource_name: "detailed test results",
               additional_error_info: "Most likely the build failed before the tests could be run.")
-            
             tests = translate_suites(response["suites"])
             results[:duration] = translate_duration(response["duration"])
             results[:total_count] = tests.count
@@ -42,6 +44,13 @@ module Houston
             results[:pass_count] = response["passCount"]
             results[:skip_count] = response["skipCount"]
             results[:tests] = tests
+            
+            
+            response = fetch_json(coverage_report_url, resource_name: "coverage report", fallback_value: {})
+            metrics = response["metrics"] || {}
+            results[:coverage] = translate_file_coverage(response["files"])
+            results[:covered_percent] = metrics["covered_percent"] / 100.0
+            results[:covered_strength] = metrics["covered_strength"] / 100.0
             
             results
           end
@@ -52,6 +61,8 @@ module Houston
             Rails.logger.debug "[jenkins] GET #{url}"
             response = connection.get(url)
             unless response.status == 200
+              return options[:fallback_value] if options.key?(:fallback_value)
+              
               error_message = "Houston could not get #{resource} from the URL #{url.inspect}."
               error_message << " " << options[:additional_error_info] if options.key?(:additional_error_info)
               raise Houston::CI::Error, error_message
@@ -128,6 +139,27 @@ module Houston
             message = lines[0]
             backtrace = lines[1..-1]
             [message, backtrace]
+          end
+          
+          
+          
+          def translate_file_coverage(files)
+            Array.wrap(files).map do |file|
+              { filename: get_relative_filename(file["filename"]),
+                coverage: file["coverage"] }
+            end
+          end
+          
+          # Gets the path of the file in question relative to the
+          # project's root directory.
+          #
+          # Works by assuming that the project has been checked out
+          # to a folder named "workspace" by Jenkins: a reasonable
+          # assumption, but not probably the most robust way of
+          # implementing this!
+          WORKSPACE_MATCHER = /(?<=\/workspace\/).*/
+          def get_relative_filename(filename)
+            filename[WORKSPACE_MATCHER] || filename
           end
           
           
