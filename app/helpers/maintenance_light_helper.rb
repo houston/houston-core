@@ -2,6 +2,8 @@ module MaintenanceLightHelper
   
   def format_maintenance_light(arg, options={})
     maintenance_light = arg.respond_to?(:maintenance_light) ? arg.maintenance_light : arg
+    return "" if maintenance_light.nil?
+    
     html = <<-HTML
     <span class="maintenance-light" rel="tooltip" title="#{maintenance_light.message}">
       <i class="stoplight #{maintenance_light.color}"></i>

@@ -60,6 +60,8 @@ class ProjectDependency
   
   
   def maintenance_light
+    return nil if nil?
+    
     if target_versions.any?
       maintenance_light_for_target_versions
     else
@@ -71,7 +73,7 @@ class ProjectDependency
     return MaintenanceLight.new(self, "green", "Nice! #{project.name} is running the latest version of #{dependency.name}.") if up_to_date?
     
     rx = /^#{minor_version}\.(\d+)$/
-    patchlevel = version.to_s.match(rx)[1].to_i
+    patchlevel = version.to_s[/\d+$/].to_i
     target_versions.each do |target_version|
       next unless target_version.to_s =~ rx
       target_patchlevel = $1.to_i

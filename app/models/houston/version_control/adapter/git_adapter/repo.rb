@@ -53,7 +53,7 @@ module Houston
           end
           
           def read_file(file_path, options={})
-            commit = options.fetch(:commit, connection.head.target)
+            commit = options[:commit] || connection.head.target
             head = native_commit(commit)
             tree = head.tree
             file_path.split("/").each do |segment|
