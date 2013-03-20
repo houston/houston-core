@@ -1,6 +1,6 @@
 if ENV['COVERAGE'] == 'on'
   require "simplecov"
-  require 'simplecov-json'
+  require "simplecov-json"
   SimpleCov.formatter = SimpleCov::Formatter::JSONFormatter
   SimpleCov.start "rails"
 end
