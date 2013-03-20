@@ -5,8 +5,6 @@ class KeyDependency
     @slug = attributes[:slug]
     @name = attributes.fetch(:as, @slug.titleize)
     @target_versions = attributes.fetch(:target_versions, []).map(&Gem::Version.method(:new))
-    
-    pp attributes
   end
   
   
