@@ -52,8 +52,9 @@ module Houston
             raise
           end
           
-          def read_file(file_path)
-            head = native_commit(connection.head.target)
+          def read_file(file_path, options={})
+            commit = options.fetch(:commit, connection.head.target)
+            head = native_commit(commit)
             tree = head.tree
             file_path.split("/").each do |segment|
               object = tree[segment]

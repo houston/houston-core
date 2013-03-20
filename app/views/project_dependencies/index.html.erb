@@ -1,0 +1,51 @@
+<h1 class="space-below">
+  Projects
+  <small>Dependencies</small>
+</h1>
+
+<% if @project_dependencies.any? %>
+  <div class="nomargin">
+    <table class="table">
+      <thead>
+        <tr>
+          <td class="table-margin"></td>
+          <th class="project-title sort-desc">Project</th>
+          <th class="project-dependency">Dependency</th>
+          <% Houston.config.environments.each do |environment| %>
+            <th class="project-environment"><%= environment %></th>
+          <% end %>
+          <td class="table-margin"></td>
+        </tr>
+      </thead>
+      <tbody>
+        <% @project_dependencies.each do |project, *dependencies| %>
+          <tr>
+            <td rowspan="<%= dependencies.length %>" class="table-margin"></td>
+            <td rowspan="<%= dependencies.length %>" class="project-title">
+              <b class="bubble <%= project.color %>" rel="tooltip" title="<%= project.color.titleize %>" data-tooltip-placement="right"></b>
+              <%= link_to project.name, edit_project_path(project) %>
+            </td>
+            <% dependencies.each_with_index do |(dependency, *versions_by_environment), i| %>
+              <% unless i.zero? %>
+                </tr><tr>
+              <% end %>
+              <td class="project-dependency">
+                <%= dependency.name %>
+              </td>
+              <% @environments.each_with_index do |environment_name, i| %>
+                <td class="project-environment">
+                  <%= format_maintenance_light(versions_by_environment[i]) %>
+                </td>
+              <% end %>
+              <% if i.zero? %>
+                <td rowspan="<%= dependencies.length %>" class="table-margin"></td>
+              <% end %>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else %>
+  <div class="alert alert-info">There are either no key dependencies defined or no projects that have them.</div>
+<% end %>

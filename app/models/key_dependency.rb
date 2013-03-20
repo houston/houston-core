@@ -4,24 +4,27 @@ class KeyDependency
   def initialize(attributes={})
     @slug = attributes[:slug]
     @name = attributes.fetch(:as, @slug.titleize)
+    @target_versions = attributes.fetch(:target_versions, []).map(&Gem::Version.method(:new))
     
-    @versions = KeyDependency.versions_for(self)
-    @latest_version = versions.first
-    
-    if versions.any?
-      stringified_versions = versions.map(&:to_s)
-      current_minor_version = stringified_versions.first[/\d+\.\d+/]
-      rx = /^#{current_minor_version}\.\d+$/
-      @patches = stringified_versions.select { |version| version =~ rx }
-      @minor_versions = stringified_versions.map { |version| version[/\d+\.\d+/] }.uniq
-    else
-      @patches = []
-      @minor_versions = []
-    end
+    pp attributes
   end
   
   
-  attr_reader :slug, :name, :versions, :latest_version, :minor_versions, :patches
+  
+  attr_reader :slug, :name, :target_versions
+  
+  def versions
+    @versions ||= KeyDependency.versions_for(self)
+  end
+  
+  def latest_version
+    versions.first
+  end
+  
+  def to_s
+    slug
+  end
+  
   
   
   def self.all
@@ -29,6 +32,7 @@ class KeyDependency
       KeyDependency.new(dependency)
     end
   end
+  
   
   
   def self.versions_for(dependency)

@@ -4,6 +4,7 @@ class Project < ActiveRecord::Base
   has_many :tickets, :dependent => :destroy
   has_many :test_runs, :dependent => :destroy
   has_many :notifications, :class_name => "UserNotification"
+  has_many :deploys
   has_and_belongs_to_many :maintainers, :join_table => "projects_maintainers", :class_name => "User"
   
   after_create :save_default_notifications
@@ -255,13 +256,22 @@ class Project < ActiveRecord::Base
   end
   
   def dependency_version(dependency)
-    return nil unless repo
-    
-    lockfile = repo.read_file("Gemfile.lock")
+    lockfile = read_file("Gemfile.lock")
     return nil unless lockfile
     
     locked_gems = Bundler::LockfileParser.new(lockfile)
-    locked_gems.specs.find { |spec| spec.name == dependency }
+    spec = locked_gems.specs.find { |spec| spec.name == dependency }
+    spec.version if spec
+  end
+  
+  def read_file(path, options={})
+    repo.read_file(path, options)
+  end
+  
+  
+  
+  def environment(environment_name)
+    Environment.new(self, environment_name)
   end
   
   

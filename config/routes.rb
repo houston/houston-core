@@ -53,6 +53,8 @@ Houston::Application.routes.draw do
   
   # Projects
   
+  match "projects/dependencies", :to => "project_dependencies#index", :via => :get
+  
   resources :projects do
     member do
       put :retire

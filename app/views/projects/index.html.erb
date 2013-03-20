@@ -64,11 +64,8 @@
             <td class="project-platform">
               <% platform = project.platform %>
               <% unless platform.blank? %>
-                <% indicator = MaintenanceLight.new(project, KeyDependency.new(slug: platform)) %>
-                <% if indicator.valid? %>
-                  <span class="stoplight <%= indicator.color %>" rel="tooltip" title="<%= indicator.message %>"></span>
-                  <span rel="tooltip" title="Parsed from Gemfile.lock"><%= platform.titleize %> <%= indicator.version %></span>
-                <% end %>
+                <% dependency = ProjectDependency.new(project, KeyDependency.new(slug: platform)) %>
+                <%= format_maintenance_light(dependency, with_name: true) if dependency.valid? %>
               <% end %>
             </td>
             <td class="project-category">
@@ -114,6 +111,8 @@
 <% if can?(:read, Ticket) && can?(:read, Commit) && can?(:read, TestingNote) %>
   <p><%= link_to "Weekly Report", "/weekly_report" %></p>
 <% end %>
+
+<p><%= link_to "Dependency View", "/projects/dependencies" %></p>
 
 <% content_for :javascripts do %>
   <script type="text/javascript">

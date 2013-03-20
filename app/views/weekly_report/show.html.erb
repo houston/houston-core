@@ -607,7 +607,7 @@
     <ul class="maintenance-lights">
       <% @projects.each do |project| %>
         <% MaintenanceLight.for(project).each do |indicator| %>
-          <% unless indicator.update_to_date? %>
+          <% unless indicator.up_to_date? %>
             <li class="maintenance-light">
               <span class="stoplight <%= indicator.color %>"></span>&nbsp;
               <span class="project-name label <%= project.color %>"><%= project.name %></span>&nbsp;

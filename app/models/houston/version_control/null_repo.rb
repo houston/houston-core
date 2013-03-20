@@ -22,7 +22,7 @@ module Houston
         nil
       end
       
-      def read_file(file_path)
+      def read_file(file_path, options={})
         nil
       end
       
