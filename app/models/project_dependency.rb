@@ -2,11 +2,9 @@ class ProjectDependency
   include ActionView::Helpers::TextHelper
   
   
-  def initialize(project, key_dependency, project_version=nil)
-    @project = project
-    @key_dependency = key_dependency
-    
-    @version = project_version || project.dependency_version(key_dependency.slug)
+  def initialize(*args)
+    @project, @key_dependency, @version = args
+    @version = project.dependency_version(key_dependency.slug) if args.length < 3
   end
   
   def self.for(project)
