@@ -14,7 +14,7 @@ class Change < ActiveRecord::Base
     
     def attributes_from_commit(commit)
       message = commit.clean_message[0..255]
-      message[0] = message[0].upcase
+      message[0] = message[0].upcase if message[0]
       { description: message,
         tag: Houston.config.fetch_tag(commit.tags.first) }
     end
