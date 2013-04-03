@@ -54,7 +54,7 @@ module Houston
           def resolve!
             unless %w{resolved closed}.member? @raw_attributes["status"]
               ticket = unfuddle.ticket(remote_id)
-              ticket.update_attributes!("status" => "resolved")
+              ticket.update_attributes!("status" => "resolved", "resolution" => "fixed")
             end
           end
           
