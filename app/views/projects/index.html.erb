@@ -13,6 +13,7 @@
           <th colspan="4" class="project-links">Links</th>
           <th class="project-maintainers">Maintainers</th>
           <th class="project-platform">Platform</th>
+          <th class="project-database">Database</th>
           <th class="project-category">Category</th>
           <th class="project-last-build">Last Build</th>
           <th class="project-last-release">Last Release</th>
@@ -67,6 +68,9 @@
                 <% dependency = ProjectDependency.new(project, KeyDependency.new(slug: platform)) %>
                 <%= format_maintenance_light(dependency, with_name: true) if dependency.valid? %>
               <% end %>
+            </td>
+            <td class="project-database database-<%= (project.database || "none").downcase %>">
+              <%= project.database %>
             </td>
             <td class="project-category">
               <%= project.category %>
