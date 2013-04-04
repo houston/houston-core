@@ -10,7 +10,11 @@
       <%= mdown(@release.message) %>
     </div>
     
-    <%= render partial: "releases/changes", locals: {changes: @release.changes} %>
+    <% if @release.changes.any? %>
+      <%= render partial: "releases/changes", locals: {changes: @release.changes} %>
+    <% else %>
+      <div class="release-no-changes">No changes</div>
+    <% end %>
     
     <div class="release-detail">
       <%= render partial: "releases/tickets", locals: {tickets: @release.tickets} if can?(:read, Ticket) %>
