@@ -108,6 +108,21 @@ class ProjectNotification < ViewMailer
   end
   
   
+  def follow_up(antecedent)
+    @antecedent = antecedent
+    @ticket = antecedent.ticket
+    @project = @ticket.project
+    @reporter = antecedent.reporter
+    @customer = @antecedent.customer
+    
+    mail({
+      to: @reporter,
+      subject: "Sample Ticket follow-up",
+      template: "follow_up"
+    })
+  end
+  
+  
 protected
   
   
