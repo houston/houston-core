@@ -10,7 +10,7 @@
   <p style="margin-top: 3em;">
     <%= link_to "Edit and Publish Release",
       new_release_url(@release, auth_token: @maintainer.authentication_token),
-      :class => "btn btn-primary" %>
+      :class => "btn btn-primary btn-large" %>
     &nbsp;
     <span style="color: #888;">(Commit range:
       <span class="commit-range"><%= link_to_commit_range(@project, @release.commit0, @release.commit1) %></span>)
