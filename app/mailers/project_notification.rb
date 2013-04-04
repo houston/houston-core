@@ -75,7 +75,7 @@ class ProjectNotification < ViewMailer
     
     mail({
       to:       @maintainer,
-      subject:  "deploy to #{deploy.environment_name} complete!",
+      subject:  "deploy to #{deploy.environment_name} complete. Click to Release!",
       template: "new_release"
     })
   end
