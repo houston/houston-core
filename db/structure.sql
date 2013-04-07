@@ -505,7 +505,8 @@ CREATE TABLE commits (
     date date,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    committer_email character varying(255)
+    committer_email character varying(255),
+    project_id integer NOT NULL
 );
 
 
@@ -1285,6 +1286,13 @@ ALTER TABLE ONLY users
 
 
 --
+-- Name: index_commits_on_project_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_commits_on_project_id ON commits USING btree (project_id);
+
+
+--
 -- Name: index_commits_tickets_on_commit_id_and_ticket_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1577,3 +1585,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130407195450');
 INSERT INTO schema_migrations (version) VALUES ('20130407200624');
 
 INSERT INTO schema_migrations (version) VALUES ('20130407220039');
+
+INSERT INTO schema_migrations (version) VALUES ('20130407220937');

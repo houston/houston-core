@@ -1,11 +1,12 @@
 class Commit < ActiveRecord::Base
   
   belongs_to :release
+  belongs_to :project
   has_and_belongs_to_many :tickets
   
   after_create :associate_tickets_with_self
   
-  delegate :project, :to => :release
+  validates :project, :presence => true
   
   
   
