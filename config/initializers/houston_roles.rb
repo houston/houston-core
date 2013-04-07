@@ -1,15 +1,12 @@
 module Houston
   
+  # The roles a user can have in a Project
   def self.roles
-    # The Team view is sorted in the order these roles appear
-    [ "Developer",
+    [ "Owner",
+      "Maintainer",
+      "Contributor",
       "Tester",
-      "Product Owner",
-      "Guest" ]
-  end
-  
-  def self.default_role
-    "Guest"
+      "Follower" ]
   end
   
 end

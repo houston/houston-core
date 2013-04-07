@@ -5,7 +5,9 @@ class Project < ActiveRecord::Base
   has_many :test_runs, :dependent => :destroy
   has_many :notifications, :class_name => "UserNotification"
   has_many :deploys
-  has_and_belongs_to_many :maintainers, :join_table => "projects_maintainers", :class_name => "User"
+  has_many :roles, :dependent => :destroy
+  
+  accepts_nested_attributes_for :roles, :allow_destroy => true # <-- !todo: authorized access only
   
   after_create :save_default_notifications
   
@@ -34,6 +36,44 @@ class Project < ActiveRecord::Base
   def unretire!
     update_attributes!(retired_at: nil)
   end
+  
+  # ------------------------------------------------------------------------- #  
+  
+  
+  
+  
+  # Teammates
+  # ------------------------------------------------------------------------- #
+  
+  def teammates
+    roles.participants.to_users
+  end
+  
+  Houston.roles.each do |role|
+    method_name = role.downcase.gsub(' ', '_')
+    collection_name = method_name.pluralize
+    
+    class_eval <<-RUBY
+      def #{collection_name}
+        @#{collection_name} ||= roles.#{collection_name}.to_users
+      end
+      
+      def #{collection_name}_ids
+        @#{collection_name}_ids ||= roles.#{collection_name}.to_users.reorder("").pluck(:id)
+      end
+    RUBY
+  end
+  
+  def add_teammate(user_or_id, role)
+    attributes = {project: self, name: role}
+    attributes[user_or_id.is_a?(User) ? :user : :user_id] = user_or_id
+    roles.create!(attributes)
+  end
+  
+  def is_teammate?(user_or_id)
+    roles.for_user(user_or_id).any?
+  end
+  alias :teammate? :is_teammate?
   
   # ------------------------------------------------------------------------- #
   
@@ -229,12 +269,6 @@ class Project < ActiveRecord::Base
   # ------------------------------------------------------------------------- #
   
   
-  
-  
-  
-  def testers
-    @testers ||= User.testers
-  end
   
   
   

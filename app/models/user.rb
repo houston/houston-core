@@ -2,34 +2,35 @@ class User < ActiveRecord::Base
   
   has_many :testing_notes
   has_many :notifications, :class_name => "UserNotification", :uniq => true
-  has_and_belongs_to_many :projects, :join_table => "projects_maintainers"
+  has_many :roles, :dependent => :destroy
   
   after_create :save_default_notifications
   
   devise *Houston.config.devise_configuration
   
   attr_accessible :first_name, :last_name, :email,
-                  :role, :password, :password_confirmation,
-                  :remember_me, :notifications_pairs, :unfuddle_id
+                  :remember_me, :notifications_pairs, :unfuddle_id,
+                  :password, :password_confirmation
   
   default_scope order("last_name, first_name")
   
-  default_value_for :role, Houston.default_role
-  
   validates :first_name, :last_name, :email, :presence => true, :length => {:minimum => 2}
-  validates :role, :presence => true, :inclusion => Houston.roles
+  
+  
   
   Houston.roles.each do |role|
     method_name = role.downcase.gsub(' ', '_')
-    class_eval <<-RUBY
-    def #{method_name}?
-      role == "#{role}"
-    end
+    collection_name = method_name.pluralize
     
-    def self.#{method_name.pluralize}
-      where(:role => "#{role}")
+    class_eval <<-RUBY
+    def self.#{collection_name}
+      Role.#{collection_name}.to_users
     end
     RUBY
+  end
+  
+  def self.participants
+    Role.participants.to_users
   end
   
   

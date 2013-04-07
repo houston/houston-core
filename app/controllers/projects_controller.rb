@@ -25,7 +25,7 @@ class ProjectsController < ApplicationController
   
   def edit
     @project = Project.find_by_slug!(params[:id])
-    @project.maintainers << current_user if @project.maintainers.none?
+    @project.roles.build if @project.roles.none?
     
     @title = "#{@project.name}: Edit"
   end

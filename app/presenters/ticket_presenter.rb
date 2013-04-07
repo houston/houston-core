@@ -50,7 +50,7 @@ class TicketPresenter
         projectSlug: ticket.project.slug,
         projectTitle: ticket.project.name,
         projectColor: ticket.project.color,
-        projectMaintainers: ticket.project.maintainer_ids,
+        projectMaintainers: ticket.project.maintainers_ids,
         number: ticket.number,
         summary: ticket.summary,
         verdict: ticket.verdict.downcase,
