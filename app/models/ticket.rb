@@ -14,7 +14,7 @@ class Ticket < ActiveRecord::Base
   validates :project_id, presence: true
   validates :summary, presence: true
   validates :number, presence: true
-  validates_uniqueness_of :number, scope: :project_id, on: :create
+  validates_uniqueness_of :number, scope: :project_id, :on => :create, :if => :number
   
   attr_readonly :number, :project_id
   
