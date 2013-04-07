@@ -1,7 +1,6 @@
 class ReleasesController < ApplicationController
   include UrlHelper
   before_filter :get_project_and_environment
-  load_and_authorize_resource
   
   def index
     @title = "#{@project.name}: Releases"
@@ -10,6 +9,8 @@ class ReleasesController < ApplicationController
   
   def show
     @release = @releases.find(params[:id])
+    authorize! :show, @release
+    
     @title = "#{@project.name}: #{@release.name}"
   end
   
@@ -20,6 +21,7 @@ class ReleasesController < ApplicationController
     @commit0 = params.fetch :commit0, @releases.most_recent_commit
     @commit1 = params.fetch :commit1, @deploy.try(:commit)
     @release = @releases.new(commit0: @commit0, commit1: @commit1, deploy: @deploy)
+    authorize! :create, @release
     
     if @project.repo.nil?
       render template: "releases/invalid_repo"
@@ -44,6 +46,7 @@ class ReleasesController < ApplicationController
 
   def edit
     @release = @releases.find(params[:id])
+    authorize! :update, @release
     
     if params[:recreate]
       @release.changes.each { |change| change._destroy = true }
@@ -61,6 +64,7 @@ class ReleasesController < ApplicationController
   def create
     @release = @releases.new(params[:release])
     @release.user = current_user
+    authorize! :create, @release
     
     if @release.save
       ProjectNotification.release(@release).deliver! if params[:send_release_email]
@@ -81,6 +85,7 @@ class ReleasesController < ApplicationController
   
   def update
     @release = @releases.find(params[:id])
+    authorize! :update, @release
     
     if @release.update_attributes(params[:release])
       redirect_to @release, notice: "Release was successfully updated."
@@ -91,6 +96,8 @@ class ReleasesController < ApplicationController
   
   def destroy
     @release = @releases.find(params[:id])
+    authorize! :destroy, @release
+    
     @release.destroy
     
     redirect_to releases_url

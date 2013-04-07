@@ -10,6 +10,8 @@ class TestingReportController < ApplicationController
     @tickets = []
     
     Project.all.each do |project|
+      next unless can?(:show, project.testing_notes.build)
+      
       tickets_for_project = unfuddle_tickets
         .select { |ticket| ticket["project_id"] == project.ticket_tracking_id }
         .map { | attributes| project.ticket_system.build_ticket(attributes) }
@@ -28,12 +30,12 @@ class TestingReportController < ApplicationController
   def show
     @project = Project.find_by_slug!(params[:slug])
     @title = "Testing Report: #{@project.name}"
+    authorize! :show, @project.testing_notes.build
     
-    @tickets = @project.find_tickets(status: :resolved, resolution: :fixed)
-     .reject(&:in_development?)
+    @tickets = @project.find_tickets(status: :resolved, resolution: :fixed).reject(&:in_development?)
     
-   @tickets = TicketPresenter.new(@tickets).with_testing_notes
-   render json: @tickets if request.xhr?
+    @tickets = TicketPresenter.new(@tickets).with_testing_notes
+    render json: @tickets if request.xhr?
   end
   
   

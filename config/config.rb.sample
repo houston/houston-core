@@ -31,8 +31,7 @@ Houston.config do
       
       # Customers are allowed to see Release Notes of products, for production
       can :read, Release do |release|
-        release.project.category == "Products" &&
-        (release.environment_name.blank? || release.environment_name == "Production")
+        release.project.category == "Products" && (release.environment_name.blank? || release.environment_name == "Production")
       end
       
       # Customers are allowed to see Features, Improvements, and Bugfixes
@@ -56,30 +55,34 @@ Houston.config do
       can :read, User
       can :update, user
       
+      # Everyone can make themselves a "Follower"
+      can :create, Role, name: "Follower"
+      
+      # Everyone can remove themselves from a role
+      can :destroy, Role, user_id: user.id
+      
+      # Everyone can edit their own testing notes
+      can [:update, :destroy], TestingNote, user_id: user.id
       
       
-      if user.developer? or user.tester? or user.product_owner?
+      
+      # The following abilities are project-specific and depend on one's role
+      
+      roles = user.roles.participants
+      if roles.any?
         
-        # Developers, Testers, and Project Owners can see and comment on Testing Reports
-        # They can also edit their own notes
-        can [:create, :read], TestingNote
-        can [:update, :destroy], TestingNote, user_id: user.id
-        
-      end
-      
-      
-      
-      if user.developer?
+        # Everyone can see and comment on Testing Reports for projects they are involved in
+        can [:create, :read], TestingNote, project_id: roles.pluck(:project_id)
         
         # Developers see the other kinds of changes: Test Fixes and Refactors
-        can :read, Change
+        can :read, Change, project_id: roles.contributors.pluck(:project_id)
         
         # Developers also see commit info
-        can :read, Commit
+        can :read, Commit, project_id: roles.contributors.pluck(:project_id)
         
-        # Developers can manage projects and releases
-        can :manage, Project
-        can :manage, Release
+        # Maintainers can manages Releases and update Projects
+        can :manage, Release, project_id: roles.maintainers.pluck(:project_id)
+        can :update, Project, id: roles.maintainers.pluck(:project_id)
         
       end
     end

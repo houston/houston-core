@@ -55,13 +55,15 @@
                   <ul class="dropdown-menu releases-menu">
                     <li><%= link_to "All Projects", main_app.dashboard_path %></li>
                     <li class="divider"></li>
-                  <% Project.all.each do |project| %>
-                    <li class="project">
-                      <%= link_to main_app.project_dashboard_path(project) do %>
-                        <%= project.name %> <b class="bubble <%= project.color %>"></b>
+                    <% Project.all.each do |project| %>
+                      <% if can?(:read, project) %>
+                        <li class="project">
+                          <%= link_to main_app.project_dashboard_path(project) do %>
+                            <%= project.name %> <b class="bubble <%= project.color %>"></b>
+                          <% end %>
+                        </li>
                       <% end %>
-                    </li>
-                  <% end %>
+                    <% end %>
                   </ul>
                 </li>
               <% end %>
@@ -73,31 +75,35 @@
                   <ul class="dropdown-menu kanban-menu">
                     <li><%= link_to "All Projects", main_app.kanban_path %></li>
                     <li class="divider"></li>
-                  <% Project.all.each do |project| %>
-                    <li class="project">
-                      <%= link_to main_app.project_kanban_path(project) do %>
-                        <%= project.name %> <b class="bubble <%= project.color %>"></b>
+                    <% Project.all.each do |project| %>
+                      <% if can?(:read, project.tickets.build) %>
+                        <li class="project">
+                          <%= link_to main_app.project_kanban_path(project) do %>
+                            <%= project.name %> <b class="bubble <%= project.color %>"></b>
+                          <% end %>
+                        </li>
                       <% end %>
-                    </li>
-                  <% end %>
+                    <% end %>
                   </ul>
                 </li>
               <% end %>
               
               <%# Testing Reports %>
-              <% if can?(:read, Ticket) && can?(:read, TestingNote) %>
+              <% if can?(:read, TestingNote) %>
                 <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">Testing Reports <b class="caret"></b></a>
                   <ul class="dropdown-menu testing-reports-menu">
                     <li><%= link_to "All Projects", main_app.testing_report_path %></li>
                     <li class="divider"></li>
-                  <% Project.all.each do |project| %>
-                    <li class="project">
-                      <%= link_to main_app.project_testing_report_path(project) do %>
-                        <%= project.name %> <b class="bubble <%= project.color %>"></b>
+                    <% Project.all.each do |project| %>
+                      <% if can?(:read, project.testing_notes.build) %>
+                        <li class="project">
+                          <%= link_to main_app.project_testing_report_path(project) do %>
+                            <%= project.name %> <b class="bubble <%= project.color %>"></b>
+                          <% end %>
+                        </li>
                       <% end %>
-                    </li>
-                  <% end %>
+                    <% end %>
                   </ul>
                 </li>
               <% end %>
@@ -107,15 +113,15 @@
                 <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">Releases <b class="caret"></b></a>
                   <ul class="dropdown-menu releases-menu">
-                  <% Project.all.each do |project| %>
-                    <% if can?(:read, project.releases.build) %>
-                      <li class="project">
-                        <%= link_to main_app.releases_path(project) do %>
-                          <%= project.name %> <b class="bubble <%= project.color %>"></b>
-                        <% end %>
-                      </li>
+                    <% Project.all.each do |project| %>
+                      <% if can?(:read, project.releases.build) %>
+                        <li class="project">
+                          <%= link_to main_app.releases_path(project) do %>
+                            <%= project.name %> <b class="bubble <%= project.color %>"></b>
+                          <% end %>
+                        </li>
+                      <% end %>
                     <% end %>
-                  <% end %>
                   </ul>
                 </li>
               <% end %>

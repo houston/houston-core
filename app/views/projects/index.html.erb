@@ -27,7 +27,7 @@
             <td class="table-margin"></td>
             <td class="project-title">
               <b class="bubble <%= project.color %>" rel="tooltip" title="<%= project.color.titleize %>" data-tooltip-placement="right"></b>
-              <%= link_to project.name, edit_project_path(project) %>
+              <%= link_to_if can?(:update, project), project.name, edit_project_path(project) %>
             </td>
             <td class="project-link project-unfuddle-link">
               <% if ticket_system_url = project.ticket_system_project_url %>
@@ -88,7 +88,7 @@
               <% end %>
             </td>
             <td class="project-new-release">
-              <% if can?(:create, Release) %>
+              <% if can?(:create, project.releases.build) %>
                 <div class="btn-group">
                   <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
                     New Release
