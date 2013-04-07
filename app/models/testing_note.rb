@@ -6,11 +6,13 @@ class TestingNote < ActiveRecord::Base
   
   belongs_to :user
   belongs_to :ticket
+  belongs_to :project
   
   VERDICTS = %w{works fails none}
   
   validates :user, :presence => true
   validates :ticket, :presence => true
+  validates :project, :presence => true
   validates :comment, :presence => true, :length => 1..1000
   validates :verdict, :presence => true, :inclusion => VERDICTS
   
@@ -21,8 +23,6 @@ class TestingNote < ActiveRecord::Base
               :body => :unfuddle_comment_body
   remote_key [:project_id, :ticket_id, :id], :path => "/projects/:unfuddle_project_id/tickets/:unfuddle_ticket_id/comments/:unfuddle_id"
   expires_after 100.years
-  
-  delegate :project, :to => :ticket
   
   def unfuddle_ticket_id
     ticket.remote_id

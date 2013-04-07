@@ -6,7 +6,7 @@ class TestingNotesController < ApplicationController
   
   
   def create
-    @testing_note = current_user.testing_notes.create(params[:testing_note])
+    @testing_note = current_user.testing_notes.create(params[:testing_note].merge(project: @ticket.project))
     render_testing_note
   end
   

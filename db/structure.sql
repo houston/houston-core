@@ -843,7 +843,8 @@ CREATE TABLE testing_notes (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     expires_at timestamp without time zone,
-    unfuddle_id integer
+    unfuddle_id integer,
+    project_id integer NOT NULL
 );
 
 
@@ -1368,6 +1369,13 @@ CREATE INDEX index_test_runs_on_project_id ON test_runs USING btree (project_id)
 
 
 --
+-- Name: index_testing_notes_on_project_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_testing_notes_on_project_id ON testing_notes USING btree (project_id);
+
+
+--
 -- Name: index_testing_notes_on_ticket_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1567,3 +1575,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130319003918');
 INSERT INTO schema_migrations (version) VALUES ('20130407195450');
 
 INSERT INTO schema_migrations (version) VALUES ('20130407200624');
+
+INSERT INTO schema_migrations (version) VALUES ('20130407220039');
