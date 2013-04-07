@@ -40,49 +40,6 @@
       </div>
     </div>
 
-    <hr />
-
-    <div class="control-group">
-      <%= f.label :notifications, :class => 'control-label' %>
-      <div class="controls changes-nested-editor">
-        <table class="notifications-table">
-          <thead>
-            <tr>
-              <td class="project"></td>
-              <% Houston.config.environments.each do |environment| %>
-                <th><%= environment %></th>
-              <% end %>
-            </tr>
-          </thead>
-          <tbody>
-            <% Project.all.each do |project| %>
-              <tr>
-                <td class="notification-project"><b class="bubble <%= project.color %>"></b> <%= project.name %></td>
-                <% Houston.config.environments.each do |environment| %>
-                  <td class="notification-checkbox">
-                    <%= label_tag "user_#{environment}_#{project.id}_notification" do %>
-                      <%= check_box_tag "user[notifications_pairs][]", "#{project.id},#{environment}", @user.notifications.where(environment_name: environment, project_id: project.id).any?, :id => "user_#{environment}_#{project.id}_notification", :class => "#{environment}-notification" %>
-                    <% end %>
-                  </td>
-                <% end %>
-              </tr>
-            <% end %>
-          </tbody>
-          <tfoot>
-            <tr>
-              <td class="project"></td>
-              <% Houston.config.environments.each do |environment| %>
-                <th>
-                  <a class="select-all" data-environment="<%= environment %>">All</a> /
-                  <a class="select-none" data-environment="<%= environment %>">None</a>
-                </th>
-              <% end %>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
-    </div>
-    
     <% if @user.new_record? %>
     <div class="control-group">
       <div class="controls">
@@ -101,19 +58,4 @@
     </div>
     
   </fieldset>
-<% end %>
-
-<% content_for :javascripts do %>
-<script type="text/javascript">
-  $(function() {
-    $('.select-all').click(function() {
-      var environment = $(this).attr('data-environment');
-      $('.' + environment + '-notification').attr('checked', 'checked');
-    });
-    $('.select-none').click(function() {
-      var environment = $(this).attr('data-environment');
-      $('.' + environment + '-notification').removeAttr('checked');
-    });
-  });
-</script>
 <% end %>

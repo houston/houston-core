@@ -1,16 +1,12 @@
 class User < ActiveRecord::Base
   
   has_many :testing_notes
-  has_many :notifications, :class_name => "UserNotification", :uniq => true
   has_many :roles, :dependent => :destroy
-  
-  after_create :save_default_notifications
   
   devise *Houston.config.devise_configuration
   
-  attr_accessible :first_name, :last_name, :email,
-                  :remember_me, :notifications_pairs, :unfuddle_id,
-                  :password, :password_confirmation
+  attr_accessible :first_name, :last_name, :email, :unfuddle_id,
+                  :password, :password_confirmation, :remember_me
   
   default_scope order("last_name, first_name")
   
@@ -33,6 +29,10 @@ class User < ActiveRecord::Base
     Role.participants.to_users
   end
   
+  def self.notified_of_releases_to(environment_name)
+    scoped # <-- !todo: implement preferences for this
+  end
+  
   
   
   def name
@@ -41,27 +41,8 @@ class User < ActiveRecord::Base
   
   
   
-  def notifications_pairs=(pairs)
-    self.notifications = pairs.map do |pair|
-      project_id, environment_name = pair.split(",")
-      find_or_create_notification(project_id: project_id.to_i, environment_name: environment_name)
-    end
-  end
-  
-  
-  
-  def default_notifications_environments
-    case role # <-- knowledge of environments
-    when "Tester";      %w{Staging Production}
-    when "Stakeholder"; %w{Production}
-    else                []
-    end
-  end
-  
-  
-  
-  
   # LDAP Overrides
+  # ------------------------------------------------------------------------- #
   
   def self.find_ldap_entry(ldap_connection, auth_key_value)
     filter = Net::LDAP::Filter.eq(Houston::TMI::FIELD_USED_FOR_LDAP_LOGIN, auth_key_value)
@@ -81,24 +62,8 @@ class User < ActiveRecord::Base
       last_name: entry.sn.first )
   end
   
+  # ------------------------------------------------------------------------- #
   
-  
-protected
-  
-  
-  def save_default_notifications
-    environments = default_notifications_environments
-    Project.all.each do |project|
-      environments.each do |environment|
-        self.notifications.push find_or_create_notification(project_id: project.id, environment_name: environment)
-      end
-    end
-    nil
-  end
-  
-  def find_or_create_notification(attributes)
-    UserNotification.find_or_create(attributes.merge(user_id: id))
-  end
   
   
 end

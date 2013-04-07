@@ -109,10 +109,7 @@ class Release < ActiveRecord::Base
   
   
   def notification_recipients
-    @notification_recipients ||= begin
-      user_ids = project.notifications.where(environment_name: environment_name).pluck(:user_id)
-      User.where(id: user_ids)
-    end
+    @notification_recipients ||= project.followers.notified_of_releases_to(environment_name)
   end
   
   

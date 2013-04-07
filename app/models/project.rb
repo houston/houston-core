@@ -5,13 +5,10 @@ class Project < ActiveRecord::Base
   has_many :tickets, :dependent => :destroy
   has_many :testing_notes, :dependent => :destroy
   has_many :test_runs, :dependent => :destroy
-  has_many :notifications, :class_name => "UserNotification"
   has_many :deploys
   has_many :roles, :dependent => :destroy
   
   accepts_nested_attributes_for :roles, :allow_destroy => true # <-- !todo: authorized access only
-  
-  after_create :save_default_notifications
   
   validate :ticket_tracking_id_is_valid
   validate :version_control_location_is_valid
@@ -21,6 +18,11 @@ class Project < ActiveRecord::Base
   def last_test_run
     test_runs.order("created_at DESC").first
   end
+  
+  def to_param
+    slug
+  end
+  
   
   
   
@@ -49,6 +51,10 @@ class Project < ActiveRecord::Base
   
   def teammates
     roles.participants.to_users
+  end
+  
+  def followers
+    roles.to_users
   end
   
   Houston.roles.each do |role|
@@ -175,14 +181,6 @@ class Project < ActiveRecord::Base
   
   
   
-  def to_param
-    slug
-  end
-  
-  
-  
-  
-  
   # Ticket Tracking
   # ------------------------------------------------------------------------- #
   
@@ -274,15 +272,6 @@ class Project < ActiveRecord::Base
   
   
   
-  def notifications_pairs=(pairs)
-    self.notifications = pairs.map do |pair|
-      user_id, environment = pair.split(",")
-      find_or_create_notification(user_id: user_id.to_i, environment_name: environment)
-    end
-  end
-  
-  
-  
   def platform
     @platform ||= begin
       if dependency_version("rails") then "rails"
@@ -332,25 +321,6 @@ class Project < ActiveRecord::Base
   
   def environment(environment_name)
     Environment.new(self, environment_name)
-  end
-  
-  
-  
-private
-  
-  
-  
-  def save_default_notifications
-    User.all.each do |user|
-      environments = user.default_notifications_environments
-      environments.each do |environment|
-        self.notifications.push find_or_create_notification(user_id: user.id, environment_name: environment)
-      end
-    end
-  end
-  
-  def find_or_create_notification(attributes)
-    UserNotification.find_or_create(attributes.merge(project_id: id))
   end
   
   
