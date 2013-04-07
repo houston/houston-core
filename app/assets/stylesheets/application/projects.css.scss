@@ -1,7 +1,5 @@
 #projects {
-  th, td {
-    vertical-align: middle;
-  }
+  th, td { vertical-align: middle; }
   th { white-space: nowrap; }
 }
 
@@ -126,3 +124,5 @@ th, td {
 }
 
 .project-platform { white-space: nowrap; }
+
+.project-following form { margin-bottom: 0; }

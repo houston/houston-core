@@ -19,6 +19,7 @@
           <th class="project-last-release"><%= environment_name %></th>
           <% end %>
           <td class="project-new-release"></td>
+          <td class="project-following"></td>
           <td class="table-margin"></td>
         </tr>
       </thead>
@@ -97,6 +98,18 @@
                     <% end %>
                   </ul>
                 </div>
+              <% end %>
+            </td>
+            <td class="project-following">
+              <% if current_user %>
+                <% roles_for_project = current_user.roles.find_all { |role| role.project_id == project.id }.map(&:name) %>
+                <% if roles_for_project.none? %>
+                  <%= button_to "Follow", project_follow_path(project), method: :post, class: "btn btn-primary" %>
+                <% elsif roles_for_project == %w{Follower} %>
+                  <%= button_to "Unfollow", project_unfollow_path(project), method: :delete, class: "btn" %>
+                <% else %>
+                  <%= roles_for_project.to_sentence %>
+                <% end %>
               <% end %>
             </td>
             <td class="table-margin"></td>

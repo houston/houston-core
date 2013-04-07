@@ -60,6 +60,9 @@ Houston::Application.routes.draw do
       put :retire
     end
     
+    post "follow", :to => "project_roles#create", :as => :follow
+    delete "unfollow", :to => "project_roles#destroy", :as => :unfollow
+    
     match "deploy", :to => "deploys#create", :via => :post
     match "deploy", :to => "deploys#create", :via => :get if Rails.env.development?
   end
