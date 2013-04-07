@@ -1,9 +1,9 @@
 class Change < ActiveRecord::Base
   
   belongs_to :release
+  belongs_to :project
   
-  delegate :project, :to => :release
-  
+  validates :project, :presence => true
   validates :description, :length => 1...255
   
   class << self

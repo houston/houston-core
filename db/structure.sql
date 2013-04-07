@@ -469,7 +469,8 @@ CREATE TABLE changes (
     description character varying(255),
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    tag_slug character varying(255)
+    tag_slug character varying(255),
+    project_id integer NOT NULL
 );
 
 
@@ -1286,6 +1287,13 @@ ALTER TABLE ONLY users
 
 
 --
+-- Name: index_changes_on_project_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_changes_on_project_id ON changes USING btree (project_id);
+
+
+--
 -- Name: index_commits_on_project_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1587,3 +1595,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130407200624');
 INSERT INTO schema_migrations (version) VALUES ('20130407220039');
 
 INSERT INTO schema_migrations (version) VALUES ('20130407220937');
+
+INSERT INTO schema_migrations (version) VALUES ('20130407221459');

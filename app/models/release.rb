@@ -20,6 +20,7 @@ class Release < ActiveRecord::Base
   # validates_presence_of :deploy_id, :on => :create
   validates_uniqueness_of :deploy_id, :allow_nil => true
   validates_associated :changes
+  before_validation :ensure_changes_are_associated_with_project
   
   
   
@@ -68,7 +69,7 @@ class Release < ActiveRecord::Base
   
   def build_changes_from_commits
     commits.each do |commit|
-      changes.build Change.attributes_from_commit(commit).merge(release: self) unless commit.skip?
+      changes.build Change.attributes_from_commit(commit).merge(release: self, project: project) unless commit.skip?
     end
   end
   
@@ -130,12 +131,19 @@ private
     []
   end
   
+  
+  def ensure_changes_are_associated_with_project
+    changes.each do |change|
+      change.project = project
+    end
+  end
+  
+  
   def release_each_ticket
     tickets.each do |ticket|
       ticket.release!(self)
     end
   end
-  
   
   
 end
