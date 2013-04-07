@@ -119,7 +119,7 @@ class Project < ActiveRecord::Base
       numbers = unfuddle_tickets.map(&:number)
       tickets = self.tickets.where(number: numbers).includes(:testing_notes).includes(:commits)
       
-      unfuddle_tickets.map do |unfuddle_ticket|
+      unfuddle_tickets.reject(&:nil?).map do |unfuddle_ticket|
         ticket = tickets.detect { |ticket| ticket.number == unfuddle_ticket.number }
         attributes = unfuddle_ticket.attributes
         if ticket
