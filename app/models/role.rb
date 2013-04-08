@@ -29,11 +29,11 @@ class Role < ActiveRecord::Base
     end
     
     def to_users
-      User.joins(:roles).merge(scoped).uniq
+      User.joins(:roles).merge(scoped).readonly(false).uniq
     end
     
     def to_projects
-      Project.scoped.merge(scoped).uniq
+      Project.scoped.merge(scoped).readonly(false).uniq
     end
     
     def for_user(user_or_id)
