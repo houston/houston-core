@@ -29,25 +29,46 @@
           <%= f.check_box :administrator, :class => 'checkbox' %>
         </div>
       </div>
+      
+      <hr />
+      
+      <div class="control-group">
+        <%= f.label :unfuddle_id, :class => 'control-label' %>
+        <div class="controls">
+          <%= f.number_field :unfuddle_id, :class => 'number_field' %>
+        </div>
+      </div>
     <% end %>
     
+    
     <hr />
-
+    
     <div class="control-group">
-      <%= f.label :unfuddle_id, :class => 'control-label' %>
+      <label class="control-label">Notifications</label>
       <div class="controls">
-        <%= f.number_field :unfuddle_id, :class => 'number_field' %>
+      
+        <p class="notifications-instructions">
+          for projects I follow, notify me:
+        </p>
+        
+        <% Houston.config.environments.each do |environment| %>
+          <label class="checkbox" for="send_release_notes_<%= environment.underscore %>">
+            <input type="hidden" name="send_release_notes[<%= environment %>]" value="0" />
+            <input type="checkbox" id="send_release_notes_<%= environment.underscore %>" name="send_release_notes[<%= environment %>]" value="1" <%= "checked=\"checked\"" if @user.environments_subscribed_to.member?(environment) %>/> of every release to <b><%= environment %></b>
+          </label>
+        <% end %>
       </div>
     </div>
-
+    
+    
     <% if @user.new_record? %>
-    <div class="control-group">
-      <div class="controls">
-        <label for="send_invitation">
-          <input type="checkbox" id="send_invitation" name="send_invitation" value="1" checked="checked" /> Invite user to set up an account
-        </label>
+      <div class="control-group">
+        <div class="controls">
+          <label for="send_invitation">
+            <input type="checkbox" id="send_invitation" name="send_invitation" value="1" checked="checked" /> Invite user to set up an account
+          </label>
+        </div>
       </div>
-    </div>
     <% end %>
     
     <div class="form-actions">

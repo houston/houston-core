@@ -1038,7 +1038,8 @@ CREATE TABLE users (
     administrator boolean DEFAULT false,
     unfuddle_id integer,
     first_name character varying(255),
-    last_name character varying(255)
+    last_name character varying(255),
+    environments_subscribed_to character varying(255) DEFAULT ''::character varying NOT NULL
 );
 
 
@@ -1597,3 +1598,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130407220039');
 INSERT INTO schema_migrations (version) VALUES ('20130407220937');
 
 INSERT INTO schema_migrations (version) VALUES ('20130407221459');
+
+INSERT INTO schema_migrations (version) VALUES ('20130416020627');

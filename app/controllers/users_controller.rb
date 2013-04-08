@@ -119,7 +119,10 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @user.administrator = @administrator
     
-    if @user.update_attributes(params[:user])
+    attributes = params[:user]
+    attributes[:environments_subscribed_to] = params[:send_release_notes].select { |_, value| value == "1" }.keys
+    
+    if @user.update_attributes(attributes)
       redirect_to @user, notice: 'User was successfully updated.'
     else
       render action: "edit"

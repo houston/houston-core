@@ -3,10 +3,13 @@ class User < ActiveRecord::Base
   has_many :testing_notes
   has_many :roles, :dependent => :destroy
   
+  serialize :environments_subscribed_to, JSON
+  
   devise *Houston.config.devise_configuration
   
   attr_accessible :first_name, :last_name, :email, :unfuddle_id,
-                  :password, :password_confirmation, :remember_me
+                  :password, :password_confirmation, :remember_me,
+                  :environments_subscribed_to
   
   default_scope order("last_name, first_name")
   
@@ -30,7 +33,7 @@ class User < ActiveRecord::Base
   end
   
   def self.notified_of_releases_to(environment_name)
-    scoped # <-- !todo: implement preferences for this
+    where(["users.environments_subscribed_to LIKE ?", "%#{environment_name.inspect}%"])
   end
   
   
