@@ -3,12 +3,8 @@
 # Fixes & Refinements
 =====================================================================
 
- 1. **Kanban:** fetch ticket queue status in the background in case Kanban isn't default screen
  2. **Test Results:** Add duration
  2. **Test Results:** Add coverage info
- 3. **Releases/Deploy Emails:** have up-to-date commits
- 3. **Test Results**, **Deploy**: add branch name to test run emails; to deploy complete emails
- 
  4. **Global:** Handle Timeout::Error
  4. **Weekly Report/Exceptions:** problems history is off by 1 week?
  4. **Weekly Report:** cache Google Chart images in emails and/or implement server-side SVG library
@@ -26,9 +22,6 @@
 Goals:
  - Measure exception turn time
  - Prioritize project backlogs
-
-Questions:
- - Is it possible prioritize w/ drag-and-drop Story cards? (How to deal with scale? Prerequisites?)
 
 Tasks:
  - **Weekly Report/Exceptions:** show average time to close problem
@@ -63,6 +56,7 @@ Projects:
    - [idea] Have modules define permissions needed
    - **Project:** fix setting notifications
  - Daily Report:
+   - When a test fails: which commit range is to blame
    - Recent new tickets
    - Recent new exceptions
    - Maintenance lights
