@@ -2,22 +2,28 @@ class TestingNotesController < ApplicationController
   before_filter :find_ticket
   before_filter :find_testing_note, :only => [:destroy, :update]
   before_filter :authenticate_user!, :only => [:create, :update, :destroy]
-  load_and_authorize_resource
   
   
   def create
     @testing_note = current_user.testing_notes.create(params[:testing_note].merge(project: @ticket.project))
+    
+    authorize! :create, @testing_note
+    
     render_testing_note
   end
   
   
   def update
+    authorize! :update, @testing_note
+    
     @testing_note.update_attributes(params[:testing_note])
     render_testing_note
   end
   
   
   def destroy
+    authorize! :destroy, @testing_note
+    
     @testing_note.destroy
     head 204
   end
