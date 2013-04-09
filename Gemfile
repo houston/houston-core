@@ -48,6 +48,7 @@ gem 'foreman-export-initscript', :git => 'git://github.com/LewisJA/foreman-expor
 gem 'gemoji'
 gem 'googlecharts'
 gem 'hpricot'
+gem 'newrelic_rpm'
 gem 'nokogiri'
 gem 'premailer' # for inlining CSS in HTML emails
 gem 'remotable', '>= 0.2.2', :git => 'git://github.com/boblail/remotable.git'
