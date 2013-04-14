@@ -48,109 +48,38 @@
           <div class="container-fluid nav-collapse">
             <ul class="nav">
               
-              <%# Dashboards %>
-              <% if can?(:read, Project) %>
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dashboard <b class="caret"></b></a>
-                  <ul class="dropdown-menu releases-menu">
-                    <li><%= link_to "All Projects", main_app.dashboard_path %></li>
-                    <li class="divider"></li>
-                    <% Project.all.each do |project| %>
-                      <% if can?(:read, project) %>
-                        <li class="project">
-                          <%= link_to main_app.project_dashboard_path(project) do %>
-                            <%= project.name %> <b class="bubble <%= project.color %>"></b>
-                          <% end %>
-                        </li>
-                      <% end %>
-                    <% end %>
-                  </ul>
-                </li>
-              <% end %>
+              <%# Dashboards -%>
+              <% projects = Project.all.select { |project| can?(:read, project) } -%>
+              <%= render_menu "Dashboard", [
+                  MenuItem.new("All Projects", main_app.dashboard_path),
+                  MenuItemDivider.new ] +
+                  projects.map { |project| ProjectMenuItem.new(project, main_app.project_dashboard_path(project)) } if projects.any? -%>
               
-              <%# Kanban %>
-              <% if can?(:read, Ticket) %>
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Kanban <b class="caret"></b></a>
-                  <ul class="dropdown-menu kanban-menu">
-                    <li><%= link_to "All Projects", main_app.kanban_path %></li>
-                    <li class="divider"></li>
-                    <% Project.all.each do |project| %>
-                      <% if can?(:read, project.tickets.build) %>
-                        <li class="project">
-                          <%= link_to main_app.project_kanban_path(project) do %>
-                            <%= project.name %> <b class="bubble <%= project.color %>"></b>
-                          <% end %>
-                        </li>
-                      <% end %>
-                    <% end %>
-                  </ul>
-                </li>
-              <% end %>
+              <%# Kanban -%>
+              <% projects = Project.all.select { |project| can?(:read, project.tickets.build) } -%>
+              <%= render_menu "Kanban", [
+                  MenuItem.new("All Projects", main_app.kanban_path),
+                  MenuItemDivider.new ] +
+                  projects.map { |project| ProjectMenuItem.new(project, main_app.project_kanban_path(project)) } if projects.any? -%>
               
-              <%# Testing Reports %>
-              <% if can?(:read, TestingNote) %>
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Testing Reports <b class="caret"></b></a>
-                  <ul class="dropdown-menu testing-reports-menu">
-                    <li><%= link_to "All Projects", main_app.testing_report_path %></li>
-                    <li class="divider"></li>
-                    <% Project.all.each do |project| %>
-                      <% if can?(:read, project.testing_notes.build) %>
-                        <li class="project">
-                          <%= link_to main_app.project_testing_report_path(project) do %>
-                            <%= project.name %> <b class="bubble <%= project.color %>"></b>
-                          <% end %>
-                        </li>
-                      <% end %>
-                    <% end %>
-                  </ul>
-                </li>
-              <% end %>
+              <%# Testing Reports -%>
+              <% projects = Project.all.select { |project| can?(:read, project.testing_notes.build) } -%>
+              <%= render_menu "Testing Reports", [
+                  MenuItem.new("All Projects", main_app.testing_report_path),
+                  MenuItemDivider.new ] +
+                  projects.map { |project| ProjectMenuItem.new(project, main_app.project_testing_report_path(project)) } if projects.any? -%>
               
-              <%# Releases %>
-              <% if can?(:read, Release) %>
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Releases <b class="caret"></b></a>
-                  <ul class="dropdown-menu releases-menu">
-                    <% Project.all.each do |project| %>
-                      <% if can?(:read, project.releases.build) %>
-                        <li class="project">
-                          <%= link_to main_app.releases_path(project) do %>
-                            <%= project.name %> <b class="bubble <%= project.color %>"></b>
-                          <% end %>
-                        </li>
-                      <% end %>
-                    <% end %>
-                  </ul>
-                </li>
-              <% end %>
+              <%# Releases -%>
+              <% projects = Project.all.select { |project| can?(:read, project.releases.build) } -%>
+              <%= render_menu "Releases",
+                  projects.map { |project| ProjectMenuItem.new(project, main_app.releases_path(project)) } -%>
               
-              <%# Modules %>
-              <%# !todo: Refactor to ask modules what abilities are required to show navigation %>
-              <% if can?(:read, Project) %>
-                <% Houston.config.modules.each do |mod| %>
-                  <% menu_items = mod.namespace.respond_to?(:menu_items) ? mod.namespace.menu_items : [] %>
-                  <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= mod.name.humanize %> <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                    <% menu_items.each do |(name, path)| %>
-                      <li><%= link_to name, path %></li>
-                    <% end %>
-                    <% if menu_items.any? %>
-                      <li class="divider"></li>
-                    <% end %>
-                    <% Project.all.each do |project| %>
-                      <li class="project">
-                        <%= link_to mod.namespace.menu_item_for_project(project) do %>
-                          <%= project.name %> <b class="bubble <%= project.color %>"></b>
-                        <% end %>
-                      </li>
-                    <% end %>
-                    </ul>
-                  </li>
-                <% end %>
-              <% end %>
+              <%# Modules -%>
+              <% Houston.config.modules.each do |mod| -%>
+                <% next unless mod.namespace.respond_to?(:menu_items_for) -%>
+                <% menu_items = mod.namespace.menu_items_for(projects: Project.all, ability: current_ability, user: current_user) -%>
+                <%= render_menu mod.name.humanize, menu_items -%>
+              <% end -%>
               
               
               
@@ -158,26 +87,26 @@
               
               
               
-              <% if can?(:read, Project) %>
+              <% if can?(:read, Project) -%>
                 <li><%= link_to "Projects", main_app.projects_path %></li>
-              <% end %>
+              <% end -%>
 
-              <% if can?(:read, User) %>
+              <% if can?(:read, User) -%>
                 <li><%= link_to "Team", main_app.users_path %></li>
-              <% end %>
+              <% end -%>
               
-              <% if current_user && current_user.administrator? %>
+              <% if current_user && current_user.administrator? -%>
                 <li><%= link_to "Resque", "/resque" %></li>
-              <% end %>
+              <% end -%>
               
             </ul>
             <ul class="nav pull-right">
-              <% if current_user %>
+              <% if current_user -%>
                 <li><%= link_to main_app.user_path(current_user) do %><span class="avatar-24" style="margin-right: 0"><%= avatar_for(current_user, size: 38) %></span><% end %></li>
                 <li><%= link_to "Sign out", main_app.destroy_user_session_path %></li>
-              <% else %>
+              <% else -%>
                 <li><%= link_to "Sign in", main_app.new_user_session_path %></li>
-              <% end %>
+              <% end -%>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -185,13 +114,13 @@
     </div>
 
     <div class="container-fluid" id="body">
-      <%= flash_messages :alert, :notice, :error %>
-      <%= yield %>
+      <%= flash_messages :alert, :notice, :error -%>
+      <%= yield -%>
 
       <!-- <footer>
         <p>&copy; Company 2012</p>
       </footer> -->
-      <%= render partial: "layouts/tester_bar" if Rails.env.development? %>
+      <%= render partial: "layouts/tester_bar" if Rails.env.development? -%>
     </div> <!-- /container -->
 
     <!-- Le javascript
