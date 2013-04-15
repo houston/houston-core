@@ -3,7 +3,7 @@
 </h1>
 
 <div class="release-draft" style="overflow: hidden;">
-  <%= render partial: "releases/changelog", locals: {draft: true} %>
+  <%= render partial: "releases/changelog", locals: {draft: @release.new_record?} %>
 </div>
 
 <% if @release.new_record? && @maintainer %>

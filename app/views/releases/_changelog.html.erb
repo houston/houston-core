@@ -1,7 +1,7 @@
 <div id="<%= @release.project.slug %>_changelog" class="-houston-changelog">
   
   <div class="-houston-changelog-day">
-    <h4><%= defined?(draft) ? "Draft" : format_release_date(@release.date) %></h4>
+    <h4><%= (defined?(draft) && draft) ? "Draft" : format_release_date(@release.date) %></h4>
   </div>
   
   <%= div_for @release do %>
@@ -16,7 +16,7 @@
       <div class="release-no-changes">No changes</div>
     <% end %>
     
-    <% unless defined?(draft) %>
+    <% unless (defined?(draft) && draft) %>
       <div class="release-detail">
         <%= render partial: "releases/tickets", locals: {tickets: @release.tickets} if can?(:read, Ticket) %>
         <%= render partial: "releases/goldmine_numbers", locals: {goldmine_numbers: @release.goldmine_numbers} if can?(:read, Ticket) %>
