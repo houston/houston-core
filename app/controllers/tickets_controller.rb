@@ -26,8 +26,6 @@ class TicketsController < ApplicationController
     ticket = Ticket.find(params[:id])
     params[:last_release_at] = params.fetch(:lastReleaseAt, params[:last_release_at])
     attributes = params.pick(:last_release_at)
-    extended_attributes = ticket.extended_attributes.merge(params.pick(*Houston::TMI::EXTENDED_ATTRIBUTES))
-    attributes.merge!(extended_attributes: extended_attributes)
     
     if ticket.update_attributes(attributes)
       render json: [], :status => :ok

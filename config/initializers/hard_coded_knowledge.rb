@@ -5,7 +5,6 @@
 module Houston
   module TMI
     
-    EXTENDED_ATTRIBUTES = [:estimated_effort, :estimated_value, :unable_to_set_estimated_effort, :unable_to_set_estimated_value]
     NAME_OF_DEPLOYMENT_FIELD = "Fixed in"
     NAME_OF_GOLDMINE_FIELD = "Goldmine"
     FIELD_USED_FOR_LDAP_LOGIN = "samaccountname"
