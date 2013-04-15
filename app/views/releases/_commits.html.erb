@@ -1,5 +1,10 @@
 <div class="release-detail-section release-commits">
-  <h5>Commits</h5>
+  <h5>
+    Commits
+    <% if can?(:read, @project.commits.build) %>
+      <span class="commit-range"><%= link_to_release_commit_range(@release) %></span>
+    <% end %>
+  </h5>
   <ul class="commits">
     <% commits.each do |commit| %>
       <%= content_tag :li, :id => "commit_#{commit.id}" do %>

@@ -4,7 +4,10 @@
 
 .no-items { font-style: italic; }
 
-.commit-range { font-family: consolas, fixed; }
+.commit-range {
+  font-family: consolas, fixed;
+  .ellipsis { letter-spacing: -2px; margin: 0 1px 0 -1px; }
+}
 
 .controls > ul {
   margin: 0 0 5px 0;
@@ -44,6 +47,11 @@ textarea#release_message {
   
   .release-header {
     margin-left: 3px;
+    
+    .commit-range {
+      float: right;
+      font-size: 0.88em;
+    }
   }
   
   .release { padding-left: 1em; }
@@ -119,6 +127,8 @@ textarea#release_message {
     clear: left;
     width: 100px;
     margin: 0;
+    
+    .commit-range { font-size: 0.75em; font-weight: normal; }
   }
   
   p.no-items { margin: 0 0 0 124px; }

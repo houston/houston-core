@@ -105,7 +105,6 @@ Goals:
 
 ### Ideas
 
- - **Releases:** incorporate GitHub commit-range link more places
  - **Releases:** search [e.g. for commit]
  - **Deploys:** add a list of deploys; allow creating releases for old deploys
  - **Releases:** create embeddable front-end for releases

@@ -1,6 +1,7 @@
 class Project < ActiveRecord::Base
   
   has_many :releases, :dependent => :destroy
+  has_many :commits
   has_many :tickets, :dependent => :destroy
   has_many :testing_notes, :dependent => :destroy
   has_many :test_runs, :dependent => :destroy
