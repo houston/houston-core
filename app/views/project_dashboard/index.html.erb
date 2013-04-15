@@ -17,10 +17,11 @@
       
       <td id="project_dependencies" class="column-2">
         <ul class="dependencies">
-          <% MaintenanceLight.for(@project).each do |indicator| %>
+          <% ProjectDependency.for(@project).each do |dependency| %>
+            <% indicator = dependency.maintenance_light %>
             <li class="dependency <%= indicator.color %>">
-              <span class="dependency-name"><%= indicator.name %></span>
-              <span class="dependency-version"><%= format_version(indicator.version) %></span>
+              <span class="dependency-name"><%= dependency.name %></span>
+              <span class="dependency-version"><%= format_version(dependency.version) %></span>
               <span class="dependency-message"><%= indicator.message %></span>
             </li>
           <% end %>
