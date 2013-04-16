@@ -27,9 +27,6 @@ Tasks:
  - **Weekly Report/Exceptions:** show average time to close problem
  - **Weekly Report/Exceptions:** break down notices by project
  - **Houston-Scheduler:** show severities
- - **Houston-Scheduler:** expand tickets like Testing Report does
- - **Houston-Scheduler:** allow editing prerequisites
- - **Houston-Scheduler:** Queuing Discipline takes prerequisites into account
 
 
 
@@ -50,8 +47,6 @@ Projects:
    - Send one-off emails that can take advantage of the abilities of each recipient
    - Put a link in emails to user's notifications options (automatically logging them in)
    - [idea] Remove add-but-dont-invite
-   - [idea] Project screen: participants (avatars) min/max width | Maintainers = special kind of participant
-   - [idea] Have modules define permissions needed
  - Daily Report:
    - When a test fails: which commit range is to blame
    - Recent new tickets
@@ -101,6 +96,12 @@ Goals:
 
 ### Ideas
 
+ - **Projects:** participants (avatars) min/max width | Maintainers = special kind of participant
+ - **Houston-Scheduler:** allow editing prerequisites
+ - **Houston-Scheduler:** allow adding milestones (show time-to-milestone)
+ - **Houston-Scheduler:** add a "The Pipe" view which interleaves work for all projects, taking 1 week bites
+ - **Houston-Scheduler:** Queuing Discipline takes prerequisites into account
+ - **Houston-Scheduler:** expand tickets like Testing Report does
  - **Releases:** search [e.g. for commit]
  - **Deploys:** add a list of deploys; allow creating releases for old deploys
  - **Releases:** create embeddable front-end for releases
@@ -137,10 +138,9 @@ Goals:
    - ?? New problems
  - **Global:** employ Twitter Bootstrap in emails
  - **Testing Report:** add priority options (to left of ticket): high/low, exclusive checkboxes
- - **Testing Report:** add additional vevrdicts (pass-with-suggestions? unable-to-test?)
+ - **Testing Report:** add additional verdicts (pass-with-suggestions? unable-to-test?)
  - **Releases:** add "What's in the pipe?" view that shows what _would_ be released to production if it were released now
  - **Releases:** allow adding/removing _tickets_ from release notes
- - **Houston-CI**: incorporate Deploy into Houston
  - **Houston-Fnord**: (show real-time analytics)
    - Solve for multiple apps (multiple gauges? multiple fields?)
    - **Project Dashboard:**
