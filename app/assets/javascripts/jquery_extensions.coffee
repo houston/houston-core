@@ -1,9 +1,9 @@
 $.fn.extend
   
   pseudoHover: ->
-    $(@).hover(
-      -> $(@).addClass('hover'),
-      -> $(@).removeClass('hover'))
+    $(@).addClass('unhovered').hover(
+      -> $(@).addClass('hover').removeClass('unhovered'),
+      -> $(@).removeClass('hover').addClass('unhovered'))
   
   popoverForTicket: ->
     $queue = $(@).closest('ul')

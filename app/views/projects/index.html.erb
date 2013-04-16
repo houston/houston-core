@@ -10,7 +10,6 @@
         <tr>
           <td class="table-margin"></td>
           <th class="project-title sort-desc">Title</th>
-          <th colspan="4" class="project-links">Links</th>
           <th class="project-maintainers">Maintainers</th>
           <th class="project-platform">Platform</th>
           <th class="project-database">Database</th>
@@ -25,37 +24,32 @@
         <% @projects.each do |project| %>
           <tr>
             <td class="table-margin"></td>
-            <td class="project-title">
+            <td class="project-title" style="white-space: nowrap;">
               <b class="bubble <%= project.color %>" rel="tooltip" title="<%= project.color.titleize %>" data-tooltip-placement="right"></b>
               <%= link_to_if can?(:update, project), project.name, edit_project_path(project) %>
-            </td>
-            <td class="project-link project-unfuddle-link">
-              <% if ticket_system_url = project.ticket_system_project_url %>
-                <%= link_to ticket_system_url, :target => "_blank" do %>
-                  <%= image_tag "/images/favicon-unfuddle.png", "data-tooltip-placement" => "right", :rel => "tooltip", :title => "View in Unfuddle", :width => 16, :height => 16 %>
+              
+              <p class="project-links">
+                <% if ticket_system_url = project.ticket_system_project_url %>
+                  <%= link_to ticket_system_url, :target => "_blank" do %>
+                    <%= image_tag "/images/favicon-unfuddle.png", "data-tooltip-placement" => "top", :rel => "tooltip", :title => "View in Unfuddle", :width => 16, :height => 16 %>
+                  <% end %>
                 <% end %>
-              <% end %>
-            </td>
-            <td class="project-link project-errbit-link">
-              <% unless project.errbit_app_id.blank? %>
-                <%= link_to errbit_app_url(project), :target => "_blank" do %>
-                  <%= image_tag "/images/favicon-errbit.png", "data-tooltip-placement" => "right", :rel => "tooltip", :title => "View in Errbit", :width => 16, :height => 16 %>
+                <% unless project.errbit_app_id.blank? %>
+                  <%= link_to errbit_app_url(project), :target => "_blank" do %>
+                    <%= image_tag "/images/favicon-errbit.png", "data-tooltip-placement" => "top", :rel => "tooltip", :title => "View in Errbit", :width => 16, :height => 16 %>
+                  <% end %>
                 <% end %>
-              <% end %>
-            </td>
-            <td class="project-link project-github-link">
-              <% if github_url?(project) %>
-                <%= link_to github_project_url(project), :target => "_blank" do %>
-                  <%= image_tag "/images/favicon-github.png", "data-tooltip-placement" => "right", :rel => "tooltip", :title => "View in GitHub", :width => 16, :height => 16 %>
+                <% if github_url?(project) %>
+                  <%= link_to github_project_url(project), :target => "_blank" do %>
+                    <%= image_tag "/images/favicon-github.png", "data-tooltip-placement" => "top", :rel => "tooltip", :title => "View in GitHub", :width => 16, :height => 16 %>
+                  <% end %>
                 <% end %>
-              <% end %>
-            </td>
-            <td class="project-link project-newrelic-link">
-              <% unless project.new_relic_id.blank? %>
-                <%= link_to new_relic_project_url(project), :target => "_blank" do %>
-                  <%= image_tag "/images/favicon-newrelic.png", "data-tooltip-placement" => "right", :rel => "tooltip", :title => "View in New Relic", :width => 16, :height => 16 %>
+                <% unless project.new_relic_id.blank? %>
+                  <%= link_to new_relic_project_url(project), :target => "_blank" do %>
+                    <%= image_tag "/images/favicon-newrelic.png", "data-tooltip-placement" => "top", :rel => "tooltip", :title => "View in New Relic", :width => 16, :height => 16 %>
+                  <% end %>
                 <% end %>
-              <% end %>
+              </p>
             </td>
             <td class="project-maintainers">
               <% project.maintainers.each do |maintainer| %>
@@ -122,6 +116,7 @@
   <script type="text/javascript">
     $(function() {
       $('#projects').tablesorter();
+      $('.project-links a').pseudoHover();
     });
   </script>
 <% end %>
