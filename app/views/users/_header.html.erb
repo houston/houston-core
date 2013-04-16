@@ -3,6 +3,6 @@
   <%= user.name %>
   <small>
     <%= link_to("Show", user_path(user)) unless current_page?(user_path(user)) %>
-    <%= link_to("Edit", edit_user_path(user)) if can?(:update, User) && !current_page?(edit_user_path(user)) %>
+    <%= link_to("Edit", edit_user_path(user)) if can?(:update, user) && !current_page?(edit_user_path(user)) %>
   </small>
 </h1>
