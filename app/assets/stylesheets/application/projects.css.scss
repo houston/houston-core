@@ -5,6 +5,12 @@
   th { white-space: nowrap; }
 }
 
+@media (min-width:1200px) {
+  th.project-last-release {
+    &::before { content: 'Last Release: '; }
+  }
+}
+
 h2.uncategorized {
   font-style: italic;
   font-weight: normal;

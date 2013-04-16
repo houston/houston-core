@@ -15,7 +15,9 @@
           <th class="project-database">Database</th>
           <th class="project-category">Category</th>
           <th class="project-last-build">Last Build</th>
-          <th class="project-last-release">Last Release</th>
+          <% Houston.config.environments.each do |environment_name| %>
+          <th class="project-last-release"><%= environment_name %></th>
+          <% end %>
           <td class="project-new-release"></td>
           <td class="table-margin"></td>
         </tr>
@@ -75,12 +77,13 @@
                 <span class="test-run-commit">(<%= link_to_commit(OpenStruct.new(project: project, sha: test_run.commit)) %>)</span>
               <% end %>
             </td>
+            <% Houston.config.environments.each do |environment_name| %>
             <td class="project-last-release">
-              <% if release = project.releases.first %>
+              <% if release = project.releases.to_environment(environment_name).first %>
                 <%= link_to format_release_age(release), release_path(release) %>
-                <span class="label label-inverse"><%= release.environment_name %></span>
               <% end %>
             </td>
+            <% end %>
             <td class="project-new-release">
               <% if can?(:create, project.releases.build) %>
                 <div class="btn-group">
