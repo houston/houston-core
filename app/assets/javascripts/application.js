@@ -18,6 +18,7 @@
 //= require highcharts.src.js
 //= require twitter/bootstrap
 //= require freight_train
+//= require lail/delayed_action
 //= require sugar
 //= require underscore
 //= require backbone
