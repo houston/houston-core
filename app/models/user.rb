@@ -42,6 +42,10 @@ class User < ActiveRecord::Base
     "#{first_name} #{last_name}"
   end
   
+  def environments_subscribed_to
+    super || []
+  end
+  
   
   
   # LDAP Overrides
