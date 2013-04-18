@@ -188,6 +188,10 @@ class Project < ActiveRecord::Base
     where Project.arel_table[:ticket_tracking_adapter].not_eq("None")
   end
   
+  def has_ticket_tracking?
+    ticket_tracking_adapter != "None"
+  end
+  
   def ticket_tracking_id_is_valid
     ticket_tracking_system.problems_with_project_id(ticket_tracking_id).each do |message|
       errors.add :ticket_tracking_id, message
