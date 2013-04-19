@@ -22,6 +22,7 @@
               <span class="test-duration">( <%= test[:duration].round(1) %>ms )</span>
               <% if test.fetch(:error_backtrace, []).any? %>
                 <ol class="test-backtrace">
+                  <li class="test-backtrace-line error-message"><%= test[:error_message] %></li>
                   <% test[:error_backtrace].each do |line| %>
                     <li class="test-backtrace-line"><%= format_backtrace_line(line) %></li>
                   <% end %>
