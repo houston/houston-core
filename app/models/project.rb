@@ -14,6 +14,7 @@ class Project < ActiveRecord::Base
   
   has_adapter Houston::TicketTracker,   project_id: :ticket_tracker_id
   has_adapter Houston::VersionControl,  location: :version_control_location
+  has_adapter Houston::ErrorTracker,    project_id: :error_tracker_id
   has_adapter Houston::CIServer
   
   
@@ -213,6 +214,23 @@ class Project < ActiveRecord::Base
   
   def version_control_temp_path
     Rails.root.join("tmp", "#{slug}.git").to_s # <-- the .git here is misleading; could be any kind of VCS
+  end
+  
+  # ------------------------------------------------------------------------- #
+  
+  
+  
+  
+  
+  # Error Tracker
+  # ------------------------------------------------------------------------- #
+  
+  def error_tracker_project_url
+    error_tracker.project_url
+  end
+  
+  def error_tracker_error_url(error_id)
+    error_tracker.error_url(error_id)
   end
   
   # ------------------------------------------------------------------------- #

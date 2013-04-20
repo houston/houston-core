@@ -37,8 +37,8 @@
                     <%= image_tag "/images/favicon-unfuddle.png", "data-tooltip-placement" => "top", :rel => "tooltip", :title => "View in Unfuddle", :width => 16, :height => 16 %>
                   <% end %>
                 <% end %>
-                <% unless project.errbit_app_id.blank? %>
-                  <%= link_to errbit_app_url(project), :target => "_blank" do %>
+                <% if error_tracker_url = project.error_tracker_project_url %>
+                  <%= link_to error_tracker_url, :target => "_blank" do %>
                     <%= image_tag "/images/favicon-errbit.png", "data-tooltip-placement" => "top", :rel => "tooltip", :title => "View in Errbit", :width => 16, :height => 16 %>
                   <% end %>
                 <% end %>

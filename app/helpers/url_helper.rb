@@ -6,15 +6,6 @@ module UrlHelper
     "http://goldmineweb/DisplayCase.aspx?CaseNumber=#{number}"
   end
   
-  def errbit_app_url(project)
-    protocol = Houston.config.errbit[:port] == 443 ? "https" : "http"
-    "#{protocol}://#{Houston.config.errbit[:host]}/apps/#{project.errbit_app_id}"
-  end
-  
-  def errbit_err_url(project, err)
-    "#{errbit_app_url(project)}/errs/#{err}"
-  end
-  
   
   
   # !nb: this is now very similar to code in `config/initializers/run_tests_on_post_receive.rb`

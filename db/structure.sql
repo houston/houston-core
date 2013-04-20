@@ -655,14 +655,15 @@ CREATE TABLE projects (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     color character varying(255),
-    errbit_app_id character varying(255),
+    error_tracker_id character varying(255),
     new_relic_id integer,
     retired_at timestamp without time zone,
     category character varying(255),
     version_control_name character varying(255) DEFAULT 'None'::character varying NOT NULL,
     ticket_tracker_name character varying(255) DEFAULT 'None'::character varying NOT NULL,
     ci_server_name character varying(255) DEFAULT 'None'::character varying NOT NULL,
-    min_passing_verdicts integer DEFAULT 1 NOT NULL
+    min_passing_verdicts integer DEFAULT 1 NOT NULL,
+    error_tracker_name character varying(255) DEFAULT 'None'::character varying
 );
 
 
@@ -1606,3 +1607,7 @@ INSERT INTO schema_migrations (version) VALUES ('20130420151334');
 INSERT INTO schema_migrations (version) VALUES ('20130420155332');
 
 INSERT INTO schema_migrations (version) VALUES ('20130420172322');
+
+INSERT INTO schema_migrations (version) VALUES ('20130420174002');
+
+INSERT INTO schema_migrations (version) VALUES ('20130420174126');

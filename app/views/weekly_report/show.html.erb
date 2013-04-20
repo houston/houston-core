@@ -112,10 +112,10 @@
     
     benchmark("Preparing data for bugs graphs") do
       
-      bugs = Errbit::Problem.during(date_range_multiweek2)
+      bugs = Houston::ErrorTracker::Adapter::ErrbitAdapter.problems_during(date_range_multiweek2)
       
       bugs.each do |bug|
-        project = @projects.detect { |project| project.errbit_app_id == bug.errbit_app_id }
+        project = @projects.detect { |project| project.error_tracker_id == bug.error_tracker_id }
         next unless project
         
         bugs_by_week = (bugs_by_week_by_project[project] ||= Hash[errbit_history_weeks.zip([0]*weeks_of_errbit_history)])
@@ -150,7 +150,7 @@
     
     benchmark("Preparing data for notices graphs") do
       
-      notices = Errbit::Notice.during(date_range_multiweek2)
+      notices = Houston::ErrorTracker::Adapter::ErrbitAdapter.notices_during(date_range_multiweek2)
       
       notices.each do |notice|
         week = notice.created_at.beginning_of_week.to_date
@@ -410,7 +410,7 @@
     <table class="layout bugs">
       <tbody>
         <% @projects.each do |project| %>
-          <% next if project.errbit_app_id.blank? %>
+          <% next if project.error_tracker_id.blank? %>
           <% bug_counts = bug_counts_by_project[project] || {} %>
           <tr>
             <th><span class="label <%= project.color %>"><%= project.name %></span></th>
