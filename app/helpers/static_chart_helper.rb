@@ -33,31 +33,35 @@ module StaticChartHelper
   
   
   def bar_graph(options={})
-    width = ((14 + 4) * options[:count]) + 10 + 20
+    bar_width = options.fetch(:bar_width, 14)
+    spacing = options.fetch(:spacing, 4)
+    width = ((bar_width + spacing) * options[:count]) + 10
+    axes = options.fetch(:axes, :left)
     
-    chxt = case options.fetch(:axes, :left)
-    when :left
-      "&chxt=y"
-    when false
-      width -= 20
-      "&chxs=0,676767,0,0,_,676767|1,676767,0,0,_,676767&chxt=x,y"
-    end
-    
+    width += 20 if axes == :left
     
     src = Gchart.bar({
       data: options[:data],
       bar_colors: options[:colors],
-      bar_width_and_spacing: 14,
+      labels: options[:labels],
+      bar_width_and_spacing: [bar_width, spacing],
       size: "#{width}x#{options[:height]}"
     })
     
-    case options.fetch(:axes, :left)
+    case axes
     when :left
       src << "&chxt=y"
+    when :bottom
+      src << "&chxs=1,676767,0,0,_,676767&chxt=x,y"
     when false
+      src << "&chxs=0,676767,0,0,_,676767|1,676767,0,0,_,676767&chxt=x,y"
+    when :label
       src << "&chxs=0,676767,0,0,_,676767|1,676767,0,0,_,676767&chxt=x,y"
     end
     
+    if axes == false && Array.wrap(options[:labels]).any?
+      src << "&chm=" << options[:labels].map_with_index { |label, i| "t#{label},000000,#{i},#{i},11" }.join("|")
+    end
     
     graph_with_subcaptions(src, width, options[:height], options[:title])
   end

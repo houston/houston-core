@@ -15,6 +15,10 @@ module Houston
             attributes[:created_at]
           end
           
+          def error_tracker_id
+            attributes[:error_tracker_id]
+          end
+          
         end
       end
     end

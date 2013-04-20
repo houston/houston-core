@@ -106,9 +106,12 @@
     
     bug_counts_by_project = {}
     bugs_by_week_by_project = Hash[@projects.zip]
+    bugs_by_grade = {"A" => 0, "B" => 0, "C" => 0, "D" => 0, "F" => 0, " " => 0}
+    bugs_by_possible_grade = {"A" => 0, "B" => 0, "C" => 0, "D" => 0, "F" => 0}
     bugs_new_this_week = 0
     bugs_fixed_this_week = 0
     bugs_change_this_week = 0
+    grade_colors = ["42a800", "9fbd2a", "ebc93b", "d65b17", "b50000", "dddddd"]
     
     benchmark("Preparing data for bugs graphs") do
       
@@ -139,20 +142,51 @@
         bugs_new_this_week += 1 if bug.first_notice_at < @date_range.end && bug.first_notice_at > @date_range.begin
         bugs_fixed_this_week += 1 if bug.resolved_at && bug.resolved_at < @date_range.end && bug.resolved_at > @date_range.begin
         
+        
+        time_unresolved = (bug.resolved_at || Time.now) - bug.first_notice_at
+        grade = if    time_unresolved <  3.days then "A"
+                elsif time_unresolved <  8.days then "B"
+                elsif time_unresolved < 15.days then "C"
+                elsif time_unresolved < 30.days then "D"
+                else                                 "F"
+                end
+        
+        if bug.resolved_at.nil?
+          bugs_by_grade[" "] += 1
+        else
+          bugs_by_grade[grade] += 1
+        end
+        bugs_by_possible_grade[grade] += 1
+        
       end
       
       bugs_change_this_week = bugs_new_this_week - bugs_fixed_this_week
     end
     
+    points          = (bugs_by_grade["A"] * 4.0 + 
+                       bugs_by_grade["B"] * 3.0 + 
+                       bugs_by_grade["C"] * 2.0 + 
+                       bugs_by_grade["D"] * 1.0)
+    possible_points = (bugs_by_possible_grade["A"] * 4.0 + 
+                       bugs_by_possible_grade["B"] * 3.0 + 
+                       bugs_by_possible_grade["C"] * 2.0 + 
+                       bugs_by_possible_grade["D"] * 1.0)
+    bugs_gpa_actual = (points / bugs_by_grade.values.sum).round(2)
+    bugs_gpa_possible = (possible_points / bugs_by_possible_grade.values.sum).round(2)
     
     
-    notices_by_week = Hash[errbit_history_weeks.zip([0]*weeks_of_errbit_history)]
+    notices_by_week_by_project = Hash[@projects.zip]
     
     benchmark("Preparing data for notices graphs") do
       
       notices = Houston::ErrorTracker::Adapter::ErrbitAdapter.notices_during(date_range_multiweek2)
       
       notices.each do |notice|
+        project = @projects.detect { |project| project.error_tracker_id == notice.error_tracker_id }
+        next unless project
+        
+        notices_by_week = (notices_by_week_by_project[project] ||= Hash[errbit_history_weeks.zip([0]*weeks_of_errbit_history)])
+        
         week = notice.created_at.beginning_of_week.to_date
         next unless notices_by_week.key?(week) # we're getting notices for the monday after the sunday that should end the range
         notices_by_week[week] += 1
@@ -205,7 +239,7 @@
               </tr>
             </tbody>
           </table>
-        
+          
         </td>
       </tr>
       
@@ -239,83 +273,6 @@
   
   
   <h3 class="heading">
-    <%= image_tag image_url("heading-flask-48.png"), size: "48" %>
-    Testing Notes
-  </h3>
-  
-  <div class="weekly-report-body">
-    
-    <table class="layout">
-      <tr>
-        <td colspan="2">
-    
-          <table class="testing-notes no-bottom-margin">
-            <thead>
-              <tr>
-                <% weekdays.each do |weekday| %>
-                  <th width="80" class="<%= weekday.downcase %>"><%= weekday %></th>
-                <% end %>
-                <td></td>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <% weekdays.each do |weekday| %>
-                  <td width="80" class="<%= weekday.downcase %>">
-                    <% testing_notes_by_weekday[weekday].each do |testing_note| %><b class="testing-note-bubble bubble" style="background-color:#<%= testing_note[:color] %>"></b><% end %>
-                  </td>
-                <% end %>
-
-                <td rowspan="2">
-                  <%= score_card :large do |s| %>
-                    <% s.score (passes == 1 ? "Pass" : "Passes"), passes, :class => "testing-note-passes" %>
-                    <% s.score (fails == 1 ? "Fail" : "Fails"), fails, :class => "testing-note-fails" %>
-                  <% end %>
-                </td>
-              </tr>
-              
-              <tr>
-                <td colspan="6">
-                  <%
-                    tickets_by_weekday = Hash[weekdays.zip([0, 0, 0, 0, 0, 0])]
-                    
-                    @date_range.each do |date|
-                      weekday = weekday_by_wday[date.wday]
-                      tickets_by_weekday[weekday] = TicketQueue.in_queue(:in_testing).during(date).count
-                    end
-                    
-                    tickets_by_weekday = tickets_by_weekday.values
-                    max = tickets_by_weekday.max
-                    
-                    width = 600
-                    height = 100
-                  %>
-                  
-                  <%= image_tag Gchart.line({
-                    data: tickets_by_weekday,
-                    size: "#{width}x#{height}"}) <<
-                    "chf=bg,s,FFFFFF00&chco=3399CC&chm=B,3399CC22,0,0,0&chxt=r&chxr=0,0,#{max}",
-                    width: width,
-                    height: height,
-                    alt: "Tickets in testing each day",
-                    style: "margin-right: -16px; margin-top: 6px;" %><!-- This bumps the labels out to the right -->
-                    
-                    <h5>Tickets in testing each day</h5>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        
-        </td>
-      </tr>
-      
-    </table>
-    
-  </div>
-  
-  
-  
-  <h3 class="heading">
     <%= image_tag image_url("heading-bug-48.png"), size: "48" %>
     Exceptions
   </h3>
@@ -323,21 +280,32 @@
   <div class="weekly-report-body">
     <table class="layout exceptions-report">
       <tr>
-        <td class="exceptions-notices-count">
-          <p class="score">
-            <span class="notices-count score-count"><%= notices_by_week.values.last %></span>
-            <span class="notices-label score-label">Notices this week</span>
-          </p>
+        <td class="exceptions-resolve-rate">
+          <%= bar_graph({
+            data: bugs_by_grade.values.map_with_index { |value, i| ([0] * 6).tap { |array| array[i] = value } },
+            labels: bugs_by_grade.keys,
+            colors: grade_colors,
+            count: 6,
+            height: 120,
+            bar_width: 20,
+            spacing: 4,
+            axes: false,
+            title: "Resolve time"
+          }) %>
         </td>
-        <td class="exceptions-notices-pie">
-          <div class="notices-by-project-pie"><span style="color: #bbb; font-weight: bold;">Coming soon</span></div>
+        <td class="exceptions-gpa">
+          <div class="score score-large">
+            <div class="score-count"><%= bugs_gpa_actual.to_s.split(".").join("<span class=\"period\">.</span>").html_safe %></div>
+            <h4>GPA</h4>
+            <div class="score-label">(<%= bugs_gpa_possible %> possible)</div>
+          </div>
         </td>
-        <td class="exceptions-problem-count" rowspan="2">
+        <td class="exceptions-problem-count">
           <%
             cumulative_totals = [0] * weeks_of_errbit_history
-
+            
             projects_included = []
-
+            
             data = @projects.map do |project|
               values = bugs_by_week_by_project[project]
               if values
@@ -364,7 +332,7 @@
             title: "#{weeks_of_errbit_history}-week problem count"
           }) %>
         </td>
-        <td class="exceptions-summary" rowspan="2">
+        <td class="exceptions-summary">
           <div class="exceptions-bugs-summary-group">
             <div class="exceptions-bugs-summary new-bugs <%= bugs_new_this_week.zero? ? "zero" : "positive" %>">
               <div class="bug-count"><span class="sign">+</span><%= bugs_new_this_week %> <%= image_tag(image_url("bug-new-32.png"), size: 32, :class => "bug") %></div>
@@ -391,20 +359,6 @@
           
         </td>
       </tr>
-      
-      <tr>
-        <td class="exceptions-notices-history" colspan="2">
-          <%= bar_graph({
-            data: notices_by_week.values,
-            colors: "d0d0d0",
-            count: weeks_of_errbit_history,
-            height: 54,
-            axes: false,
-            title: "#{weeks_of_errbit_history}-week notice levels"
-          }) %>
-        </td>
-      </tr>
-      
     </table>
     
     <table class="layout bugs">
@@ -414,33 +368,49 @@
           <% bug_counts = bug_counts_by_project[project] || {} %>
           <tr>
             <th><span class="label <%= project.color %>"><%= project.name %></span></th>
-            <% if bug_counts.values.sum > 0 %>
-              <td>
-                <% bug_counts["new"].times do %>
-                  <%= image_tag(image_url("bug-new-32.png"), size: 32, :class => "bug new-bug") %>
-                <% end %>
-                <% bug_counts["open"].times do %>
-                  <%= image_tag(image_url("bug-open-32.png"), size: 32, :class => "bug open-bug") %>
-                <% end %>
-                <% bug_counts["fixed"].times do %>
-                  <%= image_tag(image_url("bug-fixed-32.png"), size: 32, :class => "bug fixed-bug") %>
-                <% end %>
-              </td>
-              <td>
+            <td>
+              <% bug_counts.fetch("new", 0).times do %>
+                <%= image_tag(image_url("bug-new-32.png"), size: 32, :class => "bug new-bug") %>
+              <% end %>
+              <% bug_counts.fetch("open", 0).times do %>
+                <%= image_tag(image_url("bug-open-32.png"), size: 32, :class => "bug open-bug") %>
+              <% end %>
+              <% bug_counts.fetch("fixed", 0).times do %>
+                <%= image_tag(image_url("bug-fixed-32.png"), size: 32, :class => "bug fixed-bug") %>
+              <% end %>
+            </td>
+            <td>
+              <% if bug_counts.values.sum > 0 %>
                 <%= score_card :medium do |s| %>
+                  <% s.raw do %>
+                    <p>
+                      <span class="notices-count score-count">
+                        <%= bar_graph({
+                          data: (notices_by_week_by_project[project] || {}).values,
+                          colors: "555555",
+                          count: weeks_of_errbit_history,
+                          height: 27,
+                          bar_width: 4,
+                          spacing: 1,
+                          axes: false
+                        }) %>
+                      </span>
+                      <span class="score-label">Notices/week</span>
+                    </p>
+                  <% end %>
+                  
                   <% s.score "New", bug_counts["new"], :class => "new-bugs",
                       :prefix => "<span class=\"sign\">+</span>".html_safe %>
                   <% s.score "Fixed", bug_counts["fixed"], :class => "resolved-bugs",
-                          :prefix => "<span class=\"sign\">&ndash;</span>".html_safe %>
+                      :prefix => "<span class=\"sign\">&ndash;</span>".html_safe %>
                   <% s.score "Open", bug_counts["open"] + bug_counts["new"], :class => "open-bugs" %>
                 <% end %>
-              </td>
-            <% else %>
-              <td></td>
-              <td class="score score-large">
-                <p class="no-bugs">No bugs!</p>
-              </td>
-            <% end %>
+              <% else %>
+                <div class="score">
+                  <p class="no-bugs">No bugs!</p>
+                </div>
+              <% end %>
+            </td>
           </tr>
         <% end %>
       </tbody>
@@ -623,6 +593,83 @@
         <% end %>
       <% end %>
     </ul>
+    
+  </div>
+  
+  
+  
+  <h3 class="heading">
+    <%= image_tag image_url("heading-flask-48.png"), size: "48" %>
+    Testing Notes
+  </h3>
+  
+  <div class="weekly-report-body">
+    
+    <table class="layout">
+      <tr>
+        <td colspan="2">
+    
+          <table class="testing-notes no-bottom-margin">
+            <thead>
+              <tr>
+                <% weekdays.each do |weekday| %>
+                  <th width="80" class="<%= weekday.downcase %>"><%= weekday %></th>
+                <% end %>
+                <td></td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <% weekdays.each do |weekday| %>
+                  <td width="80" class="<%= weekday.downcase %>">
+                    <% testing_notes_by_weekday[weekday].each do |testing_note| %><b class="testing-note-bubble bubble" style="background-color:#<%= testing_note[:color] %>"></b><% end %>
+                  </td>
+                <% end %>
+
+                <td rowspan="2">
+                  <%= score_card :large do |s| %>
+                    <% s.score (passes == 1 ? "Pass" : "Passes"), passes, :class => "testing-note-passes" %>
+                    <% s.score (fails == 1 ? "Fail" : "Fails"), fails, :class => "testing-note-fails" %>
+                  <% end %>
+                </td>
+              </tr>
+              
+              <tr>
+                <td colspan="6">
+                  <%
+                    tickets_by_weekday = Hash[weekdays.zip([0, 0, 0, 0, 0, 0])]
+                    
+                    @date_range.each do |date|
+                      weekday = weekday_by_wday[date.wday]
+                      tickets_by_weekday[weekday] = TicketQueue.in_queue(:in_testing).during(date).count
+                    end
+                    
+                    tickets_by_weekday = tickets_by_weekday.values
+                    max = tickets_by_weekday.max
+                    
+                    width = 600
+                    height = 100
+                  %>
+                  
+                  <%= image_tag Gchart.line({
+                    data: tickets_by_weekday,
+                    size: "#{width}x#{height}"}) <<
+                    "chf=bg,s,FFFFFF00&chco=3399CC&chm=B,3399CC22,0,0,0&chxt=r&chxr=0,0,#{max}",
+                    width: width,
+                    height: height,
+                    alt: "Tickets in testing each day",
+                    style: "margin-right: -16px; margin-top: 6px;" %><!-- This bumps the labels out to the right -->
+                    
+                    <h5>Tickets in testing each day</h5>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        
+        </td>
+      </tr>
+      
+    </table>
     
   </div>
   

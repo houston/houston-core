@@ -49,7 +49,9 @@ module Houston
           end
           
           def to_notice(attributes)
-            Notice.new(created_at: attributes["created_at"].try(:to_time))
+            Notice.new(
+              created_at: attributes["created_at"].try(:to_time),
+              error_tracker_id: attributes["app_id"])
           end
           
           

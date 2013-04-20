@@ -174,6 +174,9 @@
   .score {
     color: #333333; // for Gmail
     text-align: right;
+    margin-left: 0; // covered by the TD
+    
+    .notices-count.score-count { line-height: 0; }
     
     .no-bugs {
       color: #42A800;
@@ -205,46 +208,23 @@
     margin-bottom: 3em;
   }
   
-  .notices-count {
-    font-size: 4em;
-    display: block;
-    font-weight: 100;
-    line-height: .88em;
-  }
-  
-  .notices-by-project-pie {
-    width: 108px;
-    height: 108px;
-    border-radius: 60px;
-    border: 1px solid #ccc;
-    line-height: 108px;
-    text-align: center;
-  }
-  
-  .exceptions-notices-count {
-    height: 108px;
-    padding: 0 0 0 18px;
-    
-    .score {
-      margin: 0;
-      padding: 0;
-      text-align: left;
-    }
-  }
-  
-  .exceptions-notices-pie {
-    width: 108px;
-    padding: 0 12px 0 0;
-  }
-  
-  .exceptions-notices-history {
-    padding: 4px 0 0 0;
+  .exceptions-resolve-rate {
     vertical-align: bottom;
+    width: 154px;
+  }
+  
+  .exceptions-gpa {
+    .score { text-align: center; }
+    .score-count { font-size: 5em; position: relative; top: 0.25em; }
+    h4 { font-size: 1.5em; line-height: 1.1em; margin: 0; }
+    .score-label { font-size: 0.75em; font-weight: 20; }
   }
   
   .exceptions-problem-count {
     padding: 0 0 0 12px;
     vertical-align: bottom;
+    text-align: right;
+    width: 394px;
     
     img { 
       position: relative;
@@ -253,17 +233,19 @@
   }
   
   .exceptions-summary { 
-    width: 108px;
+    padding: 0 0 0 12px;
     text-align: center;
+    width: 108px;
   }
   
   .exceptions-bugs-summary-group {
     display: inline-block;
+    margin-right: 10px; // nudge to visually align
   }
   
   .exceptions-bugs-summary {
-    font-size: 2.5em;
-    font-weight: 100;
+    font-size: 1.5em;
+    font-weight: 200;
     text-align: right;
     line-height: 1em;
     
@@ -284,6 +266,7 @@
       border-radius: 60px;
       -webkit-box-shadow: inset 0 0 3px #aaaaaa;
       font-size: 7em;
+      font-weight: 100;
       text-align: center;
       height: 102px;
       line-height: 102px;
