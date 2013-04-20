@@ -38,7 +38,7 @@ class DailyReport
   end
   
   def self.deliver_all!(recipients, date=Date.today-1)
-    Project.with_ticket_tracking.map do |project|
+    Project.with_ticket_tracker.map do |project|
       DailyReport.new(project, date).deliver_to!(recipients)
     end
   end

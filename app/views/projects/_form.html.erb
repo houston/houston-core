@@ -52,16 +52,16 @@
     <hr />
 
     <div class="control-group">
-      <%= f.label :ticket_tracking_id, :class => 'control-label' %>
+      <%= f.label :ticket_tracker_id, :class => 'control-label' %>
       <div class="controls">
         <p>
-          <% Houston::TicketTracking.adapters.each do |name| %>
-            <%= f.label "ticket_tracking_adapter_#{name.to_s.underscore}", :class => "inline-label" do %>
-              <%= f.radio_button :ticket_tracking_adapter, name %> <%= name %>
+          <% Houston::TicketTracker.adapters.each do |name| %>
+            <%= f.label "ticket_tracker_name_#{name.to_s.underscore}", :class => "inline-label" do %>
+              <%= f.radio_button :ticket_tracker_name, name %> <%= name %>
             <% end %>
           <% end %>
         </p>
-        <%= f.text_field :ticket_tracking_id, :class => 'text_field' %>
+        <%= f.text_field :ticket_tracker_id, :class => 'text_field' %>
       </div>
     </div>
 

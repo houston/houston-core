@@ -12,7 +12,7 @@ module Houston
       @modules = []
       @authentication_strategy = :database
       @authentication_strategy_configuration = {}
-      @ticket_system_configuration = {}
+      @ticket_tracker_configuration = {}
       @ci_server_configuration = {}
       @error_tracker_configuration = {}
     end
@@ -101,13 +101,13 @@ module Houston
     
     # Components
     
-    def ticket_system(*args, &block)
-      @ticket_system_configuration = HashDsl.hash_from_block(block) if block_given?
+    def ticket_tracker(*args, &block)
+      @ticket_tracker_configuration = HashDsl.hash_from_block(block) if block_given?
       
       # Currently Unfuddle is the only supported ticket system
       :unfuddle
     end
-    attr_reader :ticket_system_configuration
+    attr_reader :ticket_tracker_configuration
     
     def ci_server(*args, &block)
       @ci_server_configuration = HashDsl.hash_from_block(block) if block_given?

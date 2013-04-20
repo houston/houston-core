@@ -21,7 +21,7 @@ Houston.config do
   
   # The ticketing system that Houston will interface with.
   # Right now, the only supported system is Unfuddle.
-  # ticket_system :unfuddle do
+  # ticket_tracker :unfuddle do
   #   subdomain SUBDOMAIN
   #   username USERNAME
   #   password PASSWORD

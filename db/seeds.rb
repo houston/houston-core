@@ -14,8 +14,8 @@ unite = Project.create(
   name: "Unite",
   slug: "unite",
   color: "teal",
-  ticket_tracking_adapter: "Unfuddle",
-  ticket_tracking_id: 25)
+  ticket_tracker_name: "Unfuddle",
+  ticket_tracker_id: 25)
 
 
 
@@ -43,8 +43,8 @@ church_360 = Project.create(
   name: "Church360",
   slug: "360",
   color: "orange",
-  ticket_tracking_adapter: "Unfuddle",
-  ticket_tracking_id: 1)
+  ticket_tracker_name: "Unfuddle",
+  ticket_tracker_id: 1)
 
 
 

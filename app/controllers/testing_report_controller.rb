@@ -13,8 +13,8 @@ class TestingReportController < ApplicationController
       next unless can?(:show, project.testing_notes.build)
       
       tickets_for_project = unfuddle_tickets
-        .select { |ticket| ticket["project_id"] == project.ticket_tracking_id }
-        .map { | attributes| project.ticket_system.build_ticket(attributes) }
+        .select { |ticket| ticket["project_id"] == project.ticket_tracker_id }
+        .map { | attributes| project.ticket_tracker.build_ticket(attributes) }
       tickets = project
         .tickets_from_unfuddle_tickets(tickets_for_project)
         .reject(&:in_development?)

@@ -128,8 +128,8 @@ class Ticket < ActiveRecord::Base
   
   
   
-  def ticket_system_ticket_url
-    project.ticket_system_ticket_url(number)
+  def ticket_tracker_ticket_url
+    project.ticket_tracker_ticket_url(number)
   end
   
   
@@ -147,7 +147,7 @@ class Ticket < ActiveRecord::Base
   
   
   def remote_ticket
-    @remote_ticket ||= project && project.ticket_system.find_ticket(remote_id)
+    @remote_ticket ||= project && project.ticket_tracker.find_ticket(remote_id)
   end
   
   def release!(release)

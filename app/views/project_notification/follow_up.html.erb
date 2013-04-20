@@ -21,6 +21,6 @@
 </div>
 
 <ol class="followup-history">
-  <li>&#9658; A ticket <%= link_to "[##{@ticket.number}]", @ticket.ticket_system_ticket_url %> was created for this on <span class="detail date"><%= @ticket.created_at %></span></li>
+  <li>&#9658; A ticket <%= link_to "[##{@ticket.number}]", @ticket.ticket_tracker_ticket_url %> was created for this on <span class="detail date"><%= @ticket.created_at %></span></li>
   <li>&#9658; The ticket was deployed today at 2:37pm</li>
 </ol>

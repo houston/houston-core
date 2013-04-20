@@ -32,8 +32,8 @@
               <%= link_to_if can?(:update, project), project.name, edit_project_path(project) %>
               
               <p class="project-links">
-                <% if ticket_system_url = project.ticket_system_project_url %>
-                  <%= link_to ticket_system_url, :target => "_blank" do %>
+                <% if ticket_tracker_url = project.ticket_tracker_project_url %>
+                  <%= link_to ticket_tracker_url, :target => "_blank" do %>
                     <%= image_tag "/images/favicon-unfuddle.png", "data-tooltip-placement" => "top", :rel => "tooltip", :title => "View in Unfuddle", :width => 16, :height => 16 %>
                   <% end %>
                 <% end %>

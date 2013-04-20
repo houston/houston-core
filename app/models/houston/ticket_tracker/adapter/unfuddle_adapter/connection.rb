@@ -1,7 +1,7 @@
-require_dependency "houston/ticket_tracking/adapter/unfuddle_adapter/ticket"
+require_dependency "houston/ticket_tracker/adapter/unfuddle_adapter/ticket"
 
 module Houston
-  module TicketTracking
+  module TicketTracker
     module Adapter
       class UnfuddleAdapter
         class Connection
@@ -23,7 +23,7 @@ module Houston
           
           
           def build_ticket(attributes)
-            Houston::TicketTracking::Adapter::UnfuddleAdapter::Ticket.new(self, attributes)
+            Houston::TicketTracker::Adapter::UnfuddleAdapter::Ticket.new(self, attributes)
           end
           
           def find_ticket(ticket_id)
@@ -36,9 +36,9 @@ module Houston
             remote_tickets = unfuddle.find_tickets!(*query)
             remote_tickets.map { |attributes | build_ticket(attributes) }
           rescue Unfuddle::ConnectionError
-            raise Houston::TicketTracking::ConnectionError.new($!)
+            raise Houston::TicketTracker::ConnectionError.new($!)
           rescue Unfuddle::Error
-            raise Houston::TicketTracking::PassThroughError.new($!)
+            raise Houston::TicketTracker::PassThroughError.new($!)
           end
           
           
@@ -56,7 +56,7 @@ module Houston
           def construct_ticket_query(*args)
             unfuddle.construct_ticket_query(*args)
           rescue Unfuddle::UndefinedCustomField, Unfuddle::UndefinedCustomFieldValue, Unfuddle::UndefinedSeverity
-            raise Houston::TicketTracking::InvalidQueryError.new($!)
+            raise Houston::TicketTracker::InvalidQueryError.new($!)
           end
           
           

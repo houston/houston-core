@@ -650,7 +650,7 @@ CREATE TABLE projects (
     id integer NOT NULL,
     name character varying(255),
     slug character varying(255),
-    ticket_tracking_id integer,
+    ticket_tracker_id integer,
     version_control_location character varying(255),
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
@@ -660,7 +660,7 @@ CREATE TABLE projects (
     retired_at timestamp without time zone,
     category character varying(255),
     version_control_adapter character varying(255) DEFAULT 'None'::character varying NOT NULL,
-    ticket_tracking_adapter character varying(255) DEFAULT 'None'::character varying NOT NULL,
+    ticket_tracker_name character varying(255) DEFAULT 'None'::character varying NOT NULL,
     ci_adapter character varying(255) DEFAULT 'None'::character varying NOT NULL,
     min_passing_verdicts integer DEFAULT 1 NOT NULL
 );
@@ -1600,3 +1600,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130407220937');
 INSERT INTO schema_migrations (version) VALUES ('20130407221459');
 
 INSERT INTO schema_migrations (version) VALUES ('20130416020627');
+
+INSERT INTO schema_migrations (version) VALUES ('20130420151334');

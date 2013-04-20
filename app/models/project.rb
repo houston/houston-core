@@ -1,4 +1,5 @@
 class Project < ActiveRecord::Base
+  extend ProjectAdapter
   
   has_many :releases, :dependent => :destroy
   has_many :commits
@@ -10,7 +11,7 @@ class Project < ActiveRecord::Base
   
   accepts_nested_attributes_for :roles, :allow_destroy => true # <-- !todo: authorized access only
   
-  validate :ticket_tracking_id_is_valid
+  has_adapter Houston::TicketTracker, project_id: :ticket_tracker_id
   validate :version_control_location_is_valid
   
   default_scope order(:name)
@@ -21,6 +22,10 @@ class Project < ActiveRecord::Base
   
   def to_param
     slug
+  end
+  
+  def environment(environment_name)
+    Environment.new(self, environment_name)
   end
   
   
@@ -42,6 +47,7 @@ class Project < ActiveRecord::Base
   end
   
   # ------------------------------------------------------------------------- #  
+  
   
   
   
@@ -88,6 +94,20 @@ class Project < ActiveRecord::Base
   
   
   
+  
+  # Ticket Tracking
+  # ------------------------------------------------------------------------- #
+  
+  def ticket_tracker_project_url
+    ticket_tracker.project_url
+  end
+  
+  def ticket_tracker_ticket_url(ticket_number)
+    ticket_tracker.ticket_url(ticket_number)
+  end
+  
+  
+  
   def find_or_create_tickets_by_number(*numbers)
     numbers = numbers.flatten.map(&:to_i).uniq
     tickets = self.tickets.numbered(numbers)
@@ -115,7 +135,7 @@ class Project < ActiveRecord::Base
   def find_tickets(*query)
     Rails.logger.info "[project.find_tickets] query: #{query.inspect}"
     
-    unfuddle_tickets = ticket_system.find_tickets!(*query)
+    unfuddle_tickets = ticket_tracker.find_tickets!(*query)
     tickets_from_unfuddle_tickets(unfuddle_tickets)
   end
   
@@ -177,44 +197,7 @@ class Project < ActiveRecord::Base
     tickets
   end
   
-  
-  
-  
-  
-  # Ticket Tracking
   # ------------------------------------------------------------------------- #
-  
-  def self.with_ticket_tracking
-    where Project.arel_table[:ticket_tracking_adapter].not_eq("None")
-  end
-  
-  def has_ticket_tracking?
-    ticket_tracking_adapter != "None"
-  end
-  
-  def ticket_tracking_id_is_valid
-    ticket_tracking_system.problems_with_project_id(ticket_tracking_id).each do |message|
-      errors.add :ticket_tracking_id, message
-    end
-  end
-  
-  def ticket_system_project_url
-    ticket_system.project_url
-  end
-  
-  def ticket_system_ticket_url(ticket_number)
-    ticket_system.ticket_url(ticket_number)
-  end
-  
-  def ticket_system
-    @ticket_system ||= ticket_tracking_system.create_connection(ticket_tracking_id)
-  end
-  
-  def ticket_tracking_system
-    Houston::TicketTracking.adapter(ticket_tracking_adapter)
-  end
-  
-  # ------------------------------------------------------------------------- #  
   
   
   
@@ -319,12 +302,6 @@ class Project < ActiveRecord::Base
   
   def read_file(path, options={})
     repo.read_file(path, options)
-  end
-  
-  
-  
-  def environment(environment_name)
-    Environment.new(self, environment_name)
   end
   
   

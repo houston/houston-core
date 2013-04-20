@@ -1,40 +1,29 @@
 module Houston
-  module TicketTracking
-    class NullTicketClass
+  module TicketTracker
+    class NullConnectionClass
       
       
-      # Public API for a TicketTracking ticket
+      # Public API for a TicketTracker connection
       # ------------------------------------------------------------------------- #
       
-      def remote_id
+      def build_ticket(attributes)
+        NullTicket
+      end
+      
+      def find_ticket(*args)
         nil
       end
       
-      def number
+      def find_tickets!(*args)
+        []
+      end
+      
+      def project_url
         nil
       end
       
-      def summary
+      def ticket_url(ticket_number)
         nil
-      end
-      
-      def description
-        nil
-      end
-      
-      def deployment
-        nil
-      end
-      
-      def goldmine
-        nil
-      end
-      
-      def attributes
-        {}
-      end
-      
-      def update_attribute(*args)
       end
       
       # ------------------------------------------------------------------------- #
@@ -46,6 +35,6 @@ module Houston
       
     end
     
-    NullTicket = NullTicketClass.new
+    NullConnection = NullConnectionClass.new
   end
 end

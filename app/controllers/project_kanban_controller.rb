@@ -6,7 +6,7 @@ class ProjectKanbanController < ApplicationController
   def index
     @title = "Kanban: #{@project.name}"
     
-    @projects = Project.with_ticket_tracking
+    @projects = Project.with_ticket_tracker
   end
   
   
@@ -18,7 +18,7 @@ class ProjectKanbanController < ApplicationController
     # Always render the freshest tickets
     begin
       @tickets = @project.tickets_in_queue(@queue)
-    rescue Unfuddle::UnauthorizedError, Houston::TicketTracking::InvalidQueryError
+    rescue Unfuddle::UnauthorizedError, Houston::TicketTracker::InvalidQueryError
       @errors << "#{@project.name} is not configured correctly for use with Houston Kanban:\n#{$!.message}"
     end
     

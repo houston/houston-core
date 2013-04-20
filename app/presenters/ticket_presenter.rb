@@ -25,7 +25,7 @@ class TicketPresenter
   def as_json(*args)
     @tickets.map do |ticket|
       { id: ticket.id,
-        projectId: ticket.project.ticket_tracking_id,
+        projectId: ticket.project.ticket_tracker_id,
         projectSlug: ticket.project.slug,
         projectTitle: ticket.project.name,
         projectColor: ticket.project.color,
@@ -38,15 +38,15 @@ class TicketPresenter
         deployment: ticket.deployment,
         age: ticket.age,
         dueDate: ticket.due_date,
-        ticketSystem: ticket.project.ticket_tracking_adapter,
-        ticketUrl: ticket.ticket_system_ticket_url }
+        ticketSystem: ticket.project.ticket_tracker_adapter,
+        ticketUrl: ticket.ticket_tracker_ticket_url }
     end
   end
   
   def with_testing_notes
     @tickets.map do |ticket|
       { id: ticket.id,
-        projectId: ticket.project.ticket_tracking_id,
+        projectId: ticket.project.ticket_tracker_id,
         projectSlug: ticket.project.slug,
         projectTitle: ticket.project.name,
         projectColor: ticket.project.color,
@@ -60,8 +60,8 @@ class TicketPresenter
         deployment: ticket.deployment,
         age: ticket.age,
         dueDate: ticket.due_date,
-        ticketSystem: ticket.project.ticket_tracking_adapter,
-        ticketUrl: ticket.ticket_system_ticket_url,
+        ticketSystem: ticket.project.ticket_tracker_adapter,
+        ticketUrl: ticket.ticket_tracker_ticket_url,
         
         minPassingVerdicts: ticket.min_passing_verdicts,
         testingNotes: TestingNotePresenter.new(ticket.testing_notes).as_json,

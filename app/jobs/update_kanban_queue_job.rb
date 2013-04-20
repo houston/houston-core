@@ -9,7 +9,7 @@ class UpdateKanbanQueueJob
   end
   
   def run!
-    Project.with_ticket_tracking.each do |project|
+    Project.with_ticket_tracker.each do |project|
       update_tickets_for_project!(project)
     end
   rescue QuitAll
@@ -25,10 +25,10 @@ class UpdateKanbanQueueJob
   def update_tickets_for_project_and_queue!(project, queue)
     project.tickets_in_queue(queue)
     
-  rescue Houston::TicketTracking::ConnectionError
+  rescue Houston::TicketTracker::ConnectionError
     retry if (!connection_retry_count += 1) < 3
     connection_error!(project)
-  rescue Houston::TicketTracking::InvalidQueryError
+  rescue Houston::TicketTracker::InvalidQueryError
     query_error!(project)
   ensure
     sleep 2 # give Unfuddle a break
@@ -47,7 +47,7 @@ private
   
   def connection_error!(project)
     Error.create(
-      category: project.ticket_tracking_adapter.downcase,
+      category: project.ticket_tracker_adapter.downcase,
       message: $!.message,
       backtrace: $!.backtrace)
     raise QuitAll

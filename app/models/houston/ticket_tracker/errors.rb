@@ -1,5 +1,5 @@
 module Houston
-  module TicketTracking
+  module TicketTracker
     
     class PassThroughError < StandardError
       def initialize(original_error)

@@ -33,7 +33,7 @@ end %>
                 <% tickets.each do |ticket|; ticket.project = project %>
                   <%# This is copied from application.html.erb %>
                   <li class="ticket <%= project.slug %> <%= project.color %> <%= class_for_age(ticket.age) %> <%= ticket.verdict.downcase %>" id="ticket_<%= ticket.id %>" data-number="<%= ticket.number %>" data-project="<%= project.name %>" <%= attributes_for_ticket_verdict(ticket) %>>
-                    <a href="<%= ticket.ticket_system_ticket_url %>" target="_blank">
+                    <a href="<%= ticket.ticket_tracker_ticket_url %>" target="_blank">
                       <h3 class="ticket-number"><%= ticket.number %> <span class="ticket-age"><%= format_duration ticket.age %></span></h3>
                       <p class="ticket-summary"><%= ticket.summary %></p>
                     </a>

@@ -1,16 +1,16 @@
-Dir["#{Rails.root}/app/models/houston/ticket_tracking/adapter/*_adapter.rb"].each(&method(:require_dependency))
-require_dependency "houston/ticket_tracking/errors"
+Dir["#{Rails.root}/app/models/houston/ticket_tracker/adapter/*_adapter.rb"].each(&method(:require_dependency))
+require_dependency "houston/ticket_tracker/errors"
 
 module Houston
   
   # Classes in this namespace are assumed to implement
-  # Houston's TicketTracking API.
+  # Houston's TicketTracker API.
   # 
   # At this time there are a Null adapter (None) and an adapter for use
   # with Unfuddle. Adapters for other ticket tracking systems can be added
   # here and will be automatically available to Houston projects.
   #
-  module TicketTracking
+  module TicketTracker
     
     def self.adapters
       @adapters ||= 
@@ -21,6 +21,10 @@ module Houston
     
     def self.adapter(name)
       Adapter.const_get(name + "Adapter")
+    end
+    
+    def self.arguments
+      [:project_id]
     end
     
   end

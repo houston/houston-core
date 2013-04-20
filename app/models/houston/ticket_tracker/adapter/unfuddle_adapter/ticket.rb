@@ -1,7 +1,7 @@
 require 'ostruct'
 
 module Houston
-  module TicketTracking
+  module TicketTracker
     module Adapter
       class UnfuddleAdapter
         class Ticket
