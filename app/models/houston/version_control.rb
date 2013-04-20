@@ -12,13 +12,13 @@ module Houston
   #
   # VersionControl::Adapter classes are expected to respond to:
   #
-  #   - `problems_with_location`:
+  #   - `errors_with_parameters`:
   #       Accepts `version_control_location` and `version_control_temp_path`.
   #       Returns an array of validation messages describing problems with
   #       the value of `version_control_location`. If there are no problems,
   #       the result is an empty array.
   #
-  #   - `create_repo`:
+  #   - `build`:
   #       Accepts `version_control_location` and `version_control_temp_path`.
   #       Returns an instance of a VersionControl class.
   #       If `version_control_location` is invalid, the class should
@@ -55,6 +55,10 @@ module Houston
     
     def self.adapter(name)
       Adapter.const_get(name + "Adapter")
+    end
+    
+    def self.arguments
+      [:location, :temp_path]
     end
     
   end

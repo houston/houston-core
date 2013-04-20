@@ -659,7 +659,7 @@ CREATE TABLE projects (
     new_relic_id integer,
     retired_at timestamp without time zone,
     category character varying(255),
-    version_control_adapter character varying(255) DEFAULT 'None'::character varying NOT NULL,
+    version_control_name character varying(255) DEFAULT 'None'::character varying NOT NULL,
     ticket_tracker_name character varying(255) DEFAULT 'None'::character varying NOT NULL,
     ci_adapter character varying(255) DEFAULT 'None'::character varying NOT NULL,
     min_passing_verdicts integer DEFAULT 1 NOT NULL
@@ -1602,3 +1602,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130407221459');
 INSERT INTO schema_migrations (version) VALUES ('20130416020627');
 
 INSERT INTO schema_migrations (version) VALUES ('20130420151334');
+
+INSERT INTO schema_migrations (version) VALUES ('20130420155332');

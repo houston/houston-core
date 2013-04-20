@@ -10,20 +10,20 @@ module Houston
           # Public API for a VersionControl::Adapter
           # ------------------------------------------------------------------------- #
           
-          def problems_with_location(repo_location, temp_path=nil)
-            connect_to_repo!(repo_location.to_s, temp_path)
-            []
+          def errors_with_parameters(location, temp_path=nil)
+            connect_to_repo!(location.to_s, temp_path)
+            {}
           rescue
             Rails.logger.error $!.message
             Rails.logger.error $!.backtrace
-            ["might not be right. Houston can't seem to connect to it."]
+            {location: ["might not be right. Houston can't seem to connect to it."]}
           end
           
-          def create_repo(repo_location, temp_path=nil)
-            return Houston::VersionControl::NullRepo if repo_location.blank?
+          def build(location, temp_path=nil)
+            return Houston::VersionControl::NullRepo if location.blank?
             
             begin
-              connection = connect_to_repo!(repo_location.to_s, temp_path)
+              connection = connect_to_repo!(location.to_s, temp_path)
               self::Repo.new(connection, local: (connection.path == temp_path))
             rescue Rugged::RepositoryError, Rugged::OSError
               Houston::VersionControl::NullRepo
@@ -34,8 +34,8 @@ module Houston
           
           
           
-          def connect_to_repo!(repo_location, temp_path)
-            repo_uri = Addressable::URI.parse(repo_location)
+          def connect_to_repo!(location, temp_path)
+            repo_uri = Addressable::URI.parse(location)
             git_path = get_local_path_to_repo(repo_uri, temp_path)
             Rugged::Repository.new(git_path)
           end

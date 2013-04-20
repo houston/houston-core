@@ -130,7 +130,7 @@ end
 Houston.observer.on "test_run:complete" do |test_run|
   project = test_run.project
   
-  unless project.version_control_adapter == "Git"
+  unless project.version_control_name == "Git"
     Rails.logger.warn "[test_run:complete] #{project.slug} does not use git"
     next
   end

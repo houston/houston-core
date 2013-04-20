@@ -11,8 +11,14 @@ class Project < ActiveRecord::Base
   
   accepts_nested_attributes_for :roles, :allow_destroy => true # <-- !todo: authorized access only
   
-  has_adapter Houston::TicketTracker, project_id: :ticket_tracker_id
-  validate :version_control_location_is_valid
+  
+  has_adapter Houston::TicketTracker,
+    project_id: :ticket_tracker_id
+  
+  has_adapter Houston::VersionControl,
+    location: :version_control_location,
+    temp_path: :version_control_temp_path
+  
   
   default_scope order(:name)
   
@@ -206,27 +212,7 @@ class Project < ActiveRecord::Base
   # Version Control
   # ------------------------------------------------------------------------- #
   
-  def self.with_version_control
-    where Project.arel_table[:version_control_adapter].not_eq("None")
-  end
-  
-  def version_control_location_is_valid
-    version_control_system.problems_with_location(
-      version_control_location,
-      version_control_temp_path).each do |message|
-      errors.add :version_control_location, message
-    end
-  end
-  
-  def repo
-    @repo ||= version_control_system.create_repo(
-      version_control_location,
-      version_control_temp_path)
-  end
-  
-  def version_control_system
-    Houston::VersionControl.adapter(version_control_adapter)
-  end
+  alias :repo :version_control
   
   def version_control_temp_path
     Rails.root.join("tmp", "#{slug}.git").to_s # <-- the .git here is misleading; could be any kind of VCS

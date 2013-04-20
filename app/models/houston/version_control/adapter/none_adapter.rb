@@ -3,11 +3,11 @@ module Houston
     module Adapter
       class NoneAdapter
         
-        def self.problems_with_location(*args)
-          []
+        def self.errors_with_parameters(*args)
+          {}
         end
         
-        def self.create_repo(*args)
+        def self.build(*args)
           Houston::VersionControl::NullRepo
         end
         

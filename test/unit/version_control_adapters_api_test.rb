@@ -11,11 +11,11 @@ class VersionControlAdatersApiTest < ActiveSupport::TestCase
   Houston::VersionControl.adapters.each do |adapter_name|
     adapter = Houston::VersionControl.adapter(adapter_name)
     repo_location = Rails.root.join("test", "data", "bare_repo.git")
-    repos << adapter.create_repo(repo_location)
+    repos << adapter.build(repo_location)
     
     test "#{adapter.name} responds to the VersionControl::Adapter interface" do
-      assert_respond_to adapter, :problems_with_location
-      assert_respond_to adapter, :create_repo
+      assert_respond_to adapter, :errors_with_parameters
+      assert_respond_to adapter, :build
     end
   end
   
