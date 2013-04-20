@@ -14,6 +14,10 @@ module Houston
           
           attr_reader :project, :connection
           
+          def job_url
+            "#{@connection.url_prefix}#{job_path}"
+          end
+          
           
           
           def build!(commit)

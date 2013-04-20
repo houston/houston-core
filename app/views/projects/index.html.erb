@@ -47,6 +47,11 @@
                     <%= image_tag "/images/favicon-github.png", "data-tooltip-placement" => "top", :rel => "tooltip", :title => "View in GitHub", :width => 16, :height => 16 %>
                   <% end %>
                 <% end %>
+                <% if ci_server_url = project.ci_server_job_url %>
+                  <%= link_to ci_server_url, :target => "_blank" do %>
+                    <%= image_tag "/images/favicon-jenkins.png", "data-tooltip-placement" => "top", :rel => "tooltip", :title => "View in Jenkins", :width => 16, :height => 16 %>
+                  <% end %>
+                <% end %>
                 <% unless project.new_relic_id.blank? %>
                   <%= link_to new_relic_project_url(project), :target => "_blank" do %>
                     <%= image_tag "/images/favicon-newrelic.png", "data-tooltip-placement" => "top", :rel => "tooltip", :title => "View in New Relic", :width => 16, :height => 16 %>

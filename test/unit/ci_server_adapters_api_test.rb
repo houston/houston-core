@@ -11,6 +11,7 @@ class CIServerAdatersApiTest < ActiveSupport::TestCase
     adapter = Houston::CIServer.adapter(adapter_name)
     
     test "#{adapter.name} responds to the CIServer::Adapter interface" do
+      assert_respond_to adapter, :errors_with_parameters
       assert_respond_to adapter, :build
     end
     
@@ -18,6 +19,7 @@ class CIServerAdatersApiTest < ActiveSupport::TestCase
       project = Project.new
       job = adapter.build(project)
       
+      assert_respond_to job, :job_url
       assert_respond_to job, :build!
       assert_respond_to job, :fetch_results!
     end

@@ -242,6 +242,10 @@ class Project < ActiveRecord::Base
   # Continuous Integration
   # ------------------------------------------------------------------------- #
   
+  def ci_server_job_url
+    ci_server.job_url
+  end
+  
   # ------------------------------------------------------------------------- #
   
   

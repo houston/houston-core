@@ -5,7 +5,10 @@ module Houston
         class Job
           
           def initialize(project)
-            @project = project
+          end
+          
+          def job_url
+            nil
           end
           
           def build!(commit)
