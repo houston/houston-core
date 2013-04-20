@@ -66,6 +66,8 @@ module StaticChartHelper
   
   def area_graph(options={})
     data = options[:data].reverse
+    return "" if data.flatten.empty?
+    
     colors = options[:colors].reverse
     line_weight = options.fetch(:line_weight, 0)
     marker_colors = options[:marker_colors] ? options[:marker_colors].reverse : colors
@@ -105,6 +107,8 @@ module StaticChartHelper
   # Expects every array to have same length
   # Sums the corresponding elements in each array
   def accumulate(*arrays)
+    return [] if arrays.empty?
+    
     (0...arrays[0].length).map do |i|
       arrays.reduce(0) { |sum, array| sum + array[i] }
     end
