@@ -68,12 +68,12 @@
     <hr />
 
     <div class="control-group">
-      <%= f.label :ci_adapter, "Continuous Integration", :class => 'control-label' %>
+      <%= f.label :ci_server_name, "Continuous Integration", :class => 'control-label' %>
       <div class="controls">
         <p>
-          <% Houston::CI.adapters.each do |name| %>
-            <%= f.label "ci_adapter_#{name.to_s.underscore}", :class => "inline-label" do %>
-              <%= f.radio_button :ci_adapter, name %> <%= name %>
+          <% Houston::CIServer.adapters.each do |name| %>
+            <%= f.label "ci_server_name_#{name.to_s.underscore}", :class => "inline-label" do %>
+              <%= f.radio_button :ci_server_name, name %> <%= name %>
             <% end %>
           <% end %>
         </p>

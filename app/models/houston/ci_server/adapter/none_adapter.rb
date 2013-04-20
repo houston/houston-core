@@ -1,9 +1,13 @@
 module Houston
-  module CI
+  module CIServer
     module Adapter
       class NoneAdapter
         
-        def self.job_for_project(project)
+        def self.errors_with_parameters(project)
+          {}
+        end
+        
+        def self.build(project)
           Job.new(project)
         end
         

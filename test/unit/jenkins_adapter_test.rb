@@ -50,7 +50,7 @@ class JenkinsAdapterTest < ActiveSupport::TestCase
     }
     
     project = Project.new
-    jenkins = Houston::CI::Adapter::JenkinsAdapter::Job.new(project)
+    jenkins = Houston::CIServer::Adapter::JenkinsAdapter::Job.new(project)
     
     mock(jenkins.connection).get(result_url) do |url|
       OpenStruct.new(status: 200, body: result_response)

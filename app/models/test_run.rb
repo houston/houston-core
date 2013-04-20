@@ -48,7 +48,7 @@ class TestRun < ActiveRecord::Base
   end
   
   def trigger_build!
-    project.ci_job.build!(commit)
+    project.ci_server.build!(commit)
   end
   
   def completed!(results_url)
@@ -59,7 +59,7 @@ class TestRun < ActiveRecord::Base
   end
   
   def fetch_results!
-    attributes = project.ci_job.fetch_results!(results_url)
+    attributes = project.ci_server.fetch_results!(results_url)
     update_attributes! attributes
     Houston.observer.fire "test_run:complete", self if has_results?
   end

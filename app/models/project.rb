@@ -19,6 +19,9 @@ class Project < ActiveRecord::Base
     location: :version_control_location,
     temp_path: :version_control_temp_path
   
+  has_adapter Houston::CIServer,
+    project: :self
+  
   
   default_scope order(:name)
   
@@ -226,18 +229,6 @@ class Project < ActiveRecord::Base
   
   # Continuous Integration
   # ------------------------------------------------------------------------- #
-  
-  def self.with_ci_server
-    where Project.arel_table[:ci_adapter].not_eq("None")
-  end
-  
-  def ci_job
-    @ci_job ||= ci_server.job_for_project(self)
-  end
-  
-  def ci_server
-    Houston::CI.adapter(ci_adapter)
-  end
   
   # ------------------------------------------------------------------------- #
   

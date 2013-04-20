@@ -2,7 +2,7 @@
 
 <fieldset>
   <div class="control-group form-actions">
-    <% if @project.version_control_name == "None" %>
+    <% unless @project.has_version_control? %>
       <h3 style="margin-bottom: .5em;">No Version Control System specified for this project.</h3>
       <p>To pull release notes from your commit messages, we need to know where to find the project's repo.</p>
       <p><%= link_to "OK. Let me enter that now.", edit_project_path(@project) %></p>

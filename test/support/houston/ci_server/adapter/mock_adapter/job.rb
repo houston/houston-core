@@ -1,5 +1,5 @@
 module Houston
-  module CI
+  module CIServer
     module Adapter
       class MockAdapter
         class Job

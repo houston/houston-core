@@ -661,7 +661,7 @@ CREATE TABLE projects (
     category character varying(255),
     version_control_name character varying(255) DEFAULT 'None'::character varying NOT NULL,
     ticket_tracker_name character varying(255) DEFAULT 'None'::character varying NOT NULL,
-    ci_adapter character varying(255) DEFAULT 'None'::character varying NOT NULL,
+    ci_server_name character varying(255) DEFAULT 'None'::character varying NOT NULL,
     min_passing_verdicts integer DEFAULT 1 NOT NULL
 );
 
@@ -1604,3 +1604,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130416020627');
 INSERT INTO schema_migrations (version) VALUES ('20130420151334');
 
 INSERT INTO schema_migrations (version) VALUES ('20130420155332');
+
+INSERT INTO schema_migrations (version) VALUES ('20130420172322');

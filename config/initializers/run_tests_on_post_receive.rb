@@ -59,7 +59,7 @@ end
 # 3. Houston creates a Test Run.
 Houston.observer.on "hooks:post_receive" do |project, params|
   
-  if project.ci_adapter == "None"
+  unless project.has_ci_server?
     Rails.logger.warn "[hooks:post_receive] the project #{project.name} is not configured to be used with a Continuous Integration server"
     next
   end
@@ -84,8 +84,8 @@ Houston.observer.on "hooks:post_receive" do |project, params|
       commit: payload.commit,
       agent_email: payload.agent_email,
       branch: payload.branch).start!
-  rescue Houston::CI::Error
-    message = "#{project.ci_adapter} is not appropriately configured to build #{project.name}."
+  rescue Houston::CIServer::Error
+    message = "#{project.ci_server_name} is not appropriately configured to build #{project.name}."
     ProjectNotification.configuration_error(project, message, additional_info: $!.message).deliver!
   end
 end
@@ -103,16 +103,16 @@ Houston.observer.on "hooks:post_build" do |project, params|
   end
   
   if results_url.blank?
-    message = "#{project.ci_adapter} is not appropriately configured to build #{project.name}."
-    additional_info = "#{project.ci_adapter} did not supply 'results_url' when it triggered the post_build hook"
+    message = "#{project.ci_server_name} is not appropriately configured to build #{project.name}."
+    additional_info = "#{project.ci_server_name} did not supply 'results_url' when it triggered the post_build hook"
     ProjectNotification.configuration_error(project, message, additional_info: additional_info).deliver!
     next
   end
   
   begin
     test_run.completed!(results_url)
-  rescue Houston::CI::Error
-    message = "#{project.ci_adapter} is not appropriately configured to build #{project.name}."
+  rescue Houston::CIServer::Error
+    message = "#{project.ci_server_name} is not appropriately configured to build #{project.name}."
     ProjectNotification.configuration_error(project, message, additional_info: $!.message).deliver!
   end
 end

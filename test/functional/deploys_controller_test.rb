@@ -6,7 +6,7 @@ class DeploysControllerTest < ActionController::TestCase
   
   
   test "should not require a logged in user" do
-    @project = Project.create!(name: "Test", slug: "test", ci_adapter: "Mock")
+    @project = Project.create!(name: "Test", slug: "test", ci_server_name: "Mock")
     
     mock(Deploy).create!(anything)
     

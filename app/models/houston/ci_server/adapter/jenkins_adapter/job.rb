@@ -1,5 +1,5 @@
 module Houston
-  module CI
+  module CIServer
     module Adapter
       class JenkinsAdapter
         class Job
@@ -21,7 +21,7 @@ module Houston
             Rails.logger.info "[jenkins] POST #{url}"
             response = connection.post(url)
             unless [200, 201, 302].member?(response.status)
-              raise Houston::CI::Error.new("Houston was unable to trigger a build for #{project.name} with the URL #{url}.")
+              raise Houston::CIServer::Error.new("Houston was unable to trigger a build for #{project.name} with the URL #{url}.")
             end
           end
           
@@ -65,7 +65,7 @@ module Houston
               
               error_message = "Houston could not get #{resource} from the URL #{url.inspect}."
               error_message << " " << options[:additional_error_info] if options.key?(:additional_error_info)
-              raise Houston::CI::Error, error_message
+              raise Houston::CIServer::Error, error_message
             end
             
             JSON.parse(response.body)
@@ -74,7 +74,7 @@ module Houston
             error_message = "Houston could not parse #{resource} from the URL #{url.inspect}."
             error_message << " [#{$!.message}]"
             error_message << " " << options[:additional_error_info] if options.key?(:additional_error_info)
-            raise Houston::CI::Error, error_message
+            raise Houston::CIServer::Error, error_message
           end
             
           
@@ -169,7 +169,7 @@ module Houston
           end
           
           def build_path(commit)
-            callback_url = Houston::CI.post_build_callback_url(project)
+            callback_url = Houston::CIServer.post_build_callback_url(project)
             "#{job_path}/buildWithParameters?COMMIT_SHA=#{commit}&CALLBACK_URL=#{callback_url}"
           end
           

@@ -1,5 +1,5 @@
-Dir["#{Rails.root}/app/models/houston/ci/adapter/*_adapter.rb"].each(&method(:require_dependency))
-require_dependency "houston/ci/errors"
+Dir["#{Rails.root}/app/models/houston/ci_server/adapter/*_adapter.rb"].each(&method(:require_dependency))
+require_dependency "houston/ci_server/errors"
 
 module Houston
   
@@ -10,7 +10,7 @@ module Houston
   # with Unfuddle. Adapters for other ticket tracking systems can be added
   # here and will be automatically available to Houston projects.
   #
-  module CI
+  module CIServer
     
     def self.adapters
       @adapters ||= 
@@ -21,6 +21,10 @@ module Houston
     
     def self.adapter(name)
       Adapter.const_get(name + "Adapter")
+    end
+    
+    def self.arguments
+      [:project]
     end
     
     
