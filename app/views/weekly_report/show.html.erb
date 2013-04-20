@@ -456,7 +456,7 @@
   
   <%
     
-    unfuddle_projects = @projects.select { |project| project.ticket_tracker_adapter == "Unfuddle" }
+    unfuddle_projects = @projects.select { |project| project.ticket_tracker_name == "Unfuddle" }
     
     severities_colors = Houston.config.severities
     
