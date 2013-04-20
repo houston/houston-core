@@ -39,11 +39,11 @@ Houston.config do
   
   # The error-catching system that Houston will interface with.
   # Right now, the only supported system is Errbit.
-  # error_tracker :errbit do
-  #   host HOST
-  #   port 443
-  #   auth_token TOKEN
-  # end
+  error_tracker :errbit do
+    host "errbit.example.com"
+    port 443
+    auth_token "TOKEN"
+  end
   
   
   
