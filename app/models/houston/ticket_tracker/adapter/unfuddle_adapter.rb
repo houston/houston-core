@@ -5,7 +5,7 @@ module Houston
         
         class << self
           
-          def errors_with_parameters(project_id)
+          def errors_with_parameters(project, project_id)
             return {project_id: ["cannot be blank"]} if project_id.blank?
             return {project_id: ["must be a number"]} unless project_id.to_s =~ /\d+/
             begin
@@ -19,7 +19,7 @@ module Houston
             {}
           end
           
-          def build(project_id)
+          def build(project, project_id)
             return Houston::TicketTracker::NullConnection if project_id.blank?
             
             self::Connection.new new_connection(project_id)

@@ -4,19 +4,19 @@ class GitAdapterTest < ActiveSupport::TestCase
   
   setup do
     path = Rails.root.join("test", "data", "bare_repo.git")
-    @test_repo = Houston::VersionControl::Adapter::GitAdapter.build(path)
+    @test_repo = Houston::VersionControl::Adapter::GitAdapter.build(Project.new, path)
   end
   
   
   test "#git_dir should return path when the repo is bare" do
     path = Rails.root.join("test", "data", "bare_repo.git")
-    repo = Houston::VersionControl::Adapter::GitAdapter.build(path)
+    repo = Houston::VersionControl::Adapter::GitAdapter.build(Project.new, path)
     assert_equal path.to_s, repo.send(:git_dir)
   end
   
   test "#git_dir should return the .git subdirectory when the repo is not bare" do
     path = Rails.root
-    repo = Houston::VersionControl::Adapter::GitAdapter.build(path)
+    repo = Houston::VersionControl::Adapter::GitAdapter.build(Project.new, path)
     assert_equal path.join(".git").to_s, repo.send(:git_dir)
   end
   
@@ -65,7 +65,7 @@ STR
   
   test "should return a NullRepo if you give it an invalid path" do
     path = Rails.root.join("nope")
-    repo = Houston::VersionControl::Adapter::GitAdapter.build(path)
+    repo = Houston::VersionControl::Adapter::GitAdapter.build(Project.new, path)
     assert_equal Houston::VersionControl::NullRepo, repo
   end
   

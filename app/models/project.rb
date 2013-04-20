@@ -12,15 +12,9 @@ class Project < ActiveRecord::Base
   accepts_nested_attributes_for :roles, :allow_destroy => true # <-- !todo: authorized access only
   
   
-  has_adapter Houston::TicketTracker,
-    project_id: :ticket_tracker_id
-  
-  has_adapter Houston::VersionControl,
-    location: :version_control_location,
-    temp_path: :version_control_temp_path
-  
-  has_adapter Houston::CIServer,
-    project: :self
+  has_adapter Houston::TicketTracker,   project_id: :ticket_tracker_id
+  has_adapter Houston::VersionControl,  location: :version_control_location
+  has_adapter Houston::CIServer
   
   
   default_scope order(:name)

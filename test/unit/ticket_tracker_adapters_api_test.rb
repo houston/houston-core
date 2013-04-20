@@ -10,7 +10,7 @@ class TicketTrackerAdatersApiTest < ActiveSupport::TestCase
   connections = []
   Houston::TicketTracker.adapters.each do |adapter_name|
     adapter = Houston::TicketTracker.adapter(adapter_name)
-    connections << adapter.build(1)
+    connections << adapter.build(Project.new, 1)
     
     test "#{adapter.name} responds to the TicketTracker::Adapter interface" do
       assert_respond_to adapter, :errors_with_parameters

@@ -24,7 +24,7 @@ module Houston
     end
     
     def self.arguments
-      [:project]
+      []
     end
     
     

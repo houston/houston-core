@@ -58,7 +58,7 @@ module Houston
     end
     
     def self.arguments
-      [:location, :temp_path]
+      [:location]
     end
     
   end

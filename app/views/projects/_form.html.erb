@@ -33,55 +33,30 @@
       </div>
     </div>
     
+    <% Project.adapters.each do |_, adapter| %>
+      
+      <hr />
+      
+      <div class="control-group">
+        <label class="control-label"><%= adapter.title %></label>
+        <div class="controls">
+          <p>
+            <% adapter.namespace.adapters.each do |name| %>
+              <%= f.label "#{adapter.attribute_name}_name_#{name.to_s.underscore}", :class => "inline-label" do %>
+                <%= f.radio_button "#{adapter.attribute_name}_name", name %> <%= name %>
+              <% end %>
+            <% end %>
+          </p>
+          <% adapter.parameters.each do |parameter| %>
+            <%= f.text_field parameter, :class => 'text_field' %>
+          <% end %>
+        </div>
+      </div>
+      
+    <% end %>
+    
     <hr />
     
-    <div class="control-group">
-      <%= f.label :version_control_location, "Version Control", :class => 'control-label' %>
-      <div class="controls">
-        <p>
-          <% Houston::VersionControl.adapters.each do |name| %>
-            <%= f.label "version_control_name_#{name.to_s.underscore}", :class => "inline-label" do %>
-              <%= f.radio_button :version_control_name, name %> <%= name %>
-            <% end %>
-          <% end %>
-        </p>
-        <%= f.text_field :version_control_location, :class => 'text_field' %>
-      </div>
-    </div>
-    
-    <hr />
-
-    <div class="control-group">
-      <%= f.label :ticket_tracker_id, :class => 'control-label' %>
-      <div class="controls">
-        <p>
-          <% Houston::TicketTracker.adapters.each do |name| %>
-            <%= f.label "ticket_tracker_name_#{name.to_s.underscore}", :class => "inline-label" do %>
-              <%= f.radio_button :ticket_tracker_name, name %> <%= name %>
-            <% end %>
-          <% end %>
-        </p>
-        <%= f.text_field :ticket_tracker_id, :class => 'text_field' %>
-      </div>
-    </div>
-
-    <hr />
-
-    <div class="control-group">
-      <%= f.label :ci_server_name, "Continuous Integration", :class => 'control-label' %>
-      <div class="controls">
-        <p>
-          <% Houston::CIServer.adapters.each do |name| %>
-            <%= f.label "ci_server_name_#{name.to_s.underscore}", :class => "inline-label" do %>
-              <%= f.radio_button :ci_server_name, name %> <%= name %>
-            <% end %>
-          <% end %>
-        </p>
-      </div>
-    </div>
-
-    <hr />
-
     <div class="control-group">
       <%= f.label :errbit_app_id, "Errbit App ID", :class => 'control-label' %>
       <div class="controls">

@@ -24,7 +24,7 @@ module ProjectAdapter
     
     def initialize(model, adapter_module, options={})
       @model          = model
-      @adapter_module = adapter_module
+      @namespace      = adapter_module
       @name           = adapter_module.name
       @attribute_name = name.demodulize.underscore
       @arguments      = adapter_module.arguments
@@ -35,7 +35,11 @@ module ProjectAdapter
       raise ArgumentError, "#{adapter_module} adapters accept #{arguments.length} arguments: #{arguments.to_sentence}, but #{model} did not define #{missing_args.to_sentence}" unless missing_args.empty?
     end
     
-    attr_reader :model, :adapter_module, :name, :attribute_name, :arguments, :parameters
+    attr_reader :model, :namespace, :name, :attribute_name, :arguments, :parameters
+    
+    def title
+      name.demodulize.titleize
+    end
     
     def validation_method
       :"#{attribute_name}_configuration_is_valid"
@@ -56,7 +60,7 @@ module ProjectAdapter
         end
         
         def #{validation_method}
-          #{attribute_name}_adapter.errors_with_parameters(#{parameters.join(", ")}).each do |argument, messages|
+          #{attribute_name}_adapter.errors_with_parameters(#{(["self"] + parameters).join(", ")}).each do |argument, messages|
             next if messages.empty?
             attribute = self.class.adapters["#{name}"].name_of_argument(argument)
             errors.add(attribute, messages)
@@ -64,11 +68,11 @@ module ProjectAdapter
         end
         
         def #{attribute_name}
-          @#{attribute_name} ||= #{attribute_name}_adapter.build(#{parameters.join(", ")})
+          @#{attribute_name} ||= #{attribute_name}_adapter.build(#{(["self"] + parameters).join(", ")})
         end
         
         def #{attribute_name}_adapter
-          #{adapter_module}.adapter(#{attribute_name}_name)
+          #{namespace}.adapter(#{attribute_name}_name)
         end
       RUBY
     end
