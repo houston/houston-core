@@ -49,8 +49,8 @@ module Houston
             response = fetch_json(coverage_report_url, resource_name: "coverage report", fallback_value: {})
             metrics = response["metrics"] || {}
             results[:coverage] = translate_file_coverage(response["files"])
-            results[:covered_percent] = metrics["covered_percent"] / 100.0
-            results[:covered_strength] = metrics["covered_strength"] / 100.0
+            results[:covered_percent] = metrics["covered_percent"] / 100.0      if metrics.key?("covered_percent")
+            results[:covered_strength] = metrics["covered_strength"] / 100.0    if metrics.key?("covered_strength")
             
             results
           end
