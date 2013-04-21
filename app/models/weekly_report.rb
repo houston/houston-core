@@ -1,16 +1,16 @@
 class WeeklyReport
   
   def initialize(date=Date.today)
-    @date = date.to_date
+    date = date.to_date
     
-    monday = @date.beginning_of_week
+    monday = date.beginning_of_week
     @date_range = monday..(6.days.since(monday))
   end
   
-  attr_reader :date, :date_range
+  attr_reader :date_range
   
   def title
-    "Weekly Report for #{date.strftime("%B %e")}"
+    "Weekly Report for #{date_range.begin.strftime("%B %e")}"
   end
   
   
