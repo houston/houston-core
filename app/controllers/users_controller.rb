@@ -97,21 +97,20 @@ class UsersController < ApplicationController
   
   
   def create
+    @user = User.new(params[:user])
+    
     if params[:send_invitation]
-      @user = User.invite!(params[:user])
+      User.invite!(params[:user])
     else
-      @user = User.new(params[:user])
+      @user.administrator = @administrator
       @user.skip_password = true
       @user.save!
     end
     
-    @user.administrator = @administrator
+    redirect_to @user, notice: 'User was successfully invited.'
     
-    if @user.save
-      redirect_to @user, notice: 'User was successfully invited.'
-    else
-      render action: "new"
-    end
+  rescue ActiveRecord::RecordInvalid
+    render action: "new"
   end
   
   
