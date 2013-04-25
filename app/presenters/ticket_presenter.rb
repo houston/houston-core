@@ -24,11 +24,12 @@ class TicketPresenter
   
   def as_json(*args)
     @tickets.map do |ticket|
+      project = ticket.project
       { id: ticket.id,
-        projectId: ticket.project.ticket_tracker_id,
-        projectSlug: ticket.project.slug,
-        projectTitle: ticket.project.name,
-        projectColor: ticket.project.color,
+        projectId: project.ticket_tracker_id,
+        projectSlug: project.slug,
+        projectTitle: project.name,
+        projectColor: project.color,
         number: ticket.number,
         summary: ticket.summary,
         verdict: ticket.verdict.downcase,
@@ -38,19 +39,20 @@ class TicketPresenter
         deployment: ticket.deployment,
         age: ticket.age,
         dueDate: ticket.due_date,
-        ticketSystem: ticket.project.ticket_tracker_adapter,
+        ticketSystem: project.ticket_tracker_adapter,
         ticketUrl: ticket.ticket_tracker_ticket_url }
     end
   end
   
   def with_testing_notes
     @tickets.map do |ticket|
+      project = ticket.project
       { id: ticket.id,
-        projectId: ticket.project.ticket_tracker_id,
-        projectSlug: ticket.project.slug,
-        projectTitle: ticket.project.name,
-        projectColor: ticket.project.color,
-        projectMaintainers: ticket.project.maintainers_ids,
+        projectId: project.ticket_tracker_id,
+        projectSlug: project.slug,
+        projectTitle: project.name,
+        projectColor: project.color,
+        projectMaintainers: project.maintainers_ids,
         number: ticket.number,
         summary: ticket.summary,
         verdict: ticket.verdict.downcase,
@@ -60,7 +62,7 @@ class TicketPresenter
         deployment: ticket.deployment,
         age: ticket.age,
         dueDate: ticket.due_date,
-        ticketSystem: ticket.project.ticket_tracker_adapter,
+        ticketSystem: project.ticket_tracker_adapter,
         ticketUrl: ticket.ticket_tracker_ticket_url,
         
         minPassingVerdicts: ticket.min_passing_verdicts,
