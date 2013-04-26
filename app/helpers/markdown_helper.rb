@@ -3,8 +3,10 @@ module MarkdownHelper
   
   def markdown
     @markdown ||= Redcarpet::Markdown.new(Redcarpet::Render::HTML,
-      :autolink => true,
-      :no_intra_emphasis => true)
+      autolink: true,             # parse and identify links
+      lax_spacing: true,          # don't require extra line breaks
+      space_after_headers: false, # don't require there to be a space between # and a header
+      no_intra_emphasis: true)    # don't italicize bar in foo_bar_baz
   end
   
   def mdown(text)
