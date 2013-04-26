@@ -42,7 +42,7 @@ class TicketPresenter
       deployment: ticket.deployment,
       age: ticket.age,
       dueDate: ticket.due_date,
-      ticketSystem: project.ticket_tracker_adapter,
+      ticketSystem: project.ticket_tracker_name,
       ticketUrl: ticket.ticket_tracker_ticket_url }
   end
   
