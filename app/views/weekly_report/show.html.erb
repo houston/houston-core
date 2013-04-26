@@ -363,9 +363,7 @@
     
     <table class="layout bugs">
       <tbody>
-        <% @projects.each do |project| %>
-          <% next if project.error_tracker_id.blank? %>
-          <% bug_counts = bug_counts_by_project[project] || {} %>
+        <% bug_counts_by_project.each do |project, bug_counts| %>
           <tr>
             <th><span class="label <%= project.color %>"><%= project.name %></span></th>
             <td>
@@ -380,35 +378,29 @@
               <% end %>
             </td>
             <td>
-              <% if bug_counts.values.sum > 0 %>
-                <%= score_card :medium do |s| %>
-                  <% s.raw do %>
-                    <p>
-                      <span class="notices-count score-count">
-                        <%= bar_graph({
-                          data: (notices_by_week_by_project[project] || {}).values,
-                          colors: "555555",
-                          count: weeks_of_errbit_history,
-                          height: 27,
-                          bar_width: 4,
-                          spacing: 1,
-                          axes: false
-                        }) %>
-                      </span>
-                      <span class="score-label">Notices/week</span>
-                    </p>
-                  <% end %>
-                  
-                  <% s.score "New", bug_counts["new"], :class => "new-bugs",
-                      :prefix => "<span class=\"sign\">+</span>".html_safe %>
-                  <% s.score "Fixed", bug_counts["fixed"], :class => "resolved-bugs",
-                      :prefix => "<span class=\"sign\">&ndash;</span>".html_safe %>
-                  <% s.score "Open", bug_counts["open"] + bug_counts["new"], :class => "open-bugs" %>
+              <%= score_card :medium do |s| %>
+                <% s.raw do %>
+                  <p>
+                    <span class="notices-count score-count">
+                      <%= bar_graph({
+                        data: (notices_by_week_by_project[project] || {}).values,
+                        colors: "555555",
+                        count: weeks_of_errbit_history,
+                        height: 27,
+                        bar_width: 4,
+                        spacing: 1,
+                        axes: false
+                      }) %>
+                    </span>
+                    <span class="score-label">Notices/week</span>
+                  </p>
                 <% end %>
-              <% else %>
-                <div class="score">
-                  <p class="no-bugs">No bugs!</p>
-                </div>
+                
+                <% s.score "New", bug_counts["new"], :class => "new-bugs",
+                    :prefix => "<span class=\"sign\">+</span>".html_safe %>
+                <% s.score "Fixed", bug_counts["fixed"], :class => "resolved-bugs",
+                    :prefix => "<span class=\"sign\">&ndash;</span>".html_safe %>
+                <% s.score "Open", bug_counts["open"] + bug_counts["new"], :class => "open-bugs" %>
               <% end %>
             </td>
           </tr>
