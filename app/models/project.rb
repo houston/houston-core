@@ -63,10 +63,6 @@ class Project < ActiveRecord::Base
     roles.participants.to_users
   end
   
-  def followers
-    roles.to_users
-  end
-  
   Houston.project_roles.each do |role|
     method_name = role.downcase.gsub(' ', '_')
     collection_name = method_name.pluralize
@@ -80,6 +76,10 @@ class Project < ActiveRecord::Base
         @#{collection_name}_ids ||= roles.#{collection_name}.to_users.reorder("").pluck(:id)
       end
     RUBY
+  end
+  
+  def followers # <-- redefine followers to be everyone who participates in or follows the project
+    roles.to_users
   end
   
   def add_teammate(user_or_id, role)
