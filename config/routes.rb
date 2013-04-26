@@ -20,7 +20,7 @@ Houston::Application.routes.draw do
   match "kanban" => "kanban#index", :via => :get, :as => :kanban
   match "kanban/:slug" => "project_kanban#index", :via => :get, :as => :project_kanban
   
-  constraints :queue => Regexp.new(KanbanQueue.slugs.join("|")) do
+  constraints queue: Regexp.new(KanbanQueue.slugs.join("|")) do
     match "kanban/:slug/:queue" => "project_kanban#queue", :via => :get, :as => :project_kanban_queue
   end
   
