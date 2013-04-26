@@ -235,7 +235,7 @@
   .exceptions-summary { 
     padding: 0 0 0 12px;
     text-align: center;
-    width: 108px;
+    width: 102px;
   }
   
   .exceptions-bugs-summary-group {
@@ -265,14 +265,14 @@
     &.total-bugs {
       border-radius: 60px;
       -webkit-box-shadow: inset 0 0 3px #aaaaaa;
-      font-size: 6.25em;
+      font-size: 6em;
       font-weight: 100;
       text-align: center;
       height: 102px;
       line-height: 102px;
-      padding: 0 6px;
-      width: 90px;
+      width: 102px;
       position: relative;
+      letter-spacing: -2px;
       
       img {
         position: absolute;
