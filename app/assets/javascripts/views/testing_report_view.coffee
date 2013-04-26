@@ -2,6 +2,7 @@ class window.TestingReportView extends Backbone.View
   
   initialize: ->
     @tickets = @options.tickets
+    @tickets.bind 'reset', _.bind(@render, @)
     @pie = '.testing-report-progress.pie'
     @render()
   

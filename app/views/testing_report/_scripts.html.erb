@@ -2,7 +2,9 @@
   <script type="text/javascript">
     $(function() {
       
+      var tickets = new Tickets(<%= raw tickets.to_json %>);
       var $refresh = $('#refresh_testing_report');
+      
       $refresh.click(function(e) {
         e.preventDefault();
         
@@ -12,15 +14,14 @@
           .error(function() {
             window.console.log('error', arguments);
           })
-          .success(function(ticketsByProjectId) {
-            loadViews(ticketsByProjectId);
+          .success(function(ticketArray) {
+            tickets.reset(ticketArray);
           })
           .complete(function() {
             $refresh.removeAttr('disabled').html('Refresh');
           });
       });
       
-      var tickets = new Tickets(<%= raw tickets.to_json %>);
       new TestingReportView({el: '#testing_report', tickets: tickets});
       
     });
