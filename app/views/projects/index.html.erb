@@ -79,7 +79,9 @@
             </td>
             <td class="project-last-build">
               <% if test_run = project.last_test_run %>
-                <h5 class="test-result-banner <%= test_run.result || "pending" %>" rel="tooltip" title="<%= test_run_summary(test_run) %>"><%= test_run.result || "&nbsp;".html_safe %></h5>
+                <h5 class="test-result-banner <%= test_run.result || "pending" %>" rel="tooltip" title="<%= test_run_summary(test_run) %>">
+                  <%= link_to test_run.result, test_run.results_url, target: "_blank" %>
+                </h5>
                 <span class="test-run-commit">(<%= link_to_commit(OpenStruct.new(project: project, sha: test_run.commit)) %>)</span>
               <% end %>
             </td>
