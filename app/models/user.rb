@@ -8,16 +8,17 @@ class User < ActiveRecord::Base
   devise *Houston.config.devise_configuration
   
   attr_accessible :first_name, :last_name, :email, :unfuddle_id,
-                  :password, :password_confirmation, :remember_me,
+                  :role, :password, :password_confirmation, :remember_me,
                   :environments_subscribed_to
   
   default_scope order("last_name, first_name")
   
+  default_value_for :role, Houston.default_role
+  
   validates :first_name, :last_name, :email, :presence => true, :length => {:minimum => 2}
+  validates :role, :presence => true, :inclusion => Houston.roles
   
-  
-  
-  Houston.roles.each do |role|
+  Houston.project_roles.each do |role|
     method_name = role.downcase.gsub(' ', '_')
     collection_name = method_name.pluralize
     

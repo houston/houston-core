@@ -5,10 +5,10 @@ class Role < ActiveRecord::Base
   
   validates :user_id, :presence => true
   validates :project_id, :presence => true
-  validates :name, :presence => true, :inclusion => {:in => Houston.roles, :message => "\"%{value}\" is unknown. It must be #{Houston.roles.to_sentence(last_word_connector: ", or ")}"}
+  validates :name, :presence => true, :inclusion => {:in => Houston.project_roles, :message => "\"%{value}\" is unknown. It must be #{Houston.project_roles.to_sentence(last_word_connector: ", or ")}"}
   
   
-  Houston.roles.each do |role|
+  Houston.project_roles.each do |role|
     method_name = role.downcase.gsub(' ', '_')
     class_eval <<-RUBY
     def #{method_name}?

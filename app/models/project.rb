@@ -67,7 +67,7 @@ class Project < ActiveRecord::Base
     roles.to_users
   end
   
-  Houston.roles.each do |role|
+  Houston.project_roles.each do |role|
     method_name = role.downcase.gsub(' ', '_')
     collection_name = method_name.pluralize
     

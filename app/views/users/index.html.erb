@@ -8,58 +8,33 @@
 </h1>
 
 <% if @users.any? %>
-  <div class="users">
-    <%= in_groups_of(@users, 2, "user-row") do |user| %>
-      <div class="user">
-        <span class="user-avatar avatar-54"><%= avatar_for(user, size: 112) %></span>
-        <h3 class="user-name">
-          <%= link_to user.name, user_path(user) %>
-          <% if user.administrator? %>
-            <small>(Admin)</small>
+  <% users_by_role(@users) do |role, users| %>
+    <h4><%= role.pluralize %></h4>
+    <div class="users">
+      <%= in_groups_of(users, 2, "user-row") do |user| %>
+        <div class="user">
+          <span class="user-avatar avatar-54"><%= avatar_for(user, size: 112) %></span>
+          <h3 class="user-name">
+            <%= link_to user.name, user_path(user) %>
+            <% if user.administrator? %>
+              <small>(Admin)</small>
+            <% end %>
+          </h3>
+          <span class="user-email"><%= mail_to user.email, user.email %></span>
+          <%= link_to "Edit", edit_user_path(user), :class => "btn btn-mini" if can?(:update, user) %>
+          
+          <% if stats = @ticket_stats_by_user[user] %>
+            <%= score_card :small do |s| %>
+              <% s.score "Filed", stats[:tickets] %>
+              <% s.percent "Duplicate<br /><small>or</small> Invalid".html_safe, stats[:invalid_tickets] %>
+              <% s.percent "Fixed", stats[:fixed_tickets] %>
+              <% s.raw pie_graph(data_by_color: stats[:tickets_by_severity], width: 66) %>
+            <% end %>
           <% end %>
-        </h3>
-        <span class="user-email"><%= mail_to user.email, user.email %></span>
-        <%= link_to "Edit", edit_user_path(user), :class => "btn btn-mini" if can?(:update, user) %>
-        
-        <% if stats = @ticket_stats_by_user[user] %>
-          <%= score_card :small do |s| %>
-            <% s.score "Filed", stats[:tickets] %>
-            <% s.percent "Duplicate<br /><small>or</small> Invalid".html_safe, stats[:invalid_tickets] %>
-            <% s.percent "Fixed", stats[:fixed_tickets] %>
-            <% s.raw pie_graph(data_by_color: stats[:tickets_by_severity], width: 66) %>
-          <% end %>
-        <% end %>
-      </div>
-    <% end %>
-  </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
 <% else %>
   <div class="alert alert-info">No users have been created yet.</div>
-<% end %>
-
-<% if @followers.any? %>
-  <h2>Followers</h2>
-  <div class="users">
-    <%= in_groups_of(@followers, 2, "user-row") do |user| %>
-      <div class="user">
-        <span class="user-avatar avatar-54"><%= avatar_for(user, size: 112) %></span>
-        <h3 class="user-name">
-          <%= link_to user.name, user_path(user) %>
-          <% if user.administrator? %>
-            <small>(Admin)</small>
-          <% end %>
-        </h3>
-        <span class="user-email"><%= mail_to user.email, user.email %></span>
-        <%= link_to "Edit", edit_user_path(user), :class => "btn btn-mini" if can?(:update, user) %>
-      
-        <% if stats = @ticket_stats_by_user[user] %>
-          <%= score_card :small do |s| %>
-            <% s.score "Filed", stats[:tickets] %>
-            <% s.percent "Duplicate<br /><small>or</small> Invalid".html_safe, stats[:invalid_tickets] %>
-            <% s.percent "Fixed", stats[:fixed_tickets] %>
-            <% s.raw pie_graph(data_by_color: stats[:tickets_by_severity], width: 66) %>
-          <% end %>
-        <% end %>
-      </div>
-    <% end %>
-  </div>
 <% end %>

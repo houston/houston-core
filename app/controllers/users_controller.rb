@@ -5,8 +5,7 @@ class UsersController < ApplicationController
   
   def index
     @title = "Team"
-    @users = User.participants
-    @followers = User.followers
+    @users = User.all
     
     severities_colors = Houston.config.severities
     
