@@ -78,9 +78,9 @@ class window.TestingTicketView extends Backbone.View
     
     @ticket.activityStream().each (item)=>
       if item.constructor == TestingNote
-        $testingNotes.appendView @newViewForTestingNote(item)
+        $testingNotes.appendView @viewForTestingNote(item)
       else if item.constructor == Commit
-        $testingNotes.appendView @newViewForCommit(item)
+        $testingNotes.appendView @viewForCommit(item)
     
     # Render form for adding a testing note
     if window.userId
@@ -113,7 +113,7 @@ class window.TestingTicketView extends Backbone.View
     $(view.el).remove()
     @renderTesterVerdicts()
   
-  newViewForTestingNote: (testingNote)->
+  viewForTestingNote: (testingNote)->
     view = new TestingNoteView(model: testingNote)
     view.on 'edit:begin', _.bind(@beginEditTestingNote, @)
     view.on 'edit:cancel', _.bind(@cancelEditTestingNote, @)
@@ -121,14 +121,14 @@ class window.TestingTicketView extends Backbone.View
     view.on 'destroy', _.bind(@destroyTestingNote, @)
     view
   
-  newViewForCommit: (commit)->
+  viewForCommit: (commit)->
     new CommitView(model: commit)
   
   addTestingNote: (testingNote)->
     @testingNotes.add(testingNote)
     
     return unless @$testingNotes
-    view = @newViewForTestingNote(testingNote)
+    view = @viewForTestingNote(testingNote)
     view.render()
     $(view.el).insertBefore(@$testingNotes.find('.testing-note.new')).highlight()
     @renderTesterVerdicts()
