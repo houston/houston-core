@@ -20,7 +20,7 @@ group :assets do
   gem 'less-rails' # For Twitter Bootstrap
   gem 'uglifier', '>= 1.0.3'
   
-  gem 'turbo-sprockets-rails3', '>= 0.3.6'
+  # gem 'turbo-sprockets-rails3', '>= 0.3.6'
 end
 
 # Sass is required in production (see layouts/email.html.erb)

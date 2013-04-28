@@ -251,9 +251,6 @@ GEM
     treetop (1.4.12)
       polyglot
       polyglot (>= 0.3.1)
-    turbo-sprockets-rails3 (0.3.6)
-      railties (> 3.2.8, < 4.0.0)
-      sprockets (>= 2.0.0)
     turn (0.9.6)
       ansi
     twitter-bootstrap-rails (2.2.6)
@@ -329,7 +326,6 @@ DEPENDENCIES
   simplecov-json!
   sugar-rails
   therubyracer
-  turbo-sprockets-rails3 (>= 0.3.6)
   turn
   twitter-bootstrap-rails
   uglifier (>= 1.0.3)
