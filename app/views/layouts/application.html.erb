@@ -95,6 +95,10 @@
                 <li><%= link_to "Team", main_app.users_path %></li>
               <% end -%>
               
+              <% if can?(:manage, Setting) -%>
+                <li><%= link_to "Settings", "/settings" %></li>
+              <% end -%>
+              
               <% if current_user && current_user.administrator? -%>
                 <li><%= link_to "Resque", "/resque" %></li>
               <% end -%>

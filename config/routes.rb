@@ -102,6 +102,12 @@ Houston::Application.routes.draw do
   
   
   
+  # Settings
+  get "settings", to: "settings#show"
+  put "settings", to: "settings#update"
+  
+  
+  
   # Modules
   
   Houston.config.modules.each do |mod|

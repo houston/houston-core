@@ -821,6 +821,36 @@ CREATE TABLE schema_migrations (
 
 
 --
+-- Name: settings; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE settings (
+    id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    value character varying(255) NOT NULL
+);
+
+
+--
+-- Name: settings_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE settings_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: settings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE settings_id_seq OWNED BY settings.id;
+
+
+--
 -- Name: test_runs; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1163,6 +1193,13 @@ ALTER TABLE roles ALTER COLUMN id SET DEFAULT nextval('roles_id_seq'::regclass);
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE settings ALTER COLUMN id SET DEFAULT nextval('settings_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE test_runs ALTER COLUMN id SET DEFAULT nextval('test_runs_id_seq'::regclass);
 
 
@@ -1278,6 +1315,14 @@ ALTER TABLE ONLY releases
 
 ALTER TABLE ONLY roles
     ADD CONSTRAINT roles_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: settings_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY settings
+    ADD CONSTRAINT settings_pkey PRIMARY KEY (id);
 
 
 --
@@ -1675,3 +1720,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130420174002');
 INSERT INTO schema_migrations (version) VALUES ('20130420174126');
 
 INSERT INTO schema_migrations (version) VALUES ('20130427223925');
+
+INSERT INTO schema_migrations (version) VALUES ('20130428005808');

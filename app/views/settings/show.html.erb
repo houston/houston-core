@@ -1,0 +1,18 @@
+<h1>
+  Settings
+</h1>
+
+<%= form_tag settings_path, method: :put, :class => 'form-horizontal' do %>
+  <fieldset>
+    <div class="control-group">
+      <%= label_tag "settings[Velocity]", "Velocity", :class => 'control-label' %>
+      <div class="controls">
+        <%= text_field_tag "settings[Velocity]", @settings["Velocity"], :class => 'text_field' %>
+      </div>
+    </div>
+    
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+  </fieldset>
+<% end %>
