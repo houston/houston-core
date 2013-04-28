@@ -31,6 +31,7 @@ gem 'jquery-rails'
 gem 'sugar-rails'
 gem 'backbone-rails'
 gem 'handlebars_assets', '0.8.2'
+gem 'd3js-rails'
 
 # Helpers
 gem 'addressable', :require => 'addressable/uri'
