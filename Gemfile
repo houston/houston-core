@@ -75,7 +75,7 @@ end
 gem 'airbrake'
 
 group :development do
-  gem 'thin'
+  gem 'unicorn-rails'
   gem 'letter_opener'
   # gem 'rack-mini-profiler'
   
