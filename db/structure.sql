@@ -643,6 +643,39 @@ ALTER SEQUENCE errors_id_seq OWNED BY errors.id;
 
 
 --
+-- Name: project_quotas; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE project_quotas (
+    id integer NOT NULL,
+    project_id integer NOT NULL,
+    week date NOT NULL,
+    value integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: project_quotas_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE project_quotas_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: project_quotas_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE project_quotas_id_seq OWNED BY project_quotas.id;
+
+
+--
 -- Name: projects; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1102,6 +1135,13 @@ ALTER TABLE errors ALTER COLUMN id SET DEFAULT nextval('errors_id_seq'::regclass
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE project_quotas ALTER COLUMN id SET DEFAULT nextval('project_quotas_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE projects ALTER COLUMN id SET DEFAULT nextval('projects_id_seq'::regclass);
 
 
@@ -1206,6 +1246,14 @@ ALTER TABLE ONLY environments
 
 ALTER TABLE ONLY errors
     ADD CONSTRAINT errors_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: project_quotas_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY project_quotas
+    ADD CONSTRAINT project_quotas_pkey PRIMARY KEY (id);
 
 
 --
@@ -1321,6 +1369,20 @@ CREATE INDEX index_deploys_on_environment_name ON deploys USING btree (environme
 --
 
 CREATE INDEX index_deploys_on_project_id_and_environment_name ON deploys USING btree (project_id, environment_name);
+
+
+--
+-- Name: index_project_quotas_on_project_id_and_week; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_project_quotas_on_project_id_and_week ON project_quotas USING btree (project_id, week);
+
+
+--
+-- Name: index_project_quotas_on_week; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_project_quotas_on_week ON project_quotas USING btree (week);
 
 
 --
@@ -1611,3 +1673,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130420172322');
 INSERT INTO schema_migrations (version) VALUES ('20130420174002');
 
 INSERT INTO schema_migrations (version) VALUES ('20130420174126');
+
+INSERT INTO schema_migrations (version) VALUES ('20130427223925');

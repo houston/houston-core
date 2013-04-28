@@ -7,8 +7,12 @@ class ApplicationController < ActionController::Base
   
   rescue_from CanCan::AccessDenied do |exception|
     if current_user
-      redirect_url = request.referrer.blank? ? root_url : :back
-      redirect_to redirect_url, :alert => exception.message
+      if request.xhr?
+        render text: exception.message, status: :unauthorized
+      else
+        redirect_url = request.referrer.blank? ? root_url : :back
+        redirect_to redirect_url, :alert => exception.message
+      end
     else
       session["user.return_to"] = request.url
       require_login

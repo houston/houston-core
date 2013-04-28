@@ -13,6 +13,7 @@ module Houston
     # The Team view is sorted in the order these roles appear
     [ "Developer",
       "Tester",
+      "Mixer",      # <-- this role is tied to Houston::Scheduler
       "Guest" ]
   end
   

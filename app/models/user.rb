@@ -18,6 +18,7 @@ class User < ActiveRecord::Base
   validates :first_name, :last_name, :email, :presence => true, :length => {:minimum => 2}
   validates :role, :presence => true, :inclusion => Houston.roles
   
+  
   Houston.project_roles.each do |role|
     method_name = role.downcase.gsub(' ', '_')
     collection_name = method_name.pluralize
@@ -28,6 +29,17 @@ class User < ActiveRecord::Base
     end
     RUBY
   end
+  
+  Houston.roles.each do |role|
+    method_name = role.downcase.gsub(' ', '_')
+    
+    class_eval <<-RUBY
+    def #{method_name}?
+      role == "#{role}"
+    end
+    RUBY
+  end
+  
   
   def self.participants
     Role.participants.to_users
