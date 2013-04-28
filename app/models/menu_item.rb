@@ -17,30 +17,3 @@ class MenuItem
   end
   
 end
-
-
-class MenuItemDivider < MenuItem
-
-  def initialize
-    super("", "")
-  end
-  
-  def to_html
-    "<li class=\"divider\"></li>"
-  end
-
-end
-
-
-class ProjectMenuItem < MenuItem
-  
-  def initialize(project, href)
-    @project = project
-    super(project.name, href)
-  end
-  
-  def display
-    "#{h @project.name} <b class=\"bubble #{h @project.color}\"></b>".html_safe
-  end
-  
-end
