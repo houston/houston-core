@@ -18,11 +18,11 @@
 //  require ./jquery-ui/jquery.ui.accordian.js
 //  require ./jquery-ui/jquery.ui.autocomplete.js
 //  require ./jquery-ui/jquery.ui.button.js
-//  require ./jquery-ui/jquery.ui.dialog.js
-//  require ./jquery-ui/jquery.ui.slider.js
-//  require ./jquery-ui/jquery.ui.tabs.js
 //  require ./jquery-ui/jquery.ui.datepicker.js
+//  require ./jquery-ui/jquery.ui.dialog.js
 //  require ./jquery-ui/jquery.ui.progressbar.js
+//= require ./jquery-ui/jquery.ui.slider.js
+//  require ./jquery-ui/jquery.ui.tabs.js
 //
 //  require ./jquery-ui/jquery.effects.core.js
 //  require ./jquery-ui/jquery.effects.blind.js
