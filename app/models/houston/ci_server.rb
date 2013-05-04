@@ -23,10 +23,6 @@ module Houston
       Adapter.const_get(name + "Adapter")
     end
     
-    def self.arguments
-      []
-    end
-    
     
     
     def self.post_build_callback_url(project)

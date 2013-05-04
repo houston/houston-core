@@ -23,9 +23,5 @@ module Houston
       Adapter.const_get(name + "Adapter")
     end
     
-    def self.arguments
-      [:project_id]
-    end
-    
   end
 end

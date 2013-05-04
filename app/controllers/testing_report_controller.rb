@@ -13,7 +13,7 @@ class TestingReportController < ApplicationController
       next unless can?(:show, project.testing_notes.build)
       
       tickets_for_project = unfuddle_tickets
-        .select { |ticket| ticket["project_id"] == project.ticket_tracker_id }
+        .select { |ticket| ticket["project_id"].to_s == project.extended_attributes["unfuddle_project_id"] }
         .map { | attributes| project.ticket_tracker.build_ticket(attributes) }
       tickets = project
         .tickets_from_unfuddle_tickets(tickets_for_project)

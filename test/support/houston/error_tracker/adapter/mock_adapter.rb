@@ -11,6 +11,11 @@ module Houston
           Houston::ErrorTracker::NullApp
         end
         
+        def self.parameters
+          []
+        end
+        
+        
         
         def self.problems_during(*args)
           []

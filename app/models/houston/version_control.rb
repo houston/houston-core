@@ -57,9 +57,5 @@ module Houston
       Adapter.const_get(name + "Adapter")
     end
     
-    def self.arguments
-      [:location]
-    end
-    
   end
 end

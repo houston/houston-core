@@ -15,6 +15,7 @@ class ErrorTrackerAdatersApiTest < ActiveSupport::TestCase
     test "#{adapter.name} responds to the ErrorTracker::Adapter interface" do
       assert_respond_to adapter, :errors_with_parameters
       assert_respond_to adapter, :build
+      assert_respond_to adapter, :parameters
       
       assert_respond_to adapter, :problems_during
       assert_respond_to adapter, :notices_during

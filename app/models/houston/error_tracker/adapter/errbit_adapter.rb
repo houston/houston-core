@@ -6,8 +6,8 @@ module Houston
         class << self
           
           def errors_with_parameters(project, app_id)
-            return {project_id: ["cannot be blank"]} if app_id.blank?
-            return {project_id: ["must be a 24-character hexadecimal number"]} unless app_id.to_s =~ /^[\da-f]{24}$/
+            return {errbit_app_id: ["cannot be blank"]} if app_id.blank?
+            return {errbit_app_id: ["must be a hexadecimal number at least 24 characters long"]} unless app_id.to_s =~ /^[\da-f]{24,}$/
             
             # !todo: validate that the app exists
             # begin
@@ -20,9 +20,15 @@ module Houston
           end
           
           def build(project, app_id)
-            return Houston::TicketTracker::NullApp if app_id.blank?
+            return Houston::ErrorTracker::NullApp if app_id.blank?
             new_app(app_id)
           end
+          
+          def parameters
+            [:errbit_app_id]
+          end
+          
+          
           
           def connection
             @connection ||= self::Connection.new

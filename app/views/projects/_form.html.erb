@@ -37,18 +37,27 @@
       
       <hr />
       
-      <div class="control-group">
+      <div class="control-group project-adapter">
         <label class="control-label"><%= adapter.title %></label>
         <div class="controls">
-          <p>
+          <div class="project-adapters">
             <% adapter.namespace.adapters.each do |name| %>
-              <%= f.label "#{adapter.attribute_name}_name_#{name.to_s.underscore}", :class => "inline-label" do %>
+              <%= f.label "#{adapter.attribute_name}_name_#{name.to_s.underscore}", :class => "inline-label project-adapter-option" do %>
                 <%= f.radio_button "#{adapter.attribute_name}_name", name %> <%= name %>
               <% end %>
             <% end %>
-          </p>
-          <% adapter.parameters.each do |parameter| %>
-            <%= f.text_field parameter, :class => 'text_field' %>
+          </div>
+          <% adapter.namespace.adapters.each do |name| %>
+            <div class="project-adapter-fields" data-adapter="<%= name %>">
+              <% adapter.namespace.adapter(name).parameters.each do |parameter| %>
+                <% errors = @project.errors[parameter].flatten %>
+                <%= label_tag "project[extended_attributes][#{parameter}]", parameter.to_s.gsub('_', ' ').gsub(/\b('?[a-z])/) { $1.capitalize } %>
+                <%= text_field_tag "project[extended_attributes][#{parameter}]", @project.extended_attributes[parameter.to_s], :class => "text_field #{"error" if errors.any?}" %>
+                <% if errors.any? %>
+                  <span class="help-inline">&nbsp;<%= errors.to_sentence %></span>
+                <% end %>
+              <% end %>
+            </div>
           <% end %>
         </div>
       </div>
@@ -105,6 +114,19 @@
         $slug.val(slug);
         prevSlug = slug;
       }
+    });
+    
+    function showProjectAdapterParameters($div) {
+      var selectedAdapter = $div.find(':radio:checked').val();
+      $div.find('.project-adapter-fields').hide();
+      $div.find('.project-adapter-fields[data-adapter="' + selectedAdapter + '"]').show();
+      console.log('selected ' + selectedAdapter);
+    }
+    
+    $('.project-adapter').each(function() {
+      var $div = $(this);
+      $div.delegate(':radio', 'click', function() { showProjectAdapterParameters($div); });
+      showProjectAdapterParameters($div);
     });
   });
 </script>

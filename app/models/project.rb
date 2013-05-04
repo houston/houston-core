@@ -9,13 +9,16 @@ class Project < ActiveRecord::Base
   has_many :deploys
   has_many :roles, :dependent => :destroy
   
+  serialize :extended_attributes, ActiveRecord::Coders::Hstore
+  
   accepts_nested_attributes_for :roles, :allow_destroy => true # <-- !todo: authorized access only
   
   
-  has_adapter Houston::TicketTracker,   project_id: :ticket_tracker_id
-  has_adapter Houston::VersionControl,  location: :version_control_location
-  has_adapter Houston::ErrorTracker,    project_id: :error_tracker_id
-  has_adapter Houston::CIServer
+  
+  has_adapter Houston::TicketTracker,
+              Houston::VersionControl,
+              Houston::ErrorTracker,
+              Houston::CIServer
   
   
   default_scope order(:name)
@@ -30,6 +33,10 @@ class Project < ActiveRecord::Base
   
   def environment(environment_name)
     Environment.new(self, environment_name)
+  end
+  
+  def extended_attributes
+    super || (self.extended_attributes = {})
   end
   
   

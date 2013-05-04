@@ -16,7 +16,7 @@ module Houston
           rescue
             Rails.logger.error $!.message
             Rails.logger.error $!.backtrace
-            {location: ["might not be right. Houston can't seem to connect to it."]}
+            {git_location: ["might not be right. Houston can't seem to connect to it."]}
           end
           
           def build(project, location)
@@ -29,6 +29,10 @@ module Houston
             rescue Rugged::RepositoryError, Rugged::OSError
               Houston::VersionControl::NullRepo
             end
+          end
+          
+          def parameters
+            [:git_location]
           end
           
           # ------------------------------------------------------------------------- #

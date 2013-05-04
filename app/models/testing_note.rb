@@ -30,7 +30,7 @@ class TestingNote < ActiveRecord::Base
   attr_writer :unfuddle_ticket_id
   
   def unfuddle_project_id
-    project.ticket_tracker_id
+    project.extended_attributes["unfuddle_project_id"]
   end
   attr_writer :unfuddle_project_id
   

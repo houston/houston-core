@@ -11,6 +11,10 @@ module Houston
           Houston::TicketTracker::NullConnection
         end
         
+        def self.parameters
+          []
+        end
+        
       end
     end
   end

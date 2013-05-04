@@ -13,6 +13,7 @@ class CIServerAdatersApiTest < ActiveSupport::TestCase
     test "#{adapter.name} responds to the CIServer::Adapter interface" do
       assert_respond_to adapter, :errors_with_parameters
       assert_respond_to adapter, :build
+      assert_respond_to adapter, :parameters
     end
     
     test "#{adapter.name}::Job responds to the CIServer::Job interface" do

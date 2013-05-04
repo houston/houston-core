@@ -13,6 +13,10 @@ module Houston
           Job.new(project)
         end
         
+        def self.parameters
+          []
+        end
+        
       end
     end
   end

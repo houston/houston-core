@@ -11,6 +11,10 @@ module Houston
           Houston::VersionControl::NullRepo
         end
         
+        def self.parameters
+          []
+        end
+        
       end
     end
   end

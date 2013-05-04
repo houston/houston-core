@@ -15,6 +15,7 @@ class TicketTrackerAdatersApiTest < ActiveSupport::TestCase
     test "#{adapter.name} responds to the TicketTracker::Adapter interface" do
       assert_respond_to adapter, :errors_with_parameters
       assert_respond_to adapter, :build
+      assert_respond_to adapter, :parameters
     end
   end
   
