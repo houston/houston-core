@@ -3,37 +3,8 @@ source 'http://rubygems.org'
 gem 'rails', '3.2.13'
 gem 'activerecord-postgres-hstore' # remove when Rails 4.0
 
-# Database
 gem 'pg'
 
-# Twitter Bootstrap
-gem 'twitter-bootstrap-rails'
-
-# Font Awesome
-gem 'font-awesome-rails'
-
-# Gems used only for assets and not required
-# in production environments by default.
-group :assets do
-  gem 'coffee-rails', '~> 3.2.1'
-  gem 'therubyracer' # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  gem 'less-rails' # For Twitter Bootstrap
-  gem 'uglifier', '>= 1.0.3'
-  
-  # gem 'turbo-sprockets-rails3', '>= 0.3.6'
-end
-
-# Sass is required in production (see layouts/email.html.erb)
-gem 'sass-rails',   '~> 3.2.3'
-
-# Javascript
-gem 'jquery-rails'
-gem 'sugar-rails'
-gem 'backbone-rails'
-gem 'handlebars_assets', '0.8.2'
-gem 'd3js-rails'
-
-# Helpers
 gem 'addressable', :require => 'addressable/uri'
 gem 'redcarpet'
 gem 'bundler' # used to parse Gemfiles
@@ -49,14 +20,26 @@ gem 'foreman-export-initscript', :git => 'git://github.com/LewisJA/foreman-expor
 gem 'gemoji'
 gem 'googlecharts'
 gem 'hpricot'
-gem 'newrelic_rpm'
 gem 'nokogiri'
 gem 'premailer' # for inlining CSS in HTML emails
 gem 'remotable', '>= 0.2.2', :git => 'git://github.com/boblail/remotable.git'
 gem 'resque'
-gem 'rugged', '0.17.0.b7'
+gem 'rugged', '0.17.0.b7' # for speaking Git
 gem 'yajl-ruby', :require => 'yajl/json_gem'
 gem 'whenever' # a DSL for writing CRON jobs
+
+gem 'backbone-rails'
+gem 'd3js-rails'
+gem 'font-awesome-rails'
+gem 'handlebars_assets', '0.8.2'
+gem 'jquery-rails'
+gem 'sass-rails',   '~> 3.2.3' # Sass is required in production (see layouts/email.html.erb)
+gem 'sugar-rails'
+gem 'twitter-bootstrap-rails'
+
+# Tooling
+gem 'airbrake' # exception notification
+gem 'newrelic_rpm'
 
 
 
@@ -71,9 +54,16 @@ end
 
 
 
-# Exception notification
-# gem 'airbrake_user_attributes'
-gem 'airbrake'
+# Gems used only for assets and not required
+# in production environments by default.
+group :assets do
+  gem 'coffee-rails', '~> 3.2.1'
+  gem 'therubyracer' # See https://github.com/sstephenson/execjs#readme for more supported runtimes
+  gem 'less-rails' # For Twitter Bootstrap
+  gem 'uglifier', '>= 1.0.3'
+  
+  # gem 'turbo-sprockets-rails3', '>= 0.3.6'
+end
 
 group :development do
   gem 'unicorn-rails'
