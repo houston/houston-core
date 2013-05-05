@@ -6,7 +6,7 @@ class ProjectKanbanController < ApplicationController
   def index
     @title = "Kanban: #{@project.name}"
     
-    @projects = Project.with_ticket_tracker
+    @projects = Project.where(ticket_tracker_name: "Unfuddle")
   end
   
   
@@ -41,10 +41,8 @@ class ProjectKanbanController < ApplicationController
   
 private
   
-  
   def find_project
     @project = Project.find_by_slug!(params[:slug])
   end
-  
   
 end

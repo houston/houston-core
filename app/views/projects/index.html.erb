@@ -34,12 +34,12 @@
               <p class="project-links">
                 <% if ticket_tracker_url = project.ticket_tracker_project_url %>
                   <%= link_to ticket_tracker_url, :target => "_blank" do %>
-                    <%= image_tag "/images/favicon-unfuddle.png", "data-tooltip-placement" => "top", :rel => "tooltip", :title => "View in Unfuddle", :width => 16, :height => 16 %>
+                    <%= image_tag "/images/favicon-unfuddle.png", "data-tooltip-placement" => "top", :rel => "tooltip", :title => "View in #{project.ticket_tracker_name}", :width => 16, :height => 16 %>
                   <% end %>
                 <% end %>
                 <% if error_tracker_url = project.error_tracker_project_url %>
                   <%= link_to error_tracker_url, :target => "_blank" do %>
-                    <%= image_tag "/images/favicon-errbit.png", "data-tooltip-placement" => "top", :rel => "tooltip", :title => "View in Errbit", :width => 16, :height => 16 %>
+                    <%= image_tag "/images/favicon-errbit.png", "data-tooltip-placement" => "top", :rel => "tooltip", :title => "View in #{project.error_tracker_name}", :width => 16, :height => 16 %>
                   <% end %>
                 <% end %>
                 <% if github_url?(project) %>
@@ -49,7 +49,7 @@
                 <% end %>
                 <% if ci_server_url = project.ci_server_job_url %>
                   <%= link_to ci_server_url, :target => "_blank" do %>
-                    <%= image_tag "/images/favicon-jenkins.png", "data-tooltip-placement" => "top", :rel => "tooltip", :title => "View in Jenkins", :width => 16, :height => 16 %>
+                    <%= image_tag "/images/favicon-jenkins.png", "data-tooltip-placement" => "top", :rel => "tooltip", :title => "View in #{project.ci_server_name}", :width => 16, :height => 16 %>
                   <% end %>
                 <% end %>
                 <% unless project.new_relic_id.blank? %>

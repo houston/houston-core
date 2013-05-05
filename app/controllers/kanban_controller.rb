@@ -4,7 +4,7 @@ class KanbanController < ApplicationController
   def index
     @title = "Kanban"
     
-    @projects = Project.with_ticket_tracker
+    @projects = Project.where(ticket_tracker_name: "Unfuddle")
   end
   
   

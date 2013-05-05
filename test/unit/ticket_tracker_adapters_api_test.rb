@@ -4,7 +4,7 @@ require 'support/houston/adapters/ticket_tracker/mock_adapter'
 class TicketTrackerAdatersApiTest < ActiveSupport::TestCase
   
   test "Houston::Adapters::TicketTracker.adapters finds all available adapters" do
-    assert_equal %w{None Mock Unfuddle}, Houston::Adapters::TicketTracker.adapters
+    assert_equal %w{None Github Mock Unfuddle}, Houston::Adapters::TicketTracker.adapters
   end
   
   connections = []

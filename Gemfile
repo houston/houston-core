@@ -22,6 +22,7 @@ gem 'gemoji'
 gem 'googlecharts'
 gem 'hpricot'
 gem 'nokogiri'
+gem 'octokit' # for adapting to GitHub Issues
 gem 'premailer' # for inlining CSS in HTML emails
 gem 'remotable', '>= 0.2.2', :git => 'git://github.com/boblail/remotable.git'
 gem 'resque'

@@ -42,8 +42,8 @@
         <div class="controls">
           <div class="project-adapters">
             <% adapter.namespace.adapters.each do |name| %>
-              <%= f.label "#{adapter.attribute_name}_name_#{name.to_s.underscore}", :class => "inline-label project-adapter-option" do %>
-                <%= f.radio_button "#{adapter.attribute_name}_name", name %> <%= name %>
+              <%= f.label "#{adapter.attribute_name}_name_#{name.to_s.downcase}", :class => "inline-label project-adapter-option" do %>
+                <%= f.radio_button "#{adapter.attribute_name}_name", name %> <%= name.titleize %>
               <% end %>
             <% end %>
           </div>

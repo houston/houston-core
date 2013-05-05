@@ -146,18 +146,18 @@ class Project < ActiveRecord::Base
   def find_tickets(*query)
     Rails.logger.info "[project.find_tickets] query: #{query.inspect}"
     
-    unfuddle_tickets = ticket_tracker.find_tickets!(*query)
-    tickets_from_unfuddle_tickets(unfuddle_tickets)
+    ticket_tracker_tickets = ticket_tracker.find_tickets!(*query)
+    houston_tickets_from_ticket_tracker_tickets(ticket_tracker_tickets)
   end
   
-  def tickets_from_unfuddle_tickets(unfuddle_tickets)
-    return [] if unfuddle_tickets.empty?
+  def houston_tickets_from_ticket_tracker_tickets(ticket_tracker_tickets)
+    return [] if ticket_tracker_tickets.empty?
     
-    self.class.benchmark("[project.tickets_from_unfuddle_tickets] synchronizing with local tickets") do
-      numbers = unfuddle_tickets.map(&:number)
+    self.class.benchmark("[project.houston_tickets_from_ticket_tracker_tickets] synchronizing with local tickets") do
+      numbers = ticket_tracker_tickets.map(&:number)
       tickets = self.tickets.where(number: numbers).includes(:testing_notes).includes(:commits)
       
-      unfuddle_tickets.reject(&:nil?).map do |unfuddle_ticket|
+      ticket_tracker_tickets.reject(&:nil?).map do |unfuddle_ticket|
         ticket = tickets.detect { |ticket| ticket.number == unfuddle_ticket.number }
         attributes = unfuddle_ticket.attributes
         if ticket

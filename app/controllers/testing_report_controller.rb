@@ -16,7 +16,7 @@ class TestingReportController < ApplicationController
         .select { |ticket| ticket["project_id"].to_s == project.extended_attributes["unfuddle_project_id"] }
         .map { | attributes| project.ticket_tracker.build_ticket(attributes) }
       tickets = project
-        .tickets_from_unfuddle_tickets(tickets_for_project)
+        .houston_tickets_from_ticket_tracker_tickets(tickets_for_project)
         .reject(&:in_development?)
       
       @tickets.concat tickets
