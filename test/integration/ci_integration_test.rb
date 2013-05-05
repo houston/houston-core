@@ -1,5 +1,5 @@
 require "test_helper"
-require "support/houston/ci_server/adapter/mock_adapter"
+require "support/houston/adapters/ci_server/mock_adapter"
 
 
 # Tests config/initializers/run_tests_on_post_receive.rb
@@ -32,8 +32,8 @@ class CIIntegrationTest < ActionController::IntegrationTest
     @project = Project.create!(name: "Test", slug: "test", ci_server_name: "Mock")
     @project.add_teammate User.create!(first_name: "Bob", last_name: "Lail", email: "bob@example.com", password: "password"), "Maintainer"
     
-    any_instance_of(Houston::CIServer::Adapter::MockAdapter::Job) do |job|
-      stub(job).build! { |commit| raise Houston::CIServer::Error }
+    any_instance_of(Houston::Adapters::CIServer::MockAdapter::Job) do |job|
+      stub(job).build! { |commit| raise Houston::Adapters::CIServer::Error }
     end
     
     stub.instance_of(PostReceivePayload).commit { "63cd1ef" }
@@ -56,7 +56,7 @@ class CIIntegrationTest < ActionController::IntegrationTest
     @project = Project.create!(name: "Test", slug: "test", ci_server_name: "Mock")
     @test_run = TestRun.create!(project: @project, commit: commit)
     
-    any_instance_of(Houston::CIServer::Adapter::MockAdapter::Job) do |job|
+    any_instance_of(Houston::Adapters::CIServer::MockAdapter::Job) do |job|
       mock(job).fetch_results!(results_url)
     end
     
@@ -71,8 +71,8 @@ class CIIntegrationTest < ActionController::IntegrationTest
     @project.add_teammate User.create!(first_name: "Bob", last_name: "Lail", email: "bob@example.com", password: "password"), "Maintainer"
     @test_run = TestRun.create!(project: @project, commit: commit)
     
-    any_instance_of(Houston::CIServer::Adapter::MockAdapter::Job) do |job|
-      mock(job).fetch_results!(results_url) { raise Houston::CIServer::Error }
+    any_instance_of(Houston::Adapters::CIServer::MockAdapter::Job) do |job|
+      mock(job).fetch_results!(results_url) { raise Houston::Adapters::CIServer::Error }
     end
     
     assert_difference "ActionMailer::Base.deliveries.count", +1 do
@@ -89,7 +89,7 @@ class CIIntegrationTest < ActionController::IntegrationTest
     @project = Project.create!(name: "Test", slug: "test", ci_server_name: "Mock")
     test_run = TestRun.new(project: @project, commit: "whatever")
     
-    any_instance_of(Houston::CIServer::Adapter::MockAdapter::Job) do |job|
+    any_instance_of(Houston::Adapters::CIServer::MockAdapter::Job) do |job|
       stub(job).fetch_results! { |results_url| {result: "success"} }
     end
     

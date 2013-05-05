@@ -6,8 +6,9 @@ module ProjectAdapter
   end
   
   
-  def has_adapter(*adapter_modules)
-    adapter_modules.each do |adapter_module|
+  def has_adapter(*adapter_namespaces)
+    adapter_namespaces.each do |adapter_namespace|
+      adapter_module = Houston::Adapters[adapter_namespace]
       raise ArgumentError, "#{adapter_module} should respond to `adapters`" unless adapter_module.respond_to?(:adapters)
       raise ArgumentError, "#{adapter_module} should respond to `adapter`" unless adapter_module.respond_to?(:adapter)
       

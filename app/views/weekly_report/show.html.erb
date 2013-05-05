@@ -115,7 +115,7 @@
     
     benchmark("Preparing data for bugs graphs") do
       
-      bugs = Houston::ErrorTracker::Adapter::ErrbitAdapter.problems_during(date_range_multiweek2)
+      bugs = Houston::Adapters::ErrorTracker::ErrbitAdapter.problems_during(date_range_multiweek2)
       
       bugs.each do |bug|
         project = @projects.detect { |project| project.error_tracker_id == bug.error_tracker_id }
@@ -179,7 +179,7 @@
     
     benchmark("Preparing data for notices graphs") do
       
-      notices = Houston::ErrorTracker::Adapter::ErrbitAdapter.notices_during(date_range_multiweek2)
+      notices = Houston::Adapters::ErrorTracker::ErrbitAdapter.notices_during(date_range_multiweek2)
       
       notices.each do |notice|
         project = @projects.detect { |project| project.error_tracker_id == notice.error_tracker_id }

@@ -1,7 +1,7 @@
 require 'test_helper'
-require 'support/houston/version_control/adapter/mock_adapter'
-require 'support/houston/ticket_tracker/adapter/mock_adapter'
-require 'support/houston/ci_server/adapter/mock_adapter'
+require 'support/houston/adapters/version_control/mock_adapter'
+require 'support/houston/adapters/ticket_tracker/mock_adapter'
+require 'support/houston/adapters/ci_server/mock_adapter'
 
 class ProjectTest < ActiveSupport::TestCase
   
@@ -21,32 +21,32 @@ class ProjectTest < ActiveSupport::TestCase
   
   test "should find the specified built-in version control adapter" do
     project = Project.new(version_control_name: "None")
-    assert_equal Houston::VersionControl::Adapter::NoneAdapter, project.version_control_adapter
+    assert_equal Houston::Adapters::VersionControl::NoneAdapter, project.version_control_adapter
   end
   
   test "should find the specified built-in ticket tracking adapter" do
     project = Project.new(ticket_tracker_name: "None")
-    assert_equal Houston::TicketTracker::Adapter::NoneAdapter, project.ticket_tracker_adapter
+    assert_equal Houston::Adapters::TicketTracker::NoneAdapter, project.ticket_tracker_adapter
   end
   
   test "should find the specified built-in CIServer adapter" do
     project = Project.new(ci_server_name: "None")
-    assert_equal Houston::CIServer::Adapter::NoneAdapter, project.ci_server_adapter
+    assert_equal Houston::Adapters::CIServer::NoneAdapter, project.ci_server_adapter
   end
   
   test "should find the specified extension version control adapter" do
     project = Project.new(version_control_name: "Mock")
-    assert_equal Houston::VersionControl::Adapter::MockAdapter, project.version_control_adapter
+    assert_equal Houston::Adapters::VersionControl::MockAdapter, project.version_control_adapter
   end
   
   test "should find the specified extension ticket tracking adapter" do
     project = Project.new(ticket_tracker_name: "Mock")
-    assert_equal Houston::TicketTracker::Adapter::MockAdapter, project.ticket_tracker_adapter
+    assert_equal Houston::Adapters::TicketTracker::MockAdapter, project.ticket_tracker_adapter
   end
   
   test "should find the specified extension CIServer adapter" do
     project = Project.new(ci_server_name: "Mock")
-    assert_equal Houston::CIServer::Adapter::MockAdapter, project.ci_server_adapter
+    assert_equal Houston::Adapters::CIServer::MockAdapter, project.ci_server_adapter
   end
   
   

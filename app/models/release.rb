@@ -119,11 +119,11 @@ private
   
   def native_commits
     project.repo.commits_between(commit0, commit1)
-  rescue Houston::VersionControl::CommitNotFound
+  rescue Houston::Adapters::VersionControl::CommitNotFound
     @commit_not_found_error_message = $!.message
     @commit_not_found_error_message << " in the repo \"#{project.version_control_location}\"" if project
     []
-  rescue Houston::VersionControl::InvalidShaError
+  rescue Houston::Adapters::VersionControl::InvalidShaError
     @commit_not_found_error_message = $!.message
     []
   end

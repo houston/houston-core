@@ -15,10 +15,10 @@ class Project < ActiveRecord::Base
   
   
   
-  has_adapter Houston::TicketTracker,
-              Houston::VersionControl,
-              Houston::ErrorTracker,
-              Houston::CIServer
+  has_adapter :TicketTracker,
+              :VersionControl,
+              :ErrorTracker,
+              :CIServer
   
   
   default_scope order(:name)

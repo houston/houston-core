@@ -1,15 +1,15 @@
 require 'test_helper'
-require 'support/houston/error_tracker/adapter/mock_adapter'
+require 'support/houston/adapters/error_tracker/mock_adapter'
 
 class ErrorTrackerAdatersApiTest < ActiveSupport::TestCase
   
-  test "Houston::ErrorTracker.adapters finds all available adapters" do
-    assert_equal 3, Houston::ErrorTracker.adapters.count
+  test "Houston::Adapters::ErrorTracker.adapters finds all available adapters" do
+    assert_equal %w{None Errbit Mock}, Houston::Adapters::ErrorTracker.adapters
   end
   
   apps = []
-  Houston::ErrorTracker.adapters.each do |adapter_name|
-    adapter = Houston::ErrorTracker.adapter(adapter_name)
+  Houston::Adapters::ErrorTracker.adapters.each do |adapter_name|
+    adapter = Houston::Adapters::ErrorTracker.adapter(adapter_name)
     apps << adapter.build(Project.new, 1)
     
     test "#{adapter.name} responds to the ErrorTracker::Adapter interface" do

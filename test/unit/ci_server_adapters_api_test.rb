@@ -1,14 +1,14 @@
 require 'test_helper'
-require 'support/houston/ci_server/adapter/mock_adapter'
+require 'support/houston/adapters/ci_server/mock_adapter'
 
 class CIServerAdatersApiTest < ActiveSupport::TestCase
   
-  test "Houston::CIServer.adapters finds all available adapters" do
-    assert_equal 3, Houston::CIServer.adapters.count
+  test "Houston::Adapters::CIServer.adapters finds all available adapters" do
+    assert_equal %w{None Jenkins Mock}, Houston::Adapters::CIServer.adapters
   end
   
-  Houston::CIServer.adapters.each do |adapter_name|
-    adapter = Houston::CIServer.adapter(adapter_name)
+  Houston::Adapters::CIServer.adapters.each do |adapter_name|
+    adapter = Houston::Adapters::CIServer.adapter(adapter_name)
     
     test "#{adapter.name} responds to the CIServer::Adapter interface" do
       assert_respond_to adapter, :errors_with_parameters

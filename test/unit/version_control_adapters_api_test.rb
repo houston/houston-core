@@ -1,15 +1,15 @@
 require 'test_helper'
-require 'support/houston/version_control/adapter/mock_adapter'
+require 'support/houston/adapters/version_control/mock_adapter'
 
 class VersionControlAdatersApiTest < ActiveSupport::TestCase
   
-  test "Houston::VersionControl.adapters finds all available adapters" do
-    assert_equal 3, Houston::VersionControl.adapters.count
+  test "Houston::Adapters::VersionControl.adapters finds all available adapters" do
+    assert_equal %w{None Git Mock}, Houston::Adapters::VersionControl.adapters
   end
   
   repos = []
-  Houston::VersionControl.adapters.each do |adapter_name|
-    adapter = Houston::VersionControl.adapter(adapter_name)
+  Houston::Adapters::VersionControl.adapters.each do |adapter_name|
+    adapter = Houston::Adapters::VersionControl.adapter(adapter_name)
     repo_location = Rails.root.join("test", "data", "bare_repo.git")
     repos << adapter.build(Project.new, repo_location)
     

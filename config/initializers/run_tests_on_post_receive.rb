@@ -121,7 +121,7 @@ private
   def notify_of_invalid_configuration(project)
     begin
       yield
-    rescue Houston::CIServer::Error
+    rescue Houston::Adapters::CIServer::Error
       message = "#{project.ci_server_name} is not appropriately configured to build #{project.name}."
       ProjectNotification.configuration_error(project, message, additional_info: $!.message).deliver!
     end

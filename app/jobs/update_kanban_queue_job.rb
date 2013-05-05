@@ -25,10 +25,10 @@ class UpdateKanbanQueueJob
   def update_tickets_for_project_and_queue!(project, queue)
     project.tickets_in_queue(queue)
     
-  rescue Houston::TicketTracker::ConnectionError
+  rescue Houston::Adapters::TicketTracker::ConnectionError
     retry if (!connection_retry_count += 1) < 3
     connection_error!(project)
-  rescue Houston::TicketTracker::InvalidQueryError
+  rescue Houston::Adapters::TicketTracker::InvalidQueryError
     query_error!(project)
   ensure
     sleep 2 # give Unfuddle a break

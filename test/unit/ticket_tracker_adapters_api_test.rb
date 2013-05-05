@@ -1,15 +1,15 @@
 require 'test_helper'
-require 'support/houston/ticket_tracker/adapter/mock_adapter'
+require 'support/houston/adapters/ticket_tracker/mock_adapter'
 
 class TicketTrackerAdatersApiTest < ActiveSupport::TestCase
   
-  test "Houston::TicketTracker.adapters finds all available adapters" do
-    assert_equal 3, Houston::TicketTracker.adapters.count
+  test "Houston::Adapters::TicketTracker.adapters finds all available adapters" do
+    assert_equal %w{None Mock Unfuddle}, Houston::Adapters::TicketTracker.adapters
   end
   
   connections = []
-  Houston::TicketTracker.adapters.each do |adapter_name|
-    adapter = Houston::TicketTracker.adapter(adapter_name)
+  Houston::Adapters::TicketTracker.adapters.each do |adapter_name|
+    adapter = Houston::Adapters::TicketTracker.adapter(adapter_name)
     connections << adapter.build(Project.new, 1)
     
     test "#{adapter.name} responds to the TicketTracker::Adapter interface" do

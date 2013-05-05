@@ -3,6 +3,9 @@ $:.unshift File.expand_path("./lib/unfuddle/lib")
 require 'unfuddle/neq'
 require File.join(File.dirname(__FILE__), 'core_ext/hash')
 
+$:.unshift File.expand_path("./app/adapters")
+require "houston/adapters"
+
 module Houston
   class Configuration
     include Unfuddle::NeqHelper
@@ -99,32 +102,30 @@ module Houston
     
     
     
-    # Components
+    # Adapters
     
-    def ticket_tracker(*args, &block)
-      @ticket_tracker_configuration = HashDsl.hash_from_block(block) if block_given?
-      
-      # Currently Unfuddle is the only supported ticket system
-      :unfuddle
+    Houston::Adapters.each do |name, namespace, path|
+      module_eval <<-RUBY
+        def #{path}(adapter, &block)
+          raise ArgumentError, "\#{adapter.inspect} is not a #{name}: known #{name} adapters are: \#{Houston::Adapters::#{name}.adapters.map { |name| ":\#{name.downcase}" }.join(", ")}" unless Houston::Adapters::#{name}.adapter?(adapter)
+          raise ArgumentError, "#{path} should be invoked with a block" unless block_given?
+          
+          configuration = HashDsl.hash_from_block(block)
+          
+          @#{path}_configuration ||= {}
+          @#{path}_configuration[adapter] = configuration
+        end
+        
+        def #{path}_configuration(adapter)
+          raise ArgumentError, "\#{adapter.inspect} is not a #{name}: known #{name} adapters are: \#{Houston::Adapters::#{name}.adapters.map { |name| ":\#{name.downcase}" }.join(", ")}"  unless Houston::Adapters::#{name}.adapter?(adapter)
+          
+          @#{path}_configuration ||= {}
+          @#{path}_configuration[adapter] || {}
+        end
+      RUBY
     end
-    attr_reader :ticket_tracker_configuration
     
-    def ci_server(*args, &block)
-      @ci_server_configuration = HashDsl.hash_from_block(block) if block_given?
-      
-      # Currently Jenkins is the only supported ticket system
-      :jenkins
-    end
-    attr_reader :ci_server_configuration
     
-    def error_tracker(*args, &block)
-      @error_tracker_configuration = HashDsl.hash_from_block(block) if block_given?
-      
-      # Currently Errbit is the only supported error tracker
-      :errbit
-    end
-    attr_reader :error_tracker_configuration
-    alias :errbit :error_tracker_configuration
     
     
     

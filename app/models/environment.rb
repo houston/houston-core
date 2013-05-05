@@ -18,7 +18,7 @@ class Environment
   
   def read_file(path)
     project.read_file(path, commit: head) if head
-  rescue Houston::VersionControl::CommitNotFound
+  rescue Houston::Adapters::VersionControl::CommitNotFound
     nil
   end
   
