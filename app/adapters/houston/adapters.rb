@@ -4,7 +4,7 @@ module Houston
       
       def each
         constants.each do |name|
-          yield name, const_get(name), name_to_path(name)
+          yield name, name_to_path(name)
         end
       end
       

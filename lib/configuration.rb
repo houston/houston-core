@@ -104,7 +104,7 @@ module Houston
     
     # Adapters
     
-    Houston::Adapters.each do |name, namespace, path|
+    Houston::Adapters.each do |name, path|
       module_eval <<-RUBY
         def #{path}(adapter, &block)
           raise ArgumentError, "\#{adapter.inspect} is not a #{name}: known #{name} adapters are: \#{Houston::Adapters::#{name}.adapters.map { |name| ":\#{name.downcase}" }.join(", ")}" unless Houston::Adapters::#{name}.adapter?(adapter)
