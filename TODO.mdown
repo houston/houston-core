@@ -19,43 +19,52 @@
 # Horizon 1
 =====================================================================
 
-Goals:
- - Measure exception turn time
- - Prioritize project backlogs
+Complete the workflow loop through Houston-Scheduler:
 
-Tasks:
- - **Weekly Report/Exceptions:** show average time to close problem
- - **Weekly Report/Exceptions:** break down notices by project
- - **Houston-Scheduler:** show severities
-
-
+ - **Daily Report:** add count of tickets that need estimates
+ - **Houston-Scheduler:** have a fast load and a slow load
+ - **Houston-Scheduler:** show ticket tag/severity
+ - **Houston-Scheduler:** allow creating tickets [[ ticket + type,tags; specify severity for new tickets? ]]
+ - **Houston-Scheduler:** unprioritized count doesn't change when you drag
 
 
 # Horizon 2
 =====================================================================
 
-Goals:
- - Close loop on releases
- - Consolidate information for developers
-
-Questions:
- - What is the right role for managers, bosses, leadership?
- - How to to _interpret_ out-of-date-ness? Assign a grade? What about urgency of patches? OK button?
-
-Projects:
- - Reinvent Notifications:
-   - Send one-off emails that can take advantage of the abilities of each recipient
-   - Put a link in emails to user's notifications options (automatically logging them in)
-   - [idea] Remove add-but-dont-invite
- - Daily Report:
-   - When a test fails: which commit range is to blame
-   - Recent new tickets
-   - Recent new exceptions
-   - Maintenance lights
- - Antecedents:
+ - **Prune**
+   - Remove `tickets.goldmine`
+   - Remove `projects.ticket_tracker_id`
+   - Remove `projects.error_tracker_id`
+   - Remove `projects.version_control_location`
+   
+ - **Antecedents**
    - Auto-resolve exception antecedents
    - Send support notifications on problem antecedents
+ 
+ - **Notifications**
+   - Send one-off emails that can take advantage of the abilities of each recipient
+   - Put a link in emails to user's notifications options (automatically logging them in)
 
+ - **Daily Report**
+   - When a test fails: which commit range is to blame
+   - Recent new exceptions
+   - Maintenance lights
+
+ - **Test Result**
+   - When a test fails, which commit range is to blame?
+   - Show code coverage reports
+
+ - **Houston-Scheduler**
+   - Allow specifing prerequisites for tickets
+   - Click to edit ticket in a popup
+   - Style tickets ahead of prerequisites negatively
+   - Remember if "show effort" is on or off (user + hstore)
+   - **Discussion Needed:** allow discussion to take place
+   - **Mixer:** allow creating projects
+
+ - **Testing Report**
+   - Show related tickets
+   - Allow creating related tickets
 
 
 
@@ -71,7 +80,7 @@ Goals:
    - Engines need to supply configuration objects, plug in to config.rb
    - Create a Rails Engine generator for Houston plugins based on Houston::Scheduler
  - **Modularity:**
-   - Extract **Errbit**, **NewRelic**, and **GitHub** knowledge
+   - Extract **NewRelic**, and **GitHub** knowledge
    - Refactor hard-coded knowledge about Unfuddle/EP into configuration
      - Replace `config/initializers/hard_coded_knowledge.rb`
      - Add `tickets.status` or `tickets.closed`
@@ -90,39 +99,41 @@ Goals:
    - Duplicate code in Projects#show and WeeklyReport#show
    - New Relic API calls
    - Use [actionmailer_inline_css](https://github.com/ndbroadbent/actionmailer_inline_css)?
- - Write tests
-   - Socketable configuration
 
 ### Ideas
 
- - **Projects:** participants (avatars) min/max width | Maintainers = special kind of participant
- - **Houston-Scheduler:** allow editing prerequisites
- - **Houston-Scheduler:** allow adding milestones (show time-to-milestone)
- - **Houston-Scheduler:** add a "The Pipe" view which interleaves work for all projects, taking 1 week bites
- - **Houston-Scheduler:** Queuing Discipline takes prerequisites into account
- - **Houston-Scheduler:** expand tickets like Testing Report does
- - **Releases:** search [e.g. for commit]
+ - **Projects:**
+   - Participants (avatars) min/max width | Maintainers = special kind of participant
+   - Show retired projects and allow "unretiring" them
+ - **Houston-Scheduler:**
+   - Allow adding milestones (show time-to-milestone)
+   - Add a "The Pipe" view which interleaves work for all projects, taking 1 week bites
+   - Expand tickets like Testing Report does
+   - Calculate prerequisites/dependencies when applying Queuing Discipline
+   - Allow custom queueing disciplines
+ - **Releases:**
+   - Search [e.g. for commit]
+   - Create embeddable front-end for releases
+   - Show ticket/change counts in real time when editing a release
+   - Allow adding/removing _tickets_ from release notes
+   - Add "What's in the pipe?" view that shows what _would_ be released to production if it were released now
+   - **Release:** cache `deploy.created_at` as `deployed_at`
+   - RSS
  - **Deploys:** add a list of deploys; allow creating releases for old deploys
- - **Releases:** create embeddable front-end for releases
- - **Release:** auto-resolve errors on releases
  - **Weekly Report:**
    - Pair projects with colors somewhere (then don't for "Focus this week")
    - New Section: **Deploys** or **Releases**
    - New Section: **Test Coverage**
    - New Section: **Performance** (shows _histogram_ of response times)
    - New Section: **Superlatives**
- - **Releases:** show ticket/change counts in real time when editing a release
  - **Kanban:** optimize rendering tickets on the server
- - **Projects:** show retired projects and allow "unretiring" them
  - **Global:** make mobile site
- - **Testing Report:** allow creating tickets right there!
- - **Testing Report:** allow editing tickets!
- - **Release:** cache `deploy.created_at` as `deployed_at`
- - **Releases:** Support RSS
- - Report on health of tickets
+ - **Testing Report:**
+   - Allow creating tickets right there!
+   - Allow editing tickets!
+   - Add priority options (to left of ticket): high/low, exclusive checkboxes
+   - Add additional verdicts (pass-with-suggestions? unable-to-test?)
  - **Weekly Report:**
-   - **Exceptions:** split bar graph?
-   - time-to-close [bug] ticket
    - group into supersections
      - "Productivity", "Maintenance", "Development" [?]
      - "Effort", "Task" | "Us", "Them" | "Red", "Blue"
@@ -132,14 +143,11 @@ Goals:
      - most commits to a project per week/day
      - most projects committed to per week
      - first commit to a project per developer
+   - Report on health of tickets
  - **Project Dashboard:**
    - ?? New tickets
    - ?? New problems
  - **Global:** employ Twitter Bootstrap in emails
- - **Testing Report:** add priority options (to left of ticket): high/low, exclusive checkboxes
- - **Testing Report:** add additional verdicts (pass-with-suggestions? unable-to-test?)
- - **Releases:** add "What's in the pipe?" view that shows what _would_ be released to production if it were released now
- - **Releases:** allow adding/removing _tickets_ from release notes
  - **Houston-Fnord**: (show real-time analytics)
    - Solve for multiple apps (multiple gauges? multiple fields?)
    - **Project Dashboard:**
