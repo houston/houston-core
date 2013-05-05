@@ -462,8 +462,8 @@
       open_tickets_this_week.each do |ticket|
         severity = ticket["severity"]
         severity = nil if severity.blank?
-        color = severities_colors[severity]
-        tickets_by_severity[color] += 1
+        color = severities_colors[severity] # <-- Severity could be whatever the user has defined in Unfuddle: not necessarily what we've listed in config.rb
+        tickets_by_severity[color] += 1 if tickets_by_severity.key?(color)
       end
       
       open_tickets_by_project[project] = open_tickets_this_week.count
