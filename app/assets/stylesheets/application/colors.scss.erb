@@ -1,4 +1,4 @@
-<% Houston.config.colors.each do |name, value| %>
+<% Houston.config.project_colors.each do |name, value| %>
   $<%= name %>: <%= value.rgb %>;
 <% end %>
 
@@ -12,7 +12,7 @@
 }
 
 #kanban li {
-  <% Houston.config.colors.each do |name, value| %>
+  <% Houston.config.project_colors.each do |name, value| %>
     &.<%= name %> { @include age($<%= name %>) }
   <% end %>
 }
@@ -20,7 +20,7 @@
 .label {
   vertical-align: baseline;
   
-  <% Houston.config.colors.each do |name, value| %>
+  <% Houston.config.project_colors.each do |name, value| %>
     &.<%= name %> { background-color: $<%= name %>; }
   <% end %>
 }
@@ -35,7 +35,7 @@
   top: 1px;
   margin-left: 0.25em;
 
-  <% Houston.config.colors.each do |name, value| %>
+  <% Houston.config.project_colors.each do |name, value| %>
     &.<%= name %> { background-color: $<%= name %>; }
   <% end %>
 }
@@ -56,7 +56,7 @@
     text-transform: uppercase;
   }
   
-  <% Houston.config.colors.each do |name, value| %>
+  <% Houston.config.project_colors.each do |name, value| %>
     &.<%= name %> { background-color: $<%= name %>; }
   <% end %>
 }

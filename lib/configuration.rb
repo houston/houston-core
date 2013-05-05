@@ -22,6 +22,10 @@ module Houston
     
     
     
+    
+    
+    # Global configuration
+    
     def title(*args)
       @title = args.first if args.any?
       @title ||= "Houston"
@@ -37,9 +41,19 @@ module Houston
       @mailer_sender ||= nil
     end
     
+    def smtp(&block)
+      @smtp = HashDsl.hash_from_block(block) if block_given?
+      @smtp ||= {}
+    end
+    
     def project_categories(*args)
       @project_categories = args if args.any?
       @project_categories ||= []
+    end
+    
+    def project_colors(*args)
+      @project_colors = args.first.each_with_object({}) { |(key, hex), hash| hash[key] = ColorValue.new(hex) } if args.any?
+      @project_colors ||= []
     end
     
     def environments(*args)
@@ -125,6 +139,11 @@ module Houston
       RUBY
     end
     
+    def new_relic(&block)
+      @new_relic_configuration = HashDsl.hash_from_block(block) if block_given?
+      @new_relic_configuration ||= {}
+    end
+    
     
     
     
@@ -143,49 +162,11 @@ module Houston
     
     
     
-    def new_relic(&block)
-      @new_relic_configuration = HashDsl.hash_from_block(block) if block_given?
-      @new_relic_configuration ||= {}
-    end
     
     
+    # Configuration for Releases
     
-    # Email
-    
-    def smtp(&block)
-      @smtp = HashDsl.hash_from_block(block) if block_given?
-      @smtp ||= {}
-    end
-    
-    
-    
-    # Configuration
-    
-    def key_dependencies(&block)
-      if block_given?
-        dependencies = Houston::Dependencies.new
-        dependencies.instance_eval(&block)
-        @dependencies = dependencies.values
-      end
-      @dependencies || []
-    end
-    
-    def queues(*args)
-      @queues = args.first if args.any?
-      @queues ||= []
-    end
-    
-    def colors(*args)
-      @colors = args.first.each_with_object({}) { |(key, hex), hash| hash[key] = ColorValue.new(hex) } if args.any?
-      @colors ||= []
-    end
-    
-    def severities(*args)
-      @severities = args.first if args.any?
-      @severities ||= []
-    end
-    
-    def tags(*args)
+    def change_tags(*args)
       if args.any?
         @tag_map = {}
         args.flatten.each_with_index do |hash, position|
@@ -205,6 +186,33 @@ module Houston
     end
     
     attr_reader :tag_map
+    
+    
+    
+    
+    
+    # Configuration for Releases
+    
+    def key_dependencies(&block)
+      if block_given?
+        dependencies = Houston::Dependencies.new
+        dependencies.instance_eval(&block)
+        @dependencies = dependencies.values
+      end
+      @dependencies || []
+    end
+    
+    def queues(*args)
+      @queues = args.first if args.any?
+      @queues ||= []
+    end
+    
+    def severities(*args)
+      @severities = args.first if args.any?
+      @severities ||= []
+    end
+    
+    
     
     
     
