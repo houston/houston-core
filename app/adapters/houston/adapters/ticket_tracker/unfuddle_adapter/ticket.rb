@@ -1,5 +1,3 @@
-require 'ostruct'
-
 module Houston
   module Adapters
     module TicketTracker

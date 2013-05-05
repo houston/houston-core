@@ -3,10 +3,6 @@ module Houston
     module TicketTracker
       class NullTicketClass
         
-        
-        # Public API for a TicketTracker ticket
-        # ------------------------------------------------------------------------- #
-        
         def remote_id
           nil
         end
@@ -38,7 +34,6 @@ module Houston
         def update_attribute(*args)
         end
         
-        # ------------------------------------------------------------------------- #
         
         
         def nil?
