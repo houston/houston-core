@@ -130,7 +130,7 @@ class Project < ActiveRecord::Base
       # tickets by number with no numbers given.
       if numbers_to_fetch.any?
         begin
-          tickets.concat find_tickets(:number => numbers_to_fetch)
+          tickets.concat find_tickets(number: numbers_to_fetch)
         rescue Unfuddle::Error
           # We couldn't fetch remote tickets, let's just return what we've got for now
         end
