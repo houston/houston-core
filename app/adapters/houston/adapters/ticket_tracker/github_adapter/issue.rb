@@ -16,6 +16,7 @@ module Houston
             @summary          = attributes["title"]
             @description      = attributes["body"]
             @type             = get_type
+            @closed_at        = attributes["closed_at"] && Time.parse(attributes["closed_at"])
             
             # optional
             @tags             = attributes.fetch("labels", []).map(&method(:tag_from_label))
@@ -28,7 +29,8 @@ module Houston
                       :summary,
                       :description,
                       :type,
-                      :tags
+                      :tags,
+                      :closed_at
           
           def attributes
             { remote_id:      remote_id,
@@ -36,6 +38,7 @@ module Houston
               summary:        summary,
               description:    description,
               type:           type,
+              closed_at:      closed_at,
               
               tags:           tags,
               antecedents:    antecedents,

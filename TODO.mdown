@@ -83,7 +83,6 @@ Goals:
    - Extract **NewRelic**, and **GitHub** knowledge
    - Refactor hard-coded knowledge about Unfuddle/EP into configuration
      - Replace `config/initializers/hard_coded_knowledge.rb`
-     - Add `tickets.status` or `tickets.closed`
      - Unfuddle-specific knowledge of severities (Weekly Report, Project Dashboard)
      - Unfuddle-specific knowledge re: invalid or duplicate in `users_controller.rb`
      - Unfuddle::NeqHelper

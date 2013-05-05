@@ -27,6 +27,10 @@ module Houston
           []
         end
         
+        def closed_at
+          nil
+        end
+        
         def antecedents
           []
         end
