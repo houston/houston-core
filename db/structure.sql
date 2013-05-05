@@ -1018,7 +1018,8 @@ CREATE TABLE tickets (
     goldmine character varying(255),
     expires_at timestamp without time zone,
     extended_attributes hstore,
-    antecedents character varying[]
+    antecedents character varying[],
+    tags character varying[]
 );
 
 
@@ -1728,3 +1729,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130428005808');
 INSERT INTO schema_migrations (version) VALUES ('20130504014802');
 
 INSERT INTO schema_migrations (version) VALUES ('20130504135741');
+
+INSERT INTO schema_migrations (version) VALUES ('20130505144446');

@@ -19,6 +19,10 @@ module Houston
           nil
         end
         
+        def tags
+          []
+        end
+        
         def antecedents
           []
         end

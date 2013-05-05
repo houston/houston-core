@@ -82,4 +82,24 @@ class TicketTest < ActiveSupport::TestCase
   end
   
   
+  
+  
+  test "#tags accepts an array of strings" do
+    ticket = Ticket.create!(project_id: 1, number: 1, summary: "Test summary")
+    ticket.tags = ["Bug", "No Work-Around"]
+    assert_equal 2, ticket.tags.length
+    assert_equal TicketTag, ticket.tags.first.class
+    assert_equal ["Bug", "No Work-Around"], ticket.tags.map(&:name)
+  end
+  
+  test "#tags accepts an array of TicketTag objects" do
+    ticket = Ticket.create!(project_id: 1, number: 1, summary: "Test summary")
+    ticket.tags = [TicketTag.new("Bug", "b50000")]
+    assert_equal 1, ticket.tags.length
+    assert_equal TicketTag, ticket.tags.first.class
+    assert_equal "Bug", ticket.tags.first.name
+    assert_equal "b50000", ticket.tags.first.color
+  end
+  
+  
 end

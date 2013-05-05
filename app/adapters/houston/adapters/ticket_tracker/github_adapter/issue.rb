@@ -15,12 +15,16 @@ module Houston
             @number           = attributes["number"]
             @summary          = attributes["title"]
             @description      = attributes["body"]
+            
+            # optional
+            @tags             = attributes.fetch("labels", []).map(&method(:tag_from_label))
           end
           
           attr_reader :remote_id,
                       :number,
                       :summary,
-                      :description
+                      :description,
+                      :tags
           
           def attributes
             { remote_id:      remote_id,
@@ -28,6 +32,7 @@ module Houston
               summary:        summary,
               description:    description,
               
+              tags:           tags,
               antecedents:    antecedents,
               deployment:     deployment,
               prerequisites:  [] }
@@ -45,6 +50,14 @@ module Houston
           
           def update_attribute(*args)
             raise NotImplementedError, "Haven't implemted Github::Issue#update_attribute (#{args.inspect})"
+          end
+          
+          
+          
+        private
+          
+          def tag_from_label(label)
+            TicketTag.new(label["name"], label["color"])
           end
           
         end

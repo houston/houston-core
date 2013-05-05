@@ -17,6 +17,8 @@ module Houston
             @description      = attributes["description"]
             
             # optional
+            @severity         = get_severity_name(attributes["severity_id"])
+            @tags             = get_tags
             @antecedents      = get_antecedents
             @deployment       = get_custom_value(Houston::TMI::NAME_OF_DEPLOYMENT_FIELD)
             @prerequisites    = parse_prerequisites(attributes["associations"])
@@ -30,9 +32,11 @@ module Houston
                       :summary,
                       :description,
                       
+                      :tags,
                       :antecedents,
                       :deployment,
                       :prerequisites,
+                      :severity,
                       :due_date
           
           def attributes
@@ -41,6 +45,7 @@ module Houston
               summary:        summary,
               description:    description,
               
+              tags:           tags,
               antecedents:    antecedents,
               deployment:     deployment,
               prerequisites:  prerequisites,
@@ -122,6 +127,12 @@ module Houston
           
           
           
+          def get_tags
+            identify_tags_proc = unfuddle.config[:identify_tags]
+            return [] unless identify_tags_proc
+            identify_tags_proc.call(self)
+          end
+          
           def get_antecedents
             identify_antecedents_proc = unfuddle.config[:identify_antecedents]
             return [] unless identify_antecedents_proc
@@ -134,6 +145,13 @@ module Houston
             Array.wrap(associations)
               .select { |assocation| assocation["relationship"] == "parent" }
               .map { |assocation| assocation["ticket"]["number"] }
+          end
+          
+          
+          
+          def get_severity_name(severity_id)
+            severity = unfuddle.severities.find { |severity| severity.id == severity_id }
+            severity && severity.name
           end
           
           

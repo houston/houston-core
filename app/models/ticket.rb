@@ -146,6 +146,16 @@ class Ticket < ActiveRecord::Base
   
   
   
+  def tags
+    (super || []).map(&TicketTag.method(:from_s))
+  end
+  
+  def tags=(tags)
+    super (tags || []).map(&:to_s)
+  end
+  
+  
+  
   def extended_attributes
     super || (self.extended_attributes = {})
   end
