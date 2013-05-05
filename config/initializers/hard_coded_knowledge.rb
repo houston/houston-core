@@ -6,7 +6,6 @@ module Houston
   module TMI
     
     NAME_OF_DEPLOYMENT_FIELD = "Fixed in"
-    NAME_OF_GOLDMINE_FIELD = "Goldmine"
     FIELD_USED_FOR_LDAP_LOGIN = "samaccountname"
     INSTRUCTIONS_FOR_LOGIN = "You can log in with your CPH domain account"
     

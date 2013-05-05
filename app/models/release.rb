@@ -102,8 +102,8 @@ class Release < ActiveRecord::Base
   
   
   
-  def goldmine_numbers
-    @goldmine_numbers ||= tickets.each_with_object([]) { |ticket, numbers| numbers.concat(ticket.goldmine_numbers) }.uniq
+  def antecedents
+    @antecedents ||= tickets.map(&:antecedents).flatten.uniq
   end
   
   

@@ -122,10 +122,6 @@ class Ticket < ActiveRecord::Base
     commits.map { |commit| {name: commit.committer, email: commit.committer_email} }.uniq
   end
   
-  def goldmine_numbers
-    (goldmine || "").split(",").map(&:strip)
-  end
-  
   
   
   def ticket_tracker_ticket_url
@@ -136,6 +132,16 @@ class Ticket < ActiveRecord::Base
   
   def in_development?
     deployment.blank?
+  end
+  
+  
+  
+  def antecedents
+    (super || []).map(&TicketAntecedent.method(:from_s))
+  end
+  
+  def antecedents=(antecedents)
+    super antecedents.map(&:to_s)
   end
   
   

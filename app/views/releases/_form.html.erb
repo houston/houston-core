@@ -35,11 +35,11 @@
     </div>
     
     <div class="control-group">
-      <label class="control-label">Goldmine No.</label>
+      <label class="control-label">Antecedents</label>
       <div class="controls changes-nested-editor">
-        <ul class="goldmine-numbers">
-          <% @release.goldmine_numbers.each do |number| %>
-            <li><%= number %></li>
+        <ul class="antecedents">
+          <% @release.antecedents.each do |antecedent| %>
+            <li><%= format_antecedent(antecedent) %></li>
           <% end %>
         </ul>
       </div>

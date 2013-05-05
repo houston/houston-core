@@ -9,9 +9,10 @@ module Houston
           def initialize(unfuddle)
             @unfuddle = unfuddle
             @project_id = unfuddle.id
+            @config = Houston.config.ticket_tracker_configuration(:unfuddle)
           end
           
-          attr_reader :project_id
+          attr_reader :project_id, :config
           
           delegate :get_ticket_attribute_for_custom_value_named!,
                    :find_custom_field_value_by_id!,

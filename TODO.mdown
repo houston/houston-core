@@ -53,7 +53,6 @@ Projects:
    - Recent new exceptions
    - Maintenance lights
  - Antecedents:
-   - Houston: Implement Antecedents with Goldmine hacked in
    - Auto-resolve exception antecedents
    - Send support notifications on problem antecedents
 
@@ -75,11 +74,11 @@ Goals:
    - Extract **Errbit**, **NewRelic**, and **GitHub** knowledge
    - Refactor hard-coded knowledge about Unfuddle/EP into configuration
      - Replace `config/initializers/hard_coded_knowledge.rb`
-     - Replace `tickets.goldmine`, `Ticket#goldmine_numbers`, `Release#goldmine_numbers` with "antecedents"
      - Add `tickets.status` or `tickets.closed`
      - Unfuddle-specific knowledge of severities (Weekly Report, Project Dashboard)
      - Unfuddle-specific knowledge re: invalid or duplicate in `users_controller.rb`
      - Unfuddle::NeqHelper
+     - TicketHelper#format_antecedent
    - Turn on or off features via config.rb
    - Extract **houston-ci**
    - Extract **houston-releases**

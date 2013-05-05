@@ -19,8 +19,8 @@ module Houston
             @description      = attributes["description"]
             
             # optional
-            @deployment       = get_custom_value(Houston::TMI::NAME_OF_DEPLOYMENT_FIELD, attributes)
-            @goldmine         = get_custom_value(Houston::TMI::NAME_OF_GOLDMINE_FIELD, attributes)
+            @antecedents      = get_antecedents
+            @deployment       = get_custom_value(Houston::TMI::NAME_OF_DEPLOYMENT_FIELD)
             @prerequisites    = parse_prerequisites(attributes["associations"])
             @due_date         = attributes["due_on"]
           end
@@ -32,8 +32,8 @@ module Houston
                       :summary,
                       :description,
                       
+                      :antecedents,
                       :deployment,
-                      :goldmine,
                       :prerequisites,
                       :due_date
           
@@ -43,8 +43,8 @@ module Houston
               summary:        summary,
               description:    description,
               
+              antecedents:    antecedents,
               deployment:     deployment,
-              goldmine:       goldmine,
               prerequisites:  prerequisites,
               due_date:       due_date }
           end
@@ -81,18 +81,9 @@ module Houston
           
           
           
-        private
-          
-          attr_reader :connection
-          alias :unfuddle :connection
-          
-          delegate :find_in_cache_or_execute,
-                   :invalidate_cache,
-                   :to => :connection
-          
-          
-          
-          def get_custom_value(custom_field_name, unfuddle_ticket)
+          def get_custom_value(custom_field_name)
+            unfuddle_ticket = @raw_attributes
+            
             retried_once = false
             begin
               custom_field_key = custom_field_name.underscore.gsub(/\s/, "_")
@@ -118,6 +109,25 @@ module Houston
                 retry
               end
             end
+          end
+          
+          
+          
+        private
+          
+          attr_reader :connection
+          alias :unfuddle :connection
+          
+          delegate :find_in_cache_or_execute,
+                   :invalidate_cache,
+                   :to => :connection
+          
+          
+          
+          def get_antecedents
+            identify_antecedents_proc = unfuddle.config[:identify_antecedents]
+            return [] unless identify_antecedents_proc
+            identify_antecedents_proc.call(self)
           end
           
           

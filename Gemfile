@@ -2,6 +2,7 @@ source 'http://rubygems.org'
 
 gem 'rails', '3.2.13'
 gem 'activerecord-postgres-hstore' # remove when Rails 4.0
+gem 'activerecord-postgres-array' # remove when Rails 4.0 and convert 'string_array' in migrations to string :array => true
 
 gem 'pg'
 
