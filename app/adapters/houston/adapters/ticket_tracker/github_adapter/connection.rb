@@ -6,9 +6,10 @@ module Houston
           
           def initialize(repo_path)
             @repo_path = repo_path
+            @config = Houston.config.ticket_tracker_configuration(:github)
           end
           
-          attr_reader :repo_path
+          attr_reader :repo_path, :config
           
           
           

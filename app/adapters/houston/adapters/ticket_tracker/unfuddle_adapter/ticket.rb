@@ -9,15 +9,16 @@ module Houston
           def initialize(connection, attributes)
             @connection       = connection
             @raw_attributes   = attributes
+            @severity         = get_severity_name(attributes["severity_id"])
             
             # required
             @remote_id        = attributes["id"]
             @number           = attributes["number"]
             @summary          = attributes["summary"]
             @description      = attributes["description"]
+            @type             = get_type
             
             # optional
-            @severity         = get_severity_name(attributes["severity_id"])
             @tags             = get_tags
             @antecedents      = get_antecedents
             @deployment       = get_custom_value(Houston::TMI::NAME_OF_DEPLOYMENT_FIELD)
@@ -31,6 +32,7 @@ module Houston
                       :number,
                       :summary,
                       :description,
+                      :type,
                       
                       :tags,
                       :antecedents,
@@ -44,6 +46,7 @@ module Houston
               number:         number,
               summary:        summary,
               description:    description,
+              type:           type,
               
               tags:           tags,
               antecedents:    antecedents,
@@ -126,6 +129,11 @@ module Houston
                    :to => :connection
           
           
+          
+          def get_type
+            identify_type_proc = unfuddle.config[:identify_type]
+            identify_type_proc.call(self) if identify_type_proc
+          end
           
           def get_tags
             identify_tags_proc = unfuddle.config[:identify_tags]

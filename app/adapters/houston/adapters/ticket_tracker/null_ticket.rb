@@ -19,6 +19,10 @@ module Houston
           nil
         end
         
+        def type
+          nil
+        end
+        
         def tags
           []
         end

@@ -1,4 +1,5 @@
 class Ticket < ActiveRecord::Base
+  self.inheritance_column = nil
   
   belongs_to :project
   has_one :ticket_queue, conditions: "destroyed_at IS NULL"

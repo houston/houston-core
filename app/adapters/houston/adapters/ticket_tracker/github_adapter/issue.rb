@@ -15,15 +15,19 @@ module Houston
             @number           = attributes["number"]
             @summary          = attributes["title"]
             @description      = attributes["body"]
+            @type             = get_type
             
             # optional
             @tags             = attributes.fetch("labels", []).map(&method(:tag_from_label))
           end
           
-          attr_reader :remote_id,
+          attr_reader :raw_attributes,
+                      
+                      :remote_id,
                       :number,
                       :summary,
                       :description,
+                      :type,
                       :tags
           
           def attributes
@@ -31,6 +35,7 @@ module Houston
               number:         number,
               summary:        summary,
               description:    description,
+              type:           type,
               
               tags:           tags,
               antecedents:    antecedents,
@@ -55,6 +60,14 @@ module Houston
           
           
         private
+          
+          attr_reader :connection
+          alias :github :connection
+          
+          def get_type
+            identify_type_proc = github.config[:identify_type]
+            identify_type_proc.call(self) if identify_type_proc
+          end
           
           def tag_from_label(label)
             TicketTag.new(label["name"], label["color"])

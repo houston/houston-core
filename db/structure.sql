@@ -1019,7 +1019,8 @@ CREATE TABLE tickets (
     expires_at timestamp without time zone,
     extended_attributes hstore,
     antecedents character varying[],
-    tags character varying[]
+    tags character varying[],
+    type character varying(255)
 );
 
 
@@ -1731,3 +1732,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130504014802');
 INSERT INTO schema_migrations (version) VALUES ('20130504135741');
 
 INSERT INTO schema_migrations (version) VALUES ('20130505144446');
+
+INSERT INTO schema_migrations (version) VALUES ('20130505162039');
