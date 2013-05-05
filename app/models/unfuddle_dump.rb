@@ -32,13 +32,8 @@ module UnfuddleDump
   end
   
   def load!
-    download! unless fresh?
     return [] unless exists?
     read
-  end
-  
-  def download!
-    UnfuddleTicketDownloadJob.start!
   end
   
   def read

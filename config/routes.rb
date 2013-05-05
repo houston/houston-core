@@ -1,5 +1,3 @@
-require 'resque/server'
-
 Houston::Application.routes.draw do
   
   devise_for :users, :controllers => { :sessions => "sessions" }
@@ -123,9 +121,6 @@ Houston::Application.routes.draw do
   
   # Tester Bar
   match "tester_bar/:action", :controller => "tester_bar" if Rails.env.development?
-  
-  # Resque
-  mount Resque::Server.new, :at => "/resque"
   
   # This just renders a fake Kanban:
   # to give you an idea of what your queues, colors, and ages will look like

@@ -1,26 +1,12 @@
 class UnfuddleTicketDownloadJob
-  @queue = :ticket_download
   
   
-  
-  def self.start!
-    return if Resque.size(@queue) > 0
-    return if Resque.working.any? { |worker| worker.job["queue"] == @queue }
-    
-    Resque.enqueue(self)
-  rescue Redis::CannotConnectError
-    Houston.report_exception($!)
-  end
-  
-  def self.perform
+  def self.download!
     self.new.download!
   end
   
   
-  
   def download!
-    return if UnfuddleDump.fresh?
-    
     fetch!.tap do |tickets|
       puts "writing to \"#{UnfuddleDump.path}\""
       File.open(UnfuddleDump.path, "w") do |f|
@@ -63,7 +49,6 @@ class UnfuddleTicketDownloadJob
       ticket
     end
   end
-  
   
   
 end

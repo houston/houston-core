@@ -99,10 +99,6 @@
                 <li><%= link_to "Settings", "/settings" %></li>
               <% end -%>
               
-              <% if current_user && current_user.administrator? -%>
-                <li><%= link_to "Resque", "/resque" %></li>
-              <% end -%>
-              
             </ul>
             <ul class="nav pull-right">
               <% if current_user -%>

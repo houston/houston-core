@@ -16,8 +16,6 @@ gem 'devise',           '~> 2.2.3'
 gem 'devise_invitable', '~> 1.1.6'
 gem 'devise_ldap_authenticatable', :git => 'https://github.com/houstonmc/devise_ldap_authenticatable.git'
 gem 'faraday'
-gem 'foreman'
-gem 'foreman-export-initscript', :git => 'git://github.com/LewisJA/foreman-export-initscript.git'
 gem 'gemoji'
 gem 'googlecharts'
 gem 'hpricot'
@@ -25,7 +23,6 @@ gem 'nokogiri'
 gem 'octokit' # for adapting to GitHub Issues
 gem 'premailer' # for inlining CSS in HTML emails
 gem 'remotable', '>= 0.2.2', :git => 'git://github.com/boblail/remotable.git'
-gem 'resque'
 gem 'rugged', '0.17.0.b7' # for speaking Git
 gem 'yajl-ruby', :require => 'yajl/json_gem'
 gem 'whenever' # a DSL for writing CRON jobs
