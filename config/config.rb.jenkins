@@ -73,7 +73,7 @@ Houston.config do
   
   
   # Colors: these are the colors available for projects
-  colors({
+  project_colors({
     "teal"          => "39b3aa",
     "sky"           => "239ce7",
     "sea"           => "335996",
@@ -108,7 +108,7 @@ Houston.config do
   })
   
   # Tags: these are the tags available for Change Log entries
-  tags([
+  change_tags([
     {name: "Bugfix", as: "fix", color: "C64537", aliases: %w{bugfix}},
     {name: "Improvement", as: "improvement", color: "3383A8", aliases: %w{enhancement}},
     {name: "New Feature", as: "feature", color: "8DB500"},
