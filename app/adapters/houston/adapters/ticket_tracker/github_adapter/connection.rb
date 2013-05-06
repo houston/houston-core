@@ -17,7 +17,9 @@ module Houston
             Houston::Adapters::TicketTracker::GithubAdapter::Issue.new(self, attributes)
           end
           
-          def find_ticket(ticket_id)
+          def find_ticket(number)
+            attributes = client.issue(repo_path, number) unless number.blank?
+            build_ticket(attributes) if attributes
           end
           
           def find_tickets!(options={})

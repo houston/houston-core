@@ -27,8 +27,8 @@ module Houston
             Houston::Adapters::TicketTracker::UnfuddleAdapter::Ticket.new(self, attributes)
           end
           
-          def find_ticket(ticket_id)
-            attributes = unfuddle.find_ticket(ticket_id) unless ticket_id.blank?
+          def find_ticket(number)
+            attributes = unfuddle.find_ticket_by_number(number) unless number.blank?
             build_ticket(attributes) if attributes
           end
           

@@ -164,7 +164,7 @@ class Ticket < ActiveRecord::Base
   
   
   def remote_ticket
-    @remote_ticket ||= project && project.ticket_tracker.find_ticket(remote_id)
+    @remote_ticket ||= project && project.ticket_tracker.find_ticket(number)
   end
   
   def release!(release)

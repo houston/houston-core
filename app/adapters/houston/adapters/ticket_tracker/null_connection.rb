@@ -11,7 +11,7 @@ module Houston
           NullTicket
         end
         
-        def find_ticket(*args)
+        def find_ticket(number)
           nil
         end
         
