@@ -19,12 +19,20 @@
 # Horizon 1
 =====================================================================
 
+Complete the ticket refactor and Github Issues integration
+
+ - Implement a mechanism for setting `Ticket#closed_at`
+ - Replace `UnfuddleDump` in the Weekly Report
+ - Replace the use of native tickets in the Project Dashboard view
+
 Complete the workflow loop through Houston-Scheduler:
 
  - **Daily Report:** add count of tickets that need estimates
  - **Houston-Scheduler:** have a fast load and a slow load
  - **Houston-Scheduler:** show ticket tag/severity
- - **Houston-Scheduler:** allow creating tickets [[ ticket + type,tags; specify severity for new tickets? ]]
+ - **Houston-Scheduler:** allow creating tickets
+   - Map type and tags back to severities and labels
+   - Users need to authenticate (GitHub: oauth; Unfuddle: [AES](http://rubylearning.com/blog/2011/07/18/cryptography-or-how-i-learned-to-stop-worrying-and-love-aes/) [crypto](https://github.com/wesabe/pfc/blob/master/lib/crypto.rb)?)
  - **Houston-Scheduler:** unprioritized count doesn't change when you drag
 
 
@@ -79,19 +87,30 @@ Goals:
  - **Engines:**
    - Engines need to supply configuration objects, plug in to config.rb
    - Create a Rails Engine generator for Houston plugins based on Houston::Scheduler
+
  - **Modularity:**
    - Extract **NewRelic**, and **GitHub** knowledge
    - Refactor hard-coded knowledge about Unfuddle/EP into configuration
      - Replace `config/initializers/hard_coded_knowledge.rb`
      - Unfuddle-specific knowledge of severities (Weekly Report, Project Dashboard)
-     - Unfuddle-specific knowledge re: invalid or duplicate in `users_controller.rb`
+     - Replace `Unfuddle::Comment` and Remotable with API on `ticket_tracker` connection
+       - Octokit has methods for manipulating comments
+       - Require log in to Unfuddle as self
+     - in `users_controller.rb`:
+       - Unfuddle-specific knowledge of resolution (invalid, duplicate)
+       - `User#unfuddle_id` (add `Ticket#reporter_email` : [unfuddle](people/:reporter_id), [github](users/:login))
+         - https://api.github.com/users/boblail
+         - https://unfuddle.com/support/docs/api/people
+         - http://developer.github.com/v3/users/
      - Unfuddle::NeqHelper
      - TicketHelper#format_antecedent
+     - Don't limit TestingReportController to only use the Unfuddle adapter (have adapters publish their features?)
    - Turn on or off features via config.rb
    - Extract **houston-ci**
    - Extract **houston-releases**
    - Extract **houston-testing-report**
    - Extract **houston-kanban** (rename)
+
  - **Clean Code:**
    - Extract WeeklyReport model from WeeklyReports#show
    - Duplicate code in `users_controller#index` and `users_controller#show`
@@ -104,12 +123,14 @@ Goals:
  - **Projects:**
    - Participants (avatars) min/max width | Maintainers = special kind of participant
    - Show retired projects and allow "unretiring" them
+
  - **Houston-Scheduler:**
    - Allow adding milestones (show time-to-milestone)
    - Add a "The Pipe" view which interleaves work for all projects, taking 1 week bites
    - Expand tickets like Testing Report does
    - Calculate prerequisites/dependencies when applying Queuing Discipline
    - Allow custom queueing disciplines
+
  - **Releases:**
    - Search [e.g. for commit]
    - Create embeddable front-end for releases
@@ -118,35 +139,39 @@ Goals:
    - Add "What's in the pipe?" view that shows what _would_ be released to production if it were released now
    - **Release:** cache `deploy.created_at` as `deployed_at`
    - RSS
+
  - **Deploys:** add a list of deploys; allow creating releases for old deploys
+
  - **Weekly Report:**
    - Pair projects with colors somewhere (then don't for "Focus this week")
    - New Section: **Deploys** or **Releases**
    - New Section: **Test Coverage**
    - New Section: **Performance** (shows _histogram_ of response times)
    - New Section: **Superlatives**
- - **Kanban:** optimize rendering tickets on the server
- - **Global:** make mobile site
+     - most total commits per week/day
+     - most commits to a project per week/day
+     - most projects committed to per week
+     - first commit to a project per developer
+   - group into supersections
+     - "Productivity", "Maintenance", "Development" [?]
+     - "Effort", "Task" | "Us", "Them" | "Red", "Blue"
+   - add a Customer Satisfaction metric
+   - Report on health of tickets
+
+ - **Global:**
+   - make mobile site
+   - employ Twitter Bootstrap in emails
+
  - **Testing Report:**
    - Allow creating tickets right there!
    - Allow editing tickets!
    - Add priority options (to left of ticket): high/low, exclusive checkboxes
    - Add additional verdicts (pass-with-suggestions? unable-to-test?)
- - **Weekly Report:**
-   - group into supersections
-     - "Productivity", "Maintenance", "Development" [?]
-     - "Effort", "Task" | "Us", "Them" | "Red", "Blue"
-   - add a Customer Satisfaction metric
-   - add "Superlatives"
-     - most total commits per week/day
-     - most commits to a project per week/day
-     - most projects committed to per week
-     - first commit to a project per developer
-   - Report on health of tickets
- - **Project Dashboard:**
-   - ?? New tickets
-   - ?? New problems
- - **Global:** employ Twitter Bootstrap in emails
+
+ - **Project Dashboard:** (like Daily Report?)
+   - New tickets
+   - New problems
+
  - **Houston-Fnord**: (show real-time analytics)
    - Solve for multiple apps (multiple gauges? multiple fields?)
    - **Project Dashboard:**
