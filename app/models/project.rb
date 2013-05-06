@@ -126,21 +126,12 @@ class Project < ActiveRecord::Base
       ticket_numbers = tickets.map(&:number)
       numbers_to_fetch = numbers - ticket_numbers
       
-      # Unfuddle will return all tickets if we fetch
-      # tickets by number with no numbers given.
+      # Make sure that we do not perform a query if there is nothing to fetch.
       if numbers_to_fetch.any?
-        begin
-          tickets.concat find_tickets(number: numbers_to_fetch)
-        rescue Unfuddle::Error
-          # We couldn't fetch remote tickets, let's just return what we've got for now
-        end
+        tickets.concat find_tickets(number: numbers_to_fetch)
       end
     end
     tickets
-  end
-  
-  def find_or_create_ticket_by_number(number)
-    find_or_create_tickets_by_number(number).first
   end
   
   def find_tickets(*query)
