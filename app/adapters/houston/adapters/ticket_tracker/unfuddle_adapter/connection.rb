@@ -12,15 +12,6 @@ module Houston
             @config = Houston.config.ticket_tracker_configuration(:unfuddle)
           end
           
-          attr_reader :project_id, :config
-          
-          delegate :get_ticket_attribute_for_custom_value_named!,
-                   :find_custom_field_value_by_id!,
-                   :find_custom_field_value_by_value!,
-                   :ticket,
-                   :severities,
-                   :to => :unfuddle
-          
           
           
           def build_ticket(attributes)
@@ -51,6 +42,17 @@ module Houston
           def ticket_url(ticket_number)
             "#{project_url}/tickets/by_number/#{ticket_number}"
           end
+          
+          
+          
+          attr_reader :project_id, :config
+          
+          delegate :get_ticket_attribute_for_custom_value_named!,
+                   :find_custom_field_value_by_id!,
+                   :find_custom_field_value_by_value!,
+                   :ticket,
+                   :severities,
+                   :to => :unfuddle
           
           
           

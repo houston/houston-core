@@ -9,8 +9,6 @@ module Houston
             @config = Houston.config.ticket_tracker_configuration(:github)
           end
           
-          attr_reader :repo_path, :config
-          
           
           
           def build_ticket(attributes)
@@ -38,6 +36,8 @@ module Houston
           end
           
           
+          
+          attr_reader :repo_path, :config
           
           def client
             @client ||= Octokit::Client.new
