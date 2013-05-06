@@ -27,7 +27,7 @@ class UsersController < ApplicationController
         severity = ticket["severity"]
         severity = nil if severity.blank?
         color = severities_colors[severity]
-        tickets_by_severity[color] += 1
+        tickets_by_severity[color] += 1 if tickets_by_severity.key?(color)
       end
       
       @ticket_stats_by_user[user] = {
