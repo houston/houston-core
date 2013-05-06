@@ -9,7 +9,7 @@ class TestingReportController < ApplicationController
     
     @tickets = []
     
-    Project.all.each do |project|
+    Project.where(ticket_tracker_name: "Unfuddle").each do |project|
       next unless can?(:show, project.testing_notes.build)
       
       tickets_for_project = unfuddle_tickets
