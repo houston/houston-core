@@ -21,11 +21,49 @@ Houston.config do
   
   # The ticketing system that Houston will interface with.
   # Right now, the only supported system is Unfuddle.
-  # ticket_tracker :unfuddle do
-  #   subdomain SUBDOMAIN
-  #   username USERNAME
-  #   password PASSWORD
-  # end
+  ticket_tracker :unfuddle do
+    subdomain "cphep"
+    
+    identify_antecedents lambda { |ticket|
+      goldmine_numbers = ticket.get_custom_value("Goldmine") || ""
+      
+      antecedents = []
+      antecedents.concat goldmine_numbers.split(/[, ]/).map(&:strip).reject(&:blank?).map { |number| "Goldmine:#{number}" }
+      antecedents.concat ticket.description.to_s.scan(/^Goldmine: (\d+)/).flatten.map { |number| "Goldmine:#{number}" }
+      antecedents.concat ticket.description.to_s.scan(/^Errbit: ([0-9a-fA-F]+)/).flatten.map { |number| "Errbit:#{number}" }
+      
+      antecedents
+    }
+    
+    # ticket.severity ? [ticket.severity.gsub(/^[\s\w] /, "")] : []
+    
+    identify_tags lambda { |ticket|
+      [ticket.severity].compact
+    }
+    
+    identify_type lambda { |ticket|
+      case ticket.severity
+      when nil                                                          then nil
+      when "0 Suggestion", "D Development"                              then "Feature"
+      when "1 Lack of Polish", "P Performance", "2 Confusing to Users"  then "Tweak"
+      when "R Refactor"                                                 then "Chore"
+      else                                                                   "Bug"
+      end
+    }
+  end
+  
+  
+  
+  # Configure the Github Issues TicketTracker adapter
+  ticket_tracker :github do
+    identify_type lambda { |ticket|
+      labels = ticket.raw_attributes.fetch("labels", []).map { |label| label["name"].downcase }
+      return "Bug"      if (labels & %w{bug}).any?
+      return "Feature"  if (labels & %w{feature enhancement}).any?
+      return "Chore"    if (labels & %w{refactor}).any?
+      nil
+    }
+  end
   
   
   
