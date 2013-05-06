@@ -9,7 +9,7 @@ module Houston
           def initialize(connection, attributes)
             @connection       = connection
             @raw_attributes   = attributes
-            @severity         = get_severity_name(attributes["severity_id"])
+            @severity         = get_severity_name(attributes["severity_id"]) if attributes["severity_id"]
             
             # required
             @remote_id        = attributes["id"]
@@ -17,7 +17,7 @@ module Houston
             @summary          = attributes["summary"]
             @description      = attributes["description"]
             @type             = get_type
-            @closed_at        = attributes["closed_on"] && Time.parse(attributes["closed_on"])
+            @closed_at        = Time.parse(attributes["closed_on"]) if attributes["closed_on"]
             
             # optional
             @tags             = get_tags
