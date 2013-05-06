@@ -69,6 +69,13 @@ module Houston
           
           
           
+          def close!
+            ticket = unfuddle.ticket(remote_id)
+            ticket.update_attributes!("status" => "closed")
+          end
+          
+          
+          
           # !todo: refactor this method to be more generic and abstract
           def update_attribute(attribute, value)
             case attribute
@@ -78,10 +85,6 @@ module Houston
               
               ticket = unfuddle.ticket(remote_id)
               ticket.update_attributes!(attribute => id)
-              
-            when :closed
-              ticket = unfuddle.ticket(remote_id)
-              ticket.update_attributes!("status" => "closed")
               
             else
               raise NotImplementedError

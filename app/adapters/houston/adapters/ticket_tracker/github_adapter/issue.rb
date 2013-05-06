@@ -56,8 +56,20 @@ module Houston
           
           
           
-          def update_attribute(*args)
-            raise NotImplementedError, "Haven't implemted Github::Issue#update_attribute (#{args.inspect})"
+          def close!
+            connection.close_issue(connection.repo_path, number)
+          end
+          
+          
+          
+          # !todo: refactor this method to be more generic and abstract
+          def update_attribute(attribute, value)
+            case attribute
+            when :deployment
+              # do nothing
+            else
+              raise NotImplementedError
+            end
           end
           
           

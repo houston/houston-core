@@ -175,7 +175,7 @@ class Ticket < ActiveRecord::Base
   end
   
   def close_ticket!
-    remote_ticket.update_attribute(:closed, true) if remote_ticket
+    remote_ticket.close! if remote_ticket
     
     set_queue! nil
     self

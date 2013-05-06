@@ -43,6 +43,9 @@ module Houston
           {}
         end
         
+        def close!
+        end
+        
         def update_attribute(*args)
         end
         

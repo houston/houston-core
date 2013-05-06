@@ -37,8 +37,6 @@ module Houston
           
           
           
-        private
-          
           def client
             @client ||= Octokit::Client.new
           end
