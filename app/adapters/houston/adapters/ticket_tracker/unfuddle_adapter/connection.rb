@@ -5,6 +5,7 @@ module Houston
     module TicketTracker
       class UnfuddleAdapter
         class Connection
+          include Unfuddle::NeqHelper
           
           def initialize(unfuddle)
             @unfuddle = unfuddle
@@ -14,14 +15,38 @@ module Houston
           
           
           
+          # Required API
+          
           def build_ticket(attributes)
             Houston::Adapters::TicketTracker::UnfuddleAdapter::Ticket.new(self, attributes)
           end
           
-          def find_ticket(number)
+          def find_ticket_by_number(number)
             attributes = unfuddle.find_ticket_by_number(number) unless number.blank?
             build_ticket(attributes) if attributes
           end
+          
+          def find_tickets_numbered(*numbers)
+            numbers = numbers.flatten
+            return [] if numbers.empty?
+            find_tickets!(number: numbers)
+          end
+          
+          def open_tickets
+            find_tickets!(status: neq(:closed), resolution: 0)
+          end
+          
+          def project_url
+            "https://#{Unfuddle.instance.subdomain}.unfuddle.com/a#/projects/#{project_id}"
+          end
+          
+          def ticket_url(ticket_number)
+            "#{project_url}/tickets/by_number/#{ticket_number}"
+          end
+          
+          
+          
+          # Optional API
           
           def find_tickets!(*args)
             query = find_in_cache_or_execute(query_key(args)) { construct_ticket_query(*args) }
@@ -35,15 +60,7 @@ module Houston
           
           
           
-          def project_url
-            "https://#{Unfuddle.instance.subdomain}.unfuddle.com/a#/projects/#{project_id}"
-          end
-          
-          def ticket_url(ticket_number)
-            "#{project_url}/tickets/by_number/#{ticket_number}"
-          end
-          
-          
+          # Idiomatic API
           
           attr_reader :project_id, :config
           

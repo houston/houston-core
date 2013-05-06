@@ -126,16 +126,20 @@ class Project < ActiveRecord::Base
       ticket_numbers = tickets.map(&:number)
       numbers_to_fetch = numbers - ticket_numbers
       
-      # Make sure that we do not perform a query if there is nothing to fetch.
-      if numbers_to_fetch.any?
-        tickets.concat find_tickets(number: numbers_to_fetch)
-      end
+      ticket_tracker_tickets = ticket_tracker.find_tickets_numbered(numbers_to_fetch)
+      tickets.concat houston_tickets_from_ticket_tracker_tickets(ticket_tracker_tickets)
     end
     tickets
   end
   
+  def open_tickets
+    houston_tickets_from_ticket_tracker_tickets ticket_tracker.open_tickets
+  end
+  
   def find_tickets(*query)
     Rails.logger.info "[project.find_tickets] query: #{query.inspect}"
+    
+    return [] unless ticket_tracker.respond_to?(:find_tickets!) # <-- an optional API
     
     ticket_tracker_tickets = ticket_tracker.find_tickets!(*query)
     houston_tickets_from_ticket_tracker_tickets(ticket_tracker_tickets)

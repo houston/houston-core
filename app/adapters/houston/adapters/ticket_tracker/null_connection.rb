@@ -11,11 +11,15 @@ module Houston
           NullTicket
         end
         
-        def find_ticket(number)
+        def find_ticket_by_number(number)
           nil
         end
         
-        def find_tickets!(*args)
+        def find_tickets_numbered(*numbers)
+          []
+        end
+        
+        def open_tickets
           []
         end
         

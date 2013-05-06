@@ -25,9 +25,9 @@ class TicketTrackerAdatersApiTest < ActiveSupport::TestCase
     
     test "#{connection.class.name} responds to the TicketTracker::Connection interface" do
       assert_respond_to connection, :build_ticket
-      assert_respond_to connection, :find_ticket
-      assert_respond_to connection, :find_tickets!
-      
+      assert_respond_to connection, :find_ticket_by_number
+      assert_respond_to connection, :find_tickets_numbered
+      assert_respond_to connection, :open_tickets
       assert_respond_to connection, :project_url
       assert_respond_to connection, :ticket_url
     end
