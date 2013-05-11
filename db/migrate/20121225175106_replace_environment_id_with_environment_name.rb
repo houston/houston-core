@@ -1,7 +1,5 @@
 class ReplaceEnvironmentIdWithEnvironmentName < ActiveRecord::Migration
-  RENAMES = {
-    "dev" => "Staging",
-    "master" => "Production" }
+  RENAMES = {"dev" => "Staging", "master" => "Production"}
   
   class Environment < ActiveRecord::Base; end
   
@@ -29,12 +27,6 @@ class ReplaceEnvironmentIdWithEnvironmentName < ActiveRecord::Migration
     end
     
     rename_column :user_notifications, :environment, :environment_name
-    
-    UserNotification.tap(&:reset_column_information).all.each do |notification|
-      notification.environment_name = RENAMES[notification.environment_name] ||
-        (raise "Didn't anticipate an environment with the slug \"#{notification.environment_name}\"")
-      notification.save!(validate: false)
-    end
   end
   
   def down
@@ -43,11 +35,5 @@ class ReplaceEnvironmentIdWithEnvironmentName < ActiveRecord::Migration
     remove_column :releases, :environment_name
     
     rename_column :user_notifications, :environment_name, :environment
-    
-    UserNotification.tap(&:reset_column_information).all.each do |notification|
-      notification.environment = RENAMES.key(notification.environment) ||
-        (raise "Didn't anticipate an environment with the slug \"#{notification.environment}\"")
-      notification.save!
-    end
   end
 end

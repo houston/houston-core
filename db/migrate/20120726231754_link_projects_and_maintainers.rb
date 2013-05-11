@@ -6,10 +6,12 @@ class LinkProjectsAndMaintainers < ActiveRecord::Migration
     
     add_index :projects_maintainers, [:project_id, :user_id], :unique => true
     
-    admins = User.administrators
-    Project.all.each do |project|
-      admins.each do |admin|
-        project.maintainers << admin
+    admins = User.where(role: "Administrator")
+    Project.unscoped do
+      Project.all.each do |project|
+        admins.each do |admin|
+          project.maintainers << admin
+        end
       end
     end
   end

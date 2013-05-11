@@ -41,6 +41,11 @@ class User < ActiveRecord::Base
   end
   
   
+  def self.administrators
+    where(administrator: true)
+  end
+  
+  
   def self.participants
     Role.participants.to_users
   end

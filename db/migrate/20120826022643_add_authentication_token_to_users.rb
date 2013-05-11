@@ -3,9 +3,7 @@ class AddAuthenticationTokenToUsers < ActiveRecord::Migration
     add_column :users, :authentication_token, :string
     add_index :users, :authentication_token
     
-    User.all.each do |user|
-      user.send(:ensure_authentication_token)
-    end
+    User.unscoped { User.find_each(&:ensure_authentication_token) }
   end
   
   def down

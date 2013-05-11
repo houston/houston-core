@@ -4,16 +4,22 @@
 
 SET statement_timeout = 0;
 SET client_encoding = 'UTF8';
-SET standard_conforming_strings = off;
+SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
-SET escape_string_warning = off;
 
 --
--- Name: plpgsql; Type: PROCEDURAL LANGUAGE; Schema: -; Owner: -
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
 --
 
-CREATE OR REPLACE PROCEDURAL LANGUAGE plpgsql;
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
 SET search_path = public, pg_catalog;
@@ -430,10 +436,10 @@ CREATE OPERATOR CLASS gin_hstore_ops
     STORAGE text ,
     OPERATOR 7 @>(hstore,hstore) ,
     OPERATOR 9 ?(hstore,text) ,
-    FUNCTION 1 bttextcmp(text,text) ,
-    FUNCTION 2 gin_extract_hstore(internal,internal) ,
-    FUNCTION 3 gin_extract_hstore_query(internal,internal,smallint,internal,internal) ,
-    FUNCTION 4 gin_consistent_hstore(internal,smallint,internal,integer,internal,internal);
+    FUNCTION 1 (hstore, hstore) bttextcmp(text,text) ,
+    FUNCTION 2 (hstore, hstore) gin_extract_hstore(internal,internal) ,
+    FUNCTION 3 (hstore, hstore) gin_extract_hstore_query(internal,internal,smallint,internal,internal) ,
+    FUNCTION 4 (hstore, hstore) gin_consistent_hstore(internal,smallint,internal,integer,internal,internal);
 
 
 --
@@ -446,13 +452,13 @@ CREATE OPERATOR CLASS gist_hstore_ops
     OPERATOR 7 @>(hstore,hstore) ,
     OPERATOR 9 ?(hstore,text) ,
     OPERATOR 13 @(hstore,hstore) ,
-    FUNCTION 1 ghstore_consistent(internal,internal,integer,oid,internal) ,
-    FUNCTION 2 ghstore_union(internal,internal) ,
-    FUNCTION 3 ghstore_compress(internal) ,
-    FUNCTION 4 ghstore_decompress(internal) ,
-    FUNCTION 5 ghstore_penalty(internal,internal,internal) ,
-    FUNCTION 6 ghstore_picksplit(internal,internal) ,
-    FUNCTION 7 ghstore_same(internal,internal,internal);
+    FUNCTION 1 (hstore, hstore) ghstore_consistent(internal,internal,integer,oid,internal) ,
+    FUNCTION 2 (hstore, hstore) ghstore_union(internal,internal) ,
+    FUNCTION 3 (hstore, hstore) ghstore_compress(internal) ,
+    FUNCTION 4 (hstore, hstore) ghstore_decompress(internal) ,
+    FUNCTION 5 (hstore, hstore) ghstore_penalty(internal,internal,internal) ,
+    FUNCTION 6 (hstore, hstore) ghstore_picksplit(internal,internal) ,
+    FUNCTION 7 (hstore, hstore) ghstore_same(internal,internal,internal);
 
 
 SET default_tablespace = '';
@@ -467,6 +473,7 @@ CREATE TABLE changes (
     id integer NOT NULL,
     release_id integer,
     description character varying(255),
+    ticket_number integer,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     tag_slug character varying(255),
@@ -1135,119 +1142,119 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE changes ALTER COLUMN id SET DEFAULT nextval('changes_id_seq'::regclass);
+ALTER TABLE ONLY changes ALTER COLUMN id SET DEFAULT nextval('changes_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE commits ALTER COLUMN id SET DEFAULT nextval('commits_id_seq'::regclass);
+ALTER TABLE ONLY commits ALTER COLUMN id SET DEFAULT nextval('commits_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE deploys ALTER COLUMN id SET DEFAULT nextval('deploys_id_seq'::regclass);
+ALTER TABLE ONLY deploys ALTER COLUMN id SET DEFAULT nextval('deploys_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE environments ALTER COLUMN id SET DEFAULT nextval('environments_id_seq'::regclass);
+ALTER TABLE ONLY environments ALTER COLUMN id SET DEFAULT nextval('environments_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE errors ALTER COLUMN id SET DEFAULT nextval('errors_id_seq'::regclass);
+ALTER TABLE ONLY errors ALTER COLUMN id SET DEFAULT nextval('errors_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE project_quotas ALTER COLUMN id SET DEFAULT nextval('project_quotas_id_seq'::regclass);
+ALTER TABLE ONLY project_quotas ALTER COLUMN id SET DEFAULT nextval('project_quotas_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE projects ALTER COLUMN id SET DEFAULT nextval('projects_id_seq'::regclass);
+ALTER TABLE ONLY projects ALTER COLUMN id SET DEFAULT nextval('projects_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE releases ALTER COLUMN id SET DEFAULT nextval('releases_id_seq'::regclass);
+ALTER TABLE ONLY releases ALTER COLUMN id SET DEFAULT nextval('releases_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE roles ALTER COLUMN id SET DEFAULT nextval('roles_id_seq'::regclass);
+ALTER TABLE ONLY roles ALTER COLUMN id SET DEFAULT nextval('roles_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE settings ALTER COLUMN id SET DEFAULT nextval('settings_id_seq'::regclass);
+ALTER TABLE ONLY settings ALTER COLUMN id SET DEFAULT nextval('settings_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE test_runs ALTER COLUMN id SET DEFAULT nextval('test_runs_id_seq'::regclass);
+ALTER TABLE ONLY test_runs ALTER COLUMN id SET DEFAULT nextval('test_runs_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE testing_notes ALTER COLUMN id SET DEFAULT nextval('testing_notes_id_seq'::regclass);
+ALTER TABLE ONLY testing_notes ALTER COLUMN id SET DEFAULT nextval('testing_notes_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ticket_prerequisites ALTER COLUMN id SET DEFAULT nextval('ticket_prerequisites_id_seq'::regclass);
+ALTER TABLE ONLY ticket_prerequisites ALTER COLUMN id SET DEFAULT nextval('ticket_prerequisites_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ticket_queues ALTER COLUMN id SET DEFAULT nextval('ticket_queues_id_seq'::regclass);
+ALTER TABLE ONLY ticket_queues ALTER COLUMN id SET DEFAULT nextval('ticket_queues_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE tickets ALTER COLUMN id SET DEFAULT nextval('tickets_id_seq'::regclass);
+ALTER TABLE ONLY tickets ALTER COLUMN id SET DEFAULT nextval('tickets_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE user_notifications ALTER COLUMN id SET DEFAULT nextval('user_notifications_id_seq'::regclass);
+ALTER TABLE ONLY user_notifications ALTER COLUMN id SET DEFAULT nextval('user_notifications_id_seq'::regclass);
 
 
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
+ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
 
 
 --

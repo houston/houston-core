@@ -8,8 +8,8 @@ class CreateUserNotifications < ActiveRecord::Migration
       t.timestamps
     end
     
-    User.all.each do |user|
-      user.send(:save_default_notifications)
+    User.unscoped do
+      User.find_each(&:save_default_notifications)
     end
   end
   
