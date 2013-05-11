@@ -1,79 +1,14 @@
-#!/usr/bin/env ruby
-# encoding: UTF-8
+#!/bin/bash
+# Everything in this bootstrap script
+# is idempotent. It is OK to run again
+# on an existing project if you are
+# uncertain whether it is set up.
 
-### Bootstrap DSL (todo: extract to a library?)
+git submodule update --init
+bundle
+bundle exec rake db:create
+bundle exec rake db:migrate
+bundle exec rake test:all
 
-def run(command, options={})
-  with_exception_handling(options[:or]) do
-    puts "→ #{command}"
-    %x{#{command}}
-  end
-end
-
-def exists?(file_path)
-  File.exists?(File.expand_path(file_path))
-end
-
-def with_exception_handling(handler)
-  yield
-rescue Errno::ENOENT
-  if handler
-    send(handler)
-  else
-    raise
-  end
-end
-
-
-
-### Bootstrap helpers
-
-def you_need_bundler!
-  puts "This application requires 'bundler'.",
-       "Don't worry, it's not hard to install.",
-       "",
-       "Just run this:",
-       "  gem install bundler"
-  exit -1
-end
-
-def you_need_git!
-  puts "You need git to work here.",
-       "Hey! What are you doing here, anyway?",
-       "",
-       "Visit http://git-scm.com/downloads"
-  open "http://git-scm.com/downloads"
-  exit -1
-end
-
-def you_need_a_database_yml_file!
-  puts "Rails projects need a database.yml file.",
-       "We didn't give you one with all our secrets",
-       "when you cloned this repo because we're not",
-       "that dumb.",
-       "",
-       "Copy database.sample.yml as a starting point"
-  exit -1
-end
-
-def you_need_a_database_yml_file!
-  puts "Houston needs a config.rb file.",
-       "",
-       "Copy config.rb.sample as a starting point"
-  exit -1
-end
-
-
-
-### Houston-specific stuff
-
-# !todo:
-#  - require postgres
-
-run "bundle install", :or => :you_need_bundler!
-run "git submodule update --init", :or => :you_need_git!
-you_need_a_database_yml_file! unless exists? "config/database.yml"
-you_need_a_config_rb_file! unless exists? "config/config.rb"
-puts "If this is your first time working with this application,",
-     "you might want to run this command now:",
-     "  bundle exec rake db:setup"
+echo "If this is the first time you've clone epic-auth"
+echo "You might want to run \`bundle exec rake db:seed\`"
