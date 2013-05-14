@@ -1,0 +1,21 @@
+houston:
+  name: Houston
+  slug: houston
+  color: pea
+  ticket_tracker_name: Github
+  version_control_name: Git
+  error_tracker_name: Errbit
+  extended_attributes: '"github_repo" => "houstonmc/houston", "git_location" => "<%= Rails.root %>", "errbit_app_id" => "503638de8348fd1de9000004"'
+
+tsatsiki:
+  name: Tsatsiki
+  slug: tsatsiki
+  color: leaf
+
+test:
+  name: Test
+  slug: epic
+  color: bark
+  ticket_tracker_name: Unfuddle
+  version_control_name: Git
+  extended_attributes: '"unfuddle_project_id" => "20", "git_location" => "<%= File.expand_path("~/Code/test") %>"'
