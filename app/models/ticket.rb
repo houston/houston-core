@@ -138,7 +138,7 @@ class Ticket < ActiveRecord::Base
   
   
   def antecedents
-    (super || []).map(&TicketAntecedent.method(:from_s))
+    (super || []).map { |s| TicketAntecedent.from_s(self, s) }
   end
   
   def antecedents=(antecedents)
@@ -164,7 +164,7 @@ class Ticket < ActiveRecord::Base
   
   
   def remote_ticket
-    @remote_ticket ||= project && project.ticket_tracker.find_ticket(number)
+    @remote_ticket ||= project && project.ticket_tracker.find_ticket_by_number(number)
   end
   
   def release!(release)

@@ -27,7 +27,7 @@ module TicketHelper
   def format_antecedent(antecedent)
     case antecedent.kind
     when "Goldmine"; "Goldmine #{link_to_goldmine_case(antecedent.id)}".html_safe
-    when "Errbit"; "Err #{link_to_err(antecedent.id)}".html_safe
+    when "Errbit"; "Err #{link_to_err(antecedent.project, antecedent.id)}".html_safe
     end
   end
   
