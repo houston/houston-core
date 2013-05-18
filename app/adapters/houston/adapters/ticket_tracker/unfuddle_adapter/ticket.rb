@@ -10,6 +10,7 @@ module Houston
             @connection       = connection
             @raw_attributes   = attributes
             @severity         = get_severity_name(attributes["severity_id"]) if attributes["severity_id"]
+            @component        = get_component_name(attributes["component_id"]) if attributes["component_id"]
             
             # required
             @remote_id        = attributes["id"]
@@ -41,6 +42,7 @@ module Houston
                       :deployment,
                       :prerequisites,
                       :severity,
+                      :component,
                       :due_date
           
           def attributes
@@ -166,6 +168,11 @@ module Houston
           def get_severity_name(severity_id)
             severity = unfuddle.severities.find { |severity| severity.id == severity_id }
             severity && severity.name
+          end
+          
+          def get_component_name(component_id)
+            component = unfuddle.components.find { |component| component.id == component_id }
+            component && component.name
           end
           
           

@@ -69,6 +69,7 @@ module Houston
                    :find_custom_field_value_by_value!,
                    :ticket,
                    :severities,
+                   :components,
                    :to => :unfuddle
           
           
