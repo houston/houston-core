@@ -19,6 +19,10 @@ module Houston
           []
         end
         
+        def location
+          ""
+        end
+        
         def native_commit(sha)
           nil
         end

@@ -8,7 +8,7 @@
       <p><%= link_to "OK. Let me enter that now.", edit_project_path(@project) %></p>
     <% else %>
       <h3 style="margin-bottom: .5em;">Invalid Repo Location</h3>
-      <p>Sorry! We can't find your project at <code><%= @project.version_control_location %></code>. Maybe the system is down...</p>
+      <p>Sorry! We can't find your project at <code><%= @project.repo.location %></code>. Maybe the system is down...</p>
       <p><%= link_to "My bad. Let me enter a different one.", edit_project_path(@project) %></p>
     <% end %>
   </div>

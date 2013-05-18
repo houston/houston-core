@@ -101,13 +101,13 @@ class RunTestsOnPostReceive
       return
     end
     
-    unless project.version_control_location =~ /github/
+    unless project.repo.github?
       Rails.logger.warn "[test_run:complete] #{project.slug} is not at GitHub"
       return
     end
     
     # http://developer.github.com/v3/repos/statuses/#create-a-status
-    path = Addressable::URI.parse(project.version_control_location).path[0...-4]
+    path = Addressable::URI.parse(project.repo.location).path[0...-4]
     github_status_url = "https://api.github.com/#{path}/statuses/#{test_run.commit}"
     Rails.logger.info "[test_run:complete] POST #{github_status_url}"
     Faraday.post(github_status_url, {

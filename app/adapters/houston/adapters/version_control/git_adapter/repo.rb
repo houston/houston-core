@@ -5,15 +5,38 @@ module Houston
         class Repo
           
           
-          def initialize(connection, options={})
+          def initialize(connection, location)
             @connection = connection
-            @local = options.fetch(:local, false)
+            @location = location
+          end
+          
+          
+          
+          def github?
+            /github/ === location
+          end
+          
+          def github_project_url
+            return "" unless github?
+            connection.path.gsub(/^git@(?:www\.)?github.com:/, "https://github.com/").gsub(/^git:/, "https:").gsub(/\.git$/, "")
+          end
+
+          def github_commit_url(sha)
+            return "" unless github?
+            "#{github_project_url}/commit/#{sha}"
+          end
+
+          def github_commit_range_url(sha0, sha1)
+            return "" unless github?
+            "#{github_project_url}/compare/#{sha0}...#{sha1}"
           end
           
           
           
           # Public API for a VersionControl::Adapter Repo
           # ------------------------------------------------------------------------- #
+          
+          attr_reader :location
           
           def all_commit_times
             `git --git-dir=#{git_dir} log --all --pretty='%at'`.split(/\n/).uniq
@@ -91,7 +114,7 @@ module Houston
           end
           
           def mirrored?
-            @local
+            Addressable::URI.parse(location).absolute?
           end
           
           def pull_and_retry(retries)

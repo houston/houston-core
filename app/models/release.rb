@@ -121,7 +121,7 @@ private
     project.repo.commits_between(commit0, commit1)
   rescue Houston::Adapters::VersionControl::CommitNotFound
     @commit_not_found_error_message = $!.message
-    @commit_not_found_error_message << " in the repo \"#{project.version_control_location}\"" if project
+    @commit_not_found_error_message << " in the repo \"#{project.repo}\"" if project
     []
   rescue Houston::Adapters::VersionControl::InvalidShaError
     @commit_not_found_error_message = $!.message

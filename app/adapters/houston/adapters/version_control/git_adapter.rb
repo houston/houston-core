@@ -25,7 +25,7 @@ module Houston
             begin
               temp_path = project.version_control_temp_path
               connection = connect_to_repo!(location.to_s, temp_path)
-              self::Repo.new(connection, local: (connection.path == temp_path))
+              self::Repo.new(connection, location.to_s)
             rescue Rugged::RepositoryError, Rugged::OSError
               Houston::Adapters::VersionControl::NullRepo
             end

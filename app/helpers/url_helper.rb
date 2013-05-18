@@ -8,23 +8,20 @@ module UrlHelper
   
   
   
-  # !nb: this is now very similar to code in `config/initializers/run_tests_on_post_receive.rb`
-  
   def github_url?(project)
-    project.version_control_location =~ /github/
+    project.repo.github? if project.repo.respond_to?(:github?)
   end
   
   def github_project_url(project)
-    return "" unless github_url?(project)
-    project.version_control_location.gsub(/^git@(?:www\.)?github.com:/, "https://github.com/").gsub(/^git:/, "https:").gsub(/\.git$/, "")
+    project.repo.github_project_url if project.repo.respond_to?(:github_project_url)
   end
   
   def github_commit_url(project, sha)
-    "#{github_project_url(project)}/commit/#{sha}"
+    project.repo.github_commit_url(sha) if project.repo.respond_to?(:github_commit_url)
   end
   
   def github_commit_range_url(project, sha0, sha1)
-    "#{github_project_url(project)}/compare/#{sha0}...#{sha1}"
+    project.repo.github_commit_range_url(sha0, sha1) if project.repo.respond_to?(:github_commit_range_url)
   end
   
   
