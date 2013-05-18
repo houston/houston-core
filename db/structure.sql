@@ -582,40 +582,6 @@ ALTER SEQUENCE deploys_id_seq OWNED BY deploys.id;
 
 
 --
--- Name: environments; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE environments (
-    id integer NOT NULL,
-    slug character varying(255),
-    name character varying(255),
-    project_id integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    initial_commit character varying(255)
-);
-
-
---
--- Name: environments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE environments_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: environments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE environments_id_seq OWNED BY environments.id;
-
-
---
 -- Name: errors; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -690,12 +656,9 @@ CREATE TABLE projects (
     id integer NOT NULL,
     name character varying(255),
     slug character varying(255),
-    ticket_tracker_id integer,
-    version_control_location character varying(255),
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     color character varying(255),
-    error_tracker_id character varying(255),
     new_relic_id integer,
     retired_at timestamp without time zone,
     category character varying(255),
@@ -725,16 +688,6 @@ CREATE SEQUENCE projects_id_seq
 --
 
 ALTER SEQUENCE projects_id_seq OWNED BY projects.id;
-
-
---
--- Name: projects_maintainers; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE projects_maintainers (
-    project_id integer,
-    user_id integer
-);
 
 
 --
@@ -1022,7 +975,6 @@ CREATE TABLE tickets (
     remote_id integer,
     deployment character varying(255),
     last_release_at timestamp without time zone,
-    goldmine character varying(255),
     expires_at timestamp without time zone,
     extended_attributes hstore,
     antecedents character varying[],
@@ -1163,13 +1115,6 @@ ALTER TABLE ONLY deploys ALTER COLUMN id SET DEFAULT nextval('deploys_id_seq'::r
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY environments ALTER COLUMN id SET DEFAULT nextval('environments_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
 ALTER TABLE ONLY errors ALTER COLUMN id SET DEFAULT nextval('errors_id_seq'::regclass);
 
 
@@ -1279,14 +1224,6 @@ ALTER TABLE ONLY commits
 
 ALTER TABLE ONLY deploys
     ADD CONSTRAINT deploys_pkey PRIMARY KEY (id);
-
-
---
--- Name: environments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY environments
-    ADD CONSTRAINT environments_pkey PRIMARY KEY (id);
 
 
 --
@@ -1440,13 +1377,6 @@ CREATE UNIQUE INDEX index_project_quotas_on_project_id_and_week ON project_quota
 --
 
 CREATE INDEX index_project_quotas_on_week ON project_quotas USING btree (week);
-
-
---
--- Name: index_projects_maintainers_on_project_id_and_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE UNIQUE INDEX index_projects_maintainers_on_project_id_and_user_id ON projects_maintainers USING btree (project_id, user_id);
 
 
 --
@@ -1744,3 +1674,11 @@ INSERT INTO schema_migrations (version) VALUES ('20130505144446');
 INSERT INTO schema_migrations (version) VALUES ('20130505162039');
 
 INSERT INTO schema_migrations (version) VALUES ('20130505212838');
+
+INSERT INTO schema_migrations (version) VALUES ('20130518224352');
+
+INSERT INTO schema_migrations (version) VALUES ('20130518224406');
+
+INSERT INTO schema_migrations (version) VALUES ('20130518224655');
+
+INSERT INTO schema_migrations (version) VALUES ('20130518224722');

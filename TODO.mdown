@@ -38,12 +38,6 @@ Complete the workflow loop through Houston-Scheduler:
 # Horizon 2
 =====================================================================
 
- - **Prune**
-   - Remove `tickets.goldmine`
-   - Remove `projects.ticket_tracker_id`
-   - Remove `projects.error_tracker_id`
-   - Remove `projects.version_control_location`
-   
  - **Antecedents**
    - Auto-resolve exception antecedents
    - Send support notifications on problem antecedents
