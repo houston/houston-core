@@ -1,0 +1,23 @@
+.ticket-tag {
+  display: inline-block;
+  padding: 2px 4px;
+  font-size: 11.844px;
+  line-height: 14px;
+  color: #ffffff;
+  vertical-align: baseline;
+  white-space: nowrap;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+
+.ticket-type-icon {
+  display: block;
+  height: 48px;
+  width: 48px;
+  
+  &.ticket-type-feature { background-image: url('/images/heading-idea-48.png'); }
+  &.ticket-type-tweak { background-image: url('/images/heading-ribbon-48.png'); }
+  &.ticket-type-bug { background-image: url('/images/heading-bug-48.png'); }
+  &.ticket-type-chore { background-image: url('/images/heading-wrench-48.png'); }
+}
