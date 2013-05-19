@@ -30,7 +30,6 @@ Complete the workflow loop through Houston-Scheduler:
  - **Houston-Scheduler:** allow creating tickets
    - Map type and tags back to severities and labels
    - Users need to authenticate (GitHub: oauth; Unfuddle: [AES](http://rubylearning.com/blog/2011/07/18/cryptography-or-how-i-learned-to-stop-worrying-and-love-aes/) [crypto](https://github.com/wesabe/pfc/blob/master/lib/crypto.rb)?)
- - **Houston-Scheduler:** unprioritized count doesn't change when you drag
 
 
 # Horizon 2
