@@ -21,7 +21,6 @@
 
 Complete the ticket refactor and Github Issues integration
 
- - Replace `UnfuddleDump` in the Weekly Report
  - Replace the use of native tickets in the Project Dashboard view
 
 Complete the workflow loop through Houston-Scheduler:
@@ -84,7 +83,7 @@ Goals:
    - Extract **NewRelic**, and **GitHub** knowledge
    - Refactor hard-coded knowledge about Unfuddle/EP into configuration
      - Replace `config/initializers/hard_coded_knowledge.rb`
-     - Unfuddle-specific knowledge of severities (Weekly Report, Project Dashboard)
+     - Unfuddle-specific knowledge of severities (Project Dashboard)
      - Replace `Unfuddle::Comment` and Remotable with API on `ticket_tracker` connection
        - Octokit has methods for manipulating comments
        - Require log in to Unfuddle as self

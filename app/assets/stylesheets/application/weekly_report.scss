@@ -134,8 +134,10 @@
       }
     }
     
-    &.tickets-report tbody th {
-      padding-right: 4em;
+    &.tickets-report {
+      tbody th { padding-right: 4em; }
+      .score { max-height: 44px; }
+      p.pie-graph img { position: relative; top: -15px; }
     }
   }
   

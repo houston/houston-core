@@ -418,25 +418,27 @@
   
   <%
     
-    unfuddle_projects = @projects.select { |project| project.ticket_tracker_name == "Unfuddle" }
+    unfuddle_projects = @projects.with_ticket_tracker
     
-    severities_colors = Houston.config.severities
+    color_by_type = {
+      nil        => "EFEFEF",
+      "Chore"    => "98C221",
+      "Feature"  => "3FC1AA",
+      "Tweak"    => "EBD94B", # "FDDD32",
+      "Bug"      => "D65B17"
+    }
     
     arrivals_by_week_by_project = {}
     departures_by_week_by_project = {}
     open_tickets_by_project = {}
     tickets_by_severity_by_project = {}
     
-    tickets = UnfuddleDump.load!.map { |ticket|
-      ticket["created_at"] = ticket["created_at"].to_date
-      ticket["closed_on"] = ticket["closed_on"].try(:to_date)
-      ticket }
-    
     unfuddle_projects.each do |project|
       
-      tickets_for_project = tickets.select { |ticket| ticket["project_id"].to_s == project.extended_attributes["unfuddle_project_id"] }
-      arrivals = tickets_for_project.map { |ticket| ticket["created_at"] }.select { |created_at| date_range_multiweek2.cover?(created_at) }
-      departures = tickets_for_project.map { |ticket| ticket["closed_on"] }.select { |closed_on| closed_on && date_range_multiweek2.cover?(closed_on) }
+      tickets_for_project = project.tickets
+      
+      arrivals = tickets_for_project.map { |ticket| ticket.created_at.to_date }.select { |created_at| date_range_multiweek2.cover?(created_at) }
+      departures = tickets_for_project.map { |ticket| ticket.closed_at.try(:to_date) }.select { |closed_at| closed_at && date_range_multiweek2.cover?(closed_at) }
       
       arrivals_by_week = Hash[errbit_history_weeks.zip([0]*weeks_of_errbit_history)]
       arrivals.each do |arrived_at|
@@ -454,15 +456,15 @@
       departures_by_week_by_project[project] = departures_by_week.values
       
       # "Arrive" all the tickets created before the first week and still open
-      arrivals_by_week_by_project[project][0] += tickets_for_project.select { |ticket| ticket["created_at"] < date_range_multiweek2.first && ticket["closed_on"].nil? }.count
+      arrivals_by_week_by_project[project][0] += tickets_for_project.select { |ticket| ticket.created_at < date_range_multiweek2.first && ticket.closed_at.nil? }.count
       
-      open_tickets_this_week = tickets_for_project.select { |ticket| ticket["created_at"] <= date_range_multiweek2.end && (ticket["closed_on"].nil? || ticket["closed_on"] > date_range_multiweek2.end) }
+      open_tickets_this_week = tickets_for_project.select { |ticket| ticket.created_at <= date_range_multiweek2.end && (ticket.closed_at.nil? || ticket.closed_at > date_range_multiweek2.end) }
       
-      tickets_by_severity = tickets_by_severity_by_project[project] = Hash[severities_colors.values.zip([0] * severities_colors.values.length)]
+      tickets_by_severity = tickets_by_severity_by_project[project] = Hash[color_by_type.values.zip([0] * color_by_type.values.length)]
       open_tickets_this_week.each do |ticket|
-        severity = ticket["severity"]
+        severity = ticket.type
         severity = nil if severity.blank?
-        color = severities_colors[severity] # <-- Severity could be whatever the user has defined in Unfuddle: not necessarily what we've listed in config.rb
+        color = color_by_type[severity] # <-- Severity could be whatever the user has defined in Unfuddle: not necessarily what we've listed in config.rb
         tickets_by_severity[color] += 1 if tickets_by_severity.key?(color)
       end
       
@@ -488,41 +490,22 @@
         <td>
 
           <table class="tickets-report">
-            <!-- <thead>
-              <tr>
-                <th></th>
-                <th colspan="2">Tickets by Severity</th>
-                <td></td>
-              </tr>
-            </thead> -->
             <tbody>
-              <% legend = false %>
               <% unfuddle_projects.each do |project| %>
                 <tr>
                   <th><span class="label <%= project.color %>"><%= project.name %></span></th>
-                  <td class="pie-graph">
-                    <%= pie_graph(data_by_color: tickets_by_severity_by_project[project], width: 80) %>
-                  </td>
-                  <% unless legend; legend = true %>
-                    <td class="legend severities-legend" rowspan="<%= unfuddle_projects.count %>">
-                      <h5>Tickets by Severity</h5>
-                      <ol>
-                        <% severities_colors.each do |severity, color| %>
-                          <li class="severity">
-                            <b class="bubble" style="background-color: #<%= color %>;"></b>
-                            <%= severity || "<em>None</em>".html_safe %>
-                          </li>
-                        <% end %>
-                      </ol>
-                    </td>
-                  <% end %>
-                  <td class="score score-large">
+                  <td>
                     <%
                       new_tickets = arrivals_by_week_by_project[project].last
                       closed_tickets = departures_by_week_by_project[project].last
                       open_tickets = open_tickets_by_project[project]
                     %>
-                    <%= score_card :large do |s| %>
+                    <%= score_card :medium do |s| %>
+                      <% s.raw do %>
+                        <p class="pie-graph">
+                          <%= pie_graph(data_by_color: tickets_by_severity_by_project[project], width: 72) %>
+                        </p>
+                      <% end %>
                       <% s.score "New", new_tickets, :class => "ticket-count-new",
                           :prefix => "<span class=\"sign\">+</span>".html_safe %>
                       <% s.score "Fixed", closed_tickets, :class => "ticket-count-closed",
