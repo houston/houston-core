@@ -40,15 +40,6 @@ class Ticket < ActiveRecord::Base
       includes(:ticket_queue).where(["ticket_queues.queue IN (?)", queues])
     end
     
-    def open_on(date)
-      with_closed_at.where(["tickets.created_at < ? AND (ticket_closures.closed_at IS NULL OR ticket_closures.closed_at > ?)", date, date])
-    end
-    
-    def with_closed_at
-      # It's most recent queue will be the one on top; NULLs will be on top
-      joins("LEFT OUTER JOIN (SELECT DISTINCT ON (ticket_queues.ticket_id) ticket_queues.ticket_id, ticket_queues.destroyed_at AS closed_at FROM ticket_queues ORDER BY ticket_queues.ticket_id, ticket_queues.destroyed_at DESC) AS ticket_closures ON ticket_closures.ticket_id=tickets.id")
-    end
-    
     def numbered(*numbers)
       where(number: numbers.flatten.map(&:to_i))
     end
