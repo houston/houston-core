@@ -27,6 +27,10 @@ module Houston
           []
         end
         
+        def created_at
+          nil
+        end
+        
         def closed_at
           nil
         end

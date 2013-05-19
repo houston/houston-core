@@ -16,7 +16,8 @@ module Houston
             @summary          = attributes["title"]
             @description      = attributes["body"]
             @type             = get_type
-            @closed_at        = attributes["closed_at"] && Time.parse(attributes["closed_at"])
+            @created_at       = Time.parse(attributes["created_at"]) if attributes["created_at"]
+            @closed_at        = Time.parse(attributes["closed_at"]) if attributes["closed_at"]
             
             # optional
             @tags             = attributes.fetch("labels", []).map(&method(:tag_from_label))
@@ -30,6 +31,7 @@ module Houston
                       :description,
                       :type,
                       :tags,
+                      :created_at,
                       :closed_at
           
           def attributes
@@ -38,6 +40,7 @@ module Houston
               summary:        summary,
               description:    description,
               type:           type,
+              created_at:     created_at,
               closed_at:      closed_at,
               
               tags:           tags,

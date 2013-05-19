@@ -18,6 +18,7 @@ module Houston
             @summary          = attributes["summary"]
             @description      = attributes["description"]
             @type             = get_type
+            @created_at       = Time.parse(attributes["created_at"]) if attributes["created_at"]
             @closed_at        = Time.parse(attributes["closed_on"]) if attributes["closed_on"]
             
             # optional
@@ -35,6 +36,7 @@ module Houston
                       :summary,
                       :description,
                       :type,
+                      :created_at,
                       :closed_at,
                       
                       :tags,
@@ -51,6 +53,7 @@ module Houston
               summary:        summary,
               description:    description,
               type:           type,
+              created_at:     created_at,
               closed_at:      closed_at,
               
               tags:           tags,
