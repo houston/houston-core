@@ -118,7 +118,7 @@
       bugs = Houston::Adapters::ErrorTracker::ErrbitAdapter.problems_during(date_range_multiweek2)
       
       bugs.each do |bug|
-        project = @projects.detect { |project| project.error_tracker_id == bug.error_tracker_id }
+        project = @projects.detect { |project| project.extended_attributes["errbit_app_id"] == bug.app_id }
         next unless project
         
         bugs_by_week = (bugs_by_week_by_project[project] ||= Hash[errbit_history_weeks.zip([0]*weeks_of_errbit_history)])
@@ -182,7 +182,7 @@
       notices = Houston::Adapters::ErrorTracker::ErrbitAdapter.notices_during(date_range_multiweek2)
       
       notices.each do |notice|
-        project = @projects.detect { |project| project.error_tracker_id == notice.error_tracker_id }
+        project = @projects.detect { |project| project.extended_attributes["errbit_app_id"] == notice.app_id }
         next unless project
         
         notices_by_week = (notices_by_week_by_project[project] ||= Hash[errbit_history_weeks.zip([0]*weeks_of_errbit_history)])

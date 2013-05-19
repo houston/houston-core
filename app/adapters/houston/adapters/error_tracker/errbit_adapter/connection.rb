@@ -42,7 +42,7 @@ module Houston
               first_notice_at: attributes["first_notice_at"].try(:to_time),
               resolved: attributes["resolved"],
               resolved_at: attributes["resolved_at"].try(:to_time),
-              error_tracker_id: attributes["app_id"])
+              app_id: attributes["app_id"])
           end
           
           
@@ -55,7 +55,7 @@ module Houston
           def to_notice(attributes)
             Notice.new(
               created_at: attributes["created_at"].try(:to_time),
-              error_tracker_id: attributes["app_id"])
+              app_id: attributes["app_id"])
           end
           
           
