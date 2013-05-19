@@ -15,8 +15,10 @@ class TestingReportController < ApplicationController
       tickets_for_project = unfuddle_tickets
         .select { |ticket| ticket["project_id"].to_s == project.extended_attributes["unfuddle_project_id"] }
         .map { | attributes| project.ticket_tracker.build_ticket(attributes) }
-      tickets = project
-        .houston_tickets_from_ticket_tracker_tickets(tickets_for_project)
+      tickets = project.tickets
+        .includes(:testing_notes)
+        .includes(:commits)
+        .synchronize(tickets_for_project)
         .reject(&:in_development?)
       
       @tickets.concat tickets

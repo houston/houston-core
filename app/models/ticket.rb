@@ -8,7 +8,7 @@ class Ticket < ActiveRecord::Base
   has_and_belongs_to_many :releases, before_add: :ignore_release_if_duplicate
   has_and_belongs_to_many :commits
   
-  default_scope order(:number).includes(:ticket_queue).includes(:ticket_prerequisites)
+  default_scope order(:number)
   
   serialize :extended_attributes, ActiveRecord::Coders::Hstore
   
@@ -32,12 +32,12 @@ class Ticket < ActiveRecord::Base
     
     def in_queue(queue)
       queue = queue.slug if queue.is_a?(KanbanQueue)
-      where(["ticket_queues.queue = ?", queue])
+      includes(:ticket_queue).where(["ticket_queues.queue = ?", queue])
     end
     
     def in_queues(*queues)
       queues = queues.flatten.map { |queue| queue.is_a?(KanbanQueue) ? queue.slug : queue }
-      where(["ticket_queues.queue IN (?)", queues])
+      includes(:ticket_queue).where(["ticket_queues.queue IN (?)", queues])
     end
     
     def open_on(date)
@@ -50,8 +50,7 @@ class Ticket < ActiveRecord::Base
     end
     
     def numbered(*numbers)
-      numbers = numbers.flatten.map(&:to_i)
-      where(:number => numbers)
+      where(number: numbers.flatten.map(&:to_i))
     end
     
   end

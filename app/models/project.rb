@@ -3,7 +3,7 @@ class Project < ActiveRecord::Base
   
   has_many :releases, :dependent => :destroy
   has_many :commits
-  has_many :tickets, :dependent => :destroy
+  has_many :tickets, :dependent => :destroy, extend: TicketSynchronizer
   has_many :testing_notes, :dependent => :destroy
   has_many :test_runs, :dependent => :destroy
   has_many :deploys
@@ -124,74 +124,28 @@ class Project < ActiveRecord::Base
     tickets = self.tickets.numbered(numbers)
     if tickets.length < numbers.length
       ticket_numbers = tickets.map(&:number)
-      numbers_to_fetch = numbers - ticket_numbers
-      
-      ticket_tracker_tickets = ticket_tracker.find_tickets_numbered(numbers_to_fetch)
-      tickets.concat houston_tickets_from_ticket_tracker_tickets(ticket_tracker_tickets)
+      tickets.concat self.tickets.fetch_numbered(numbers - ticket_numbers)
     end
     tickets
   end
   
   def all_tickets
-    houston_tickets_from_ticket_tracker_tickets ticket_tracker.all_tickets
+    tickets.fetch_all
   end
   
   def open_tickets
-    houston_tickets_from_ticket_tracker_tickets ticket_tracker.open_tickets
+    tickets.fetch_open
   end
   
   def find_tickets(*query)
-    Rails.logger.info "[project.find_tickets] query: #{query.inspect}"
-    
-    return [] unless ticket_tracker.respond_to?(:find_tickets!) # <-- an optional API
-    
-    ticket_tracker_tickets = ticket_tracker.find_tickets!(*query)
-    houston_tickets_from_ticket_tracker_tickets(ticket_tracker_tickets)
-  end
-  
-  def houston_tickets_from_ticket_tracker_tickets(ticket_tracker_tickets)
-    return [] if ticket_tracker_tickets.empty?
-    
-    self.class.benchmark("[project.houston_tickets_from_ticket_tracker_tickets] synchronizing with local tickets") do
-      numbers = ticket_tracker_tickets.map(&:number)
-      tickets = self.tickets.where(number: numbers).includes(:testing_notes).includes(:commits)
-      
-      ticket_tracker_tickets.reject(&:nil?).map do |unfuddle_ticket|
-        ticket = tickets.detect { |ticket| ticket.number == unfuddle_ticket.number }
-        attributes = unfuddle_ticket.attributes
-        if ticket
-          
-          # This is essentially a call to update_attributes,
-          # but I broke it down so that we don't begin a
-          # transaction if we don't have any changes to save.
-          # This is pretty much just to reduce log verbosity.
-          ticket.assign_attributes(attributes)
-          
-          # hstore thinks it has always changed
-          has_legitimate_changes = ticket.changed?
-          if has_legitimate_changes && ticket.changed == %w{extended_attributes}
-            before, after = ticket.changes["extended_attributes"]
-            has_legitimate_changes = false if before == after
-          end
-          ticket.save if has_legitimate_changes
-        else
-          ticket = Ticket.nosync { self.tickets.create(attributes) }
-        end
-        
-        # There's no reason why this shouldn't be set,
-        # but in order to reduce a bunch of useless hits
-        # to the cache and a bunch of log output...
-        ticket.project = self
-        ticket
-      end
-    end
+    tickets.fetch_with_query(*query)
   end
   
   
   
   def tickets_in_queue(queue)
     queue = KanbanQueue.find_by_slug(queue) unless queue.is_a?(KanbanQueue)
-    find_tickets(*queue.query).tap do |tickets|
+    tickets.includes(:ticket_queue).fetch_with_query(*queue.query).tap do |tickets|
       update_tickets_in_queue(tickets, queue)
     end
   end
@@ -200,7 +154,7 @@ class Project < ActiveRecord::Base
     tickets.each { |ticket| ticket.queue = queue.slug }
     
     ids = tickets.map(&:id).compact
-    tickets_removed_from_queue = self.tickets.in_queue(queue)
+    tickets_removed_from_queue = self.tickets.includes(:ticket_queue).in_queue(queue)
     tickets_removed_from_queue = tickets_removed_from_queue.where(["NOT (tickets.id IN (?))", ids]) if ids.any?
     tickets_removed_from_queue.each { |ticket| ticket.queue = nil }
     
