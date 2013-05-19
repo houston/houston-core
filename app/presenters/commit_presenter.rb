@@ -24,7 +24,7 @@ class CommitPresenter
       environment: commit.release.environment_name,
       message: commit.message,
       sha: commit.sha,
-      linkTo: github_url?(commit.project) ? github_commit_url(commit.project, commit.sha) : nil, # <-- !todo: more abstract
+      linkTo: github_commit_url(commit.project, commit.sha), # <-- !todo: more abstract
       committer: {
         name: commit.committer,
         email: commit.committer_email } }

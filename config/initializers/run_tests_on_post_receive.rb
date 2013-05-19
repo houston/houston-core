@@ -101,7 +101,7 @@ class RunTestsOnPostReceive
       return
     end
     
-    unless project.repo.github?
+    unless project.repo.is_a? Houston::Adapters::VersionControl::GitAdapter::GithubRepo
       Rails.logger.warn "[test_run:complete] #{project.slug} is not at GitHub"
       return
     end

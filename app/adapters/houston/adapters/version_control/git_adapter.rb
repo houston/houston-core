@@ -11,7 +11,8 @@ module Houston
           # ------------------------------------------------------------------------- #
           
           def errors_with_parameters(project, location)
-            connect_to_repo!(location.to_s, project.version_control_temp_path)
+            location = Addressable::URI.parse(location.to_s)
+            connect_to_repo!(location, project.version_control_temp_path)
             {}
           rescue
             Rails.logger.error $!.message
@@ -20,12 +21,15 @@ module Houston
           end
           
           def build(project, location)
+            location = Addressable::URI.parse(location.to_s)
             return Houston::Adapters::VersionControl::NullRepo if location.blank?
             
             begin
-              temp_path = project.version_control_temp_path
-              connection = connect_to_repo!(location.to_s, temp_path)
-              self::Repo.new(connection, location.to_s)
+              connection = connect_to_repo!(location, project.version_control_temp_path)
+              
+              return self::Repo.new(connection) unless location.absolute?
+              return self::GithubRepo.new(connection, location) if /github/ === location
+              return self::RemoteRepo.new(connection, location)
             rescue Rugged::RepositoryError, Rugged::OSError
               Houston::Adapters::VersionControl::NullRepo
             end
@@ -39,8 +43,7 @@ module Houston
           
           
           
-          def connect_to_repo!(location, temp_path)
-            repo_uri = Addressable::URI.parse(location)
+          def connect_to_repo!(repo_uri, temp_path)
             git_path = get_local_path_to_repo(repo_uri, temp_path)
             Rugged::Repository.new(git_path)
           end
