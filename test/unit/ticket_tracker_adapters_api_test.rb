@@ -27,6 +27,7 @@ class TicketTrackerAdatersApiTest < ActiveSupport::TestCase
       assert_respond_to connection, :build_ticket
       assert_respond_to connection, :find_ticket_by_number
       assert_respond_to connection, :find_tickets_numbered
+      assert_respond_to connection, :all_tickets
       assert_respond_to connection, :open_tickets
       assert_respond_to connection, :project_url
       assert_respond_to connection, :ticket_url

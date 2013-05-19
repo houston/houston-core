@@ -32,6 +32,10 @@ module Houston
             find_tickets!(number: numbers)
           end
           
+          def all_tickets
+            find_tickets!
+          end
+          
           def open_tickets
             find_tickets!(status: neq(:closed), resolution: 0)
           end

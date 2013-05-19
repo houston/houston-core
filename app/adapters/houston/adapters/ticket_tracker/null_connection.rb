@@ -19,6 +19,10 @@ module Houston
           []
         end
         
+        def all_tickets
+          []
+        end
+        
         def open_tickets
           []
         end

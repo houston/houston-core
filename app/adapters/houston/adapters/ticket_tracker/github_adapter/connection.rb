@@ -29,6 +29,11 @@ module Houston
             open_tickets.select { |ticket| numbers.member?(ticket.number) }
           end
           
+          def all_tickets
+            remote_issues = client.list_issues(repo_path)
+            remote_issues.map { |attributes | build_ticket(attributes) }
+          end
+          
           def open_tickets
             remote_issues = client.list_issues(repo_path, state: "open")
             remote_issues.map { |attributes | build_ticket(attributes) }

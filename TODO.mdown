@@ -21,7 +21,6 @@
 
 Complete the ticket refactor and Github Issues integration
 
- - Implement a mechanism for setting `Ticket#closed_at`
  - Replace `UnfuddleDump` in the Weekly Report
  - Replace the use of native tickets in the Project Dashboard view
 

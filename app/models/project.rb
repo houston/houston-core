@@ -132,6 +132,10 @@ class Project < ActiveRecord::Base
     tickets
   end
   
+  def all_tickets
+    houston_tickets_from_ticket_tracker_tickets ticket_tracker.all_tickets
+  end
+  
   def open_tickets
     houston_tickets_from_ticket_tracker_tickets ticket_tracker.open_tickets
   end
