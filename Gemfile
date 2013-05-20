@@ -24,8 +24,9 @@ gem 'octokit' # for adapting to GitHub Issues
 gem 'premailer' # for inlining CSS in HTML emails
 gem 'remotable', '>= 0.2.2', :git => 'git://github.com/boblail/remotable.git'
 gem 'rugged', '0.17.0.b7' # for speaking to Git
-gem 'yajl-ruby', :require => 'yajl/json_gem'
+gem 'strongbox' # for encrypting user credentials
 gem 'whenever' # a DSL for writing CRON jobs
+gem 'yajl-ruby', :require => 'yajl/json_gem'
 
 gem 'backbone-rails'
 gem 'd3js-rails'

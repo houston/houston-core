@@ -41,6 +41,15 @@ module Houston
       @mailer_sender ||= nil
     end
     
+    def passphrase(*args)
+      @passphrase = args.first if args.any?
+      @passphrase ||= nil
+    end
+    
+    def keypair
+      Rails.root.join('config', 'keypair.pem')
+    end
+    
     def smtp(&block)
       @smtp = HashDsl.hash_from_block(block) if block_given?
       @smtp ||= {}

@@ -2,6 +2,7 @@ class User < ActiveRecord::Base
   
   has_many :testing_notes
   has_many :roles, :dependent => :destroy
+  has_many :credentials, :class_name => "UserCredentials", :dependent => :destroy
   
   serialize :environments_subscribed_to, JSON
   

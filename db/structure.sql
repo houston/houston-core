@@ -1004,6 +1004,42 @@ ALTER SEQUENCE tickets_id_seq OWNED BY tickets.id;
 
 
 --
+-- Name: user_credentials; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE user_credentials (
+    id integer NOT NULL,
+    user_id integer,
+    service character varying(255),
+    login character varying(255),
+    password bytea,
+    password_key bytea,
+    password_iv bytea,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: user_credentials_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE user_credentials_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: user_credentials_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE user_credentials_id_seq OWNED BY user_credentials.id;
+
+
+--
 -- Name: user_notifications; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1192,6 +1228,13 @@ ALTER TABLE ONLY tickets ALTER COLUMN id SET DEFAULT nextval('tickets_id_seq'::r
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY user_credentials ALTER COLUMN id SET DEFAULT nextval('user_credentials_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY user_notifications ALTER COLUMN id SET DEFAULT nextval('user_notifications_id_seq'::regclass);
 
 
@@ -1312,6 +1355,14 @@ ALTER TABLE ONLY ticket_queues
 
 ALTER TABLE ONLY tickets
     ADD CONSTRAINT tickets_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: user_credentials_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY user_credentials
+    ADD CONSTRAINT user_credentials_pkey PRIMARY KEY (id);
 
 
 --
@@ -1682,3 +1733,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130518224406');
 INSERT INTO schema_migrations (version) VALUES ('20130518224655');
 
 INSERT INTO schema_migrations (version) VALUES ('20130518224722');
+
+INSERT INTO schema_migrations (version) VALUES ('20130519163615');
