@@ -2,4 +2,5 @@
 
 export RAILS_ENV=test
 cp ./config/config.rb.jenkins ./config/config.rb
+bundle
 bundle exec rake ci:setup:minitest test:all COVERAGE=on CI=true
