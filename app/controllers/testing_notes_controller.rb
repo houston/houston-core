@@ -5,10 +5,10 @@ class TestingNotesController < ApplicationController
   
   
   def create
-    @testing_note = current_user.testing_notes.create(params[:testing_note].merge(project: @ticket.project))
+    @testing_note = current_user.testing_notes.build(params[:testing_note].merge(project: @ticket.project))
     
     authorize! :create, @testing_note
-    
+    @testing_note.save
     render_testing_note
   end
   
