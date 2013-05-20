@@ -2,7 +2,12 @@ class window.Errors
   
   constructor: (response)->
     if response.status == 401
-      @errors = {base: ["You are not authorized"]}
+      if response.getResponseHeader('X-Credentials') == 'Missing Credentials'
+        @missingCredentials = true
+      else if response.getResponseHeader('X-Credentials') == 'Invalid Credentials'
+        @invalidCredentials = true
+      else
+        @errors = {base: ["You are not authorized"]}
     else
       @errors = JSON.parse(response.responseText)
   

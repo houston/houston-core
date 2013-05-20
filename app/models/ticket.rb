@@ -153,6 +153,30 @@ class Ticket < ActiveRecord::Base
   
   
   
+  def create_comment!(testing_note)
+    return unless remote_ticket.respond_to?(:create_comment!)
+    remote_id = remote_ticket.create_comment!(testing_note.to_comment)
+    binding.pry
+    raise RuntimeError, "remote_id must not be nil" unless remote_id
+    testing_note.unfuddle_id = remote_id
+  end
+  
+  def update_comment!(testing_note)
+    return unless remote_ticket.respond_to?(:update_comment!)
+    remote_ticket.update_comment!(testing_note.to_comment)
+  end
+  
+  def destroy_comment!(testing_note)
+    return unless remote_ticket.respond_to?(:destroy_comment!)
+    remote_ticket.destroy_comment!(testing_note.to_comment)
+  end
+  
+  
+  
+  def ticket_tracker
+    project.ticket_tracker
+  end
+  
   def remote_ticket
     @remote_ticket ||= project && project.ticket_tracker.find_ticket_by_number(number)
   end

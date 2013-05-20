@@ -1,13 +1,4 @@
 GIT
-  remote: git://github.com/boblail/remotable.git
-  revision: 764eed5f1febf207ab51025d152c59bf95bc01ff
-  specs:
-    remotable (0.2.3)
-      activerecord
-      activeresource
-      activesupport
-
-GIT
   remote: git://github.com/houstonmc/houston-scheduler.git
   revision: 505c214695a4da2635bb9241304727b2e83798e7
   specs:
@@ -306,7 +297,6 @@ DEPENDENCIES
   pry
   rails (= 3.2.13)
   redcarpet
-  remotable (>= 0.2.2)!
   rr
   rugged (= 0.17.0.b7)
   sass-rails (~> 3.2.3)

@@ -106,6 +106,16 @@ module Houston
           
           
           
+          def as_user(user, &block)
+            credentials = user.credentials.for("Unfuddle")
+            login, password = credentials.login, credentials.password.decrypt(Houston.config.passphrase)
+            Unfuddle.with_config(username: login, password: password, &block)
+          rescue Unfuddle::ConfigurationError
+            raise Unfuddle::UnauthorizedError, "A username or password was no specified"
+          end
+          
+          
+          
         private
           
           attr_reader :unfuddle

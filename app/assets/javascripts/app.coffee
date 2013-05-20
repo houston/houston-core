@@ -24,3 +24,43 @@ window.App =
         "<img alt=\"#{$1}\" height=\"20\" width=\"20\" src=\"#{App.relativeRoot()}/images/emoji/#{$1}.png\" class=\"emoji\" />"
       else
         match
+  
+  promptForCredentialsTo: (service)->
+    html = """
+    <div class="modal hide fade">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>Log in to #{service}</h3>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal">
+          <div class="control-group">
+            <label class="control-label" for="user_credentials_login">Login</label>
+            <div class="controls">
+              <input type="text" id="user_credentials_login">
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="user_credentials_password">Password</label>
+            <div class="controls">
+              <input type="password" id="user_credentials_password">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Sign in</button>
+      </div>
+    </div>
+    """
+    $modal = $(html).modal()
+    $modal.on 'hidden', -> $(@).remove()
+    $modal.on 'shown', (e)=>
+      $modal.find('button[type="submit"]').click (e)=>
+        e.preventDefault()
+        $.put '/credentials',
+          service: service
+          login: $modal.find('#user_credentials_login').val()
+          password: $modal.find('#user_credentials_password').val()
+        $modal.modal('hide')
+    

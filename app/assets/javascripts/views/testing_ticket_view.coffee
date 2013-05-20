@@ -150,6 +150,8 @@ class window.TestingTicketView extends Backbone.View
         @trigger('testing_note:refresh')
       error: (model, response)=>
         errors = Errors.fromResponse(response)
+        if errors.missingCredentials or errors.invalidCredentials
+          App.promptForCredentialsTo('Unfuddle')
         errors.renderToAlert().insertBefore($(@el).find('.testing-note.new')).alert()
   
   createTestingNoteAndResetTicket: (e)->

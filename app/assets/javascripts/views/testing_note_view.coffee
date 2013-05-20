@@ -48,6 +48,8 @@ class window.TestingNoteView extends Backbone.View
         error: (model, response)=>
           @model.set(previousAttributes, {silent: true})
           errors = Errors.fromResponse(response)
+          if errors.missingCredentials or errors.invalidCredentials
+            App.promptForCredentialsTo('Unfuddle')
           errors.renderToAlert().prependTo($(@el)).alert()
     @
   

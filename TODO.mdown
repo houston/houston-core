@@ -83,9 +83,6 @@ Goals:
    - Refactor hard-coded knowledge about Unfuddle/EP into configuration
      - Replace `config/initializers/hard_coded_knowledge.rb`
      - Unfuddle-specific knowledge of severities (Project Dashboard)
-     - Replace `Unfuddle::Comment` and Remotable with API on `ticket_tracker` connection
-       - Octokit has methods for manipulating comments
-       - Require log in to Unfuddle as self
      - in `users_controller.rb`:
        - Unfuddle-specific knowledge of resolution (invalid, duplicate)
        - `User#unfuddle_id` (add `Ticket#reporter_email` : [unfuddle](people/:reporter_id), [github](users/:login))

@@ -81,6 +81,35 @@ module Houston
           
           
           
+          def create_comment!(comment)
+            unfuddle.as_user(comment.user) do
+              ticket = unfuddle.ticket(remote_id)
+              ticket.create_comment("body" => comment.body).id
+            end
+          end
+          
+          def update_comment!(comment)
+            unfuddle.as_user(comment.user) do
+              unfuddle_comment = comment(comment.remote_id)
+              return unless unfuddle_comment
+              
+              unfuddle_comment.project_id = unfuddle.project_id
+              unfuddle_comment.update_attributes!("body" => comment.body)
+            end
+          end
+          
+          def destroy_comment!(comment)
+            unfuddle.as_user(comment.user) do
+              unfuddle_comment = comment(comment.remote_id)
+              return unless unfuddle_comment
+              
+              unfuddle_comment.project_id = unfuddle.project_id
+              unfuddle_comment.destroy!
+            end
+          end
+          
+          
+          
           # !todo: refactor this method to be more generic and abstract
           def update_attribute(attribute, value)
             case attribute
@@ -178,6 +207,14 @@ module Houston
             component && component.name
           end
           
+          
+          
+          def comment(remote_comment_id)
+            return nil unless remote_comment_id
+            
+            ticket = unfuddle.ticket(remote_id)
+            ticket.comment(remote_comment_id)
+          end
           
           
         end
