@@ -111,7 +111,7 @@ module Houston
             login, password = credentials.login, credentials.password.decrypt(Houston.config.passphrase)
             Unfuddle.with_config(username: login, password: password, &block)
           rescue Unfuddle::ConfigurationError
-            raise Unfuddle::UnauthorizedError, "A username or password was no specified"
+            raise Unfuddle::UnauthorizedError, "A username or password was not specified"
           end
           
           
