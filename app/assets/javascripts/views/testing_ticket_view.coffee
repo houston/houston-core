@@ -152,7 +152,10 @@ class window.TestingTicketView extends Backbone.View
         errors = Errors.fromResponse(response)
         if errors.missingCredentials or errors.invalidCredentials
           App.promptForCredentialsTo('Unfuddle')
-        errors.renderToAlert().insertBefore($(@el).find('.testing-note.new')).alert()
+        
+        $el = $('.testing-note.new')
+        $el.find('.alert').remove()
+        errors.renderToAlert().prependTo $el
   
   createTestingNoteAndResetTicket: (e)->
     params = {lastReleaseAt: new Date()}
