@@ -33,7 +33,7 @@ window.App =
         <h3>Log in to #{service}</h3>
       </div>
       <div class="modal-body">
-        <form class="form-horizontal">
+        <form class="form-horizontal" id="user_credentials_form">
           <div class="control-group">
             <label class="control-label" for="user_credentials_login">Login</label>
             <div class="controls">
@@ -58,9 +58,13 @@ window.App =
     $modal.on 'shown', (e)=>
       $modal.find('button[type="submit"]').click (e)=>
         e.preventDefault()
-        $.put '/credentials',
+        xhr = $.put '/credentials',
           service: service
           login: $modal.find('#user_credentials_login').val()
           password: $modal.find('#user_credentials_password').val()
-        $modal.modal('hide')
-    
+        xhr.success ->
+          $modal.modal('hide')
+        xhr.error (response)->
+          $form = $('#user_credentials_form')
+          $form.find('.alert').remove()
+          Errors.fromResponse(response).renderToAlert().prependTo $form
