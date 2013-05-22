@@ -7,7 +7,8 @@ class window.Errors
       else if response.getResponseHeader('X-Credentials') == 'Invalid Credentials'
         @invalidCredentials = true
       else
-        @errors = {base: ["You are not authorized"]}
+        message = response.responseText ? "You are not authorized"
+        @errors = {base: [message]}
     else
       @errors = JSON.parse(response.responseText)
   

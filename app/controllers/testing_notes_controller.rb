@@ -9,8 +9,12 @@ class TestingNotesController < ApplicationController
   end
   
   rescue_from Unfuddle::UnauthorizedError do
-    response.headers["X-Credentials"] = "Invalid Credentials"
-    head 401
+    if current_user.credentials.for("Unfuddle").valid?
+      render text: "You do not have permission to post a comment to this ticket.", status: 401
+    else
+      response.headers["X-Credentials"] = "Invalid Credentials"
+      head 401
+    end
   end
   
   
