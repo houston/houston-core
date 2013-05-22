@@ -49,7 +49,7 @@ module TicketSynchronizer
           end
           ticket.save if has_legitimate_changes
         else
-          ticket = Ticket.nosync { self.tickets.create(attributes) }
+          ticket = Ticket.nosync { create(attributes) }
         end
         
         # There's no reason why this shouldn't be set,
