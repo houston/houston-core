@@ -156,7 +156,6 @@ class Ticket < ActiveRecord::Base
   def create_comment!(testing_note)
     return unless remote_ticket.respond_to?(:create_comment!)
     remote_id = remote_ticket.create_comment!(testing_note.to_comment)
-    binding.pry
     raise RuntimeError, "remote_id must not be nil" unless remote_id
     testing_note.unfuddle_id = remote_id
   end
