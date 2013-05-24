@@ -12,6 +12,11 @@ class TestRun < ActiveRecord::Base
     where(["commit LIKE ?", "#{sha}%"]).first
   end
   
+  def self.excluding(*test_runs_or_ids)
+    ids = test_runs_or_ids.flatten.map { |test_run_or_id| test_run_or_id.respond_to?(:id) ? test_run_or_id.id : test_run_or_id }
+    where(arel_table[:id].not_in(ids))
+  end
+  
   
   
   class << self
@@ -27,6 +32,42 @@ class TestRun < ActiveRecord::Base
       where(result: "fail")
     end
   end
+  
+  
+  
+  def failed?
+    result.to_s == "fail"
+  end
+  
+  def passed?
+    result.to_s == "pass"
+  end
+  
+  def fixed?
+    return false unless passed?
+    
+    last_tested_ancestor = commits_since_last_test_run.last
+    return false if last_tested_ancestor.nil?
+    
+    project.test_runs.find_by_commit(last_tested_ancestor.sha).failed?
+  end
+  
+  
+  
+  def commits_since_last_test_run
+    shas_of_tested_commits = project.test_runs.excluding(self).pluck(:commit)
+    project.repo.ancestors_until(commit, :including_self) { |ancestor| shas_of_tested_commits.member?(ancestor.sha) }
+  rescue Houston::Adapters::VersionControl::CommitNotFound
+    []
+  end
+  
+  def commits_since_last_passing_test_run
+    shas_of_passing_commits = project.test_runs.passed.pluck(:commit)
+    project.repo.ancestors_until(commit, :including_self) { |ancestor| shas_of_passing_commits.member?(ancestor.sha) }
+  rescue Houston::Adapters::VersionControl::CommitNotFound
+    []
+  end
+  alias :blamable_commits :commits_since_last_passing_test_run
   
   
   

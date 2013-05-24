@@ -6,6 +6,35 @@
   <%= link_to @test_run.result, @test_run.results_url, target: "_blank" %>
 </h2>
 
+<% if @test_run.failed? %>
+  <% if (blamable_commits = @test_run.blamable_commits).any? %>
+    <div class="test-result-credit">
+      <p>
+        <%= blamable_commits.uniq_by(&:author_email).map { |commit|
+              "<span class=\"test-result-committer\">#{gravatar_image commit.author_email, size: 48} #{commit.author_name}</span>"
+            }.to_sentence(two_words_connector: " or ", last_word_connector: ", or ").html_safe %>
+        broke the build.
+        <%= image_tag image_url("emoji/disappointed_relieved.png") %>
+      </p>
+      
+      See commits <%= link_to_commit_range @test_run.project, blamable_commits.last.sha, blamable_commits.first.sha %>
+    </div>
+  <% end %>
+<% elsif @test_run.fixed? %>
+  <% praisable_commits = @test_run.commits_since_last_test_run %>
+  <div class="test-result-credit">
+    <p>
+      <%= praisable_commits.uniq_by(&:author_email).map { |commit|
+            "<span class=\"test-result-committer\">#{gravatar_image commit.author_email, size: 48} #{commit.author_name}</span>"
+          }.to_sentence.html_safe %>
+      fixed the build!
+      <%= image_tag image_url("emoji/star.png") %><%= image_tag image_url("emoji/trophy.png") %><%= image_tag image_url("emoji/star.png") %>
+    </p>
+    
+    See commits <%= link_to_commit_range @test_run.project, praisable_commits.last.sha, praisable_commits.first.sha %>
+  </div>
+<% end %>
+
 <div class="tests-detail">
   <% if @test_run.tests.nil? %>
     <p>The build failed without running tests.</p>

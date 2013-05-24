@@ -10,6 +10,23 @@ h2.test-result-banner {
   border-radius: 12px;
 }
 
+.test-result-credit {
+  margin-top: 48px;
+  background-color: #ffc;
+  font-weight: 200;
+  
+  margin: 48px -48px;
+  padding: 16px 64px;
+  
+  p {
+    font-size: 1.5em;
+    margin: 0;
+    
+    .test-result-committer { font-weight: 800; }
+    img { width: 1em; height: 1em; }
+  }
+}
+
 .test-result-banner {
   display: inline-block;
   width: 4em;

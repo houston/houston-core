@@ -24,6 +24,25 @@ module Houston
               .map(&:name)
           end
           
+          def ancestors_until(sha, *args)
+            # Assert the presence of the commit
+            native_commit(sha)
+            
+            walker = connection.walk(sha)
+            
+            # by default, start with the commit's parent
+            walker.next unless args.member? :including_self
+            
+            commits = []
+            walker.each do |commit|
+              commit = to_commit(commit)
+              commits << commit
+              return commits if yield commit
+            end
+            
+            raise CommitNotFound, "No matching ancestor of \"#{sha}\" was found"
+          end
+          
           def commits_between(sha1, sha2)
             # Assert the presence of both commits
             native_commit(sha1)

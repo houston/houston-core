@@ -49,7 +49,6 @@ Complete the workflow loop through Houston-Scheduler:
    - Maintenance lights
 
  - **Test Result**
-   - When a test fails, which commit range is to blame?
    - Show code coverage reports
 
  - **Houston-Scheduler**

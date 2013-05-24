@@ -6,10 +6,11 @@ class ViewMailer < ActionMailer::Base
   end
   
   default from: format_email_address(OpenStruct.new(name: Houston.config.title, email: Houston.config.mailer_sender))
-  helper EmojiHelper
+  helper AvatarHelper
   helper BacktraceHelper
   helper CommitHelper
   helper EmailHelper
+  helper EmojiHelper
   helper MarkdownHelper
   helper ReleaseHelper
   helper ScoreCardHelper
