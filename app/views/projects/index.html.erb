@@ -11,6 +11,7 @@
           <td class="table-margin"></td>
           <th class="project-title sort-desc">Title</th>
           <th class="project-maintainers">Maintainers</th>
+          <th class="project-owners">Owners</th>
           <th class="project-platform">Platform</th>
           <th class="project-database">Database</th>
           <th class="project-category">Category</th>
@@ -60,9 +61,10 @@
               </p>
             </td>
             <td class="project-maintainers">
-              <% project.maintainers.each do |maintainer| %>
-                <%= link_to avatar_for(maintainer), user_path(maintainer), :class => "project-maintainer", :rel => "tooltip", :title => maintainer.name, "data-placement" => "right" %><span class="hidden-text"><%= maintainer.first_name %></span><!-- so sort works -->
-              <% end %>
+              <% project.maintainers.each do |maintainer| %><%= link_to avatar_for(maintainer), user_path(maintainer), :class => "project-maintainer", :rel => "tooltip", :title => maintainer.name, "data-placement" => "right" %><span class="hidden-text"><%= maintainer.first_name %></span><!-- so sort works --><% end %>
+            </td>
+            <td class="project-owners">
+              <% project.owners.each do |owner| %><%= link_to avatar_for(owner), user_path(owner), :class => "project-owner", :rel => "tooltip", :title => owner.name, "data-placement" => "right" %><span class="hidden-text"><%= owner.first_name %></span><!-- so sort works --><% end %>
             </td>
             <td class="project-platform">
               <% platform = project.platform %>
