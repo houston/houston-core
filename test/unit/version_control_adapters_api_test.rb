@@ -23,6 +23,8 @@ class VersionControlAdatersApiTest < ActiveSupport::TestCase
   repos.uniq.each do |repo|
     test "#{repo.class.name} responds to the VersionControl::Repo interface" do
       assert_respond_to repo, :all_commit_times
+      assert_respond_to repo, :ancestors
+      assert_respond_to repo, :ancestors_until
       assert_respond_to repo, :branches_at
       assert_respond_to repo, :commits_between
       assert_respond_to repo, :location

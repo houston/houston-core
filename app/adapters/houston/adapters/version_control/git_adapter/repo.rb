@@ -18,10 +18,12 @@ module Houston
             `git --git-dir=#{git_dir} log --all --pretty='%at'`.split(/\n/).uniq
           end
           
-          def branches_at(sha)
-            Rugged::Branch.each(connection, :local)
-              .select { |branch| branch.tip.oid.start_with?(sha) }
-              .map(&:name)
+          def ancestors(sha)
+            native_commit(sha)
+            walker = connection.walk(sha)
+            walker.next # don't start with the commit itself, start with its parent
+            
+            walker.map(&method(:to_commit))
           end
           
           def ancestors_until(sha, *args)
@@ -43,18 +45,16 @@ module Houston
             raise CommitNotFound, "No matching ancestor of \"#{sha}\" was found"
           end
           
+          def branches_at(sha)
+            Rugged::Branch.each(connection, :local)
+              .select { |branch| branch.tip.oid.start_with?(sha) }
+              .map(&:name)
+          end
+          
           def commits_between(sha1, sha2)
-            # Assert the presence of both commits
             native_commit(sha1)
-            native_commit(sha2)
-            
-            found = false
-            walker = connection.walk(sha2)
-            commits = walker.take_until { |commit| found = commit.oid.start_with?(sha1) }
-            
-            raise CommitNotFound, "\"#{sha1}\" is not an ancestor of \"#{sha2}\"" unless found
-            
-            commits.map(&method(:to_commit))
+            matces_sha = lambda { |commit| commit.sha.start_with?(sha1) }
+            ancestors_until(sha2, :including_self, &matces_sha).reverse[1..-1]
           end
           
           def location

@@ -13,6 +13,10 @@ module Houston
         
         attr_reader :sha, :message, :date, :author_name, :author_email
         
+        def to_s
+          sha[0...7]
+        end
+        
       end
     end
   end

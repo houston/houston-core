@@ -52,8 +52,18 @@ STR
     sha0 = "b62c3f32f72423b81a0282a1a4b97cad2cf129d4"
     sha1 = "22924bbf4378f83cab93bfd5fa7d7777cbc1f3b4"
     commits = @test_repo.commits_between(sha0, sha1)
+    assert_equal "22924bb", commits.last.to_s, "Expected the last commit to be the one _before_ #{sha1}"
+    assert_equal "bd3e9e2", commits.first.to_s, "Expected the first commit to be the one _after_ #{sha0}"
     assert_equal 2, commits.length
     assert_instance_of Houston::Adapters::VersionControl::Commit, commits.first
+  end
+  
+  test "#ancestors should return an array of commits that are reachable from the given sha" do
+    sha1 = "baa3ef2" # "When you have eliminated the impossible, what remains," (divergent-branch)
+    sha2 = "22924bb" # "Create README.md" (master)
+    
+    assert_equal %w{b3d156e bd3e9e2 b62c3f3}, @test_repo.ancestors(sha1).map(&:to_s)
+    assert_equal         %w{bd3e9e2 b62c3f3}, @test_repo.ancestors(sha2).map(&:to_s)
   end
   
   

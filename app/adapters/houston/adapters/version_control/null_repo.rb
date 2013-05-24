@@ -11,6 +11,14 @@ module Houston
           []
         end
         
+        def ancestors
+          []
+        end
+        
+        def ancestors_until(sha)
+          []
+        end
+        
         def branches_at(sha)
           []
         end
