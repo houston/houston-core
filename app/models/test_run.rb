@@ -36,7 +36,7 @@ class TestRun < ActiveRecord::Base
   end
   
   def short_commit
-    commit[0...8]
+    commit[0...7]
   end
   
   def completed?

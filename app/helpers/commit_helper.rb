@@ -29,7 +29,7 @@ module CommitHelper
   
   def format_sha(sha)
     return "_"*8 if sha.blank?
-    sha[0...8]
+    sha[0...7]
   end
   
   def format_change(change)
