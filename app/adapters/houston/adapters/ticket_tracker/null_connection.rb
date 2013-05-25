@@ -11,6 +11,10 @@ module Houston
           NullTicket
         end
         
+        def create_ticket!(attributes)
+          raise NotImplementedError
+        end
+        
         def find_ticket_by_number(number)
           nil
         end

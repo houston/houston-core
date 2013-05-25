@@ -27,9 +27,6 @@ Complete the workflow loop through Houston-Scheduler:
 
  - **Daily Report:** add count of tickets that need estimates
  - **Houston-Scheduler:** have a fast load and a slow load
- - **Houston-Scheduler:** allow creating tickets
-   - Map type and tags back to severities and labels
-   - Users need to authenticate (GitHub: oauth; Unfuddle: [AES](http://rubylearning.com/blog/2011/07/18/cryptography-or-how-i-learned-to-stop-worrying-and-love-aes/) [crypto](https://github.com/wesabe/pfc/blob/master/lib/crypto.rb)?)
 
 
 # Horizon 2

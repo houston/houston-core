@@ -21,6 +21,22 @@ module Houston
             Houston::Adapters::TicketTracker::UnfuddleAdapter::Ticket.new(self, attributes)
           end
           
+          def create_ticket!(houston_ticket)
+            as_user(houston_ticket.reporter) do
+              attrs = get_attributes_from_type(houston_ticket.type)
+              
+              native_ticket = unfuddle.create_ticket(
+                "project_id" => project_id, # required for fetch! to work below
+                "priority" => "3", # required by Unfuddle
+                "summary" => houston_ticket.summary,
+                "description" => houston_ticket.description,
+                "severity_id" => attrs[:severity] && unfuddle.find_severity_by_name!(attrs[:severity]).id)
+              native_ticket.fetch! # fetch attributes we don't know yet (like number and created_at)
+              
+              build_ticket(native_ticket.attributes)
+            end
+          end
+          
           def find_ticket_by_number(number)
             attributes = unfuddle.find_ticket_by_number(number) unless number.blank?
             build_ticket(attributes) if attributes
@@ -122,6 +138,12 @@ module Houston
         private
           
           attr_reader :unfuddle
+          
+          def get_attributes_from_type(type)
+            attributes_from_type_proc = config[:attributes_from_type]
+            return {} unless attributes_from_type_proc
+            attributes_from_type_proc.call(type)
+          end
           
         end
       end

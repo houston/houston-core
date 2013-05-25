@@ -980,7 +980,9 @@ CREATE TABLE tickets (
     antecedents character varying[],
     tags character varying[],
     type character varying(255),
-    closed_at timestamp without time zone
+    closed_at timestamp without time zone,
+    reporter_email character varying(255),
+    reporter_id integer
 );
 
 
@@ -1735,3 +1737,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130518224655');
 INSERT INTO schema_migrations (version) VALUES ('20130518224722');
 
 INSERT INTO schema_migrations (version) VALUES ('20130519163615');
+
+INSERT INTO schema_migrations (version) VALUES ('20130525192607');

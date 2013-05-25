@@ -34,6 +34,17 @@ class TicketsController < ApplicationController
     end
   end
   
+  def create
+    project = Project.find_by_slug! params[:slug]
+    ticket = project.create_ticket! params[:ticket].merge(reporter: current_user)
+    
+    if ticket.persisted?
+      render json: TicketPresenter.new(ticket)
+    else
+      render json: ticket.errors, status: :unprocessable_entity
+    end
+  end
+  
   def close
     ticket = Ticket.find(params[:id])
     ticket.close_ticket!

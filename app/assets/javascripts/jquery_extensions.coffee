@@ -43,6 +43,11 @@ $.fn.extend
     view.render()
     el
   
+  prependView: (view)->
+    el = @prepend(view.el)
+    view.render()
+    el
+  
   serializeObject: ->
     o = {}
     a = @serializeArray()

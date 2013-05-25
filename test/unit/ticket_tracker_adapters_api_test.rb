@@ -24,7 +24,9 @@ class TicketTrackerAdatersApiTest < ActiveSupport::TestCase
     tickets << connection.build_ticket({})
     
     test "#{connection.class.name} responds to the TicketTracker::Connection interface" do
-      assert_respond_to connection, :build_ticket
+      assert_respond_to connection, :build_ticket # <-- for creating a TicketTracker::Ticket from a native ticket,
+                                                  #     used internally except for TestingReportController:17
+      assert_respond_to connection, :create_ticket! # <-- for creating a remote ticket from attributes
       assert_respond_to connection, :find_ticket_by_number
       assert_respond_to connection, :find_tickets_numbered
       assert_respond_to connection, :all_tickets

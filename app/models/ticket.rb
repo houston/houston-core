@@ -2,6 +2,7 @@ class Ticket < ActiveRecord::Base
   self.inheritance_column = nil
   
   belongs_to :project
+  belongs_to :reporter, class_name: "User"
   has_one :ticket_queue, conditions: "destroyed_at IS NULL"
   has_many :testing_notes
   has_many :ticket_prerequisites, autosave: true

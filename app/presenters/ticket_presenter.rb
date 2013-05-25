@@ -34,6 +34,8 @@ class TicketPresenter
       projectColor: project.color,
       number: ticket.number,
       summary: ticket.summary,
+      type: ticket.type.to_s.downcase.dasherize,
+      tags: ticket.tags.map(&:to_h),
       verdict: ticket.verdict.downcase,
       verdictsByTester: ticket.verdicts_by_tester_index,
       queue: ticket.queue,

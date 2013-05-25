@@ -119,6 +119,14 @@ class Project < ActiveRecord::Base
   
   
   
+  def create_ticket!(attributes)
+    ticket = tickets.build attributes.merge(number: 0)
+    ticket = tickets.create ticket_tracker.create_ticket!(ticket).attributes if ticket.valid?
+    ticket
+  end
+  
+  
+  
   def find_or_create_tickets_by_number(*numbers)
     numbers = numbers.flatten.map(&:to_i).uniq
     tickets = self.tickets.numbered(numbers)
