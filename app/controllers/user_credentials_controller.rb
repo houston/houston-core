@@ -12,4 +12,13 @@ class UserCredentialsController < ApplicationController
     end
   end
   
+  def destroy
+    credentials = current_user.credentials.find_by_id(params[:id])
+    if credentials && credentials.delete
+      redirect_to :back, notice: "Houston has deleted your credentials for #{credentials.service}"
+    else
+      redirect_to :back
+    end
+  end
+  
 end

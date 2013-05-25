@@ -3,11 +3,15 @@
   padding: 0;
 }
 
-.notifications-instructions {
+.notifications-instructions { font-style: italic; }
+
+.controls > p {
   padding-top: 5px;
   margin-bottom: 5px;
-  font-style: italic;
 }
+
+li.user_credentials { line-height: 2em; }
+.user-credentials-service { display: inline-block; width: 20em; }
 
 .user-row {
   clear: left;

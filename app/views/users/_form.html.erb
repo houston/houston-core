@@ -49,7 +49,6 @@
       </div>
     <% end %>
     
-    
     <hr />
     
     <div class="control-group">
@@ -68,6 +67,28 @@
         <% end %>
       </div>
     </div>
+    
+    
+    <% if @user.credentials.any? %>
+      <hr />
+      
+      <div class="control-group">
+        <label class="control-label">Credentials</label>
+        <div class="controls">
+          
+          <p>Houston has remembered your credentials for:</p>
+          
+          <ul class="user-credentials">
+            <%= content_tag_for :li, @user.credentials do |user_credentials| %>
+              <span class="user-credentials-service"><%= user_credentials.service %></span>
+              <span class="user-credentials-delete">
+                <a class="btn btn-mini btn-danger delete-user-credentials" href="/credentials/<%= user_credentials.id %>" data-method="delete" data-confirm="Should Houston forget your credentials for <%= user_credentials.service %>?">Delete</a>
+              </span>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    <% end %>
     
     
     <% if @user.new_record? %>

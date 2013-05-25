@@ -119,8 +119,8 @@ Houston::Application.routes.draw do
   
   # Authorizations
   
-  # resource :user_credentials, path: "credentials"
   put "credentials", to: "user_credentials#upsert"
+  delete "credentials/:id", to: "user_credentials#destroy"
   
   
   
