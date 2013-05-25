@@ -28,9 +28,9 @@ class TicketsController < ApplicationController
     attributes = params.pick(:last_release_at)
     
     if ticket.update_attributes(attributes)
-      render json: [], :status => :ok
+      render json: []
     else
-      render json: ticket.errors, :status => :unprocessable_entity
+      render json: ticket.errors, status: :unprocessable_entity
     end
   end
   
