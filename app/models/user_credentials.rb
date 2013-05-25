@@ -1,6 +1,8 @@
 class UserCredentials < ActiveRecord::Base
   
   class MissingCredentials < RuntimeError; end
+  class InsufficientPermissions < RuntimeError; end
+  class InvalidCredentials < RuntimeError; end
   
   encrypt_with_public_key :password, key_pair: Houston.config.keypair
   

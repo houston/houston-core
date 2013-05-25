@@ -3,20 +3,6 @@ class TestingNotesController < ApplicationController
   before_filter :find_testing_note, :only => [:destroy, :update]
   before_filter :authenticate_user!, :only => [:create, :update, :destroy]
   
-  rescue_from UserCredentials::MissingCredentials do
-    response.headers["X-Credentials"] = "Missing Credentials"
-    head 401
-  end
-  
-  rescue_from Unfuddle::UnauthorizedError do
-    if current_user.credentials.for("Unfuddle").valid?
-      render text: "You do not have permission to post a comment to this ticket.", status: 401
-    else
-      response.headers["X-Credentials"] = "Invalid Credentials"
-      head 401
-    end
-  end
-  
   
   def create
     @testing_note = current_user.testing_notes.build(params[:testing_note].merge(project: @ticket.project))

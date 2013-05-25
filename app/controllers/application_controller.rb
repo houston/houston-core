@@ -19,6 +19,18 @@ class ApplicationController < ActionController::Base
     end
   end
   
+  rescue_from UserCredentials::MissingCredentials do
+    head 401, "X-Credentials" => "Missing Credentials"
+  end
+  
+  rescue_from UserCredentials::InvalidCredentials do
+    head 401, "X-Credentials" => "Invalid Credentials"
+  end
+  
+  rescue_from UserCredentials::InsufficientPermissions do |exception|
+    render text: exception.message, status: 401
+  end
+  
   
   
   def require_login
