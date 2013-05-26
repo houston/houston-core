@@ -491,7 +491,7 @@
                     <%= score_card :medium do |s| %>
                       <% s.raw do %>
                         <p class="pie-graph">
-                          <%= pie_graph(data_by_color: tickets_by_severity_by_project[project], width: 56, retina: true) %>
+                          <%= pie_graph data_by_color: tickets_by_severity_by_project[project], width: 56, retina: true %>
                         </p>
                       <% end %>
                       <% s.score "New", new_tickets, :class => "ticket-count-new",

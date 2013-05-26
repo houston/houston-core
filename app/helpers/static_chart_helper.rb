@@ -38,15 +38,13 @@ module StaticChartHelper
   
   
   def bar_graph(options={})
-    bar_width = options.fetch(:bar_width, 14)
-    spacing = options.fetch(:spacing, 4)
-    width = ((bar_width + spacing) * options[:count]) + 10
-    axes = options.fetch(:axes, :left)
-    
+    bar_width   = options.fetch(:bar_width, 14)
+    spacing     = options.fetch(:spacing, 4)
+    width       = ((bar_width + spacing) * options[:count]) + 10
+    axes        = options.fetch(:axes, :left)
     width += 20 if axes == :left
-    
-    img_width = width
-    img_height = options[:height]
+    img_width   = width
+    img_height  = options[:height]
     
     if options[:retina]
       bar_width *= 2
