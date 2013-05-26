@@ -12,7 +12,7 @@ class TestRunStatistics
   
   
   def duration(n=20)
-    durations = last_completed_test_runs(n).pluck(:duration)
+    durations = last_completed_test_runs(n).pluck(:duration).map { |n| n / 1000.0 }
     ljust(durations, 0, n).reverse
   end
   
