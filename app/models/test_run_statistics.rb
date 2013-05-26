@@ -18,7 +18,7 @@ class TestRunStatistics
   
   
   def coverage(n=20)
-    percentages = last_completed_test_runs(n).pluck(:covered_percent).map { |n| (n.to_f * 100) }
+    percentages = last_completed_test_runs(n).pluck(:covered_percent).map { |n| n * 100.0 }
     ljust(percentages, 0.0, n).reverse
   end
   
@@ -29,19 +29,19 @@ class TestRunStatistics
   end
   
   def skips(n=20)
-    ljust(last_completed_test_runs(n).pluck(:skip_count).map(&:to_i), 0, n).reverse
+    ljust(last_completed_test_runs(n).pluck(:skip_count), 0, n).reverse
   end
   
   def regressions(n=20)
-    ljust(last_completed_test_runs(n).pluck(:regression_count).map(&:to_i), 0, n).reverse
+    ljust(last_completed_test_runs(n).pluck(:regression_count), 0, n).reverse
   end
   
   def fails(n=20)
-    ljust(last_completed_test_runs(n).pluck(:fail_count).map(&:to_i), 0, n).reverse
+    ljust(last_completed_test_runs(n).pluck(:fail_count), 0, n).reverse
   end
   
   def passes(n=20)
-    ljust(last_completed_test_runs(n).pluck(:pass_count).map(&:to_i), 0, n).reverse
+    ljust(last_completed_test_runs(n).pluck(:pass_count), 0, n).reverse
   end
   
   

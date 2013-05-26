@@ -9,23 +9,23 @@
 <div class="test-result-stats">
   <div class="score score-large">
     <p class="test-duration">
-      <span class="score-count"><%= (@test_run.duration.to_i / 1000.0).round(2) %><span class="unit">s</span></span>
+      <span class="score-count"><%= (@test_run.duration / 1000.0).round(2) %><span class="unit">s</span></span>
       <span class="score-label">Duration</span>
     </p>
     
     <p class="test-coverage">
-      <span class="score-count"><%= (@test_run.covered_percent.to_f * 100).round(1) %><span class="unit">%</span></span>
+      <span class="score-count"><%= (@test_run.covered_percent * 100.0).round(1) %><span class="unit">%</span></span>
       <span class="score-label">Coverage</span>
     </p>
     
     <% if @test_run.fail_count.zero? %>
       <p class="test-coverage">
-        <span class="score-count"><%= @test_run.total_count.to_i %></span>
+        <span class="score-count"><%= @test_run.total_count %></span>
         <span class="score-label"><%= @test_run.total_count == 1 ? "Test" : "Tests" %></span>
       </p>
     <% else %>
       <p class="test-coverage">
-        <span class="score-count"><%= @test_run.fail_count.to_i %></span>
+        <span class="score-count"><%= @test_run.fail_count %></span>
         <span class="score-label"><%= @test_run.fail_count == 1 ? "Fail" : "Fails" %></span>
       </p>
     <% end %>

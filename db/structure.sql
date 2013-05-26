@@ -822,20 +822,20 @@ CREATE TABLE test_runs (
     completed_at timestamp without time zone,
     results_url character varying(255),
     result character varying(255),
-    duration integer,
-    fail_count integer,
-    pass_count integer,
-    skip_count integer,
+    duration integer DEFAULT 0 NOT NULL,
+    fail_count integer DEFAULT 0 NOT NULL,
+    pass_count integer DEFAULT 0 NOT NULL,
+    skip_count integer DEFAULT 0 NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     tests text,
-    total_count integer,
+    total_count integer DEFAULT 0 NOT NULL,
     agent_email character varying(255),
     branch character varying(255),
     coverage text,
-    covered_percent numeric(6,5),
-    covered_strength numeric(6,5),
-    regression_count integer
+    covered_percent numeric(6,5) DEFAULT 0 NOT NULL,
+    covered_strength numeric(6,5) DEFAULT 0 NOT NULL,
+    regression_count integer DEFAULT 0 NOT NULL
 );
 
 
@@ -1742,3 +1742,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130519163615');
 INSERT INTO schema_migrations (version) VALUES ('20130525192607');
 
 INSERT INTO schema_migrations (version) VALUES ('20130525222131');
+
+INSERT INTO schema_migrations (version) VALUES ('20130526024851');
