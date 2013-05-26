@@ -7,6 +7,8 @@
 # Tentatively, I plan to keep the API that this helper publishes but
 # re-implement it to generate SVG charts, server-side.
 #
+# Google limits charts to 300000 pixels
+#
 class StaticChart
   
   def initialize(options={})

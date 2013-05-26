@@ -1,7 +1,7 @@
 <table class="layout exceptions-report">
   <tr>
     <td class="exceptions-resolve-rate">
-      <%= bar_graph({
+      <%= bar_graph(
         data: bugs.by_grade.values.map_with_index { |value, i| ([0] * 6).tap { |array| array[i] = value } },
         labels: bugs.by_grade.keys,
         colors: ["42a800", "9fbd2a", "ebc93b", "d65b17", "b50000", "dddddd"],
@@ -10,8 +10,7 @@
         bar_width: 20,
         spacing: 4,
         axes: false,
-        title: "Resolve time"
-      }) %>
+        title: "Resolve time" ) %>
     </td>
     <td class="exceptions-gpa">
       <div class="score score-large">
@@ -78,7 +77,7 @@
             <% s.raw do %>
               <p>
                 <span class="notices-count score-count">
-                  <%= bar_graph({
+                  <%= bar_graph(
                     data: (notices.history_by_project[project] || {}).values,
                     colors: "555555",
                     count: notices.weeks_of_history,
@@ -86,8 +85,7 @@
                     bar_width: 4,
                     spacing: 1,
                     retina: true,
-                    axes: false
-                  }) %>
+                    axes: false ) %>
                 </span>
                 <span class="score-label">Notices/week</span>
               </p>

@@ -15,9 +15,6 @@ class WeeklyReport
       @by_project = {}
       @history_by_project = Hash[projects.zip]
       
-      history_range = ((weeks_of_history - 1).weeks.before(@this_week.begin))..@this_week.end
-      history_weeks = history_range.step(7)
-      
       time_range = @this_week.begin.beginning_of_day.to_time.to_i...@this_week.end.end_of_day.to_time.to_i
       time_range_multiweek = history_range.begin.beginning_of_day.to_time.to_i...history_range.end.end_of_day.to_time.to_i
       
