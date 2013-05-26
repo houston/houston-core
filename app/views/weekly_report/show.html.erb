@@ -302,29 +302,18 @@
         </td>
         <td class="exceptions-problem-count">
           <%
-            cumulative_totals = [0] * weeks_of_errbit_history
-            
-            projects_included = []
-            
-            data = @projects.map do |project|
+            projects_included, data = [], []
+            @projects.each do |project|
               values = bugs_by_week_by_project[project]
               if values
                 projects_included << project
-                values = values.values
-              else
-                next
+                data << values.values
               end
-
-              values.each_with_index do |value, i|
-                cumulative_totals[i] += value
-              end
-              cumulative_totals.dup
             end
-            data.compact!
           
             colors_included = projects_included.map { |project| colors[project.color] }
           %>
-          <%= area_graph({
+          <%= stacked_area_graph({
             data: data,
             colors: colors_included,
             width: 392,
