@@ -17,13 +17,17 @@ module StaticChartHelper
       options.merge!(data: hash.values, colors: hash.keys)
     end
     
-    width = options.fetch(:width, 60)
-    height = options.fetch(:height, width)
+    img_width   = width   = options.fetch(:width, 60)
+    img_height  = height  = options.fetch(:height, width)
+    if options[:retina]
+      img_width *= 2
+      img_height *= 2
+    end
     
     src = Gchart.pie({
       data: options[:data],
       bar_colors: options[:colors],
-      size: "#{width}x#{height}",
+      size: "#{img_width}x#{img_height}",
       labels: options[:labels],
       bg: "FFFFFF00" # transparent background
     })
