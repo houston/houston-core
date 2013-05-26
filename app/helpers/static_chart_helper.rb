@@ -95,7 +95,7 @@ module StaticChartHelper
     chls = "&chls=" + (["#{line_weight},0,0"] * (data.length-1)).join("|") + "|0,0,0"
     
     min = options.fetch(:min, 0) # data.last.min
-    max = options.fetch(:max, data.map(&:max).max)
+    max = options.fetch(:max, data.flatten.compact.max)
     
     width = options[:width]
     height = options[:height]
