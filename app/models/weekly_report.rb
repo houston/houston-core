@@ -1,5 +1,6 @@
 class WeeklyReport
   
+  
   def initialize(date=Date.today)
     date = date.to_date
     
@@ -22,10 +23,26 @@ class WeeklyReport
   
   
   def sections
-    { commits:      { commits: CommitStats.new(date_range) },
-      exceptions:   { bugs: BugStats.new(date_range), notices: NoticeStats.new(date_range) },
-      tickets:      { tickets: TicketStats.new(date_range) },
-      maintenance:  { maintenance_lights: MaintenanceStats.new } }
+    [ Section.new(
+        title: "Commits",
+        icon_url: "heading-git-48.png",
+        context: { commits: CommitStats.new(date_range) }),
+      
+      Section.new(
+        title: "Exceptions",
+        icon_url: "heading-bug-48.png",
+        context: { bugs: BugStats.new(date_range), notices: NoticeStats.new(date_range) }),
+      
+      Section.new(
+        title: "Tickets",
+        icon_url: "heading-idea-48.png",
+        context: { tickets: TicketStats.new(date_range) }),
+      
+      Section.new(
+        title: "Maintenance",
+        icon_url: "heading-wrench-48.png",
+        context: { maintenance_lights: MaintenanceStats.new })
+    ]
   end
   
   

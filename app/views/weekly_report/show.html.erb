@@ -9,13 +9,20 @@
           <%= link_to "Next", weekly_report_path(next_date) %>
         <% else %>
           <span class="disabled">Next</span>
-        <% end unless for_email? %>
+        <% end %>
       <% end %>
     </span>
   </h1>
   
-  <% @weekly_report.sections.each do |section, context| %>
-    <%= render partial: section.to_s, locals: context.merge(weekly_report: @weekly_report) %>
+  <% @weekly_report.sections.each do |section| %>
+    <h3 class="heading">
+      <%= image_tag image_url(section.icon_url), size: "48" %>
+      <%= section.title %>
+    </h3>
+    
+    <div class="weekly-report-body">
+      <%= render partial: section.template, locals: section.context %>
+    </div>
   <% end %>
   
 </div>

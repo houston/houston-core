@@ -1,113 +1,106 @@
-<h3 class="heading">
-  <%= image_tag image_url("heading-bug-48.png"), size: "48" %>
-  Exceptions
-</h3>
-
-<div class="weekly-report-body">
-  <table class="layout exceptions-report">
-    <tr>
-      <td class="exceptions-resolve-rate">
-        <%= bar_graph({
-          data: bugs.by_grade.values.map_with_index { |value, i| ([0] * 6).tap { |array| array[i] = value } },
-          labels: bugs.by_grade.keys,
-          colors: ["42a800", "9fbd2a", "ebc93b", "d65b17", "b50000", "dddddd"],
-          count: 6,
-          height: 120,
-          bar_width: 20,
-          spacing: 4,
-          axes: false,
-          title: "Resolve time"
-        }) %>
-      </td>
-      <td class="exceptions-gpa">
-        <div class="score score-large">
-          <div class="score-count"><%= bugs.gpa_actual.to_s.split(".").join("<span class=\"period\">.</span>").html_safe %></div>
-          <h4>GPA</h4>
-          <div class="score-label">(<%= bugs.gpa_possible %> possible)</div>
+<table class="layout exceptions-report">
+  <tr>
+    <td class="exceptions-resolve-rate">
+      <%= bar_graph({
+        data: bugs.by_grade.values.map_with_index { |value, i| ([0] * 6).tap { |array| array[i] = value } },
+        labels: bugs.by_grade.keys,
+        colors: ["42a800", "9fbd2a", "ebc93b", "d65b17", "b50000", "dddddd"],
+        count: 6,
+        height: 120,
+        bar_width: 20,
+        spacing: 4,
+        axes: false,
+        title: "Resolve time"
+      }) %>
+    </td>
+    <td class="exceptions-gpa">
+      <div class="score score-large">
+        <div class="score-count"><%= bugs.gpa_actual.to_s.split(".").join("<span class=\"period\">.</span>").html_safe %></div>
+        <h4>GPA</h4>
+        <div class="score-label">(<%= bugs.gpa_possible %> possible)</div>
+      </div>
+    </td>
+    <td class="exceptions-problem-count">
+      <%= area_graph(
+        data: bugs.history_by_project.values.map(&:values),
+        colors: bugs.history_by_project.keys.map(&:color_value),
+        width: 392,
+        height: 152,
+        title: "#{bugs.weeks_of_history}-week problem count" ) %>
+    </td>
+    <td class="exceptions-summary">
+      <div class="exceptions-bugs-summary-group">
+        <div class="exceptions-bugs-summary new-bugs <%= bugs.new_this_week.zero? ? "zero" : "positive" %>">
+          <div class="bug-count"><span class="sign">+</span><%= bugs.new_this_week %> <%= image_tag(image_url("bug-new-32.png"), size: 32, :class => "bug") %></div>
         </div>
-      </td>
-      <td class="exceptions-problem-count">
-        <%= area_graph(
-          data: bugs.history_by_project.values.map(&:values),
-          colors: bugs.history_by_project.keys.map(&:color_value),
-          width: 392,
-          height: 152,
-          title: "#{bugs.weeks_of_history}-week problem count" ) %>
-      </td>
-      <td class="exceptions-summary">
-        <div class="exceptions-bugs-summary-group">
-          <div class="exceptions-bugs-summary new-bugs <%= bugs.new_this_week.zero? ? "zero" : "positive" %>">
-            <div class="bug-count"><span class="sign">+</span><%= bugs.new_this_week %> <%= image_tag(image_url("bug-new-32.png"), size: 32, :class => "bug") %></div>
-          </div>
-          <div class="exceptions-bugs-summary resolved-bugs <%= bugs.fixed_this_week.zero? ? "zero" : "negative" %>">
-            <div class="bug-count"><span class="sign">–</span><%= bugs.fixed_this_week %> <%= image_tag(image_url("bug-fixed-32.png"), size: 32, :class => "bug") %></div>
-          </div>
+        <div class="exceptions-bugs-summary resolved-bugs <%= bugs.fixed_this_week.zero? ? "zero" : "negative" %>">
+          <div class="bug-count"><span class="sign">–</span><%= bugs.fixed_this_week %> <%= image_tag(image_url("bug-fixed-32.png"), size: 32, :class => "bug") %></div>
         </div>
-        
-        <% if bugs.change_this_week == 0 %>
-          <p class="exceptions-bugs-summary total-bugs zero">
-            <span class="bug-count">0</span><%= image_tag image_url("bug-zero-128.png"), size: 118 %>
-          </p>
-        <% elsif bugs.change_this_week < 0 %>
-          <p class="exceptions-bugs-summary total-bugs negative" style="-webkit-box-shadow: inset 0 0 <%= -bugs_change_this_week * 2 %>px #42A800; <%= "letter-spacing: -0.15em; text-indent: -0.25em;" if (10..19).cover?(-bugs_change_this_week) %>">
-            <span class="bug-count"><%= -bugs.change_this_week %></span><%= image_tag image_url("bug-fixed-128.png"), size: 118 %>
-          </p>
-        <% else %>
-          <p class="exceptions-bugs-summary total-bugs positive" style="-webkit-box-shadow: inset 0 0 <%= bugs.change_this_week * 2 %>px #E00000; <%= "letter-spacing: -0.15em; text-indent: -0.25em;" if (10..19).cover?(bugs.change_this_week) %>">
-            <span class="bug-count"><%= bugs.change_this_week %></span><%= image_tag image_url("bug-new-128.png"), size: 118 %>
-          </p>
-        <% end %>
-        
-        
-      </td>
-    </tr>
-  </table>
-  
-  <table class="layout bugs">
-    <tbody>
-      <% bugs.by_project.each do |project, bug_counts| %>
-        <tr>
-          <th><span class="label <%= project.color %>"><%= project.name %></span></th>
-          <td>
-            <% bug_counts.fetch("new", 0).times do %>
-              <%= image_tag(image_url("bug-new-32.png"), size: 32, :class => "bug new-bug") %>
-            <% end %>
-            <% bug_counts.fetch("open", 0).times do %>
-              <%= image_tag(image_url("bug-open-32.png"), size: 32, :class => "bug open-bug") %>
-            <% end %>
-            <% bug_counts.fetch("fixed", 0).times do %>
-              <%= image_tag(image_url("bug-fixed-32.png"), size: 32, :class => "bug fixed-bug") %>
-            <% end %>
-          </td>
-          <td>
-            <%= score_card :medium do |s| %>
-              <% s.raw do %>
-                <p>
-                  <span class="notices-count score-count">
-                    <%= bar_graph({
-                      data: (notices.history_by_project[project] || {}).values,
-                      colors: "555555",
-                      count: notices.weeks_of_history,
-                      height: 27,
-                      bar_width: 4,
-                      spacing: 1,
-                      retina: true,
-                      axes: false
-                    }) %>
-                  </span>
-                  <span class="score-label">Notices/week</span>
-                </p>
-              <% end %>
-              
-              <% s.score "New", bug_counts["new"], :class => "new-bugs",
-                  prefix: "<span class=\"sign\">+</span>".html_safe %>
-              <% s.score "Fixed", bug_counts["fixed"], :class => "resolved-bugs",
-                  prefix: "<span class=\"sign\">&ndash;</span>".html_safe %>
-              <% s.score "Open", bug_counts["open"] + bug_counts["new"], :class => "open-bugs" %>
-            <% end %>
-          </td>
-        </tr>
+      </div>
+      
+      <% if bugs.change_this_week == 0 %>
+        <p class="exceptions-bugs-summary total-bugs zero">
+          <span class="bug-count">0</span><%= image_tag image_url("bug-zero-128.png"), size: 118 %>
+        </p>
+      <% elsif bugs.change_this_week < 0 %>
+        <p class="exceptions-bugs-summary total-bugs negative" style="-webkit-box-shadow: inset 0 0 <%= -bugs_change_this_week * 2 %>px #42A800; <%= "letter-spacing: -0.15em; text-indent: -0.25em;" if (10..19).cover?(-bugs_change_this_week) %>">
+          <span class="bug-count"><%= -bugs.change_this_week %></span><%= image_tag image_url("bug-fixed-128.png"), size: 118 %>
+        </p>
+      <% else %>
+        <p class="exceptions-bugs-summary total-bugs positive" style="-webkit-box-shadow: inset 0 0 <%= bugs.change_this_week * 2 %>px #E00000; <%= "letter-spacing: -0.15em; text-indent: -0.25em;" if (10..19).cover?(bugs.change_this_week) %>">
+          <span class="bug-count"><%= bugs.change_this_week %></span><%= image_tag image_url("bug-new-128.png"), size: 118 %>
+        </p>
       <% end %>
-    </tbody>
-  </table>
-</div>
+      
+      
+    </td>
+  </tr>
+</table>
+
+<table class="layout bugs">
+  <tbody>
+    <% bugs.by_project.each do |project, bug_counts| %>
+      <tr>
+        <th><span class="label <%= project.color %>"><%= project.name %></span></th>
+        <td>
+          <% bug_counts.fetch("new", 0).times do %>
+            <%= image_tag(image_url("bug-new-32.png"), size: 32, :class => "bug new-bug") %>
+          <% end %>
+          <% bug_counts.fetch("open", 0).times do %>
+            <%= image_tag(image_url("bug-open-32.png"), size: 32, :class => "bug open-bug") %>
+          <% end %>
+          <% bug_counts.fetch("fixed", 0).times do %>
+            <%= image_tag(image_url("bug-fixed-32.png"), size: 32, :class => "bug fixed-bug") %>
+          <% end %>
+        </td>
+        <td>
+          <%= score_card :medium do |s| %>
+            <% s.raw do %>
+              <p>
+                <span class="notices-count score-count">
+                  <%= bar_graph({
+                    data: (notices.history_by_project[project] || {}).values,
+                    colors: "555555",
+                    count: notices.weeks_of_history,
+                    height: 27,
+                    bar_width: 4,
+                    spacing: 1,
+                    retina: true,
+                    axes: false
+                  }) %>
+                </span>
+                <span class="score-label">Notices/week</span>
+              </p>
+            <% end %>
+            
+            <% s.score "New", bug_counts["new"], :class => "new-bugs",
+                prefix: "<span class=\"sign\">+</span>".html_safe %>
+            <% s.score "Fixed", bug_counts["fixed"], :class => "resolved-bugs",
+                prefix: "<span class=\"sign\">&ndash;</span>".html_safe %>
+            <% s.score "Open", bug_counts["open"] + bug_counts["new"], :class => "open-bugs" %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
