@@ -107,10 +107,6 @@
     
   end
   
-  
-  
-  colors = Houston.config.project_colors
-  
 %>
 
 <h3 class="heading">
@@ -149,7 +145,7 @@
             next unless values
             
             data << values.values
-            colors_included << colors[project.color]
+            colors_included << project.color_value
           end
         %>
         <%= area_graph({

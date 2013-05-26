@@ -12,8 +12,6 @@
   date_range_multiweek2 = ((weeks_of_errbit_history - 1).weeks.before(@date_range.begin))..@date_range.end
   errbit_history_weeks = date_range_multiweek2.step(7)
   
-  colors = Houston.config.project_colors
-  
   unfuddle_projects = @projects.with_ticket_tracker
   
   color_by_type = {
@@ -123,7 +121,7 @@
           <%= cumulative_flow_diagram({
             arrivals: arrivals_by_week_by_project.values,
             departures: departures_by_week_by_project.values,
-            colors: unfuddle_projects.map { |project| colors[project.color] },
+            colors: unfuddle_projects.map(&:color_value),
             width: width,
             height: height,
             title: "Cumulative Flow Diagram"

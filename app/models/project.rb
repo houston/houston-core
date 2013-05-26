@@ -31,6 +31,10 @@ class Project < ActiveRecord::Base
     slug
   end
   
+  def color_value
+    Houston.config.project_colors[color]
+  end
+  
   def environment(environment_name)
     Environment.new(self, environment_name)
   end

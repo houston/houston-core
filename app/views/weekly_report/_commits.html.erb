@@ -1,5 +1,3 @@
-<% colors = Houston.config.project_colors %>
-
 <h3 class="heading">
   <%= image_tag image_url("heading-git-48.png"), size: "48" %>
   Commits
@@ -45,7 +43,7 @@
       <td width="40%">
         <%= pie_graph({
           data: commits.weekday_commits_by_project.values,
-          colors: commits.weekday_commits_by_project.keys.map { |project| colors[project.color] },
+          colors: commits.weekday_commits_by_project.keys.map(&:color_value),
           labels: commits.weekday_commits_by_project.keys.map(&:name),
           width: 320,
           height: 80,
@@ -56,7 +54,7 @@
       <td width="60%">
         <%= bar_graph({
           data: @projects.map { |project| commits.commits_by_week_by_project[project].values },
-          colors: @projects.map { |project| colors[project.color] },
+          colors: @projects.map(&:color_value),
           count: commits.weeks_of_history,
           height: 80,
           title: "#{commits.weeks_of_history}-week commit history"

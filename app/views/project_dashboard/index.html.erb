@@ -73,7 +73,6 @@
         <%
 
           @projects = [@project]
-          colors = Houston.config.project_colors
 
 
 
@@ -124,8 +123,8 @@
               <td>
                 <%= area_graph({
                   data: data,
-                  colors: @projects.map { |project| colors[project.color] },
-                  marker_colors: @projects.map { |project| "#{colors[project.color]}55" },
+                  colors: @projects.map(&:color_value),
+                  marker_colors: @projects.map { |project| "#{project.color_value}55" },
                   bg: "212121",
                   line_weight: 2,
                   width: 110,
