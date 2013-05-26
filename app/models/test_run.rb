@@ -8,20 +8,20 @@ class TestRun < ActiveRecord::Base
   serialize :tests
   serialize :coverage
   
-  def self.find_by_commit(sha)
-    where(["commit LIKE ?", "#{sha}%"]).first
-  end
-  
-  def self.excluding(*test_runs_or_ids)
-    ids = test_runs_or_ids.flatten.map { |test_run_or_id| test_run_or_id.respond_to?(:id) ? test_run_or_id.id : test_run_or_id }
-    where(arel_table[:id].not_in(ids))
-  end
-  
   
   
   class << self
+    def find_by_commit(sha)
+      where(["commit LIKE ?", "#{sha}%"]).first
+    end
+    
+    def excluding(*test_runs_or_ids)
+      ids = test_runs_or_ids.flatten.map { |test_run_or_id| test_run_or_id.respond_to?(:id) ? test_run_or_id.id : test_run_or_id }
+      where arel_table[:id].not_in(ids)
+    end
+    
     def completed
-      where(arel_table[:completed_at].not_eq(nil))
+      where arel_table[:completed_at].not_eq(nil)
     end
     
     def passed
