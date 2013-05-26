@@ -101,7 +101,7 @@ class ActiveSupport::TestCase
     
     extra_keys = actual_hash.keys - expected_hash.keys
     if extra_keys.any?
-      differences << "Expected value#{format_context(context)} to have keys #{extra_keys.inspect}, but is not expected to have them"
+      differences << "Expected value#{format_context(context)} has keys #{extra_keys.inspect}, but is not expected to have them"
     end
     
     shared_keys = expected_hash.keys & actual_hash.keys
