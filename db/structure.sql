@@ -834,7 +834,8 @@ CREATE TABLE test_runs (
     branch character varying(255),
     coverage text,
     covered_percent numeric(6,5),
-    covered_strength numeric(6,5)
+    covered_strength numeric(6,5),
+    regression_count integer
 );
 
 
@@ -1739,3 +1740,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130518224722');
 INSERT INTO schema_migrations (version) VALUES ('20130519163615');
 
 INSERT INTO schema_migrations (version) VALUES ('20130525192607');
+
+INSERT INTO schema_migrations (version) VALUES ('20130525222131');

@@ -44,11 +44,11 @@ module Houston
             tests = translate_suites(response["suites"])
             results[:duration] = translate_duration(response["duration"])
             results[:total_count] = tests.count
-            results[:fail_count] = response["failCount"]
+            results[:regression_count] = tests.count { |hash| hash[:status] == :regression }
+            results[:fail_count] = response["failCount"] - results[:regression_count]
             results[:pass_count] = response["passCount"]
             results[:skip_count] = response["skipCount"]
             results[:tests] = tests
-            
             
             response = fetch_json(coverage_report_url, resource_name: "coverage report", fallback_value: {})
             metrics = response["metrics"] || {}
@@ -132,7 +132,7 @@ module Houston
           
           def translate_status(status)
             { "FAILED" => :fail,
-              "REGRESSION" => :fail,
+              "REGRESSION" => :regression,
               "PASSED" => :pass,
               "FIXED"  => :pass }[status] ||
               (raise NotImplementedError.new("#{status} is not a mapped status from Jenkins"))
