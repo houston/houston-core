@@ -1,0 +1,136 @@
+
+
+<h3 class="heading">
+  <%= image_tag image_url("heading-idea-48.png"), size: "48" %>
+  Tickets
+</h3>
+
+<%
+  
+  weeks_of_errbit_history = 16
+  date_range_multiweek2 = ((weeks_of_errbit_history - 1).weeks.before(@date_range.begin))..@date_range.end
+  errbit_history_weeks = date_range_multiweek2.step(7)
+  
+  colors = Houston.config.project_colors
+  
+  unfuddle_projects = @projects.with_ticket_tracker
+  
+  color_by_type = {
+    nil        => "EFEFEF",
+    "Chore"    => "98C221",
+    "Feature"  => "3FC1AA",
+    "Tweak"    => "EBD94B", # "FDDD32",
+    "Bug"      => "D65B17"
+  }
+  
+  arrivals_by_week_by_project = {}
+  departures_by_week_by_project = {}
+  open_tickets_by_project = {}
+  tickets_by_severity_by_project = {}
+  
+  unfuddle_projects.each do |project|
+    
+    tickets_for_project = project.tickets
+    
+    arrivals = tickets_for_project.map { |ticket| ticket.created_at.to_date }.select { |created_at| date_range_multiweek2.cover?(created_at) }
+    departures = tickets_for_project.map { |ticket| ticket.closed_at.try(:to_date) }.select { |closed_at| closed_at && date_range_multiweek2.cover?(closed_at) }
+    
+    arrivals_by_week = Hash[errbit_history_weeks.zip([0]*weeks_of_errbit_history)]
+    arrivals.each do |arrived_at|
+      week = arrived_at.beginning_of_week
+      arrivals_by_week[week] += 1 if arrivals_by_week.key?(week)
+    end
+    
+    departures_by_week = Hash[errbit_history_weeks.zip([0]*weeks_of_errbit_history)]
+    departures.each do |departed_at|
+      week = departed_at.beginning_of_week
+      departures_by_week[week] += 1 if departures_by_week.key?(week)
+    end
+    
+    arrivals_by_week_by_project[project] = arrivals_by_week.values
+    departures_by_week_by_project[project] = departures_by_week.values
+    
+    # "Arrive" all the tickets created before the first week and still open
+    arrivals_by_week_by_project[project][0] += tickets_for_project.select { |ticket| ticket.created_at < date_range_multiweek2.first && ticket.closed_at.nil? }.count
+    
+    open_tickets_this_week = tickets_for_project.select { |ticket| ticket.created_at <= date_range_multiweek2.end && (ticket.closed_at.nil? || ticket.closed_at > date_range_multiweek2.end) }
+    
+    tickets_by_severity = tickets_by_severity_by_project[project] = Hash[color_by_type.values.zip([0] * color_by_type.values.length)]
+    open_tickets_this_week.each do |ticket|
+      severity = ticket.type
+      severity = nil if severity.blank?
+      color = color_by_type[severity] # <-- Severity could be whatever the user has defined in Unfuddle: not necessarily what we've listed in config.rb
+      tickets_by_severity[color] += 1 if tickets_by_severity.key?(color)
+    end
+    
+    open_tickets_by_project[project] = open_tickets_this_week.count
+    
+  end
+  
+  # 68 is the height of a score row
+  # 18 is the height of the label
+  # height = 68 * unfuddle_projects.length - 22
+  # height = 200 if height < 200
+  # height = 700 if height > 700 # Google limits charts to 300000 pixels
+  
+  width = 826
+  height = 300
+  
+%>
+
+<div class="weekly-report-body">
+  
+  <table class="layout">
+    <tr>
+      <td>
+
+        <table class="tickets-report">
+          <tbody>
+            <% unfuddle_projects.each do |project| %>
+              <tr>
+                <th><span class="label <%= project.color %>"><%= project.name %></span></th>
+                <td>
+                  <%
+                    new_tickets = arrivals_by_week_by_project[project].last
+                    closed_tickets = departures_by_week_by_project[project].last
+                    open_tickets = open_tickets_by_project[project]
+                  %>
+                  <%= score_card :medium do |s| %>
+                    <% s.raw do %>
+                      <p class="pie-graph">
+                        <%= pie_graph data_by_color: tickets_by_severity_by_project[project], width: 56, retina: true %>
+                      </p>
+                    <% end %>
+                    <% s.score "New", new_tickets, :class => "ticket-count-new",
+                        prefix: "<span class=\"sign\">+</span>".html_safe %>
+                    <% s.score "Fixed", closed_tickets, :class => "ticket-count-closed",
+                        prefix: "<span class=\"sign\">&ndash;</span>".html_safe %>
+                    <% s.score "Open", open_tickets, :class => "ticket-count-open" %>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+
+      </td>
+    </tr>
+    <tr>
+      <td class="tickets-cfd">
+        
+        <div class="cfd">
+          <%= cumulative_flow_diagram({
+            arrivals: arrivals_by_week_by_project.values,
+            departures: departures_by_week_by_project.values,
+            colors: unfuddle_projects.map { |project| colors[project.color] },
+            width: width,
+            height: height,
+            title: "Cumulative Flow Diagram"
+          }) %>
+        </div>
+        
+      </td>
+    </tr>
+  </table>
+  
+</div>

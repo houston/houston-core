@@ -1,0 +1,28 @@
+<h3 class="heading">
+  <%= image_tag image_url("heading-wrench-48.png"), size: "48" %>
+  Maintenance
+</h3>
+
+<div class="weekly-report-body">
+  
+  <ul class="maintenance-lights">
+    <% @projects.each do |project| %>
+      <% ProjectDependency.for(project).each do |dependency| %>
+        <% unless dependency.up_to_date? %>
+          <% indicator = dependency.maintenance_light %>
+          <li class="maintenance-light">
+            <span class="stoplight <%= indicator.color %>"></span>&nbsp;
+            <span class="project-name label <%= project.color %>"><%= project.name %></span>&nbsp;
+            <span class="maintenance-message">
+              Update
+              <span class="dependency-name"><%= dependency.name %></span>
+              from <span class="dependency-version dependency-version-from"><%= dependency.version %></span>
+              to <span class="dependency-version dependency-version-to"><%= dependency.latest_version %></span>
+            </span>
+          </li>
+        <% end %>
+      <% end %>
+    <% end %>
+  </ul>
+  
+</div>

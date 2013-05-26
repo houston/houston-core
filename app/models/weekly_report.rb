@@ -15,6 +15,12 @@ class WeeklyReport
   
   
   
+  def sections
+    %w{commits exceptions tickets maintenance}
+  end
+  
+  
+  
   def deliver_to!(recipients)
     ViewMailer.weekly_report(self, recipients).deliver!
   end
