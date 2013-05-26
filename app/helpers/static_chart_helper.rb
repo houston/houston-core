@@ -40,23 +40,33 @@ module StaticChartHelper
     
     width += 20 if axes == :left
     
+    img_width = width
+    img_height = options[:height]
+    
+    if options[:retina]
+      bar_width *= 2
+      spacing *= 2
+      img_width *= 2
+      img_height *= 2
+    end
+    
     src = Gchart.bar({
       data: options[:data],
       bar_colors: options[:colors],
       labels: options[:labels],
       bar_width_and_spacing: [bar_width, spacing],
-      size: "#{width}x#{options[:height]}"
+      size: "#{img_width}x#{img_height}"
     })
     
     case axes
     when :left
       src << "&chxt=y"
     when :bottom
-      src << "&chxs=1,676767,0,0,_,676767&chxt=x,y"
+      src << "&chxs=1,333333,0,0,_,333333&chxt=x,y"
     when false
-      src << "&chxs=0,676767,0,0,_,676767|1,676767,0,0,_,676767&chxt=x,y"
+      src << "&chxs=0,333333,0,0,_,333333|1,333333,0,0,_,333333&chxt=x,y"
     when :label
-      src << "&chxs=0,676767,0,0,_,676767|1,676767,0,0,_,676767&chxt=x,y"
+      src << "&chxs=0,333333,0,0,_,333333|1,333333,0,0,_,333333&chxt=x,y"
     end
     
     if axes == false && Array.wrap(options[:labels]).any?
@@ -87,20 +97,35 @@ module StaticChartHelper
     min = options.fetch(:min, 0) # data.last.min
     max = options.fetch(:max, data.map(&:max).max)
     
+    width = options[:width]
+    height = options[:height]
+    font_size = 11.5
+    
+    if options[:retina]
+      width *= 2
+      height *= 2
+      font_size *= 1.5
+    end
+    
     src = Gchart.line({
       data: data,
       bar_colors: colors,
       bg: options[:bg],
-      axis_range: [nil, [min, max]],
+      axis_range: [[min, max]],
       min_value: min,
       max_value: max,
-      size: "#{options[:width]}x#{options[:height]}"
+      size: "#{width}x#{height}"
     }) + markers + chls
     
-    if options.fetch(:axes, true)
-      src << "&chxt=r&chxs=0,676767,0,0,_,676767&chxt=y,r"
-    else
-      src << "&chxs=0,676767,0,0,_,676767|1,676767,0,0,_,676767&chxt=x,y"
+    case options.fetch(:axes, :right)
+    when :right
+      src << "&chxt=r,x,y&chxs=0,333333,#{font_size},-1,lt|1,333333,0,0,_|2,333333,0,0,_"
+    when :left
+      src << "&chxt=y"
+    when :bottom
+      src << "&chxs=1,333333,0,0,_,333333&chxt=x,y"
+    when false
+      src << "&chxs=0,333333,0,0,_,333333|1,333333,0,0,_,333333&chxt=x,y"
     end
     
     graph_with_subcaptions(src, options[:width], options[:height], options[:title])
@@ -146,6 +171,19 @@ module StaticChartHelper
       colors: ["FFFFFF"] + colors,
       title: options[:title]
     })
+  end
+  
+  def stacked_area_graph(options={})
+    data = options[:data]
+    
+    length = data.map(&:length).max
+    last_line = [0] * length
+    
+    stacked_data = data.map do |line|
+      last_line = length.times.map { |i| last_line.fetch(i, 0) + line.fetch(i, 0) }
+    end
+    
+    area_graph(options.merge(data: stacked_data))
   end
   
   

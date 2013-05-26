@@ -8,6 +8,8 @@
 h2.test-result-banner {
   font-size: 7em; // ~90px
   border-radius: 12px;
+  margin-top: 36px;
+  margin-bottom: 36px;
 }
 
 .test-result-credit {
@@ -15,7 +17,7 @@ h2.test-result-banner {
   background-color: #ffc;
   font-weight: 200;
   
-  margin: 48px -48px;
+  margin: 12px -48px 48px;
   padding: 16px 64px;
   
   p {
@@ -74,7 +76,7 @@ h2.test-result-banner {
     padding: 0.18em 0 0.18em 5.25em;
     text-indent: -4em;
     
-    &.fail  { background-color: rgb(253, 233, 229); }
+    &.fail  { background-color: rgba(226, 78, 50, 0.15); }
     &.error { background-color: rgb(252, 247, 207); }
     &.skip  { }
   }
@@ -120,4 +122,21 @@ h2.test-result-banner {
   &.fail  { color: #E24E32; } // tomato
   &.error { color: #DFCC3D; }
   &.skip  { }
+}
+
+.test-result-top-matter { margin-bottom: 18px; }
+
+.test-result-stats {
+  position: absolute;
+  left: 0;
+  top: 105px;
+  width: 565px;
+  color: #ccc;
+  
+  p { display: block; margin: 0 0 1.33em; }
+}
+
+.test-result-graph {
+  padding: 0 5px;
+  h5 { margin: 0; text-align: center; font-weight: 500; }
 }

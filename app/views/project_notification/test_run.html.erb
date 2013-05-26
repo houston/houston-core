@@ -1,10 +1,78 @@
-<h1 class="project-banner <%= @project.color %>">
+<h1 class="project-banner <%= @project.color %>" style="margin-bottom: 12px;">
   <small>Test Results for</small> <%= @project.name %>
 </h1>
 
 <h2 class="test-result-banner <%= @test_run.result %>">
   <%= link_to @test_run.result, @test_run.results_url, target: "_blank" %>
 </h2>
+
+<div class="test-result-stats">
+  <div class="score score-large">
+    <p class="test-duration">
+      <span class="score-count"><%= (@test_run.duration.to_i / 1000.0).round(2) %><span class="unit">s</span></span>
+      <span class="score-label">Duration</span>
+    </p>
+    
+    <p class="test-coverage">
+      <span class="score-count"><%= (@test_run.covered_percent.to_f * 100).round(1) %><span class="unit">%</span></span>
+      <span class="score-label">Coverage</span>
+    </p>
+    
+    <% if @test_run.fail_count.zero? %>
+      <p class="test-coverage">
+        <span class="score-count"><%= @test_run.total_count.to_i %></span>
+        <span class="score-label"><%= @test_run.total_count == 1 ? "Test" : "Tests" %></span>
+      </p>
+    <% else %>
+      <p class="test-coverage">
+        <span class="score-count"><%= @test_run.fail_count.to_i %></span>
+        <span class="score-label"><%= @test_run.fail_count == 1 ? "Fail" : "Fails" %></span>
+      </p>
+    <% end %>
+  </div>
+</div>
+
+<table class="test-result-top-matter">
+  <tr>
+    <td class="test-result-graph">
+      <% stats = TestRunStatistics.new(@project) %>
+      <% runs, width, height = 15, 188, 75 %>
+      
+      <%= stacked_area_graph({
+        data: stats.tests(runs),
+        colors: ["FFFFFF", "AA0000", "E24E32", "5DB64C"],
+        width: width,
+        height: height,
+        retina: true,
+        bg: "FFFFFF00",
+        title: "Results (count)"
+      }) %>
+    </td>
+    <td class="test-result-graph">
+      <%= area_graph({
+        data: [stats.coverage(runs)],
+        colors: ["445599"],
+        width: width,
+        height: height,
+        retina: true,
+        max: 100,
+        bg: "FFFFFF00",
+        title: "Coverage (percent)"
+      }) %>
+    </td>
+    <td class="test-result-graph">
+      <%= area_graph({
+        data: [stats.duration(runs)],
+        colors: ["3FC1AA"],
+        width: width,
+        height: height,
+        retina: true,
+        bg: "FFFFFF00",
+        title: "Duration (milliseconds)"
+      }) %>
+    </td>
+  </tr>
+</table>
 
 <% if @test_run.failed? %>
   <% if (blamable_commits = @test_run.blamable_commits).any? %>
