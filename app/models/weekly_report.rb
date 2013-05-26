@@ -21,10 +21,11 @@ class WeeklyReport
   
   
   
-  
-  
   def sections
-    %w{commits exceptions tickets maintenance}
+    { commits:      CommitStats.new(date_range),
+      exceptions:   nil,
+      tickets:      nil,
+      maintenance:  nil }
   end
   
   

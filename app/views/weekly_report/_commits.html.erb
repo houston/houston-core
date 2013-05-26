@@ -1,64 +1,4 @@
-<%
-  
-  @date_range = @weekly_report.date_range
-  weekday_by_wday = %w{Weekend Monday Tuesday Wednesday Thursday Friday Weekend}
-  weekdays = %w{Monday Tuesday Wednesday Thursday Friday Weekend}
-  commits_by_weekday = Hash[weekdays.zip([[], [], [], [], [], []])]
-  weekday_commits_by_project = {}
-  total_commits = 0
-  projects_with_commits = 0
-  commits_by_week_by_project = Hash[@projects.zip]
-  colors = Houston.config.project_colors
-  
-  weeks_of_commit_history = 26
-  date_range_multiweek = ((weeks_of_commit_history - 1).weeks.before(@date_range.begin))..@date_range.end
-  commit_history_weeks = date_range_multiweek.step(7)
-  
-  time_range = @date_range.begin.beginning_of_day.to_time.to_i...@date_range.end.end_of_day.to_time.to_i
-  time_range_multiweek = date_range_multiweek.begin.beginning_of_day.to_time.to_i...date_range_multiweek.end.end_of_day.to_time.to_i
-  
-  
-  
-  
-  benchmark("Preparing data for commits graphs") do
-    @projects.each do |project|
-      
-      commits_by_week = (commits_by_week_by_project[project] ||= Hash[commit_history_weeks.zip([0]*weeks_of_commit_history)])
-      commits_this_week = false
-      
-      
-      commits = project.repo.all_commit_times
-      
-      commits.each do |commit|
-        timestamp = commit.to_i
-        
-        if time_range_multiweek.include?(timestamp)
-          time = Time.at(timestamp)
-          date = time.to_date
-          
-          week = date.beginning_of_week
-          next unless commits_by_week.key?(week)
-          commits_by_week[week] = commits_by_week[week] + 1
-          
-          if time_range.include?(timestamp)
-            weekday = weekday_by_wday[date.wday]
-            weekday = "Weekend" unless (6..18).cover?(time.hour)
-            
-            weekday_commits_by_project[project] = weekday_commits_by_project.fetch(project, 0) + 1 unless weekday == "Weekend"
-            commits_by_weekday[weekday].push(color: project.color, project: project.name)
-            commits_this_week = true
-            total_commits += 1
-          end
-        end
-      end
-      
-      
-      
-      projects_with_commits += 1 if commits_this_week
-    end
-  end
-
-%>
+<% colors = Houston.config.project_colors %>
 
 <h3 class="heading">
   <%= image_tag image_url("heading-git-48.png"), size: "48" %>
@@ -74,7 +14,7 @@
         <table class="commits">
           <thead>
             <tr>
-              <% weekdays[0...5].each do |weekday| %>
+              <% commits.weekdays[0...5].each do |weekday| %>
                 <th width="80" class="<%= weekday.downcase %>"><%= weekday %></th>
               <% end %>
               <th width="80" class="weekend">Evening,<br />Weekend</th>
@@ -82,16 +22,16 @@
           </thead>
           <tbody>
             <tr>
-              <% weekdays.each do |weekday| %>
+              <% commits.by_weekday.each do |weekday, commits| %>
                 <td width="80" class="<%= weekday.downcase %>">
-                  <% commits_by_weekday[weekday].each do |commit| %><b class="commit bubble <%= commit[:color] %>" rel="tooltip" title="<%= commit[:project] %>"></b><% end %>
+                  <% commits.each do |commit| %><b class="commit bubble <%= commit[:color] %>" rel="tooltip" title="<%= commit[:project] %>"></b><% end %>
                 </td>
               <% end %>
               
               <td>
                 <%= score_card :large do |s| %>
-                  <% s.score (total_commits == 1 ? "Commit" : "Commits"), total_commits, :class => "total-commits" %>
-                  <% s.score (projects_with_commits == 1 ? "Project" : "Projects"), projects_with_commits, :class => "total-projects" %>
+                  <% s.score (commits.count == 1 ? "Commit" : "Commits"), commits.count, :class => "total-commits" %>
+                  <% s.score (commits.project_count == 1 ? "Project" : "Projects"), commits.project_count, :class => "total-projects" %>
                 <% end %>
               </td>
             </tr>
@@ -104,9 +44,9 @@
     <tr>
       <td width="40%">
         <%= pie_graph({
-          data: weekday_commits_by_project.values,
-          colors: weekday_commits_by_project.keys.map { |project| colors[project.color] },
-          labels: weekday_commits_by_project.keys.map(&:name),
+          data: commits.weekday_commits_by_project.values,
+          colors: commits.weekday_commits_by_project.keys.map { |project| colors[project.color] },
+          labels: commits.weekday_commits_by_project.keys.map(&:name),
           width: 320,
           height: 80,
           title: "Focus this week"
@@ -115,11 +55,11 @@
       
       <td width="60%">
         <%= bar_graph({
-          data: @projects.map { |project| commits_by_week_by_project[project].values },
+          data: @projects.map { |project| commits.commits_by_week_by_project[project].values },
           colors: @projects.map { |project| colors[project.color] },
-          count: weeks_of_commit_history,
+          count: commits.weeks_of_history,
           height: 80,
-          title: "#{weeks_of_commit_history}-week commit history"
+          title: "#{commits.weeks_of_history}-week commit history"
         }) %>
       </td>
     </tr>
