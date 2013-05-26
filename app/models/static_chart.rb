@@ -91,17 +91,45 @@ class StaticChart
     raise NotImplementedError
   end
   
-  
+  def render_graph
+    src = self.src
+    Rails.logger.debug "[gcharts] URL length: #{src.length} (#{title})"
+    "<img src=\"#{src}\" width=\"#{width}\" height=\"#{height}\" alt=\"#{title}\" class=\"google-chart\" />"
+  end
   
   def to_s
     return "" if empty?
     
-    src = self.src
-    Rails.logger.debug "[gcharts] URL length: #{src.length} (#{title})"
-    
-    html = "<img src=\"#{src}\" width=\"#{width}\" height=\"#{height}\" alt=\"#{title}\" class=\"google-chart\" />"
+    html = render_graph
     html << "<h5>#{title}</h5>" if title
     html.html_safe
+  end
+  
+  
+  
+protected
+  
+  def chm
+    markers = self.markers
+    return "" if markers.empty?
+    "&chm=#{markers.join("|")}"
+  end
+  
+  def markers
+    []
+  end
+  
+  def chxs
+    case axes
+    when :right
+      "&chxt=r,x,y&chxs=0,333333,#{font_size},-1,lt|1,333333,0,0,_|2,333333,0,0,_"
+    when :left
+      "&chxt=y&chxs=0,333333,#{font_size},-1,lt"
+    when :bottom
+      "&chxs=1,333333,0,0,_,333333&chxt=x,y"
+    when false, :label
+      "&chxs=0,333333,0,0,_,333333|1,333333,0,0,_,333333&chxt=x,y"
+    end
   end
   
 end

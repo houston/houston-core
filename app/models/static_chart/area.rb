@@ -1,12 +1,12 @@
 class StaticChart
   class Area < StaticChart
     
-    
     def defaults
       super.merge(
-        line_width: 0,
+        line_weight: 0,
         axes: :right )
     end
+    
     
     
     def line_weight
@@ -17,56 +17,53 @@ class StaticChart
       options.fetch(:marker_colors, colors)
     end
     
+    def data
+      @data ||= stack_data(super)
+    end
+    
+    def min
+      options.fetch(:min, 0) # data.last.min
+    end
+    
+    def max
+      options.fetch(:max, data.flatten.compact.max)
+    end
+    
+    
     
     def src
-      length = self.data.map(&:length).max
-      last_line = [0] * length
-      
-      stacked_data = self.data.map do |line|
-        last_line = length.times.map { |i| last_line.fetch(i, 0) + line.fetch(i, 0) }
-      end
-      
-      data = stacked_data.reverse
-      colors = self.colors.reverse
-      marker_colors = self.marker_colors.reverse
-      
-      markers = []
-      marker_colors.each_with_index do |color, i|
-        markers << "B,#{color},#{i},0,0"
-      end
-      markers = "&chm=#{markers.join("|")}"
-
-      chls = "&chls=" + (["#{line_weight},0,0"] * (data.length-1)).join("|") + "|0,0,0"
-
-      min = options.fetch(:min, 0) # data.last.min
-      max = options.fetch(:max, data.flatten.compact.max)
-      
       src = Gchart.line(
-        data: data,
-        bar_colors: colors,
+        data: data.reverse,
+        bar_colors: colors.reverse,
         bg: bg,
         axis_range: [[min, max]],
         min_value: min,
         max_value: max,
         size: size )
       
-      src << markers
+      src << chm
       src << chls
-      
-      case axes
-      when :right
-        src << "&chxt=r,x,y&chxs=0,333333,#{font_size},-1,lt|1,333333,0,0,_|2,333333,0,0,_"
-      when :left
-        src << "&chxt=y"
-      when :bottom
-        src << "&chxs=1,333333,0,0,_,333333&chxt=x,y"
-      when false
-        src << "&chxs=0,333333,0,0,_,333333|1,333333,0,0,_,333333&chxt=x,y"
-      end
-      
+      src << chxs
       src
     end
     
+    
+    
+  protected
+    
+    def stack_data(data)
+      length = data.map(&:length).max
+      last_line = [0] * length
+      data.map { |line| last_line = length.times.map { |i| last_line.fetch(i, 0) + line.fetch(i, 0) } }
+    end
+    
+    def markers
+      marker_colors.reverse.map_with_index { |color, i| "B,#{color},#{i},0,0" }
+    end
+    
+    def chls
+      "&chls=" + (["#{line_weight},0,0"] * (data.length-1)).join("|") + "|0,0,0"
+    end
     
   end
 end

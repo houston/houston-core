@@ -1,7 +1,6 @@
 class StaticChart
   class Pie < StaticChart
     
-    
     def defaults
       super.merge( width: 60 )
     end
@@ -20,7 +19,6 @@ class StaticChart
         labels: labels,
         bg: bg )
     end
-    
     
   end
 end
