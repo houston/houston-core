@@ -7,7 +7,7 @@ class TestRunStatistics
   attr_reader :project
   
   def last_completed_test_runs(n)
-    project.test_runs.completed.limit(n)
+    project.test_runs.where("total_count > 0").limit(n)
   end
   
   
