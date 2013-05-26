@@ -1,12 +1,3 @@
-# This module provides view helpers for drawing pie, bar, area, and
-# other kinds of graphs.
-#
-# Its current implementation relies on Google Image Charts which has
-# been deprecated. That service will cease in April 2015.
-#
-# Tentatively, I plan to keep the API that this helper publishes but
-# re-implement it to generate SVG charts, server-side.
-#
 module StaticChartHelper
   
   def pie_graph(options={})
@@ -19,6 +10,27 @@ module StaticChartHelper
   
   def area_graph(options={})
     StaticChart::Area.new(options)
+  end
+  
+  
+  
+  def cumulative_flow_diagram(options={})
+    arrivals = options[:arrivals]
+    departures = options[:departures]
+    colors = ["FFFFFF"] + options[:colors]
+    data = []
+    
+    data << accumulate(stack_sum(*departures))
+    
+    arrivals.length.times do |i|
+      project_arrivals = arrivals[i]
+      project_departures = departures[i]
+      
+      line = project_arrivals.length.times.map { |i| project_arrivals[i] - project_departures[i] }
+      data << accumulate(line)
+    end
+    
+    area_graph(options.merge(data: data, colors: colors))
   end
   
   
@@ -43,48 +55,5 @@ module StaticChartHelper
       cumulative += value
     end
   end
-  
-  
-  
-  
-  def cumulative_flow_diagram(options={})
-    arrivals = options[:arrivals]
-    departures = options[:departures]
-    colors = options[:colors]
-    
-    data = []
-    line = stack_sum(*departures)
-    data << line
-    
-    arrivals.each do |project_arrivals|
-      line = stack_sum(line, project_arrivals)
-      data << line
-    end
-    
-    data.map!(&method(:accumulate))
-    
-    area_graph({
-      data: data,
-      width: options[:width],
-      height: options[:height],
-      colors: ["FFFFFF"] + colors,
-      title: options[:title]
-    })
-  end
-  
-  def stacked_area_graph(options={})
-    data = options[:data]
-    
-    length = data.map(&:length).max
-    last_line = [0] * length
-    
-    stacked_data = data.map do |line|
-      last_line = length.times.map { |i| last_line.fetch(i, 0) + line.fetch(i, 0) }
-    end
-    
-    area_graph(options.merge(data: stacked_data))
-  end
-  
-  
   
 end

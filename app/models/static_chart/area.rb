@@ -19,7 +19,14 @@ class StaticChart
     
     
     def src
-      data = self.data.reverse
+      length = self.data.map(&:length).max
+      last_line = [0] * length
+      
+      stacked_data = self.data.map do |line|
+        last_line = length.times.map { |i| last_line.fetch(i, 0) + line.fetch(i, 0) }
+      end
+      
+      data = stacked_data.reverse
       colors = self.colors.reverse
       marker_colors = self.marker_colors.reverse
       

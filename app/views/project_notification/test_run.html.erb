@@ -38,7 +38,7 @@
       <% stats = TestRunStatistics.new(@project) %>
       <% runs, width, height = 15, 188, 75 %>
       
-      <%= stacked_area_graph({
+      <%= area_graph({
         data: stats.tests(runs),
         colors: ["FFFFFF", "AA0000", "E24E32", "5DB64C"],
         width: width,
