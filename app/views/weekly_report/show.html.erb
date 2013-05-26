@@ -15,7 +15,7 @@
   </h1>
   
   <% @weekly_report.sections.each do |section, context| %>
-    <%= render partial: section.to_s, locals: {weekly_report: @weekly_report, section => context} %>
+    <%= render partial: section.to_s, locals: context.merge(weekly_report: @weekly_report) %>
   <% end %>
   
 </div>
