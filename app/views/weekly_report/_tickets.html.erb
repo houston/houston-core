@@ -7,6 +7,7 @@
 
 <%
   
+  @date_range = @weekly_report.date_range
   weeks_of_errbit_history = 16
   date_range_multiweek2 = ((weeks_of_errbit_history - 1).weeks.before(@date_range.begin))..@date_range.end
   errbit_history_weeks = date_range_multiweek2.step(7)

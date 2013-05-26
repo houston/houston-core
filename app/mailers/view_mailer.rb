@@ -33,7 +33,6 @@ class ViewMailer < ActionMailer::Base
   
   
   def weekly_report(weekly_report, recipients)
-    @date_range = weekly_report.date_range
     @projects = Project.scoped
     @title = weekly_report.title
     

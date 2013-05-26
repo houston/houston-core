@@ -4,7 +4,6 @@ class WeeklyReportController < ApplicationController
   skip_before_filter :verify_authenticity_token, :only => :send_email
   
   def show
-    @date_range = @weekly_report.date_range
     @projects = Project.scoped
   end
   
