@@ -1,28 +1,15 @@
 class WeeklyReport
   class BugStats
+    include HistoricalWeeklyStats
     
     
-    def initialize(date_range, projects: Project.scoped, weeks_of_history: 16)
+    def initialize(this_week, projects: Project.scoped, weeks_of_history: 16)
+      @this_week = this_week
       @weeks_of_history = weeks_of_history
-      @date_range = date_range
-      # weekday_by_wday = %w{Weekend Monday Tuesday Wednesday Thursday Friday Weekend}
-      # weekdays = %w{Monday Tuesday Wednesday Thursday Friday Weekend}
+      
       total_bugs = 0
-      
-      # weeks_of_commit_history = 26
-      # date_range_multiweek = ((weeks_of_commit_history - 1).weeks.before(@date_range.begin))..@date_range.end
-      # 
-      @weeks_of_errbit_history = 16
-      date_range_multiweek2 = ((@weeks_of_errbit_history - 1).weeks.before(@date_range.begin))..@date_range.end
-      errbit_history_weeks = date_range_multiweek2.step(7)
-      # 
-      # time_range = @date_range.begin.beginning_of_day.to_time.to_i...@date_range.end.end_of_day.to_time.to_i
-      # time_range_multiweek = date_range_multiweek.begin.beginning_of_day.to_time.to_i...date_range_multiweek.end.end_of_day.to_time.to_i
-      
-      
-      
       @by_project = {}
-      @history_by_project = {} # Hash[projects.zip]
+      @history_by_project = {}
       @by_grade = {"A" => 0, "B" => 0, "C" => 0, "D" => 0, "F" => 0, " " => 0}
       bugs_by_possible_grade = {"A" => 0, "B" => 0, "C" => 0, "D" => 0, "F" => 0}
       @new_this_week = 0
@@ -30,17 +17,16 @@ class WeeklyReport
       @change_this_week = 0
       
       
-      
-      bugs = Houston::Adapters::ErrorTracker::ErrbitAdapter.problems_during(date_range_multiweek2)
+      bugs = Houston::Adapters::ErrorTracker::ErrbitAdapter.problems_during(history_range)
       
       bugs.each do |bug|
         project = projects.detect { |project| project.extended_attributes["errbit_app_id"] == bug.app_id }
         next unless project
         
-        bugs_by_week = (@history_by_project[project] ||= Hash[errbit_history_weeks.zip([0]*@weeks_of_errbit_history)])
+        bugs_by_week = @history_by_project[project] ||= new_history_vector
         bug_counts = (@by_project[project] ||= {"fixed" => 0, "new" => 0, "open" => 0})
         
-        errbit_history_weeks.each do |week|
+        history_weeks.each do |week|
           
           # open during week?
           if (bug.first_notice_at < week) && (bug.resolved_at.nil? || bug.resolved_at >= 7.days.after(week))
@@ -49,14 +35,14 @@ class WeeklyReport
           
         end
         
-        if (bug.first_notice_at < @date_range.end) && (bug.resolved_at.nil? || bug.resolved_at >= @date_range.begin)
+        if (bug.first_notice_at < @this_week.end) && (bug.resolved_at.nil? || bug.resolved_at >= @this_week.begin)
           
-          status = bug.resolved? ? "fixed" : (bug.first_notice_at >= @date_range.begin) ? "new" : "open"
+          status = bug.resolved? ? "fixed" : (bug.first_notice_at >= @this_week.begin) ? "new" : "open"
           bug_counts[status] += 1
           
         end
-        @new_this_week += 1 if bug.first_notice_at < @date_range.end && bug.first_notice_at > @date_range.begin
-        @fixed_this_week += 1 if bug.resolved_at && bug.resolved_at < @date_range.end && bug.resolved_at > @date_range.begin
+        @new_this_week += 1 if bug.first_notice_at < @this_week.end && bug.first_notice_at > @this_week.begin
+        @fixed_this_week += 1 if bug.resolved_at && bug.resolved_at < @this_week.end && bug.resolved_at > @this_week.begin
         
         
         time_unresolved = (bug.resolved_at || Time.now) - bug.first_notice_at
@@ -95,7 +81,10 @@ class WeeklyReport
     
     
     
-    attr_reader :by_grade,
+    attr_reader :this_week,
+                :weeks_of_history,
+                
+                :by_grade,
                 :gpa_actual,
                 :gpa_possible,
                 
@@ -105,8 +94,8 @@ class WeeklyReport
                 
                 :history_by_project,
                 
-                :by_project,
-                :weeks_of_history
+                :by_project
+                
     
   end
 end

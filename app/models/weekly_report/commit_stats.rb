@@ -1,9 +1,11 @@
 class WeeklyReport
   class CommitStats
+    include HistoricalWeeklyStats
     
-    def initialize(date_range, weeks_of_history: 26, projects: Project.scoped)
+    
+    def initialize(this_week, weeks_of_history: 26, projects: Project.scoped)
+      @this_week = this_week
       @weeks_of_history = weeks_of_history
-      @date_range = date_range
       @count = 0 # commits this week
       @project_count = 0 # projects committed to this week
       
@@ -13,16 +15,16 @@ class WeeklyReport
       @by_project = {}
       @history_by_project = Hash[projects.zip]
       
-      date_range_multiweek = ((weeks_of_history - 1).weeks.before(@date_range.begin))..@date_range.end
-      commit_history_weeks = date_range_multiweek.step(7)
+      history_range = ((weeks_of_history - 1).weeks.before(@this_week.begin))..@this_week.end
+      history_weeks = history_range.step(7)
       
-      time_range = @date_range.begin.beginning_of_day.to_time.to_i...@date_range.end.end_of_day.to_time.to_i
-      time_range_multiweek = date_range_multiweek.begin.beginning_of_day.to_time.to_i...date_range_multiweek.end.end_of_day.to_time.to_i
+      time_range = @this_week.begin.beginning_of_day.to_time.to_i...@this_week.end.end_of_day.to_time.to_i
+      time_range_multiweek = history_range.begin.beginning_of_day.to_time.to_i...history_range.end.end_of_day.to_time.to_i
       
       
       projects.each do |project|
         
-        commits_by_week = (@history_by_project[project] ||= Hash[commit_history_weeks.zip([0]*weeks_of_history)])
+        commits_by_week = @history_by_project[project] ||= new_history_vector
         commits_this_week = false
         
         commits = project.repo.all_commit_times
@@ -56,8 +58,8 @@ class WeeklyReport
     
     
     
-    attr_reader :weeks_of_history,
-                :date_range,
+    attr_reader :this_week,
+                :weeks_of_history,
                 :weekdays,
                 :count,
                 :project_count,
