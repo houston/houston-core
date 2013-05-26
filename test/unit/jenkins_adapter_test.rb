@@ -16,6 +16,7 @@ class JenkinsAdapterTest < ActiveSupport::TestCase
       total_count:  4,
       fail_count:   1,
       pass_count:   3,
+      regression_count: 0,
       skip_count:   0,
       tests:        [{
         suite: "ChangeTest", name: "should have a tag when created for a slug that has been aliased to a tag",
