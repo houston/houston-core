@@ -629,8 +629,9 @@
                   
                   <%= image_tag Gchart.line({
                     data: tickets_by_weekday,
+                    bg: "FFFFFF00",
                     size: "#{width}x#{height}"}) <<
-                    "chf=bg,s,FFFFFF00&chco=3399CC&chm=B,3399CC22,0,0,0&chxt=r&chxr=0,0,#{max}",
+                    "&chco=3399CC&chm=B,3399CC22,0,0,0&chxt=r&chxr=0,0,#{max}",
                     width: width,
                     height: height,
                     alt: "Tickets in testing each day",

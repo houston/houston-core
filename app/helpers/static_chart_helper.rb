@@ -24,8 +24,9 @@ module StaticChartHelper
       data: options[:data],
       bar_colors: options[:colors],
       size: "#{width}x#{height}",
-      labels: options[:labels]
-    }) + "&chf=bg,s,FFFFFF00"
+      labels: options[:labels],
+      bg: "FFFFFF00" # transparent background
+    })
     
     graph_with_subcaptions(src, width, height, options[:title])
   end
