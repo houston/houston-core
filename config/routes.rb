@@ -51,6 +51,12 @@ Houston::Application.routes.draw do
   
   
   
+  # Test Runs
+  
+  get "projects/:slug/test_runs/:commit", :to => "test_runs#show"
+  
+  
+  
   # Projects
   
   match "projects/dependencies", :to => "project_dependencies#index", :via => :get
