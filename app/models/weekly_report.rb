@@ -25,7 +25,7 @@ class WeeklyReport
     { commits:      { commits: CommitStats.new(date_range) },
       exceptions:   { bugs: BugStats.new(date_range), notices: NoticeStats.new(date_range) },
       tickets:      { tickets: TicketStats.new(date_range) },
-      maintenance:  {} }
+      maintenance:  { maintenance_lights: MaintenanceStats.new } }
   end
   
   
