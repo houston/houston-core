@@ -2,15 +2,14 @@
   <h1 class="weekly-report-heading">
     Weekly Report
     <span class="subtitle">
-      <%= link_to "Prev", weekly_report_path(1.week.until(@weekly_report.date_range.begin)) unless for_email? %>
+      <%= link_to "Prev", weekly_report_path(prev_week(@weekly_report)) unless for_email? %>
       Week of <b><%= @weekly_report %></b><%= ", #{@weekly_report.year}" unless current_year?(@weekly_report.year) %>
       <% unless for_email? %>
-        <% next_date = 1.week.since(@weekly_report.date_range.begin) %>
-        <% if next_date <= Date.today %>
+        <% if (next_date = next_week(@weekly_report)) <= Date.today %>
           <%= link_to "Next", weekly_report_path(next_date) %>
         <% else %>
           <span class="disabled">Next</span>
-        <% end %>
+        <% end unless for_email? %>
       <% end %>
     </span>
   </h1>
