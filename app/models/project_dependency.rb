@@ -51,7 +51,7 @@ class ProjectDependency
       stringified_versions = versions.map(&:to_s)
       current_minor_version = stringified_versions.first[/\d+\.\d+/]
       rx = /^#{current_minor_version}\.\d+$/
-      @patches = stringified_versions.select { |version| version =~ rx }
+      stringified_versions.select { |version| version =~ rx }
     end
   end
   
@@ -59,29 +59,19 @@ class ProjectDependency
   
   def maintenance_light
     return nil if nil?
-    
-    if target_versions.any?
-      maintenance_light_for_target_versions
-    else
-      maintenance_light_for_latest_release
-    end
+    return maintenance_light_for_target_versions if target_versions.any?
+    maintenance_light_for_latest_release
   end
   
   def maintenance_light_for_target_versions
     return MaintenanceLight.new(self, "green", "Nice! #{project.name} is running the latest version of #{dependency.name}.") if up_to_date?
     
-    rx = /^#{minor_version}\.(\d+)$/
-    patchlevel = version.to_s[/\d+$/].to_i
     target_versions.each do |target_version|
-      next unless target_version.to_s =~ rx
-      target_patchlevel = $1.to_i
+      next unless minor_version_of(target_version) == minor_version
       
-      patches_behind = target_patchlevel - patchlevel
-      if patches_behind <= 0
-        return MaintenanceLight.new(self, "spring-green", "#{project.name} is running a safe version of #{dependency.name}.")
-      else
-        return MaintenanceLight.new(self, "yellow", "#{project.name} is running a version of #{dependency.name} only #{pluralize(patches_behind, "patch")} behind #{target_version}. It should be a painless upgrade.")
-      end
+      patches_behind = patchlevel_of(target_version) - patchlevel_of(version)
+      return MaintenanceLight.new(self, "spring-green", "#{project.name} is running a safe version of #{dependency.name}.") if patches_behind <= 0
+      return MaintenanceLight.new(self, "yellow", "#{project.name} is running a version of #{dependency.name} only #{pluralize(patches_behind, "patch")} behind #{target_version}. It should be a painless upgrade.")
     end
     
     MaintenanceLight.new(self, "red", "#{project.name} is running an older version of #{dependency.name}. Watch for breaking changes!")
@@ -107,6 +97,10 @@ private
   
   def minor_version_of(version)
     version.to_s[/\d+\.\d+/]
+  end
+  
+  def patchlevel_of(version)
+    version.to_s[/\d+$/].to_i
   end
   
   
