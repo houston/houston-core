@@ -302,16 +302,14 @@
         </td>
         <td class="exceptions-problem-count">
           <%
-            projects_included, data = [], []
+            data, colors_included = [], []
             @projects.each do |project|
               values = bugs_by_week_by_project[project]
-              if values
-                projects_included << project
-                data << values.values
-              end
+              next unless values
+              
+              data << values.values
+              colors_included << colors[project.color]
             end
-          
-            colors_included = projects_included.map { |project| colors[project.color] }
           %>
           <%= stacked_area_graph({
             data: data,
