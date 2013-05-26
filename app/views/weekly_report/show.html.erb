@@ -385,9 +385,9 @@
                 <% end %>
                 
                 <% s.score "New", bug_counts["new"], :class => "new-bugs",
-                    :prefix => "<span class=\"sign\">+</span>".html_safe %>
+                    prefix: "<span class=\"sign\">+</span>".html_safe %>
                 <% s.score "Fixed", bug_counts["fixed"], :class => "resolved-bugs",
-                    :prefix => "<span class=\"sign\">&ndash;</span>".html_safe %>
+                    prefix: "<span class=\"sign\">&ndash;</span>".html_safe %>
                 <% s.score "Open", bug_counts["open"] + bug_counts["new"], :class => "open-bugs" %>
               <% end %>
             </td>
@@ -495,9 +495,9 @@
                         </p>
                       <% end %>
                       <% s.score "New", new_tickets, :class => "ticket-count-new",
-                          :prefix => "<span class=\"sign\">+</span>".html_safe %>
+                          prefix: "<span class=\"sign\">+</span>".html_safe %>
                       <% s.score "Fixed", closed_tickets, :class => "ticket-count-closed",
-                              :prefix => "<span class=\"sign\">&ndash;</span>".html_safe %>
+                          prefix: "<span class=\"sign\">&ndash;</span>".html_safe %>
                       <% s.score "Open", open_tickets, :class => "ticket-count-open" %>
                     <% end %>
                   </td>

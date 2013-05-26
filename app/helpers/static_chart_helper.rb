@@ -51,9 +51,7 @@ module StaticChartHelper
   # Adds each element to the sum of its predecessors
   def accumulate(array)
     cumulative = 0
-    array.map do |value|
-      cumulative += value
-    end
+    array.map { |value| cumulative += value }
   end
   
 end
