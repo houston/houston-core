@@ -5,13 +5,21 @@ class WeeklyReport
     
     monday = date.beginning_of_week
     @date_range = monday..(6.days.since(monday))
+    @year = monday.year
   end
   
-  attr_reader :date_range
+  attr_reader :date_range, :year
   
   def title
-    "Weekly Report for #{date_range.begin.strftime("%B %e")}"
+    "Weekly Report for #{name_of_week}"
   end
+  
+  def name_of_week
+    date_range.begin.strftime("%B %e")    
+  end
+  alias :to_s :name_of_week
+  
+  
   
   
   

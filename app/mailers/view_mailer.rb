@@ -17,6 +17,7 @@ class ViewMailer < ActionMailer::Base
   helper StaticChartHelper
   helper TicketHelper
   helper UrlHelper
+  helper WeeklyReportHelper
   
   
   helper_method :can?, :cannot?, :current_ability

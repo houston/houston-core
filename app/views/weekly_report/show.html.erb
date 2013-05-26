@@ -3,9 +3,9 @@
     Weekly Report
     <span class="subtitle">
       <%= link_to "Prev", weekly_report_path(1.week.until(@date_range.begin)) unless for_email? %>
-      Week of <b><%= @date_range.begin.strftime("%B %e") %></b><% if @date_range.begin.year != Date.today.year %>, <%= @date_range.begin.year %><% end %>
-      <% next_date = 1.week.since(@date_range.begin) %>
+      Week of <b><%= @weekly_report %></b><%= ", #{@weekly_report.year}" unless current_year?(@weekly_report.year) %>
       <% unless for_email? %>
+        <% next_date = 1.week.since(@date_range.begin) %>
         <% if next_date <= Date.today %>
           <%= link_to "Next", weekly_report_path(next_date) %>
         <% else %>
