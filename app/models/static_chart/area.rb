@@ -2,14 +2,27 @@ class StaticChart
   class Area < StaticChart
     
     
-    def to_s
-      data = options[:data].reverse
-      return "" if data.flatten.empty?
-
-      colors = options[:colors].reverse
-      line_weight = options.fetch(:line_weight, 0)
-      marker_colors = options[:marker_colors] ? options[:marker_colors].reverse : colors
-
+    def defaults
+      super.merge(
+        line_width: 0,
+        axes: :right )
+    end
+    
+    
+    def line_weight
+      options[:line_weight]
+    end
+    
+    def marker_colors
+      options.fetch(:marker_colors, colors)
+    end
+    
+    
+    def src
+      data = self.data.reverse
+      colors = self.colors.reverse
+      marker_colors = self.marker_colors.reverse
+      
       markers = []
       marker_colors.each_with_index do |color, i|
         markers << "B,#{color},#{i},0,0"
@@ -20,27 +33,20 @@ class StaticChart
 
       min = options.fetch(:min, 0) # data.last.min
       max = options.fetch(:max, data.flatten.compact.max)
-
-      img_width   = width   = options.fetch(:width, 60)
-      img_height  = height  = options.fetch(:height, width)
-      font_size   = 11.5
-      if options[:retina]
-        img_width *= 2
-        img_height *= 2
-        font_size *= 1.5
-      end
-
-      src = Gchart.line({
+      
+      src = Gchart.line(
         data: data,
         bar_colors: colors,
-        bg: options[:bg],
+        bg: bg,
         axis_range: [[min, max]],
         min_value: min,
         max_value: max,
-        size: "#{img_width}x#{img_height}"
-      }) + markers + chls
-
-      case options.fetch(:axes, :right)
+        size: size )
+      
+      src << markers
+      src << chls
+      
+      case axes
       when :right
         src << "&chxt=r,x,y&chxs=0,333333,#{font_size},-1,lt|1,333333,0,0,_|2,333333,0,0,_"
       when :left
@@ -50,8 +56,8 @@ class StaticChart
       when false
         src << "&chxs=0,333333,0,0,_,333333|1,333333,0,0,_,333333&chxt=x,y"
       end
-
-      graph_with_subcaptions(src, width, height, options[:title])
+      
+      src
     end
     
     

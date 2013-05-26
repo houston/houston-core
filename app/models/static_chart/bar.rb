@@ -2,30 +2,45 @@ class StaticChart
   class Bar < StaticChart
     
     
-    def to_s
-      bar_width   = options.fetch(:bar_width, 14)
-      spacing     = options.fetch(:spacing, 4)
-      width       = ((bar_width + spacing) * options[:count]) + 10
-      axes        = options.fetch(:axes, :left)
-      width += 20 if axes == :left
-      img_width   = width
-      img_height  = height = options[:height]
-
-      if options[:retina]
-        bar_width *= 2
-        spacing *= 2
-        img_width *= 2
-        img_height *= 2
+    def defaults
+      super.merge(
+        bar_width: 14,
+        spacing: 4,
+        axes: :left )
+    end
+    
+    
+    def bar_width
+      options[:bar_width]
+    end
+    
+    def spacing
+      options[:spacing]
+    end
+    
+    def bar_width_and_spacing
+      retina? ? [bar_width * 2, spacing * 2] : [bar_width, spacing]
+    end
+    
+    
+    def width
+      @width ||= begin
+        w = ((bar_width + spacing) * options[:count]) + 10
+        w += 20 if axes == :left
+        w
       end
-
-      src = Gchart.bar({
-        data: options[:data],
-        bar_colors: options[:colors],
-        labels: options[:labels],
-        bar_width_and_spacing: [bar_width, spacing],
-        size: "#{img_width}x#{img_height}"
-      })
-
+    end
+    
+    
+    def src
+      src = Gchart.bar(
+        data: data,
+        bar_colors: colors,
+        labels: labels,
+        bar_width_and_spacing: bar_width_and_spacing,
+        size: size,
+        bg: bg )
+      
       case axes
       when :left
         src << "&chxt=y"
@@ -36,12 +51,12 @@ class StaticChart
       when :label
         src << "&chxs=0,333333,0,0,_,333333|1,333333,0,0,_,333333&chxt=x,y"
       end
-
+      
       if axes == false && Array.wrap(options[:labels]).any?
         src << "&chm=" << options[:labels].map_with_index { |label, i| "t#{label},000000,#{i},#{i},11" }.join("|")
       end
-
-      graph_with_subcaptions(src, width, height, options[:title])
+      
+      src
     end
     
     
