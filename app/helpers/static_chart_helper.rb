@@ -136,15 +136,27 @@ module StaticChartHelper
   
   # Takes a variable number of arrays
   # Expects at least one array
-  # Expects every array to have same length
   # Sums the corresponding elements in each array
-  def accumulate(*arrays)
+  def stack_sum(*arrays)
     return [] if arrays.empty?
     
-    (0...arrays[0].length).map do |i|
-      arrays.reduce(0) { |sum, array| sum + array[i] }
+    length = arrays.map(&:length).max
+    
+    (0...length).map do |i|
+      arrays.reduce(0) { |sum, array| sum + array.fetch(i, 0) }
     end
   end
+  
+  # Adds each element to the sum of its predecessors
+  def accumulate(array)
+    cumulative = 0
+    array.map do |value|
+      cumulative += value
+    end
+  end
+  
+  
+  
   
   def cumulative_flow_diagram(options={})
     arrivals = options[:arrivals]
@@ -152,18 +164,15 @@ module StaticChartHelper
     colors = options[:colors]
     
     data = []
-    line = accumulate(*departures)
+    line = stack_sum(*departures)
     data << line
     
     arrivals.each do |project_arrivals|
-      line = accumulate(line, project_arrivals)
+      line = stack_sum(line, project_arrivals)
       data << line
     end
     
-    data.map! do |line|
-      cumulative = 0
-      line.map { |value| cumulative += value }
-    end
+    data.map!(&method(:accumulate))
     
     area_graph({
       data: data,
