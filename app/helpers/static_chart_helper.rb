@@ -84,14 +84,16 @@ module StaticChartHelper
     
     chls = "&chls=" + (["#{line_weight},0,0"] * (data.length-1)).join("|") + "|0,0,0"
     
-    min = 0 # data.last.min
-    max = data.first.max
+    min = options.fetch(:min, 0) # data.last.min
+    max = options.fetch(:max, data.map(&:max).max)
     
     src = Gchart.line({
       data: data,
       bar_colors: colors,
       bg: options[:bg],
       axis_range: [nil, [min, max]],
+      min_value: min,
+      max_value: max,
       size: "#{options[:width]}x#{options[:height]}"
     }) + markers + chls
     
