@@ -45,6 +45,15 @@ class TestRun < ActiveRecord::Base
     result.to_s == "pass"
   end
   
+  def broken?
+    return false unless failed?
+    
+    last_tested_ancestor = commits_since_last_test_run.last
+    return false if last_tested_ancestor.nil?
+    
+    project.test_runs.find_by_commit(last_tested_ancestor.sha).passed?
+  end
+  
   def fixed?
     return false unless passed?
     
