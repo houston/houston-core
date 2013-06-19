@@ -38,18 +38,17 @@
       <% stats = TestRunStatistics.new(@project) %>
       <% runs, width, height = 15, 188, 75 %>
       
-      <%= area_graph({
+      <%= area_graph(
         data: stats.tests(runs),
         colors: ["FFFFFF", "AA0000", "E24E32", "5DB64C"],
         width: width,
         height: height,
         retina: true,
         bg: "FFFFFF00",
-        title: "Results (count)"
-      }) %>
+        title: "Results (count)" ) %>
     </td>
     <td class="test-result-graph">
-      <%= area_graph({
+      <%= area_graph(
         data: [stats.coverage(runs)],
         colors: ["445599"],
         width: width,
@@ -57,19 +56,17 @@
         retina: true,
         max: 100,
         bg: "FFFFFF00",
-        title: "Coverage (percent)"
-      }) %>
+        title: "Coverage (percent)" ) %>
     </td>
     <td class="test-result-graph">
-      <%= area_graph({
+      <%= area_graph(
         data: [stats.duration(runs)],
         colors: ["3FC1AA"],
         width: width,
         height: height,
         retina: true,
         bg: "FFFFFF00",
-        title: "Duration (seconds)"
-      }) %>
+        title: "Duration (seconds)" ) %>
     </td>
   </tr>
 </table>
