@@ -13,11 +13,18 @@ module Houston
           
           
           def project_url
-            "#{connection.errbit_url}/apps/#{app_id}"
+            connection.project_url(app_id)
           end
           
           def error_url(err)
-            "#{project_url}/errs/#{err}"
+            connection.error_url(app_id, err)
+          end
+          
+          
+          def problems_during(range)
+            connection
+              .problems_during(range)
+              .select { |problem| problem.app_id == app_id }
           end
           
           

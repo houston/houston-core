@@ -26,6 +26,8 @@ class ErrorTrackerAdatersApiTest < ActiveSupport::TestCase
     test "#{app.class.name} responds to the ErrorTracker::App interface" do
       assert_respond_to app, :project_url
       assert_respond_to app, :error_url
+      
+      assert_respond_to app, :problems_during
     end
   end
   

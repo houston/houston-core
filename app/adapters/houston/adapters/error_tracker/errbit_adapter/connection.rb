@@ -27,6 +27,16 @@ module Houston
           
           
           
+          def project_url(app_id)
+            "#{errbit_url}/apps/#{app_id}"
+          end
+          
+          def error_url(app_id, err)
+            "#{project_url(app_id)}/problems/#{err}"
+          end
+          
+          
+          
         private
           
           
@@ -40,9 +50,17 @@ module Houston
           def to_problem(attributes)
             Problem.new(
               first_notice_at: attributes["first_notice_at"].try(:to_time),
+              last_notice_at: attributes["last_notice_at"].try(:to_time),
+              notices_count: attributes["notices_count"],
+              
               resolved: attributes["resolved"],
               resolved_at: attributes["resolved_at"].try(:to_time),
-              app_id: attributes["app_id"])
+              
+              app_id: attributes["app_id"],
+              message: attributes["message"],
+              where: attributes["where"],
+              environment: attributes["environment"],
+              url: error_url(attributes["app_id"], attributes["_id"]["$oid"]))
           end
           
           

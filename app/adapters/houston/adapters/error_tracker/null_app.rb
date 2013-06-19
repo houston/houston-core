@@ -15,6 +15,10 @@ module Houston
           nil
         end
         
+        def problems_during(range)
+          []
+        end
+        
         # ------------------------------------------------------------------------- #
         
         
