@@ -1,14 +1,4 @@
 GIT
-  remote: git://github.com/houstonmc/houston-scheduler.git
-  revision: a6ce57e2c43aa369accfc0671a8f9cd0dd500eaa
-  specs:
-    houston-scheduler (0.0.1)
-      coffee-rails (~> 3.2.1)
-      handlebars_assets
-      rails (~> 3.2.9)
-      sass-rails (~> 3.2.3)
-
-GIT
   remote: git://github.com/houstonmc/simplecov-json.git
   revision: ad09e37eebbbb177fbc5e65bdd3db80cc997c6a6
   specs:
@@ -23,6 +13,15 @@ GIT
     devise_ldap_authenticatable (0.7.0)
       devise (~> 2.0)
       net-ldap (~> 0.2)
+
+PATH
+  remote: ../houston-scheduler
+  specs:
+    houston-scheduler (0.0.1)
+      coffee-rails (~> 3.2.1)
+      handlebars_assets
+      rails (~> 3.2.9)
+      sass-rails (~> 3.2.3)
 
 GEM
   remote: http://rubygems.org/
@@ -67,7 +66,7 @@ GEM
       json
     ansi (1.4.3)
     arel (3.0.2)
-    backbone-rails (0.9.10)
+    backbone-rails (1.0.0)
       rails (>= 3.0.0)
     bcrypt-ruby (3.0.1)
     better_errors (0.8.0)
