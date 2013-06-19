@@ -1,0 +1,18 @@
+<h3 class="heading">
+  <%= image_tag image_url("heading-bug-48.png"), size: "36" %>
+  New Exceptions
+</h3>
+
+<% @report.new_exceptions.each do |exception| %>
+  <%= link_to exception.url, class: "exception" do %>
+    <span class="exception-message"><%= exception.message %></span>
+    <% unless exception.where.blank? or exception.where == "unknown" %>
+      <span class="exception-where"><%= exception.where %></span>
+    <% end %>
+    <span class="exception-notice-count">
+      <%= score_card :small do |s| %>
+        <% s.score (exception.notices_count == 1) ? "Notice" : "Notices", exception.notices_count %>
+      <% end %>
+    </span>
+  <% end %>
+<% end %>

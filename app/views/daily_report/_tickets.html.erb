@@ -1,0 +1,40 @@
+<h3 class="heading">
+  <%= image_tag image_url("heading-idea-48.png"), size: "36" %>
+  Ticket Movement
+</h3>
+
+<% if @report.tickets_created.any? %>
+  <h3><%= pluralize @report.tickets_created.count, "ticket" %> created</h3>
+  <ul class="tickets">
+    <% @report.tickets_created.each do |queue_change| %>
+      <li class="ticket">
+        <span class="ticket-queue"><%= queue_change[:queue_after] %></span>
+        <%= link_to_ticket(queue_change[:ticket]) %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+
+<% if @report.tickets_closed.any? %>
+  <h3><%= pluralize @report.tickets_closed.count, "ticket" %> closed</h3>
+  <ul class="tickets">
+    <% @report.tickets_closed.each do |queue_change| %>
+      <li class="ticket">
+        <span class="ticket-queue"><%= queue_change[:queue_before] %></span>
+        <%= link_to_ticket(queue_change[:ticket]) %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+
+<% if @report.tickets_with_queue_changes.any? %>
+  <h3><%= pluralize @report.tickets_with_queue_changes.count, "ticket" %> moved</h3>
+  <ul class="tickets">
+    <% @report.tickets_with_queue_changes.each do |queue_change| %>
+      <li class="ticket">
+        <span class="ticket-queue ticket-queue-from"><%= queue_change[:queue_before] %></span>&rarr;<span class="ticket-queue ticket-queue-to"><%= queue_change[:queue_after] %></span>
+        <%= link_to_ticket(queue_change[:ticket]) %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>

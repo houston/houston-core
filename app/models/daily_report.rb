@@ -15,9 +15,22 @@ class DailyReport
     "activity on #{date.strftime("%A, %B %e")}"
   end
   
+  
+  
   def any_news?
-    queue_changes.any?
+    queue_changes.any? || wip.any? || new_exceptions.any?
   end
+  
+  
+  
+  def wip
+    return @wip if defined?(@wip)
+    @wip = []
+    @wip << [exceptions.count, :exceptions] if exceptions.count > 0
+    @wip
+  end
+  
+  
   
   def tickets_created
     @tickets_created ||= queue_changes.select { |change| change[:queue_before] == "Created" }
@@ -33,12 +46,22 @@ class DailyReport
   
   
   
+  def exceptions
+    @exceptions ||= project.error_tracker.problems_during(timespan)
+  end
+  
+  def new_exceptions
+    @new_exceptions ||= exceptions.select { |exception| timespan.cover? exception.first_notice_at }
+  end
+  
+  
+  
   def deliver_to!(recipients)
     ProjectNotification.daily_report(self, recipients).deliver! if any_news?
   end
   
   def self.deliver_all!(recipients, date=Date.today-1)
-    Project.with_ticket_tracker.map do |project|
+    Project.all.map do |project|
       DailyReport.new(project, date).deliver_to!(recipients)
     end
   end

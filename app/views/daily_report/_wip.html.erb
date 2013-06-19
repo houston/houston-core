@@ -1,0 +1,8 @@
+<div class="alert">
+  <h3>Work-in-Progress</h3>
+  <ul class="wip">
+    <% @report.wip.each do |wip| %>
+      <li class="wip"><%= render_wip(@project, wip) %></li>
+    <% end %>
+  </ul>
+</div>

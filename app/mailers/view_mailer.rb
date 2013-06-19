@@ -9,6 +9,7 @@ class ViewMailer < ActionMailer::Base
   helper AvatarHelper
   helper BacktraceHelper
   helper CommitHelper
+  helper DailyReportHelper
   helper EmailHelper
   helper EmojiHelper
   helper MarkdownHelper

@@ -1,4 +1,42 @@
 #daily_report {
+  max-width: 880px;
+  padding: 0 40px 20px;
+  
+  h3.heading {
+    font-weight: 500;
+    font-size: 1.66em;
+    color: #333333; // for Gmail
+    
+    margin-top: 2em;
+    border-bottom: 1px solid #bbb;
+    
+    line-height: 36px;
+    vertical-align: top;
+    
+    img {
+      display: inline-block;
+      width: 36px;
+      height: 36px;
+      vertical-align: bottom;
+    }
+  }
+  
+  .alert h3 {
+    font-size: 1.33em;
+    margin: 0.25em 0;
+    color: rgb(136, 127, 108);
+  }
+  
+  ul.wip {
+    margin: 0;
+    padding: 0;
+  }
+  
+  li.wip {
+    margin: 0;
+    padding: 0;
+    display: block;
+  }
   
   .ticket-queue {
     display: inline-block;
@@ -20,6 +58,42 @@
     display: block;
     margin: 2px 0;
     padding: 0;
+  }
+  
+  .exception {
+    display: block;
+    margin: 0.25em 0;
+    background-color: #efefef;
+    color: #555555;
+    padding: 1em 1.5em;
+    text-decoration: none;
+    position: relative;
+    min-height: 2em;
+    border-radius: 2px;
+    
+    &:hover {
+      background-color: rgb(223, 233, 238);
+      text-decoration: none;
+    }
+    
+    .exception-message {
+      display: block;
+      font-size: 1.25em;
+      padding-right: 160px;
+    }
+    
+    .exception-where {
+      display: block;
+      margin-top: 0.25em;
+      font-weight: 200;
+    }
+    
+    .exception-notice-count {
+      display: block;
+      position: absolute;
+      top: 0;
+      right: 1.5em;
+    }
   }
   
 }
