@@ -4,10 +4,9 @@ class DailyReport
     @project = project
     @date = date.to_date
     @timespan = date.beginning_of_day...date.end_of_day
-    @queue_changes = find_queue_changes!
   end
   
-  attr_reader :project, :date, :timespan, :queue_changes
+  attr_reader :project, :date, :timespan
   
   
   
@@ -16,6 +15,10 @@ class DailyReport
   end
   
   
+  
+  def recipients
+    @recipients ||= project.followers.developers
+  end
   
   def any_news?
     queue_changes.any? || wip.any? || new_exceptions.any?
@@ -31,6 +34,10 @@ class DailyReport
   end
   
   
+  
+  def queue_changes
+    @queue_changes ||= find_queue_changes!
+  end
   
   def tickets_created
     @tickets_created ||= queue_changes.select { |change| change[:queue_before] == "Created" }
@@ -56,14 +63,25 @@ class DailyReport
   
   
   
+  def deliver!
+    deliver_to!(recipients)
+  end
+  
   def deliver_to!(recipients)
     ProjectNotification.daily_report(self, recipients).deliver! if any_news?
   end
   
-  def self.deliver_all!(recipients, date=Date.today-1)
-    Project.all.map do |project|
-      DailyReport.new(project, date).deliver_to!(recipients)
+  def self.reports_with_news_and_recipients(date)
+    reports_with_news_and_recipients = []
+    Project.find_each do |project|
+      report = DailyReport.new(project, date)
+      reports_with_news_and_recipients << report if report.recipients.any? && report.any_news?
     end
+    reports_with_news_and_recipients
+  end
+  
+  def self.deliver_all!(date=Date.today-1)
+    reports_with_news_and_recipients(date).map(&:deliver!)
   end
   
   

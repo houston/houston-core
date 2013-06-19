@@ -33,8 +33,13 @@ class User < ActiveRecord::Base
   
   Houston.roles.each do |role|
     method_name = role.downcase.gsub(' ', '_')
+    collection_name = method_name.pluralize
     
     class_eval <<-RUBY
+    def self.#{collection_name}
+      where(role: "#{role}")
+    end
+    
     def #{method_name}?
       role == "#{role}"
     end
