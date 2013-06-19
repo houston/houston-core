@@ -18,11 +18,11 @@ module Houston
           
           
           def problems_during(range)
-            fetch_problems start_date: range.begin.strftime("%Y-%m-%d"), end_date: range.end.strftime("%Y-%m-%d")
+            fetch_problems start_date: range.begin.iso8601, end_date: range.end.iso8601
           end
           
           def notices_during(range)
-            fetch_notices start_date: range.begin.strftime("%Y-%m-%d"), end_date: range.end.strftime("%Y-%m-%d")
+            fetch_notices start_date: range.begin.iso8601, end_date: range.end.iso8601
           end
           
           
