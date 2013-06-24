@@ -2,11 +2,8 @@ module DailyReportHelper
   
   
   def render_wip(project, wip)
-    count, type = wip
-    case type
-    when :exceptions
-      link_to_if(project.error_tracker.project_url, "#{pluralize count, "open exceptions"}", project.error_tracker.project_url, target: "_blank")
-    end
+    count, type, url = wip
+    link_to_if url, "#{pluralize count, type}", url, target: "_blank"
   end
   
   

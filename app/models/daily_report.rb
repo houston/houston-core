@@ -29,8 +29,33 @@ class DailyReport
   def wip
     return @wip if defined?(@wip)
     @wip = []
-    @wip << [exceptions.count, :exceptions] if exceptions.count > 0
+    @wip << [exceptions.count, "open exceptions", project.error_tracker.project_url] if exceptions.count > 0
+    @wip << [unreleased_commits.count, "unreleased commits", commit_range_url] if unreleased_commits.count > 0
     @wip
+  end
+  
+  
+  
+  def unreleased_commits
+    @unreleased_commits ||= find_unreleased_commits!
+  end
+  
+  def find_unreleased_commits!
+    last_release_to_staging = project.releases.to_environment("Staging").first
+    last_release_to_production = project.releases.to_environment("Production").first
+    return [] unless last_release_to_staging && last_release_to_production
+    
+    staging_head = last_release_to_staging.commit1
+    production_head = last_release_to_production.commit1
+    project.repo.commits_between(production_head, staging_head)
+  rescue Houston::Adapters::VersionControl::CommitNotFound
+    []
+  end
+  
+  def commit_range_url
+    return nil unless project.repo.respond_to?(:commit_range_url)
+    return nil unless unreleased_commits.any?
+    project.repo.commit_range_url("#{unreleased_commits.first.sha}^", unreleased_commits.last.sha)
   end
   
   
