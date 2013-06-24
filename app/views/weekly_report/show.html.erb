@@ -21,7 +21,7 @@
     </h3>
     
     <div class="weekly-report-body">
-      <%= render partial: section.template, locals: section.context %>
+      <%= render partial: "weekly_report/#{section.template}", locals: section.context %>
     </div>
   <% end %>
   

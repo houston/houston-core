@@ -36,6 +36,7 @@ class ViewMailer < ActionMailer::Base
   def weekly_report(weekly_report, recipients)
     @projects = Project.scoped
     @title = weekly_report.title
+    @weekly_report = weekly_report
     
     mail({
       to: recipients,
