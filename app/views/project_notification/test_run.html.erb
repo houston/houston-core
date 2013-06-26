@@ -75,10 +75,7 @@
   <% if (blamable_commits = @test_run.blamable_commits).any? %>
     <div class="test-result-credit">
       <p>
-        <%= blamable_commits.uniq_by(&:author_email).map { |commit|
-              "<span class=\"test-result-committer\">#{gravatar_image commit.author_email, size: 48} #{commit.author_name}</span>"
-            }.to_sentence(two_words_connector: " or ", last_word_connector: ", or ").html_safe %>
-        broke the build.
+        Luke broke the build.
         <%= image_tag image_url("emoji/disappointed_relieved.png") %>
       </p>
       
