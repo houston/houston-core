@@ -16,6 +16,7 @@ class ViewMailer < ActionMailer::Base
   helper ReleaseHelper
   helper ScoreCardHelper
   helper StaticChartHelper
+  helper TestRunHelper
   helper TicketHelper
   helper UrlHelper
   helper WeeklyReportHelper
