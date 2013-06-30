@@ -21,6 +21,7 @@ config/keypair.pem
 REVISION
 .sass-cache
 .rvmrc
+.DS_Store
 
 # Ignore test artifacts
 coverage
