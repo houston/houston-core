@@ -21,7 +21,7 @@ class DailyReport
   end
   
   def any_news?
-    queue_changes.any? || wip.any? || new_exceptions.any?
+    queue_changes.any? || new_exceptions.any?
   end
   
   
