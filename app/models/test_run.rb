@@ -118,4 +118,8 @@ class TestRun < ActiveRecord::Base
   
   
   
+  def real_fail_count
+    fail_count + regressions_count
+  end
+  
 end

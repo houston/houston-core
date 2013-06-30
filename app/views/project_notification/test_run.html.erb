@@ -18,15 +18,15 @@
       <span class="score-label">Coverage</span>
     </p>
     
-    <% if @test_run.fail_count.zero? %>
+    <% if @test_run.real_fail_count.zero? %>
       <p class="test-coverage">
         <span class="score-count"><%= @test_run.total_count %></span>
         <span class="score-label"><%= @test_run.total_count == 1 ? "Test" : "Tests" %></span>
       </p>
     <% else %>
       <p class="test-coverage">
-        <span class="score-count"><%= @test_run.fail_count %></span>
-        <span class="score-label"><%= @test_run.fail_count == 1 ? "Fail" : "Fails" %></span>
+        <span class="score-count"><%= @test_run.real_fail_count %></span>
+        <span class="score-label"><%= @test_run.real_fail_count == 1 ? "Fail" : "Fails" %></span>
       </p>
     <% end %>
   </div>
