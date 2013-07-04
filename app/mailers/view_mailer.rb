@@ -52,8 +52,13 @@ protected
   
   def mail(options={})
     options[:from] = format_email_addresses(options[:from]) if options.key?(:from)
-    options[:to] = format_email_addresses(options[:to]) if options.key?(:to)
-    options[:cc] = format_email_addresses(options[:cc]) if options.key?(:cc)
+    options[:to] = format_email_addresses(options[:to]).uniq if options.key?(:to)
+    options[:cc] = format_email_addresses(options[:cc]).uniq if options.key?(:cc)
+    
+    # Don't CC anyone whose already being mailed
+    options[:cc] -= options[:to] if options[:to] && options[:cc]
+    
+    return if Array(options[:to]).none? and Array(options[:cc]).none?
     
     if block_given?
       super
