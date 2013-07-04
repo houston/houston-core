@@ -111,8 +111,9 @@ class Ticket < ActiveRecord::Base
   end
   
   def committers
-    commits.map { |commit| {name: commit.committer, email: commit.committer_email} }.uniq
+    commits.map { |commit| TicketCommitter.new(commit.committer, commit.committer_email) }
   end
+  
   
   
   
@@ -249,12 +250,45 @@ class Ticket < ActiveRecord::Base
   
   
   
+  def participants
+    @participants ||= begin              # Participants in a Ticket include:
+      User.where(id:                     #
+        Array(reporter_id) +             #   - its reporter
+        testing_notes.pluck(:user_id) +  #   - anyone who has commented on it
+        releases.pluck(:user_id)) +      #   - anyone who has released it
+        committers                       #   - anyone who has comitted to it
+    end                                  #
+  end
+  
+  
+  
   # Not certain if it will be best to use Remotable with Tickets or not
   # By putting this here, dependent code won't have to change if we add
   # Remotable to Tickets again.
   def self.nosync; yield; end
   def self.nosync=(value); end
   def self.nosync?; true; end
+  
+  
+  
+  class TicketCommitter
+    
+    def initialize(name, email)
+      @name = name
+      @email = email
+    end
+    
+    attr_reader :name, :email
+    
+    def tester?
+      false
+    end
+    
+    def to_h
+      { name: name, email: email }
+    end
+    
+  end
   
   
   

@@ -39,7 +39,7 @@ class TicketPresenter
       verdict: ticket.verdict.downcase,
       verdictsByTester: ticket.verdicts_by_tester_index,
       queue: ticket.queue,
-      committers: ticket.committers,
+      committers: ticket.committers(&:to_h),
       deployment: ticket.deployment,
       age: ticket.age,
       dueDate: ticket.due_date,
