@@ -237,6 +237,19 @@ Houston.config do
   
   
   
+  on "testing_note:create" do |testing_note|
+    ticket = testing_note.ticket
+    ProjectNotification.testing_note(testing_note).deliver! if ticket.participants.any?
+  end
+  
+  on "deploy:create" do |deploy|
+    deploy.project.maintainers.each do |maintainer|
+      ProjectNotification.maintainer_of_deploy(maintainer, deploy).deliver!
+    end
+  end
+  
+  
+  
   # Cron jobs
   cron do
     # In this block, use the DSL defined by the Whenever gem.
@@ -247,6 +260,10 @@ Houston.config do
     # every :monday, :at => "6am" do
     #   runner "WeeklyReport.deliver_to!(#{RECIPIENTS.inspect})"
     # end
+    
+    every :day, :at => "6:30am" do
+      runner 'DailyReport.deliver_all!', environment: "production"
+    end
     
   end
   
