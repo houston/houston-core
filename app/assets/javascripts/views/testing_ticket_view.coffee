@@ -24,6 +24,7 @@ class window.TestingTicketView extends Backbone.View
     # window.console.log "[ticket] render ##{ticket.number}", ticket
     
     $el = $(@el)
+    $el.attr 'id', "ticket_#{@ticket.id}"
     ticket.maintainer = _.include(ticket.projectMaintainers, window.userId)
     ticket.testerVerdicts = @ticket.testerVerdicts()
     ticket.verdict = @ticket.verdict()
