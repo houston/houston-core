@@ -39,6 +39,7 @@ class window.TestingTicketView extends Backbone.View
   
   showOrHideTestingNotes: (e)->
     return if @$el.hasClass('in-transition')
+    return if @$el.hasClass('deleting')
     return if $(e.target).is('button, a, input')
     
     if @$el.hasClass('expanded')
@@ -173,13 +174,15 @@ class window.TestingTicketView extends Backbone.View
     e.preventDefault()
     $btn = $(e.target)
     
+    @collapse()
+    
     if $btn.hasClass('btn-success') || confirm('Are you suuuure? The ticket\'s not passing...')
-      $(@el).css(opacity: 0.2)
+      @$el.addClass('deleting')
       $btn.attr('disabled', 'disabled')
       @ticket.destroy
         success: (model, response)=>
           @remove()
         error: (model, response)=>
-          @$el.css(opacity: 1.0)
+          @$el.removeClass('deleting')
           $btn.removeAttr('disabled')
           App.showErrorMessage("Unable to close ticket", response.responseText)
