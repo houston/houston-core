@@ -1,60 +1,59 @@
 # To Do
 
-# Fixes & Refinements
+
+
+# On Deck
 =====================================================================
 
- 2. **Test Results:** Add duration
- 2. **Test Results:** Add coverage info
- 4. **Global:** Handle Timeout::Error
- 4. **Weekly Report/Exceptions:** problems history is off by 1 week?
- 4. **Weekly Report:** cache Google Chart images in emails and/or implement server-side SVG library
- 5. **Global:** disable buttons when working! (e.g. what saving a very slow testing note)
- 5. **CI Results:** fails are reported as errors
- 5. **Project:** allow changing Version Control Location (have tmp folder deleted or whatever)
- 5. **Testing Notes:** edit a failing testing note at home, SMTP fail, timeout takes 30 seconds!
+ - **Global:**
+   - Disable buttons when working! (e.g. what saving a very slow testing note)
 
+ - **Prune**
+   - Replace the use of native tickets in the Project Dashboard view
+   - Houston.config.severities
+   - Rename `Project#color` to `Project#color_name` and `Project#color_value` to `Project#color`
+   - Replace unfuddle dump with reporter_email
+ 
+ - **Roles Refactor**
+   - Replace hard-coded knowledge of roles:
+     - projects#index - columns for maintainers and owners
+     - Testing Report, application.html.erb: User.testers
+     - TicketPresenter: replace projectMaintainers with can-close-ticket
+     - ProjectNotification: project.maintainers are CCed on releases, sent test results and configuration errors
+   - Extract the "Follower" role to a separate table
 
-
-
-# Horizon 1
-=====================================================================
-
-Complete the ticket refactor and Github Issues integration
-
- - Replace the use of native tickets in the Project Dashboard view
-
-Complete the workflow loop through Houston-Scheduler:
-
- - **Daily Report:** add count of tickets that need estimates
- - **Houston-Scheduler:** have a fast load and a slow load
-
-
-# Horizon 2
-=====================================================================
+ - **Bugs**
+   - Release: improve commit formatter: http://status.cphepdev.com/projects/errbit/environments/Production/releases/602
 
  - **Antecedents**
    - Auto-resolve exception antecedents
    - Send support notifications on problem antecedents
- 
+
  - **Notifications**
-   - Send one-off emails that can take advantage of the abilities of each recipient
+   - Send one-off emails that can take advantage of the abilities of each recipient (-> Sidekiq?)
    - Put a link in emails to user's notifications options (automatically logging them in)
 
  - **Daily Report**
-   - When a test fails: which commit range is to blame
-   - Recent new exceptions
+   - Regressions?
+   - Exceptions that received notices
+   - Recent resolved problems
    - Maintenance lights
+   - Count of tickets that need estimates?
 
- - **Test Result**
-   - Show code coverage reports
+ - **Weekly Report**
+   - Add tests section
 
  - **Houston-Scheduler**
-   - Allow specifing prerequisites for tickets
+   - Show tickets that were begun this week (even if they were closed!)
+   - Show current percentage
+   - Show more than one week of predicted velocity
+   - Allow specifying prerequisites for tickets
    - Click to edit ticket in a popup
    - Style tickets ahead of prerequisites negatively
    - Remember if "show effort" is on or off (user + hstore)
    - **Discussion Needed:** allow discussion to take place
    - **Mixer:** allow creating projects
+   - Have a fast load and a slow load?
 
  - **Testing Report**
    - Show related tickets
@@ -62,7 +61,7 @@ Complete the workflow loop through Houston-Scheduler:
 
 
 
-# Horizon 3: Ideas
+# Ideas
 =====================================================================
 
 Goals:
@@ -95,13 +94,21 @@ Goals:
    - Extract **houston-kanban** (rename)
 
  - **Clean Code:**
-   - Extract WeeklyReport model from WeeklyReports#show
    - Duplicate code in `users_controller#index` and `users_controller#show`
    - Duplicate code in Projects#show and WeeklyReport#show
-   - New Relic API calls
    - Use [actionmailer_inline_css](https://github.com/ndbroadbent/actionmailer_inline_css)?
+   - Test Weekly Report classes
 
-### Ideas
+### Robustness
+
+ - **Global:** Handle Timeout::Error
+ - **Weekly Report/Exceptions:** problems history is off by 1 week?
+ - **Weekly Report:** cache Google Chart images in emails and/or implement server-side SVG library
+ - **CI Results:** fails are reported as errors
+ - **Project:** allow changing Version Control Location (have tmp folder deleted or whatever)
+ - **Testing Notes:** edit a failing testing note at home, SMTP fail, timeout takes 30 seconds!
+
+### Features
 
  - **Projects:**
    - Participants (avatars) min/max width | Maintainers = special kind of participant
@@ -128,7 +135,6 @@ Goals:
  - **Weekly Report:**
    - Pair projects with colors somewhere (then don't for "Focus this week")
    - New Section: **Deploys** or **Releases**
-   - New Section: **Test Coverage**
    - New Section: **Performance** (shows _histogram_ of response times)
    - New Section: **Superlatives**
      - most total commits per week/day
@@ -146,7 +152,6 @@ Goals:
    - employ Twitter Bootstrap in emails
 
  - **Testing Report:**
-   - Allow creating tickets right there!
    - Allow editing tickets!
    - Add priority options (to left of ticket): high/low, exclusive checkboxes
    - Add additional verdicts (pass-with-suggestions? unable-to-test?)
@@ -161,3 +166,4 @@ Goals:
      - Real-time graph of exception notices
      - Figure out how to show queue history; show more weeks
      - Show deploys _on_ real-time graphs
+     - PG stats
