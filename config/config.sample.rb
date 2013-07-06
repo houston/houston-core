@@ -1,27 +1,75 @@
 Houston.config do
   
-  # (Optional) The name that will be shown in the banner
+  # This is the name that will be shown in the banner
   title "Mission Control"
   
-  # (Required) The host name where Houston will be running
+  # This is the host where Houston will be running
   host "houston.my-company.com"
   
-  # (Required) The email address from which Houston's emails will be sent
+  # This is the email address for emails send from Houston
   mailer_sender "houston@my-company.com"
   
-  # (Optional) Categories you can organize your projects by
-  project_categories "Products", "Tools"
+  # This is the passphrase Houston will use to encrypt and decrypt sensitive data
+  passphrase "SECRET"
+  
+  # Configuration for Email
+  smtp do
+    address "10.10.10.10"
+    port 25
+    domain "10.10.10.10"
+  end
+  
+  # (Optional) These are the categories you can organize your projects by
+  project_categories "Products", "Infrastructure", "Tools"
+  
+  # These are the colors available for projects
+  project_colors(
+    "teal"          => "39b3aa",
+    "sky"           => "239ce7",
+    "sea"           => "335996",
+    "indigo"        => "7d63b8",
+    "thistle"       => "b35ab8",
+    "tomato"        => "e74c23",
+    "bark"          => "756e54",
+    "hazelnut"      => "a4703d",
+    "burnt_sienna"  => "df8a3d",
+    "orange"        => "e9b84e",
+    "pea"           => "8dc63f",
+    "leaf"          => "409938",
+    "spruce"        => "307355",
+    "slate"         => "6c7a80",
+    "silver"        => "a2a38b" )
   
   # These are the environments you deploy projects to
-  environments "Staging", "Production"
+  environments "Production", "Staging"
   
-  # These are the tags available for Change Log entries
-  tags( {name: "New Feature", as: "feature", color: "8DB500"},
-        {name: "Improvement", as: "improvement", color: "3383A8", aliases: %w{enhancement}},
-        {name: "Bugfix", as: "fix", color: "C64537", aliases: %w{bugfix}},
-        {name: "Refactor", as: "refactor", color: "909090"},
-        {name: "Testfix", as: "testfix", color: "909090"},
-        {name: "CI Fix", as: "ci", color: "909090", aliases: %w{cifix ciskip}} )
+  
+  
+  # Roles:
+  # A user can have zero or one of these roles.
+  # You can refer to these roles when you configure
+  # abilities.
+  #
+  # To this list, Houston will add the role "Guest",
+  # which is the default (null) role.
+  #
+  # Presently, Houston requires that "Tester" be
+  # one of these roles.
+  roles "Developer",
+        "Tester",
+        "Mixer"
+  
+  # Project Roles:
+  # Each of these roles is project-specific. A user
+  # can have zero or many project roles. You can refer
+  # to these roles when you configure abilities.
+  #
+  # Presently, Houston requires that "Maintainer" be
+  # one of these roles.
+  project_roles "Owner",
+                "Maintainer"
+  
+  
   
   # Abilities:
   # In this block, use the DSL defined by CanCan.
@@ -64,6 +112,19 @@ Houston.config do
       # Everyone can edit their own testing notes
       can [:update, :destroy], TestingNote, user_id: user.id
       
+      # Everyone can see project quotas
+      can :read, Houston::Scheduler::ProjectQuota
+      
+      # Mixers can manage project quotas
+      can :manage, Houston::Scheduler::ProjectQuota if user.mixer?
+      
+      # Developers see the other kinds of changes: Test Fixes and Refactors
+      # as well as commit info
+      can :read, [Commit, Change] if user.developer?
+      
+      # Mixers can see all testing notes
+      can :read, TestingNote if user.mixer?
+      
       
       
       # The following abilities are project-specific and depend on one's role
@@ -74,19 +135,19 @@ Houston.config do
         # Everyone can see and comment on Testing Reports for projects they are involved in
         can [:create, :read], TestingNote, project_id: roles.pluck(:project_id)
         
-        # Developers see the other kinds of changes: Test Fixes and Refactors
-        can :read, Change, project_id: roles.contributors.pluck(:project_id)
-        
-        # Developers also see commit info
-        can :read, Commit, project_id: roles.contributors.pluck(:project_id)
-        
         # Maintainers can manages Releases and update Projects
         can :manage, Release, project_id: roles.maintainers.pluck(:project_id)
         can :update, Project, id: roles.maintainers.pluck(:project_id)
         
+        # With regard to Houston::Scheduler, Maintainers can write estimates;
+        # while Product Owners can prioritize tickets.
+        can :estimate, Project, id: roles.maintainers.pluck(:project_id)
+        can :prioritize, Project, id: roles.owners.pluck(:project_id)
+        
       end
     end
   end
+  
   
   
   
@@ -137,34 +198,6 @@ Houston.config do
   end
   
   
-  
-  # Configuration for Email
-  smtp do
-    address "10.10.10.10"
-    port 25
-    domain "10.10.10.10"
-  end
-  
-  
-  
-  # Colors: these are the colors available for projects
-  colors({
-    "teal"          => "39b3aa",
-    "sky"           => "239ce7",
-    "sea"           => "335996",
-    "indigo"        => "7d63b8",
-    "thistle"       => "b35ab8",
-    "tomato"        => "e74c23",
-    "bark"          => "756e54",
-    "hazelnut"      => "a4703d",
-    "burnt_sienna"  => "df8a3d",
-    "orange"        => "e9b84e",
-    "pea"           => "8dc63f",
-    "leaf"          => "409938",
-    "spruce"        => "307355",
-    "slate"         => "6c7a80",
-    "silver"        => "a2a38b"
-  })
   
   # List of ticket severities and their colors
   severities({

@@ -81,7 +81,7 @@ Houston uses adapters to support multiple systems. There are three right now:
 
 ### Configuration
 
-The specific details of Houston's operation are described in config/config.rb ([example](https://github.com/houstonmc/houston/blob/master/config/config.rb.sample)).
+The specific details of Houston's operation are described in config/config.rb ([example](https://github.com/houstonmc/houston/blob/master/config/config.sample.rb)).
 
 
 
