@@ -180,4 +180,6 @@ class window.TestingTicketView extends Backbone.View
         success: (model, response)=>
           @remove()
         error: (model, response)=>
-          console.log("failed to close ticket: #{response.responseText}")
+          @$el.css(opacity: 1.0)
+          $btn.removeAttr('disabled')
+          App.showErrorMessage("Unable to close ticket", response.responseText)
