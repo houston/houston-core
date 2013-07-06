@@ -3,6 +3,11 @@ class window.TestingReportView extends Backbone.View
   initialize: ->
     @tickets = @options.tickets
     @tickets.bind 'reset', _.bind(@render, @)
+    
+    # Prevent tablesorter from exhuming buried rows
+    @tickets.bind 'destroy', (ticket)=>
+      $('table.testing-report-table').trigger('update')
+      
     @pie = '.testing-report-progress.pie'
     @render()
   

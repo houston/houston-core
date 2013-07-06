@@ -180,6 +180,7 @@ class window.TestingTicketView extends Backbone.View
       @$el.addClass('deleting')
       $btn.attr('disabled', 'disabled')
       @ticket.destroy
+        wait: true
         success: (model, response)=>
           @remove()
         error: (model, response)=>
