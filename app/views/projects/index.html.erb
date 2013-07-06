@@ -26,7 +26,7 @@
       </thead>
       <tbody>
         <% @projects.each do |project| %>
-          <tr>
+          <tr id="project_<%= project.id %>">
             <td class="table-margin"></td>
             <td class="project-title" style="white-space: nowrap;">
               <b class="bubble <%= project.color %>" rel="tooltip" title="<%= project.color.titleize %>" data-tooltip-placement="right"></b>
