@@ -14,13 +14,13 @@ class User < ActiveRecord::Base
   
   default_scope order("last_name, first_name")
   
-  default_value_for :role, Houston.default_role
+  default_value_for :role, Houston.config.default_role
   
   validates :first_name, :last_name, :email, :presence => true, :length => {:minimum => 2}
-  validates :role, :presence => true, :inclusion => Houston.roles
+  validates :role, :presence => true, :inclusion => Houston.config.roles
   
   
-  Houston.project_roles.each do |role|
+  Houston.config.project_roles.each do |role|
     method_name = role.downcase.gsub(' ', '_')
     collection_name = method_name.pluralize
     
@@ -31,7 +31,7 @@ class User < ActiveRecord::Base
     RUBY
   end
   
-  Houston.roles.each do |role|
+  Houston.config.roles.each do |role|
     method_name = role.downcase.gsub(' ', '_')
     collection_name = method_name.pluralize
     

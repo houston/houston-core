@@ -33,15 +33,6 @@ module UrlHelper
   
   
   
-  def default_path_for(user)
-    case user.role
-    when "Tester"; user_path(user)
-    else; root_path
-    end
-  end
-  
-  
-  
   def releases_path(project, *args)
     options = args.extract_options!
     environment_name = args.first

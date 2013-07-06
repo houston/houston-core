@@ -70,6 +70,20 @@ module Houston
       @environments ||= []
     end
     
+    def roles(*args)
+      @roles = args if args.any?
+      ["Guest"] + (@roles ||= [])
+    end
+    
+    def default_role
+      "Guest"
+    end
+    
+    def project_roles(*args)
+      @project_roles = args if args.any?
+      ["Follower"] + (@project_roles ||= [])
+    end
+    
     
     
     

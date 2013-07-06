@@ -80,7 +80,7 @@
       <div class="controls changes-nested-editor">
         <%= f.nested_editor_for :roles do |f| -%>
           <%= f.select :user_id, User.scoped.map { |user| [user.name, user.id] } %>
-          <%= f.select :name, Houston.project_roles %>
+          <%= f.select :name, Houston.config.project_roles %>
         <% end -%>
       </div>
     </div>

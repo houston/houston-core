@@ -1,5 +1,5 @@
 class AddRoleToUsers < ActiveRecord::Migration
   def change
-    add_column :users, :role, :string, :default => Houston.roles.first
+    add_column :users, :role, :string, :default => "Guest"
   end
 end

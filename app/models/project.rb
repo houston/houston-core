@@ -43,6 +43,10 @@ class Project < ActiveRecord::Base
     super || (self.extended_attributes = {})
   end
   
+  def testers
+    User.testers
+  end
+  
   
   
   
@@ -74,7 +78,7 @@ class Project < ActiveRecord::Base
     roles.participants.to_users
   end
   
-  Houston.project_roles.each do |role|
+  Houston.config.project_roles.each do |role|
     method_name = role.downcase.gsub(' ', '_')
     collection_name = method_name.pluralize
     
