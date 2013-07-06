@@ -64,9 +64,8 @@ module Houston
           def native_commit(sha)
             normalize_sha!(sha)
             connection.lookup(sha)
-          rescue CommitNotFound
-            $!.message = "\"#{sha}\" is not a commit"
-            raise
+          rescue Rugged::OdbError
+            raise CommitNotFound, "\"#{sha}\" is not a commit"
           end
           
           def read_file(file_path, options={})
