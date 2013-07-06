@@ -142,29 +142,6 @@
         }.to_json) %>);
         <% end %>
         
-        var $body = $('body');
-        $body.keypress(function(e) {
-          if(e.which == 102) { // f
-            $body.toggleClass('full-screen');
-            window.location.hash = $body.attr('class');
-            if(window.kanbanObj) { kanbanObj.setKanbanHeight(); }
-          }
-        });
-        
-        $body.keydown(function(e) {
-          if(e.keyCode == 27) {
-            $body.attr('class', '');
-            window.location.hash = '';
-            if(window.kanbanObj) { kanbanObj.setKanbanHeight(); }
-          }
-        });
-        
-        var options = window.location.hash.substring(1).split(' ');
-        if(_.include(options, 'full-screen')) {
-          $body.toggleClass('full-screen');
-          if(window.kanbanObj) { kanbanObj.setKanbanHeight(); }
-        }
-        
       });
     </script>
     <%= yield :javascripts %>

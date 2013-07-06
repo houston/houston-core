@@ -25,6 +25,26 @@ window.App =
       else
         match
   
+  toggleFullScreen: ->
+    $body = $('body')
+    
+    $body.keypress (e)->
+      if e.which is 102 # f
+        $body.toggleClass('full-screen')
+        window.location.hash = $body.attr('class')
+        kanbanObj.setKanbanHeight() if window.kanbanObj
+    
+    $body.keydown (e)->
+      if e.keyCode is 27
+        $body.removeClass('full-screen')
+        window.location.hash = ''
+        kanbanObj.setKanbanHeight() if window.kanbanObj
+    
+    options = window.location.hash.substring(1).split(' ')
+    if _.include(options, 'full-screen')
+      $body.toggleClass('full-screen')
+      kanbanObj.setKanbanHeight() if window.kanbanObj
+  
   promptForCredentialsTo: (service)->
     html = """
     <div class="modal hide fade">
