@@ -19,6 +19,34 @@ Houston.config do
   
   
   
+  # Roles:
+  # A user can have zero or one of these roles.
+  # You can refer to these roles when you configure
+  # abilities.
+  #
+  # To this list, Houston will add the role "Guest",
+  # which is the default (null) role.
+  #
+  # Presently, Houston requires that "Tester" be
+  # one of these roles.
+  roles "Developer",
+        "Tester",
+        "Mixer"
+  
+  # Project Roles:
+  # Each of these roles is project-specific. A user
+  # can have zero or many project roles. You can refer
+  # to these roles when you configure abilities.
+  #
+  # Presently, Houston requires that "Maintainer" be
+  # one of these roles.
+  project_roles "Owner",
+                "Maintainer"
+  
+  
+  
+  
+  
   # The ticketing system that Houston will interface with.
   # Right now, the only supported system is Unfuddle.
   ticket_tracker :unfuddle do
