@@ -111,7 +111,7 @@ class Ticket < ActiveRecord::Base
   end
   
   def committers
-    commits.map { |commit| TicketCommitter.new(commit.committer, commit.committer_email) }
+    commits.map { |commit| TicketCommitter.new(commit.committer, commit.committer_email) }.uniq
   end
   
   
