@@ -271,14 +271,7 @@ class Ticket < ActiveRecord::Base
   
   
   
-  class TicketCommitter
-    
-    def initialize(name, email)
-      @name = name
-      @email = email
-    end
-    
-    attr_reader :name, :email
+  TicketCommitter = Struct.new(:name, :email) do
     
     def tester?
       false
