@@ -1,6 +1,7 @@
 require 'test_helper'
 
 class GitAdapterTest < ActiveSupport::TestCase
+  include RR::Adapters::TestUnit
   
   setup do
     path = Rails.root.join("test", "data", "bare_repo.git")
@@ -77,6 +78,21 @@ STR
     path = Rails.root.join("nope")
     repo = Houston::Adapters::VersionControl::GitAdapter.build(Project.new, path)
     assert_equal Houston::Adapters::VersionControl::NullRepo, repo
+  end
+  
+  
+  test "RemoteRepo should try pulling changes when a commit is not found" do
+    remote_path = "git@github.com:houstonmc/houston.git"
+    local_path = Rails.root.join("test", "data", "bare_repo.git").to_s
+    connection = OpenStruct.new(path: local_path)
+    stub(connection).lookup { |*args| raise Houston::Adapters::VersionControl::CommitNotFound }
+    
+    mock(Houston::Adapters::VersionControl::GitAdapter).pull!(local_path) { }
+    
+    assert_raises Houston::Adapters::VersionControl::CommitNotFound do
+      repo = Houston::Adapters::VersionControl::GitAdapter::RemoteRepo.new(connection, remote_path)
+      repo.commits_between("aaaaaaa", "bbbbbbb")
+    end
   end
   
   

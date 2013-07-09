@@ -66,6 +66,8 @@ module Houston
             connection.lookup(sha)
           rescue Rugged::OdbError
             raise CommitNotFound, "\"#{sha}\" is not a commit"
+          rescue Rugged::InvalidError
+            raise CommitNotFound, "\"#{sha}\" is not a valid commit"
           end
           
           def read_file(file_path, options={})

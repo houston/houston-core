@@ -3,7 +3,7 @@ module Houston
     module VersionControl
       
       class PassThroughError < StandardError
-        def initialize(original_error, message=nil)
+        def initialize(original_error=nil, message=nil)
           original_error, message = nil, original_error if original_error.is_a?(String)
           
           if original_error

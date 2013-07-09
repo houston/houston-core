@@ -15,8 +15,8 @@ module Houston
           # Public API for a VersionControl::Adapter Repo
           # ------------------------------------------------------------------------- #
           
-          def commits_between(sha1, sha2)
-            pull_and_retry(1) { super(sha1, sha2) }
+          def ancestors_until(sha, *args)
+            pull_and_retry(1) { super(sha, *args) }
           end
           
           attr_reader :location
@@ -38,16 +38,14 @@ module Houston
           def pull_and_retry(retries)
             begin
               yield
-            rescue Rugged::OdbError
+            rescue CommitNotFound
               if retries > 0
                 retries -= 1
                 pull!
                 retry
               else
-                raise Houston::Adapters::VersionControl::CommitNotFound.new($!)
+                raise
               end
-            rescue Rugged::InvalidError
-              raise Houston::Adapters::VersionControl::CommitNotFound.new($!)
             end
           end
           
