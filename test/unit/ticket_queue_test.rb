@@ -14,4 +14,15 @@ class TicketQueueTest < ActiveSupport::TestCase
   end
   
   
+  test "deleting a queue (loaded via a ticket) sets its destroy_at property" do
+    ticket = Ticket.create!(project_id: 1, number: 1, summary: "Test summary")
+    TicketQueue.create!(ticket: ticket, queue: "in_testing")
+    
+    queue = Ticket.find(1).ticket_queue
+    
+    queue.destroy
+    assert_not_nil queue.destroyed_at, "Expected destroyed_at to be set"
+  end
+  
+  
 end

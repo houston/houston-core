@@ -71,16 +71,16 @@ class TicketQueue < ActiveRecord::Base
   end
   
   def destroy
-    _run_destroy_callbacks { delete }
+    run_callbacks(:destroy) { delete }
   end
   
   def delete
-    update_attribute(:destroyed_at, Time.now) if !deleted? && persisted?
-    freeze
+    return if deleted? or new_record?
+    update_column :destroyed_at, Time.now
   end
   
   def destroyed?
-    !destroyed_at.nil?
+    !self.destroyed_at.nil?
   end
   alias :deleted? :destroyed?
   
