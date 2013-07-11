@@ -514,7 +514,8 @@ CREATE TABLE commits (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     committer_email character varying(255),
-    project_id integer NOT NULL
+    project_id integer NOT NULL,
+    authored_at timestamp without time zone NOT NULL
 );
 
 
@@ -1746,3 +1747,6 @@ INSERT INTO schema_migrations (version) VALUES ('20130525222131');
 INSERT INTO schema_migrations (version) VALUES ('20130526024851');
 
 INSERT INTO schema_migrations (version) VALUES ('20130706141443');
+
+INSERT INTO schema_migrations (version) VALUES ('20130710233849');
+

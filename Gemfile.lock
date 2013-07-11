@@ -170,6 +170,7 @@ GEM
     premailer (1.7.3)
       css_parser (>= 1.1.9)
       htmlentities (>= 4.0.0)
+    progressbar (0.11.0)
     pry (0.9.12)
       coderay (~> 1.0.5)
       method_source (~> 0.8)
@@ -294,6 +295,7 @@ DEPENDENCIES
   octokit
   pg
   premailer
+  progressbar
   pry
   rails (= 3.2.13)
   redcarpet

@@ -7,13 +7,14 @@ class Commit < ActiveRecord::Base
   after_create :associate_tickets_with_self
   
   validates :project, :presence => true
+  validates :authored_at, :presence => true
   
   
   
   def self.attributes_from_native_commit(native)
     { :sha => native.sha,
       :message => native.message,
-      :date => native.date,
+      :authored_at => native.authored_at,
       :committer => native.author_name,
       :committer_email => native.author_email }
   end

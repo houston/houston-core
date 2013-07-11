@@ -63,7 +63,7 @@ module Houston
           
           def native_commit(sha)
             normalize_sha!(sha)
-            connection.lookup(sha)
+            to_commit connection.lookup(sha)
           rescue Rugged::OdbError
             raise CommitNotFound, "\"#{sha}\" is not a commit"
           rescue Rugged::InvalidError
@@ -72,7 +72,7 @@ module Houston
           
           def read_file(file_path, options={})
             commit = options[:commit] || connection.head.target
-            head = native_commit(commit)
+            head = native_commit(commit).original
             tree = head.tree
             file_path.split("/").each do |segment|
               object = tree[segment]
@@ -111,9 +111,10 @@ module Houston
           
           def to_commit(rugged_commit)
             Houston::Adapters::VersionControl::Commit.new({
+              original: rugged_commit,
               sha: rugged_commit.oid,
               message: rugged_commit.message,
-              date: rugged_commit.author[:time],
+              authored_at: rugged_commit.author[:time],
               author_name: rugged_commit.author[:name],
               author_email: rugged_commit.author[:email]
             })
