@@ -18,6 +18,10 @@ module Houston
             `git --git-dir=#{git_dir} log --all --pretty='%at'`.split(/\n/).uniq
           end
           
+          def all_commits
+            `git --git-dir=#{git_dir} log --all --pretty='%H'`.split(/\n/)
+          end
+          
           def ancestors(sha)
             native_commit(sha)
             walker = connection.walk(sha)

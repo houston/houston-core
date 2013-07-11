@@ -549,6 +549,16 @@ CREATE TABLE commits_tickets (
 
 
 --
+-- Name: commits_users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE commits_users (
+    commit_id integer,
+    user_id integer
+);
+
+
+--
 -- Name: deploys; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1407,6 +1417,13 @@ CREATE UNIQUE INDEX index_commits_tickets_on_commit_id_and_ticket_id ON commits_
 
 
 --
+-- Name: index_commits_users_on_commit_id_and_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_commits_users_on_commit_id_and_user_id ON commits_users USING btree (commit_id, user_id);
+
+
+--
 -- Name: index_deploys_on_environment_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1751,3 +1768,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130706141443');
 INSERT INTO schema_migrations (version) VALUES ('20130710233849');
 
 INSERT INTO schema_migrations (version) VALUES ('20130711004558');
+
+INSERT INTO schema_migrations (version) VALUES ('20130711013156');

@@ -86,6 +86,14 @@ module Houston
     
     
     
+    def identify_committers(&block)
+      @identify_committers_proc = block
+    end
+    
+    attr_reader :identify_committers_proc
+    
+    
+    
     
     
     # Authentication options

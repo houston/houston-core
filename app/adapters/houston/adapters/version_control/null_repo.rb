@@ -11,6 +11,10 @@ module Houston
           []
         end
         
+        def all_commits
+          []
+        end
+        
         def ancestors
           []
         end

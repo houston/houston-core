@@ -3,8 +3,10 @@ class Commit < ActiveRecord::Base
   belongs_to :release
   belongs_to :project
   has_and_belongs_to_many :tickets
+  has_and_belongs_to_many :committers, class_name: "User"
   
   after_create :associate_tickets_with_self
+  after_create :associate_committers_with_self
   
   validates :project, :presence => true
   validates :sha, :presence => true
@@ -14,6 +16,10 @@ class Commit < ActiveRecord::Base
   validates :committer_email, :presence => true
   
   
+  
+  def self.from_native_commit(native)
+    new attributes_from_native_commit(native)
+  end
   
   def self.attributes_from_native_commit(native)
     { :sha => native.sha,
@@ -57,6 +63,14 @@ class Commit < ActiveRecord::Base
   
   def extra_attributes
     parsed_message[:attributes]
+  end
+  
+  
+  
+  def identify_committers
+    proc = Houston.config.identify_committers_proc
+    emails = proc ? Array(proc[self]) : [committer_email]
+    User.where(email: emails.map(&:downcase)).to_a
   end
   
   
@@ -111,6 +125,12 @@ private
     project.find_or_create_tickets_by_number(ticket_numbers).each do |ticket|
       ticket.commits << self unless ticket.commits.exists?(id)
     end
+  end
+  
+  
+  
+  def associate_committers_with_self
+    self.committers << identify_committers
   end
   
   
