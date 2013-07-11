@@ -20,7 +20,7 @@ class Commit < ActiveRecord::Base
       :message => native.message,
       :authored_at => native.authored_at,
       :committer => native.author_name,
-      :committer_email => native.author_email }
+      :committer_email => native.author_email.downcase }
   end
   
   def native_commit
