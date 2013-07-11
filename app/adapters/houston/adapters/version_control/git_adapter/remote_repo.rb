@@ -26,7 +26,7 @@ module Houston
           end
           
           def refresh!
-            pull!
+            GitAdapter.sync!(location, connection.path)
           end
           
           # ------------------------------------------------------------------------- #
@@ -41,16 +41,12 @@ module Houston
             rescue CommitNotFound
               if retries > 0
                 retries -= 1
-                pull!
+                refresh!
                 retry
               else
                 raise
               end
             end
-          end
-          
-          def pull!
-            GitAdapter.pull!(connection.path)
           end
           
         end
