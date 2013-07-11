@@ -16,9 +16,14 @@ class AddAuthoredAtToCommits < ActiveRecord::Migration
           
           begin
             native_commit = project.repo.native_commit(commit.sha)
+            unless native_commit
+              commit.delete
+              missing_commits << commit
+              next
+            end
             commit.update_column :authored_at, native_commit.authored_at
           rescue Houston::Adapters::VersionControl::CommitNotFound
-            commit.destroy
+            commit.delete
             missing_commits << commit
           end
           
@@ -33,8 +38,10 @@ class AddAuthoredAtToCommits < ActiveRecord::Migration
     
     
     puts "", "", ""
-    missing_commits.each do |commit|
-      puts "#{commit.project.slug.ljust(12)} #{commit.sha} #{commit.release_id.to_s.rjust(5)} #{commit.message}"
+    Project.unscoped do
+      missing_commits.each do |commit|
+        puts "#{commit.project.slug.ljust(12)} #{commit.sha} #{commit.release_id.to_s.rjust(5)} #{commit.message}"
+      end
     end
     puts "", "", "#{missing_commits.length} commits were not found in the repo and were destroyed"
   end
