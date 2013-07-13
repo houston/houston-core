@@ -75,9 +75,16 @@ class ApplicationController < ActionController::Base
   
   
   def api_authenticate!
+    allow_params_authentication!
     authenticate_or_request_with_http_basic do |username, password|
-      user = User.find_for_authentication(email: username)
-      sign_in :user, user if user && user.valid_password?(password)
+      params["user"] ||= {}
+      params["user"].merge!(email: username, password: password)
+      user = warden.authenticate(scope: :user)
+      if user
+        sign_in(:user, user)
+      else
+        head :unauthorized
+      end
     end
   end
   
