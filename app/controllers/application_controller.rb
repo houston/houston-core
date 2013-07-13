@@ -74,6 +74,15 @@ class ApplicationController < ActionController::Base
   
   
   
+  def api_authenticate!
+    authenticate_or_request_with_http_basic do |username, password|
+      user = User.find_for_authentication(email: username)
+      sign_in :user, user if user && user.valid_password?(password)
+    end
+  end
+  
+  
+  
   def no_cache
     response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
     response.headers["Pragma"] = "no-cache"

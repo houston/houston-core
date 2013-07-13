@@ -17,13 +17,19 @@ class Commit < ActiveRecord::Base
   
   
   
+  def self.during(range)
+    where(authored_at: range)
+  end
+  
+  
+  
   def self.from_native_commit(native)
     new attributes_from_native_commit(native)
   end
   
   def self.attributes_from_native_commit(native)
     { :sha => native.sha,
-      :message => native.message,
+      :message => native.message.strip,
       :authored_at => native.authored_at,
       :committer => native.author_name,
       :committer_email => native.author_email.downcase }

@@ -115,6 +115,14 @@ Houston::Application.routes.draw do
   
   
   
+  # API
+  
+  scope "self" do
+    get "commits", to: "self_commits#index"
+  end
+  
+  
+  
   # Modules
   
   Houston.config.modules.each do |mod|

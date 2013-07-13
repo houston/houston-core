@@ -14,20 +14,22 @@ class CommitPresenter
   end
   
   def to_hash(commit)
-    { id: commit.id,
-      
-      # NB: we want to sort these with TesterNotes
-      #     by the field 'createdAt', so while this
-      #     _actually_ represents 'releasedAt', we'll
-      #     call it 'createdAt' for now.
-      createdAt: commit.release.created_at, 
-      environment: commit.release.environment_name,
+    hash = { id: commit.id,
       message: commit.message,
       sha: commit.sha,
       linkTo: github_commit_url(commit.project, commit.sha), # <-- !todo: more abstract
       committer: {
         name: commit.committer,
         email: commit.committer_email } }
+    if commit.release
+      # NB: we want to sort these with TesterNotes
+      #     by the field 'createdAt', so while this
+      #     _actually_ represents 'releasedAt', we'll
+      #     call it 'createdAt' for now.
+      hash[:createdAt] = commit.release.created_at
+      hash[:environment] = commit.release.environment_name
+    end
+    hash
   end
   
 end

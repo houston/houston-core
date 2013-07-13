@@ -30,7 +30,7 @@ class CIIntegrationTest < ActionController::IntegrationTest
   
   test "should alert maintainers when a build cannot be triggered" do
     @project = Project.create!(name: "Test", slug: "test", ci_server_name: "Mock")
-    @project.add_teammate User.create!(first_name: "Bob", last_name: "Lail", email: "bob@example.com", password: "password"), "Maintainer"
+    @project.add_teammate users(:boblail), "Maintainer"
     
     any_instance_of(Houston::Adapters::CIServer::MockAdapter::Job) do |job|
       stub(job).build! { |commit| raise Houston::Adapters::CIServer::Error }
@@ -68,7 +68,7 @@ class CIIntegrationTest < ActionController::IntegrationTest
     commit = "whatever"
     results_url = "http://example.com/results"
     @project = Project.create!(name: "Test", slug: "test", ci_server_name: "Mock")
-    @project.add_teammate User.create!(first_name: "Bob", last_name: "Lail", email: "bob@example.com", password: "password"), "Maintainer"
+    @project.add_teammate users(:boblail), "Maintainer"
     @test_run = TestRun.create!(project: @project, commit: commit)
     
     any_instance_of(Houston::Adapters::CIServer::MockAdapter::Job) do |job|
