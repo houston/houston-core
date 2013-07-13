@@ -14,9 +14,11 @@ class CommitPresenter
   end
   
   def to_hash(commit)
-    hash = { id: commit.id,
-      message: commit.message,
+    hash = {
+      id: commit.id,
       sha: commit.sha,
+      message: commit.message,
+      project: commit.project.slug,
       linkTo: github_commit_url(commit.project, commit.sha), # <-- !todo: more abstract
       committer: {
         name: commit.committer,
