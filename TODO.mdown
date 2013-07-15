@@ -1,8 +1,6 @@
 # To Do
 
-
-
-# On Deck
+## On Deck
 =====================================================================
 
  - **Global:**
@@ -62,13 +60,13 @@
 
 
 
-# Ideas
+## Ideas
 =====================================================================
 
 Goals:
  - Make Houston flexible enough to use in other contexts
  
-### Refactoring
+#### Refactoring
 
  - **Engines:**
    - Engines need to supply configuration objects, plug in to config.rb
@@ -100,7 +98,7 @@ Goals:
    - Use [actionmailer_inline_css](https://github.com/ndbroadbent/actionmailer_inline_css)?
    - Test Weekly Report classes
 
-### Robustness
+#### Robustness
 
  - **Global:** Handle Timeout::Error
  - **Weekly Report/Exceptions:** problems history is off by 1 week?
@@ -109,7 +107,7 @@ Goals:
  - **Project:** allow changing Version Control Location (have tmp folder deleted or whatever)
  - **Testing Notes:** edit a failing testing note at home, SMTP fail, timeout takes 30 seconds!
 
-### Features
+#### Features
 
  - **Projects:**
    - Participants (avatars) min/max width | Maintainers = special kind of participant
