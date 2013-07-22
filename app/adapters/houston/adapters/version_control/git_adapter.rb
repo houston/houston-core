@@ -73,7 +73,7 @@ module Houston
           
           def pull!(local_path)
             ActiveRecord::Base.benchmark("[git:pull] #{local_path}") do
-             `git --git-dir=#{local_path} remote update`
+             `git --git-dir=#{local_path} remote update --prune`
             end
           end
           
