@@ -25,7 +25,10 @@ class window.TestingNoteView extends Backbone.View
   isEditable: ->
     @model.get('userId') == window.userId
   
-  edit: ->
+  edit: (e)->
+    if e
+      e.preventDefault()
+      e.stopImmediatePropagation()
     if @isEditable() and !@isInEditMode
       @isInEditMode = true
       @render()
