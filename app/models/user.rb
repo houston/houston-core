@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  include Retirement
   
   has_many :testing_notes
   has_many :roles, :dependent => :destroy

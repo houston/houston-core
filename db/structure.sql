@@ -1117,7 +1117,8 @@ CREATE TABLE users (
     unfuddle_id integer,
     first_name character varying(255),
     last_name character varying(255),
-    environments_subscribed_to character varying(255) DEFAULT ''::character varying NOT NULL
+    environments_subscribed_to character varying(255) DEFAULT ''::character varying NOT NULL,
+    retired_at timestamp without time zone
 );
 
 
@@ -1770,3 +1771,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130710233849');
 INSERT INTO schema_migrations (version) VALUES ('20130711004558');
 
 INSERT INTO schema_migrations (version) VALUES ('20130711013156');
+
+INSERT INTO schema_migrations (version) VALUES ('20130728191005');
