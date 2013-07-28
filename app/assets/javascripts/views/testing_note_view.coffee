@@ -41,6 +41,7 @@ class window.TestingNoteView extends Backbone.View
       e.stopImmediatePropagation()
     if @isInEditMode
       $form = $(@el).find('form')
+      $form.disable().find('.btn-primary').html('<i class="icon-spinner icon-spin"></i> Saving...')
       params = $form.serializeObject()
       previousAttributes = @model.previousAttributes()
       @model.save params,
@@ -49,6 +50,8 @@ class window.TestingNoteView extends Backbone.View
           @render()
           @trigger('edit:commit', @, @model)
         error: (model, response)=>
+          $form.enable().find('.btn-primary').html('Save')
+          
           @model.set(previousAttributes, {silent: true})
           errors = Errors.fromResponse(response)
           if errors.missingCredentials or errors.invalidCredentials

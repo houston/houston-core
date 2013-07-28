@@ -65,6 +65,12 @@ $.fn.extend
   
   reset: ->
     $(@).each -> @reset()
+  
+  disable: ->
+    $(@).find('input[type="submit"], input[type="reset"], button').attr('disabled', 'disabled').end()
+  
+  enable: ->
+    $(@).find('input[type="submit"], input[type="reset"], button').removeAttr('disabled').end()
 
 
 

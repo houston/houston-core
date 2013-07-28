@@ -144,6 +144,9 @@ class window.TestingTicketView extends Backbone.View
     params = $form.serializeObject()
     testingNote = new TestingNote
       ticketId: @ticket.get('id')
+      
+    $form.disable()
+    
     testingNote.save params,
       success: (model, response)=>
         $('.alert').remove()
@@ -158,6 +161,8 @@ class window.TestingTicketView extends Backbone.View
         $el = $('.testing-note.new')
         $el.find('.alert').remove()
         errors.renderToAlert().prependTo $el
+      complete: ->
+        $form.enable()
   
   createTestingNoteAndResetTicket: (e)->
     params = {lastReleaseAt: new Date()}
