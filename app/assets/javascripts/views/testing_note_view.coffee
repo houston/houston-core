@@ -23,7 +23,7 @@ class window.TestingNoteView extends Backbone.View
     @
   
   isEditable: ->
-    @model.get('userId') == window.userId
+    @model.get('userId') == window.userId or window.user.get('admin')
   
   edit: (e)->
     if e
