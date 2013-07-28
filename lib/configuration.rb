@@ -116,7 +116,9 @@ module Houston
       #      :omniauthable
       
       configuration = [:database_authenticatable, :token_authenticatable]
-      configuration << :ldap_authenticatable if authentication_strategy == :ldap
+      unless Rails.env.test? # <-- !todo: control when custom strategies are employed in the test suite
+        configuration << :ldap_authenticatable if authentication_strategy == :ldap
+      end
       configuration.concat [
        :recoverable,
        :rememberable,
