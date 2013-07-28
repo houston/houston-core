@@ -87,7 +87,8 @@ module Houston
           def translate_result(result)
             { "FAILURE" => :fail,
               "UNSTABLE" => :fail,
-              "SUCCESS" => :pass }[result] ||
+              "SUCCESS" => :pass,
+              "ABORTED" => :aborted }[result] ||
               (raise NotImplementedError.new("#{result} is not a mapped result from Jenkins"))
           end
           

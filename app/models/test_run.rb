@@ -45,6 +45,10 @@ class TestRun < ActiveRecord::Base
     result.to_s == "pass"
   end
   
+  def aborted?
+    result.to_s == "aborted"
+  end
+  
   def broken?
     return false unless failed?
     
@@ -96,7 +100,7 @@ class TestRun < ActiveRecord::Base
   end
   
   def has_results?
-    result.present?
+    result.present? and !aborted?
   end
   
   def trigger_build!
