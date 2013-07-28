@@ -1,5 +1,6 @@
 class Project < ActiveRecord::Base
   extend ProjectAdapter
+  include Retirement
   
   has_many :releases, :dependent => :destroy
   has_many :commits
@@ -46,26 +47,6 @@ class Project < ActiveRecord::Base
   def testers
     User.testers
   end
-  
-  
-  
-  
-  
-  # Retirement
-  # ------------------------------------------------------------------------- #
-  
-  default_scope where(retired_at: nil)
-  
-  def retire!
-    update_attributes!(retired_at: Time.now)
-    freeze
-  end
-  
-  def unretire!
-    update_attributes!(retired_at: nil)
-  end
-  
-  # ------------------------------------------------------------------------- #  
   
   
   
