@@ -99,13 +99,11 @@ module Houston
           end
           
           def destroy_comment!(comment)
-            unfuddle.as_user(comment.user) do
-              unfuddle_comment = comment(comment.remote_id)
-              return unless unfuddle_comment
-              
-              unfuddle_comment.project_id = unfuddle.project_id
-              unfuddle_comment.destroy!
-            end
+            unfuddle_comment = comment(comment.remote_id)
+            return unless unfuddle_comment
+            
+            unfuddle_comment.project_id = unfuddle.project_id
+            unfuddle_comment.destroy!
           end
           
           
