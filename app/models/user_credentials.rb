@@ -28,8 +28,8 @@ class UserCredentials < ActiveRecord::Base
   def test_github_connection
     password = self.password.decrypt(Houston.config.passphrase)
     Octokit::Client.new(login: login, password: password).user
-  Octokit::Forbidden
-    raise AccountLocked
+  rescue Octokit::Forbidden
+    errors.add(:base, "Account locked")
   rescue Octokit::Unauthorized
     errors.add(:base, "Invalid credentials")
   end
