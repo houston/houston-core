@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   
   def index
     @title = "Team"
-    @users = User.all
+    @users = User.unretired
     
     severities_colors = Houston.config.severities
     

@@ -1,20 +1,16 @@
 module Retirement
   extend ActiveSupport::Concern
   
-  included do
-    default_scope where(retired_at: nil)
-  end
-  
   
   
   module ClassMethods
     
-    def with_retired
-      unscoped
+    def unretired
+      where(retired_at: nil)
     end
     
     def retired
-      with_retired.where(arel_table[:retired_at].not_eq(nil))
+      where(arel_table[:retired_at].not_eq(nil))
     end
     
   end

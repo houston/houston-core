@@ -130,7 +130,7 @@
     <%= ft_init :adapter => :jquery %>
     <script type="text/javascript">
       $(function(){
-        window.testers = new Testers(<%= raw TesterPresenter.new(User.testers).to_json %>);
+        window.testers = new Testers(<%= raw TesterPresenter.new(User.testers.unretired).to_json %>);
         
         <% if current_user %>
         window.userId = <%= current_user.id %>;

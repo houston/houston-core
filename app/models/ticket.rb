@@ -252,7 +252,7 @@ class Ticket < ActiveRecord::Base
   
   def participants
     @participants ||= begin              # Participants in a Ticket include:
-      User.where(id:                     #
+      User.unretired.where(id:           #
         Array(reporter_id) +             #   - its reporter
         testing_notes.pluck(:user_id) +  #   - anyone who has commented on it
         releases.pluck(:user_id)) +      #   - anyone who has released it
