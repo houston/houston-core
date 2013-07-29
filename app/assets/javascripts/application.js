@@ -15,6 +15,8 @@
 //= require jquery-ui
 //= require jquery.pjax.js
 //= require jquery.tablesorter.js
+//= require jquery.autosize.js
+//= require mousetrap
 //= require highcharts.src.js
 //= require twitter/bootstrap
 //= require freight_train
