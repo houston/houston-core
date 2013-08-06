@@ -23,13 +23,15 @@ class CommitPresenter
       committer: {
         name: commit.committer,
         email: commit.committer_email } }
-    if commit.release
+    
+    release = commit.releases.first
+    if release
       # NB: we want to sort these with TesterNotes
       #     by the field 'createdAt', so while this
       #     _actually_ represents 'releasedAt', we'll
       #     call it 'createdAt' for now.
-      hash[:createdAt] = commit.release.created_at
-      hash[:environment] = commit.release.environment_name
+      hash[:createdAt] = release.created_at
+      hash[:environment] = release.environment_name
     end
     hash
   end

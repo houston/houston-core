@@ -539,6 +539,16 @@ ALTER SEQUENCE commits_id_seq OWNED BY commits.id;
 
 
 --
+-- Name: commits_releases; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE commits_releases (
+    commit_id integer,
+    release_id integer
+);
+
+
+--
 -- Name: commits_tickets; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1411,6 +1421,13 @@ CREATE INDEX index_commits_on_project_id ON commits USING btree (project_id);
 
 
 --
+-- Name: index_commits_releases_on_commit_id_and_release_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_commits_releases_on_commit_id_and_release_id ON commits_releases USING btree (commit_id, release_id);
+
+
+--
 -- Name: index_commits_tickets_on_commit_id_and_ticket_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1773,3 +1790,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130711004558');
 INSERT INTO schema_migrations (version) VALUES ('20130711013156');
 
 INSERT INTO schema_migrations (version) VALUES ('20130728191005');
+
+INSERT INTO schema_migrations (version) VALUES ('20130806143651');

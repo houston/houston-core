@@ -8,7 +8,7 @@ class Release < ActiveRecord::Base
   belongs_to :user
   belongs_to :deploy
   has_many :changes, :dependent => :destroy
-  has_many :commits, :dependent => :destroy, :autosave => true
+  has_and_belongs_to_many :commits
   
   default_scope order("created_at DESC")
   
@@ -76,9 +76,10 @@ class Release < ActiveRecord::Base
   def load_commits!
     native_commits.each do |native|
       commit = commits.find_by_sha(native.sha)
-      attributes = Commit.attributes_from_native_commit(native).merge(release: self, project: project)
+      attributes = Commit.attributes_from_native_commit(native).merge(project: project)
       if commit
         commit.update_attributes(attributes)
+        commits << commit
       else
         commits.build(attributes)
       end

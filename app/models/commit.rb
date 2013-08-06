@@ -1,12 +1,12 @@
 class Commit < ActiveRecord::Base
   
-  belongs_to :release
   belongs_to :project
-  has_and_belongs_to_many :tickets
   has_and_belongs_to_many :committers, class_name: "User"
+  has_and_belongs_to_many :releases
+  has_and_belongs_to_many :tickets
   
-  after_create :associate_tickets_with_self
   after_create :associate_committers_with_self
+  after_create :associate_tickets_with_self
   
   validates :project, :presence => true
   validates :sha, :presence => true
