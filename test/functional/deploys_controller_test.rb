@@ -22,4 +22,10 @@ class DeploysControllerTest < ActionController::TestCase
   end
   
   
+  test "should work with lowercased environments" do
+    mock(Deploy).create!({project: @project, environment_name: @environment, commit: "hi"})
+    post :create, {project_id: @project.slug, environment: "production", commit: "hi"}
+  end
+  
+  
 end
