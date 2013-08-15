@@ -1,5 +1,146 @@
-<div class="dashboard coming-soon">
+<div class="dashboard">
+  <div class="range-options">
+    <!-- <label><input type="radio" name="range" value="90 minutes" />90 minutes</label>
+    <label><input type="radio" name="range" value="12 hours" checked="checked"/>12 hours</label>
+    <label><input type="radio" name="range" value="3 days" />3 days</label> -->
+    <!-- <label><input type="radio" name="range" value="2 weeks" />2 weeks</label> -->
+  </div>
   
-  Coming Soon
+  <div class="dashboard-container gold">
+    
+    <div class="project-thumbnail" data-project="members">
+      <div class="response-code-graph"></div>
+      <div class="response-time-graph"></div>
+      <h4>Members</h4>
+    </div>
+
+    <div class="project-thumbnail" data-project="unite">
+      <div class="response-code-graph"></div>
+      <div class="response-time-graph"></div>
+      <h4>Unite</h4>
+    </div>
+
+    <div class="project-thumbnail" data-project="epic-auth">
+      <div class="response-code-graph"></div>
+      <div class="response-time-graph"></div>
+      <h4>Epic Auth</h4>
+    </div>
+
+    <div class="project-thumbnail" data-project="cts">
+      <div class="response-code-graph"></div>
+      <div class="response-time-graph"></div>
+      <h4>CTS Web Sites</h4>
+    </div>
+
+    <!-- <div class="project-thumbnail" data-project="dr">
+      <div class="graph"></div>
+      <h4>Doctrinal Review</h4>
+    </div> -->
+    
+  </div>
   
+  <ol class="legend"></ol>
 </div>
+
+<% content_for :javascripts do %>
+  <script type="text/javascript">
+    $(function() {
+      var seconds = 1000,
+          minutes = seconds * 60,
+          hours = minutes * 60,
+          days = hours * 24,
+          weeks = days * 7,
+          
+          range = 12 * hours,
+          // range = 10 * minutes,
+          // range = 5 * minutes,
+          step = range / 60,
+          interval = step,
+          interval = 5 * seconds,
+          width = 340,
+          
+          responseCodeGraphs = [],
+          responseTimeGraphs = [],
+          
+          $project,
+          project,
+          graph;
+      
+      
+      $(':radio').click(function() {
+        var value = $(':radio:checked').val();
+        if(value == '90 minutes') {
+          range = 90 * minutes;
+        } else if(value == '12 hours') {
+          range = 12 * hours;
+        } else if(value == '3 days') {
+          range = 3 * days;
+        } else {
+          range = 2 * weeks;
+        }
+        step = range / 60;
+        
+        responseCodeGraphs.each(function(graph) {
+          graph.setRangeAndStep(range, step);
+        });
+        responseTimeGraphs.each(function(graph) {
+          graph.setRangeAndStep(range, step);
+        });
+      });
+      
+      
+      function updateResponseCodeDomain() {
+        var statusCodes = [];
+        responseCodeGraphs.each(function(graph) {
+          for(code in graph.countByStatusCode) {
+            if(statusCodes.indexOf(code) == -1) statusCodes.push(code);
+          }
+        });
+        
+        $('.status-code').removeClass('shown');
+        _.each(statusCodes, function(code) {
+          $('.status-code-' + code).addClass('shown');
+        });
+      }
+      
+      
+      $('.project-thumbnail').each(function() {
+        $project = $(this);
+        project = $project.attr('data-project');
+        
+        
+        graph = new HoustonDashboard.ResponseCodeGraph(
+          $project.find('.response-code-graph'), {
+            project: project,
+            range: range,
+            step: step,
+            interval: interval,
+            width: width,
+            height: 112 });
+        graph.render();
+        responseCodeGraphs.push(graph);
+        graph.on('render', updateResponseCodeDomain);
+        
+        
+        graph = new HoustonDashboard.ResponseTimeGraph(
+          $project.find('.response-time-graph'), {
+            project: project,
+            range: range,
+            step: step,
+            interval: interval,
+            width: width,
+            height: 88 });
+        graph.render();
+        responseTimeGraphs.push(graph);
+      });
+      
+      
+      
+      var $legend = $('.legend'), color;
+      HoustonDashboard.ResponseCodeGraph.legend.each(function(pair) {
+        $legend.append('<li class="status-code status-code-' + pair[0] + '">' + pair[0] + ' ' + pair[1] + ' <span class="bubble"></span></li>');
+      });
+      
+    });
+  </script>
+<% end %>
