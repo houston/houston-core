@@ -2,18 +2,14 @@ class CommitPresenter
   include UrlHelper
   
   def initialize(commits)
-    @commits = commits
+    @commits = OneOrMany.new(commits)
   end
   
   def as_json(*args)
-    if @commits.is_a?(Commit)
-      to_hash @commits
-    else
-      @commits.map(&method(:to_hash))
-    end
+    @commits.map(&method(:commit_to_json))
   end
   
-  def to_hash(commit)
+  def commit_to_json(commit)
     hash = {
       id: commit.id,
       sha: commit.sha,
@@ -34,6 +30,22 @@ class CommitPresenter
       hash[:environment] = release.environment_name
     end
     hash
+  end
+  
+  def verbose
+    @commits.map do |commit|
+      commit_to_json(commit).merge({
+        tag: commit.tags.first,
+        hours: commit.hours_worked,
+        tickets: commit.ticket_numbers,
+        releases: commit.releases.map { |release| {
+          environment: release.environment_name,
+          createdAt: release.created_at } },
+        committers: commit.committers.map { |committer| {
+          id: committer.id,
+          email: committer.email,
+          name: committer.name } } })
+    end
   end
   
 end

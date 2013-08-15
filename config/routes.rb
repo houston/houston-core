@@ -117,8 +117,10 @@ Houston::Application.routes.draw do
   
   # API
   
+  get "commits", to: "commits#index"
+  
   scope "self" do
-    get "commits", to: "self_commits#index"
+    get "commits", to: "commits#self"
   end
   
   
