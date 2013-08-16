@@ -33,7 +33,8 @@ Houston::Application.routes.draw do
   match "tickets/:id", :to => "tickets#update", :via => :put
   match "tickets/:id", :to => "tickets#close", :via => :delete
   
-  post "projects/:slug/tickets", :to => "tickets#create"
+  get "projects/:slug/tickets", :to => "project_tickets#index"
+  post "projects/:slug/tickets", :to => "project_tickets#create"
   
   scope "tickets/:ticket_id" do
     resources :testing_notes

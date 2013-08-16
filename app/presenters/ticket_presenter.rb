@@ -31,6 +31,14 @@ class TicketPresenter
       ticketUrl: ticket.ticket_tracker_ticket_url }
   end
   
+  def with_extended_attributes
+    @tickets.map do |ticket|
+      ticket_to_json(ticket).merge({
+        extendedAttributes: ticket.extended_attributes
+      })
+    end
+  end
+  
   def with_testing_notes
     @tickets.map do |ticket|
       ticket_to_json(ticket).merge({
