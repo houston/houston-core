@@ -38,6 +38,7 @@ class CommitPresenter
         tag: commit.tags.first,
         hours: commit.hours_worked,
         tickets: commit.ticket_numbers,
+        unreachable: commit.unreachable,
         releases: commit.releases.map { |release| {
           environment: release.environment_name,
           createdAt: release.created_at } },

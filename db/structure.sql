@@ -515,7 +515,8 @@ CREATE TABLE commits (
     updated_at timestamp without time zone NOT NULL,
     committer_email character varying(255),
     project_id integer NOT NULL,
-    authored_at timestamp without time zone NOT NULL
+    authored_at timestamp without time zone NOT NULL,
+    unreachable boolean DEFAULT false NOT NULL
 );
 
 
@@ -1421,6 +1422,13 @@ CREATE INDEX index_commits_on_project_id ON commits USING btree (project_id);
 
 
 --
+-- Name: index_commits_on_unreachable; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_commits_on_unreachable ON commits USING btree (unreachable);
+
+
+--
 -- Name: index_commits_releases_on_commit_id_and_release_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1792,3 +1800,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130711013156');
 INSERT INTO schema_migrations (version) VALUES ('20130728191005');
 
 INSERT INTO schema_migrations (version) VALUES ('20130806143651');
+
+INSERT INTO schema_migrations (version) VALUES ('20130815232527');
