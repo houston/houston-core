@@ -136,7 +136,7 @@ private
   
   
   def associate_committers_with_self
-    self.committers << identify_committers
+    self.committers = identify_committers
   end
   
   
