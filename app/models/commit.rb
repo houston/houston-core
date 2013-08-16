@@ -115,16 +115,6 @@ class Commit < ActiveRecord::Base
   
   
   
-private
-  
-  
-  
-  def parsed_message
-    @parsed_message ||= self.class.parse_message(message)
-  end
-  
-  
-  
   def associate_tickets_with_self
     return if ticket_numbers.empty?
     
@@ -140,5 +130,11 @@ private
   end
   
   
+  
+private
+  
+  def parsed_message
+    @parsed_message ||= self.class.parse_message(message)
+  end
   
 end
