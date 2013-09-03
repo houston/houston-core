@@ -373,8 +373,11 @@ module Houston
   class Observer
     
     def initialize
+      @async = true
       clear!
     end
+    
+    attr_accessor :async
     
     def on(event, &block)
       observers_of(event).push(block)
@@ -386,13 +389,9 @@ module Houston
     end
     
     def fire(event, *args)
+      invoker = async ? method(:invoke_callback_async) : method(:invoke_callback)
       observers_of(event).each do |block|
-        begin
-          block.call(*args)
-        rescue
-          raise if Rails.env.test? || Rails.env.development?
-          Houston.report_exception($!)
-        end
+        invoker.call(block, *args)
       end
       nil
     end
@@ -402,6 +401,18 @@ module Houston
     end
     
   private
+    
+    def invoke_callback_async(block, *args)
+      Thread.new do
+        invoke_callback(block, *args)
+      end
+    end
+    
+    def invoke_callback(block, *args)
+      block.call(*args)
+    rescue
+      Houston.report_exception($!)
+    end
     
     def observers_of(event)
       observers[event] ||= []
