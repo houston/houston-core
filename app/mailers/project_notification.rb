@@ -83,15 +83,16 @@ class ProjectNotification < ViewMailer
   end
   
   
-  def configuration_error(project, message, options={})
-    @project = project
+  def ci_configuration_error(test_run, message, options={})
+    @test_run = test_run
+    @project = test_run.project
     @message = message
     @additional_info = options[:additional_info]
     
     mail({
       to:       options.fetch(:to, @project.maintainers),
       subject:  "configuration error",
-      template: "configuration_error"
+      template: "ci_configuration_error"
     })
   end
   

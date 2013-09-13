@@ -130,4 +130,6 @@
   <% end %>
 </div>
 
+<%= link_to "Retry", retry_test_run_url(slug: @test_run.project.slug, commit: @test_run.commit), class: "btn btn-large" %>
+
 <p style="text-align: right;"><%= link_to @test_run.results_url, @test_run.results_url, target: "_blank" %></p>

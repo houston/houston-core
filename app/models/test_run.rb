@@ -86,6 +86,10 @@ class TestRun < ActiveRecord::Base
   
   
   
+  def retry!
+    trigger_build!
+  end
+  
   def start!
     trigger_build!
     save!
@@ -111,13 +115,17 @@ class TestRun < ActiveRecord::Base
     self.completed_at = Time.now unless completed?
     self.results_url = results_url
     save!
-    fetch_results! unless has_results?
+    fetch_results!
   end
   
   def fetch_results!
     attributes = project.ci_server.fetch_results!(results_url)
     update_attributes! attributes
-    Houston.observer.fire "test_run:complete", self if has_results?
+    fire_complete! if has_results?
+  end
+  
+  def fire_complete!
+    Houston.observer.fire "test_run:complete", self
   end
   
   

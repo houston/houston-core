@@ -56,12 +56,14 @@ class RunTestsOnPostReceive
       return
     end
     
-    notify_of_invalid_configuration(project) do
-      TestRun.new(
-        project: project,
-        commit: payload.commit,
-        agent_email: payload.agent_email,
-        branch: payload.branch).start!
+    test_run = TestRun.new(
+      project: project,
+      commit: payload.commit,
+      agent_email: payload.agent_email,
+      branch: payload.branch)
+    
+    notify_of_invalid_configuration(test_run) do
+      test_run.start!
     end
   end
   
@@ -78,11 +80,11 @@ class RunTestsOnPostReceive
     if results_url.blank?
       message = "#{project.ci_server_name} is not appropriately configured to build #{project.name}."
       additional_info = "#{project.ci_server_name} did not supply 'results_url' when it triggered the post_build hook"
-      ProjectNotification.configuration_error(project, message, additional_info: additional_info).deliver!
+      ProjectNotification.ci_configuration_error(test_run, message, additional_info: additional_info).deliver!
       return
     end
     
-    notify_of_invalid_configuration(project) do
+    notify_of_invalid_configuration(test_run) do
       test_run.completed!(results_url)
     end
   end
@@ -118,12 +120,13 @@ class RunTestsOnPostReceive
   
 private
   
-  def notify_of_invalid_configuration(project)
+  def notify_of_invalid_configuration(test_run)
     begin
       yield
     rescue Houston::Adapters::CIServer::Error
+      project = test_run.project
       message = "#{project.ci_server_name} is not appropriately configured to build #{project.name}."
-      ProjectNotification.configuration_error(project, message, additional_info: $!.message).deliver!
+      ProjectNotification.ci_configuration_error(test_run, message, additional_info: $!.message).deliver!
     end
   end
   
