@@ -19,7 +19,7 @@ module Houston
           []
         end
         
-        def ancestors_until(sha)
+        def ancestors_until(sha, *args)
           []
         end
         
