@@ -7,7 +7,7 @@ class TestRunsController < ApplicationController
   
   def retry
     @test_run.retry!
-    redirect_to test_run_url
+    redirect_to @project.ci_server.last_build_url
   end
   
 private

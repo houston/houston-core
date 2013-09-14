@@ -18,6 +18,15 @@ module Houston
             "#{@connection.url_prefix}#{job_path}"
           end
           
+          def last_build_url
+            url = "#{job_path}/api/json?tree=lastBuild[url]"
+            response = connection.get(url)
+            unless 200 == response.status
+              raise Houston::Adapters::CIServer::Error.new("Houston was unable to fetch the job's lastBuild URL using #{url}.")
+            end
+            JSON.load(response.body).fetch("lastBuild").fetch("url")
+          end
+          
           
           
           def build!(commit)
