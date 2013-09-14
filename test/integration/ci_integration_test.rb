@@ -100,4 +100,50 @@ class CIIntegrationTest < ActionController::IntegrationTest
   
   
   
+  test "should publish test status to GitHub when pending" do
+    # don't pull changes for this repo
+    git = stub(Houston::Adapters::VersionControl::GitAdapter)
+    git.sync! { |*args| }
+    git.get_local_path_to_repo { |_,_| Rails.root.join("test/data/bare_repo.git").to_s }
+    
+    @project = Project.create!(
+      name: "Test",
+      slug: "fixture",
+      version_control_name: "Git",
+      extended_attributes: { "git_location" => "git@github.com:houstonmc/fixture.git" })
+    test_run = TestRun.new(project: @project, commit: "bd3e9e2")
+    
+    expected_url = "https://api.github.com/repos/houstonmc/fixture/statuses/bd3e9e2?access_token=#{Houston.config.github[:access_token]}"
+    expected_params = JSON.dump(state: "pending", target_url: nil)
+    mock(Faraday).post(expected_url, expected_params) do
+      stub(Object.new).success? { true }
+    end
+    
+    Houston.observer.fire "test_run:start", test_run
+  end
+  
+  test "should publish test results to GitHub" do 
+    # don't pull changes for this repo
+    git = stub(Houston::Adapters::VersionControl::GitAdapter)
+    git.sync! { |*args| }
+    git.get_local_path_to_repo { |_,_| Rails.root.join("test/data/bare_repo.git").to_s }
+    
+    @project = Project.create!(
+      name: "Test",
+      slug: "fixture",
+      version_control_name: "Git",
+      extended_attributes: { "git_location" => "git@github.com:houstonmc/fixture.git" })
+    test_run = TestRun.new(project: @project, commit: "bd3e9e2", result: "pass", completed_at: Time.now)
+    
+    expected_url = "https://api.github.com/repos/houstonmc/fixture/statuses/bd3e9e2?access_token=#{Houston.config.github[:access_token]}"
+    expected_params = JSON.dump(state: "success", target_url: nil)
+    mock(Faraday).post(expected_url, expected_params) do
+      stub(Object.new).success? { true }
+    end
+    
+    Houston.observer.fire "test_run:complete", test_run
+  end
+  
+  
+  
 end

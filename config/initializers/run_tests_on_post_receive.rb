@@ -1,7 +1,11 @@
 class RunTestsOnPostReceive
   
+  def self.instance
+    @instance ||= self.new
+  end
+  
   def self.begin!
-    self.new.begin!
+    instance.begin!
   end
   
   def begin!
@@ -16,22 +20,26 @@ class RunTestsOnPostReceive
     #      POST /job/houston/buildWithParameters.
     Houston.observer.on "hooks:post_receive", &method(:create_a_test_run)
     
-    #   4. Jenkins checks out the project, runs the tests, and
+    #   4. Houston notifies GitHub that the test run has started:
+    #      POST /repos/houstonmc/houston/statuses/:sha
+    Houston.observer.on "test_run:start", &method(:publish_status_to_github)
+    
+    #   5. Jenkins checks out the project, runs the tests, and
     #      tells Houston that it is finished:
     #      POST /projects/houston/hooks/post_build.
-    #   5. Houston receives the request and fires the
+    #   6. Houston receives the request and fires the
     #      'hooks:post_build' event.
-    #   6. Houston updates the TestRun,
+    #   7. Houston updates the TestRun,
     #      fetching additional details from Jenkins:
     #      GET /job/houston/19/testReport/api/json
     Houston.observer.on "hooks:post_build", &method(:fetch_test_run_results)
     
-    #   7. Houston emails results of the TestRun.
+    #   8. Houston emails results of the TestRun.
     Houston.observer.on "test_run:complete", &method(:email_test_run_results)
     
-    #   8. Houston publishes results to GitHub:
+    #   9. Houston publishes results to GitHub:
     #      POST /repos/houstonmc/houston/statuses/:sha
-    Houston.observer.on "test_run:complete", &method(:publish_results_to_github)
+    Houston.observer.on "test_run:complete", &method(:publish_status_to_github)
   end
   
   
@@ -95,27 +103,42 @@ class RunTestsOnPostReceive
   end
   
   
-  def publish_results_to_github(test_run)
+  # http://developer.github.com/v3/repos/statuses/#create-a-status
+  # status is [pending, success, error, failure]
+  # RunTestsOnPostReceive.instance.publish_status_to_github(tr)
+  def publish_status_to_github(test_run)
     project = test_run.project
-    
-    unless project.version_control_name == "Git"
-      Rails.logger.warn "[test_run:complete] #{project.slug} does not use git"
+    return unless project.repo.respond_to? :commit_status_url
+      
+    access_token = Houston.config.github[:access_token]
+    unless access_token
+      message = "Houston can publish your test results to GitHub"
+      additional_info = "Supply github/access_token in Houston's config.rb"
+      ProjectNotification.ci_configuration_error(test_run, message, additional_info: additional_info).deliver!
       return
     end
     
-    unless project.repo.is_a? Houston::Adapters::VersionControl::GitAdapter::GithubRepo
-      Rails.logger.warn "[test_run:complete] #{project.slug} is not at GitHub"
-      return
+    github_status_url = project.repo.commit_status_url(test_run.commit)
+    if test_run.completed?
+      status = {"pass" => "success", "fail" => "failure"}.fetch(test_run.result, "error")
+    else
+      status = "pending"
     end
     
-    # http://developer.github.com/v3/repos/statuses/#create-a-status
-    path = Addressable::URI.parse(project.repo.location).path[0...-4]
-    github_status_url = "https://api.github.com/#{path}/statuses/#{test_run.commit}"
-    Rails.logger.info "[test_run:complete] POST #{github_status_url}"
-    Faraday.post(github_status_url, {
-      status: test_run.result,
+    Rails.logger.info "[test_run:complete] POST #{status} to #{github_status_url}"
+    github_status_url << "?access_token=#{access_token}"
+    response = Faraday.post(github_status_url, JSON.dump({
+      state: status,
       target_url: test_run.results_url
-    })
+    }))
+    
+    unless response.success?
+      message = "Houston was unable to publish your test results to GitHub"
+      additional_info = "GitHub returned #{response.status}: #{response.body}"
+      ProjectNotification.ci_configuration_error(test_run, message, additional_info: additional_info).deliver!
+    end
+    
+    response
   end
   
 private

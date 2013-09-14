@@ -121,6 +121,19 @@ Houston.config do
   
   
   
+  # Configuration for GitHub
+  # Use the following command to generate an access_token
+  # for your GitHub account to allow Houston to modify
+  # commit statuses.
+  #
+  # curl -v -u USERNAME -X POST https://api.github.com/authorizations --data '{"scopes":["repo:status"]}'
+  #
+  github do
+    access_token "accesstoken"
+  end
+  
+  
+  
   # What dependencies to check
   key_dependencies do
     gem "rails", ["3.2.13", "3.1.12"]

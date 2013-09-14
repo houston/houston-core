@@ -109,6 +109,7 @@ class TestRun < ActiveRecord::Base
   
   def trigger_build!
     project.ci_server.build!(commit)
+    Houston.observer.fire "test_run:start", self
   end
   
   def completed!(results_url)

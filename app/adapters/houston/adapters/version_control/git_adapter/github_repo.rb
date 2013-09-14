@@ -20,6 +20,11 @@ module Houston
             "#{project_url}/compare/#{sha0}...#{sha1}"
           end
           
+          def commit_status_url(sha)
+            path = Addressable::URI.parse(location).path[0...-4]
+            "https://api.github.com/repos/#{path}/statuses/#{sha}"
+          end
+          
           
         end
       end
