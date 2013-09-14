@@ -73,6 +73,13 @@ class TestRun < ActiveRecord::Base
     @commit ||= project.find_commit_by_sha(sha)
   end
   
+  def coverage_detail
+    @coverage_detail ||= Array(coverage).map do |file|
+      file = file.with_indifferent_access
+      SourceFileCoverage.new(project, sha, file[:filename], file[:coverage])
+    end
+  end
+  
   
   
   def commits_since_last_test_run

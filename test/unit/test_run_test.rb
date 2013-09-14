@@ -36,8 +36,24 @@ class TestRunTest < ActiveSupport::TestCase
     test_run = TestRun.new(sha: "b62c3f3", project: project)
     
     commit = test_run.commit
-    assert Commit === commit
+    assert_instance_of Commit, commit
     assert_match /^b62c3f3/, commit.sha
+  end
+  
+  
+  test "#coverage_detail returns SourceFileCoverage objects for each tested file" do
+    project = Project.new(name: "Test", slug: "test", code_climate_repo_token: "repo_token")
+    test_run = TestRun.new(project: project, sha: "bd3e9e2", result: "pass", completed_at: Time.now, coverage: [
+      { filename: "lib/test1.rb", coverage: [1,nil,nil,1,1,nil,1] },
+      { filename: "lib/test2.rb", coverage: [1,nil,1,0,0,0,0,1,nil,1] }
+    ])
+    
+    stub(project).read_file { |*args| "" }
+    
+    files = test_run.coverage_detail
+    assert_equal 2, files.length
+    assert_instance_of SourceFileCoverage, files[0]
+    assert_equal "lib/test2.rb", files[1].filename
   end
   
   
