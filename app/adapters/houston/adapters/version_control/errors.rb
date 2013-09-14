@@ -23,6 +23,9 @@ module Houston
       class CommitNotFound < PassThroughError
       end
       
+      class FileNotFound < PassThroughError
+      end
+      
       class InvalidShaError < ArgumentError
       end
       
