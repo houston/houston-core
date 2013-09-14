@@ -36,6 +36,7 @@ module Houston
             unless [200, 201, 302].member?(response.status)
               raise Houston::Adapters::CIServer::Error.new("Houston was unable to trigger a build for #{project.name} with the URL #{url}.")
             end
+            response
           end
           
           def fetch_results!(build_url)
