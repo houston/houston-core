@@ -54,7 +54,7 @@ class CIIntegrationTest < ActionController::IntegrationTest
     commit = "whatever"
     results_url = "http://example.com/results"
     @project = Project.create!(name: "Test", slug: "test", ci_server_name: "Mock")
-    @test_run = TestRun.create!(project: @project, commit: commit)
+    @test_run = TestRun.create!(project: @project, sha: commit)
     
     any_instance_of(Houston::Adapters::CIServer::MockAdapter::Job) do |job|
       mock(job).fetch_results!(results_url)
@@ -69,7 +69,7 @@ class CIIntegrationTest < ActionController::IntegrationTest
     results_url = "http://example.com/results"
     @project = Project.create!(name: "Test", slug: "test", ci_server_name: "Mock")
     @project.add_teammate users(:boblail), "Maintainer"
-    @test_run = TestRun.create!(project: @project, commit: commit)
+    @test_run = TestRun.create!(project: @project, sha: commit)
     
     any_instance_of(Houston::Adapters::CIServer::MockAdapter::Job) do |job|
       mock(job).fetch_results!(results_url) { raise Houston::Adapters::CIServer::Error }
@@ -87,7 +87,7 @@ class CIIntegrationTest < ActionController::IntegrationTest
   
   test "should fire test_run:complete when the results of the test run are saved" do
     @project = Project.create!(name: "Test", slug: "test", ci_server_name: "Mock")
-    test_run = TestRun.new(project: @project, commit: "whatever")
+    test_run = TestRun.new(project: @project, sha: "whatever")
     
     any_instance_of(Houston::Adapters::CIServer::MockAdapter::Job) do |job|
       stub(job).fetch_results! { |results_url| {result: "success"} }
@@ -111,7 +111,7 @@ class CIIntegrationTest < ActionController::IntegrationTest
       slug: "fixture",
       version_control_name: "Git",
       extended_attributes: { "git_location" => "git@github.com:houstonmc/fixture.git" })
-    test_run = TestRun.new(project: @project, commit: "bd3e9e2")
+    test_run = TestRun.new(project: @project, sha: "bd3e9e2")
     
     expected_url = "https://api.github.com/repos/houstonmc/fixture/statuses/bd3e9e2?access_token=#{Houston.config.github[:access_token]}"
     expected_params = JSON.dump(state: "pending", target_url: nil)
@@ -133,7 +133,7 @@ class CIIntegrationTest < ActionController::IntegrationTest
       slug: "fixture",
       version_control_name: "Git",
       extended_attributes: { "git_location" => "git@github.com:houstonmc/fixture.git" })
-    test_run = TestRun.new(project: @project, commit: "bd3e9e2", result: "pass", completed_at: Time.now)
+    test_run = TestRun.new(project: @project, sha: "bd3e9e2", result: "pass", completed_at: Time.now)
     
     expected_url = "https://api.github.com/repos/houstonmc/fixture/statuses/bd3e9e2?access_token=#{Houston.config.github[:access_token]}"
     expected_params = JSON.dump(state: "success", target_url: nil)

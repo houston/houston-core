@@ -2,7 +2,7 @@ class TestRun < ActiveRecord::Base
   
   belongs_to :project
   
-  validates_presence_of :project_id, :commit
+  validates_presence_of :project_id, :sha
   validates :results_url, :presence => true, :if => :completed?
   
   default_scope order("completed_at DESC")
@@ -13,8 +13,8 @@ class TestRun < ActiveRecord::Base
   
   
   class << self
-    def find_by_commit(sha)
-      where(["commit LIKE ?", "#{sha}%"]).first
+    def find_by_sha(sha)
+      where(["sha LIKE ?", "#{sha}%"]).first
     end
     
     def excluding(*test_runs_or_ids)
@@ -55,7 +55,7 @@ class TestRun < ActiveRecord::Base
     last_tested_ancestor = commits_since_last_test_run.last
     return false if last_tested_ancestor.nil?
     
-    project.test_runs.find_by_commit(last_tested_ancestor.sha).passed?
+    project.test_runs.find_by_sha(last_tested_ancestor.sha).passed?
   end
   
   def fixed?
@@ -64,21 +64,21 @@ class TestRun < ActiveRecord::Base
     last_tested_ancestor = commits_since_last_test_run.last
     return false if last_tested_ancestor.nil?
     
-    project.test_runs.find_by_commit(last_tested_ancestor.sha).failed?
+    project.test_runs.find_by_sha(last_tested_ancestor.sha).failed?
   end
   
   
   
   def commits_since_last_test_run
-    shas_of_tested_commits = project.test_runs.excluding(self).pluck(:commit)
-    project.repo.ancestors_until(commit, :including_self) { |ancestor| shas_of_tested_commits.member?(ancestor.sha) }
+    shas_of_tested_commits = project.test_runs.excluding(self).pluck(:sha)
+    project.repo.ancestors_until(sha, :including_self) { |ancestor| shas_of_tested_commits.member?(ancestor.sha) }
   rescue Houston::Adapters::VersionControl::CommitNotFound
     []
   end
   
   def commits_since_last_passing_test_run
-    shas_of_passing_commits = project.test_runs.passed.pluck(:commit)
-    project.repo.ancestors_until(commit, :including_self) { |ancestor| shas_of_passing_commits.member?(ancestor.sha) }
+    shas_of_passing_commits = project.test_runs.passed.pluck(:sha)
+    project.repo.ancestors_until(sha, :including_self) { |ancestor| shas_of_passing_commits.member?(ancestor.sha) }
   rescue Houston::Adapters::VersionControl::CommitNotFound
     []
   end
@@ -96,7 +96,7 @@ class TestRun < ActiveRecord::Base
   end
   
   def short_commit
-    commit[0...7]
+    sha[0...7]
   end
   
   def completed?
@@ -108,7 +108,7 @@ class TestRun < ActiveRecord::Base
   end
   
   def trigger_build!
-    project.ci_server.build!(commit)
+    project.ci_server.build!(sha)
     Houston.observer.fire "test_run:start", self
   end
   

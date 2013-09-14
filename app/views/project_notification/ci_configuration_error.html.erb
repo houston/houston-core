@@ -8,7 +8,7 @@
 <p><%= @additional_info %></p>
 <% end %>
 
-<%= link_to "Retry", retry_test_run_url(slug: @test_run.project.slug, commit: @test_run.commit), class: "btn btn-large" %>
+<%= link_to "Retry", retry_test_run_url(slug: @test_run.project.slug, commit: @test_run.sha), class: "btn btn-large" %>
 
 <% if @test_run.results_url %>
   <p style="text-align: right;"><%= link_to @test_run.results_url, @test_run.results_url, target: "_blank" %></p>

@@ -14,7 +14,7 @@ private
   
   def find_test_run
     @project = Project.find_by_slug!(params[:slug])
-    @test_run = @project.test_runs.find_by_commit(params[:commit]) || (raise ActiveRecord::RecordNotFound)
+    @test_run = @project.test_runs.find_by_sha(params[:commit]) || (raise ActiveRecord::RecordNotFound)
   end
   
 end

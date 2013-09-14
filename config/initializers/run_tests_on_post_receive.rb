@@ -57,7 +57,7 @@ class RunTestsOnPostReceive
       return
     end
     
-    test_run = project.test_runs.find_by_commit(payload.commit)
+    test_run = project.test_runs.find_by_sha(payload.commit)
     
     if test_run
       Rails.logger.warn "[hooks:post_receive] a test run exists for #{test_run.short_commit}; doing nothing"
@@ -66,7 +66,7 @@ class RunTestsOnPostReceive
     
     test_run = TestRun.new(
       project: project,
-      commit: payload.commit,
+      sha: payload.commit,
       agent_email: payload.agent_email,
       branch: payload.branch)
     
@@ -78,7 +78,7 @@ class RunTestsOnPostReceive
   
   def fetch_test_run_results(project, params)
     commit, results_url = params.values_at(:commit, :results_url)
-    test_run = project.test_runs.find_by_commit(commit)
+    test_run = project.test_runs.find_by_sha(commit)
     
     unless test_run
       Rails.logger.warn "[hooks:post_build] no test run found for project '#{project.slug}' and commit '#{commit}'"
@@ -118,7 +118,7 @@ class RunTestsOnPostReceive
       return
     end
     
-    github_status_url = project.repo.commit_status_url(test_run.commit)
+    github_status_url = project.repo.commit_status_url(test_run.sha)
     if test_run.completed?
       status = {"pass" => "success", "fail" => "failure"}.fetch(test_run.result, "error")
     else

@@ -840,7 +840,7 @@ ALTER SEQUENCE settings_id_seq OWNED BY settings.id;
 CREATE TABLE test_runs (
     id integer NOT NULL,
     project_id integer NOT NULL,
-    commit character varying(255) NOT NULL,
+    sha character varying(255) NOT NULL,
     completed_at timestamp without time zone,
     results_url character varying(255),
     result character varying(255),
@@ -1523,7 +1523,7 @@ CREATE INDEX index_roles_on_user_id_and_project_id_and_name ON roles USING btree
 -- Name: index_test_runs_on_commit; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_test_runs_on_commit ON test_runs USING btree (commit);
+CREATE INDEX index_test_runs_on_commit ON test_runs USING btree (sha);
 
 
 --
@@ -1802,3 +1802,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130728191005');
 INSERT INTO schema_migrations (version) VALUES ('20130806143651');
 
 INSERT INTO schema_migrations (version) VALUES ('20130815232527');
+
+INSERT INTO schema_migrations (version) VALUES ('20130914152419');
