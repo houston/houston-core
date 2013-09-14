@@ -26,4 +26,19 @@ class TestRunTest < ActiveSupport::TestCase
   end
   
   
+  test "#commit returns a Commit for the test_run's sha" do
+    path = Rails.root.join("test", "data", "bare_repo.git").to_s
+    project = Project.new(
+      name: "Test",
+      slug: "test",
+      version_control_name: "Git",
+      extended_attributes: { "git_location" => path })
+    test_run = TestRun.new(sha: "b62c3f3", project: project)
+    
+    commit = test_run.commit
+    assert Commit === commit
+    assert_match /^b62c3f3/, commit.sha
+  end
+  
+  
 end

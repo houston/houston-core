@@ -41,6 +41,12 @@ class Commit < ActiveRecord::Base
   
   
   
+  def to_str
+    sha
+  end
+  
+  
+  
   def skip?
     merge? || tags.member?("skip")
   end

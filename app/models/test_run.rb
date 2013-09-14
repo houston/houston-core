@@ -69,6 +69,12 @@ class TestRun < ActiveRecord::Base
   
   
   
+  def commit
+    @commit ||= project.find_commit_by_sha(sha)
+  end
+  
+  
+  
   def commits_since_last_test_run
     shas_of_tested_commits = project.test_runs.excluding(self).pluck(:sha)
     project.repo.ancestors_until(sha, :including_self) { |ancestor| shas_of_tested_commits.member?(ancestor.sha) }

@@ -173,6 +173,12 @@ class Project < ActiveRecord::Base
     Rails.root.join("tmp", "#{slug}.git").to_s # <-- the .git here is misleading; could be any kind of VCS
   end
   
+  def find_commit_by_sha(sha)
+    commits.find_by_sha(sha) || commits.from_native_commit(repo.native_commit(sha))
+  rescue Houston::Adapters::VersionControl::CommitNotFound
+    nil
+  end
+  
   # ------------------------------------------------------------------------- #
   
   
