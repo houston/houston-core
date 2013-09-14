@@ -150,6 +150,9 @@ class RunTestsOnPostReceive
   def publish_coverage_to_code_climate(test_run)
     return if test_run.project.code_climate_repo_token.blank?
     CodeClimate::CoverageReport.publish!(test_run)
+  rescue
+    message = "Houston was unable to publish your code coverage to Code Climate"
+    ProjectNotification.ci_configuration_error(test_run, message, additional_info: $!.message).deliver!
   end
   
   
