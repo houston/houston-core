@@ -7,7 +7,8 @@ class TestRunsController < ApplicationController
   
   def retry
     @test_run.retry!
-    redirect_to @project.ci_server.last_build_url
+    last_build_url = @project.ci_server.last_build_url if @project.ci_server.respond_to? :last_build_url
+    redirect_to last_build_url || root_url, notice: "Build for #{@project.name} retried"
   end
   
 private

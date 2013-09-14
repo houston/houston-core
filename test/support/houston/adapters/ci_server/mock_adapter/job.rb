@@ -18,6 +18,10 @@ module Houston
             {}
           end
           
+          def last_build_url
+            "/test"
+          end
+          
         end
       end
     end
