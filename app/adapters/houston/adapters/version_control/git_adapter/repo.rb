@@ -120,7 +120,10 @@ module Houston
               message: rugged_commit.message,
               authored_at: rugged_commit.author[:time],
               author_name: rugged_commit.author[:name],
-              author_email: rugged_commit.author[:email]
+              author_email: rugged_commit.author[:email],
+              committed_at: rugged_commit.committer[:time],
+              committer_name: rugged_commit.committer[:name],
+              committer_email: rugged_commit.committer[:email]
             })
           end
           
