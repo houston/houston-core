@@ -122,7 +122,7 @@ class CIIntegrationTest < ActionController::IntegrationTest
     Houston.observer.fire "test_run:start", test_run
   end
   
-  test "should publish test results to GitHub" do 
+  test "should publish test results to GitHub" do
     # don't pull changes for this repo
     git = stub(Houston::Adapters::VersionControl::GitAdapter)
     git.sync! { |*args| }
@@ -140,6 +140,20 @@ class CIIntegrationTest < ActionController::IntegrationTest
     mock(Faraday).post(expected_url, expected_params) do
       stub(Object.new).success? { true }
     end
+    
+    Houston.observer.fire "test_run:complete", test_run
+  end
+  
+  
+  
+  test "should publish test results to CodeClimate" do
+    @project = Project.create!(name: "Test", slug: "test", code_climate_repo_token: "repo_token")
+    test_run = TestRun.new(project: @project, sha: "bd3e9e2", result: "pass", completed_at: Time.now, coverage: [
+      { filename: "lib/test1.rb", coverage: [1,nil,nil,1,1,nil,1] },
+      { filename: "lib/test2.rb", coverage: [1,nil,1,0,0,0,0,1,nil,1] }
+    ])
+    
+    mock(CodeClimate::CoverageReport).publish!(test_run)
     
     Houston.observer.fire "test_run:complete", test_run
   end

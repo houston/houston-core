@@ -40,6 +40,9 @@ class RunTestsOnPostReceive
     #   9. Houston publishes results to GitHub:
     #      POST /repos/houstonmc/houston/statuses/:sha
     Houston.observer.on "test_run:complete", &method(:publish_status_to_github)
+    
+    #  10. Houston publishes results to Code Climate.
+    Houston.observer.on "test_run:complete", &method(:publish_coverage_to_code_climate)
   end
   
   
@@ -103,6 +106,7 @@ class RunTestsOnPostReceive
   end
   
   
+  
   # http://developer.github.com/v3/repos/statuses/#create-a-status
   # status is [pending, success, error, failure]
   # RunTestsOnPostReceive.instance.publish_status_to_github(tr)
@@ -140,6 +144,15 @@ class RunTestsOnPostReceive
     
     response
   end
+  
+  
+  
+  def publish_coverage_to_code_climate(test_run)
+    return if test_run.project.code_climate_repo_token.blank?
+    CodeClimate::CoverageReport.publish!(test_run)
+  end
+  
+  
   
 private
   

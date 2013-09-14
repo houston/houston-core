@@ -75,6 +75,18 @@ module Houston
           end
           
           def read_file(file_path, options={})
+            blob = find_file(file_path, options={})
+            blob && blob.content
+          end
+          
+          def refresh!
+          end
+          
+          # ------------------------------------------------------------------------- #
+          
+          
+          
+          def find_file(file_path, options={})
             commit = options[:commit] || connection.head.target
             head = native_commit(commit).original
             tree = head.tree
@@ -83,13 +95,8 @@ module Houston
               return nil unless object
               tree = connection.lookup object[:oid]
             end
-            tree.content
+            tree
           end
-          
-          def refresh!
-          end
-          
-          # ------------------------------------------------------------------------- #
           
           
           
