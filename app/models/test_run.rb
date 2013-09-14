@@ -74,10 +74,10 @@ class TestRun < ActiveRecord::Base
   end
   
   def coverage_detail
-    @coverage_detail ||= Array(coverage).map do |file|
+    @coverage_detail ||= (Array(coverage).map do |file|
       file = file.with_indifferent_access
       SourceFileCoverage.new(project, sha, file[:filename], file[:coverage])
-    end
+    end).select { |file| file.src.any? }
   end
   
   

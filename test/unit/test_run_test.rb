@@ -48,7 +48,7 @@ class TestRunTest < ActiveSupport::TestCase
       { filename: "lib/test2.rb", coverage: [1,nil,1,0,0,0,0,1,nil,1] }
     ])
     
-    stub(project).read_file { |*args| "" }
+    stub(project).read_file { |*args| "line 1\nline 2\n" }
     
     files = test_run.coverage_detail
     assert_equal 2, files.length
