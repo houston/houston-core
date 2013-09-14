@@ -58,6 +58,11 @@
                     <%= image_tag "/images/favicon-newrelic.png", "data-tooltip-placement" => "top", :rel => "tooltip", :title => "View in New Relic", :width => 16, :height => 16 %>
                   <% end %>
                 <% end %>
+                <% unless project.code_climate_repo_token.blank? %>
+                  <%= link_to "#", :target => "_blank" do %>
+                    <%= image_tag "/images/favicon-codeclimate.png", "data-tooltip-placement" => "top", :rel => "tooltip", :title => "Uses Code Climate!", :width => 16, :height => 16 %>
+                  <% end %>
+                <% end %>
               </p>
             </td>
             <td class="project-maintainers project-participants">
