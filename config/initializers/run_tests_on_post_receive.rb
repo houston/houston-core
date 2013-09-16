@@ -107,42 +107,12 @@ class RunTestsOnPostReceive
   
   
   
-  # http://developer.github.com/v3/repos/statuses/#create-a-status
-  # status is [pending, success, error, failure]
-  # RunTestsOnPostReceive.instance.publish_status_to_github(tr)
   def publish_status_to_github(test_run)
-    project = test_run.project
-    return unless project.repo.respond_to? :commit_status_url
-      
-    access_token = Houston.config.github[:access_token]
-    unless access_token
-      message = "Houston can publish your test results to GitHub"
-      additional_info = "Supply github/access_token in Houston's config.rb"
-      ProjectNotification.ci_configuration_error(test_run, message, additional_info: additional_info).deliver!
-      return
-    end
-    
-    github_status_url = project.repo.commit_status_url(test_run.sha)
-    if test_run.completed?
-      status = {"pass" => "success", "fail" => "failure"}.fetch(test_run.result, "error")
-    else
-      status = "pending"
-    end
-    
-    Rails.logger.info "[test_run:complete] POST #{status} to #{github_status_url}"
-    github_status_url << "?access_token=#{access_token}"
-    response = Faraday.post(github_status_url, JSON.dump({
-      state: status,
-      target_url: test_run.results_url
-    }))
-    
-    unless response.success?
-      message = "Houston was unable to publish your test results to GitHub"
-      additional_info = "GitHub returned #{response.status}: #{response.body}"
-      ProjectNotification.ci_configuration_error(test_run, message, additional_info: additional_info).deliver!
-    end
-    
-    response
+    return unless test_run.project.repo.respond_to? :commit_status_url
+    Github::CommitStatusReport.publish!(test_run)
+  rescue
+    message = "Houston was unable to publish your commit status to GitHub"
+    ProjectNotification.ci_configuration_error(test_run, message, additional_info: $!.message).deliver!
   end
   
   
