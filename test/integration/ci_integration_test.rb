@@ -133,7 +133,7 @@ class CIIntegrationTest < ActionController::IntegrationTest
       slug: "fixture",
       version_control_name: "Git",
       extended_attributes: { "git_location" => "git@github.com:houstonmc/fixture.git" })
-    test_run = TestRun.new(project: @project, sha: "bd3e9e2", result: "pass", completed_at: Time.now)
+    test_run = TestRun.new(project: @project, sha: "bd3e9e2", result: :pass, completed_at: Time.now)
     
     expected_url = "https://api.github.com/repos/houstonmc/fixture/statuses/bd3e9e2e4ddf89a640a4f880cbf55bb46cc7e88a?access_token=#{Houston.config.github[:access_token]}"
     expected_params = JSON.dump(state: "success", target_url: nil)

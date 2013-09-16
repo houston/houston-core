@@ -42,7 +42,7 @@ module Github
     
     def state
       return "pending" unless test_run.completed?
-      {"pass" => "success", "fail" => "failure"}.fetch(test_run.result, "error")
+      {"pass" => "success", "fail" => "failure"}.fetch(test_run.result.to_s, "error")
     end
     
     def payload
