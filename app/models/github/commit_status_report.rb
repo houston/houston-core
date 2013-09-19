@@ -58,8 +58,8 @@ module Github
     end
     
     def bad_response(response)
-      message = "Houston was unable to publish your test results to GitHub"
-      additional_info = "GitHub returned #{response.status}: #{response.body}"
+      message = "Houston was unable to publish your commit status to GitHub"
+      additional_info = "GitHub returned #{response.status}: #{response.body} (URL: #{github_status_url})"
       ProjectNotification.ci_configuration_error(test_run, message, additional_info: additional_info).deliver!
     end
     
