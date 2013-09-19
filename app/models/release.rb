@@ -110,7 +110,7 @@ class Release < ActiveRecord::Base
   
   
   def notification_recipients
-    @notification_recipients ||= project.followers.notified_of_releases_to(environment_name)
+    @notification_recipients ||= project.followers.unretired.notified_of_releases_to(environment_name)
   end
   
   
