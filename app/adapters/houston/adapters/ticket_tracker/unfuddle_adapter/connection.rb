@@ -1,4 +1,5 @@
 require_dependency "houston/adapters/ticket_tracker/unfuddle_adapter/ticket"
+require_dependency "houston/adapters/ticket_tracker/unfuddle_adapter/milestone"
 
 module Houston
   module Adapters
@@ -66,7 +67,28 @@ module Houston
           
           
           
+          def milestones
+            unfuddle.milestones.map { |attributes | build_milestone(attributes) }
+          end
+          
+          
+          
           # Optional API
+          
+          def build_milestone(attributes)
+            attributes = attributes.attributes if attributes.is_a?(Unfuddle::Milestone)
+            Houston::Adapters::TicketTracker::UnfuddleAdapter::Milestone.new(self, attributes)
+          end
+          
+          def create_milestone!(houston_milestone)
+            native_milestone = unfuddle.create_milestone(
+              "project_id" => project_id, # required for fetch! to work below
+              "due_on" => Date.new(2100, 1, 1), # required by Unfuddle; unused by Houston
+              "title" => houston_milestone.name)
+            native_milestone.fetch! # fetch attributes we don't know yet
+            
+            build_milestone(native_milestone)
+          end
           
           def find_tickets!(*args)
             query = find_in_cache_or_execute(query_key(args)) { construct_ticket_query(*args) }

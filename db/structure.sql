@@ -638,6 +638,42 @@ ALTER SEQUENCE errors_id_seq OWNED BY errors.id;
 
 
 --
+-- Name: milestones; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE milestones (
+    id integer NOT NULL,
+    project_id integer NOT NULL,
+    remote_id integer,
+    name character varying(255) NOT NULL,
+    tickets_count integer DEFAULT 0,
+    completed_at timestamp without time zone,
+    extended_attributes hstore,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: milestones_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE milestones_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: milestones_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE milestones_id_seq OWNED BY milestones.id;
+
+
+--
 -- Name: project_quotas; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1006,7 +1042,8 @@ CREATE TABLE tickets (
     type character varying(255),
     closed_at timestamp without time zone,
     reporter_email character varying(255),
-    reporter_id integer
+    reporter_id integer,
+    milestone_id integer
 );
 
 
@@ -1185,6 +1222,13 @@ ALTER TABLE ONLY errors ALTER COLUMN id SET DEFAULT nextval('errors_id_seq'::reg
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY milestones ALTER COLUMN id SET DEFAULT nextval('milestones_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY project_quotas ALTER COLUMN id SET DEFAULT nextval('project_quotas_id_seq'::regclass);
 
 
@@ -1302,6 +1346,14 @@ ALTER TABLE ONLY deploys
 
 ALTER TABLE ONLY errors
     ADD CONSTRAINT errors_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: milestones_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY milestones
+    ADD CONSTRAINT milestones_pkey PRIMARY KEY (id);
 
 
 --
@@ -1465,6 +1517,13 @@ CREATE INDEX index_deploys_on_project_id_and_environment_name ON deploys USING b
 
 
 --
+-- Name: index_milestones_on_project_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_milestones_on_project_id ON milestones USING btree (project_id);
+
+
+--
 -- Name: index_project_quotas_on_project_id_and_week; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1560,6 +1619,13 @@ CREATE INDEX index_testing_notes_on_user_id ON testing_notes USING btree (user_i
 --
 
 CREATE INDEX index_ticket_prerequisites_on_ticket_id ON ticket_prerequisites USING btree (ticket_id);
+
+
+--
+-- Name: index_tickets_on_milestone_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_tickets_on_milestone_id ON tickets USING btree (milestone_id);
 
 
 --
@@ -1807,3 +1873,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130815232527');
 INSERT INTO schema_migrations (version) VALUES ('20130914152419');
 
 INSERT INTO schema_migrations (version) VALUES ('20130914155044');
+
+INSERT INTO schema_migrations (version) VALUES ('20130921141449');

@@ -65,6 +65,12 @@ module Houston
           
           
           
+          def milestones
+            []
+          end
+          
+          
+          
           # Idiomatic API
           
           attr_reader :repo_path, :config

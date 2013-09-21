@@ -5,6 +5,7 @@ class Project < ActiveRecord::Base
   has_many :releases, :dependent => :destroy
   has_many :commits
   has_many :tickets, :dependent => :destroy, extend: TicketSynchronizer
+  has_many :milestones, :dependent => :destroy, extend: MilestoneSynchronizer
   has_many :testing_notes, :dependent => :destroy
   has_many :test_runs, :dependent => :destroy
   has_many :deploys
@@ -156,6 +157,24 @@ class Project < ActiveRecord::Base
     tickets_removed_from_queue.each { |ticket| ticket.queue = nil }
     
     tickets
+  end
+  
+  
+  
+  def open_milestones
+    milestones.fetch_all.select(&:uncompleted?)
+  end
+  
+  def create_milestone!(attributes)
+    milestone = milestones.build attributes
+    if milestone.valid?
+      if ticket_tracker.respond_to?(:create_milestone!)
+        milestone = milestones.create ticket_tracker.create_milestone!(milestone).attributes
+      else
+        milestone.save
+      end
+    end
+    milestone
   end
   
   # ------------------------------------------------------------------------- #
