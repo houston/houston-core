@@ -81,6 +81,13 @@ module Houston
           
           
           
+          def set_milestone!(milestone_id)
+            ticket = unfuddle.ticket(remote_id)
+            ticket.update_attribute("milestone_id", milestone_id)
+          end
+          
+          
+          
           def create_comment!(comment)
             unfuddle.as_user(comment.user) do
               ticket = unfuddle.ticket(remote_id)

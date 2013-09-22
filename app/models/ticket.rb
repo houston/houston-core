@@ -19,6 +19,8 @@ class Ticket < ActiveRecord::Base
   validates :number, presence: true
   validates_uniqueness_of :number, scope: :project_id, on: :create, if: :number
   
+  after_save :propagate_milestone_change, if: :milestone_id_changed?
+  
   attr_readonly :number, :project_id
   
   delegate :testers, :maintainers, to: :project
@@ -288,12 +290,13 @@ class Ticket < ActiveRecord::Base
   
 private
   
-  
-  
   def ignore_release_if_duplicate(release)
     raise ActiveRecord::Rollback if self.releases.exists?(release.id)
   end
   
   
+  def propagate_milestone_change
+    remote_ticket.set_milestone! milestone.remote_id if milestone
+  end
   
 end
