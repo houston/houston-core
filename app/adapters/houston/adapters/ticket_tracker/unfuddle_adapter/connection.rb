@@ -67,8 +67,10 @@ module Houston
           
           
           
-          def milestones
-            unfuddle.milestones.map { |attributes | build_milestone(attributes) }
+          def open_milestones
+            unfuddle.milestones
+              .reject { |m| m.completed || m.archived }
+              .map { |attributes | build_milestone(attributes) }
           end
           
           

@@ -39,7 +39,7 @@ module Houston
           nil
         end
         
-        def milestones
+        def open_milestones
           []
         end
         

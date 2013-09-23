@@ -162,7 +162,7 @@ class Project < ActiveRecord::Base
   
   
   def open_milestones
-    milestones.fetch_all.select(&:uncompleted?)
+    milestones.fetch_open
   end
   
   def create_milestone!(attributes)
