@@ -66,9 +66,9 @@ module Houston
           
           
           def resolve!
-            unless %w{resolved closed}.member? @raw_attributes["status"]
+            unless %w{resolved closed}.member? @raw_attributes["status"].to_s.downcase
               ticket = unfuddle.ticket(remote_id)
-              ticket.update_attributes!("status" => "resolved", "resolution" => "fixed")
+              ticket.update_attributes!("status" => "Resolved", "resolution" => "fixed")
             end
           end
           
@@ -76,7 +76,7 @@ module Houston
           
           def close!
             ticket = unfuddle.ticket(remote_id)
-            ticket.update_attributes!("status" => "closed")
+            ticket.update_attributes!("status" => "Closed")
           end
           
           
