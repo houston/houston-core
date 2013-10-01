@@ -197,7 +197,7 @@ class window.NewTicketView extends Backbone.View
     
     return [] if words.length == 0
     
-    regexes = (new RegExp(word, 'i') for word in words)
+    regexes = (new RegExp("\\b#{word}", 'i') for word in words)
     
     results = []
     for ticket in @tickets
@@ -220,6 +220,8 @@ class window.NewTicketView extends Backbone.View
       0
   
   IGNORED_WORDS: ['an', 'the',
+                  'if', 'when', 'then',
+                  'i', 'my',
                   'and', 'or', 'but',
                   'for', 'of', 'from',
                   'should']
