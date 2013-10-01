@@ -85,7 +85,6 @@ module Houston
           def create_milestone!(houston_milestone)
             native_milestone = unfuddle.create_milestone(
               "project_id" => project_id, # required for fetch! to work below
-              "due_on" => Date.new(2100, 1, 1), # required by Unfuddle; unused by Houston
               "title" => houston_milestone.name)
             native_milestone.fetch! # fetch attributes we don't know yet
             
