@@ -71,6 +71,37 @@ $.fn.extend
   
   enable: ->
     $(@).find('input[type="submit"], input[type="reset"], button').removeAttr('disabled').end()
+  
+  getCursorPosition: ->
+    input = @get(0)
+    return unless input
+    if input.selectionStart # Standard-compliant browsers
+      input.selectionStart
+    else if document.selection # IE
+      input.focus()
+      sel = document.selection.createRange()
+      selLen = document.selection.createRange().text.length
+      sel.moveStart 'character', -input.value.length
+      sel.text.length - selLen
+  
+  putCursorAtEnd: ->
+    @each ->
+      $(@).focus()
+      
+      # If this function exists...
+      if @setSelectionRange
+        # ... then use it (Doesn't work in IE)
+        
+        # Double the length because Opera is inconsistent about whether a carriage return is one character or two. Sigh.
+        len = $(@).val().length * 2
+        
+        @setSelectionRange(len, len)
+      else
+        
+        # ... otherwise replace the contents with itself
+        # (Doesn't work in Google Chrome)
+        
+        $(@).val($(@).val())
 
 
 

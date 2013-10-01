@@ -7,6 +7,17 @@ class ProjectTicketsController < ApplicationController
   end
   
   
+  def new
+    @tickets = @project.tickets.includes(:project).map do |ticket|
+      { id: ticket.id,
+        summary: ticket.summary,
+        closed: ticket.closed_at.present?,
+        ticketUrl: ticket.ticket_tracker_ticket_url,
+        number: ticket.number }
+    end
+  end
+  
+  
   def create
     ticket = @project.create_ticket! params[:ticket].merge(reporter: current_user)
     
