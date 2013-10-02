@@ -242,22 +242,16 @@ class window.NewTicketView extends Backbone.View
     @$summary.focus()
   
   createNewTicket: ->
-    $form = $('#new_ticket_view')
-    attributes = $form.serializeObject()
+    attributes = @$el.serializeObject()
     
-    summary = attributes['ticket[summary]']
-    md = /^\s*\[(\w+)\]\s*(.*)$/.exec(summary)
-    [_, type, summary] = md || [null, '', '']
-    attributes['ticket[summary]'] = summary
-    attributes['ticket[type]'] = type.capitalize()
+    @$el.disable()
     
-    $form.disable()
     xhr = $.post "/projects/#{@project.slug}/tickets", attributes
-    xhr.complete -> $form.enable()
+    xhr.complete => @$el.enable()
     
     xhr.success (ticket)=>
       @tickets.push(ticket)
-      $form.enable()
+      @$el.enable()
       @resetNewTicket()
     
     xhr.error (response)=>

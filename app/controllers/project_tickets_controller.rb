@@ -19,7 +19,12 @@ class ProjectTicketsController < ApplicationController
   
   
   def create
-    ticket = @project.create_ticket! params[:ticket].merge(reporter: current_user)
+    attributes = params[:ticket]
+    md = attributes[:summary].match(/^\s*\[(\w+)\]\s*(.*)$/) || [nil, "", attributes[:summary]]
+    attributes.merge!(type: md[1].capitalize(), summary: md[2])
+    attributes.merge!(reporter: current_user)
+    
+    ticket = @project.create_ticket! attributes
     
     if ticket.persisted?
       render json: TicketPresenter.new(ticket)
