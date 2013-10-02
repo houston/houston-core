@@ -253,6 +253,7 @@ class window.NewTicketView extends Backbone.View
       @tickets.push(ticket)
       @$el.enable()
       @resetNewTicket()
+      $("<div class=\"alert alert-success\">Ticket <a href=\"#{ticket.ticketUrl}\" target=\"_blank\">##{ticket.number}</a> was created.</div>").prependTo($('#body')).alert()
     
     xhr.error (response)=>
       errors = Errors.fromResponse(response)
