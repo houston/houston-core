@@ -76,7 +76,7 @@ module Houston
           
           def close!
             ticket = unfuddle.ticket(remote_id)
-            ticket.update_attributes!("status" => "Closed")
+            ticket.update_attributes!("status" => "closed")
           end
           
           
