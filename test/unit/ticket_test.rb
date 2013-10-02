@@ -9,7 +9,7 @@ class TicketTest < ActiveSupport::TestCase
   
   
   test "creating a valid ticket" do
-    ticket = Ticket.new(project_id: 1, number: 1, summary: "Test summary")
+    ticket = Ticket.new(project_id: 1, number: 1, summary: "Test summary", type: "Bug")
     assert_equal true, ticket.valid?
   end
   
@@ -17,7 +17,7 @@ class TicketTest < ActiveSupport::TestCase
   
   
   test "setting a ticket's queue creates a TicketQueue" do
-    ticket = Ticket.create!(project_id: 1, number: 1, summary: "Test summary")
+    ticket = Ticket.create!(project_id: 1, number: 1, summary: "Test summary", type: "Bug")
     
     assert_difference "TicketQueue.count", +1 do
       ticket.set_queue! "to_do"
@@ -28,7 +28,7 @@ class TicketTest < ActiveSupport::TestCase
   
   
   test "updating a ticket's queue destroys the first TicketQueue and creates another one" do
-    ticket = Ticket.create!(project_id: 1, number: 1, summary: "Test summary")
+    ticket = Ticket.create!(project_id: 1, number: 1, summary: "Test summary", type: "Bug")
     ticket.set_queue! "to_do"
     queue = ticket.ticket_queue
     
@@ -40,7 +40,7 @@ class TicketTest < ActiveSupport::TestCase
   
   
   test "TicketQueues aren't destroyed or created when you set a ticket's queue to the same value" do
-    ticket = Ticket.create!(project_id: 1, number: 1, summary: "Test summary")
+    ticket = Ticket.create!(project_id: 1, number: 1, summary: "Test summary", type: "Bug")
     ticket.set_queue! "to_do"
     queue = ticket.ticket_queue
     
@@ -55,14 +55,14 @@ class TicketTest < ActiveSupport::TestCase
   test "a ticket's queue can be mass-assigned on creation" do
     ticket = nil
     assert_difference "TicketQueue.count", +1 do
-      ticket = Ticket.create!(project_id: 1, number: 1, summary: "Test summary", queue: "to_do")
+      ticket = Ticket.create!(project_id: 1, number: 1, summary: "Test summary", type: "Bug", queue: "to_do")
     end
     assert_equal "to_do", ticket.ticket_queue(true).queue
   end
   
   
   test "a ticket's queue can be mass-assigned on update" do
-    ticket = Ticket.create!(project_id: 1, number: 1, summary: "Test summary", queue: "to_do")
+    ticket = Ticket.create!(project_id: 1, number: 1, summary: "Test summary", type: "Bug", queue: "to_do")
     assert_difference "TicketQueue.count", +1 do
       ticket.update_attributes(queue: "in_testing")
     end
@@ -73,7 +73,7 @@ class TicketTest < ActiveSupport::TestCase
   
   
   test "invoking `release!` triggers the ticket:release event" do
-    ticket = Ticket.create!(project_id: 1, number: 1, summary: "Test summary")
+    ticket = Ticket.create!(project_id: 1, number: 1, summary: "Test summary", type: "Bug")
     release = Release.new
     
     assert_triggered "ticket:release" do
@@ -85,7 +85,7 @@ class TicketTest < ActiveSupport::TestCase
   
   
   test "#tags accepts an array of strings" do
-    ticket = Ticket.create!(project_id: 1, number: 1, summary: "Test summary")
+    ticket = Ticket.create!(project_id: 1, number: 1, summary: "Test summary", type: "Bug")
     ticket.tags = ["Bug", "No Work-Around"]
     assert_equal 2, ticket.tags.length
     assert_equal TicketTag, ticket.tags.first.class
@@ -93,7 +93,7 @@ class TicketTest < ActiveSupport::TestCase
   end
   
   test "#tags accepts an array of TicketTag objects" do
-    ticket = Ticket.create!(project_id: 1, number: 1, summary: "Test summary")
+    ticket = Ticket.create!(project_id: 1, number: 1, summary: "Test summary", type: "Bug")
     ticket.tags = [TicketTag.new("Bug", "b50000")]
     assert_equal 1, ticket.tags.length
     assert_equal TicketTag, ticket.tags.first.class

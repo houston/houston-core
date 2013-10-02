@@ -4,7 +4,7 @@ class TicketQueueTest < ActiveSupport::TestCase
   
   
   test "must be for a valid queue" do
-    ticket = Ticket.new(project_id: 1, number: 1, summary: "Test summary")
+    ticket = Ticket.new(project_id: 1, number: 1, summary: "Test summary", type: "Bug")
     
     valid_queue = TicketQueue.new(ticket: ticket, queue: "in_testing")
     assert_equal true, valid_queue.valid?
@@ -15,7 +15,7 @@ class TicketQueueTest < ActiveSupport::TestCase
   
   
   test "deleting a queue (loaded via a ticket) sets its destroy_at property" do
-    ticket = Ticket.create!(project_id: 1, number: 1, summary: "Test summary")
+    ticket = Ticket.create!(project_id: 1, number: 1, summary: "Test summary", type: "Bug")
     TicketQueue.create!(ticket: ticket, queue: "in_testing")
     
     queue = Ticket.find(1).ticket_queue
