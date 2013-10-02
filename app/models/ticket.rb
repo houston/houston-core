@@ -10,7 +10,7 @@ class Ticket < ActiveRecord::Base
   has_and_belongs_to_many :releases, before_add: :ignore_release_if_duplicate
   has_and_belongs_to_many :commits
   
-  default_scope order(:number)
+  default_scope order(:number).where(destroyed_at: nil)
   
   serialize :extended_attributes, ActiveRecord::Coders::Hstore
   
@@ -47,6 +47,10 @@ class Ticket < ActiveRecord::Base
     
     def numbered(*numbers)
       where(number: numbers.flatten.map(&:to_i))
+    end
+    
+    def not_numbered(*numbers)
+      where(arel_table[:number].not_in(numbers.flatten.map(&:to_i)))
     end
     
   end

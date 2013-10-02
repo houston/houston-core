@@ -17,7 +17,7 @@ class SyncAllTicketsJob
   end
   
   def update_tickets_for_project!(project)
-    project.all_tickets
+    SyncProjectTicketsJob.new(project).run!
     
   rescue Houston::Adapters::TicketTracker::ConnectionError
     retry if (!connection_retry_count += 1) < 3

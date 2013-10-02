@@ -1045,7 +1045,8 @@ CREATE TABLE tickets (
     closed_at timestamp without time zone,
     reporter_email character varying(255),
     reporter_id integer,
-    milestone_id integer
+    milestone_id integer,
+    destroyed_at timestamp without time zone
 );
 
 
@@ -1624,6 +1625,13 @@ CREATE INDEX index_ticket_prerequisites_on_ticket_id ON ticket_prerequisites USI
 
 
 --
+-- Name: index_tickets_on_destroyed_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_tickets_on_destroyed_at ON tickets USING btree (destroyed_at);
+
+
+--
 -- Name: index_tickets_on_milestone_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1881,3 +1889,5 @@ INSERT INTO schema_migrations (version) VALUES ('20130921141449');
 INSERT INTO schema_migrations (version) VALUES ('20131002005512');
 
 INSERT INTO schema_migrations (version) VALUES ('20131002015547');
+
+INSERT INTO schema_migrations (version) VALUES ('20131002145620');
