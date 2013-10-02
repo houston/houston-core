@@ -110,6 +110,22 @@ Houston::Application.routes.draw do
   
   
   
+  # Tickets
+  
+  constraints :slug => /360|members/ do
+    scope "projects/:slug" do
+      match "tickets/new", :to => "project_tickets#new"
+    end
+  end
+  
+  scope "projects/:slug" do
+    get "tickets/sync", :to => "project_tickets_sync#show", as: :project_tickets_sync
+    post "tickets/sync", :to => "project_tickets_sync#create"
+  end
+  
+  
+  
+  
   # Settings
   
   get "settings", to: "settings#show"
@@ -146,12 +162,6 @@ Houston::Application.routes.draw do
   
   # Experiment
   match "tickets", :to => "tickets#index", :via => :get
-  
-  constraints :slug => /360|members/ do
-    scope "projects/:slug" do
-      match "tickets/new", :to => "project_tickets#new"
-    end
-  end
   
   # Tester Bar
   match "tester_bar/:action", :controller => "tester_bar" if Rails.env.development?

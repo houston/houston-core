@@ -45,6 +45,17 @@ module ApplicationHelper
   
   
   
+  def format_time(time)
+    return "Never" if time.nil?
+    if time.to_date == Date.today
+      time.strftime("%l:%M %p")
+    else
+      time.strftime("%b %e, %l:%M %p")
+    end
+  end
+  
+  
+  
 end
 
 

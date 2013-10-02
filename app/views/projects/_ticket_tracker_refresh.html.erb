@@ -1,0 +1,6 @@
+<div class="ticket-tracker-refresh <%= "working" if @project.ticket_tracker_sync_in_progress? %>">
+  <%= link_to project_tickets_sync_path, id: "sync_tickets_button", "data-tracker" => @project.ticket_tracker_name do %>
+    <i data-toggle="tooltip" title="Refresh" class="icon icon-refresh"></i>
+    <span data-toggle="tooltip" title="Last Synced with <%= @project.ticket_tracker_name %>" class="ticket-tracker-last-sync"><%= format_time @project.last_ticket_tracker_sync_at %></span>
+  <% end %>
+</div>

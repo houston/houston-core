@@ -177,6 +177,12 @@ class Project < ActiveRecord::Base
     milestone
   end
   
+  
+  
+  def ticket_tracker_sync_in_progress?
+    ticket_tracker_sync_started_at.present? and ticket_tracker_sync_started_at > 5.minutes.ago
+  end
+  
   # ------------------------------------------------------------------------- #
   
   

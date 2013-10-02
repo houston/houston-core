@@ -1,0 +1,33 @@
+#sync_tickets_button {
+  color: #333;
+  padding: 6px;
+  display: block;
+  position: absolute;
+  top: 74px;
+  right: 48px;
+  white-space: nowrap;
+  cursor: pointer;
+  
+  i {
+    display: inline-block;
+    padding-right: 3px;
+  }
+  
+  &.working {
+    i {
+      -moz-animation: spin 1.5s infinite linear;
+      -o-animation: spin 1.5s infinite linear;
+      -webkit-animation: spin 1.5s infinite linear;
+      animation: spin 1.5s infinite linear;
+    }
+  }
+  
+  &:hover {
+    text-decoration: none;
+  }
+  
+  .ticket-tracker-last-sync { 
+    display: inline-block;
+    font-weight: 200;
+  }
+}

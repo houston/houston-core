@@ -726,7 +726,9 @@ CREATE TABLE projects (
     min_passing_verdicts integer DEFAULT 1 NOT NULL,
     error_tracker_name character varying(255) DEFAULT 'None'::character varying,
     extended_attributes hstore,
-    code_climate_repo_token character varying(255) DEFAULT ''::character varying NOT NULL
+    code_climate_repo_token character varying(255) DEFAULT ''::character varying NOT NULL,
+    last_ticket_tracker_sync_at timestamp without time zone,
+    ticket_tracker_sync_started_at timestamp without time zone
 );
 
 
@@ -1875,3 +1877,7 @@ INSERT INTO schema_migrations (version) VALUES ('20130914152419');
 INSERT INTO schema_migrations (version) VALUES ('20130914155044');
 
 INSERT INTO schema_migrations (version) VALUES ('20130921141449');
+
+INSERT INTO schema_migrations (version) VALUES ('20131002005512');
+
+INSERT INTO schema_migrations (version) VALUES ('20131002015547');
