@@ -26,7 +26,7 @@ module TicketSynchronizer
     unsynchronized_tickets = unsynchronized_tickets.reject(&:nil?)
     return [] if unsynchronized_tickets.empty?
     
-    Project.benchmark("[tickets.synchronize] synchronizing with local tickets") do
+    Project.benchmark("\e[33m[tickets.synchronize] synchronizing with local tickets\e[0m") do
       numbers = unsynchronized_tickets.map(&:number)
       tickets = includes(:ticket_prerequisites).where(number: numbers)
       
