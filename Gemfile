@@ -29,6 +29,7 @@ gem 'simplecov'
 gem 'strongbox' # for encrypting user credentials
 gem 'whenever' # a DSL for writing CRON jobs
 gem 'yajl-ruby', :require => 'yajl/json_gem'
+gem 'oj'
 
 gem 'backbone-rails'
 gem 'd3js-rails'

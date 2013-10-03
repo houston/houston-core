@@ -57,6 +57,10 @@ class Ticket < ActiveRecord::Base
       where(arel_table[:number].not_in(numbers.flatten.map(&:to_i)))
     end
     
+    def unclosed
+      where(closed_at: nil)
+    end
+    
   end
   
   
