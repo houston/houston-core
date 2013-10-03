@@ -161,6 +161,10 @@ class Project < ActiveRecord::Base
   
   
   
+  def all_milestones
+    milestones.fetch_all
+  end
+  
   def open_milestones
     milestones.fetch_open
   end

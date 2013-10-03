@@ -65,6 +65,10 @@ module Houston
           
           
           
+          def all_milestones
+            []
+          end
+          
           def open_milestones
             []
           end

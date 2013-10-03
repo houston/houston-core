@@ -1,6 +1,10 @@
 module MilestoneSynchronizer
   
   
+  def fetch_all
+    synchronize ticket_tracker.all_milestones
+  end
+  
   def fetch_open
     synchronize ticket_tracker.open_milestones
   end

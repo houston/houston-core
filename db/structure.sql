@@ -650,7 +650,8 @@ CREATE TABLE milestones (
     completed_at timestamp without time zone,
     extended_attributes hstore,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    destroyed_at timestamp without time zone
 );
 
 
@@ -1520,6 +1521,13 @@ CREATE INDEX index_deploys_on_project_id_and_environment_name ON deploys USING b
 
 
 --
+-- Name: index_milestones_on_destroyed_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_milestones_on_destroyed_at ON milestones USING btree (destroyed_at);
+
+
+--
 -- Name: index_milestones_on_project_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1891,3 +1899,5 @@ INSERT INTO schema_migrations (version) VALUES ('20131002005512');
 INSERT INTO schema_migrations (version) VALUES ('20131002015547');
 
 INSERT INTO schema_migrations (version) VALUES ('20131002145620');
+
+INSERT INTO schema_migrations (version) VALUES ('20131003014023');
