@@ -203,7 +203,9 @@ class Ticket < ActiveRecord::Base
   end
   
   def release!(release)
+    first_release = self.releases.count == 0
     self.releases << release unless self.releases.exists?(release.id)
+    update_attribute(:first_release_at, release.created_at) if first_release
     update_attribute(:last_release_at, release.created_at)
     set_deployment_to!(release.environment_name)
     Houston.observer.fire "ticket:release", self, release

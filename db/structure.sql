@@ -1048,7 +1048,8 @@ CREATE TABLE tickets (
     reporter_id integer,
     milestone_id integer,
     destroyed_at timestamp without time zone,
-    resolution character varying(255) DEFAULT ''::character varying NOT NULL
+    resolution character varying(255) DEFAULT ''::character varying NOT NULL,
+    first_release_at timestamp without time zone
 );
 
 
@@ -1911,3 +1912,5 @@ INSERT INTO schema_migrations (version) VALUES ('20131002145620');
 INSERT INTO schema_migrations (version) VALUES ('20131003014023');
 
 INSERT INTO schema_migrations (version) VALUES ('20131004015452');
+
+INSERT INTO schema_migrations (version) VALUES ('20131004185618');

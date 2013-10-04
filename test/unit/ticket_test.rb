@@ -81,6 +81,32 @@ class TicketTest < ActiveSupport::TestCase
     end
   end
   
+  test "invoking `release!` assigns first_release_at and last_release_at" do
+    ticket = Ticket.create!(project_id: 1, number: 1, summary: "Test summary", type: "Bug")
+    release = Release.new
+    released_at = Time.now
+    stub(release).created_at { released_at }
+    
+    ticket.release!(release)
+    
+    assert_equal released_at, ticket.first_release_at
+    assert_equal released_at, ticket.last_release_at
+  end
+  
+  test "invoking `release!` on a ticket that has been released assigns last_release_at" do
+    project = Project.new(version_control_name: "Mock")
+    ticket = Ticket.create!(project_id: 1, number: 1, summary: "Test summary", type: "Bug", first_release_at: 5.days.ago)
+    ticket.releases << Release.create!(user_id: 1, project: project)
+    release = Release.new
+    released_at = Time.now
+    stub(release).created_at { released_at }
+    
+    ticket.release!(release)
+    
+    refute_equal released_at, ticket.first_release_at
+    assert_equal released_at, ticket.last_release_at
+  end
+  
   
   
   
