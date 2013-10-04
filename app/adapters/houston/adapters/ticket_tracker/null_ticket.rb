@@ -19,6 +19,10 @@ module Houston
           nil
         end
         
+        def resolution
+          ""
+        end
+        
         def type
           nil
         end

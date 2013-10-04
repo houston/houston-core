@@ -1047,7 +1047,8 @@ CREATE TABLE tickets (
     reporter_email character varying(255),
     reporter_id integer,
     milestone_id integer,
-    destroyed_at timestamp without time zone
+    destroyed_at timestamp without time zone,
+    resolution character varying(255) DEFAULT ''::character varying NOT NULL
 );
 
 
@@ -1647,6 +1648,13 @@ CREATE INDEX index_tickets_on_milestone_id ON tickets USING btree (milestone_id)
 
 
 --
+-- Name: index_tickets_on_resolution; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_tickets_on_resolution ON tickets USING btree (resolution);
+
+
+--
 -- Name: index_users_on_authentication_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1901,3 +1909,5 @@ INSERT INTO schema_migrations (version) VALUES ('20131002015547');
 INSERT INTO schema_migrations (version) VALUES ('20131002145620');
 
 INSERT INTO schema_migrations (version) VALUES ('20131003014023');
+
+INSERT INTO schema_migrations (version) VALUES ('20131004015452');

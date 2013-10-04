@@ -17,6 +17,7 @@ module Houston
             @number           = attributes["number"]
             @summary          = attributes["summary"]
             @description      = attributes["description"]
+            @resolution       = attributes["resolution"]
             @type             = get_type
             @created_at       = Time.parse(attributes["created_at"]) if attributes["created_at"]
             @closed_at        = Time.parse(attributes["closed_on"]) if attributes["closed_on"]
@@ -35,6 +36,7 @@ module Houston
                       :number,
                       :summary,
                       :description,
+                      :resolution,
                       :type,
                       :created_at,
                       :closed_at,
@@ -52,6 +54,7 @@ module Houston
               number:         number,
               summary:        summary,
               description:    description,
+              resolution:     resolution,
               type:           type,
               created_at:     created_at,
               closed_at:      closed_at,
