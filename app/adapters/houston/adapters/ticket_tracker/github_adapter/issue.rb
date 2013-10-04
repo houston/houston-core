@@ -16,6 +16,7 @@ module Houston
             @summary          = attributes["title"]
             @description      = attributes["body"]
             @resolution       = ""
+            @milestone_id     = nil
             @type             = get_type
             @created_at       = Time.parse(attributes["created_at"]) if attributes["created_at"]
             @closed_at        = Time.parse(attributes["closed_at"]) if attributes["closed_at"]
@@ -31,6 +32,7 @@ module Houston
                       :summary,
                       :description,
                       :resolution,
+                      :milestone_id,
                       :type,
                       :tags,
                       :created_at,
@@ -42,6 +44,7 @@ module Houston
               summary:        summary,
               description:    description,
               resolution:     resolution,
+              milestone_id:   milestone_id,
               type:           type,
               created_at:     created_at,
               closed_at:      closed_at,

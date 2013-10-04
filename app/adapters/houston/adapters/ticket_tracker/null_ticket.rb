@@ -23,6 +23,10 @@ module Houston
           ""
         end
         
+        def milestone_id
+          nil
+        end
+        
         def type
           nil
         end

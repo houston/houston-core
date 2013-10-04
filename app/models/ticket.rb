@@ -284,12 +284,25 @@ class Ticket < ActiveRecord::Base
   
   
   
-  # Not certain if it will be best to use Remotable with Tickets or not
-  # By putting this here, dependent code won't have to change if we add
-  # Remotable to Tickets again.
-  def self.nosync; yield; end
-  def self.nosync=(value); end
-  def self.nosync?; true; end
+  def self.nosync
+    value = nosync?
+    begin
+      self.nosync = true
+      yield
+    ensure
+      self.nosync = value
+    end
+  end
+  
+  def self.nosync=(value)
+    @nosync = value
+  end
+  
+  def self.nosync?
+    !!@nosync
+  end
+  
+  delegate :nosync?, to: "self.class"
   
   
   
@@ -315,6 +328,7 @@ private
   
   
   def propagate_milestone_change
+    return if nosync?
     remote_ticket.set_milestone! milestone.remote_id if milestone
   end
   
