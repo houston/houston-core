@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/houstonmc/houston-scheduler.git
-  revision: 1cfea21707c3c559adc87abffd98436bb2e99889
+  revision: 9554d6b0001412a2004ecf4ecf67d17f42e8725b
   specs:
     houston-scheduler (0.0.1)
       coffee-rails (~> 3.2.1)
@@ -151,7 +151,7 @@ GEM
     method_source (0.8.1)
     mime-types (1.25)
     minitest (4.6.2)
-    multi_json (1.8.0)
+    multi_json (1.8.1)
     multipart-post (1.2.0)
     net-ldap (0.3.1)
     netrc (0.7.7)
@@ -209,7 +209,7 @@ GEM
     ref (1.0.2)
     rr (1.0.4)
     rugged (0.17.0.b7)
-    sass (3.2.11)
+    sass (3.2.12)
     sass-rails (3.2.6)
       railties (~> 3.2.0)
       sass (>= 3.1.10)
