@@ -34,7 +34,13 @@ class TestingReportController < ApplicationController
     @title = "Testing Report: #{@project.name}"
     authorize! :show, @project.testing_notes.build
     
-    @tickets = @project.find_tickets(status: :resolved, resolution: :fixed).reject(&:in_development?)
+    @tickets = @project.tickets
+      .unclosed
+      .fixed
+      .includes(:testing_notes)
+      .includes(:releases)
+      .includes(:commits)
+      .reject(&:in_development?)
     
     @tickets = TicketPresenter.new(@tickets).with_testing_notes
     render json: @tickets if request.xhr?

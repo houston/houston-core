@@ -1,8 +1,8 @@
 <%= render partial: "projects/header", locals: {project: @project, subtitle: "Testing Report"} %>
 
+<%= render "projects/ticket_tracker_refresh" %>
+
 <% if @tickets.any? %>
-  <button class="btn" id="refresh_testing_report">Refresh</button>
-  
   <div id="project_<%= @project.id %>_progress" class="testing-report-progress pie"></div>
   
   <div class="nomargin">
