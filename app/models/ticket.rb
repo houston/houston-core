@@ -329,7 +329,7 @@ private
   
   def propagate_milestone_change
     return if nosync?
-    remote_ticket.set_milestone! milestone.remote_id if milestone
+    remote_ticket.set_milestone! milestone && milestone.remote_id
   end
   
 end

@@ -89,7 +89,7 @@ module Houston
           
           def set_milestone!(milestone_id)
             ticket = unfuddle.ticket(remote_id)
-            ticket.update_attribute("milestone_id", milestone_id)
+            ticket.update_attribute("milestone_id", milestone_id || 0)
           end
           
           
