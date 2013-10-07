@@ -61,8 +61,16 @@ class Ticket < ActiveRecord::Base
       unclosed.where(resolution: "")
     end
     
+    def resolved
+      where(arel_table[:resolution].not_eq(""))
+    end
+    
     def unclosed
       where(closed_at: nil)
+    end
+    
+    def closed
+      where(arel_table[:closed_at].not_eq(nil))
     end
     
   end
