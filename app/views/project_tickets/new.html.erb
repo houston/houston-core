@@ -27,7 +27,8 @@
   $(function() {
     new NewTicketView({
       tickets: <%= raw @tickets.to_json %>,
-      project: { slug: <%= raw @project.slug.to_json %> }
+      project: { slug: <%= raw @project.slug.to_json %> },
+      labels: <%= raw @labels.to_json %>
     }).render();
   });
 </script>

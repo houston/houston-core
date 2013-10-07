@@ -18,74 +18,6 @@ class window.NewTicketView extends Backbone.View
   
   TYPES: ["[bug]", "[feature]", "[chore]", "[refactor]"]
   
-  LABELS: [
-    'Admin',
-    'Global',
-    'What\'s New',
-    'Help',
-    'Feedback',
-    'Overview',
-    'Overview / Upcoming Events',
-    'Overview / Notifcations',
-    'Overview / Data Health',
-    'Overview / Recent Attendance',
-    'Reports',
-    'Reports / Annual Report',
-    'Trends',
-    'Trends / Export',
-    'Trends / Print',
-    'Trends Detail',
-    'Trends Detail / Export',
-    'Trends Detail / Print',
-    'People',
-    'People / Export',
-    'People / Print',
-    'Profile',
-    'Profile / Photo',
-    'Profile / General',
-    'Profile / Family',
-    'Profile / Attendance',
-    'Profile / Offering',
-    'Profile / Notes',
-    'Profile / Pastoral Visits',
-    'Profile / Export',
-    'Mailing Labels',
-    'Church Directory',
-    'Add/Remove Tags',
-    'Send Email',
-    'Contribution Statements',
-    'Households',
-    'Households / Export',
-    'Households / Print',
-    'Household',
-    'Household / Photo',
-    'Household / General',
-    'Household / Members',
-    'Household / Notes',
-    'Household / Pastoral Visits',
-    'Smart Groups',
-    'Tags',
-    'Pastoral Visits',
-    'New Person',
-    'New Person / vCard',
-    'Events',
-    'Events / Print',
-    'Event',
-    'Event / Anniversary',
-    'Calendars',
-    'Enter Attendance',
-    'Enter Offerings',
-    'Enter Offerings / Export',
-    'Envelopes',
-    'Funds',
-    'Pledges',
-    'Settings',
-    'Logins',
-    'Permisssions',
-    'Sunday School',
-    'SS Import'
-  ]
-  
   events:
     'click #reset_ticket': 'resetNewTicket'
     'click #create_ticket': 'createNewTicket'
@@ -94,6 +26,7 @@ class window.NewTicketView extends Backbone.View
     @$el = $('#new_ticket_view')
     @project = @options.project
     @tickets = @options.tickets
+    @LABELS = @options.labels
     @renderSuggestion = HandlebarsTemplates['new_ticket/suggestion']
     @$suggestions = $('#ticket_suggestions')
     @$summary = $('#ticket_summary')

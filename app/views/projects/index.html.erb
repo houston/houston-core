@@ -21,6 +21,7 @@
           <% Houston.config.environments.each do |environment_name| %>
           <th class="project-last-release"><%= environment_name %></th>
           <% end %>
+          <td class="project-new-ticket"></td>
           <td class="project-following"></td>
           <td class="table-margin"></td>
         </tr>
@@ -100,6 +101,11 @@
               <% end %>
             </td>
             <% end %>
+            <td class="project-new-ticket">
+              <% if can?(:create, project.tickets.build) %>
+                <%= link_to "New Ticket", new_ticket_path(slug: project.slug), class: "btn" %>
+              <% end %>
+            </td>
             <td class="project-following">
               <% if current_user %>
                 <% roles_for_project = current_user.roles.find_all { |role| role.project_id == project.id }.map(&:name) %>

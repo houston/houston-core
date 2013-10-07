@@ -112,10 +112,8 @@ Houston::Application.routes.draw do
   
   # Tickets
   
-  constraints :slug => /360|members/ do
-    scope "projects/:slug" do
-      match "tickets/new", :to => "project_tickets#new"
-    end
+  scope "projects/:slug" do
+    match "tickets/new", :to => "project_tickets#new", as: :new_ticket
   end
   
   scope "projects/:slug" do

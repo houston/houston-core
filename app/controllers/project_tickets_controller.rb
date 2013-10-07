@@ -8,6 +8,8 @@ class ProjectTicketsController < ApplicationController
   
   
   def new
+    @labels = []
+    @labels = Houston::TMI::TICKET_LABELS_FOR_MEMBERS if @project.slug =~ /^360|members$/
     @tickets = @project.tickets.includes(:project).map do |ticket|
       { id: ticket.id,
         summary: ticket.summary,
