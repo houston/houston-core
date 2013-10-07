@@ -186,14 +186,14 @@ class window.NewTicketView extends Backbone.View
       @tickets.push(ticket)
       @$el.enable()
       @resetNewTicket()
-      $("<div class=\"alert alert-success\">Ticket <a href=\"#{ticket.ticketUrl}\" target=\"_blank\">##{ticket.number}</a> was created.</div>").prependTo($('#body')).alert()
+      $("<div class=\"alert alert-success\">Ticket <a href=\"#{ticket.ticketUrl}\" target=\"_blank\">##{ticket.number}</a> was created.</div>").appendAsAlert()
     
     xhr.error (response)=>
       errors = Errors.fromResponse(response)
       if errors.missingCredentials or errors.invalidCredentials
         App.promptForCredentialsTo @project.ticketTrackerName
       else
-        errors.renderToAlert().prependTo($('#body')).alert()
+        errors.renderToAlert().appendAsAlert()
 
 
 

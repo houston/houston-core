@@ -116,15 +116,11 @@
     <%= yield :title %>
     
     <div class="container-fluid" id="body">
-      <%= flash_messages :alert, :notice, :error -%>
       <%= yield -%>
-
-      <!-- <footer>
-        <p>&copy; Company 2012</p>
-      </footer> -->
+      
       <%= render partial: "layouts/tester_bar" if Rails.env.development? -%>
     </div> <!-- /container -->
-
+    
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->

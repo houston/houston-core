@@ -84,6 +84,17 @@ $.fn.extend
       sel.moveStart 'character', -input.value.length
       sel.text.length - selLen
   
+  appendAsAlert: ->
+    $alerts = $('#body .alert')
+    $newAlert = $(@)
+    if $alerts.length > 0
+      $('#body .alert').fadeOut
+        complete: ->
+          $(@).remove()
+          $newAlert.prependTo($('#body')).alert()
+    else
+      $newAlert.prependTo($('#body')).alert()
+  
   putCursorAtEnd: ->
     @each ->
       $(@).focus()
