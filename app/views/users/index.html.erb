@@ -2,10 +2,12 @@
   <p class="stats-fresh-date">Stats as of <b><%= @last_updated.strftime('%B %e %l:%m %p') %></b></p>
 <% end %>
 
+<% content_for :title do %>
 <h1 class="space-below">
   Team
   <%= link_to "New Team Member", new_user_path, :class => "btn btn-primary" if can?(:create, User) %>
 </h1>
+<% end %>
 
 <% if @users.any? %>
   <% users_by_role(@users) do |role, users| %>

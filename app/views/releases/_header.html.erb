@@ -1,8 +1,6 @@
-<h1 class="space-below">
+<% content_for :title do %>
+<h1 class="project-banner <%= @project.color %> space-below">
   <%= release.project.name %>
-  <small>
-    Release
-    <%= link_to "Show", release_path(release) unless current_page?(release_path(release)) %>
-    <%= link_to "Edit", edit_release_path(release) unless current_page?(edit_release_path(release)) %>
-  </small>
+  <small>: <%= format_release_date(@release.date) %></small>
 </h1>
+<% end %>

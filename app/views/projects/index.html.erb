@@ -1,7 +1,9 @@
+<% content_for :title do %>
 <h1 class="space-below">
   Projects
   <%= link_to "New Project", new_project_path, :class => "btn btn-primary" if can?(:create, Project) %>
 </h1>
+<% end %>
 
 <% if @projects.any? %>
   <div class="nomargin">

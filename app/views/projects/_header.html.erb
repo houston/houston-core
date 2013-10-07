@@ -1,17 +1,6 @@
-<h1 class="space-below">
+<% content_for :title do %>
+<h1 class="project-banner <%= @project.color %> space-below">
+  <small><%= subtitle %></small>
   <%= project.name %>
-  
-  <small class="dropdown inline">
-    <a class="dropdown-toggle" id="dLabel" role="button" data-toggle="dropdown" data-target="#">
-      <%= subtitle %>
-      <b class="caret"></b>
-    </a>
-    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-      <%= custom_link_unless_current "Dashboard", project_dashboard_path(project) %>
-      <%= custom_link_unless_current "Kanban", project_kanban_path(project) %>
-      <%= custom_link_unless_current "Testing Report", project_testing_report_path(project) %>
-      <%= custom_link_unless_current "Releases", releases_path(project) %>
-      <%= custom_link_unless_current "Edit", edit_project_path(project) %>
-    </ul>
-  </small>
 </h1>
+<% end %>

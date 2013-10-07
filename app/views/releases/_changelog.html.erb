@@ -1,7 +1,10 @@
 <div id="<%= @release.project.slug %>_changelog" class="-houston-changelog">
   
   <div class="-houston-changelog-day">
-    <h4><%= (defined?(draft) && draft) ? "Draft" : format_release_date(@release.date) %></h4>
+    <h4>
+      <%= (defined?(draft) && draft) ? "Draft" : format_release_date(@release.date) %>
+      <%= link_to "Edit", edit_release_path(@release) unless (defined?(draft) && draft) %>
+    </h4>
   </div>
   
   <%= div_for @release do %>

@@ -61,15 +61,6 @@ label input[type="checkbox"] { vertical-align: baseline; }
   margin: 0 0.7em 0 0.75em
 }
 
-h1 .subtitle {
-  font-weight: normal;
-  color: #444;
-}
-
-h1.space-below { 
-  margin-bottom: 1em;
-}
-
 .form-actions .btn-delete { float: right; }
 
 .avatar-24 {
@@ -154,6 +145,34 @@ small { font-size: 0.88em; }
 
 h1 .dropdown .caret {
   margin-top: 16px;
+}
+
+h1 .subtitle {
+  font-weight: normal;
+  color: #444;
+}
+
+h1 {
+  background: #60615B;
+  color: white;
+  font-weight: 500;
+  padding: .66em .66em .66em 2em;
+  margin: -24px -20px 1em;
+  font-weight: 200;
+  font-size: 2em;
+  
+  -moz-box-shadow: 0 0 7px 1px rgba(0, 0, 0, 0.25);
+  -webkit-box-shadow: 0 0 7px 1px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 0 7px 1px rgba(0, 0, 0, 0.25);
+  
+  .buttons { float: right; }
+  
+  small {
+    font-weight: 100;
+    font-size: .75em;
+    text-transform: uppercase;
+    color: white;
+  }
 }
 
 .table { border-bottom: 1px solid #dddddd; }

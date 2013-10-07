@@ -112,7 +112,9 @@
         </div>
       </div>
     </div>
-
+    
+    <%= yield :title %>
+    
     <div class="container-fluid" id="body">
       <%= flash_messages :alert, :notice, :error -%>
       <%= yield -%>

@@ -1,3 +1,4 @@
+<% content_for :title do %>
 <h1 class="space-below">
   <%= avatar_for(user, size: 256) %>
   <%= user.name %>
@@ -6,3 +7,4 @@
     <%= link_to("Edit", edit_user_path(user)) if can?(:update, user) && !current_page?(edit_user_path(user)) %>
   </small>
 </h1>
+<% end %>

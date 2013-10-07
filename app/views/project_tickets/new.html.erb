@@ -1,4 +1,8 @@
-<div class="label label-important experimental">Experimental</div>
+<% content_for :title do %>
+<h1 class="project-banner <%= @project.color %>">
+  <small>New Ticket for</small> <%= @project.name %> <small>
+</h1>
+<% end %>
 
 <%= render "projects/ticket_tracker_refresh" %>
 

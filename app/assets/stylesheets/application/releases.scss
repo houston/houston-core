@@ -39,6 +39,12 @@ textarea#release_message {
       font-weight: 200;
       color: #666;
     }
+    
+    a {
+      text-transform: lowercase;
+      font-weight: 200;
+      float: right;
+    }
   }
   
   .-houston-changelog-day {

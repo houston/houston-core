@@ -41,21 +41,6 @@
 }
 
 .project-banner {
-  color: white;
-  font-weight: 500;
-  padding: .66em;
-  margin: -8px;
-  margin-bottom: 1.5em;
-  -moz-box-shadow: 0 0 7px 1px rgba(0, 0, 0, 0.25);
-  -webkit-box-shadow: 0 0 7px 1px rgba(0, 0, 0, 0.25);
-  box-shadow: 0 0 7px 1px rgba(0, 0, 0, 0.25);
-  
-  small {
-    font-weight: 100;
-    font-size: .75em;
-    text-transform: uppercase;
-  }
-  
   <% Houston.config.project_colors.each do |name, value| %>
     &.<%= name %> { background-color: $<%= name %>; }
   <% end %>

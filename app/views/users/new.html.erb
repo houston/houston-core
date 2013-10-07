@@ -1,6 +1,8 @@
+<% content_for :title do %>
 <h1 class="space-below">
   <%= avatar_for(@user, size: 40) %>
   New Team Member
 </h1>
+<% end %>
 
 <%= render partial: "form" %>
