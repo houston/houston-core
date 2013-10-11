@@ -4,9 +4,11 @@
     {{#if tester}}
     <p>
       <input data-attr="ticket_id" id="ticket_{{ticketId}}_new_testing_note_ticket_id" name="ticket_id" type="hidden" value="{{ticketId}}" />
-      <label for="ticket_{{ticketId}}_new_testing_note_verdict_works"><input id="ticket_{{ticketId}}_new_testing_note_verdict_works" name="verdict" type="radio" value="works"> Works</label>
-      <label for="ticket_{{ticketId}}_new_testing_note_verdict_fails"><input id="ticket_{{ticketId}}_new_testing_note_verdict_fails" name="verdict" type="radio" value="fails"> Fails</label>
-      <label for="ticket_{{ticketId}}_new_testing_note_verdict_none"><input id="ticket_{{ticketId}}_new_testing_note_verdict_none" name="verdict" type="radio" value="none"> None</label>
+      <label for="ticket_{{ticketId}}_new_testing_note_verdict_works"><input id="ticket_{{ticketId}}_new_testing_note_verdict_works" name="verdict" type="radio" value="works"> It works as written</label> (Got a suggestion?
+      <a href="/projects/{{projectSlug}}/tickets/new" target="_blank">File a ticket!</a> <img alt="stuck_out_tongue_winking_eye" height="20" width="20" src="/images/emoji/stuck_out_tongue_winking_eye.png" class="emoji">)<br />
+      <label for="ticket_{{ticketId}}_new_testing_note_verdict_fails2"><input id="ticket_{{ticketId}}_new_testing_note_verdict_fails2" name="verdict" type="radio" value="fails"> It works, but introduces a new problem</label><br />
+      <label for="ticket_{{ticketId}}_new_testing_note_verdict_fails"><input id="ticket_{{ticketId}}_new_testing_note_verdict_fails" name="verdict" type="radio" value="fails"> It doesn't do what it says</label><br />
+      <label for="ticket_{{ticketId}}_new_testing_note_verdict_none"><input id="ticket_{{ticketId}}_new_testing_note_verdict_none" name="verdict" type="radio" value="none"> No verdict</label>
     </p>
     {{else}}
     <input data-attr="ticket_id" id="ticket_{{ticketId}}_new_testing_note_ticket_id" name="ticket_id" type="hidden" value="{{ticketId}}" />

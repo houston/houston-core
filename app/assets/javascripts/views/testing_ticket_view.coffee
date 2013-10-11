@@ -87,6 +87,7 @@ class window.TestingTicketView extends Backbone.View
     # Render form for adding a testing note
     if window.userId
       params =
+        projectSlug: @ticket.get('projectSlug')
         ticketId: @ticket.get('id')
         tester: window.user.get('role') == 'Tester'
         developer: window.user.get('role') == 'Developer'
