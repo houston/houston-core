@@ -3,7 +3,7 @@
   <div class="-houston-changelog-day">
     <h4>
       <%= (defined?(draft) && draft) ? "Draft" : format_release_date(@release.date) %>
-      <%= link_to "Edit", edit_release_path(@release) unless (defined?(draft) && draft) %>
+      <%= link_to "Edit", edit_release_path(@release) if can?(:update, @release) and !(defined?(draft) && draft) %>
     </h4>
   </div>
   
