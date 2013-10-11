@@ -1,5 +1,7 @@
 class ProjectTicketsController < ApplicationController
   before_filter :find_project
+  before_filter :api_authenticate!, :only => :create
+  
   
   
   def index
