@@ -205,7 +205,7 @@ GEM
     rake (10.1.0)
     rdoc (3.12.2)
       json (~> 1.4)
-    redcarpet (2.2.2)
+    redcarpet (3.0.0)
     ref (1.0.2)
     rr (1.0.4)
     rugged (0.17.0.b7)
