@@ -55,24 +55,17 @@
                   MenuItemDivider.new ] +
                   projects.map { |project| ProjectMenuItem.new(project, main_app.project_dashboard_path(project)) } if projects.any? -%>
               
-              <%# Kanban -%>
-              <% projects = Project.all.select { |project| can?(:read, project.tickets.build) } -%>
-              <%= render_menu "Kanban", [
-                  MenuItem.new("All Projects", main_app.kanban_path),
-                  MenuItemDivider.new ] +
-                  projects.map { |project| ProjectMenuItem.new(project, main_app.project_kanban_path(project)) } if projects.any? -%>
-              
-              <%# Testing Reports -%>
-              <% projects = Project.all.select { |project| can?(:read, project.testing_notes.build) } -%>
-              <%= render_menu "Testing Reports", [
-                  MenuItem.new("All Projects", main_app.testing_report_path),
-                  MenuItemDivider.new ] +
-                  projects.map { |project| ProjectMenuItem.new(project, main_app.project_testing_report_path(project)) } if projects.any? -%>
-              
               <%# Releases -%>
               <% projects = Project.all.select { |project| can?(:read, project.releases.build) } -%>
               <%= render_menu "Releases",
                   projects.map { |project| ProjectMenuItem.new(project, main_app.releases_path(project)) } -%>
+              
+              <%# Testing Reports -%>
+              <% projects = Project.all.select { |project| can?(:read, project.testing_notes.build) } -%>
+              <%= render_menu "Testing", [
+                  MenuItem.new("All Projects", main_app.testing_report_path),
+                  MenuItemDivider.new ] +
+                  projects.map { |project| ProjectMenuItem.new(project, main_app.project_testing_report_path(project)) } if projects.any? -%>
               
               <%# Modules -%>
               <% Houston.config.modules.each do |mod| -%>
@@ -80,6 +73,13 @@
                 <% menu_items = mod.namespace.menu_items_for(projects: Project.all, ability: current_ability, user: current_user) -%>
                 <%= render_menu mod.name.humanize, menu_items -%>
               <% end -%>
+              
+              <%# Kanban -%>
+              <% projects = Project.all.select { |project| can?(:read, project.tickets.build) } -%>
+              <%= render_menu "Kanban", [
+                  MenuItem.new("All Projects", main_app.kanban_path),
+                  MenuItemDivider.new ] +
+                  projects.map { |project| ProjectMenuItem.new(project, main_app.project_kanban_path(project)) } if projects.any? -%>
               
               
               
@@ -95,12 +95,11 @@
                 <li><%= link_to "Team", main_app.users_path %></li>
               <% end -%>
               
-              <% if can?(:manage, Setting) -%>
-                <li><%= link_to "Settings", "/settings" %></li>
-              <% end -%>
-              
             </ul>
             <ul class="nav pull-right">
+              <% if can?(:manage, Setting) -%>
+                <li><%= link_to "/settings", :class => "settings-link" do %><i class="icon icon-2x icon-cog"></i><% end %></li>
+              <% end -%>
               <% if current_user -%>
                 <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= avatar_for(current_user, size: 68) %> <b class="caret"></b></a>

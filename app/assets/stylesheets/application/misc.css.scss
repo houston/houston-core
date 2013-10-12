@@ -75,12 +75,16 @@ label input[type="checkbox"] { vertical-align: baseline; }
   margin-right: 0.5em;
 }
 
+.navbar .nav > li > a.settings-link {
+  padding: 8px 4px 0;
+}
+
 .nav {
   .avatar {
     width: 34px;
     height: 34px;
     margin: -6px 0 -6px -6px;
-    opacity: 0.8;
+    opacity: 0.9;
   }
   
   a:hover .avatar, .dropdown.open .avatar { opacity: 1; }
