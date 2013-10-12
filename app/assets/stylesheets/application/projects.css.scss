@@ -3,10 +3,20 @@
   th { white-space: nowrap; }
 }
 
-@media (min-width:1200px) {
+@media (min-width:1400px) {
   th.project-last-release {
     &::before { content: 'Last Release: '; }
   }
+}
+
+@media (max-width:1200px) {
+  .project-platform,
+  .project-database,
+  .project-category { display: none; }
+}
+
+@media (max-width:900px) {
+  .project-last-release { display: none; }
 }
 
 h2.uncategorized {
