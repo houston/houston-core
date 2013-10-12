@@ -75,12 +75,15 @@ label input[type="checkbox"] { vertical-align: baseline; }
   margin-right: 0.5em;
 }
 
-.nav .avatar {
-  width: 34px;
-  height: 34px;
-  margin: 0;
-  position: absolute;
-  top: 3px;
+.nav {
+  .avatar {
+    width: 34px;
+    height: 34px;
+    margin: -6px 0 -6px -6px;
+    opacity: 0.8;
+  }
+  
+  a:hover .avatar, .dropdown.open .avatar { opacity: 1; }
 }
 
 .committer-avatar img {
