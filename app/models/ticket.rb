@@ -5,6 +5,7 @@ class Ticket < ActiveRecord::Base
   belongs_to :reporter, class_name: "User"
   belongs_to :milestone, counter_cache: true
   belongs_to :sprint
+  belongs_to :checked_out_by, class_name: "User"
   has_one :ticket_queue, conditions: "ticket_queues.destroyed_at IS NULL"
   has_many :testing_notes
   has_many :ticket_prerequisites, autosave: true
@@ -152,6 +153,12 @@ class Ticket < ActiveRecord::Base
   
   def ticket_tracker_ticket_url
     project.ticket_tracker_ticket_url(number)
+  end
+  
+  
+  
+  def checked_out?
+    checked_out_at.present?
   end
   
   
