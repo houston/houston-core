@@ -874,6 +874,38 @@ ALTER SEQUENCE settings_id_seq OWNED BY settings.id;
 
 
 --
+-- Name: sprints; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE sprints (
+    id integer NOT NULL,
+    project_id integer NOT NULL,
+    end_date date,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: sprints_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE sprints_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sprints_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE sprints_id_seq OWNED BY sprints.id;
+
+
+--
 -- Name: test_runs; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1049,7 +1081,8 @@ CREATE TABLE tickets (
     milestone_id integer,
     destroyed_at timestamp without time zone,
     resolution character varying(255) DEFAULT ''::character varying NOT NULL,
-    first_release_at timestamp without time zone
+    first_release_at timestamp without time zone,
+    sprint_id integer
 );
 
 
@@ -1270,6 +1303,13 @@ ALTER TABLE ONLY settings ALTER COLUMN id SET DEFAULT nextval('settings_id_seq':
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY sprints ALTER COLUMN id SET DEFAULT nextval('sprints_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY test_runs ALTER COLUMN id SET DEFAULT nextval('test_runs_id_seq'::regclass);
 
 
@@ -1400,6 +1440,14 @@ ALTER TABLE ONLY roles
 
 ALTER TABLE ONLY settings
     ADD CONSTRAINT settings_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: sprints_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY sprints
+    ADD CONSTRAINT sprints_pkey PRIMARY KEY (id);
 
 
 --
@@ -1593,6 +1641,13 @@ CREATE INDEX index_roles_on_user_id_and_project_id_and_name ON roles USING btree
 
 
 --
+-- Name: index_sprints_on_project_id_and_end_date; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_sprints_on_project_id_and_end_date ON sprints USING btree (project_id, end_date);
+
+
+--
 -- Name: index_test_runs_on_commit; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1653,6 +1708,13 @@ CREATE INDEX index_tickets_on_milestone_id ON tickets USING btree (milestone_id)
 --
 
 CREATE INDEX index_tickets_on_resolution ON tickets USING btree (resolution);
+
+
+--
+-- Name: index_tickets_on_sprint_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_tickets_on_sprint_id ON tickets USING btree (sprint_id);
 
 
 --
@@ -1914,3 +1976,5 @@ INSERT INTO schema_migrations (version) VALUES ('20131003014023');
 INSERT INTO schema_migrations (version) VALUES ('20131004015452');
 
 INSERT INTO schema_migrations (version) VALUES ('20131004185618');
+
+INSERT INTO schema_migrations (version) VALUES ('20131012152403');

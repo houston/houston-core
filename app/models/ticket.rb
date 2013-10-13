@@ -4,6 +4,7 @@ class Ticket < ActiveRecord::Base
   belongs_to :project
   belongs_to :reporter, class_name: "User"
   belongs_to :milestone, counter_cache: true
+  belongs_to :sprint
   has_one :ticket_queue, conditions: "ticket_queues.destroyed_at IS NULL"
   has_many :testing_notes
   has_many :ticket_prerequisites, autosave: true

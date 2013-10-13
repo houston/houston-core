@@ -6,6 +6,7 @@ class Project < ActiveRecord::Base
   has_many :commits
   has_many :tickets, :dependent => :destroy, extend: TicketSynchronizer
   has_many :milestones, :dependent => :destroy, extend: MilestoneSynchronizer
+  has_many :sprints, :dependent => :destroy
   has_many :testing_notes, :dependent => :destroy
   has_many :test_runs, :dependent => :destroy
   has_many :deploys
