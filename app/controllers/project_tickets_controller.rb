@@ -10,6 +10,11 @@ class ProjectTicketsController < ApplicationController
   
   
   def new
+    unless @project.has_ticket_tracker?
+      render template: "project_tickets/no_ticket_tracker"
+      return
+    end
+    
     @labels = []
     @labels = Houston::TMI::TICKET_LABELS_FOR_MEMBERS if @project.slug =~ /^360|members$/
     @tickets = @project.tickets.includes(:project).map do |ticket|

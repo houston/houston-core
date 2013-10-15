@@ -1,0 +1,8 @@
+<% content_for :title do %>
+<h1 class="project-banner <%= @project.color %>">
+  <small>New Ticket for</small> <%= @project.name %> <small>
+</h1>
+<% end %>
+
+<%= render "configuration_error/no_ticket_tracker",
+  message: "To create tickets for this project, we need to know what ticket tracker it uses." %>

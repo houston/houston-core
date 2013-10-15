@@ -138,3 +138,9 @@ th, td {
 .project-following form { margin-bottom: 0; }
 
 .project-adapter-fields { display: none; }
+
+form.form-horizontal {
+  hr { margin: 0; }
+  .control-group { margin: 10px 0; padding: 10px 0; }
+  .control-group.highlight { background-color: #ffd; }
+}

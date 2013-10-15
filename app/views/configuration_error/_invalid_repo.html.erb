@@ -1,0 +1,7 @@
+<fieldset>
+  <div class="control-group form-actions">
+    <h3 style="margin-bottom: 0.25em;">Invalid Repo Location</h3>
+    <p>Sorry! We can't find your project at <code><%= @project.repo.location %></code>. Maybe the system is down...</p>
+    <p><%= link_to "My bad. Let me enter a different one.", edit_project_path(@project, anchor: "version_control") %></p>
+  </div>
+</fieldset>

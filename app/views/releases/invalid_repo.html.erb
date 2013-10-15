@@ -1,15 +1,8 @@
 <%= render partial: "projects/header", locals: {project: @project, subtitle: "New Release"} %>
 
-<fieldset>
-  <div class="control-group form-actions">
-    <% unless @project.has_version_control? %>
-      <h3 style="margin-bottom: .5em;">No Version Control System specified for this project.</h3>
-      <p>To pull release notes from your commit messages, we need to know where to find the project's repo.</p>
-      <p><%= link_to "OK. Let me enter that now.", edit_project_path(@project) %></p>
-    <% else %>
-      <h3 style="margin-bottom: .5em;">Invalid Repo Location</h3>
-      <p>Sorry! We can't find your project at <code><%= @project.repo.location %></code>. Maybe the system is down...</p>
-      <p><%= link_to "My bad. Let me enter a different one.", edit_project_path(@project) %></p>
-    <% end %>
-  </div>
-</fieldset>
+<% unless @project.has_version_control? %>
+  <%= render "configuration_error/no_version_control",
+    message: "To pull release notes from your commit messages, we need to know where to find the project's repo." %>
+<% else %>
+  <%= render "configuration_error/invalid_repo" %>
+<% end %>
