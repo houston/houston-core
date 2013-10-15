@@ -77,23 +77,17 @@
     }
     
     .exception-message {
-      display: block;
       font-size: 1.25em;
-      padding-right: 160px;
     }
     
     .exception-where {
-      display: block;
       margin-top: 0.25em;
       font-weight: 200;
     }
     
-    .exception-notice-count {
-      display: block;
-      position: absolute;
-      top: 0;
-      right: 1.5em;
-    }
+    .exception-notice-count { float: right; }
+    
+    .exception-notice-count .score.score-small { padding-top: 0; }
   }
   
 }

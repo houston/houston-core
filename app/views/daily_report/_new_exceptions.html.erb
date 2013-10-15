@@ -5,14 +5,14 @@
 
 <% @report.new_exceptions.each do |exception| %>
   <%= link_to exception.url, class: "exception" do %>
-    <span class="exception-message"><%= exception.message %></span>
-    <% unless exception.where.blank? or exception.where == "unknown" %>
-      <span class="exception-where"><%= exception.where %></span>
-    <% end %>
     <span class="exception-notice-count">
-      <%= score_card :small do |s| %>
+      <%= score_card :small, style: "padding-top: 0;" do |s| %>
         <% s.score (exception.notices_count == 1) ? "Notice" : "Notices", exception.notices_count %>
       <% end %>
     </span>
+    <span class="exception-message" style="font-size: 1.25em;"><%= exception.message %></span><br />
+    <% unless exception.where.blank? or exception.where == "unknown" %>
+      <span class="exception-where"><%= exception.where %></span>
+    <% end %>
   <% end %>
 <% end %>

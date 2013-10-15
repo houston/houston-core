@@ -59,7 +59,7 @@ class ScoreCard
     css << "score-large" if @size == :large
     css << "score-medium" if @size == :medium
     css << "score-small" if @size == :small
-    @view.content_tag(:div, @scores.join.html_safe, :class => css.join(" "))
+    @view.content_tag(:div, @scores.join.html_safe, @options.slice(:style).merge(:class => css.join(" ")))
   end
   
 end
