@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/houstonmc/houston-scheduler.git
-  revision: b4e0c8c00f4bbea82f30d61d653466fae8d1434e
+  revision: d294b26174ab138ef595cd9b0afcb4571dd8a9fb
   specs:
     houston-scheduler (0.0.1)
       coffee-rails (~> 3.2.1)
@@ -130,7 +130,7 @@ GEM
     jquery-rails (2.2.1)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
-    json (1.8.0)
+    json (1.8.1)
     kgio (2.8.0)
     launchy (2.2.0)
       addressable (~> 2.3)
@@ -151,7 +151,7 @@ GEM
     method_source (0.8.1)
     mime-types (1.25)
     minitest (4.6.2)
-    multi_json (1.8.1)
+    multi_json (1.8.2)
     multipart-post (1.2.0)
     net-ldap (0.3.1)
     netrc (0.7.7)
