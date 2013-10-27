@@ -7,7 +7,7 @@ class Sprint < ActiveRecord::Base
   validates :project_id, :end_date, presence: true
   
   def self.current
-    where("end_date > now()").order("end_date DESC").first
+    where("end_date >= current_date").order("end_date DESC").first
   end
   
 private
