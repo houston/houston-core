@@ -298,3 +298,31 @@
 }
 
 .close-button { color: #888; &.btn-success { color: white; } }
+
+.table td.ticket-testingPriority {
+  padding: 0;
+  .icon-arrow-up   { padding: 12px 2px 12px 8px; display: inline-block; }
+  .icon-arrow-down { padding: 12px 8px 12px 2px; display: inline-block; }
+}
+
+.table thead td {
+  vertical-align: bottom;
+  border-bottom: 4px solid transparent;
+}
+
+td.ticket-testingPriority { white-space: nowrap; }
+
+
+.ticket-priority-low .ticket-testingPriority .icon-arrow-down { color: #239ce7 !important; }
+.ticket-priority-high .ticket-testingPriority .icon-arrow-up { color: #e74c23 !important; }
+thead .ticket-testingPriority { color: #ccc; }
+tbody .ticket-testingPriority {
+  i, a { color: rgba(0, 0, 0, 0.04); }
+  a:hover {
+    text-decoration: none;
+    cursor: pointer;
+    
+    &.icon-arrow-down { color: rgba(35, 156, 231, 0.6); }
+    &.icon-arrow-up { color: rgba(231, 76, 35, 0.6); }
+  }
+}

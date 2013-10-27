@@ -1084,7 +1084,8 @@ CREATE TABLE tickets (
     first_release_at timestamp without time zone,
     sprint_id integer,
     checked_out_at timestamp without time zone,
-    checked_out_by_id integer
+    checked_out_by_id integer,
+    priority character varying(255) DEFAULT 'normal'::character varying NOT NULL
 );
 
 
@@ -1982,3 +1983,5 @@ INSERT INTO schema_migrations (version) VALUES ('20131004185618');
 INSERT INTO schema_migrations (version) VALUES ('20131012152403');
 
 INSERT INTO schema_migrations (version) VALUES ('20131013185636');
+
+INSERT INTO schema_migrations (version) VALUES ('20131027214942');

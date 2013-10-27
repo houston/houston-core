@@ -5,6 +5,7 @@ class window.TestingTicketView extends Backbone.View
   events:
     'click': 'showOrHideTestingNotes'
     'click .close-button': 'closeTicket'
+    'click a.ticket-set-priority': 'setPriority'
   
   initialize: ->
     @ticket = @options.ticket
@@ -32,6 +33,7 @@ class window.TestingTicketView extends Backbone.View
     ticket.failing = ticket.verdict == 'Failing'
     $el.html @renderTicket(ticket)
     
+    $el.addClass("ticket-priority-#{ticket.priority}")
     $el.toggleClass('failing', ticket.failing)
     $el.toggleClass('passing', ticket.passing)
     $el.find('.close-button').toggleClass('btn-success', ticket.passing)
@@ -193,3 +195,13 @@ class window.TestingTicketView extends Backbone.View
           @$el.removeClass('deleting')
           $btn.removeAttr('disabled')
           App.showErrorMessage("Unable to close ticket", response.responseText)
+
+
+
+  setPriority: (e)->
+    $a = $(e.target)
+    priority = $a.data('priority')
+    priority = 'normal' if @$el.hasClass("ticket-priority-#{priority}")
+    @$el.removeClass 'ticket-priority-low ticket-priority-normal ticket-priority-high'
+    @$el.addClass "ticket-priority-#{priority}"
+    @ticket.save priority: priority

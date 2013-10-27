@@ -19,6 +19,7 @@ class Ticket < ActiveRecord::Base
   validates :project_id, presence: true
   validates :summary, presence: true
   validates :number, presence: true
+  validates :priority, inclusion: { in: %w{low normal high} }
   validates :type, presence: true, inclusion: { in: Houston::TMI::TICKET_TYPES, message: "\"%{value}\" is unknown. It must be #{Houston::TMI::TICKET_TYPES.to_sentence(last_word_connector: ", or ")}" }
   validates_uniqueness_of :number, scope: :project_id, on: :create, if: :number
   
