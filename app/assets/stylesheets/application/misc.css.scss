@@ -180,6 +180,22 @@ h1 {
     text-transform: uppercase;
     color: white;
   }
+  
+  &.project-banner {
+    position: absolute;
+    left: 0;
+    right: 0;
+    
+    &.affix {
+      position: fixed;
+      top: -6px;
+      z-index: 1029; // right below the navbar
+    }
+  }
+}
+
+#body {
+  padding-top: 77px;
 }
 
 .table { border-bottom: 1px solid #dddddd; }

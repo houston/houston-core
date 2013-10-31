@@ -3,7 +3,7 @@
 <% end %>
 
 <% content_for :title do %>
-<h1 class="space-below">
+<h1 class="project-banner space-below">
   Team
   <%= link_to "New Team Member", new_user_path, :class => "btn btn-primary" if can?(:create, User) %>
 </h1>
