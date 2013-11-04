@@ -120,49 +120,11 @@ class window.NewTicketView extends Backbone.View
   updateSuggestions: ->
     unless @lastSearch is @nextSearch
       @lastSearch = @nextSearch
-      results = @search(@nextSearch)
+      results = @tickets.search(@nextSearch)
       list = (@renderSuggestion(ticket) for ticket in results)
       @$suggestions.empty().append list
   
-  search: (summary)->
-    words = @getWords(summary)
-    console.log(summary, '->', words)
-    
-    return [] if words.length == 0
-    
-    regexes = (new RegExp("\\b#{word}", 'i') for word in words)
-    
-    results = []
-    for ticket in @tickets
-      value = _.select(regexes, (rx)-> rx.test(ticket.summary)).length
-      if value > 0
-        ticket.value = value
-        results.push(ticket)
-    results.sort(@compareTickets).slice(0, 12)
-  
-  compareTickets: (a, b)->
-    if a.value > b.value
-      -1
-    else if b.value > a.value
-      1
-    else if a.closed && !b.closed
-      1
-    else if b.closed && !a.closed
-      -1
-    else
-      0
-  
-  IGNORED_WORDS: ['an', 'the',
-                  'if', 'when', 'then',
-                  'i', 'my',
-                  'and', 'or', 'but',
-                  'for', 'of', 'from',
-                  'should']
-  
-  getWords: (string)->
-    words = (word.replace(/[:\|.,;!?]/, '') for word in string.split(' '))
-    _.select words, (word)=>
-      word.length > 1 and @IGNORED_WORDS.indexOf(word) is -1
+
   
   
   
