@@ -21,6 +21,10 @@ class Commit < ActiveRecord::Base
     where(authored_at: range)
   end
   
+  def self.reachable
+    where(unreachable: false)
+  end
+  
   
   
   def self.from_native_commit(native)

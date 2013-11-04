@@ -46,7 +46,7 @@ class TicketPresenter
         projectMaintainers: ticket.project.maintainers_ids,
         minPassingVerdicts: ticket.min_passing_verdicts,
         testingNotes: TestingNotePresenter.new(ticket.testing_notes).as_json,
-        commits: CommitPresenter.new(ticket.commits).as_json,
+        commits: CommitPresenter.new(ticket.commits.reachable).as_json,
         releases: ReleasePresenter.new(ticket.releases).as_json,
         lastReleaseAt: ticket.last_release_at,
         description: mdown(ticket.description) })
