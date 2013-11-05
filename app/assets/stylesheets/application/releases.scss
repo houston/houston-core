@@ -1,6 +1,6 @@
 .change-tag select { width: 10em; }
 .change-tag .help-inline { display: none; }
-.change-description input { width: 40em; }
+.change-description input { width: 36em; }
 
 .no-items { font-style: italic; }
 
@@ -21,6 +21,7 @@ textarea#release_message {
   height: 120px;
 }
 
+#new_ticket_field { width: 36em; }
 
 
 .-houston-changelog {

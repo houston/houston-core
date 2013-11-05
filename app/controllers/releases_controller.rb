@@ -1,6 +1,7 @@
 class ReleasesController < ApplicationController
   include UrlHelper
   before_filter :get_project_and_environment
+  before_filter :load_tickets, only: [:new, :edit, :create, :update]
   
   def index
     @title = "#{@project.name}: Releases"
@@ -110,6 +111,16 @@ private
     @environment = params[:environment]
     @environment = Houston.config.environments.first unless Houston.config.environments.member?(@environment)
     @releases = @project.releases.to_environment(@environment)
+  end
+  
+  def load_tickets
+    @tickets = @project.tickets.includes(:project).map do |ticket|
+      { id: ticket.id,
+        summary: ticket.summary,
+        closed: ticket.closed_at.present?,
+        ticketUrl: ticket.ticket_tracker_ticket_url,
+        number: ticket.number }
+    end
   end
   
 end

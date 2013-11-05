@@ -9,6 +9,7 @@ class Release < ActiveRecord::Base
   belongs_to :deploy
   has_many :changes, :dependent => :destroy
   has_and_belongs_to_many :commits
+  has_and_belongs_to_many :tickets, autosave: false # <-- a bug with autosave causes ticket_ids to be saved twice
   
   default_scope order("created_at DESC")
   
@@ -17,7 +18,6 @@ class Release < ActiveRecord::Base
   delegate :maintainers, :to => :project
   
   validates_presence_of :user_id
-  # validates_presence_of :deploy_id, :on => :create
   validates_uniqueness_of :deploy_id, :allow_nil => true
   validates_associated :changes
   before_validation :ensure_changes_are_associated_with_project
@@ -94,11 +94,7 @@ class Release < ActiveRecord::Base
   end
   
   def load_tickets!
-    project.find_or_create_tickets_by_number(ticket_numbers)
-  end
-  
-  def tickets
-    @tickets ||= load_tickets!
+    self.tickets = project.find_or_create_tickets_by_number(ticket_numbers).to_a
   end
   
   

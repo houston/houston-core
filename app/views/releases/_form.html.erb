@@ -26,10 +26,17 @@
     <div class="control-group">
       <%= f.label :tickets, "Tickets", :class => 'control-label' %>
       <div class="controls changes-nested-editor">
-        <ol>
+        <ol id="release_tickets">
           <% @release.tickets.each do |ticket| %>
-            <li><%= link_to_ticket(ticket) %></li>
+            <li id="ticket_<%= ticket.id %>">
+              <input type="hidden" name="release[ticket_ids][]" value="<%= ticket.id %>" />
+              <%= link_to_ticket(ticket) %>
+              <a class="delete-link delete-nested-link" href="#" title="Delete" tabindex="-1">Delete</a>
+            </li>
           <% end %>
+          <li id="new_ticket_li">
+            <input type="text" id="new_ticket_field" placeholder="Look up ticket to add to this release" />
+          </li>
         </ol>
       </div>
     </div>
