@@ -69,7 +69,7 @@ GEM
     arel (3.0.2)
     backbone-rails (1.0.0)
       rails (>= 3.0.0)
-    bcrypt-ruby (3.0.1)
+    bcrypt-ruby (3.1.2)
     better_errors (0.8.0)
       coderay (>= 1.0.0)
       erubis (>= 2.6.6)
@@ -97,7 +97,7 @@ GEM
     d3js-rails (3.0.0.1)
       railties (>= 3.0, < 5.0)
     default_value_for (2.0.2)
-    devise (2.2.3)
+    devise (2.2.7)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
       railties (~> 3.1)
@@ -253,7 +253,7 @@ GEM
     unicorn-rails (1.0.1)
       rack
       unicorn
-    warden (1.2.1)
+    warden (1.2.3)
       rack (>= 1.0)
     whenever (0.8.2)
       activesupport (>= 2.3.4)
