@@ -25,6 +25,11 @@ window.App =
       else
         match
   
+  formatTicketSummary: (message)->
+    message = Handlebars.Utils.escapeExpression(message)
+    [feature, sentence] = message.split(':', 2)
+    if sentence then "<b>#{feature}:</b>#{sentence}" else message
+  
   showErrorMessage: (title, responseText)->
     html = """
     <div class="modal hide">
