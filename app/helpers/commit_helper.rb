@@ -1,7 +1,7 @@
 module CommitHelper
   
   def format_commit(commit)
-    message = commit.message
+    message = commit.summary
     message = format_with_tickets_linked(commit.project, message)
     message = mdown(message)
     message

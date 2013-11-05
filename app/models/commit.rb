@@ -27,6 +27,12 @@ class Commit < ActiveRecord::Base
   
   
   
+  def summary
+    message[/^.*$/]
+  end
+  
+  
+  
   def self.from_native_commit(native)
     new attributes_from_native_commit(native)
   end

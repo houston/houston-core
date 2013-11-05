@@ -13,7 +13,7 @@ class CommitPresenter
     hash = {
       id: commit.id,
       sha: commit.sha,
-      message: commit.message,
+      message: commit.summary,
       project: commit.project.slug,
       linkTo: github_commit_url(commit.project, commit.sha), # <-- !todo: more abstract
       committer: {
