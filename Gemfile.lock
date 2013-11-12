@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/houstonmc/houston-scheduler.git
-  revision: f195e9ac3059716dc39fb9beaf10c416ba7edbce
+  revision: 43be4c68046b4630b91f172cd5a3957ea308cd2b
   specs:
     houston-scheduler (0.0.1)
       coffee-rails (~> 3.2.1)
