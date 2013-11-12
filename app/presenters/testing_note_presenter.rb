@@ -18,6 +18,7 @@ class TestingNotePresenter
       createdAt: testing_note.created_at,
       avatarImage: avatar_for(testing_note.user),
       userId: testing_note.user_id,
+      byTester: testing_note.user.try(:tester?),
       ticketId: testing_note.ticket_id,
       verdict: testing_note.verdict,
       comment: testing_note.comment }
