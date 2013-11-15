@@ -14,6 +14,7 @@ namespace :deploy do
     run "ln -nfs #{shared_path}/config/keypair.pem #{release_path}/config/keypair.pem"
     run "rm -rf #{release_path}/tmp"
     run "ln -nfs #{shared_path}/tmp #{release_path}"
+    run "ln -nfs #{shared_path}/extras #{release_path}/public/extras"
   end
   
   desc "Copy config.rb"
