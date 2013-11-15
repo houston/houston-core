@@ -27,3 +27,5 @@ REVISION
 coverage
 test/reports
 
+# Ignore experiments
+public/extras
