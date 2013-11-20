@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/houstonmc/houston-scheduler.git
-  revision: 991828fb195766bf27474f61f2b9e5d363cd8f28
+  revision: da0a4c0313a408edddcbd56f25bbc8e616b80b3b
   specs:
     houston-scheduler (0.0.1)
       coffee-rails (~> 3.2.1)
@@ -66,7 +66,7 @@ GEM
       builder
       json
     ansi (1.4.3)
-    arel (3.0.2)
+    arel (3.0.3)
     backbone-rails (1.0.0)
       rails (>= 3.0.0)
     bcrypt-ruby (3.1.2)
