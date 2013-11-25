@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/houstonmc/houston-scheduler.git
-  revision: da0a4c0313a408edddcbd56f25bbc8e616b80b3b
+  revision: 4b5f6d0ab50dcfba03318bdfa2e59d09ca286dbc
   specs:
     houston-scheduler (0.0.1)
       coffee-rails (~> 3.2.1)
@@ -149,7 +149,7 @@ GEM
       rack-contrib
       railties
     method_source (0.8.1)
-    mime-types (1.25)
+    mime-types (1.25.1)
     minitest (4.6.2)
     multi_json (1.8.2)
     multipart-post (1.2.0)
