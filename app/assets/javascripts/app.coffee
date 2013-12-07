@@ -3,6 +3,12 @@ window.App =
   meta: (name)->
     $("meta[name=\"#{name}\"]").attr('value')
   
+  serverDateFormat: d3.time.format('%Y-%m-%d')
+  
+  parseDate: (date)->
+    return date unless _.isString(date)
+    App.serverDateFormat.parse date.slice(0, 10)
+  
   checkRevision: (jqXHR)->
     @clientRevision ||= App.meta('revision')
     serverRevision = jqXHR.getResponseHeader('X-Revision')
