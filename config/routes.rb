@@ -1,5 +1,13 @@
 Houston::Application.routes.draw do
   
+  resources :oauth_consumers do
+    member do
+      get :callback
+      get :callback2
+      match 'client/*endpoint' => 'oauth_consumers#client', :via => [:get, :post, :put, :delete]
+    end
+  end
+  
   devise_for :users, :controllers => { :sessions => "sessions" }
   
   root :to => "projects#index", :via => :get
@@ -159,8 +167,9 @@ Houston::Application.routes.draw do
   
   # Other
   
-  # Experiment
+  # Experiments
   match "tickets", :to => "tickets#index", :via => :get
+  match "pull_requests", :to => "pull_requests#index", via: :get, as: :pull_requests
   
   # Tester Bar
   match "tester_bar/:action", :controller => "tester_bar" if Rails.env.development?

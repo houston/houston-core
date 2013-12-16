@@ -17,10 +17,12 @@ gem 'devise',           '~> 2.2.3'
 gem 'devise_invitable', '~> 1.1.6'
 gem 'devise_ldap_authenticatable', :git => 'https://github.com/houstonmc/devise_ldap_authenticatable.git'
 gem 'faraday'
+gem 'faraday-http-cache'
 gem 'gemoji'
 gem 'googlecharts'
 gem 'hpricot'
 gem 'nokogiri'
+gem 'oauth-plugin', '~> 0.5.1'
 gem 'octokit' # for adapting to GitHub Issues
 gem 'premailer' # for inlining CSS in HTML emails
 gem 'progressbar' # for long migrations

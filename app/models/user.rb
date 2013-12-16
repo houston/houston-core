@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   has_many :testing_notes
   has_many :roles, :dependent => :destroy
   has_many :credentials, :class_name => "UserCredentials", :dependent => :destroy
+  has_many :consumer_tokens
   has_and_belongs_to_many :commits
   
   serialize :environments_subscribed_to, JSON

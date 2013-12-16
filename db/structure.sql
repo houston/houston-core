@@ -570,6 +570,43 @@ CREATE TABLE commits_users (
 
 
 --
+-- Name: consumer_tokens; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE consumer_tokens (
+    id integer NOT NULL,
+    user_id integer,
+    type character varying(30),
+    token character varying(1024),
+    refresh_token character varying(255),
+    secret character varying(255),
+    expires_at integer,
+    expires_in character varying(255),
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: consumer_tokens_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE consumer_tokens_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: consumer_tokens_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE consumer_tokens_id_seq OWNED BY consumer_tokens.id;
+
+
+--
 -- Name: deploys; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1251,6 +1288,13 @@ ALTER TABLE ONLY commits ALTER COLUMN id SET DEFAULT nextval('commits_id_seq'::r
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY consumer_tokens ALTER COLUMN id SET DEFAULT nextval('consumer_tokens_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY deploys ALTER COLUMN id SET DEFAULT nextval('deploys_id_seq'::regclass);
 
 
@@ -1380,6 +1424,14 @@ ALTER TABLE ONLY changes
 
 ALTER TABLE ONLY commits
     ADD CONSTRAINT commits_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: consumer_tokens_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY consumer_tokens
+    ADD CONSTRAINT consumer_tokens_pkey PRIMARY KEY (id);
 
 
 --
@@ -1558,6 +1610,13 @@ CREATE UNIQUE INDEX index_commits_tickets_on_commit_id_and_ticket_id ON commits_
 --
 
 CREATE UNIQUE INDEX index_commits_users_on_commit_id_and_user_id ON commits_users USING btree (commit_id, user_id);
+
+
+--
+-- Name: index_consumer_tokens_on_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_consumer_tokens_on_token ON consumer_tokens USING btree (token);
 
 
 --
@@ -1766,6 +1825,8 @@ CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (v
 --
 -- PostgreSQL database dump complete
 --
+
+SET search_path TO "$user",public;
 
 INSERT INTO schema_migrations (version) VALUES ('20120324185914');
 
@@ -1990,3 +2051,5 @@ INSERT INTO schema_migrations (version) VALUES ('20131027214942');
 INSERT INTO schema_migrations (version) VALUES ('20131112010815');
 
 INSERT INTO schema_migrations (version) VALUES ('20131223194246');
+
+INSERT INTO schema_migrations (version) VALUES ('20131216014505');
