@@ -16,9 +16,9 @@
         <th class="ticket-summary">Ticket</th>
         <th class="ticket-deployment">Environment</th>
         <th class="ticket-due-date">Due Date</th>
-        <th class="ticket-participants"><span class="participant-name">Committers</span></th>
+        <th class="ticket-participants vertical"><span class="participant-name">Committers</span></th>
         <% User.testers.unretired.each do |tester| %>
-          <th class="ticket-participants tester" data-tester-id="<%= tester.id %>"><span class="participant-name"><%= tester.first_name %></span></th>
+          <th class="ticket-participants vertical tester" data-tester-id="<%= tester.id %>"><span class="participant-name"><%= tester.first_name %></span></th>
         <% end %>
         <td class="table-margin"></td>
       </tr>

@@ -1,0 +1,23 @@
+th.vertical {
+  width: 28px;
+  max-width: 28px;
+  padding: 4px 0;
+  
+  > span {
+    display: block;
+    writing-mode: tb-rl;
+    filter: flipv fliph;
+    transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg); /* IE 9 */
+    -moz-transform: rotate(-90deg); /* Firefox */
+    -webkit-transform: rotate(-90deg); /* Safari and Chrome */
+    -o-transform: rotate(-90deg); /* Opera */
+    width: 3em;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    
+    position: relative;
+    left: -7px;
+    top: -15px;
+  }
+}

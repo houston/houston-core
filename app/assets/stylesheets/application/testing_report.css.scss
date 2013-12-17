@@ -71,39 +71,7 @@
     max-width: 28px;
     padding: 4px 0;
     
-    .participant-name {
-      display: block;
-      writing-mode: tb-rl;
-      filter: flipv fliph;
-      transform: rotate(-90deg);
-      -ms-transform: rotate(-90deg); /* IE 9 */
-      -moz-transform: rotate(-90deg); /* Firefox */
-      -webkit-transform: rotate(-90deg); /* Safari and Chrome */
-      -o-transform: rotate(-90deg); /* Opera */
-      width: 3em;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      
-      position: relative;
-      left: -4px;
-      top: -15px;
-    }
-    
-    &.current-tester {
-      font-weight: bold;
-    }
-    
-  //  &.current-tester::after {
-  //    content: '.';
-  //    text-indent: 9999em;
-  //    position: absolute;
-  //    border: 1px solid red;
-  //    margin-left: -1px;
-  //    width: 30px;
-  //    height: 100%;
-  //    top: 0;
-  //    bottom: 0;
-  //  }
+    &.current-tester { font-weight: bold; }
   }
 }
 
