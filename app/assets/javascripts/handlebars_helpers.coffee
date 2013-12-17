@@ -66,16 +66,16 @@ Handlebars.registerHelper 'linkToCommit', (commit)->
 
 Handlebars.registerHelper 'testerAvatar', (email, size, title)->
   tester = window.testers.findByEmail(email)
-  gravatarUrl = "http://www.gravatar.com/avatar/#{MD5(email.toLowerCase().trim())}?r=g&d=identicon&s=#{size}"
+  gravatarUrl = "http://www.gravatar.com/avatar/#{MD5(email.toLowerCase().trim())}?r=g&d=identicon&s=#{size * 2}"
   "<img src=\"#{gravatarUrl}\" width=\"#{size}\" height=\"#{size}\" rel=\"tooltip\" title=\"#{tester.get('name')}\" />"
   
 Handlebars.registerHelper 'userAvatar', (size)->
   user = window.user
-  gravatarUrl = "http://www.gravatar.com/avatar/#{MD5(user.get('email').toLowerCase().trim())}?r=g&d=identicon&s=#{size}"
+  gravatarUrl = "http://www.gravatar.com/avatar/#{MD5(user.get('email').toLowerCase().trim())}?r=g&d=identicon&s=#{size * 2}"
   "<img src=\"#{gravatarUrl}\" width=\"#{size}\" height=\"#{size}\" rel=\"tooltip\" title=\"#{user.get('name')}\" />"
   
 Handlebars.registerHelper 'avatar', (email, size, title)->
-  gravatarUrl = "http://www.gravatar.com/avatar/#{MD5(email.toLowerCase().trim())}?r=g&d=identicon&s=#{size}"
+  gravatarUrl = "http://www.gravatar.com/avatar/#{MD5(email.toLowerCase().trim())}?r=g&d=identicon&s=#{size * 2}"
   "<img src=\"#{gravatarUrl}\" width=\"#{size}\" height=\"#{size}\" rel=\"tooltip\" title=\"#{title}\" />"
   
 Handlebars.registerHelper 'ifEq', (v1, v2, block)->
