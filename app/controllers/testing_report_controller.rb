@@ -37,6 +37,7 @@ class TestingReportController < ApplicationController
     @tickets = @project.tickets
       .unclosed
       .fixed
+      .includes(:project)
       .includes(:testing_notes)
       .includes(:releases)
       .includes(:commits)
