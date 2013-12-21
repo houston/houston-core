@@ -7,7 +7,7 @@ window.App =
   
   parseDate: (date)->
     return date unless _.isString(date)
-    App.serverDateFormat.parse date.slice(0, 10)
+    @serverDateFormat.parse date.slice(0, 10)
   
   checkRevision: (jqXHR)->
     @clientRevision ||= App.meta('revision')

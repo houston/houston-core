@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/houstonmc/houston-scheduler.git
-  revision: af544fb26cad224adf716b62a1e4046888e09b9c
+  revision: 5e1d0edbade229066a6789c7f9de547057fa65b2
   branch: master
   specs:
     houston-scheduler (0.0.1)
@@ -95,7 +95,7 @@ GEM
     css_parser (1.2.6)
       addressable
       rdoc
-    d3js-rails (3.0.0.1)
+    d3js-rails (3.1.6)
       railties (>= 3.0, < 5.0)
     default_value_for (2.0.2)
     devise (2.2.7)
