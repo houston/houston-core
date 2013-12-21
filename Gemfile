@@ -71,6 +71,7 @@ end
 group :development do
   gem 'unicorn-rails'
   gem 'letter_opener'
+  gem 'spring'
   # gem 'rack-mini-profiler'
   
   # Better error messages
