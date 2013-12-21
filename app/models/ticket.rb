@@ -164,6 +164,10 @@ class Ticket < ActiveRecord::Base
   
   
   
+  def resolved?
+    !resolution.blank?
+  end
+  
   def in_development?
     deployment.blank?
   end
