@@ -69,6 +69,10 @@ module Houston
             connection.close_issue(connection.repo_path, number)
           end
           
+          def reopen!
+            connection.reopen_issue(connection.repo_path, number)
+          end
+          
           
           
           # !todo: refactor this method to be more generic and abstract

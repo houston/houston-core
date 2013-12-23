@@ -54,6 +54,7 @@ class TicketTrackerAdatersApiTest < ActiveSupport::TestCase
       assert_respond_to ticket, :deployment
       
       assert_respond_to ticket, :close!
+      assert_respond_to ticket, :reopen!
       assert_respond_to ticket, :update_attribute
     end
   end

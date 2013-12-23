@@ -236,6 +236,7 @@ GEM
       ref
     thor (0.18.1)
     tilt (1.4.1)
+    timecop (0.6.1)
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
@@ -316,6 +317,7 @@ DEPENDENCIES
   strongbox
   sugar-rails
   therubyracer
+  timecop
   turn
   twitter-bootstrap-rails
   uglifier (>= 1.0.3)

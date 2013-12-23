@@ -58,6 +58,9 @@ module Houston
         def close!
         end
         
+        def reopen!
+        end
+        
         def update_attribute(*args)
         end
         

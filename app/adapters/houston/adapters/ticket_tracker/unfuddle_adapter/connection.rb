@@ -164,6 +164,13 @@ module Houston
           
           
           
+          def deployment_field
+            @deployment_field ||= unfuddle. \
+              get_ticket_attribute_for_custom_value_named!(Houston::TMI::NAME_OF_DEPLOYMENT_FIELD)
+          end
+          
+          
+          
         private
           
           attr_reader :unfuddle

@@ -168,6 +168,10 @@ class Ticket < ActiveRecord::Base
     !resolution.blank?
   end
   
+  def closed?
+    closed_at.present?
+  end
+  
   def in_development?
     deployment.blank?
   end
@@ -228,7 +232,7 @@ class Ticket < ActiveRecord::Base
   end
   
   def release!(release)
-    first_release = self.releases.count == 0
+    first_release = self.releases.before(reopened_at).empty?
     self.releases << release unless self.releases.exists?(release.id)
     update_attribute(:first_release_at, release.created_at) if first_release
     update_attribute(:last_release_at, release.created_at)
@@ -242,6 +246,20 @@ class Ticket < ActiveRecord::Base
     update_column :closed_at, Time.now
     set_queue! nil
     self
+  end
+  
+  def reopen!
+    raise "Instead of reopening a closed ticket, make a new one!" if closed?
+    return unless resolved?
+    
+    remote_ticket.reopen! if remote_ticket
+    
+    update_attributes(
+      deployment: nil,
+      resolution: "",
+      reopened_at: Time.now,
+      first_release_at: nil,
+      last_release_at: nil)
   end
   
   def set_deployment_to!(environment_name)

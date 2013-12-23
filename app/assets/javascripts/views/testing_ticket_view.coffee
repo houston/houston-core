@@ -5,6 +5,7 @@ class window.TestingTicketView extends Backbone.View
   events:
     'click': 'showOrHideTestingNotes'
     'click .close-button': 'closeTicket'
+    'click .reopen-button': 'reopenTicket'
     'click a.ticket-set-priority': 'setPriority'
   
   initialize: ->
@@ -186,14 +187,35 @@ class window.TestingTicketView extends Backbone.View
     
     if $btn.hasClass('btn-success') || confirm('Are you suuuure? The ticket\'s not passing...')
       @$el.addClass('deleting')
-      $btn.attr('disabled', 'disabled')
+      @$el.find('button').attr('disabled', 'disabled')
+      
       @ticket.destroy
+        url: "/tickets/#{@ticket.id}/close"
         wait: true
         success: (model, response)=>
           @remove()
         error: (model, response)=>
           @$el.removeClass('deleting')
-          $btn.removeAttr('disabled')
+          @$el.find('button').removeAttr('disabled')
+          App.showErrorMessage("Unable to close ticket", response.responseText)
+
+  reopenTicket: (e)->
+    e.preventDefault()
+    $btn = $(e.target)
+    
+    @collapse()
+    
+    if confirm('Are you sure you want to REOPEN this ticket?')
+      @$el.addClass('deleting')
+      @$el.find('button').attr('disabled', 'disabled')
+      @ticket.destroy
+        url: "/tickets/#{@ticket.id}/reopen"
+        wait: true
+        success: (model, response)=>
+          @remove()
+        error: (model, response)=>
+          @$el.removeClass('deleting')
+          @$el.find('button').removeAttr('disabled')
           App.showErrorMessage("Unable to close ticket", response.responseText)
 
 

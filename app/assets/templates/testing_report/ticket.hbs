@@ -5,6 +5,7 @@
   {{{formatTicketSummary summary}}}
   <a href="{{ticketUrl}}" target="_blank" rel="tooltip" data-tooltip-placement="right" data-original-title="View in {{ticketSystem}}">[#{{number}}]</a>
   {{#if maintainer}}
+    <button class="reopen-button btn btn-mini">Reopen</button>
     <button class="close-button btn btn-mini">Close</button>
   {{/if}}
 </td>

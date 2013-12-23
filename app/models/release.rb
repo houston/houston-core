@@ -36,6 +36,11 @@ class Release < ActiveRecord::Base
     (release = first) && release.commit1
   end
   
+  def self.before(time)
+    return scoped if time.nil?
+    where(arel_table[:created_at].lt(time))
+  end
+  
   
   
   def can_read_commits?

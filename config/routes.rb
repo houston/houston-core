@@ -31,7 +31,8 @@ Houston::Application.routes.draw do
   
   match "tickets/:id", :to => "tickets#show", :via => :get
   match "tickets/:id", :to => "tickets#update", :via => :put
-  match "tickets/:id", :to => "tickets#close", :via => :delete
+  match "tickets/:id/close", :to => "tickets#close", :via => :delete
+  match "tickets/:id/reopen", :to => "tickets#reopen", :via => :delete
   
   get "projects/:slug/tickets", :to => "project_tickets#index"
   post "projects/:slug/tickets", :to => "project_tickets#create"

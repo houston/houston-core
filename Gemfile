@@ -83,6 +83,7 @@ group :development, :test do
   gem 'minitest'
   gem 'turn', :require => false # for prettier tests
   gem 'shoulda-context'
+  gem 'timecop'
   gem 'rr'
   
   # For Jenkins

@@ -78,11 +78,16 @@ module Houston
             end
           end
           
-          
-          
           def close!
             ticket = unfuddle.ticket(remote_id)
             ticket.update_attributes!("status" => "closed")
+          end
+          
+          def reopen!
+            unless %w{closed}.member? @raw_attributes["status"].to_s.downcase
+              ticket = unfuddle.ticket(remote_id)
+              ticket.update_attributes!("status" => "Reopened", "resolution" => "", deployment_field => 0)
+            end
           end
           
           
@@ -125,11 +130,9 @@ module Houston
           def update_attribute(attribute, value)
             case attribute
             when :deployment
-              attribute = unfuddle.get_ticket_attribute_for_custom_value_named!(Houston::TMI::NAME_OF_DEPLOYMENT_FIELD) # e.g. field2_value_id
               id = unfuddle.find_custom_field_value_by_value!(Houston::TMI::NAME_OF_DEPLOYMENT_FIELD, value).id
-              
               ticket = unfuddle.ticket(remote_id)
-              ticket.update_attributes!(attribute => id)
+              ticket.update_attributes!(deployment_field => id)
               
             else
               raise NotImplementedError
@@ -177,6 +180,7 @@ module Houston
           
           delegate :find_in_cache_or_execute,
                    :invalidate_cache,
+                   :deployment_field,
                    :to => :connection
           
           

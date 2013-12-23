@@ -42,4 +42,12 @@ class TicketsController < ApplicationController
     render json: [$!.message], :status => :unprocessable_entity
   end
   
+  def reopen
+    ticket = Ticket.find(params[:id])
+    ticket.reopen!
+    render json: [], :status => :ok
+  rescue
+    render json: [$!.message], :status => :unprocessable_entity
+  end
+  
 end
