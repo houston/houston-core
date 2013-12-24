@@ -48,6 +48,8 @@ class window.Ticket extends Backbone.Model
         verdictsByTester[testerId] = 'failing'
       else if verdict == 'works'
         verdictsByTester[testerId] ?= 'passing'
+      else if verdict == 'badticket'
+        verdictsByTester[testerId] ?= 'badticket'
       else if verdict == 'none'
         verdictsByTester[testerId] ?= 'comment'
     verdictsByTester

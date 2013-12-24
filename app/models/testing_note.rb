@@ -11,7 +11,7 @@ class TestingNote < ActiveRecord::Base
   belongs_to :ticket
   belongs_to :project
   
-  VERDICTS = %w{works fails none}
+  VERDICTS = %w{works fails badticket none}
   
   validates :user, :presence => true
   validates :ticket, :presence => true

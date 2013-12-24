@@ -3,9 +3,11 @@
   <p>
     <input data-attr="ticket_id" id="testing_note_{{id}}_ticket_id" name="ticket_id" type="hidden" value="{{ticketId}}" />
     {{#if tester}}
-    <label for="testing_note_{{id}}_verdict_works">{{{radioButton "testing_note" id "verdict" "works" verdict}}} Works</label>
-    <label for="testing_note_{{id}}_verdict_fails">{{{radioButton "testing_note" id "verdict" "fails" verdict}}} Fails</label>
-    <label for="testing_note_{{id}}_verdict_none">{{{radioButton "testing_note" id "verdict" "none" verdict}}} None</label>
+    <label for="testing_note_{{id}}_verdict_works">{{{radioButton "testing_note" id "verdict" "works" verdict}}} Works as written</label> (Could be improved?
+    <a href="/projects/{{projectSlug}}/tickets/new" target="_blank">File a ticket!</a> <img alt="stuck_out_tongue_winking_eye" height="20" width="20" src="/images/emoji/stuck_out_tongue_winking_eye.png" class="emoji">)<br />
+    <label for="testing_note_{{id}}_verdict_fails">{{{radioButton "testing_note" id "verdict" "fails" verdict}}} Doesn't do what it says or introduces a regression</label><br />
+    <label for="testing_note_{{id}}_verdict_badticket">{{{radioButton "testing_note" id "verdict" "badticket" verdict}}} I do not understand how to test this ticket</label><br />
+    <label for="testing_note_{{id}}_verdict_none">{{{radioButton "testing_note" id "verdict" "none" verdict}}} No verdict</label>
     {{/if}}
   </p>
   <p>
