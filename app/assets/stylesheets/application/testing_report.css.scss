@@ -271,7 +271,11 @@
   margin-bottom: 0;
   label {
     display: inline-block;
-    input { display: inline; }
+    
+    input {
+      display: inline;
+      margin: 0;
+    }
   }
   p { margin: 0; }
 }
