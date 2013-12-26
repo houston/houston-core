@@ -77,10 +77,6 @@ module Github
     
     def token
       @token ||= user.consumer_tokens.first
-    rescue RuntimeError
-      raise unless $!.message =~ /refresh_token is not available/
-      GithubToken.delete_all(user_id: user.id)
-      nil
     end
     
   end
