@@ -3,6 +3,9 @@
 ## On Deck
 =====================================================================
 
+ - **Top:**
+   - **Milestones:** show progress (not 0 effort when closed)
+
  - **Global:**
    - Disable buttons when working
 
@@ -21,9 +24,6 @@
      - ProjectNotification: project.maintainers are CCed on releases, sent test results and configuration errors
    - Extract the "Follower" role to a separate table
 
- - **Bugs**
-   - Release: improve commit formatter: http://status.cphepdev.com/projects/errbit/environments/Production/releases/602
-
  - **Antecedents**
    - Auto-resolve exception antecedents
    - Send support notifications on problem antecedents
@@ -31,6 +31,13 @@
  - **Notifications**
    - Send one-off emails that can take advantage of the abilities of each recipient (-> Sidekiq?)
    - Put a link in emails to user's notifications options (automatically logging them in)
+   - Style Release Notifications to look OK in Outlook on a PC:
+     http://www.campaignmonitor.com/css/ - what CSS is supported by what browser
+     http://snook.ca/archives/html_and_css/rounded_corners_experiment_ie/ - rounded rects with VML
+     http://stackoverflow.com/questions/10156077/html-that-will-render-correctly-in-outlook-2007-2010
+     http://www.webpronews.com/kiss-your-css-goodbye-with-outlook-2007-01
+     http://www.emailonacid.com/blog/details/C13/css_padding_in_outlook_2007_and_2010
+     http://www.emailonacid.com/blog/details/C13/7_tips_and_tricks_regarding_margins_and_padding_in_html_emails
 
  - **Daily Report**
    - Regressions?
@@ -52,11 +59,14 @@
    - Remember if "show effort" is on or off (user + hstore)
    - **Discussion Needed:** allow discussion to take place
    - **Mixer:** allow creating projects
-   - Have a fast load and a slow load?
 
  - **Testing Report**
    - Show related tickets
    - Allow creating related tickets
+
+ - **Tickets**
+   - Support attachments
+
 
 
 
