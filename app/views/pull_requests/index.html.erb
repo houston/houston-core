@@ -1,6 +1,12 @@
 <% content_for :title do %>
 <h1 class="project-banner space-below">
-  Pull Requests
+  <span class="light"><%= @pull_requests_by_repo.values.flatten.length %></span> Pull Requests
+</h1>
+<% end %>
+
+<% if for_email? %>
+<h1 class="project-banner space-below">
+  <span class="light"><%= @pull_requests_by_repo.values.flatten.length %></span> Pull Requests
 </h1>
 <% end %>
 

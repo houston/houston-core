@@ -145,7 +145,25 @@
       background-color: #51A351;
     }
     
+    .badge {
+      display: inline-block;
+      padding: 2px 4px;
+      font-size: 11.844px;
+      font-weight: bold;
+      line-height: 14px;
+      color: #ffffff;
+      vertical-align: baseline;
+      white-space: nowrap;
+      background-color: #999999;
+      padding-left: 9px;
+      padding-right: 9px;
+      -webkit-border-radius: 9px;
+      -moz-border-radius: 9px;
+      border-radius: 9px;
+    }
+    
     .project-banner {
+      background: #60615B;
       position: static;
       color: white;
       font-weight: 500;
@@ -163,6 +181,8 @@
       text-transform: uppercase;
     }
     
+    .project-banner .light { font-weight: 100; }
+    
     <%= render_scss "application/emoji.scss" %>
     <%= render_scss "application/colors.scss.erb" %>
     <%= render_scss "application/scores.scss" %>
@@ -170,6 +190,7 @@
     <%= render_scss "application/daily_report.scss" %>
     <%= render_scss "application/test_run.scss" %>
     <%= render_scss "application/releases.scss" %>
+    <%= render_scss "application/pull_requests.scss" %>
     <%= render_scss "application/follow_up.scss" %>
   </style>
 </head>

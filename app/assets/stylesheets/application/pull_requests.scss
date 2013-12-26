@@ -29,15 +29,16 @@ ul.pull-requests { margin: 0; }
 
 .pull-request-number {
   display: inline-block;
+  vertical-align: middle;
   text-align: right;
   width: 2.5em; // enough room for 4 digits (i.e. 9999 pull requests)
   font-size: 1.66em;
   font-weight: 100;
   color: #777;
-  vertical-align: middle;
 }
 
 .pull-request-author {
+  vertical-align: middle;
   margin-left: 0.25em;
   width: 24px;
   height: 24px;
@@ -45,11 +46,13 @@ ul.pull-requests { margin: 0; }
 
 .pull-request-title {
   display: inline-block;
+  vertical-align: middle;
   margin-left: 0.25em;
 }
 
 .pull-request-age {
   display: inline-block;
+  vertical-align: middle;
   margin-left: 0.5em;
   color: #c9c9c9;
 }
