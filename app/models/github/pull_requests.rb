@@ -42,6 +42,7 @@ module Github
         queue = Queue.new
         repos.map do |repo|
           Thread.new do
+            sleep 1 # <-- *hack* I _think_ CPH's network throttles outgoing requests :-(
             queue << {
               repo: repo,
 
