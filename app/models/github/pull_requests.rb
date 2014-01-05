@@ -39,20 +39,9 @@ module Github
         # c.f. http://developer.github.com/v3/repos/#list-organization-repositories
         repos = client.org_repos Houston::TMI::NAME_OF_GITHUB_ORGANIZATION
         
-        queue = Queue.new
-        repos.map do |repo|
-          Thread.new do
-            sleep 1 # <-- *hack* I _think_ CPH's network throttles outgoing requests :-(
-            queue << {
-              repo: repo,
-
-              # c.f. http://developer.github.com/v3/pulls/#list-pull-requests
-              pull_requests: client.pull_requests(repo.full_name)
-            }
-          end
-        end.each(&:join)
-        
-        @results = map_results!(queue)
+        repos.extend ParallelEnumerable
+        # @results = Hash[repos.parallel_map { |repo| [repo, client.pull_requests(repo.full_name)] }]
+        @results = Hash[repos.map { |repo| [repo, client.pull_requests(repo.full_name)] }]
       end
     end
     

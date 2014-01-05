@@ -10,7 +10,7 @@
 </h1>
 <% end %>
 
-<% @pull_requests_by_repo.each do |repo, pull_requests| %>
+<% @pull_requests_by_repo.each do |repo, pull_requests|; next if pull_requests.none? %>
   <h4 class="github-repo">
     <span class="github-repo-name"><%= repo.full_name %></span>
     <span class="pull-requests-count badge"><%= pull_requests.count %></span>
