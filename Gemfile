@@ -11,7 +11,7 @@ gem 'redcarpet'
 gem 'bundler' # used to parse Gemfiles
 gem 'cancan'
 gem 'childprocess'
-gem 'codeclimate-test-reporter', '0.0.7'
+gem 'codeclimate-test-reporter', '0.2.0'
 gem 'default_value_for'
 gem 'devise',           '~> 2.2.3'
 gem 'devise_invitable', '~> 1.1.6'

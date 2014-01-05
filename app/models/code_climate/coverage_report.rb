@@ -40,7 +40,7 @@ module CodeClimate
     
     
     
-    # https://github.com/codeclimate/ruby-test-reporter/blob/master/lib/code_climate/test_reporter/formatter.rb#L38-L81
+    # https://github.com/codeclimate/ruby-test-reporter/blob/v0.2.0/lib/code_climate/test_reporter/formatter.rb#L58-L75
     def code_climate_payload
       {
         repo_token:         repo_token,
@@ -52,7 +52,7 @@ module CodeClimate
         partial:            false,
         git:                commit_info,
         environment:        environment,
-        ci_service:         ci_info
+        ci_service:         ci_service
       }
     end
     
@@ -62,7 +62,7 @@ module CodeClimate
       project.code_climate_repo_token
     end
     
-    # https://github.com/codeclimate/ruby-test-reporter/blob/master/lib/code_climate/test_reporter/formatter.rb#L40-L57
+    # https://github.com/codeclimate/ruby-test-reporter/blob/v0.2.0/lib/code_climate/test_reporter/formatter.rb#L39-L56
     def source_files
       @source_files ||= test_run.coverage_detail.map do |file|
         {
@@ -81,7 +81,7 @@ module CodeClimate
     end
     
     def run_at
-      test_run.completed_at
+      test_run.completed_at.to_i
     end
     
     def covered_percent
@@ -100,28 +100,28 @@ module CodeClimate
       end
     end
     
-    # https://github.com/codeclimate/ruby-test-reporter/blob/master/lib/code_climate/test_reporter/formatter.rb#L67-L71
+    # https://github.com/codeclimate/ruby-test-reporter/blob/v0.2.0/lib/code_climate/test_reporter/git.rb
     def commit_info
       {
         head:             test_run.sha,
-        committed_at:     committed_at,
+        committed_at:     committed_at.to_i,
         branch:           test_run.branch,
       }
     end
     
-    # https://github.com/codeclimate/ruby-test-reporter/blob/master/lib/code_climate/test_reporter/formatter.rb#L72-L78
+    # https://github.com/codeclimate/ruby-test-reporter/blob/v0.2.0/lib/code_climate/test_reporter/formatter.rb#L67-L73
     def environment
       {
-        test_framework:   "functional tests",
-        pwd:              nil,                            # Dir.pwd
-        rails_root:       nil,                            # (Rails.root.to_s rescue nil)
-        simplecov_root:   nil,                            # ::SimpleCov.root
-        gem_version:      "0.0.7"
+        test_framework:   "rspec",  # result.command_name.downcase
+        pwd:              Dir.pwd,  # Dir.pwd
+        rails_root:       nil,      # (Rails.root.to_s rescue nil)
+        simplecov_root:   Dir.pwd,  # ::SimpleCov.root
+        gem_version:      "0.2.0"
       }
     end
     
-    # https://github.com/codeclimate/ruby-test-reporter/blob/master/lib/code_climate/test_reporter/formatter.rb#L83-L121
-    def ci_info
+    # https://github.com/codeclimate/ruby-test-reporter/blob/v0.2.0/lib/code_climate/test_reporter/ci.rb
+    def ci_service
       case project.ci_server
       when Houston::Adapters::CIServer::JenkinsAdapter::Job
         {
@@ -142,12 +142,12 @@ module CodeClimate
     
     
     
-    # https://github.com/codeclimate/ruby-test-reporter/blob/master/lib/code_climate/test_reporter/formatter.rb#L130-L133
+    # https://github.com/codeclimate/ruby-test-reporter/blob/v0.2.0/lib/code_climate/test_reporter/formatter.rb#L85-L88
     def short_filename(filename)
       filename
     end
     
-    # https://github.com/codeclimate/ruby-test-reporter/blob/master/lib/code_climate/test_reporter/formatter.rb#L123-L128 
+    # https://github.com/codeclimate/ruby-test-reporter/blob/v0.2.0/lib/code_climate/test_reporter/formatter.rb#L78-L83   
     def blob_id_of(filename)
       blob = project.repo.find_file(filename, commit: test_run.sha)
       blob && blob.oid

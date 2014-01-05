@@ -35,6 +35,7 @@ class CommitsApiTest < ActionController::IntegrationTest
     assert_response :success
     
     expected_commits = [
+      "Added lib files for code coverage tests",
       "When you have eliminated the impossible, what remains,",
       "however improbable, must be true",
       "Create README.md",
