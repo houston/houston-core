@@ -34,23 +34,6 @@ class ViewMailer < ActionMailer::Base
   before_filter { @for_email = true }
   
   
-  def pull_requests(user)
-    @pull_requests_by_repo = Github::PullRequests.new(user).to_h
-    mail({
-      to: user.email,
-      subject: "#{@pull_requests_by_repo.values.flatten.length} pull requests",
-      template: "pull_requests/index"
-    })
-    
-  rescue Github::Unauthorized
-    mail({
-      to: user.email,
-      subject: "Pull Requests",
-      template: "pull_requests/need_access"
-    })
-  end
-  
-  
   def weekly_report(weekly_report, recipients)
     @projects = Project.scoped
     @title = weekly_report.title
