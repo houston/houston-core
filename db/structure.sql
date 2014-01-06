@@ -766,7 +766,8 @@ CREATE TABLE projects (
     extended_attributes hstore,
     code_climate_repo_token character varying(255) DEFAULT ''::character varying NOT NULL,
     last_ticket_tracker_sync_at timestamp without time zone,
-    ticket_tracker_sync_started_at timestamp without time zone
+    ticket_tracker_sync_started_at timestamp without time zone,
+    view_options hstore
 );
 
 
@@ -1247,7 +1248,8 @@ CREATE TABLE users (
     first_name character varying(255),
     last_name character varying(255),
     environments_subscribed_to character varying(255) DEFAULT ''::character varying NOT NULL,
-    retired_at timestamp without time zone
+    retired_at timestamp without time zone,
+    view_options hstore
 );
 
 
@@ -2050,6 +2052,10 @@ INSERT INTO schema_migrations (version) VALUES ('20131027214942');
 
 INSERT INTO schema_migrations (version) VALUES ('20131112010815');
 
+INSERT INTO schema_migrations (version) VALUES ('20131216014505');
+
 INSERT INTO schema_migrations (version) VALUES ('20131223194246');
 
-INSERT INTO schema_migrations (version) VALUES ('20131216014505');
+INSERT INTO schema_migrations (version) VALUES ('20140106212047');
+
+INSERT INTO schema_migrations (version) VALUES ('20140106212305');

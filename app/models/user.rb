@@ -8,12 +8,13 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :commits
   
   serialize :environments_subscribed_to, JSON
+  serialize :view_options, ActiveRecord::Coders::Hstore
   
   devise *Houston.config.devise_configuration
   
   attr_accessible :first_name, :last_name, :email, :unfuddle_id,
                   :role, :password, :password_confirmation, :remember_me,
-                  :environments_subscribed_to
+                  :environments_subscribed_to, :view_options
   
   default_scope order("last_name, first_name")
   

@@ -165,6 +165,16 @@ Houston::Application.routes.draw do
   
   
   
+  # Options
+  
+  put "projects/:slug/options", :to => "project_options#update"
+  delete "projects/:slug/options/:key", :to => "project_options#destroy"
+  
+  put "options", to: "user_options#update"
+  delete "options/:key", to: "user_options#destroy"
+  
+  
+  
   # Other
   
   # Experiments

@@ -13,6 +13,7 @@ class Project < ActiveRecord::Base
   has_many :roles, :dependent => :destroy
   
   serialize :extended_attributes, ActiveRecord::Coders::Hstore
+  serialize :view_options, ActiveRecord::Coders::Hstore
   
   accepts_nested_attributes_for :roles, :allow_destroy => true # <-- !todo: authorized access only
   
