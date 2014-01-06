@@ -11,7 +11,7 @@ class WeeklyReport
       notices = Houston::Adapters::ErrorTracker::ErrbitAdapter.notices_during(history_range)
       
       notices.each do |notice|
-        project = projects.detect { |project| project.extended_attributes["errbit_app_id"] == notice.app_id }
+        project = projects.detect { |project| project.extended_attributes["errbit_app_id"] == notice.app_id.to_s }
         next unless project
         
         notices_by_week = @history_by_project[project] ||= new_history_vector

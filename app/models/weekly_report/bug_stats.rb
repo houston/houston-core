@@ -20,7 +20,7 @@ class WeeklyReport
       bugs = Houston::Adapters::ErrorTracker::ErrbitAdapter.problems_during(history_range)
       
       bugs.each do |bug|
-        project = projects.detect { |project| project.extended_attributes["errbit_app_id"] == bug.app_id }
+        project = projects.detect { |project| project.extended_attributes["errbit_app_id"] == bug.app_id.to_s }
         next unless project
         
         bugs_by_week = @history_by_project[project] ||= new_history_vector

@@ -52,6 +52,7 @@ class StaticChart
   protected
     
     def stack_data(data)
+      return [] if data.empty?
       length = data.map(&:length).max
       last_line = [0] * length
       data.map { |line| last_line = length.times.map { |i| last_line.fetch(i, 0) + line.fetch(i, 0) } }

@@ -48,6 +48,7 @@ module Houston
           end
           
           def to_problem(attributes)
+            attributes = attributes["problem"]
             Problem.new(
               first_notice_at: attributes["first_notice_at"].try(:to_time),
               last_notice_at: attributes["last_notice_at"].try(:to_time),
@@ -60,7 +61,7 @@ module Houston
               message: attributes["message"],
               where: attributes["where"],
               environment: attributes["environment"],
-              url: error_url(attributes["app_id"], attributes["_id"]["$oid"]))
+              url: error_url(attributes["app_id"], attributes["id"]))
           end
           
           
@@ -71,6 +72,7 @@ module Houston
           end
           
           def to_notice(attributes)
+            attributes = attributes["notice"]
             Notice.new(
               created_at: attributes["created_at"].try(:to_time),
               app_id: attributes["app_id"])
