@@ -8,4 +8,6 @@ class ConsumerToken < ActiveRecord::Base
   # Modify this with class_name etc to match your application
   belongs_to :user
   
+  validates_uniqueness_of :token
+  
 end
