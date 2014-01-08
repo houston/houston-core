@@ -111,6 +111,7 @@ class RunTestsOnPostReceive
     return unless test_run.project.repo.respond_to? :commit_status_url
     Github::CommitStatusReport.publish!(test_run)
   rescue
+    Houston.report_exception $!
     message = "Houston was unable to publish your commit status to GitHub"
     ProjectNotification.ci_configuration_error(test_run, message, additional_info: $!.message).deliver!
   end
@@ -121,6 +122,7 @@ class RunTestsOnPostReceive
     return if test_run.project.code_climate_repo_token.blank?
     CodeClimate::CoverageReport.publish!(test_run)
   rescue
+    Houston.report_exception $!
     message = "Houston was unable to publish your code coverage to Code Climate"
     ProjectNotification.ci_configuration_error(test_run, message, additional_info: $!.message).deliver!
   end
