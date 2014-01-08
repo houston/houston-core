@@ -56,7 +56,6 @@
    - Allow specifying prerequisites for tickets
    - Click to edit ticket in a popup
    - Style tickets ahead of prerequisites negatively
-   - Remember if "show effort" is on or off (user + hstore)
    - **Discussion Needed:** allow discussion to take place
    - **Mixer:** allow creating projects
 
