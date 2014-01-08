@@ -43,7 +43,7 @@ gem 'sugar-rails'
 gem 'twitter-bootstrap-rails'
 
 # Tooling
-gem 'airbrake' # exception notification
+gem 'airbrake', '~> 3.1.15' # exception notification
 gem 'newrelic_rpm'
 
 
