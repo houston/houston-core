@@ -26,9 +26,9 @@ class Ability
       can :update, user
       
       
-      if user.developer? or user.tester? or user.product_owner?
+      if user.developer? or user.tester?
         
-        # Developers, Testers, and Project Owners can see and comment on Testing Reports
+        # Developers and Testers can see and comment on Testing Reports
         # They can also edit their own notes
         can [:create, :read], TestingNote
         can [:update, :destroy], TestingNote, user_id: user.id
