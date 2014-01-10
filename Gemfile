@@ -29,6 +29,7 @@ gem 'progressbar' # for long migrations
 gem 'rugged', '0.17.0.b7' # for speaking to Git
 gem 'simplecov'
 gem 'strongbox' # for encrypting user credentials
+gem 'sucker_punch' # for Airbrake
 gem 'whenever' # a DSL for writing CRON jobs
 gem 'yajl-ruby', :require => 'yajl/json_gem'
 gem 'oj'
