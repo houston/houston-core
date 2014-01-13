@@ -49,19 +49,19 @@
             <ul class="nav">
               
               <%# Dashboards -%>
-              <% projects = Project.all.select { |project| can?(:read, project) } -%>
+              <% projects = Project.unretired.select { |project| can?(:read, project) } -%>
               <%= render_menu "Dashboard", [
                   MenuItem.new("All Projects", main_app.dashboard_path),
                   MenuItemDivider.new ] +
                   projects.map { |project| ProjectMenuItem.new(project, main_app.project_dashboard_path(project)) } if projects.any? -%>
               
               <%# Releases -%>
-              <% projects = Project.all.select { |project| can?(:read, project.releases.build) } -%>
+              <% projects = Project.unretired.select { |project| can?(:read, project.releases.build) } -%>
               <%= render_menu "Releases",
                   projects.map { |project| ProjectMenuItem.new(project, main_app.releases_path(project)) } -%>
               
               <%# Testing Reports -%>
-              <% projects = Project.all.select { |project| can?(:read, project.testing_notes.build) } -%>
+              <% projects = Project.unretired.select { |project| can?(:read, project.testing_notes.build) } -%>
               <%= render_menu "Testing", [
                   MenuItem.new("All Projects", main_app.testing_report_path),
                   MenuItemDivider.new ] +
@@ -70,12 +70,12 @@
               <%# Modules -%>
               <% Houston.config.modules.each do |mod| -%>
                 <% next unless mod.namespace.respond_to?(:menu_items_for) -%>
-                <% menu_items = mod.namespace.menu_items_for(projects: Project.all, ability: current_ability, user: current_user) -%>
+                <% menu_items = mod.namespace.menu_items_for(projects: Project.unretired, ability: current_ability, user: current_user) -%>
                 <%= render_menu mod.name.humanize, menu_items -%>
               <% end -%>
               
               <%# Kanban -%>
-              <% projects = Project.all.select { |project| can?(:read, project.tickets.build) } -%>
+              <% projects = Project.unretired.select { |project| can?(:read, project.tickets.build) } -%>
               <%= render_menu "Kanban", [
                   MenuItem.new("All Projects", main_app.kanban_path),
                   MenuItemDivider.new ] +
