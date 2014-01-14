@@ -13,6 +13,7 @@ class TicketPresenter
   def ticket_to_json(ticket)
     project = ticket.project
     { id: ticket.id,
+      projectId: project.id,
       projectSlug: project.slug,
       projectTitle: project.name,
       projectColor: project.color,
@@ -43,7 +44,6 @@ class TicketPresenter
   def with_testing_notes
     @tickets.map do |ticket|
       ticket_to_json(ticket).merge({
-        projectMaintainers: ticket.project.maintainers_ids,
         minPassingVerdicts: ticket.min_passing_verdicts,
         testingNotes: TestingNotePresenter.new(ticket.testing_notes).as_json,
         commits: CommitPresenter.new(ticket.commits.reachable).as_json,

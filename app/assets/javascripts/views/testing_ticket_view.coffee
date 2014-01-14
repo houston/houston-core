@@ -10,6 +10,7 @@ class window.TestingTicketView extends Backbone.View
   
   initialize: ->
     @ticket = @options.ticket
+    @canClose = @options.canClose
     @testingNotes = @ticket.testingNotes()
     
     @renderTicket = HandlebarsTemplates['testing_report/ticket']
@@ -27,7 +28,7 @@ class window.TestingTicketView extends Backbone.View
     
     $el = $(@el)
     $el.attr 'id', "ticket_#{@ticket.id}"
-    ticket.maintainer = _.include(ticket.projectMaintainers, window.userId)
+    ticket.canClose = @canClose
     ticket.testerVerdicts = @ticket.testerVerdicts()
     ticket.verdict = @ticket.verdict()
     ticket.passing = ticket.verdict == 'Passing'

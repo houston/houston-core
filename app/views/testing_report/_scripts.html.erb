@@ -22,7 +22,11 @@
           });
       });
       
-      new TestingReportView({el: '#testing_report', tickets: tickets});
+      new TestingReportView({
+        el: '#testing_report',
+        projectsCanCloseTicketsFor: <%= raw @projects.select { |project| can?(:close, project.tickets.build) }.map(&:id).to_json %>,
+        tickets: tickets
+      });
       
     });
   </script>

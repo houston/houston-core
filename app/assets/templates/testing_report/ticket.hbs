@@ -1,10 +1,10 @@
 <td class="table-margin"></td>
-<td class="ticket-testingPriority">{{#if maintainer}}<a class="ticket-set-priority icon-arrow-up" data-priority="high"></a><a class="ticket-set-priority icon-arrow-down" data-priority="low"></a>{{else}}<i class="icon-arrow-up"></i><i class="icon-arrow-down"></i>{{/if}}</td>
+<td class="ticket-testingPriority">{{#if canClose}}<a class="ticket-set-priority icon-arrow-up" data-priority="high"></a><a class="ticket-set-priority icon-arrow-down" data-priority="low"></a>{{else}}<i class="icon-arrow-up"></i><i class="icon-arrow-down"></i>{{/if}}</td>
 <td class="ticket-project"><b class="bubble {{projectColor}}"></b> {{projectTitle}}</td>
 <td class="ticket-summary">
   {{{formatTicketSummary summary}}}
   <a href="{{ticketUrl}}" target="_blank" rel="tooltip" data-tooltip-placement="right" data-original-title="View in {{ticketSystem}}">[#{{number}}]</a>
-  {{#if maintainer}}
+  {{#if canClose}}
     <button class="reopen-button btn btn-mini">Reopen</button>
     <button class="close-button btn btn-mini">Close</button>
   {{/if}}

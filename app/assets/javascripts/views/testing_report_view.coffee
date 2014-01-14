@@ -2,6 +2,7 @@ class window.TestingReportView extends Backbone.View
   
   initialize: ->
     @tickets = @options.tickets
+    @projectsCanCloseTicketsFor = @options.projectsCanCloseTicketsFor
     @tickets.bind 'reset', _.bind(@render, @)
     
     # Prevent tablesorter from exhuming buried rows
@@ -17,7 +18,9 @@ class window.TestingReportView extends Backbone.View
     $ul = $el
     $ul.empty()
     @tickets.each (ticket)=>
-      view = new TestingTicketView(ticket: ticket)
+      view = new TestingTicketView
+        ticket: ticket
+        canClose: _.include(@projectsCanCloseTicketsFor, ticket.get('projectId'))
       view.on 'expanding', => @onViewExpanding(view)
       view.on 'testing_note:refresh', _.bind(@refreshPieGraph, @)
       $ul.appendView view

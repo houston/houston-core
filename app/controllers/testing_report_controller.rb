@@ -8,8 +8,9 @@ class TestingReportController < ApplicationController
     unfuddle_tickets = Unfuddle.instance.find_tickets!(status: :resolved, resolution: :fixed)
     
     @tickets = []
+    @projects = Project.where(ticket_tracker_name: "Unfuddle")
     
-    Project.where(ticket_tracker_name: "Unfuddle").each do |project|
+    @projects.each do |project|
       next unless can?(:show, project.testing_notes.build)
       
       tickets_for_project = unfuddle_tickets
@@ -42,6 +43,7 @@ class TestingReportController < ApplicationController
       .includes(:releases)
       .includes(:commits)
       .reject(&:in_development?)
+    @projects = [@project]
     
     @tickets = TicketPresenter.new(@tickets).with_testing_notes
     render json: @tickets if request.xhr?

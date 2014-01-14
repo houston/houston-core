@@ -20,7 +20,6 @@
    - Replace hard-coded knowledge of roles:
      - projects#index - columns for maintainers and owners
      - Testing Report, application.html.erb: User.testers
-     - TicketPresenter: replace projectMaintainers with can-close-ticket
      - ProjectNotification: project.maintainers are CCed on releases, sent test results and configuration errors
    - Extract the "Follower" role to a separate table
 
