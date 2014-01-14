@@ -22,9 +22,7 @@
 
 <% if @release.new_record? && @maintainer %>
   <p style="margin-top: 3em;">
-    <%= link_to "Edit and Publish Release",
-      new_release_url(@release, auth_token: @maintainer.authentication_token),
-      :class => "btn btn-primary btn-large" %>
+    <%= link_to "Edit and Publish Release", new_release_url(@release, auth_token: @auth_token), :class => "btn btn-primary btn-large" %>
     &nbsp;
     <span style="color: #888;">(Commit range:
       <span class="commit-range"><%= link_to_release_commit_range(@release) %></span>)

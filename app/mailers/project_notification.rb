@@ -67,7 +67,10 @@ class ProjectNotification < ViewMailer
     @release = deploy.build_release
     @maintainer = maintainer
     
-    @maintainer.reset_authentication_token!
+    if @maintainer.respond_to?(:reset_authentication_token!)
+      @maintainer.reset_authentication_token! 
+      @auth_token = @maintainer.authentication_token
+    end
     
     if @release.commits.empty? && @release.can_read_commits?
       @release.load_commits!
