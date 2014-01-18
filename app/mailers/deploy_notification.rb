@@ -20,6 +20,8 @@ class DeployNotification
     messages
   end
   
+private
+  
   def we_know_who_triggered_the_deploy
     !deployer.blank?
   end
