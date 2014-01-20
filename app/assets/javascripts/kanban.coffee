@@ -77,6 +77,7 @@ class window.Kanban
       $queue.find(".#{project.slug}").remove()
       
       for ticket in tickets
+        ticket.age = ticket.queues[queueName] ? 0
         $queue.append @renderTicket(ticket)
       
       @refreshQueue $queue, ".ticket.#{project.slug}"

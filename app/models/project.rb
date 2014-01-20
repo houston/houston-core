@@ -48,7 +48,17 @@ class Project < ActiveRecord::Base
   end
   
   def testers
-    User.testers
+    @testers ||= User.testers
+  end
+  
+  def current_sprint
+    return @current_sprint if defined?(@current_sprint)
+    @current_sprint = sprints.current
+  end
+  
+  def in_current_sprint?(ticket)
+    return false unless current_sprint
+    current_sprint.id == ticket.sprint_id
   end
   
   
@@ -139,26 +149,6 @@ class Project < ActiveRecord::Base
   
   def find_tickets(*query)
     tickets.fetch_with_query(*query)
-  end
-  
-  
-  
-  def tickets_in_queue(queue)
-    queue = KanbanQueue.find_by_slug(queue) unless queue.is_a?(KanbanQueue)
-    tickets.includes(:ticket_queue).fetch_with_query(*queue.query).tap do |tickets|
-      update_tickets_in_queue(tickets, queue)
-    end
-  end
-  
-  def update_tickets_in_queue(tickets, queue)
-    tickets.each { |ticket| ticket.queue = queue.slug }
-    
-    ids = tickets.map(&:id).compact
-    tickets_removed_from_queue = self.tickets.includes(:ticket_queue).in_queue(queue)
-    tickets_removed_from_queue = tickets_removed_from_queue.where(["NOT (tickets.id IN (?))", ids]) if ids.any?
-    tickets_removed_from_queue.each { |ticket| ticket.queue = nil }
-    
-    tickets
   end
   
   

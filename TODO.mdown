@@ -91,7 +91,6 @@ Goals:
          - https://api.github.com/users/boblail
          - https://unfuddle.com/support/docs/api/people
          - http://developer.github.com/v3/users/
-     - Unfuddle::NeqHelper
      - TicketHelper#format_antecedent
      - Don't limit TestingReportController to only use the Unfuddle adapter (have adapters publish their features?)
    - Turn on or off features via config.rb

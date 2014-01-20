@@ -23,7 +23,7 @@ class UpdateKanbanQueueJob
   end
   
   def update_tickets_for_project_and_queue!(project, queue)
-    project.tickets_in_queue(queue)
+    project.tickets.in_queue(queue, :refresh)
     
   rescue Houston::Adapters::TicketTracker::ConnectionError
     retry if (!connection_retry_count += 1) < 3

@@ -5,7 +5,7 @@
 <a id="auto_update">Auto-Update</a>
 <% tickets_by_project_by_queue = Ticket.benchmark("\e[33m[kanban] time to query and organize tickets:\e[0m") do
   Ticket.nosync do
-    tickets = Ticket.for_projects(projects).in_queues(KanbanQueue.all).includes(:testing_notes)
+    tickets = Ticket.for_projects(projects).includes(:testing_notes, :ticket_queues)
     group_tickets_by_queue_and_project(tickets, projects) 
   end
 end %>
@@ -32,9 +32,9 @@ end %>
               <% projects.each do |project|; tickets = tickets_by_project[project.id] %>
                 <% tickets.each do |ticket|; ticket.project = project %>
                   <%# This is copied from application.html.erb %>
-                  <li class="ticket <%= project.slug %> <%= project.color %> <%= class_for_age(ticket.age) %> <%= ticket.verdict.downcase %>" id="ticket_<%= ticket.id %>" data-number="<%= ticket.number %>" data-project="<%= project.name %>" <%= attributes_for_ticket_verdict(ticket) %>>
+                  <li class="ticket <%= project.slug %> <%= project.color %> <%= class_for_age(ticket.age_in(queue)) %> <%= ticket.verdict.downcase %>" id="ticket_<%= ticket.id %>" data-number="<%= ticket.number %>" data-project="<%= project.name %>" <%= attributes_for_ticket_verdict(ticket) %>>
                     <a href="<%= ticket.ticket_tracker_ticket_url %>" target="_blank">
-                      <h3 class="ticket-number"><%= ticket.number %> <span class="ticket-age"><%= format_duration ticket.age %></span></h3>
+                      <h3 class="ticket-number"><%= ticket.number %> <span class="ticket-age"><%= format_duration ticket.age_in(queue) %></span></h3>
                       <p class="ticket-summary"><%= ticket.summary %></p>
                     </a>
                   </li>

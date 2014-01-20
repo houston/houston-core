@@ -6,21 +6,19 @@ class ProjectKanbanController < ApplicationController
   def index
     @title = "Kanban: #{@project.name}"
     
-    @projects = Project.where(ticket_tracker_name: "Unfuddle")
+    @projects = Project.unretired
   end
   
   
   def queue
     @queue = KanbanQueue.find_by_slug(params[:queue])
-    @tickets = []
-    @errors = []
-    
-    # Always render the freshest tickets
-    begin
-      @tickets = @project.tickets_in_queue(@queue)
-    rescue Unfuddle::UnauthorizedError, Houston::Adapters::TicketTracker::InvalidQueryError
-      @errors << "#{@project.name} is not configured correctly for use with Houston Kanban:\n#{$!.message}"
-    end
+    @tickets = @project.tickets
+      .includes(:project)
+      .includes(:testing_notes)
+      .includes(:ticket_queues)
+      .includes(:releases)
+      .includes(:commits)
+      .in_queue(@queue, :refresh)
     
     respond_to do |format|
       format.html do
@@ -28,12 +26,7 @@ class ProjectKanbanController < ApplicationController
       end
       format.json do
         response.headers["X-Revision"] = revision
-        
-        if @errors.any?
-          render :json => {errors: @errors}
-        else
-          render :json => TicketPresenter.new(@tickets).with_testing_notes
-        end
+        render json: TicketPresenter.new(@tickets).with_testing_notes
       end
     end
   end

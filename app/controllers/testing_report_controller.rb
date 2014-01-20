@@ -38,11 +38,11 @@ class TestingReportController < ApplicationController
     @tickets = @project.tickets
       .unclosed
       .fixed
+      .deployed
       .includes(:project)
       .includes(:testing_notes)
       .includes(:releases)
       .includes(:commits)
-      .reject(&:in_development?)
     @projects = [@project]
     
     @tickets = TicketPresenter.new(@tickets).with_testing_notes

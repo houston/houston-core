@@ -6,11 +6,11 @@ class Ticket < ActiveRecord::Base
   belongs_to :milestone, counter_cache: true
   belongs_to :sprint
   belongs_to :checked_out_by, class_name: "User"
-  has_one :ticket_queue, conditions: "ticket_queues.destroyed_at IS NULL"
+  has_many :ticket_queues, conditions: "ticket_queues.destroyed_at IS NULL"
   has_many :testing_notes
   has_many :ticket_prerequisites, autosave: true
   has_and_belongs_to_many :releases, before_add: :ignore_release_if_duplicate
-  has_and_belongs_to_many :commits
+  has_and_belongs_to_many :commits, conditions: {unreachable: false}
   
   default_scope order(:number).where(destroyed_at: nil)
   
@@ -37,16 +37,31 @@ class Ticket < ActiveRecord::Base
       ids = projects.flatten.map { |project| project.is_a?(Project) ? project.id : project }
       where(project_id: ids)
     end
+    alias :for_project :for_projects
     
-    def in_queue(queue)
-      queue = queue.slug if queue.is_a?(KanbanQueue)
-      includes(:ticket_queue).where(["ticket_queues.queue = ?", queue])
+    def in_queue(queue, arg=nil)
+      if arg == :refresh
+        sync_tickets_in_queue(queue)
+      else
+        includes(:ticket_queues).merge(TicketQueue.named(queue))
+      end
     end
     
-    def in_queues(*queues)
-      queues = queues.flatten.map { |queue| queue.is_a?(KanbanQueue) ? queue.slug : queue }
-      includes(:ticket_queue).where(["ticket_queues.queue IN (?)", queues])
+    def sync_tickets_in_queue(queue)
+      queue = KanbanQueue.find_by_slug(queue) unless queue.is_a?(KanbanQueue)
+      transaction do
+        queue.filter(scoped).tap do |tickets_in_queue|
+        
+          ticket_ids_were_in_queue = TicketQueue.where(queue: queue.slug).merge(scoped).pluck(:ticket_id)
+          ticket_ids_in_queue = tickets_in_queue.pluck(:id)
+          TicketQueue.enter! queue, ticket_ids_in_queue - ticket_ids_were_in_queue
+          TicketQueue.exit!  queue, ticket_ids_were_in_queue - ticket_ids_in_queue
+        
+        end
+      end
     end
+    
+    
     
     def numbered(*numbers)
       where(number: numbers.flatten.map(&:to_i))
@@ -75,9 +90,18 @@ class Ticket < ActiveRecord::Base
     def unclosed
       where(closed_at: nil)
     end
+    alias :open :unclosed
     
     def closed
       where(arel_table[:closed_at].not_eq(nil))
+    end
+    
+    def deployed
+      where(arel_table[:deployment].not_eq(nil))
+    end
+    
+    def deployed_to(environment)
+      where(deployment: environment)
     end
     
   end
@@ -118,37 +142,26 @@ class Ticket < ActiveRecord::Base
   
   
   
-  def in_queue?(name)
-    self.queue == name
-  end
-  
-  def set_queue!(value)
-    return if queue == value
-    
-    Ticket.transaction do
-      ticket_queue.destroy if ticket_queue
-      self.ticket_queue = TicketQueue.create!(ticket: self, queue: value) if value
-    end
-    
-    value
-  end
-  alias :queue= :set_queue!
-  
-  def queue
-    ticket_queue && ticket_queue.name
+  def exit_queues!
+    ticket_queues.exit_all!
   end
   
   
   
-  # Returns the amount of time the ticket has spent in its current queue (in seconds)
-  def age
-    ticket_queue ? ticket_queue.queue_time : 0
+  def age_in(queue)
+    queue = queue.slug if queue.is_a?(KanbanQueue)
+    age_in_queues.fetch(queue, 0)
   end
+  
+  def age_in_queues
+    @age_in_queues ||= Hash[ticket_queues.map { |queue| [queue.queue, queue.queue_time] }]
+  end
+  
+  
   
   def committers
     commits.map { |commit| TicketCommitter.new(commit.committer, commit.committer_email) }.uniq
   end
-  
   
   
   
@@ -162,10 +175,22 @@ class Ticket < ActiveRecord::Base
     checked_out_at.present?
   end
   
+  def in_current_sprint?
+    project.in_current_sprint?(self)
+  end
   
+  
+  
+  def unresolved?
+    resolution.blank?
+  end
   
   def resolved?
     !resolution.blank?
+  end
+  
+  def open?
+    closed_at.nil?
   end
   
   def closed?

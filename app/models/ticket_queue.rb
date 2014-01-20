@@ -11,13 +11,14 @@ class TicketQueue < ActiveRecord::Base
   
   class << self
     def for_kanban
-      in_queues(KanbanQueue.slugs)
+      where(queue: KanbanQueue.slugs)
     end
     
     def in_queue(queue)
+      queue = queue.slug if queue.is_a?(KanbanQueue)
       where(queue: queue)
     end
-    alias :in_queues :in_queue
+    alias :named :in_queue
     
     def for_project(project)
       where(["tickets.project_id = ?", project.id])
@@ -29,6 +30,22 @@ class TicketQueue < ActiveRecord::Base
     end
     alias :on :during
     alias :at :during
+    
+    
+    
+    def enter!(slug, ids)
+      in_queue(slug).create! ids.map { |id| { ticket_id: id } }
+    end
+    
+    def exit!(slug, ids)
+      in_queue(slug).where(ticket_id: ids).exit_all!
+    end
+    
+    
+    
+    def exit_all!
+      update_all(destroyed_at: Time.now)
+    end
     
     
     

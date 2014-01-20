@@ -24,10 +24,9 @@ class TicketPresenter
       tags: ticket.tags.map(&:to_h),
       verdict: ticket.verdict.downcase,
       verdictsByTester: ticket.verdicts_by_tester_index,
-      queue: ticket.queue,
       committers: ticket.committers(&:to_h),
       deployment: ticket.deployment,
-      age: ticket.age,
+      queues: ticket.age_in_queues,
       dueDate: ticket.due_date,
       ticketSystem: project.ticket_tracker_name,
       ticketUrl: ticket.ticket_tracker_ticket_url }
@@ -46,7 +45,7 @@ class TicketPresenter
       ticket_to_json(ticket).merge({
         minPassingVerdicts: ticket.min_passing_verdicts,
         testingNotes: TestingNotePresenter.new(ticket.testing_notes).as_json,
-        commits: CommitPresenter.new(ticket.commits.reachable).as_json,
+        commits: CommitPresenter.new(ticket.commits).as_json,
         releases: ReleasePresenter.new(ticket.releases).as_json,
         lastReleaseAt: ticket.last_release_at,
         description: mdown(ticket.description) })

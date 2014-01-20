@@ -1,6 +1,3 @@
-# !todo: remove this requirement
-$:.unshift File.expand_path("./lib/unfuddle/lib")
-require 'unfuddle/neq'
 require File.join(File.dirname(__FILE__), 'core_ext/hash')
 
 $:.unshift File.expand_path("./app/adapters")
@@ -8,8 +5,6 @@ require "houston/adapters"
 
 module Houston
   class Configuration
-    include Unfuddle::NeqHelper
-    
     
     def initialize
       @modules = []
@@ -240,8 +235,12 @@ module Houston
       @dependencies || []
     end
     
-    def queues(*args)
-      @queues = args.first if args.any?
+    def queues(&block)
+      if block_given?
+        builder = Houston::QueuesBuilder.new
+        builder.instance_eval(&block)
+        @queues = builder.queues
+      end
       @queues ||= []
     end
     
@@ -334,6 +333,7 @@ module Houston
     
     attr_reader :hash
     alias :to_hash :hash
+    alias :to_h :hash
     
     def self.from_block(block)
       HashDsl.new.tap { |dsl| dsl.instance_eval(&block) }
@@ -351,6 +351,53 @@ module Houston
       else
         super
       end
+    end
+    
+  end
+  
+  
+  
+  class QueuesBuilder
+    
+    def initialize
+      @queues = []
+    end
+    
+    def method_missing(slug, *args, &block)
+      builder = QueueBuilder.new(slug)
+      builder.instance_eval(&block)
+      @queues << builder.queue
+    end
+    
+    attr_reader :queues
+    
+  end
+  
+  
+  
+  class QueueBuilder
+    
+    def initialize(slug)
+      @slug = slug.to_s
+    end
+    
+    def name(name)
+      @name = name
+    end
+    
+    def description(description)
+      @description = description
+    end
+    
+    def where(&block)
+      @where = block
+    end
+    
+    def queue
+      { slug: @slug,
+        name: @name,
+        description: @description,
+        where: @where }
     end
     
   end
@@ -515,4 +562,3 @@ end
 
 # Load configuration file
 require File.expand_path("./config/config.rb")
-# require Rails.root.join('config', 'config.rb').to_s

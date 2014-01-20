@@ -2,13 +2,17 @@ require 'unfuddle/neq'
 
 class KanbanQueue
   
-  attr_accessor :name, :slug, :description, :query
+  attr_accessor :name, :slug, :description
   
   def initialize(attributes={})
     @name = attributes[:name]
     @slug = attributes[:slug]
     @description = attributes[:description]
-    @query = attributes[:query]
+    @where = attributes[:where]
+  end
+  
+  def filter(tickets)
+    @where.call(tickets)
   end
   
   class << self
