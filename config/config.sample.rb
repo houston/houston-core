@@ -223,37 +223,37 @@ Houston.config do
       name: "To Proofread",
       slug: "assign_health",
       description: "Make sure these tickets are healthy, unique, and that you can reproduce the problem with the supplied Steps to Test.",
-      query: {:status => neq(:closed), :resolution => 0, "Health" => 0}
+      query: {status: neq(:closed), resolution: 0, "Health" => 0}
     }, {
       name: "To Improve",
       slug: "to_fix",
       description: "These tickets do not contain enough information. Follow up with the reporter and see that they are clarified.",
-      query: {:status => neq(:closed), :resolution => 0, "Health" => ["Summary and Description need work", "Summary needs work"]}
+      query: {status: neq(:closed), resolution: 0, "Health" => ["Summary and Description need work", "Summary needs work"]}
     }, {
       name: "To Consider",
       slug: "suggestions",
       description: "These tickets may or may not belong to the vision of this product. Consider them as a team and close them or change their severity.",
-      query: {:status => neq(:closed), :resolution => 0, "Health" => ["Good", "Description needs work"], :milestone => 0, :severity => "0 Suggestion"}
+      query: {status: neq(:closed), resolution: 0, "Health" => ["Good", "Description needs work"], :milestone => [neq(:next_upcoming), 0], severity: "0 Suggestion"}
     }, {
-      name: "To Plan",
+      name: "Backlog",
       slug: "to_do",
-      description: "These are open tickets that have not been scheduled to a milestone.",
-      query: {:status => neq(:closed), :resolution => 0, "Health" => ["Good", "Description needs work"], :milestone => 0, :severity => neq("0 Suggestion")}
+      description: "This is the project backlog: open tickets that aren't up next.",
+      query: {status: neq(:closed), resolution: 0, "Health" => ["Good", "Description needs work"], :milestone => [neq(:next_upcoming), 0], severity: neq("0 Suggestion")}
     }, {
-      name: "Scheduled",
+      name: "Next Up",
       slug: "assigned_tickets",
-      description: "These are open tickets that have been scheduled in a milestone.",
-      query: {:status => neq(:closed), :resolution => 0, "Health" => ["Good", "Description needs work"], :milestone => neq(0)}
+      description: "These are open tickets that are scheduled for the next upcoming milestone.",
+      query: [[:status, neq(:closed)], [:resolution, 0], ["Health", ["Good", "Description needs work"]], [:milestone, :next_upcoming], [:milestone, neq(0)]]
     }, {
       name: "Queued",
       slug: "staged_for_testing",
       description: "These tickets have been resolved, but are waiting for the current batch to be released before they enter testing.",
-      query: {:status => neq(:closed), :resolution => :fixed, "Fixed in" => 0}
+      query: {status: neq(:closed), resolution: :fixed, "Fixed in" => 0}
     }, {
       name: "To Test",
       slug: "in_testing",
       description: "These tickets are ready to test. Click on <b>Testing Reports</b> to record your testing notes.",
-      query: {:status => neq(:closed), :resolution => :fixed, "Fixed in" => ["Staging", "Production"]}
+      query: {status: neq(:closed), resolution: :fixed, "Fixed in" => ["Staging", "Production"]}
   } ]
   
   
