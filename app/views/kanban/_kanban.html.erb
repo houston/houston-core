@@ -3,7 +3,7 @@
   <div id="timer"></div>
 </div>
 <a id="auto_update">Auto-Update</a>
-<% tickets_by_project_by_queue = Ticket.benchmark("[kanban] time to query and organize tickets:") do
+<% tickets_by_project_by_queue = Ticket.benchmark("\e[33m[kanban] time to query and organize tickets:\e[0m") do
   Ticket.nosync do
     tickets = Ticket.for_projects(projects).in_queues(KanbanQueue.all).includes(:testing_notes)
     group_tickets_by_queue_and_project(tickets, projects) 
@@ -25,7 +25,7 @@ end %>
   </thead>
   <tbody>
     <tr>
-      <% Ticket.benchmark("[kanban] time to render tickets:") do %>
+      <% Ticket.benchmark("\e[33m[kanban] time to render tickets:\e[0m") do %>
         <% KanbanQueue.all.each do |queue|; tickets_by_project = tickets_by_project_by_queue[queue.slug] %>
           <td class="kanban-column" data-queue="<%= queue.slug %>">
             <ul id="<%= queue.slug %>">
