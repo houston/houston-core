@@ -199,42 +199,37 @@ Houston.config do
   
   
   # Queues
-  queues [ {
-      name: "To Proofread",
-      slug: "assign_health",
-      description: "Make sure these tickets are healthy, unique, and that you can reproduce the problem with the supplied Steps to Test.",
-      query: {:status => neq(:closed), :resolution => 0, "Health" => 0}
-    }, {
-      name: "To Improve",
-      slug: "to_fix",
-      description: "These tickets do not contain enough information. Follow up with the reporter and see that they are clarified.",
-      query: {:status => neq(:closed), :resolution => 0, "Health" => ["Summary and Description need work", "Summary needs work"]}
-    }, {
-      name: "To Consider",
-      slug: "suggestions",
-      description: "These tickets may or may not belong to the vision of this product. Consider them as a team and close them or change their severity.",
-      query: {:status => neq(:closed), :resolution => 0, "Health" => ["Good", "Description needs work"], :milestone => neq(:next_upcoming), :severity => "0 Suggestion"}
-    }, {
-      name: "Backlog",
-      slug: "to_do",
-      description: "This is the project backlog: open tickets that aren't up next.",
-      query: {:status => neq(:closed), :resolution => 0, "Health" => ["Good", "Description needs work"], :milestone => neq(:next_upcoming), :severity => neq("0 Suggestion")}
-    }, {
-      name: "Next Up",
-      slug: "assigned_tickets",
-      description: "These are open tickets that are scheduled for the next upcoming milestone.",
-      query: {:status => neq(:closed), :resolution => 0, "Health" => ["Good", "Description needs work"], :milestone => :next_upcoming}
-    }, {
-      name: "Queued",
-      slug: "staged_for_testing",
-      description: "These tickets have been resolved, but are waiting for the current batch to be released before they enter testing.",
-      query: {:status => neq(:closed), :resolution => :fixed, "Fixed in" => 0}
-    }, {
-      name: "To Test",
-      slug: "in_testing",
-      description: "These tickets are ready to test. Click on <b>Testing Reports</b> to record your testing notes.",
-      query: {:status => neq(:closed), :resolution => :fixed, "Fixed in" => ["Staging", "Production"]}
-  } ]
+  queues do
+    unprioritized do
+      name "To Prioritize"
+      description "Tickets for <b>Product Owners</b> to prioritize"
+      where { |tickets| tickets.unresolved.unprioritized }
+    end
+    
+    unestimated do
+      name "To Estimate"
+      description "Tickets for <b>Developers</b> to estimate"
+      where { |tickets| tickets.unresolved.unestimated }
+    end
+    
+    sprint do
+      name "Sprint"
+      description "Tickets left in the current sprint"
+      where { |tickets| tickets.unresolved.in_current_sprint }
+    end
+    
+    testing do
+      name "To Test"
+      description "Tickets for <b>Testers</b> to test"
+      where { |tickets| tickets.resolved.open.deployed }
+    end
+    
+    staging do
+      name "To Release"
+      description "Tickets ready for <b>Maintainers</b> to deploy"
+      where { |tickets| tickets.closed.deployed_to("Staging") }
+    end
+  end
   
   
   
