@@ -10,7 +10,6 @@
    - Disable buttons when working
 
  - **Prune**
-   - Houston.config.severities
    - Rename `Project#color` to `Project#color_name` and `Project#color_value` to `Project#color`
    - Replace unfuddle dump with reporter_email
    - Remove `all_commit_times` from the Version Control Repo API

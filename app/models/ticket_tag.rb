@@ -10,7 +10,7 @@ class TicketTag
   def self.from_s(string)
     name, color = string.scan(/\[([^\]]+)\]\(([a-fA-F0-9]{6})\)/).flatten
     name = string unless name
-    color = Houston.config.severities.fetch(name, "e4e4e4") unless color
+    color = "e4e4e4" unless color
     new(name, color)
   end
   

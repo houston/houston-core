@@ -253,11 +253,6 @@ module Houston
       @queues ||= []
     end
     
-    def severities(*args)
-      @severities = args.first if args.any?
-      @severities ||= []
-    end
-    
     
     
     
