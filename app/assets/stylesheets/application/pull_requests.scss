@@ -13,6 +13,14 @@ ul.pull-requests { margin: 0; }
   margin: 0;
   line-height: 24px;
   
+  &.back-burner a {
+    color: #c9c9c9;
+    
+    .pull-request-author { opacity: 0.16; }
+    .pull-request-number { color: #d6d6d6; }
+    .pull-request-age { color: #d6d6d6; }
+  }
+  
   a {
     display: block;
     padding: 0.33em 0;
@@ -20,7 +28,9 @@ ul.pull-requests { margin: 0; }
     &:hover {
       text-decoration: none;
       background: #EDF9FF;
+      color: #005580;
       
+      .pull-request-author { opacity: 1.0; }
       .pull-request-number { color: #6C8592; }
       .pull-request-age { color: #AABCC5; }
     }

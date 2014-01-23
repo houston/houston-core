@@ -39,7 +39,7 @@ module Github
         # c.f. http://developer.github.com/v3/repos/#list-organization-repositories
         repos = client.org_repos Houston::TMI::NAME_OF_GITHUB_ORGANIZATION
         repos = repos.parallel if Houston.config.parallelize?
-        @results = Hash[repos.map { |repo| [repo, client.pull_requests(repo.full_name)] }]
+        @results = Hash[repos.map { |repo| [repo, fetch_for_repo(repo)] }]
       end
     end
     
@@ -54,6 +54,12 @@ module Github
     
     def token
       @token ||= user.consumer_tokens.first
+    end
+    
+private
+    
+    def fetch_for_repo(repo)
+      client.pull_requests(repo.full_name).map(&::Github::PullRequest.method(:new))
     end
     
   end

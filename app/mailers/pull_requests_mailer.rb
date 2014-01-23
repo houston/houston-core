@@ -14,7 +14,7 @@ class PullRequestsMailer < ViewMailer
     @pull_requests_by_repo = Github::PullRequests.new(user).to_h
     mail({
       to: user.email,
-      subject: "#{@pull_requests_by_repo.values.flatten.length} pull requests",
+      subject: "#{@pull_requests_by_repo.values.flatten.select(&:eligible?).length} pull requests",
       template: "pull_requests/index"
     })
     
@@ -25,6 +25,5 @@ class PullRequestsMailer < ViewMailer
       template: "pull_requests/need_access"
     })
   end
-  
   
 end

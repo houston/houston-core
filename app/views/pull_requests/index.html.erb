@@ -1,28 +1,28 @@
 <% content_for :title do %>
 <h1 class="project-banner space-below">
-  <span class="light"><%= @pull_requests_by_repo.values.flatten.length %></span> Pull Requests
+  <span class="light"><%= @pull_requests_by_repo.values.flatten.select(&:eligible?).length %></span> Pull Requests
 </h1>
 <% end %>
 
 <% if for_email? %>
 <h1 class="project-banner space-below">
-  <span class="light"><%= @pull_requests_by_repo.values.flatten.length %></span> Pull Requests
+  <span class="light"><%= @pull_requests_by_repo.values.flatten.select(&:eligible?).length %></span> Pull Requests
 </h1>
 <% end %>
 
 <% @pull_requests_by_repo.each do |repo, pull_requests|; next if pull_requests.none? %>
   <h4 class="github-repo">
     <span class="github-repo-name"><%= repo.full_name %></span>
-    <span class="pull-requests-count badge"><%= pull_requests.count %></span>
+    <span class="pull-requests-count badge"><%= pull_requests.select(&:eligible?).count %></span>
   </h4>
   <ul class="pull-requests">
     <% pull_requests.each do |pull_request| %>
-      <li class="pull-request">
-        <%= link_to pull_request._links.html.href, target: "_blank" do %>
+      <li class="pull-request <%= "back-burner" if pull_request.back_burner? %>">
+        <%= link_to pull_request.url, target: "_blank" do %>
           <span class="pull-request-number"><%= pull_request.number %></span>
-          <%= image_tag "http://www.gravatar.com/avatar/#{pull_request.user.gravatar_id}?r=g&d=identicon&s=64", width: 32, height: 32, class: "pull-request-author" %>
+          <%= image_tag pull_request.gravatar_url, width: 32, height: 32, class: "pull-request-author" %>
           <span class="pull-request-title"><%= emojify pull_request.title %></span>
-          <span class="pull-request-age"><%= time_ago_in_words pull_request.created_at %></span>
+          <span class="pull-request-age"><%= time_ago_in_words pull_request.created_at %> old</span>
         <% end %>
       </li>
     <% end %>
