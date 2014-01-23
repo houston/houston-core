@@ -20,7 +20,7 @@ class SyncAllTicketsJob
     SyncProjectTicketsJob.new(project).run!
     
   rescue Houston::Adapters::TicketTracker::ConnectionError
-    retry if (!connection_retry_count += 1) < 3
+    retry if (connection_retry_count += 1) < 3
     connection_error!(project)
   rescue Houston::Adapters::TicketTracker::InvalidQueryError
     query_error!(project)
@@ -40,6 +40,7 @@ private
   
   
   def connection_error!(project)
+    Houston.report_exception $!
     Error.create(
       category: project.ticket_tracker_adapter.downcase,
       message: $!.message,
@@ -48,6 +49,7 @@ private
   end
     
   def query_error!(project)
+    Houston.report_exception $!
     Error.create(
       project: project,
       category: "configuration",
