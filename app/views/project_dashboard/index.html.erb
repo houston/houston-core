@@ -2,7 +2,7 @@
   <table>
     <tr>
       <td rowspan="2" class="column-1">
-        <h1><%= @project.name %></h1>
+        <h2><%= @project.name %></h2>
         
         <div class="graph coming-soon">
           <p class="description">Real-time responses</p>
@@ -82,7 +82,7 @@
           data = week_ends.map do |week_end|
             scope = TicketQueue \
               .where(ticket_queues[:created_at].lt(week_end)) \
-              .where(["destroyed_at IS NULL or destroyed_at > ?", week_end]) \
+              .where(["ticket_queues.destroyed_at IS NULL or ticket_queues.destroyed_at > ?", week_end]) \
               .group("ticket_queues.queue, tickets.project_id") \
               .select("ticket_queues.queue, tickets.project_id, COUNT(ticket_queues.id) AS count")
 
