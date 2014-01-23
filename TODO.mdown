@@ -10,7 +10,6 @@
    - Disable buttons when working
 
  - **Prune**
-   - Replace the use of native tickets in the Project Dashboard view
    - Houston.config.severities
    - Rename `Project#color` to `Project#color_name` and `Project#color_value` to `Project#color`
    - Replace unfuddle dump with reporter_email

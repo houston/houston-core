@@ -17,7 +17,6 @@ Houston::Application.routes.draw do
   # Dashboard
   
   match "dashboard" => "dashboard#index", :via => :get, :as => :dashboard
-  match "dasbhoard/:slug" => "project_dashboard#index", :via => :get, :as => :project_dashboard
   
   
   
