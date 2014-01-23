@@ -4,7 +4,7 @@ class Role < ActiveRecord::Base
   belongs_to :project
   
   validates :user_id, :presence => true
-  validates :project_id, :presence => true
+  validates :project, :presence => true
   validates :name, :presence => true, :inclusion => {:in => Houston.config.project_roles, :message => "\"%{value}\" is unknown. It must be #{Houston.config.project_roles.to_sentence(last_word_connector: ", or ")}"}
   
   

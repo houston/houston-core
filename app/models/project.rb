@@ -15,7 +15,8 @@ class Project < ActiveRecord::Base
   serialize :extended_attributes, ActiveRecord::Coders::Hstore
   serialize :view_options, ActiveRecord::Coders::Hstore
   
-  accepts_nested_attributes_for :roles, :allow_destroy => true # <-- !todo: authorized access only
+  accepts_nested_attributes_for :roles, :allow_destroy => true, # <-- !todo: authorized access only
+    reject_if: proc { |attrs| attrs[:user_id].blank? or attrs[:name].blank? }
   
   
   
