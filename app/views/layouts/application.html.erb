@@ -49,11 +49,13 @@
             <ul class="nav">
               
               <%# Dashboards -%>
+              <% if Rails.env.development? %>
               <% projects = Project.unretired.select { |project| can?(:read, project) } -%>
               <%= render_menu "Dashboard", [
                   MenuItem.new("All Projects", main_app.dashboard_path),
                   MenuItemDivider.new ] +
                   projects.map { |project| ProjectMenuItem.new(project, main_app.project_dashboard_path(project)) } if projects.any? -%>
+              <% end %>
               
               <%# Kanban -%>
               <% projects = Project.unretired.select { |project| can?(:read, project.tickets.build) } -%>
