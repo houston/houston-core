@@ -10,6 +10,13 @@ module Houston
     FIELD_USED_FOR_LDAP_LOGIN = "samaccountname"
     INSTRUCTIONS_FOR_LOGIN = "You can log in with your CPH domain account"
     TICKET_TYPES = %w{Feature Bug Chore Refactor Tweak}
+    TICKET_TYPE_COLORS = {
+      nil           => "EFEFEF",
+      "Feature"     => "3FC1AA",
+      "Enhancement" => "98C221",
+      "Bug"         => "D65B17",
+      "Chore"       => "AAAAAA"
+    }
     TICKET_LABELS_FOR_MEMBERS = [
       'Admin',
       'Global',

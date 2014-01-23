@@ -7,7 +7,8 @@ class UsersController < ApplicationController
     @title = "Team"
     @users = User.unretired
     
-    severities_colors = Houston.config.severities
+    colors = Houston::TMI::TICKET_TYPE_COLORS
+    identify_type_proc = Houston.config.ticket_tracker_configuration(:unfuddle)[:identify_type]
     
     tickets = UnfuddleDump.load!
     @last_updated = UnfuddleDump.last_updated
@@ -22,19 +23,18 @@ class UsersController < ApplicationController
       fixed_tickets = tickets_for_user.select { |ticket| ticket["resolution"] == "fixed" }.length
       percent = 100.0 / tickets_for_user.length
       
-      tickets_by_severity = Hash[severities_colors.values.zip([0] * severities_colors.values.length)]
+      tickets_by_type = Hash[colors.values.zip([0] * colors.values.length)]
       tickets_for_user.each do |ticket|
-        severity = ticket["severity"]
-        severity = nil if severity.blank?
-        color = severities_colors[severity]
-        tickets_by_severity[color] += 1 if tickets_by_severity.key?(color)
+        type = identify_type_proc.call(OpenStruct.new(ticket))
+        color = colors.fetch(type, "EFEFEF")
+        tickets_by_type[color] += 1 if tickets_by_type.key?(color)
       end
       
       @ticket_stats_by_user[user] = {
         tickets: tickets_for_user.length,
         invalid_tickets: invalid_tickets * percent,
         fixed_tickets: fixed_tickets * percent,
-        tickets_by_severity: tickets_by_severity
+        tickets_by_severity: tickets_by_type
       }
     end
   end
