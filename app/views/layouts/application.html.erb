@@ -55,10 +55,12 @@
                   MenuItemDivider.new ] +
                   projects.map { |project| ProjectMenuItem.new(project, main_app.project_dashboard_path(project)) } if projects.any? -%>
               
-              <%# Releases -%>
-              <% projects = Project.unretired.select { |project| can?(:read, project.releases.build) } -%>
-              <%= render_menu "Releases",
-                  projects.map { |project| ProjectMenuItem.new(project, main_app.releases_path(project)) } -%>
+              <%# Kanban -%>
+              <% projects = Project.unretired.select { |project| can?(:read, project.tickets.build) } -%>
+              <%= render_menu "Kanban", [
+                  MenuItem.new("All Projects", main_app.kanban_path),
+                  MenuItemDivider.new ] +
+                  projects.map { |project| ProjectMenuItem.new(project, main_app.project_kanban_path(project)) } if projects.any? -%>
               
               <%# Testing Reports -%>
               <% projects = Project.unretired.select { |project| can?(:read, project.testing_notes.build) } -%>
@@ -74,12 +76,10 @@
                 <%= render_menu mod.name.humanize, menu_items -%>
               <% end -%>
               
-              <%# Kanban -%>
-              <% projects = Project.unretired.select { |project| can?(:read, project.tickets.build) } -%>
-              <%= render_menu "Kanban", [
-                  MenuItem.new("All Projects", main_app.kanban_path),
-                  MenuItemDivider.new ] +
-                  projects.map { |project| ProjectMenuItem.new(project, main_app.project_kanban_path(project)) } if projects.any? -%>
+              <%# Releases -%>
+              <% projects = Project.unretired.select { |project| can?(:read, project.releases.build) } -%>
+              <%= render_menu "Releases",
+                  projects.map { |project| ProjectMenuItem.new(project, main_app.releases_path(project)) } -%>
               
               
               
