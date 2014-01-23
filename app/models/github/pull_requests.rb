@@ -38,20 +38,8 @@ module Github
         
         # c.f. http://developer.github.com/v3/repos/#list-organization-repositories
         repos = client.org_repos Houston::TMI::NAME_OF_GITHUB_ORGANIZATION
-        
-        repos.extend ParallelEnumerable
-        # @results = Hash[repos.parallel_map { |repo| [repo, client.pull_requests(repo.full_name)] }]
+        repos = repos.parallel if Houston.config.parallelize?
         @results = Hash[repos.map { |repo| [repo, client.pull_requests(repo.full_name)] }]
-      end
-    end
-    
-    def map_results!(queue)
-      {}.tap do |results|
-        until queue.empty?
-          pair = queue.pop
-          next if pair[:pull_requests].empty?
-          results[pair[:repo]] = pair[:pull_requests]
-        end
       end
     end
     

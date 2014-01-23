@@ -1,17 +1,31 @@
-module ParallelEnumerable
+module Enumerable
   
-  def parallel_each
-    map do |item|
+  def parallel
+    ParallelEnumerable.new(self)
+  end
+  
+end
+
+class ParallelEnumerable
+  
+  def initialize(enumerable)
+    @enumerable = enumerable
+  end
+  
+  
+  
+  def each
+    enumerable.map do |item|
       Thread.new do
         yield item
       end
     end.each(&:join)
   end
   
-  def parallel_map
+  def map
     queue = Queue.new
     
-    parallel_each do |item|
+    each do |item|
       queue << yield(item)
     end
     
@@ -19,5 +33,18 @@ module ParallelEnumerable
       results.push queue.pop until queue.empty?
     end
   end
+  
+  
+  
+  def method_missing(method_name, *args, &block)
+    return super unless enumerable.respond_to?(method_name)
+    
+    $stderr.puts "[parallel-enumerable] ##{method_name} is not defined"
+    enumerable.public_send(method_name, *args, &block)
+  end
+  
+private
+  
+  attr_reader :enumerable
   
 end

@@ -45,6 +45,15 @@ module Houston
       Rails.root.join('config', 'keypair.pem')
     end
     
+    def parallelization(*args)
+      @parallelization = args.first if args.any?
+      @parallelization ||= :off
+    end
+    
+    def parallelize?
+      parallelization == :on
+    end
+    
     def smtp(&block)
       @smtp = HashDsl.hash_from_block(block) if block_given?
       @smtp ||= {}

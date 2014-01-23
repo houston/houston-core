@@ -12,6 +12,12 @@ Houston.config do
   # This is the passphrase Houston will use to encrypt and decrypt sensitive data
   passphrase "SECRET"
   
+  # Parallelize requests.
+  # Improves performance when Houston has to make several requests at once
+  # to a remote API. Some firewalls might see this as suspicious activity.
+  # In those environments, comment the following line out.
+  parallelization :on
+  
   # Configuration for Email
   smtp do
     address "10.10.10.10"
