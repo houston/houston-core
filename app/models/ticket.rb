@@ -96,6 +96,10 @@ class Ticket < ActiveRecord::Base
       where(arel_table[:closed_at].not_eq(nil))
     end
     
+    def closed_on(date)
+      where(closed_at: date.to_time.beginning_of_day..date.to_time.end_of_day)
+    end
+    
     def deployed
       where(arel_table[:deployment].not_eq(nil))
     end

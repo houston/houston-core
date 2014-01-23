@@ -21,59 +21,13 @@ class DailyReport
   end
   
   def any_news?
-    queue_changes.any? || new_exceptions.any?
+    tickets_closed.any? || new_exceptions.any?
   end
   
   
-  
-  def wip
-    return @wip if defined?(@wip)
-    @wip = []
-    @wip << [exceptions.count, "open exceptions", project.error_tracker.project_url] if exceptions.count > 0
-    @wip << [unreleased_commits.count, "unreleased commits", commit_range_url] if unreleased_commits.count > 0
-    @wip
-  end
-  
-  
-  
-  def unreleased_commits
-    @unreleased_commits ||= find_unreleased_commits!
-  end
-  
-  def find_unreleased_commits!
-    last_release_to_staging = project.releases.to_environment("Staging").first
-    last_release_to_production = project.releases.to_environment("Production").first
-    return [] unless last_release_to_staging && last_release_to_production
-    
-    staging_head = last_release_to_staging.commit1
-    production_head = last_release_to_production.commit1
-    project.repo.commits_between(production_head, staging_head)
-  rescue Houston::Adapters::VersionControl::CommitNotFound
-    []
-  end
-  
-  def commit_range_url
-    return nil unless project.repo.respond_to?(:commit_range_url)
-    return nil unless unreleased_commits.any?
-    project.repo.commit_range_url("#{unreleased_commits.first.sha}^", unreleased_commits.last.sha)
-  end
-  
-  
-  
-  def queue_changes
-    @queue_changes ||= find_queue_changes!
-  end
-  
-  def tickets_created
-    @tickets_created ||= queue_changes.select { |change| change[:queue_before] == "Created" }
-  end
   
   def tickets_closed
-    @tickets_closed ||= queue_changes.select { |change| change[:queue_after] == "Closed" }
-  end
-  
-  def tickets_with_queue_changes
-    @tickets_with_queue_changes ||= queue_changes.select { |change| change[:queue_before] != "Created" && change[:queue_after] != "Closed" }
+    @tickets_closed ||= project.tickets.closed_on(date).order(:resolution)
   end
   
   
@@ -107,83 +61,6 @@ class DailyReport
   
   def self.deliver_all!(date=Date.today-1)
     reports_with_news_and_recipients(date).map(&:deliver!)
-  end
-  
-  
-  
-private
-  
-  
-  
-  def find_queue_changes!
-    ticket_id_and_queue_before_timespan = select_ticket_id_and_latest_queue_before(timespan)
-    ticket_id_and_queue_after_timespan = select_ticket_id_and_earliest_queue_after(timespan)
-    queue_names = Hash[KanbanQueue.all.map { |queue| [queue.slug, queue.name] }]
-    
-    queue_changes = []
-    
-    ticket_id_and_queue_before_timespan.each do |hash|
-      ticket_id = hash["ticket_id"].to_i
-      queue = queue_names.fetch(hash["queue"], "Created")
-      
-      queue_changes.push(ticket_id: ticket_id, queue_before: queue, queue_after: "Closed")
-    end
-    
-    ticket_id_and_queue_after_timespan.each do |hash|
-      ticket_id = hash["ticket_id"].to_i
-      queue = queue_names.fetch(hash["queue"], "Closed")
-      
-      queue_change = queue_changes.detect { |queue_change| queue_change[:ticket_id] == ticket_id }
-      if queue_change
-        queue_change[:queue_after] = queue
-        queue_changes.delete(queue_change) if queue_change[:queue_before] == queue_change[:queue_after]
-      else
-        queue_changes.push(ticket_id: ticket_id, queue_before: "Created", queue_after: queue)
-      end
-    end
-    
-    remap_ticket_id_to_ticket(sort_by_queue_order(queue_changes))
-  end
-  
-  
-  
-  def select_ticket_id_and_latest_queue_before(time)
-    time = time.begin if time.is_a?(Range)
-    select_ticket_id_and_queue ticket_queues.at(time).order("ticket_id, ticket_queues.created_at DESC")
-  end
-  
-  def select_ticket_id_and_earliest_queue_after(time)
-    time = time.end if time.is_a?(Range)
-    select_ticket_id_and_queue ticket_queues.at(time).order("ticket_id, ticket_queues.created_at ASC")
-  end
-  
-  def ticket_queues
-    TicketQueue.for_project(project).for_kanban
-  end
-  
-  def select_ticket_id_and_queue(scope)
-    TicketQueue.connection.select_all(scope.select("DISTINCT ON (ticket_id) queue, ticket_id").to_sql)
-  end
-  
-  
-  
-  def sort_by_queue_order(queue_changes)
-    queue_positions = Hash[KanbanQueue.all.each_with_index.map { |queue, i| [queue.name, i] }]
-    queue_positions["Created"] = -1
-    queue_positions["Closed"] = 9999
-    queue_changes.sort_by { |change| [
-      queue_positions[change[:queue_before]],
-      queue_positions[change[:queue_after]] ] }
-  end
-  
-  def remap_ticket_id_to_ticket(queue_changes)
-    ticket_ids = queue_changes.map { |queue_change| queue_change[:ticket_id] }
-    tickets = project.tickets.where(id: ticket_ids)
-    queue_changes.each do |queue_change|
-      ticket_id = queue_change.delete(:ticket_id)
-      ticket = tickets.detect { |ticket| ticket.id == ticket_id }
-      queue_change[:ticket] = ticket
-    end
   end
   
   
