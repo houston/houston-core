@@ -50,11 +50,15 @@ module Houston
           end
           
           def all_tickets
-            find_tickets!
+            Unfuddle.with_config(timeout: 300) do
+              find_tickets!
+            end
           end
           
           def open_tickets
-            find_tickets!(status: neq(:closed), resolution: 0)
+            Unfuddle.with_config(timeout: 300) do
+              find_tickets!(status: neq(:closed), resolution: 0)
+            end
           end
           
           def project_url

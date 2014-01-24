@@ -1,12 +1,12 @@
 GIT
   remote: git://github.com/boblail/unfuddle.git
-  revision: db9739aee9f32adcb72f85892ad6c221e333890a
+  revision: cf300d071b282c37add03aabc06022b5b7f84d50
   branch: master
   specs:
     unfuddle (0.1.0)
       activesupport
       builder
-      faraday
+      faraday (~> 0.8.8)
 
 GIT
   remote: git://github.com/houstonmc/houston-scheduler.git
@@ -121,7 +121,7 @@ GEM
     docile (1.1.1)
     erubis (2.7.0)
     execjs (2.0.2)
-    faraday (0.8.8)
+    faraday (0.8.9)
       multipart-post (~> 1.2.0)
     faraday-http-cache (0.3.0)
       activesupport (>= 3.0)
