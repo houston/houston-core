@@ -8,13 +8,7 @@ class WeeklyReport
       @weeks_of_history = weeks_of_history
       @projects = projects
       
-      color_by_type = {
-        nil        => "EFEFEF",
-        "Chore"    => "98C221",
-        "Feature"  => "3FC1AA",
-        "Tweak"    => "EBD94B", # "FDDD32",
-        "Bug"      => "D65B17"
-      }
+      color_by_type = Houston::TMI::TICKET_TYPE_COLORS
       
       @arrivals_by_week_by_project = {}
       @departures_by_week_by_project = {}
