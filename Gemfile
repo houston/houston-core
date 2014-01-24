@@ -24,15 +24,16 @@ gem 'hpricot'
 gem 'nokogiri'
 gem 'oauth-plugin', '~> 0.5.1'
 gem 'octokit' # for adapting to GitHub Issues
+gem 'oj'
 gem 'premailer' # for inlining CSS in HTML emails
 gem 'progressbar' # for long migrations
 gem 'rugged', '0.17.0.b7' # for speaking to Git
 gem 'simplecov'
 gem 'strongbox' # for encrypting user credentials
 gem 'sucker_punch' # for Airbrake
+gem 'unfuddle', github: 'boblail/unfuddle', branch: 'master'
 gem 'whenever' # a DSL for writing CRON jobs
 gem 'yajl-ruby', :require => 'yajl/json_gem'
-gem 'oj'
 
 gem 'backbone-rails'
 gem 'd3js-rails'

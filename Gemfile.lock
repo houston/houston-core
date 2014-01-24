@@ -1,6 +1,16 @@
 GIT
+  remote: git://github.com/boblail/unfuddle.git
+  revision: db9739aee9f32adcb72f85892ad6c221e333890a
+  branch: master
+  specs:
+    unfuddle (0.1.0)
+      activesupport
+      builder
+      faraday
+
+GIT
   remote: git://github.com/houstonmc/houston-scheduler.git
-  revision: 5a9336963f61051cbfe212feee9d5c6e3960f17d
+  revision: b6c6fa2c11f76cfafa5c351f83e2e94e93fcc9f3
   branch: master
   specs:
     houston-scheduler (0.0.1)
@@ -345,6 +355,7 @@ DEPENDENCIES
   turn
   twitter-bootstrap-rails
   uglifier (>= 1.0.3)
+  unfuddle!
   unicorn-rails
   whenever
   yajl-ruby
