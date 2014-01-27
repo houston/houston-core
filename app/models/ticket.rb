@@ -273,7 +273,7 @@ class Ticket < ActiveRecord::Base
     remote_ticket.close! if remote_ticket
     
     update_column :closed_at, Time.now
-    set_queue! nil
+    exit_queues!
     self
   end
   
