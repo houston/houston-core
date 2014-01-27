@@ -16,7 +16,8 @@ class window.NewTicketView extends Backbone.View
  - 
   '''
   
-  TYPES: ["[bug]", "[feature]", "[chore]", "[refactor]"]
+  # !todo: get these from Houston::TMI::TICKET_TYPES
+  TYPES: ["[bug]", "[feature]", "[chore]", "[enhancement]"]
   
   events:
     'click #reset_ticket': 'resetNewTicket'
