@@ -37,7 +37,7 @@ gem 'yajl-ruby', :require => 'yajl/json_gem'
 
 gem 'backbone-rails'
 gem 'd3js-rails'
-gem 'font-awesome-rails'
+gem 'font-awesome-rails', '~> 3.2.1'
 gem 'handlebars_assets', '0.8.2'
 gem 'jquery-rails'
 gem 'sass-rails',   '~> 3.2.3' # Sass is required in production (see layouts/email.html.erb)
