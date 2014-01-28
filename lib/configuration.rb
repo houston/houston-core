@@ -88,6 +88,18 @@ module Houston
       ["Follower"] + (@project_roles ||= [])
     end
     
+    def ticket_types(*args)
+      if args.any?
+        @ticket_types = args.first
+        @ticket_types.default = "EFEFEF"
+      end
+      @ticket_types.keys
+    end
+    
+    def ticket_colors
+      @ticket_types
+    end
+    
     
     
     def identify_committers(&block)

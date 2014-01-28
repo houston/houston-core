@@ -7,7 +7,7 @@ class UsersController < ApplicationController
     @title = "Team"
     @users = User.unretired
     
-    colors = Houston::TMI::TICKET_TYPE_COLORS
+    colors = Houston.config.ticket_colors
     identify_type_proc = Houston.config.ticket_tracker_configuration(:unfuddle)[:identify_type]
     
     tickets = UnfuddleDump.load!

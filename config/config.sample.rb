@@ -49,6 +49,22 @@ Houston.config do
   # These are the environments you deploy projects to
   environments "Production", "Staging"
   
+  # These are the tags available for each change in Release Notes
+  change_tags( {name: "New Feature", as: "feature", color: "8DB500"},
+               {name: "Improvement", as: "improvement", color: "3383A8", aliases: %w{enhancement}},
+               {name: "Bugfix", as: "fix", color: "C64537", aliases: %w{bugfix}},
+               {name: "Refactor", as: "refactor", color: "909090"},
+               {name: "Testfix", as: "testfix", color: "909090"},
+               {name: "CI Fix", as: "ci", color: "909090", aliases: %w{cifix ciskip}} )
+  
+  # 
+  ticket_types({
+    "Chore"       => "909090",
+    "Feature"     => "8DB500",
+    "Enhancement" => "3383A8", # "FDDD32",
+    "Bug"         => "C64537"
+  })
+  
   
   
   # Roles:
@@ -237,16 +253,6 @@ Houston.config do
   # one module, configure local paths for bundler. See:
   # http://ryanbigg.com/2013/08/bundler-local-paths/
   use :scheduler, :github => "houstonmc/houston-scheduler", :branch => "master"
-  
-  
-  
-  # These are the tags available for each change in Release Notes
-  change_tags( {name: "New Feature", as: "feature", color: "8DB500"},
-               {name: "Improvement", as: "improvement", color: "3383A8", aliases: %w{enhancement}},
-               {name: "Bugfix", as: "fix", color: "C64537", aliases: %w{bugfix}},
-               {name: "Refactor", as: "refactor", color: "909090"},
-               {name: "Testfix", as: "testfix", color: "909090"},
-               {name: "CI Fix", as: "ci", color: "909090", aliases: %w{cifix ciskip}} )
   
   
   

@@ -16,7 +16,7 @@ class window.NewTicketView extends Backbone.View
  - 
   '''
   
-  # !todo: get these from Houston::TMI::TICKET_TYPES
+  # !todo: get these from Houston.config.ticket_types
   TYPES: ["[bug]", "[feature]", "[chore]", "[enhancement]"]
   
   events:
