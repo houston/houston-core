@@ -10,14 +10,3 @@
   -moz-border-radius: 3px;
   border-radius: 3px;
 }
-
-.ticket-type-icon {
-  display: block;
-  height: 48px;
-  width: 48px;
-  
-  &.ticket-type-feature { background-image: url('/images/heading-idea-48.png'); }
-  &.ticket-type-enhancement { background-image: url('/images/heading-ribbon-48.png'); }
-  &.ticket-type-bug { background-image: url('/images/heading-bug-48.png'); }
-  &.ticket-type-chore { background-image: url('/images/heading-wrench-48.png'); }
-}
