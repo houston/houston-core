@@ -1,0 +1,57 @@
+.project-banner {
+  padding-bottom: 0;
+  min-height: 58px;
+  
+  a.project-banner-btn {
+    color: #333;
+    padding: 6px;
+    display: block;
+    float: right;
+    white-space: nowrap;
+    cursor: pointer;
+    margin-right: 8px;
+    position: relative;
+    top: -4px;
+
+    i {
+      display: inline-block;
+      font-size: 18px;
+      line-height: 23px;
+      vertical-align: middle;
+    }
+
+    &:hover {
+      text-decoration: none;
+      background: rgba(0, 0, 0, 0.1);
+      border-radius: 6px;
+      color: white;
+    }
+  }
+}
+
+#sync_tickets_button {
+  
+  &.working {
+    i {
+      -moz-animation: spin 1.5s infinite linear;
+      -o-animation: spin 1.5s infinite linear;
+      -webkit-animation: spin 1.5s infinite linear;
+      animation: spin 1.5s infinite linear;
+    }
+  }
+  
+  .ticket-tracker-last-sync { 
+    display: inline-block;
+    .time-date { display: block; font-size:  9px; line-height: 1em; font-weight: 400; }
+    .time-time { display: block; font-size: 14px; line-height: 1em; font-weight: 200; }
+  }
+}
+
+#new_ticket_button {
+  
+  span { 
+    display: inline-block;
+    font-size: 11px;
+    line-height: 11px;
+  }
+}

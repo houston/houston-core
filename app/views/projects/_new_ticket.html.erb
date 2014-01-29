@@ -1,0 +1,8 @@
+<%= link_to main_app.new_ticket_path(project), id: "new_ticket_button", class: "project-banner-btn" do %>
+  <i class="icon-tag"></i>
+  
+  <span>
+    New<br />
+    Ticket
+  </span>
+<% end if can?(:create, project.tickets.build) %>
