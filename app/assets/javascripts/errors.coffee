@@ -6,6 +6,8 @@ class window.Errors
         @missingCredentials = true
       else if response.getResponseHeader('X-Credentials') == 'Invalid Credentials'
         @invalidCredentials = true
+      else if response.getResponseHeader('X-Credentials') == 'Oauth'
+        @oauthLocation = response.getResponseHeader('Location')
       else
         message = response.responseText ? "You are not authorized"
         @errors = {base: [message]}

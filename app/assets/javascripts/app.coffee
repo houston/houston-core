@@ -74,6 +74,9 @@ window.App =
       $body.toggleClass('full-screen')
       kanbanObj.setKanbanHeight() if window.kanbanObj
   
+  oauth: (url)->
+    window.location = url
+  
   promptForCredentialsTo: (service)->
     html = """
     <div class="modal hide fade">

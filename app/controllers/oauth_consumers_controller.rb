@@ -33,7 +33,7 @@ protected
   # params[:id] holds the service name so you could use this to redirect to various parts
   # of your application depending on what service you're connecting to.
   def go_back
-    redirect_to pull_requests_url
+    redirect_to session.fetch("user.return_to", pull_requests_url)
   end
 
   # The plugin requires logged_in? to return true or false if the user is logged in. Uncomment and

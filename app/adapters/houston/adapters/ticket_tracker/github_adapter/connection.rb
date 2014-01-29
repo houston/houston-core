@@ -86,19 +86,16 @@ module Houston
           
           
           def as_user(user, &block)
-            credentials = user.credentials.for("Github")
-            login, password = credentials.login, credentials.password.decrypt(Houston.config.passphrase)
-            
             current_client = @client
             begin
-              @client = Octokit::Client.new(login: login, password: password)
+              token = user.consumer_tokens.first
+              # !todo: use a more generic exception?
+              raise Github::Unauthorized unless token
+              @client = Octokit::Client.new(access_token: token.token)
               yield
             ensure
               @client = current_client
             end
-            
-          rescue Octokit::Unauthorized
-            raise UserCredentials::InvalidCredentials
           end
           
           

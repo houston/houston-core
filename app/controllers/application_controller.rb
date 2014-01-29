@@ -31,6 +31,15 @@ class ApplicationController < ActionController::Base
     render text: exception.message, status: 401
   end
   
+  rescue_from Github::Unauthorized do |exception|
+    session["user.return_to"] = request.referer
+    if request.xhr?
+      head 401, "X-Credentials" => "Oauth", "Location" => oauth_consumer_path(id: "github")
+    else
+      redirect_to oauth_consumer_path(id: "github")
+    end
+  end
+  
   
   
   def require_login
