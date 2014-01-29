@@ -1,7 +1,5 @@
 <%= render partial: "projects/header", locals: {project: @project, subtitle: "Testing Report"} %>
 
-<%= render "projects/ticket_tracker_refresh" %>
-
 <% if @tickets.any? %>
   <div class="nomargin">
     <table class="table table-sortable table-striped testing-report-table testing-reports-projects">

@@ -46,12 +46,20 @@ module ApplicationHelper
   
   
   def format_time(time)
-    return "Never" if time.nil?
-    if time.to_date == Date.today
-      time.strftime("%l:%M %p")
+    if time.nil?
+      date, time = ["", "Never"]
+    elsif time.to_date == Date.today
+      date, time = ["Today", time.strftime("%l:%M %p")]
+    elsif time.to_date == Date.today - 1
+      date, time = ["Yesterday", time.strftime("%l:%M %p")]
     else
-      time.strftime("%b %e, %l:%M %p")
+      date, time = [time.strftime("%b %e"), time.strftime("%l:%M %p")]
     end
+    
+    <<-HTML.html_safe
+    <span class="time-date">#{date}</span>
+    <span class="time-time">#{time.gsub(" AM", "a").gsub(" PM", "p")}</span>
+    HTML
   end
   
   

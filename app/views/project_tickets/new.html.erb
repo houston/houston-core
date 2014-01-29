@@ -1,10 +1,4 @@
-<% content_for :title do %>
-<h1 class="project-banner <%= @project.color %>">
-  <small>New Ticket for</small> <%= @project.name %> <small>
-</h1>
-<% end %>
-
-<%= render "projects/ticket_tracker_refresh" %>
+<%= render partial: "projects/header", locals: {project: @project, subtitle: "New Ticket for"} %>
 
 <form id="new_ticket_view" data-mode="type">
   <div class="sequence-new-ticket-wrap">

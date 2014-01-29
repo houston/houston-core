@@ -1,6 +1,8 @@
 <% content_for :title do %>
-<h1 class="project-banner <%= @project.color %> space-below">
+<h1 class="project-banner <%= project.color %> space-below">
   <small><%= subtitle %></small>
   <%= project.name %>
+  
+  <%= render partial: "projects/ticket_tracker_refresh", locals: {project: project} %>
 </h1>
 <% end %>

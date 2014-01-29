@@ -3,14 +3,16 @@
   padding: 6px;
   display: block;
   position: absolute;
-  top: 60px;
-  right: 48px;
+  top: 14px;
+  right: 36px;
   white-space: nowrap;
   cursor: pointer;
   
   i {
     display: inline-block;
-    padding: 3px;
+    font-size: 18px;
+    line-height: 23px;
+    vertical-align: middle;
   }
   
   &.working {
@@ -28,6 +30,7 @@
   
   .ticket-tracker-last-sync { 
     display: inline-block;
-    font-weight: 200;
+    .time-date { display: block; font-size:  9px; line-height: 1em; font-weight: 400; }
+    .time-time { display: block; font-size: 14px; line-height: 1em; font-weight: 200; }
   }
 }

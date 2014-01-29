@@ -1,10 +1,4 @@
-<% content_for :title do %>
-<h1 class="project-banner <%= @project.color %>">
-  <small>Kanban for</small> <%= @project.name %> <small>
-</h1>
-<% end %>
-
-<%= render "projects/ticket_tracker_refresh" %>
+<%= render partial: "projects/header", locals: {project: @project, subtitle: "Kanban for"} %>
 
 <%= render partial: "kanban/kanban", locals: {projects: [@project]} %>
 
