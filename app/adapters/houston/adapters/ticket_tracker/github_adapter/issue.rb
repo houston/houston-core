@@ -18,11 +18,11 @@ module Houston
             @resolution       = ""
             @milestone_id     = nil
             @type             = get_type
-            @created_at       = Time.parse(attributes["created_at"]) if attributes["created_at"]
-            @closed_at        = Time.parse(attributes["closed_at"]) if attributes["closed_at"]
+            @created_at       = attributes["created_at"] if attributes["created_at"]
+            @closed_at        = attributes["closed_at"] if attributes["closed_at"]
             
             # optional
-            @tags             = attributes.fetch("labels", []).map(&method(:tag_from_label))
+            @tags             = get_tags
           end
           
           attr_reader :raw_attributes,
@@ -95,6 +95,12 @@ module Houston
           def get_type
             identify_type_proc = github.config[:identify_type]
             identify_type_proc.call(self) if identify_type_proc
+          end
+          
+          def get_tags
+            identify_tags_proc = github.config[:identify_tags]
+            return Array(attributes["labels"]).map(&method(:tag_from_label)) unless identify_tags_proc
+            identify_tags_proc.call(self)
           end
           
           def tag_from_label(label)
