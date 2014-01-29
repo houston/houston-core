@@ -17,7 +17,6 @@
 //= require jquery.tablesorter.js
 //= require jquery.autosize.js
 //= require mousetrap
-//= require highcharts.src.js
 //= require twitter/bootstrap
 //= require freight_train
 //= require lail/delayed_action

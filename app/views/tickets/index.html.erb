@@ -1,9 +1,15 @@
-<h1>Tickets by Reporter</h1>
+<% content_for :title do %>
+<h1 class="project-banner space-below">
+  Unfuddle Ticket Experiment
+</h1>
+<% end %>
+
+<h2>Tickets by Reporter</h2>
 <p>as of <b><%= @last_updated.strftime('%B %e %l:%m %p') %></b></p>
 
 <div id="tickets_by_reporter" style="min-width: 720px; height: 660px; margin: 0 auto"></div>
 
-<h1>Tickets by Project</h1>
+<h2>Tickets by Project</h2>
 <p>as of <b><%= @last_updated.strftime('%B %e %l:%m %p') %></b></p>
 
 <div id="tickets_by_project" style="min-width: 720px; height: 660px; margin: 0 auto"></div>
@@ -29,6 +35,7 @@
 
 
 <% content_for :javascripts do %>
+  <script src="/highcharts.src.js" type="text/javascript"></script>
   <script type="text/javascript">
     $(function() {
       
