@@ -108,6 +108,10 @@ class Ticket < ActiveRecord::Base
       where(deployment: environment)
     end
     
+    def unreleased
+      where(arel_table[:deployment].not_eq("Production"))
+    end
+    
   end
   
   
