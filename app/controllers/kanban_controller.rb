@@ -4,7 +4,7 @@ class KanbanController < ApplicationController
   def index
     @title = "Kanban"
     
-    @projects = Project.unretired
+    @projects = followed_projects
   end
   
   

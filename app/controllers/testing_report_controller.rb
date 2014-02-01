@@ -6,7 +6,7 @@ class TestingReportController < ApplicationController
   def index
     @title = "Testing Report"
     
-    @projects = Project.unretired.select { |project| can?(:read, project.testing_notes.build) }
+    @projects = followed_projects.select { |project| can?(:read, project.testing_notes.build) }
     @tickets = Ticket.for_projects @projects
   end
   

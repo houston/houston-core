@@ -33,7 +33,7 @@ class Role < ActiveRecord::Base
     end
     
     def to_projects
-      Project.scoped.merge(scoped).readonly(false)
+      Project.joins(:roles).merge(scoped).readonly(false)
     end
     
     def for_user(user_or_id)

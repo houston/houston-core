@@ -64,6 +64,12 @@ module ApplicationHelper
   
   
   
+  def follows?(project)
+    followed_projects.member?(project)
+  end
+  
+  
+  
 end
 
 

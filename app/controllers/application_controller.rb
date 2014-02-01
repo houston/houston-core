@@ -99,6 +99,15 @@ class ApplicationController < ActionController::Base
   
   
   
+  helper_method :followed_projects
+  def followed_projects
+    return @followed_projects if defined?(@followed_projects)
+    return @followed_projects = [] unless current_user
+    @followed_projects = current_user.roles.to_projects.unretired.to_a
+  end
+  
+  
+  
   def no_cache
     response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
     response.headers["Pragma"] = "no-cache"

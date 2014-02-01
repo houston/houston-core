@@ -74,6 +74,10 @@ class User < ActiveRecord::Base
     super || []
   end
   
+  def follows?(project)
+    roles.to_projects.member?(project)
+  end
+  
   
   
   # LDAP Overrides

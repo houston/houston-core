@@ -49,14 +49,14 @@
             <ul class="nav">
               
               <%# Kanban -%>
-              <% projects = Project.unretired.select { |project| can?(:read, project.tickets.build) } -%>
+              <% projects = followed_projects.select { |project| can?(:read, project.tickets.build) } -%>
               <%= render_menu "Kanban", [
                   MenuItem.new("All Projects", main_app.kanban_path),
                   MenuItemDivider.new ] +
                   projects.map { |project| ProjectMenuItem.new(project, main_app.project_kanban_path(project)) } if projects.any? -%>
               
               <%# Testing Reports -%>
-              <% projects = Project.unretired.select { |project| can?(:read, project.testing_notes.build) } -%>
+              <% projects = followed_projects.select { |project| can?(:read, project.testing_notes.build) } -%>
               <%= render_menu "Testing", [
                   MenuItem.new("All Projects", main_app.testing_report_path),
                   MenuItemDivider.new ] +
@@ -65,12 +65,12 @@
               <%# Modules -%>
               <% Houston.config.modules.each do |mod| -%>
                 <% next unless mod.namespace.respond_to?(:menu_items_for) -%>
-                <% menu_items = mod.namespace.menu_items_for(projects: Project.unretired, ability: current_ability, user: current_user) -%>
+                <% menu_items = mod.namespace.menu_items_for(projects: followed_projects, ability: current_ability, user: current_user) -%>
                 <%= render_menu mod.name.humanize, menu_items -%>
               <% end -%>
               
               <%# Releases -%>
-              <% projects = Project.unretired.select { |project| can?(:read, project.releases.build) } -%>
+              <% projects = followed_projects.select { |project| can?(:read, project.releases.build) } -%>
               <%= render_menu "Releases",
                   projects.map { |project| ProjectMenuItem.new(project, main_app.releases_path(project)) } -%>
               
