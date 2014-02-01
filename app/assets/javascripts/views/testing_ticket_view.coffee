@@ -19,7 +19,7 @@ class window.TestingTicketView extends Backbone.View
     @renderNewTestingNote = HandlebarsTemplates['testing_notes/new']
     Handlebars.registerPartial 'testerVerdict', @renderTesterVerdict
     
-    @numColumns = window.testers.length
+    @numColumns = window.testers.length + 1
     @viewInEdit = null
   
   render: ->
@@ -75,8 +75,9 @@ class window.TestingTicketView extends Backbone.View
   
   renderTestingNotes: ->
     id = "ticket_#{@ticket.get('id')}_testing_notes"
-    $tr = $ @renderTicketDescription(@ticket.toJSON())
-    $tr.find('.white-space').attr('colspan', @numColumns)
+    ticket = @ticket.toJSON()
+    ticket.colspan = @numColumns
+    $tr = $ @renderTicketDescription(ticket)
     
     @$el.after $tr
     
