@@ -41,6 +41,14 @@ class Release < ActiveRecord::Base
     where(arel_table[:created_at].lt(time))
   end
   
+  def self.latest
+    first
+  end
+  
+  def self.earliest
+    last
+  end
+  
   
   
   def can_read_commits?

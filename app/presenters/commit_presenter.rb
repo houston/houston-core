@@ -20,7 +20,7 @@ class CommitPresenter
         name: commit.committer,
         email: commit.committer_email } }
     
-    release = commit.releases.first
+    release = commit.releases.earliest
     if release
       # NB: we want to sort these with TesterNotes
       #     by the field 'createdAt', so while this
