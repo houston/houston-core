@@ -45,7 +45,7 @@ class TicketPresenter
       ticket_to_json(ticket).merge({
         minPassingVerdicts: ticket.min_passing_verdicts,
         testingNotes: TestingNotePresenter.new(ticket.testing_notes).as_json,
-        commits: CommitPresenter.new(ticket.commits).as_json,
+        commits: CommitPresenter.new(ticket.commits.released).as_json,
         releases: ReleasePresenter.new(ticket.releases).as_json,
         lastReleaseAt: ticket.last_release_at,
         description: mdown(ticket.description) })

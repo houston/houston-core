@@ -25,6 +25,11 @@ class Commit < ActiveRecord::Base
     where(unreachable: false)
   end
   
+  def self.released
+    commits_releases = Arel::Table.new("commits_releases")
+    where(arel_table[:id].in(commits_releases.project(:commit_id)))
+  end
+  
   
   
   def summary
