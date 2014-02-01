@@ -3,24 +3,6 @@
     $(function() {
       
       var tickets = new Tickets(<%= raw tickets.to_json %>);
-      var $refresh = $('#refresh_testing_report');
-      
-      $refresh.click(function(e) {
-        e.preventDefault();
-        
-        $refresh.attr('disabled', 'disabled').html('Loading...');
-        
-        $.get(window.location.href)
-          .error(function() {
-            window.console.log('error', arguments);
-          })
-          .success(function(ticketArray) {
-            tickets.reset(ticketArray);
-          })
-          .complete(function() {
-            $refresh.removeAttr('disabled').html('Refresh');
-          });
-      });
       
       new TestingReportView({
         el: '#testing_report',
