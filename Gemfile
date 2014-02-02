@@ -36,7 +36,6 @@ gem 'whenever' # a DSL for writing CRON jobs
 gem 'yajl-ruby', :require => 'yajl/json_gem'
 
 gem 'backbone-rails'
-gem 'd3js-rails'
 gem 'font-awesome-rails', '~> 3.2.1'
 gem 'handlebars_assets', '0.8.2'
 gem 'jquery-rails'

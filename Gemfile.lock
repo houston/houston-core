@@ -106,8 +106,6 @@ GEM
     css_parser (1.2.6)
       addressable
       rdoc
-    d3js-rails (3.1.6)
-      railties (>= 3.0, < 5.0)
     default_value_for (2.0.2)
     devise (2.2.7)
       bcrypt-ruby (~> 3.0)
@@ -311,7 +309,6 @@ DEPENDENCIES
   ci_reporter
   codeclimate-test-reporter (= 0.2.0)
   coffee-rails (~> 3.2.1)
-  d3js-rails
   default_value_for
   devise (~> 2.2.3)
   devise_invitable (~> 1.1.6)
