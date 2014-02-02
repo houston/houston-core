@@ -10,7 +10,7 @@ GIT
 
 GIT
   remote: git://github.com/houstonmc/houston-scheduler.git
-  revision: 7b7513071d5838a6681b2dc268379ff003bc5e93
+  revision: e12f5d494cfac9d9aafbc0d451a5c5ff9871db26
   branch: master
   specs:
     houston-scheduler (0.0.1)
