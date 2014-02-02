@@ -10,7 +10,7 @@ GIT
 
 GIT
   remote: git://github.com/houstonmc/houston-scheduler.git
-  revision: 7b00164e42cac6057af686aadfb33f35f6e09661
+  revision: 7b7513071d5838a6681b2dc268379ff003bc5e93
   branch: master
   specs:
     houston-scheduler (0.0.1)
@@ -101,7 +101,7 @@ GEM
     coffee-script (2.2.0)
       coffee-script-source
       execjs
-    coffee-script-source (1.6.3)
+    coffee-script-source (1.7.0)
     commonjs (0.2.6)
     css_parser (1.2.6)
       addressable
