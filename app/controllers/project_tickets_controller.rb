@@ -17,6 +17,7 @@ class ProjectTicketsController < ApplicationController
     
     @labels = []
     @labels = Houston::TMI::TICKET_LABELS_FOR_MEMBERS if @project.slug =~ /^360|members$/
+    @labels = Houston::TMI::TICKET_LABELS_FOR_UNITE if @project.slug == "unite"
     @tickets = @project.tickets.includes(:project).map do |ticket|
       { id: ticket.id,
         summary: ticket.summary,
