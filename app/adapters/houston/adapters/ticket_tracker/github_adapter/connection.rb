@@ -46,8 +46,7 @@ module Houston
           end
           
           def all_tickets
-            remote_issues = client.list_issues(repo_path)
-            remote_issues.map { |attributes | build_ticket(attributes) }
+            open_tickets + closed_tickets
           end
           
           def open_tickets
@@ -106,6 +105,11 @@ module Houston
             attributes_from_type_proc = config[:attributes_from_type]
             return {} unless attributes_from_type_proc
             attributes_from_type_proc.call(type)
+          end
+          
+          def closed_tickets
+            remote_issues = client.list_issues(repo_path, state: "closed")
+            remote_issues.map { |attributes | build_ticket(attributes) }
           end
           
         end
