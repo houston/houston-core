@@ -63,7 +63,8 @@ Houston::Application.routes.draw do
   # Test Runs
   
   get "projects/:slug/test_runs/:commit", :to => "test_runs#show", :as => :test_run
-  match "projects/:slug/test_runs/:commit/retry", :to => "test_runs#retry", :as => :retry_test_run
+  get "projects/:slug/test_runs/:commit/retry", :to => "test_runs#confirm_retry", :as => :retry_test_run
+  post "projects/:slug/test_runs/:commit/retry", :to => "test_runs#retry"
   
   
   

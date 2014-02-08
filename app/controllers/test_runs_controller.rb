@@ -5,6 +5,9 @@ class TestRunsController < ApplicationController
     render template: "project_notification/test_run", layout: "email"
   end
   
+  def confirm_retry
+  end
+  
   def retry
     @test_run.retry!
     last_build_url = @project.ci_server.last_build_url if @project.ci_server.respond_to? :last_build_url
