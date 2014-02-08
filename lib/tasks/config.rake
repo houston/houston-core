@@ -51,10 +51,10 @@ namespace :config do
     ssl :simple_tls
     username_builder Proc.new { |attribute, login, ldap| "\#{login}@example.com" }
     TEXT
-    config.replace_block! "ticket_tracker :unfuddle", <<-TEXT
-    subdomain UNFUDDLE_SUBDOMAIN
-    username UNFUDDLE_USERNAME
-    password UNFUDDLE_PASSWORD
+    config.replace_block! "ticket_tracker :unfuddle", <<-TEXT, comment_out: true
+    subdomain "UNFUDDLE_SUBDOMAIN"
+    username "UNFUDDLE_USERNAME"
+    password "UNFUDDLE_PASSWORD"
     
     identify_antecedents lambda { |ticket|
       # ...
@@ -75,27 +75,21 @@ namespace :config do
     config.remove! /(  \n)+  # Configure the Github Issues TicketTracker adapter/m
     config.remove_block! "ticket_tracker :github"
     config.replace_block! "ci_server :jenkins", <<-TEXT
-    host JENKINS_HOST
-    username JENKINS_USERNAME
-    password JENKINS_PASSWORD
+    host "jenkins.example.com"
+    username "JENKINS_USERNAME"
+    password "JENKINS_PASSWORD"
     TEXT
     config.replace_block! "error_tracker :errbit", <<-TEXT
-    host ERRBIT_HOST
+    host "errbit.example.com"
     port 443
-    auth_token ERRBIT_AUTH_TOKEN
+    auth_token "ERRBIT_AUTH_TOKEN"
     TEXT
     config.remove! /(  \n)+  # Configuration for New Relic/m
     config.remove_block! "new_relic"
     config.replace_block! "github", <<-TEXT
-    access_token GITHUB_ACCESS_TOKEN
-    key GITHUB_OAUTH_KEY
-    secret GITHUB_OAUTH_SECRET
-    TEXT
-    config.replace_block! "key_dependencies", <<-TEXT
-    gem "rails"
-    gem "devise"
-    gem "backbone-rails", as: "Backbone.js"
-    gem "jquery-rails", as: "jQuery"
+    access_token "GITHUB_ACCESS_TOKEN"
+    key "GITHUB_OAUTH_KEY"
+    secret "GITHUB_OAUTH_SECRET"
     TEXT
     config.remove_block! 'on "deploy:create"'
     config.remove_block! 'on "hooks:exception_report"'

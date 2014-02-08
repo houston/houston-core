@@ -26,7 +26,7 @@ Houston.config do
   end
   
   # (Optional) These are the categories you can organize your projects by
-  project_categories "Products", "Infrastructure", "Tools"
+  project_categories "Products", "Services", "Libraries", "Tools"
   
   # These are the colors available for projects
   project_colors(
@@ -195,42 +195,42 @@ Houston.config do
   
   
   # Configure the Unfuddle TicketTracker adapter
-  ticket_tracker :unfuddle do
-    subdomain UNFUDDLE_SUBDOMAIN
-    username UNFUDDLE_USERNAME
-    password UNFUDDLE_PASSWORD
-    
-    identify_antecedents lambda { |ticket|
-      # ...
-    }
-    
-    identify_tags lambda { |ticket|
-      # ...
-    }
-    
-    identify_type lambda { |ticket|
-      # ...
-    }
-    
-    attributes_from_type lambda { |ticket|
-      # ...
-    }
-  end
+  # ticket_tracker :unfuddle do
+  #   subdomain "UNFUDDLE_SUBDOMAIN"
+  #   username "UNFUDDLE_USERNAME"
+  #   password "UNFUDDLE_PASSWORD"
+  #   
+  #   identify_antecedents lambda { |ticket|
+  #     # ...
+  #   }
+  #   
+  #   identify_tags lambda { |ticket|
+  #     # ...
+  #   }
+  #   
+  #   identify_type lambda { |ticket|
+  #     # ...
+  #   }
+  #   
+  #   attributes_from_type lambda { |ticket|
+  #     # ...
+  #   }
+  # end
 
   # Configure the Jenkins CIServer adapter
   ci_server :jenkins do
-    host JENKINS_HOST
-    username JENKINS_USERNAME
-    password JENKINS_PASSWORD
+    host "jenkins.example.com"
+    username "JENKINS_USERNAME"
+    password "JENKINS_PASSWORD"
   end
   
   
   
   # Configure the Errbit ErrorTracker adapter
   error_tracker :errbit do
-    host ERRBIT_HOST
+    host "errbit.example.com"
     port 443
-    auth_token ERRBIT_AUTH_TOKEN
+    auth_token "ERRBIT_AUTH_TOKEN"
   end
 
   # Configuration for GitHub
@@ -241,9 +241,9 @@ Houston.config do
   # curl -v -u USERNAME -X POST https://api.github.com/authorizations --data '{"scopes":["repo:status"]}'
   #
   github do
-    access_token GITHUB_ACCESS_TOKEN
-    key GITHUB_OAUTH_KEY
-    secret GITHUB_OAUTH_SECRET
+    access_token "GITHUB_ACCESS_TOKEN"
+    key "GITHUB_OAUTH_KEY"
+    secret "GITHUB_OAUTH_SECRET"
   end
   
   
@@ -258,10 +258,8 @@ Houston.config do
   
   # What dependencies to check
   key_dependencies do
-    gem "rails"
-    gem "devise"
-    gem "backbone-rails", as: "Backbone.js"
-    gem "jquery-rails", as: "jQuery"
+    gem "rails", ["3.2.13", "3.1.12"]
+    gem "devise", ["2.2.3", "2.1.3", "2.0.5", "1.5.4"]
   end
   
   
@@ -271,13 +269,13 @@ Houston.config do
     unprioritized do
       name "To Prioritize"
       description "Tickets for <b>Product Owners</b> to prioritize"
-      where { |tickets| tickets.unresolved.unprioritized }
+      where { |tickets| tickets.unresolved.able_to_prioritize.unprioritized }
     end
     
     unestimated do
       name "To Estimate"
       description "Tickets for <b>Developers</b> to estimate"
-      where { |tickets| tickets.unresolved.unestimated }
+      where { |tickets| tickets.unresolved.able_to_estimate.unestimated }
     end
     
     sprint do
@@ -295,7 +293,7 @@ Houston.config do
     staging do
       name "To Release"
       description "Tickets ready for <b>Maintainers</b> to deploy"
-      where { |tickets| tickets.closed.deployed_to("Staging") }
+      where { |tickets| tickets.closed.fixed.unreleased }
     end
   end
   
