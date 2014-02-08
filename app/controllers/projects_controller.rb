@@ -11,7 +11,7 @@ class ProjectsController < ApplicationController
   
   
   def show
-    redirect_to project_dashboard_path(@project)
+    redirect_to projects_path
   end
   
   
