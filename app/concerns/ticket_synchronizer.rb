@@ -28,13 +28,13 @@ module TicketSynchronizer
     
     map_milestone_id = project.milestones.remote_id_map
     
-    Project.benchmark("\e[33m[tickets.synchronize] synchronizing with local tickets\e[0m") do
+    Project.benchmark("\e[33m[tickets.synchronize] synchronizing #{unsynchronized_tickets.length} tickets\e[0m") do
       numbers = unsynchronized_tickets.map(&:number)
-      tickets = includes(:ticket_prerequisites).where(number: numbers)
+      tickets = Ticket.unscoped { includes(:ticket_prerequisites).where(number: numbers) }
       
       unsynchronized_tickets.map do |unsynchronized_ticket|
         ticket = tickets.detect { |ticket| ticket.number == unsynchronized_ticket.number }
-        attributes = unsynchronized_ticket.attributes
+        attributes = unsynchronized_ticket.attributes.merge(destroyed_at: nil)
         
         # Convert remote milestone IDs to local milestone IDs
         attributes[:milestone_id] = map_milestone_id[attributes[:milestone_id]]
