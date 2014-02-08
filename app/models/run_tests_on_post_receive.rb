@@ -20,7 +20,10 @@ class RunTestsOnPostReceive
     #   3. Houston creates a TestRun and tells a CI server to build
     #      then corresponding job:
     #      POST /job/houston/buildWithParameters.
-    Houston.observer.on "hooks:post_receive", &method(:create_a_test_run)
+    Houston.observer.on "hooks:post_receive" do |project, params|
+      Rails.logger.info "\e[31;1m[hooks:post_receive] creating a TestRun\e[0m"
+      create_a_test_run(project, params)
+    end
     
     #   4. Houston notifies GitHub that the test run has started:
     #      POST /repos/houstonmc/houston/statuses/:sha
@@ -37,10 +40,16 @@ class RunTestsOnPostReceive
     #   7. Houston updates the TestRun,
     #      fetching additional details from Jenkins:
     #      GET /job/houston/19/testReport/api/json
-    Houston.observer.on "hooks:post_build", &method(:fetch_test_run_results)
+    Houston.observer.on "hooks:post_build" do |project, params|
+      Rails.logger.info "\e[31;1m[hooks:post_build] fetching TestRun results\e[0m"
+      fetch_test_run_results(project, params)
+    end
     
     #   8. Houston emails results of the TestRun.
-    Houston.observer.on "test_run:complete", &method(:email_test_run_results)
+    Houston.observer.on "test_run:complete" do |test_run|
+      Rails.logger.info "\e[31;1m[test_run:complete] emailing TestRun results\e[0m"
+      email_test_run_results(test_run)
+    end
     
     #   9. Houston publishes results to GitHub:
     #      POST /repos/houstonmc/houston/statuses/:sha
@@ -50,7 +59,10 @@ class RunTestsOnPostReceive
     end
     
     #  10. Houston publishes results to Code Climate.
-    Houston.observer.on "test_run:complete", &method(:publish_coverage_to_code_climate)
+    Houston.observer.on "test_run:complete" do |test_run|
+      Rails.logger.info "\e[31;1m[test_run:complete] publishing status on CodeClimate\e[0m"
+      publish_coverage_to_code_climate(test_run)
+    end
   end
   
   
