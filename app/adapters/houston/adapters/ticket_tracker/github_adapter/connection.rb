@@ -80,7 +80,7 @@ module Houston
           attr_reader :repo_path, :config
           
           def client
-            @client ||= Octokit::Client.new(Houston.config.github.pick(:access_token))
+            @client ||= Octokit::Client.new(Houston.config.github.pick(:access_token).merge(auto_paginate: true))
           end
           
           
