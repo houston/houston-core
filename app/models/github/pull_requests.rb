@@ -32,6 +32,7 @@ module Github
         @results = client.org_issues(Houston::TMI::NAME_OF_GITHUB_ORGANIZATION, filter: "all", state: "open")
           .select(&method(:pull_request?))
           .map(&::Github::PullRequest.method(:new))
+          .sort_by { |pull| [pull.repo, -pull.number] }
       end
     end
     
