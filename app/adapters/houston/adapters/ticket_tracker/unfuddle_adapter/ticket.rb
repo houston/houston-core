@@ -165,7 +165,7 @@ module Houston
                 # If an error occurred above, it may be because
                 # we cached the wrong value for something.
                 retried_once = true
-                invalidate_cache!("#{custom_field_key}_field", "#{custom_field_key}_value_#{value_id}")
+                connection.invalidate_cache!("#{custom_field_key}_field", "#{custom_field_key}_value_#{value_id}")
                 retry
               end
             end
