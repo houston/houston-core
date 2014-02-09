@@ -1,7 +1,7 @@
 class PullRequestsMailer < ViewMailer
   
-  def self.deliver_to!(recipients)
-    recipients.each do |email|
+  def self.deliver_to!(*recipients)
+    recipients.flatten.each do |email|
       user = User.find_by_email!(email)
       pull_requests(user).deliver!
     end
