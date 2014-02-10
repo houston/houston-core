@@ -162,8 +162,15 @@
           }
         }
         
+        function keyboardShortcuts() {
+          new KeyboardShortcutsModal().show()
+        }
+                
         $('#new_ticket_button').click(function(e) { e.preventDefault(); newTicket() });
         Mousetrap.bind('n t', newTicket);
+        
+        $('#keyboard_shortcuts_button').click(function(e) { e.preventDefault(); keyboardShortcuts(); });
+        Mousetrap.bind('?', keyboardShortcuts);
       });
     </script>
 

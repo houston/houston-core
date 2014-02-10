@@ -70,20 +70,6 @@
   width: 720px;
   margin-left: -360px;
   
-  .modal-header {
-    -webkit-border-top-left-radius: 6px;
-    -webkit-border-top-right-radius: 6px;
-    -moz-border-top-left-radius: 6px;
-    -moz-border-top-right-radius: 6px;
-    border-top-left-radius: 6px;
-    border-top-right-radius: 6px;
-    
-    h3 {
-      color: rgba(0, 0, 0, 0.3);
-      font-weight: 200;
-    }
-  }
-  
   .modal-body {
     min-height: 420px;
     overflow: hidden;

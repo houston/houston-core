@@ -46,6 +46,8 @@
   <% end %>
 }
 
+.modal-header { background-color: #60615B; }
+
 <% Houston.config.project_colors.each do |name, value| %>
   #new_ticket_modal.<%= name %> {
     .modal-header { background-color: $<%= name %>; }
