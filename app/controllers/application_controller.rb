@@ -84,6 +84,7 @@ class ApplicationController < ActionController::Base
   
   
   def api_authenticate!
+    return if current_user
     allow_params_authentication!
     authenticate_or_request_with_http_basic do |username, password|
       params["user"] ||= {}
