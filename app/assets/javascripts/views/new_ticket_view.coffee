@@ -25,8 +25,9 @@ class window.NewTicketView extends Backbone.View
   
   initialize: ->
     @$el = $('#new_ticket_view')
+    @$el.html HandlebarsTemplates['new_ticket/form']()
     @project = @options.project
-    @tickets = @options.tickets
+    @tickets = new Tickets(@options.tickets)
     @LABELS = @options.labels
     @renderSuggestion = HandlebarsTemplates['new_ticket/suggestion']
     @$suggestions = $('#ticket_suggestions')
@@ -57,7 +58,7 @@ class window.NewTicketView extends Backbone.View
     y = /\] *([^:]*)/
     z = /^([^\]]*)(\]|$)/
     
-    $('#ticket_summary')
+    @$summary
       .attr('autocomplete', 'off')
       .typeahead
         source: (query)->
@@ -98,7 +99,8 @@ class window.NewTicketView extends Backbone.View
             @lquery.test(item)
           else
             false
-  
+    
+    $('#ticket_summary').focus().select()
   
   
   onTicketSummaryChange: ->
@@ -129,7 +131,8 @@ class window.NewTicketView extends Backbone.View
   
   
   
-  resetNewTicket: ->
+  resetNewTicket: (e)->
+    e?.preventDefault()
     @$summary.val ''
     @$suggestions.empty()
     $('#ticket_description').val ''
@@ -150,6 +153,7 @@ class window.NewTicketView extends Backbone.View
       @$el.enable()
       @resetNewTicket()
       $("<div class=\"alert alert-success\">Ticket <a href=\"#{ticket.ticketUrl}\" target=\"_blank\">##{ticket.number}</a> was created.</div>").appendAsAlert()
+      $(document).trigger 'ticket:create', [ticket]
     
     xhr.error (response)=>
       errors = Errors.fromResponse(response)

@@ -46,6 +46,12 @@
   <% end %>
 }
 
+<% Houston.config.project_colors.each do |name, value| %>
+  #new_ticket_modal.<%= name %> {
+    .modal-header { background-color: $<%= name %>; }
+  }
+<% end %>
+
 td.ticket-type { padding: 0 !important; }
 .ticket-type {
   background: #efefef;

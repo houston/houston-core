@@ -149,6 +149,21 @@
           $el.tooltip({placement: placement});
         });
         $('.project-banner').affix({offset: {top: 66}})
+        
+        function newTicket() {
+          var $banner = $('.project-banner'),
+              slug = $banner.attr('data-project-slug'),
+              color = $banner.attr('data-project-color');
+          if(slug) {
+            if($('#new_ticket_modal').length == 0) {
+              modal = new NewTicketModal({slug: slug, color: color});
+              modal.show();
+            }
+          }
+        }
+        
+        $('#new_ticket_button').click(function(e) { e.preventDefault(); newTicket() });
+        Mousetrap.bind('n t', newTicket);
       });
     </script>
 

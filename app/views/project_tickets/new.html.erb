@@ -1,26 +1,12 @@
 <%= render partial: "projects/header", locals: {project: @project, subtitle: "New Ticket for"} %>
 
-<form id="new_ticket_view" data-mode="type">
-  <div class="sequence-new-ticket-wrap">
-    <input id="ticket_summary" name="ticket[summary]" type="text" placeholder="[feature] New Feature: type your summary here" class="mousetrap" />
-    <ol id="ticket_suggestions">
-    </ol>
-    <div class="sequence-ticket-description sequence-new-ticket-full">
-      <textarea id="ticket_description" name="ticket[description]" rows="4" class="mousetrap"></textarea>
-    </div>
-  </div>
-  <div class="sequence-new-ticket-full sequence-new-ticket-buttons">
-    <button class="btn" id="reset_ticket">Cancel</button>
-    <button class="btn btn-primary" id="create_ticket">Create</button>
-  </div>
-</form>
-
+<form id="new_ticket_view" class="full-page" data-mode="type"></form>
 
 <% content_for :javascripts do %>
 <script type="text/javascript">
   $(function() {
     new NewTicketView({
-      tickets: new Tickets(<%= raw @tickets.to_json %>),
+      tickets: <%= raw @tickets.to_json %>,
       project: { slug: <%= raw @project.slug.to_json %> },
       labels: <%= raw @labels.to_json %>
     }).render();

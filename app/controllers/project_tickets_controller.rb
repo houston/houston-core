@@ -25,6 +25,14 @@ class ProjectTicketsController < ApplicationController
         ticketUrl: ticket.ticket_tracker_ticket_url,
         number: ticket.number }
     end
+    
+    if request.xhr?
+      render json: {
+        tickets: @tickets,
+        project: { slug: @project.slug },
+        labels: @labels
+      }
+    end
   end
   
   

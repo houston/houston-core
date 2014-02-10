@@ -1,5 +1,5 @@
 <% content_for :title do %>
-<h1 class="project-banner <%= project.color %> space-below">
+<h1 class="project-banner <%= project.color %> space-below" data-project-slug="<%= project.slug %>" data-project-color="<%= project.color %>">
   <small><%= subtitle %></small>
   <%= project.name %>
   
