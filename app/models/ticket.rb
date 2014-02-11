@@ -273,6 +273,13 @@ class Ticket < ActiveRecord::Base
     Houston.observer.fire "ticket:release", self, release
   end
   
+  def resolve!
+    remote_ticket.resolve! if remote_ticket and remote_ticket.respond_to?(:resolve!)
+    
+    update_column :resolution, "fixed"
+    self
+  end
+  
   def close_ticket!
     remote_ticket.close! if remote_ticket
     
