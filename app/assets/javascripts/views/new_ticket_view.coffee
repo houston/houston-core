@@ -17,7 +17,7 @@ class window.NewTicketView extends Backbone.View
   '''
   
   # !todo: get these from Houston.config.ticket_types
-  TYPES: ["[bug]", "[feature]", "[chore]", "[enhancement]"]
+  TYPES: ['bug', 'feature', 'chore', 'enhancement']
   
   events:
     'click #reset_ticket': 'resetNewTicket'
@@ -29,6 +29,8 @@ class window.NewTicketView extends Backbone.View
     @project = @options.project
     @tickets = new Tickets(@options.tickets)
     @LABELS = @options.labels
+    @TAGS = @TYPES.map (type)-> "[#{type}]"
+    @TAG_MATCHER = "\\[(#{@TYPES.join('|')})\\]"
     @renderSuggestion = HandlebarsTemplates['new_ticket/suggestion']
     @$suggestions = $('#ticket_suggestions')
     @$summary = $('#ticket_summary')
@@ -69,7 +71,7 @@ class window.NewTicketView extends Backbone.View
           if a is -1 or pos <= a
             @tquery = query.match(z)[1].toLowerCase()
             @mode = 'type'
-            return view.TYPES
+            return view.TAGS
           
           else if a > 0 and (b is -1 or pos <= b)
             @lquery = query.match(y)[1]
@@ -106,15 +108,15 @@ class window.NewTicketView extends Backbone.View
   onTicketSummaryChange: ->
     return unless @$summary.is(':focus')
     summary = @$summary.val()
-    if !/\[(bug|feature|chore|refactor)\] /.test(summary)
+    if !///#{@TAG_MATCHER} ///.test(summary)
       @$el.attr('data-mode', 'type')
       @$suggestions.empty()
-    else if !/\[(bug|feature|chore|refactor)\] (.*):/.test(summary)
+    else if !///#{@TAG_MATCHER} (.*):///.test(summary)
       @$el.attr('data-mode', 'label')
       @$suggestions.empty()
     else
       @$el.attr('data-mode', 'summary')
-      md = summary.match(/\[(bug|feature|chore|refactor)\] (.*)/)
+      md = summary.match(///#{@TAG_MATCHER} (.*)///)
       if md
         [_, type, summary] = md
         @nextSearch = summary
