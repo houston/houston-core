@@ -11,6 +11,8 @@ class @KeyboardShortcutsModal
         <dl class="keyboard-shortcuts">
           <dt><span class="key">n</span> <span class="key">t</span></dt>
           <dd>New ticket</dd>
+          <dt><span class="key">R</span> <span class="key">t</span></dt>
+          <dd>Refresh tickets</dd>
           <dt><span class="key">?</span></dt>
           <dd>Keyboard shortcuts</dd>
         </dl>
