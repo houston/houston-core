@@ -37,8 +37,7 @@ class window.NewTicketView extends Backbone.View
     @lastSearch = ''
     
     Mousetrap.bind ['ctrl+enter', 'command+enter'], (e)=>
-      if $('#new_ticket_view :focus').length > 0
-        @createNewTicket()
+      @$el.find('#create_ticket').click() if @$el.find(':focus').length > 0
   
   render: ->
     onTicketSummaryChange = _.bind(@onTicketSummaryChange, @)
@@ -152,9 +151,9 @@ class window.NewTicketView extends Backbone.View
     
     xhr.success (ticket)=>
       @tickets.push(ticket)
-      @$el.enable()
       @resetNewTicket()
       $("<div class=\"alert alert-success\">Ticket <a href=\"#{ticket.ticketUrl}\" target=\"_blank\">##{ticket.number}</a> was created.</div>").appendAsAlert()
+      @$el.enable()
       $(document).trigger 'ticket:create', [ticket]
     
     xhr.error (response)=>
