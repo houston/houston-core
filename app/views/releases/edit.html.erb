@@ -1,4 +1,4 @@
-<%= render partial: "releases/header", locals: {release: @release} %>
+<%= render partial: "projects/header", locals: {project: @project, subtitle: format_release_date(@release.date)} %>
 
 <% if params[:recreate] %>
   <%= link_to "Cancel", edit_release_path(@release), :class => "btn" %>
