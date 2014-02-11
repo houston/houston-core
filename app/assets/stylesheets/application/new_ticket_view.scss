@@ -80,7 +80,10 @@
     margin-top: 2em;
     
     #ticket_summary { width: 662px; }
-    #ticket_description { width: 674px; }
+    #ticket_description {
+      width: 674px;
+      height: 348px;
+    }
     .sequence-new-ticket-full.sequence-new-ticket-buttons { text-align: right; }
   }
 }
