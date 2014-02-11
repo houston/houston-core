@@ -1,4 +1,4 @@
-<%= render partial: "projects/header", locals: {project: @project, subtitle: "New Ticket for"} %>
+<%= render partial: "projects/header", locals: {project: @project, subtitle: "New Ticket for", without: %w{new_ticket keyboard_shortcuts}} %>
 
 <form id="new_ticket_view" class="full-page" data-mode="type"></form>
 

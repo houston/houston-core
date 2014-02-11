@@ -31,19 +31,20 @@ $ ->
   
   $button = $('#sync_tickets_button')
   $button.find('[data-toggle="tooltip"]').tooltip()
+  
+  Mousetrap.bind 'R t', -> $button.click()
   $button.click (e)->
     e.preventDefault()
     refreshTickets()
-  Mousetrap.bind('R t', refreshTickets)
   
   
+  Mousetrap.bind 'n t', -> $('#new_ticket_button').click()
   $('#new_ticket_button').click (e)->
     e.preventDefault()
     showNewTicket()
-  Mousetrap.bind('n t', showNewTicket)
   
   
+  Mousetrap.bind '?', ->  $('#keyboard_shortcuts_button').click()
   $('#keyboard_shortcuts_button').click (e)->
     e.preventDefault()
     showKeyboardShortcuts()
-  Mousetrap.bind('?', showKeyboardShortcuts)

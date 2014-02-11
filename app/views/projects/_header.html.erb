@@ -1,10 +1,11 @@
 <% content_for :title do %>
+<% without = (defined?(without) && without) || [] %>
 <h1 class="project-banner <%= project.color %> space-below" data-project-slug="<%= project.slug %>" data-project-color="<%= project.color %>">
   <small><%= subtitle %></small>
   <%= project.name %>
   
   <%= render partial: "projects/ticket_tracker_refresh", locals: {project: project} %>
-  <%= render partial: "projects/new_ticket", locals: {project: project} %>
-  <%= render partial: "projects/keyboard_shortcuts" %>
+  <%= render partial: "projects/new_ticket", locals: {project: project} unless without.include?("new_ticket") %>
+  <%= render partial: "projects/keyboard_shortcuts" unless without.include?("keyboard_shortcuts") %>
 </h1>
 <% end %>
