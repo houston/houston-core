@@ -75,6 +75,10 @@ class UserTest < ActiveSupport::TestCase
       assert_equal 1, User.with_email_address("bob@gmail.com").count, "Should find the user by an alias email"
       assert_equal 1, User.with_email_address(%w{bob@example.com bob@gmail.com}).count, "Should find the user only once if two addresses match"
     end
+    
+    should "find users regardless of email case" do
+      assert_equal 1, User.with_email_address("BOB@EXAMPLE.COM").count, "Should find the user by his primary email address even though that case is different"
+    end
   end
   
   

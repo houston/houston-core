@@ -67,11 +67,12 @@ class User < ActiveRecord::Base
   end
   
   def self.with_primary_email(email)
+    email = email.downcase if email
     where(email: email)
   end
   
   def self.with_email_address(*email_addresses)
-    values = email_addresses.flatten.map(&method(:quote_value)).join(",")
+    values = email_addresses.flatten.map { |email| quote_value(email.downcase) }.join(",")
     where("ARRAY[\"email_addresses\"] && ARRAY[#{values}]")
   end
   
