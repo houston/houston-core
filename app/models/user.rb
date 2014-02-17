@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
   
   devise *Houston.config.devise_configuration
   
-  attr_accessible :first_name, :last_name, :email, :unfuddle_id,
+  attr_accessible :first_name, :last_name, :email,
                   :role, :password, :password_confirmation, :remember_me,
                   :environments_subscribed_to, :view_options, :alias_emails
   
