@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
   
   attr_accessible :first_name, :last_name, :email, :unfuddle_id,
                   :role, :password, :password_confirmation, :remember_me,
-                  :environments_subscribed_to, :view_options
+                  :environments_subscribed_to, :view_options, :alias_emails
   
   default_scope order("last_name, first_name")
   
@@ -22,6 +22,8 @@ class User < ActiveRecord::Base
   
   validates :first_name, :last_name, :email, :presence => true, :length => {:minimum => 2}
   validates :role, :presence => true, :inclusion => Houston.config.roles
+  validate :all_email_addresses_must_be_unique
+  
   
   
   Houston.config.project_roles.each do |role|
@@ -64,6 +66,35 @@ class User < ActiveRecord::Base
     where(["users.environments_subscribed_to LIKE ?", "%#{environment_name.inspect}%"])
   end
   
+  def self.with_primary_email(email)
+    where(email: email)
+  end
+  
+  def self.with_email_address(*email_addresses)
+    values = email_addresses.flatten.map(&method(:quote_value)).join(",")
+    where("ARRAY[\"email_addresses\"] && ARRAY[#{values}]")
+  end
+  
+  
+  
+  def email=(value)
+    value = value.downcase if value
+    super(value)
+    self.email_addresses = [email] + alias_emails
+  end
+  
+  def email_addresses
+    super || []
+  end
+  
+  def alias_emails
+    email_addresses - [email]
+  end
+  
+  def alias_emails=(value)
+    self.email_addresses = [email] + Array.wrap(value)
+  end
+  
   
   
   def name
@@ -104,5 +135,15 @@ class User < ActiveRecord::Base
   # ------------------------------------------------------------------------- #
   
   
+  
+private
+  
+  def all_email_addresses_must_be_unique
+    email_addresses.each do |email_address|
+      if User.where(User.arel_table[:id].not_eq(id)).with_email_address(email_address).any?
+        errors.add :base, "The email address \"#{email_address}\" is being used"
+      end
+    end
+  end
   
 end

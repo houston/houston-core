@@ -1217,7 +1217,8 @@ CREATE TABLE users (
     last_name character varying(255),
     environments_subscribed_to character varying(255) DEFAULT ''::character varying NOT NULL,
     retired_at timestamp without time zone,
-    view_options hstore
+    view_options hstore,
+    email_addresses text[]
 );
 
 
@@ -1750,6 +1751,13 @@ CREATE UNIQUE INDEX index_users_on_email ON users USING btree (email);
 
 
 --
+-- Name: index_users_on_email_addresses; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_users_on_email_addresses ON users USING btree (email_addresses);
+
+
+--
 -- Name: index_users_on_invitation_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2016,3 +2024,5 @@ INSERT INTO schema_migrations (version) VALUES ('20140106212305');
 INSERT INTO schema_migrations (version) VALUES ('20140114014144');
 
 INSERT INTO schema_migrations (version) VALUES ('20140217150735');
+
+INSERT INTO schema_migrations (version) VALUES ('20140217160450');

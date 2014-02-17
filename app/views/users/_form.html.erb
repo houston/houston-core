@@ -16,9 +16,16 @@
     </div>
 
     <div class="control-group">
-      <%= f.label :email, :class => 'control-label' %>
+      <%= f.label :email, "Primary Email Address", :class => 'control-label' %>
       <div class="controls">
         <%= f.text_field :email, :class => 'text_field' %>
+      </div>
+    </div>
+    
+    <div class="control-group">
+      <%= f.label :alias_emails, "Other Email Addresses", :class => 'control-label' %>
+      <div class="controls">
+        <%= f.text_area :alias_emails, :class => 'text_field', rows: 3, value: @user.alias_emails.join("\n") %>
       </div>
     </div>
     
