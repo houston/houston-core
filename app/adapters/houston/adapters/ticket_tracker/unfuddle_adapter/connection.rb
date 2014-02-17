@@ -19,6 +19,7 @@ module Houston
           # Required API
           
           def build_ticket(attributes)
+            attributes["reporter_email"] = find_reporter_email(attributes["reporter_id"])
             Houston::Adapters::TicketTracker::UnfuddleAdapter::Ticket.new(self, attributes)
           end
           
@@ -136,21 +137,21 @@ module Houston
           
           
           def query_key(query)
-            "query/#{Digest::MD5::hexdigest(query.inspect)}"
+            "unfuddle/projects/#{project_id}/query/#{Digest::MD5::hexdigest(query.inspect)}"
+          end
+          
+          def reporter_key(reporter_id)
+            "unfuddle/reporters/#{reporter_id}"
           end
           
           def find_in_cache_or_execute(key, &block)
-            Rails.cache.fetch(cache_key(key), &block)
+            Rails.cache.fetch(key, &block)
           end
           
           def invalidate_cache!(*keys)
             keys.each do |key|
-              Rails.cache.delete cache_key(key)
+              Rails.cache.delete key
             end
-          end
-          
-          def cache_key(key)
-            "unfuddle/projects/#{project_id}/#{key}"
           end
           
           
@@ -178,6 +179,14 @@ module Houston
         private
           
           attr_reader :unfuddle
+          
+          def find_reporter_email(reporter_id)
+            return nil if reporter_id.nil?
+            find_in_cache_or_execute(reporter_key(reporter_id)) do
+              person = Unfuddle.instance.person(reporter_id)
+              person.email if person
+            end
+          end
           
           def get_attributes_from_type(type)
             attributes_from_type_proc = config[:attributes_from_type]

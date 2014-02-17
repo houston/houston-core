@@ -19,6 +19,10 @@ module Houston
           nil
         end
         
+        def reporter_email
+          nil
+        end
+        
         def resolution
           ""
         end

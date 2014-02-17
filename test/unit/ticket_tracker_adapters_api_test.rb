@@ -44,6 +44,7 @@ class TicketTrackerAdatersApiTest < ActiveSupport::TestCase
       assert_respond_to ticket, :number
       assert_respond_to ticket, :summary
       assert_respond_to ticket, :description
+      assert_respond_to ticket, :reporter_email
       assert_respond_to ticket, :resolution
       assert_respond_to ticket, :milestone_id
       assert_respond_to ticket, :type

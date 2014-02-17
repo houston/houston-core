@@ -14,6 +14,8 @@ module Houston
           # Required API
           
           def build_ticket(attributes)
+            attributes["user"] = {} unless attributes["user"]
+            attributes["user"]["email"] = find_user_email(attributes["user"]["login"])
             Houston::Adapters::TicketTracker::GithubAdapter::Issue.new(self, attributes)
           end
           
@@ -100,6 +102,28 @@ module Houston
           
           
         private
+          
+          def find_user_email(user_login)
+            return nil if user_login.nil?
+            find_in_cache_or_execute(user_key(user_login)) do
+              user = client.user user_login
+              user.email if user
+            end
+          end
+          
+          def user_key(user_login)
+            "github/users/#{user_login}"
+          end
+          
+          def find_in_cache_or_execute(key, &block)
+            Rails.cache.fetch(key, &block)
+          end
+          
+          def invalidate_cache!(*keys)
+            keys.each do |key|
+              Rails.cache.delete key
+            end
+          end
           
           def get_attributes_from_type(type)
             attributes_from_type_proc = config[:attributes_from_type]

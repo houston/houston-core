@@ -17,6 +17,7 @@ module Houston
             @number           = attributes["number"]
             @summary          = attributes["summary"]
             @description      = attributes["description"]
+            @reporter_email   = attributes["reporter_email"]
             @resolution       = attributes["resolution"]
             @milestone_id     = attributes["milestone_id"]
             @type             = get_type
@@ -37,6 +38,7 @@ module Houston
                       :number,
                       :summary,
                       :description,
+                      :reporter_email,
                       :resolution,
                       :milestone_id,
                       :type,
@@ -56,6 +58,7 @@ module Houston
               number:         number,
               summary:        summary,
               description:    description,
+              reporter_email: reporter_email,
               resolution:     resolution,
               milestone_id:   milestone_id,
               type:           type,

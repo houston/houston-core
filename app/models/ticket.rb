@@ -23,6 +23,7 @@ class Ticket < ActiveRecord::Base
   validates :type, presence: true, inclusion: { in: Houston.config.ticket_types, message: "\"%{value}\" is unknown. It must be #{Houston.config.ticket_types.to_sentence(last_word_connector: ", or ")}" }
   validates_uniqueness_of :number, scope: :project_id, on: :create, if: :number
   
+  before_save :find_reporter, if: :find_reporter?
   after_save :propagate_milestone_change, if: :milestone_id_changed?
   
   attr_readonly :number, :project_id
@@ -146,6 +147,13 @@ class Ticket < ActiveRecord::Base
   def due_date=(value)
     extended_attributes["due_date"] = value
     extended_attributes_will_change!
+  end
+  
+  
+  
+  def reporter_email=(value)
+    value = value.downcase if value
+    super(value)
   end
   
   
@@ -410,6 +418,13 @@ private
     raise ActiveRecord::Rollback if self.releases.exists?(release.id)
   end
   
+  def find_reporter?
+    reporter_email_changed? or (reporter_email.present? and reporter_id.nil?)
+  end
+  
+  def find_reporter
+    self.reporter = User.with_email_address(reporter_email).first
+  end
   
   def propagate_milestone_change
     return if nosync?

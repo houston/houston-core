@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/boblail/unfuddle.git
-  revision: cf300d071b282c37add03aabc06022b5b7f84d50
+  revision: 89c1e1f4d40a1dccc839ec5826eb1109ba379be1
   branch: master
   specs:
     unfuddle (0.1.0)
