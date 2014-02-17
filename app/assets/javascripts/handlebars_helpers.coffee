@@ -76,7 +76,10 @@ Handlebars.registerHelper 'userAvatar', (size)->
   
 Handlebars.registerHelper 'avatar', (email, size, title)->
   gravatarUrl = "http://www.gravatar.com/avatar/#{MD5(email.toLowerCase().trim())}?r=g&d=identicon&s=#{size * 2}"
-  "<img src=\"#{gravatarUrl}\" width=\"#{size}\" height=\"#{size}\" rel=\"tooltip\" title=\"#{title}\" />"
+  if title
+    "<img src=\"#{gravatarUrl}\" width=\"#{size}\" height=\"#{size}\" rel=\"tooltip\" title=\"#{title}\" />"
+  else
+    "<img src=\"#{gravatarUrl}\" width=\"#{size}\" height=\"#{size}\" />"
   
 Handlebars.registerHelper 'ifEq', (v1, v2, block)->
   if v1 == v2
