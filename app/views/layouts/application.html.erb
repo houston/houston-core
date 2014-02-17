@@ -113,6 +113,7 @@
     <%= yield :title %>
     
     <div class="container-fluid" id="body">
+      <%= flash_messages :alert, :notice, :error %>
       <%= yield -%>
       
       <%= render partial: "layouts/tester_bar" if Rails.env.development? -%>

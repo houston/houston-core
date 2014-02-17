@@ -108,6 +108,7 @@ class UsersController < ApplicationController
     redirect_to @user, notice: 'User was successfully invited.'
     
   rescue ActiveRecord::RecordInvalid
+    flash.now[:error] = @user.errors[:base].join("\n")
     render action: "new"
   end
   
@@ -123,6 +124,7 @@ class UsersController < ApplicationController
     if @user.update_attributes(attributes)
       redirect_to @user, notice: 'User was successfully updated.'
     else
+      flash.now[:error] = @user.errors[:base].join("\n")
       render action: "edit"
     end
   end

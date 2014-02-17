@@ -37,6 +37,7 @@ class ProjectsController < ApplicationController
     if @project.save
       redirect_to projects_path, notice: 'Project was successfully created.'
     else
+      flash.now[:error] = @project.errors[:base].join("\n")
       render action: "new"
     end
   end
@@ -48,6 +49,7 @@ class ProjectsController < ApplicationController
     if @project.update_attributes(params[:project])
       redirect_to projects_path, notice: 'Project was successfully updated.'
     else
+      flash.now[:error] = @project.errors[:base].join("\n")
       render action: "edit"
     end
   end
