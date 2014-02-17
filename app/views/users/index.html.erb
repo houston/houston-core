@@ -1,7 +1,3 @@
-<% if @last_updated %>
-  <p class="stats-fresh-date">Stats as of <b><%= @last_updated.strftime('%B %e %l:%m %p') %></b></p>
-<% end %>
-
 <% content_for :title do %>
 <h1 class="project-banner space-below">
   Team
@@ -30,7 +26,6 @@
               <% s.score "Filed", stats[:tickets] %>
               <% s.percent "Duplicate<br /><small>or</small> Invalid".html_safe, stats[:invalid_tickets] %>
               <% s.percent "Fixed", stats[:fixed_tickets] %>
-              <% s.raw pie_graph(data_by_color: stats[:tickets_by_severity], width: 66) %>
             <% end %>
           <% end %>
         </div>

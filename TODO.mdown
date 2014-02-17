@@ -11,7 +11,6 @@
 
  - **Prune**
    - Rename `Project#color` to `Project#color_name` and `Project#color_value` to `Project#color`
-   - Replace unfuddle dump with reporter_email
    - Remove `all_commit_times` from the Version Control Repo API
  
  - **Roles Refactor**
@@ -82,9 +81,6 @@ Goals:
    - Extract **NewRelic**, and **GitHub** knowledge
    - Refactor hard-coded knowledge about Unfuddle/EP into configuration
      - Replace `config/initializers/hard_coded_knowledge.rb`
-     - Unfuddle-specific knowledge of severities (Project Dashboard)
-     - in `users_controller.rb`:
-       - Unfuddle-specific knowledge of resolution (invalid, duplicate)
      - TicketHelper#format_antecedent
      - Don't limit TestingReportController to only use the Unfuddle adapter (have adapters publish their features?)
    - Turn on or off features via config.rb
@@ -94,7 +90,6 @@ Goals:
    - Extract **houston-kanban** (rename)
 
  - **Clean Code:**
-   - Duplicate code in `users_controller#index` and `users_controller#show`
    - Duplicate code in Projects#show and WeeklyReport#show
    - Use [actionmailer_inline_css](https://github.com/ndbroadbent/actionmailer_inline_css)?
    - Test Weekly Report classes

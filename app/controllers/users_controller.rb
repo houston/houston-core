@@ -7,35 +7,8 @@ class UsersController < ApplicationController
     @title = "Team"
     @users = User.unretired
     
-    colors = Houston.config.ticket_colors
-    identify_type_proc = Houston.config.ticket_tracker_configuration(:unfuddle)[:identify_type]
-    
-    tickets = UnfuddleDump.load!
-    @last_updated = UnfuddleDump.last_updated
-    
-    @ticket_stats_by_user = {}
-    @users.each do |user|
-      next unless user.unfuddle_id
-      
-      tickets_for_user = tickets.select { |ticket| ticket["reporter_id"] == user.unfuddle_id }
-      resolutions = %w{invalid duplicate}
-      invalid_tickets = tickets_for_user.select { |ticket| resolutions.member?(ticket["resolution"]) }.length
-      fixed_tickets = tickets_for_user.select { |ticket| ticket["resolution"] == "fixed" }.length
-      percent = 100.0 / tickets_for_user.length
-      
-      tickets_by_type = Hash[colors.values.zip([0] * colors.values.length)]
-      tickets_for_user.each do |ticket|
-        type = identify_type_proc.call(OpenStruct.new(ticket))
-        color = colors.fetch(type, "EFEFEF")
-        tickets_by_type[color] += 1 if tickets_by_type.key?(color)
-      end
-      
-      @ticket_stats_by_user[user] = {
-        tickets: tickets_for_user.length,
-        invalid_tickets: invalid_tickets * percent,
-        fixed_tickets: fixed_tickets * percent,
-        tickets_by_severity: tickets_by_type
-      }
+    @ticket_stats_by_user = @users.each_with_object({}) do |user, stats|
+      stats[user] = stats_for_user(user)
     end
   end
   
@@ -43,37 +16,7 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @title = @user.name
-    @stats = {
-      tickets: 0,
-      invalid_tickets: 1/0.0, # NaN
-      fixed_tickets: 1/0.0 } # NaN
-    
-    if @user.unfuddle_id
-      begin
-        url = "ticket_reports/dynamic.json"
-        url << "?conditions_string=reporter-eq-#{@user.unfuddle_id}"
-        url << "&fields_string=#{%w{project number summary resolution}.join("|")}"
-        url << "&pretty=true&exclude_description=true"
-        response = Unfuddle.get(url)
-      
-        binding.pry unless response.status == 200
-        report = response.json
-        group0 = report.fetch("groups", [])[0] || {}
-        tickets_for_user = group0.fetch("tickets", [])
-      
-        resolutions = %w{invalid duplicate}
-        invalid_tickets = tickets_for_user.select { |ticket| resolutions.member?(ticket["resolution"]) }.length
-        fixed_tickets = tickets_for_user.select { |ticket| ticket["resolution"] == "fixed" }.length
-        percent = 100.0 / tickets_for_user.length
-      
-        @stats = {
-          tickets: tickets_for_user.length,
-          invalid_tickets: invalid_tickets * percent,
-          fixed_tickets: fixed_tickets * percent }
-      
-      rescue Unfuddle::ConnectionError
-      end
-    end
+    @stats = stats_for_user(@user)
   end
   
   
@@ -144,6 +87,21 @@ private
   def extract_administrator
     @administrator = params[:user].delete(:administrator) == "1"
     @administrator = false unless current_user.administrator?
+  end
+  
+  
+  def stats_for_user(user)
+    ticket_resolutions = user.tickets.pluck(:resolution)
+    filed_tickets = ticket_resolutions.count
+    invalid_tickets = ticket_resolutions.count { |resolution| %w{invalid duplicate}.member?(resolution) }
+    fixed_tickets = ticket_resolutions.count { |resolution| resolution == "fixed" }
+    percent = 100.0 / filed_tickets
+    
+    {
+      tickets: filed_tickets,
+      invalid_tickets: invalid_tickets * percent,
+      fixed_tickets: fixed_tickets * percent
+    }
   end
   
   
