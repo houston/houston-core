@@ -183,9 +183,16 @@ module Houston
           def find_reporter_email(reporter_id)
             return nil if reporter_id.nil?
             find_in_cache_or_execute(reporter_key(reporter_id)) do
-              person = Unfuddle.instance.person(reporter_id)
+              person = people.detect { |person| person.id == reporter_id }
               person.email if person
             end
+          rescue Unfuddle::InvalidResponseError
+            Rails.logger.warn "[unfuddle] person with id #{reporter_id} not found"
+            nil
+          end
+          
+          def people
+            @people ||= Unfuddle.instance.people(including_removed: true)
           end
           
           def get_attributes_from_type(type)
