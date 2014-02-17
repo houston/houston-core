@@ -1185,39 +1185,6 @@ ALTER SEQUENCE user_credentials_id_seq OWNED BY user_credentials.id;
 
 
 --
--- Name: user_notifications; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE user_notifications (
-    id integer NOT NULL,
-    user_id integer,
-    project_id integer,
-    environment_name character varying(255),
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: user_notifications_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE user_notifications_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: user_notifications_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE user_notifications_id_seq OWNED BY user_notifications.id;
-
-
---
 -- Name: users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1403,13 +1370,6 @@ ALTER TABLE ONLY user_credentials ALTER COLUMN id SET DEFAULT nextval('user_cred
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY user_notifications ALTER COLUMN id SET DEFAULT nextval('user_notifications_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
 
 
@@ -1555,14 +1515,6 @@ ALTER TABLE ONLY tickets
 
 ALTER TABLE ONLY user_credentials
     ADD CONSTRAINT user_credentials_pkey PRIMARY KEY (id);
-
-
---
--- Name: user_notifications_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY user_notifications
-    ADD CONSTRAINT user_notifications_pkey PRIMARY KEY (id);
 
 
 --
@@ -2062,3 +2014,5 @@ INSERT INTO schema_migrations (version) VALUES ('20140106212047');
 INSERT INTO schema_migrations (version) VALUES ('20140106212305');
 
 INSERT INTO schema_migrations (version) VALUES ('20140114014144');
+
+INSERT INTO schema_migrations (version) VALUES ('20140217150735');
