@@ -1125,7 +1125,8 @@ CREATE TABLE tickets (
     checked_out_at timestamp without time zone,
     checked_out_by_id integer,
     priority character varying(255) DEFAULT 'normal'::character varying NOT NULL,
-    reopened_at timestamp without time zone
+    reopened_at timestamp without time zone,
+    prerequisites integer[]
 );
 
 
@@ -2026,3 +2027,5 @@ INSERT INTO schema_migrations (version) VALUES ('20140114014144');
 INSERT INTO schema_migrations (version) VALUES ('20140217150735');
 
 INSERT INTO schema_migrations (version) VALUES ('20140217160450');
+
+INSERT INTO schema_migrations (version) VALUES ('20140217195942');

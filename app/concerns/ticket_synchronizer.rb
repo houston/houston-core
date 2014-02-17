@@ -30,7 +30,7 @@ module TicketSynchronizer
     
     Project.benchmark("\e[33m[tickets.synchronize] synchronizing #{unsynchronized_tickets.length} tickets\e[0m") do
       numbers = unsynchronized_tickets.map(&:number)
-      tickets = Ticket.unscoped { includes(:ticket_prerequisites).where(number: numbers) }
+      tickets = Ticket.unscoped { where(number: numbers) }
       
       unsynchronized_tickets.map do |unsynchronized_ticket|
         ticket = tickets.detect { |ticket| ticket.number == unsynchronized_ticket.number }

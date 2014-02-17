@@ -12,6 +12,7 @@
  - **Prune**
    - Rename `Project#color` to `Project#color_name` and `Project#color_value` to `Project#color`
    - Remove `all_commit_times` from the Version Control Repo API
+   - Remove `ticket_prerequisites`
  
  - **Roles Refactor**
    - Replace hard-coded knowledge of roles:

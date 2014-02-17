@@ -8,7 +8,6 @@ class Ticket < ActiveRecord::Base
   belongs_to :checked_out_by, class_name: "User"
   has_many :ticket_queues, conditions: "ticket_queues.destroyed_at IS NULL"
   has_many :testing_notes
-  has_many :ticket_prerequisites, autosave: true
   has_and_belongs_to_many :releases, before_add: :ignore_release_if_duplicate
   has_and_belongs_to_many :commits, conditions: {unreachable: false}
   
@@ -113,29 +112,6 @@ class Ticket < ActiveRecord::Base
       where(arel_table[:deployment].not_eq("Production"))
     end
     
-  end
-  
-  
-  
-  def prerequisites=(ticket_numbers)
-    existing_prerequisites = self.prerequisites
-    
-    # Delete any prerequisites that have been removed
-    ticket_prerequisites.not_numbered(ticket_numbers).delete_all if existing_prerequisites.any?
-    
-    # Create any prerequisites that have been added
-    new_prerequisites = (ticket_numbers - existing_prerequisites).map { |new_number|
-        {project_id: project_id, prerequisite_ticket_number: new_number} }
-    
-    if new_record?
-      ticket_prerequisites.build(new_prerequisites)
-    else
-      new_prerequisites.each { |attrs| ticket_prerequisites.create(attrs) }
-    end
-  end
-  
-  def prerequisites
-    ticket_prerequisites.map(&:prerequisite_ticket_number)
   end
   
   
