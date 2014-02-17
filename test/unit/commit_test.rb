@@ -1,6 +1,7 @@
 require 'test_helper'
 
 class CommitTest < ActiveSupport::TestCase
+  include RR::Adapters::TestUnit
   
   test "should extract an array of tags from the front of a commit" do
     commits = [
@@ -122,6 +123,37 @@ class CommitTest < ActiveSupport::TestCase
     commit_message = "Short summary\n\nDetailed Description"
     
     assert_equal "Short summary", Commit.new(message: commit_message).clean_message, "Should omit the detailed description from commit messages"
+  end
+  
+  
+  
+  context "#identify_committers" do
+    setup do
+      user = User.first
+      user.alias_emails = %w{bob@gmail.com}
+      user.save!
+    end
+    
+    should "find users by their primary email address" do
+      commit = Commit.new(committer_email: "bob@example.com")
+      assert_equal 1, commit.identify_committers.count
+    end
+    
+    should "find users by their secondary email address" do
+      commit = Commit.new(committer_email: "bob@gmail.com")
+      assert_equal 1, commit.identify_committers.count
+    end
+    
+    should "find users only once when several email addresses match" do
+      stub(Houston.config).identify_committers_proc do
+        Proc.new { |commit| %w{bob@example.com bob@gmail.com} }
+      end
+      
+      mock.proxy(User).with_email_address(%w{bob@example.com bob@gmail.com}).once
+      
+      commit = Commit.new
+      assert_equal 1, commit.identify_committers.count, "Should find the user given two of his email addresses"
+    end
   end
   
 end
