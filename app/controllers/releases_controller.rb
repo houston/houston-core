@@ -70,7 +70,7 @@ class ReleasesController < ApplicationController
     if @release.save
       ProjectNotification.release(@release).deliver! if params[:send_release_email]
       
-      redirect_to @release, notice: 'Release was successfully created.'
+      redirect_to @release
     else
       @commit0 = @release.commit0
       @commit1 = @release.commit1
