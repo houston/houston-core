@@ -102,6 +102,11 @@ module Houston
             build_milestone(native_milestone)
           end
           
+          def close_milestone!(houston_milestone)
+            native_milestone = unfuddle.milestone(houston_milestone.remote_id)
+            native_milestone.update_attribute(:completed, true)
+          end
+          
           def find_tickets!(*args)
             query = find_in_cache_or_execute(query_key(args)) { construct_ticket_query(*args) }
             remote_tickets = unfuddle.find_tickets!(*query)

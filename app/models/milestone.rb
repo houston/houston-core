@@ -29,4 +29,9 @@ class Milestone < ActiveRecord::Base
     completed_at.nil?
   end
   
+  def close!
+    project.ticket_tracker.close_milestone!(self)
+    touch :completed_at
+  end
+  
 end
