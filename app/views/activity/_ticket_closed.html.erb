@@ -1,0 +1,6 @@
+<div class="timeline-event timeline-event-ticket-closed <%= ticket_closed.ticket.project.color %>" data-time="<%= ticket_closed.time.iso8601 %>">
+  <b class="bubble <%= ticket_closed.ticket.project.color %>"><i class="timeline-event-type <%= icon_for_resolution(ticket_closed.ticket.resolution) %>"></i></b>
+  <span class="timeline-event-actor"><%= avatar_for(ticket_closed.ticket.reporter, size: 20) %></span>
+  <span class="ticket"><%= link_to_ticket ticket_closed.ticket %></span>
+  <span class="ticket-resolution"><%= ticket_closed.ticket.resolution.to_s.titleize %></span>
+</div>

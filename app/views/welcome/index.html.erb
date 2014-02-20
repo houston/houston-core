@@ -1,0 +1,40 @@
+<div id="welcome">
+  <h1>
+    Projects I Follow
+    <%= avatar_for(current_user, size: 144) %>
+  </h1>
+  
+  <div class="timeline">
+    <p class="spinner"><i class="icon-spinner icon-spin icon-large"></i> Loading...</p>
+    <%= render "activity/events" %>
+  </div>
+  
+</div>
+
+<% content_for :javascripts do %>
+<script type="text/javascript">
+$(function() {
+  var $window = $(window),
+      $document = $(document),
+      $timeline = $('.timeline'),
+      offset = 50;
+  $window.scroll(function () { 
+    if($timeline.hasClass('loading')) { return; }
+    
+    if($window.scrollTop() >= $document.height() - $window.height() - offset) {
+      var time = $timeline.find('.timeline-event:last').attr('data-time');
+      
+      $timeline.addClass('loading');
+      var xhr = $.get('/', {since: time});
+      xhr.success(function(html) {
+        $timeline.removeClass('loading');
+        $('.timeline').append(html);
+      });
+      xhr.error(function() {
+        $timeline.removeClass('loading');
+      });
+    }
+  });
+});
+</script>
+<% end %>

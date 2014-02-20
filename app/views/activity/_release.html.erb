@@ -1,0 +1,6 @@
+<div class="timeline-event timeline-event-release" data-time="<%= release.time.iso8601 %>">
+  <b class="bubble <%= release.release.project.color %>"><i class="timeline-event-type icon-rocket"></i></b>
+  <span class="timeline-event-actor"><%= avatar_for(release.release.user, size: 20) %></span>
+  <%= link_to "Release to <b>#{release.release.environment_name}</b>".html_safe, release_path(release.release), target: "_blank" %>
+  <span class="commit-range"><%= link_to_release_commit_range(release.release) %></span>
+</div>

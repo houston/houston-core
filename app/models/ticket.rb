@@ -96,6 +96,14 @@ class Ticket < ActiveRecord::Base
       where(arel_table[:closed_at].not_eq(nil))
     end
     
+    def created_before(time)
+      where(arel_table[:created_at].lt(time)).reorder(arel_table[:created_at].desc)
+    end
+    
+    def closed_before(time)
+      where(arel_table[:closed_at].lt(time)).reorder(arel_table[:closed_at].desc)
+    end
+    
     def closed_on(date)
       where(closed_at: date.to_time.beginning_of_day..date.to_time.end_of_day)
     end

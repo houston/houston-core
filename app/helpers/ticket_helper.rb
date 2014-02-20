@@ -1,7 +1,7 @@
 module TicketHelper
   
   def format_ticket(ticket)
-    "[##{ticket.number}] #{format_with_feature_bolded ticket.summary}".html_safe
+    "<span class=\"ticket-number\">[##{ticket.number}]</span> <span class=\"ticket-summary\">#{format_with_feature_bolded ticket.summary}</span>".html_safe
   end
   
   def link_to_ticket(ticket)

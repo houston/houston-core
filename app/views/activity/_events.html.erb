@@ -1,0 +1,5 @@
+<% @events.each do |event| %>
+  <%= @last_date ? render_timeline_gap_for(event.date...@last_date) : render_timeline_date(event.date) %>
+  <%= render event %>
+  <% @last_date = event.date %>
+<% end %>

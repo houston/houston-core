@@ -1,0 +1,73 @@
+<div class="navbar navbar-fixed-top navbar-inverse">
+  <div class="navbar-inner">
+      <div class="container-fluid">
+      <a class="btn btn-navbar" data-target=".nav-collapse" data-toggle="collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+      <%= link_to Houston.config.title, main_app.root_url, class: "brand" %>
+      <div class="container-fluid nav-collapse">
+        <ul class="nav">
+          
+          <%# Kanban -%>
+          <% projects = followed_projects.select { |project| can?(:read, project.tickets.build) } -%>
+          <%= render_menu "Kanban", [
+              MenuItem.new("All Projects", main_app.kanban_path),
+              MenuItemDivider.new ] +
+              projects.map { |project| ProjectMenuItem.new(project, main_app.project_kanban_path(project)) } if projects.any? -%>
+          
+          <%# Testing Reports -%>
+          <% projects = followed_projects.select { |project| can?(:read, project.testing_notes.build) } -%>
+          <%= render_menu "Testing", [
+              MenuItem.new("All Projects", main_app.testing_report_path),
+              MenuItemDivider.new ] +
+              projects.map { |project| ProjectMenuItem.new(project, main_app.project_testing_report_path(project)) } if projects.any? -%>
+          
+          <%# Modules -%>
+          <% Houston.config.modules.each do |mod| -%>
+            <% next unless mod.namespace.respond_to?(:menu_items_for) -%>
+            <% menu_items = mod.namespace.menu_items_for(projects: followed_projects, ability: current_ability, user: current_user) -%>
+            <%= render_menu mod.name.humanize, menu_items -%>
+          <% end -%>
+          
+          <%# Releases -%>
+          <% projects = followed_projects.select { |project| can?(:read, project.releases.build) } -%>
+          <%= render_menu "Releases",
+              projects.map { |project| ProjectMenuItem.new(project, main_app.releases_path(project)) } -%>
+          
+          
+          
+          <li class="divider-vertical"></li>
+          
+          
+          
+          <% if can?(:read, Project) -%>
+            <li><%= link_to "Projects", main_app.projects_path %></li>
+          <% end -%>
+
+          <% if can?(:read, User) -%>
+            <li><%= link_to "Team", main_app.users_path %></li>
+          <% end -%>
+          
+        </ul>
+        <ul class="nav pull-right">
+          <% if can?(:manage, Setting) -%>
+            <li><%= link_to "/settings", :class => "settings-link" do %><i class="icon icon-2x icon-cog"></i><% end %></li>
+          <% end -%>
+          <% if current_user -%>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= avatar_for(current_user, size: 68) %> <b class="caret"></b></a>
+              <ul class="dropdown-menu releases-menu">
+                <li><%= link_to "Settings", main_app.user_path(current_user) %></li>
+                <li><%= link_to "Sign out", main_app.destroy_user_session_path %></li>
+              </ul>
+            </li>
+          <% else -%>
+            <li><%= link_to "Sign in", main_app.new_user_session_path %></li>
+          <% end -%>
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </div>
+</div>

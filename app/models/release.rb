@@ -28,6 +28,11 @@ class Release < ActiveRecord::Base
     where(environment_name: environment_name)
   end
   
+  def self.for_projects(*projects)
+    ids = projects.flatten.map { |project| project.is_a?(Project) ? project.id : project }
+    where(project_id: ids)
+  end
+  
   def self.for_deploy(deploy)
     where(deploy_id: deploy.id)
   end
