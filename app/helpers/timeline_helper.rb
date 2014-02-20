@@ -15,10 +15,7 @@ module TimelineHelper
   def icon_for_resolution(resolution)
     case resolution
     when nil, "", "fixed" then "icon-ok"
-    else "icon-trash"
-    # when "duplicate" then "icon-tags"
-    # when "invalid" then "icon-ban-circle"
-    # else "icon-trash"
+    else "icon-minus"
     end
   end
   

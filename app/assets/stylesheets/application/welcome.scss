@@ -56,7 +56,7 @@
   
   .timeline-event {
     margin-left: 50px;
-    padding: 3px 0 3px 70px;
+    padding: 4px 0 4px 70px;
     border-left: solid 2px #eee;
     position: relative;
     font-size: 0.92em;
@@ -86,25 +86,17 @@
     }
     
     .timeline-event-type {
-      color: rgba(255, 255, 255, 0.88);
+      color: white;
       font-size: 9px;
       display: inline-block;
       width: 12px;
       text-indent: 0;
       position: relative;
       top: -5px;
-      left: 0;
+      left: 1px;
       text-align: center;
       
-      &.icon-ok {
-        left: 1px;
-      }
-      &.icon-tag {
-        left: 1px;
-      }
-      &.icon-trash {
-        color: white;
-      }
+      &.icon-rocket { left: 0; }
     }
     
     &::after {
@@ -118,7 +110,7 @@
       color: transparent;
       position: absolute;
       left: -6px;
-      top: 9px;
+      top: 10px;
     }
     
     &::before {
@@ -130,7 +122,35 @@
       color: transparent;
       position: absolute;
       left: 0;
-      top: 13px;
+      top: 14px;
+    }
+    
+    &.timeline-event-release {
+      padding-top: 8px;
+      padding-bottom: 8px;
+      font-size: 1.20em;
+      
+      a { font-weight: 400;
+        b { font-weight: 800; }
+      }
+      
+      .bubble {
+        width: 21px;
+        height: 21px;
+        left: -2px;
+        border-radius: 21px;
+        top: 1px;
+        margin-right: -4px;
+      }
+      
+      .timeline-event-type {
+        font-size: 17px;
+        left: 2px;
+        top: 1px;
+      }
+      
+      &::before { top: 19px; }
+      &::after { top: 15px; }
     }
     
     .timeline-event-actor {
@@ -144,6 +164,10 @@
       display: inline-block;
       text-indent: 0;
       margin-left: 1em;
+      font-size: 10px;
+      letter-spacing: 1px;
+      
+      a { color: #0088cc !important; }
     }
     
     .ticket-resolution {

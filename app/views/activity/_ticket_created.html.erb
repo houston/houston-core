@@ -1,5 +1,5 @@
 <div class="timeline-event timeline-event-ticket-created <%= ticket_created.ticket.project.color %>" data-time="<%= ticket_created.time.iso8601 %>">
-  <b class="bubble <%= ticket_created.ticket.project.color %>"><i class="timeline-event-type icon-tag"></i></b>
+  <b class="bubble <%= ticket_created.ticket.project.color %>"><i class="timeline-event-type icon-plus"></i></b>
   <span class="timeline-event-actor"><%= avatar_for(ticket_created.ticket.reporter, size: 20) %></span>
   <span class="ticket"><%= link_to_ticket ticket_created.ticket %></span>
 </div>
