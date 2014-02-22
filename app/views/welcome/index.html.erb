@@ -1,12 +1,57 @@
 <div id="welcome">
-  <h1>
-    Projects I Follow
-    <%= avatar_for(current_user, size: 144) %>
-  </h1>
+  <div class="header">
+    <h1>
+      Projects I Follow
+      <%= avatar_for(current_user, size: 132) %>
+    </h1>
+    
+    <ul class="nav nav-pills">
+      <li id="nav_timeline" class="active"><a href="#timeline">Timeline</a></li>
+      <li id="nav_todo"><a href="#to-do">To Do</a></li>
+    </ul>
+  </div>
   
-  <div class="timeline">
-    <p class="spinner"><i class="icon-spinner icon-spin icon-large"></i> Loading...</p>
-    <%= render "activity/events" %>
+  <div id="triptych">
+    <div id="timeline_body">
+      <div class="timeline">
+        <p class="spinner"><i class="icon-spinner icon-spin icon-large"></i> Loading...</p>
+        <%= render "activity/events" %>
+      </div>
+    </div>
+    
+    <div id="todo_body" class="to-do out">
+      <table>
+        <tbody>
+          <% @project_tdls.each do |project| %>
+            <tr>
+              <td>
+                <b class="bubble <%= project.color %>"></b>
+                <span class="project-name"><%= project.name %></span>
+              </td>
+              <td>
+                <%= score_card :medium do |s| %>
+                  <% s.score "Unprioritized<br/>Tickets".html_safe,
+                             project.unprioritized_tickets,
+                             project.score_options(:unprioritized_tickets) %>
+                  <% s.score "Unestimated<br/>Tickets".html_safe,
+                             project.unestimated_tickets,
+                             project.score_options(:unestimated_tickets) %>
+                  <% s.score "Pull Requests".html_safe,
+                             project.pull_requests,
+                             project.score_options(:pull_requests) %>
+                  <% s.score "Failing Verdicts".html_safe,
+                             project.failing_verdicts,
+                             project.score_options(:failing_verdicts) %>
+                  <% s.score "Unreleased<br/>Commits".html_safe,
+                             project.unreleased_commits,
+                             project.score_options(:unreleased_commits) %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
   </div>
   
 </div>
@@ -14,12 +59,14 @@
 <% content_for :javascripts do %>
 <script type="text/javascript">
 $(function() {
+  new WelcomeView();
   var $window = $(window),
       $document = $(document),
       $timeline = $('.timeline'),
       offset = 50;
   $window.scroll(function () { 
     if($timeline.hasClass('loading')) { return; }
+    if(!/#?timeline/.test(window.location.hash)) { return; }
     
     if($window.scrollTop() >= $document.height() - $window.height() - offset) {
       var time = $timeline.find('.timeline-event:last').attr('data-time');

@@ -2,11 +2,18 @@
   vertical-align: top;
   white-space: nowrap;
   
-  p {
+  p, a {
     display: inline-block;
     vertical-align: top;
     text-align: right;
     margin: 0 0 0 1.25em;
+  }
+  
+  a {
+    &:hover {
+      text-decoration: none;
+      background: #f4f4f4;
+    }
   }
   
   .score-count {
@@ -56,7 +63,7 @@
   &.score-medium {
     margin: 4px 0 4px 1em;
     
-    p { min-width: 3.25em; }
+    p, a { min-width: 3.25em; }
     
     .score-count {
       font-size: 2.5em;
@@ -73,7 +80,7 @@
   &.score-large {
     margin: 4px 0 4px 1em;
     
-    p { min-width: 5em; }
+    p, a { min-width: 5em; }
     
     .score-count {
       font-size: 3.25em;

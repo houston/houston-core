@@ -12,6 +12,7 @@ class WelcomeController < ApplicationController
     end
     
     @events = ActivityFeed.new(followed_projects, time, count: 150).events
+    @project_tdls = ProjectTDL.for(followed_projects, current_user)
     
     if request.xhr?
       render partial: "activity/events"
