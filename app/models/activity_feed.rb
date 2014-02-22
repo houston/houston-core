@@ -19,17 +19,17 @@ class ActivityFeed
   end
   
   def ticket_creations
-    Ticket.for_projects(projects).includes(:project).created_before(time).limit(count)
+    Ticket.for_projects(projects).includes(:project, :reporter).created_before(time).limit(count)
       .map { |ticket| TicketCreatedEvent.new(ticket) }
   end
   
   def ticket_closures
-    Ticket.for_projects(projects).includes(:project).closed_before(time).limit(count)
+    Ticket.for_projects(projects).includes(:project, :reporter).closed_before(time).limit(count)
       .map { |ticket| TicketClosedEvent.new(ticket) }
   end
   
   def releases
-    Release.for_projects(projects).includes(:project).before(time).limit(count)
+    Release.for_projects(projects).includes(:project, :user).before(time).limit(count)
       .map { |release| ReleaseEvent.new(release) }
   end
   
@@ -44,9 +44,19 @@ class ActivityFeed
       time.to_date
     end
     
-    def to_partial_path
-      "activity/ticket_created"
+    def css
+      "timeline-event-ticket-created"
     end
+    
+    def icon
+      "icon-plus"
+    end
+    
+    def actor
+      ticket.reporter
+    end
+    
+    delegate :project, to: :ticket
   end
   
   TicketClosedEvent = Struct.new(:time, :ticket) do
@@ -58,9 +68,19 @@ class ActivityFeed
       time.to_date
     end
     
-    def to_partial_path
-      "activity/ticket_closed"
+    def css
+      "timeline-event-ticket-closed"
     end
+    
+    def icon
+      "icon-minus"
+    end
+    
+    def actor
+      ticket.reporter
+    end
+    
+    delegate :project, to: :ticket
   end
   
   ReleaseEvent = Struct.new(:time, :release) do
@@ -72,9 +92,19 @@ class ActivityFeed
       time.to_date
     end
     
-    def to_partial_path
-      "activity/release"
+    def css
+      "timeline-event-release"
     end
+    
+    def icon
+      "icon-rocket"
+    end
+    
+    def actor
+      release.user
+    end
+    
+    delegate :project, to: :release
   end
   
 end

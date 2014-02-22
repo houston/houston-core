@@ -1,5 +1,17 @@
 <% @events.each do |event| %>
   <%= @last_date ? render_timeline_gap_for(event.date...@last_date) : render_timeline_date(event.date) %>
-  <%= render event %>
+  <div class="timeline-event <%= event.css %>" data-time="<%= event.time.iso8601 %>">
+    <b class="bubble <%= event.project.color %>"><i class="timeline-event-type <%= event.icon %>"></i></b>
+    <span class="timeline-event-actor"><%= avatar_for(event.actor, size: 20) %></span>
+  <% case event; when ActivityFeed::TicketCreatedEvent %>
+    <span class="ticket"><%= link_to_ticket event.ticket %></span>
+  <% when ActivityFeed::TicketClosedEvent %>
+    <span class="ticket-resolution"><%= event.ticket.resolution.to_s.titleize %></span>
+    <span class="ticket"><%= link_to_ticket event.ticket %></span>
+  <% when ActivityFeed::ReleaseEvent %>
+    <span class="commit-range"><%= link_to_release_commit_range(event.release) %></span>
+    <%= link_to "Released <b>#{event.release.project.name}</b> to <b>#{event.release.environment_name}</b>".html_safe, release_path(event.release), target: "_blank" %>
+  <% end %>
+  </div>
   <% @last_date = event.date %>
 <% end %>

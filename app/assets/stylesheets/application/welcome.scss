@@ -60,7 +60,7 @@
   
   .timeline-event {
     margin-left: 50px;
-    padding: 4px 0 4px 70px;
+    padding: 4px 100px 4px 70px;
     border-left: solid 2px #eee;
     position: relative;
     font-size: 0.92em;
@@ -84,7 +84,7 @@
       width: 13px;
       height: 13px;
       position: relative;
-      top: 5px;
+      top: 2px;
       text-indent: 0;
       margin: 0 4px;
     }
@@ -95,12 +95,10 @@
       display: inline-block;
       width: 12px;
       text-indent: 0;
-      position: relative;
-      top: -5px;
+      position: absolute;
+      top: 2px;
       left: 1px;
       text-align: center;
-      
-      &.icon-rocket { left: 0; }
     }
     
     &::after {
@@ -119,7 +117,7 @@
     
     &::before {
       content: '.';
-      width: 10px;
+      width: 12px;
       height: 2px;
       background: #eee;
       display: block;
@@ -130,9 +128,7 @@
     }
     
     &.timeline-event-release {
-      padding-top: 8px;
-      padding-bottom: 8px;
-      font-size: 1.20em;
+      font-size: 1.10em;
       
       a { font-weight: 400;
         b { font-weight: 800; }
@@ -141,19 +137,19 @@
       .bubble {
         width: 21px;
         height: 21px;
-        left: -2px;
+        left: -4px;
         border-radius: 21px;
-        top: 1px;
+        top: 6px;
         margin-right: -4px;
       }
       
       .timeline-event-type {
         font-size: 17px;
         left: 2px;
-        top: 1px;
+        top: 2px;
       }
       
-      &::before { top: 19px; }
+      &::before { top: 19px; width: 8px; }
       &::after { top: 15px; }
     }
     
@@ -162,12 +158,16 @@
       display: inline-block;
       text-indent: 0;
       margin: 0 4px;
+      position: relative;
+      top: -1px;
     }
     
     .commit-range { 
-      display: inline-block;
+      display: block;
+      position: absolute;
+      top: 11px;
+      right: 0;
       text-indent: 0;
-      margin-left: 1em;
       font-size: 10px;
       letter-spacing: 1px;
       
@@ -175,9 +175,11 @@
     }
     
     .ticket-resolution {
-      display: inline-block;
+      display: block;
+      position: absolute;
+      top: 4px;
+      right: 0;
       text-indent: 0;
-      margin-left: 0.66em;
       font-size: 0.88em;
       font-weight: 800;
       color: #aaa;
