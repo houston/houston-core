@@ -1,4 +1,6 @@
 #welcome {
+  max-width: 920px;
+  margin: 0 auto;
   
   h1 {
     background: none;
@@ -20,6 +22,8 @@
 }
 
 .timeline {
+  padding-right: 60px;
+  
   .timeline-date {
     width: 38px;
     font-size: 0.75em;
