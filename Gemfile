@@ -27,6 +27,7 @@ gem 'octokit' # for adapting to GitHub Issues
 gem 'oj'
 gem 'premailer' # for inlining CSS in HTML emails
 gem 'progressbar' # for long migrations
+gem 'ruby-ntlm', require: false # for authenticating re: ITSM
 gem 'rugged', '0.17.0.b7' # for speaking to Git
 gem 'simplecov'
 gem 'strongbox' # for encrypting user credentials

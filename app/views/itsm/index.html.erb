@@ -1,0 +1,32 @@
+<div class="dashboard" style="background: #333333; color: #777;">
+  
+  <img src="/extras/fire.svg" style="position: fixed; max-height: 100%; top: 0; opacity: 0.1; width: 100%; z-index: -1;" />
+  
+  <div style="max-width: 900px; margin: 0 auto;">
+    <h2 style="text-align: left; margin-bottom: 0.5em;">Fires</h2>
+    <table id="fires">
+      <%= render "fires" %>
+    </table>
+  </div>
+</div>
+
+<%= content_for :javascripts do %>
+<script type="text/javascript">
+  $(function() {
+    $('body').addClass('full-screen');
+    var $fires = $('#fires');
+    
+    function refresh() {
+      var time = new Date(),
+          hour = time.getHours();
+      // Only refresh between 6am and 6pm
+      if(hour < 6 || hour > 18) return;
+      $.get('/itsm/issues').done(function(html) {
+        $fires.html(html);
+      });
+    }
+    
+    window.setInterval(refresh, 15000); // refresh every 15 seconds
+  });
+</script>
+<% end %>

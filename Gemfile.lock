@@ -229,6 +229,7 @@ GEM
     redcarpet (3.0.0)
     ref (1.0.2)
     rr (1.0.4)
+    ruby-ntlm (0.0.1)
     rugged (0.17.0.b7)
     sass (3.2.14)
     sass-rails (3.2.6)
@@ -335,6 +336,7 @@ DEPENDENCIES
   rails (~> 3.2.13)
   redcarpet
   rr
+  ruby-ntlm
   rugged (= 0.17.0.b7)
   sass-rails (~> 3.2.3)
   shoulda-context

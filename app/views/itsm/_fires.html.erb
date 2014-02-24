@@ -1,0 +1,8 @@
+<% @issues.each do |issue| %>
+  <tr class="fire">
+    <td style="padding: 0.25em 1em;">
+      <%= link_to issue["Summary"], issue["CallDetailUrl"], target: "_blank", style: "color: #aaa;" %>
+    </td>
+    <td style="padding: 0.25em 1em;"><%= issue["AssignedTo"]%></td>
+  </tr>
+<% end %>
