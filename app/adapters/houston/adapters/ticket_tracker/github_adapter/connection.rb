@@ -52,8 +52,7 @@ module Houston
           end
           
           def open_tickets
-            remote_issues = client.list_issues(repo_path, state: "open")
-            remote_issues.map { |attributes | build_ticket(attributes) }
+            build_issues client.list_issues(repo_path, state: "open")
           end
           
           def project_url
@@ -140,8 +139,17 @@ module Houston
           end
           
           def closed_tickets
-            remote_issues = client.list_issues(repo_path, state: "closed")
-            remote_issues.map { |attributes | build_ticket(attributes) }
+            build_issues client.list_issues(repo_path, state: "closed")
+          end
+          
+          def build_issues(remote_issues)
+            remote_issues
+              .reject(&method(:pull_request?))
+              .map(&method(:build_ticket))
+          end
+          
+          def pull_request?(issue)
+            issue.pull_request._rels.size > 0
           end
           
         end
