@@ -18,7 +18,6 @@ class TicketTest < ActiveSupport::TestCase
   
   
   
-  
   context "#exit_queues!" do
     setup do
       @ticket = Ticket.create!(project_id: 1, number: 1, summary: "Test summary", type: "Bug")
@@ -52,6 +51,14 @@ class TicketTest < ActiveSupport::TestCase
       assert_triggered "ticket:release" do
         ticket.release!(release)
       end
+    end
+    
+    should "release antecedents" do
+      antecedent = TicketAntecedent.new(ticket, "Test", 4)
+      mock(antecedent).release!
+      stub(ticket).antecedents { [antecedent] }
+      
+      ticket.release!(release)
     end
     
     should "assign first_release_at and last_release_at" do
@@ -91,6 +98,38 @@ class TicketTest < ActiveSupport::TestCase
           assert_equal released_at, ticket.first_release_at
         end
       end
+    end
+  end
+  
+  
+  
+  context "#resolve!" do
+    setup do
+      @ticket = Ticket.create!(project_id: 1, number: 1, summary: "Test summary", type: "Bug")
+    end
+    
+    should "resolve antecedents" do
+      antecedent = TicketAntecedent.new(ticket, "Test", 4)
+      mock(antecedent).resolve!
+      stub(ticket).antecedents { [antecedent] }
+      
+      ticket.resolve!
+    end
+  end
+  
+  
+  
+  context "#close!" do
+    setup do
+      @ticket = Ticket.create!(project_id: 1, number: 1, summary: "Test summary", type: "Bug")
+    end
+    
+    should "resolve antecedents" do
+      antecedent = TicketAntecedent.new(ticket, "Test", 4)
+      mock(antecedent).close!
+      stub(ticket).antecedents { [antecedent] }
+      
+      ticket.close!
     end
   end
   

@@ -40,7 +40,7 @@ Houston.config do
     "hazelnut"      => "a4703d",
     "burnt_sienna"  => "df8a3d",
     "orange"        => "e9b84e",
-    "pea"           => "8dc63f",
+    "pea"           => "84bd37",
     "leaf"          => "409938",
     "spruce"        => "307355",
     "slate"         => "6c7a80",
@@ -302,17 +302,20 @@ Houston.config do
   # Events:
   # Attach a block to handle any of the events broadcast by
   # Houston's event system:
-  #   * boot                  When the Rails application is booted
-  #   * deploy:create         When a deploy has been recorded
-  #   * error:create          When an exception has been reported
-  #   * hooks:*               When a Web Hook as been triggered
-  #   * release:create        When a new Release has been created
-  #   * test_run:start        When the CI server has begun a build
-  #   * test_run:complete     When the CI server has completed a build
-  #   * testing_note:create   When a Testing Note has been created
-  #   * testing_note:update   When a Testing Note has been updated
-  #   * testing_note:save     When a Testing Note has been created or updated
-  #   * ticket:release        When a Ticket is mentioned in a Release
+  #   * antecedent:*:released   When a Ticket has been released, for each antecedent
+  #   * antecedent:*:resolved   When a Ticket has been resolved, for each antecedent
+  #   * antecedent:*:closed     When a Ticket has been closed, for each antecedent
+  #   * boot                    When the Rails application is booted
+  #   * deploy:create           When a deploy has been recorded
+  #   * error:create            When an exception has been reported
+  #   * hooks:*                 When a Web Hook as been triggered
+  #   * release:create          When a new Release has been created
+  #   * test_run:start          When the CI server has begun a build
+  #   * test_run:complete       When the CI server has completed a build
+  #   * testing_note:create     When a Testing Note has been created
+  #   * testing_note:update     When a Testing Note has been updated
+  #   * testing_note:save       When a Testing Note has been created or updated
+  #   * ticket:release          When a Ticket is mentioned in a Release
   #
   # Example:
   # on "boot" do

@@ -46,7 +46,7 @@ class ActiveSupport::TestCase
       
       yield
       
-      assert event_triggered, ["The test_run:completed event was not triggered", message].compact.join
+      assert event_triggered, ["The event \"#{event_name}\" was not triggered", message].compact.join
     end
   end
   

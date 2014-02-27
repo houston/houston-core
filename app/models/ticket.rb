@@ -24,6 +24,8 @@ class Ticket < ActiveRecord::Base
   
   before_save :find_reporter, if: :find_reporter?
   after_save :propagate_milestone_change, if: :milestone_id_changed?
+  after_save :resolve_antecedents!, if: :just_resolved?
+  after_save :close_antecedents!, if: :just_closed?
   
   attr_readonly :number, :project_id
   
@@ -262,23 +264,26 @@ class Ticket < ActiveRecord::Base
     update_attribute(:first_release_at, release.created_at) if first_release
     update_attribute(:last_release_at, release.created_at)
     set_deployment_to!(release.environment_name)
+    
     Houston.observer.fire "ticket:release", self, release
+    antecedents.each(&:release!)
   end
   
   def resolve!
     remote_ticket.resolve! if remote_ticket and remote_ticket.respond_to?(:resolve!)
     
-    update_column :resolution, "fixed"
+    update_attribute :resolution, "fixed"
     self
   end
   
-  def close_ticket!
+  def close!
     remote_ticket.close! if remote_ticket
     
-    update_column :closed_at, Time.now
+    update_attribute :closed_at, Time.now
     exit_queues!
     self
   end
+  alias :close_ticket! :close!
   
   def reopen!
     raise "Instead of reopening a closed ticket, make a new one!" if closed?
@@ -413,6 +418,22 @@ private
   def propagate_milestone_change
     return if nosync?
     remote_ticket.set_milestone! milestone && milestone.remote_id
+  end
+  
+  def just_resolved?
+    resolution_changed? && resolution_was.blank?
+  end
+  
+  def just_closed?
+    closed_at_changed? && closed_at_was.nil?
+  end
+  
+  def resolve_antecedents!
+    antecedents.each(&:resolve!)
+  end
+  
+  def close_antecedents!
+    antecedents.each(&:close!)
   end
   
 end

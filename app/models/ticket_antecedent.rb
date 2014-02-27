@@ -17,4 +17,18 @@ class TicketAntecedent
     "#{kind}:#{id}"
   end
   
+  
+  
+  def release!
+    Houston.observer.fire "antecedent:#{kind.downcase.underscore}:released", self
+  end
+  
+  def resolve!
+    Houston.observer.fire "antecedent:#{kind.downcase.underscore}:resolved", self
+  end
+  
+  def close!
+    Houston.observer.fire "antecedent:#{kind.downcase.underscore}:closed", self
+  end
+  
 end
