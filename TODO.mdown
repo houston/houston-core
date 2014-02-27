@@ -10,7 +10,6 @@
    - Disable buttons when working
 
  - **Prune**
-   - Rename `Project#color` to `Project#color_name` and `Project#color_value` to `Project#color`
    - Remove `all_commit_times` from the Version Control Repo API
    - Remove `ticket_prerequisites`
  
@@ -21,47 +20,21 @@
      - ProjectNotification: project.maintainers are CCed on releases, sent test results and configuration errors
    - Extract the "Follower" role to a separate table
 
- - **Antecedents**
-   - Auto-resolve exception antecedents
-   - Send support notifications on problem antecedents
-
- - **Notifications**
-   - Send one-off emails that can take advantage of the abilities of each recipient (-> Sidekiq?)
-   - Put a link in emails to user's notifications options (automatically logging them in)
-   - Style Release Notifications to look OK in Outlook on a PC:
-     http://www.campaignmonitor.com/css/ - what CSS is supported by what browser
-     http://snook.ca/archives/html_and_css/rounded_corners_experiment_ie/ - rounded rects with VML
-     http://stackoverflow.com/questions/10156077/html-that-will-render-correctly-in-outlook-2007-2010
-     http://www.webpronews.com/kiss-your-css-goodbye-with-outlook-2007-01
-     http://www.emailonacid.com/blog/details/C13/css_padding_in_outlook_2007_and_2010
-     http://www.emailonacid.com/blog/details/C13/7_tips_and_tricks_regarding_margins_and_padding_in_html_emails
-
- - **Daily Report**
-   - Regressions?
-   - Exceptions that received notices
-   - Recent resolved problems
-   - Maintenance lights
-   - Count of tickets that need estimates?
-
- - **Weekly Report**
-   - Add tests section
-
  - **Houston-Scheduler**
    - Show tickets that were begun this week (even if they were closed!)
    - Show current percentage
    - Show more than one week of predicted velocity
-   - Allow specifying prerequisites for tickets
-   - Click to edit ticket in a popup
-   - Style tickets ahead of prerequisites negatively
    - **Discussion Needed:** allow discussion to take place
-   - **Mixer:** allow creating projects
 
  - **Testing Report**
    - Show related tickets
-   - Allow creating related tickets
 
- - **Tickets**
-   - Support attachments
+ - **Other**
+   - Houston: add "who" to deploy
+   - Houston: check break-the-build, skip test runs w/o results
+   - Houston: you broke the build if you get a config error
+   - Houston: Kanban needs to auto-update
+   - Houston: fast load Kanban
 
 
 
@@ -79,12 +52,11 @@ Goals:
    - Create a Rails Engine generator for Houston plugins based on Houston::Scheduler
 
  - **Modularity:**
-   - Extract **NewRelic**, and **GitHub** knowledge
    - Refactor hard-coded knowledge about Unfuddle/EP into configuration
      - Replace `config/initializers/hard_coded_knowledge.rb`
      - TicketHelper#format_antecedent
-     - Don't limit TestingReportController to only use the Unfuddle adapter (have adapters publish their features?)
    - Turn on or off features via config.rb
+   - Have adapters publish their features? (like `can_resolve?` or `supports_resolution?`)
    - Extract **houston-ci**
    - Extract **houston-releases**
    - Extract **houston-testing-report**
@@ -101,17 +73,14 @@ Goals:
  - **Weekly Report/Exceptions:** problems history is off by 1 week?
  - **Weekly Report:** cache Google Chart images in emails and/or implement server-side SVG library
  - **CI Results:** fails are reported as errors
- - **Project:** allow changing Version Control Location (have tmp folder deleted or whatever)
  - **Testing Notes:** edit a failing testing note at home, SMTP fail, timeout takes 30 seconds!
 
 #### Features
 
  - **Projects:**
-   - Participants (avatars) min/max width | Maintainers = special kind of participant
    - Show retired projects and allow "unretiring" them
 
  - **Houston-Scheduler:**
-   - Allow adding milestones (show time-to-milestone)
    - Add a "The Pipe" view which interleaves work for all projects, taking 1 week bites
    - Expand tickets like Testing Report does
    - Calculate prerequisites/dependencies when applying Queuing Discipline
@@ -131,17 +100,11 @@ Goals:
  - **Weekly Report:**
    - Pair projects with colors somewhere (then don't for "Focus this week")
    - New Section: **Deploys** or **Releases**
-   - New Section: **Performance** (shows _histogram_ of response times)
    - New Section: **Superlatives**
      - most total commits per week/day
      - most commits to a project per week/day
      - most projects committed to per week
      - first commit to a project per developer
-   - group into supersections
-     - "Productivity", "Maintenance", "Development" [?]
-     - "Effort", "Task" | "Us", "Them" | "Red", "Blue"
-   - add a Customer Satisfaction metric
-   - Report on health of tickets
 
  - **Global:**
    - make mobile site
@@ -152,14 +115,12 @@ Goals:
    - Add priority options (to left of ticket): high/low, exclusive checkboxes
    - Add additional verdicts (pass-with-suggestions? unable-to-test?)
 
- - **Project Dashboard:** (like Daily Report?)
-   - New tickets
-   - New problems
+ - **Project Dashboard:**
+   - Real-time graph of exception notices
+   - Figure out how to show queue history; show more weeks
+   - Show deploys _on_ real-time graphs
+   - PG stats
 
- - **Houston-Fnord**: (show real-time analytics)
-   - Solve for multiple apps (multiple gauges? multiple fields?)
-   - **Project Dashboard:**
-     - Real-time graph of exception notices
-     - Figure out how to show queue history; show more weeks
-     - Show deploys _on_ real-time graphs
-     - PG stats
+ - **Antecedents**
+   - Send support notifications on problem antecedents
+
