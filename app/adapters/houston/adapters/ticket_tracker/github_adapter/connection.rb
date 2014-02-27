@@ -84,6 +84,14 @@ module Houston
             @client ||= Octokit::Client.new(Houston.config.github.pick(:access_token).merge(auto_paginate: true))
           end
           
+          def close_issue(number)
+            client.close_issue(repo_path, number)
+          end
+          
+          def reopen_issue(number)
+            client.reopen_issue(repo_path, number)
+          end
+          
           
           
           def as_user(user, &block)

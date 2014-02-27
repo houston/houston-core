@@ -69,7 +69,7 @@ module Houston
           
           
           def close!
-            connection.close_issue(connection.repo_path, number)
+            connection.close_issue(number)
           end
           
           def resolve!
@@ -77,7 +77,7 @@ module Houston
           end
           
           def reopen!
-            connection.reopen_issue(connection.repo_path, number)
+            connection.reopen_issue(number)
           end
           
           
