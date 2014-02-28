@@ -326,6 +326,14 @@ Houston.config do
   
   
   
+  on "antecedent:errbit:release" do |antecedent|
+    if antecedent.project.error_tracker_name == "Errbit"
+      antecedent.project.error_tracker.resolve!(antecedent.id)
+    end
+  end
+  
+  
+  
   # Cron:
   # Define events to occur at scheduled intervals
   # using the DSL defined by the Whenever gem.

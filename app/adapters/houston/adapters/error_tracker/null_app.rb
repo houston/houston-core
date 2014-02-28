@@ -8,15 +8,16 @@ module Houston
         # ------------------------------------------------------------------------- #
         
         def project_url
-          nil
         end
         
         def error_url(*args)
-          nil
         end
         
         def problems_during(range)
           []
+        end
+        
+        def resolve!(problem_id)
         end
         
         # ------------------------------------------------------------------------- #
@@ -25,6 +26,7 @@ module Houston
         def nil?
           true
         end
+        
         
       end
       

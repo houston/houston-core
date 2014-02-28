@@ -25,6 +25,14 @@ module Houston
             fetch_notices start_date: range.begin.iso8601, end_date: range.end.iso8601
           end
           
+          def resolve!(problem_id)
+            put("api/v1/problems/#{problem_id}/resolve.json")
+          end
+          
+          def unresolve!(problem_id)
+            put("api/v1/problems/#{problem_id}/unresolve.json")
+          end
+          
           
           
           def project_url(app_id)
@@ -82,8 +90,14 @@ module Houston
           
           def get(path, params={})
             params = params.merge(auth_token: config[:auth_token])
-            response = Project.benchmark("[errbit] fetch \"#{path}\" (#{params.inspect})") { @connection.get(path, params) }
+            response = Project.benchmark("[errbit] GET \"#{path}\" (#{params.inspect})") { @connection.get(path, params) }
             Yajl.load(response.body)
+          end
+          
+          def put(path, params={})
+            params = params.merge(auth_token: config[:auth_token])
+            response = Project.benchmark("[errbit] PUT \"#{path}\" (#{params.inspect})") { @connection.put(path, params) }
+            response.status
           end
           
         end

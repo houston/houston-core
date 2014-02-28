@@ -27,6 +27,14 @@ module Houston
               .select { |problem| problem.app_id == app_id }
           end
           
+          def resolve!(problem_id)
+            connection.resolve!(problem_id)
+          end
+          
+          def unresolve!(problem_id)
+            connection.unresolve!(problem_id)
+          end
+          
           
         end
       end
