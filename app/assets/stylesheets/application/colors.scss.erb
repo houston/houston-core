@@ -34,9 +34,15 @@
   position: relative;
   top: 1px;
   margin-left: 0.25em;
-
+  
   <% Houston.config.project_colors.each do |name, value| %>
     &.<%= name %> { background-color: $<%= name %>; }
+  <% end %>
+}
+
+.project-tile {
+  <% Houston.config.project_colors.each do |name, value| %>
+    &.<%= name %>:hover { background-color: $<%= name %>; }
   <% end %>
 }
 

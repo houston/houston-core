@@ -34,6 +34,10 @@ class TicketsController < ApplicationController
     end
   end
   
+  def new
+    @projects = followed_projects.select(&:has_ticket_tracker?)
+  end
+  
   def close
     ticket = Ticket.find(params[:id])
     ticket.close_ticket!

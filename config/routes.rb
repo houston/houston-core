@@ -36,14 +36,6 @@ Houston::Application.routes.draw do
   match "testing_report" => "testing_report#index", :via => :get, :as => :testing_report
   match "testing_report/:slug" => "testing_report#show", :via => :get, :as => :project_testing_report
   
-  match "tickets/:id", :to => "tickets#show", :via => :get
-  match "tickets/:id", :to => "tickets#update", :via => :put
-  match "tickets/:id/close", :to => "tickets#close", :via => :delete
-  match "tickets/:id/reopen", :to => "tickets#reopen", :via => :delete
-  
-  get "projects/:slug/tickets", :to => "project_tickets#index"
-  post "projects/:slug/tickets", :to => "project_tickets#create"
-  
   scope "tickets/:ticket_id" do
     resources :testing_notes
   end
@@ -120,6 +112,15 @@ Houston::Application.routes.draw do
   
   
   # Tickets
+  
+  match "tickets/new", to: "tickets#new"
+  match "tickets/:id", :to => "tickets#show", :via => :get
+  match "tickets/:id", :to => "tickets#update", :via => :put
+  match "tickets/:id/close", :to => "tickets#close", :via => :delete
+  match "tickets/:id/reopen", :to => "tickets#reopen", :via => :delete
+  
+  get "projects/:slug/tickets", :to => "project_tickets#index"
+  post "projects/:slug/tickets", :to => "project_tickets#create"
   
   scope "projects/:slug" do
     match "tickets/new", :to => "project_tickets#new", as: :new_ticket
