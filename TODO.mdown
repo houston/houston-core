@@ -49,7 +49,6 @@ Goals:
 
  - **Engines:**
    - Engines need to supply configuration objects, plug in to config.rb
-   - Create a Rails Engine generator for Houston plugins based on Houston::Scheduler
 
  - **Modularity:**
    - Refactor hard-coded knowledge about Unfuddle/EP into configuration

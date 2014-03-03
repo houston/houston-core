@@ -249,9 +249,27 @@ Houston.config do
   
   
   # Modules
-  # If you're contributing to Houston and working with more then
-  # one module, configure local paths for bundler. See:
-  # http://ryanbigg.com/2013/08/bundler-local-paths/
+  # ---------------------------------------------------------------------------
+  #
+  # Modules provide a way to extend Houston.
+  #
+  # They are mountable Rails Engines whose routes are automatically
+  # added to Houston's, prefixed with the name of the module.
+  #
+  # To create a new module for Houston, run:
+  #
+  #   gem install houston-cli
+  #   houston_new_module <MODULE>
+  #
+  # Then add the module to this file with:
+  #
+  #   use :<MODULE>, github: "<USERNAME>/houston-<MODULE>", branch: "master"
+  #
+  # When developing a module, it can be helpful to tell Bundler
+  # to refer to the local copy of your module's repo:
+  #
+  #   bundle config local.houston-<MODULE> ~/Projects/houston-<MODULE>
+  #
   use :scheduler, :github => "houstonmc/houston-scheduler", :branch => "master"
   
   
