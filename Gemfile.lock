@@ -9,6 +9,15 @@ GIT
       faraday (~> 0.8.8)
 
 GIT
+  remote: git://github.com/concordia-publishing-house/houston-itsm.git
+  revision: 8321feef881798b70e41f23b8dd80dd0995b1433
+  branch: master
+  specs:
+    houston-itsm (0.0.1)
+      rails (~> 3.2.17)
+      ruby-ntlm
+
+GIT
   remote: git://github.com/houstonmc/houston-scheduler.git
   revision: b6a9290e9ec62ca07012dd7a43efee9f0c939b3a
   branch: master
@@ -317,6 +326,7 @@ DEPENDENCIES
   gemoji
   googlecharts
   handlebars_assets (= 0.8.2)
+  houston-itsm!
   houston-scheduler!
   hpricot
   jquery-rails
@@ -336,7 +346,6 @@ DEPENDENCIES
   rails (~> 3.2.13)
   redcarpet
   rr
-  ruby-ntlm
   rugged (= 0.17.0.b7)
   sass-rails (~> 3.2.3)
   shoulda-context

@@ -97,6 +97,7 @@ namespace :config do
     config.remove_block! 'on "test_run:complete"'
     config.remove_block! 'on "ticket:release"'
     config.remove_block! 'on "boot"'
+    config.remove! /^  use :itsm,[^\n]+\n/
     
     config.gsub! /^end.*\Z/m, "end\n"
     

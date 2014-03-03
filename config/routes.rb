@@ -181,7 +181,6 @@ Houston::Application.routes.draw do
   # Experiments
   match "tickets", :to => "tickets#index", :via => :get
   match "pull_requests", :to => "pull_requests#index", via: :get, as: :pull_requests
-  get "itsm/issues", :to => "itsm#index"
   
   # Tester Bar
   match "tester_bar/:action", :controller => "tester_bar" if Rails.env.development?
