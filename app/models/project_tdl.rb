@@ -11,14 +11,15 @@ class ProjectTDL < SimpleDelegator
     super(project)
     @unestimated_tickets = has_ticket_tracker? ? tickets.unresolved.able_to_estimate.unestimated.count : nil
     @unprioritized_tickets = has_ticket_tracker? ? tickets.unresolved.able_to_prioritize.unprioritized.count : nil
-    @failing_verdicts = TestingNote.for_tickets(tickets.unclosed.fixed.deployed).count
+    testing_notes = TestingNote.for_tickets(tickets.unclosed.fixed.deployed)
+    @failing_tickets = testing_notes.where(verdict: %w{fails badticket}).pluck(:ticket_id).uniq.count
     @pull_requests = pull_requests.empty? ? nil : pull_requests.count
   end
   
   attr_reader :unestimated_tickets,
               :unprioritized_tickets,
               :pull_requests,
-              :failing_verdicts
+              :failing_tickets
   
   def unreleased_commits
     return nil unless unreleased_commit_range
@@ -49,7 +50,7 @@ class ProjectTDL < SimpleDelegator
     when :pull_requests
       return {} unless pull_requests
       { href: repo.pull_requests_url }
-    when :failing_verdicts
+    when :failing_tickets
       { href: "/testing_report/#{slug}" }
     else
       {}

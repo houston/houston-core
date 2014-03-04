@@ -39,9 +39,9 @@
                   <% s.score "Pull Requests".html_safe,
                              project.pull_requests,
                              project.score_options(:pull_requests) %>
-                  <% s.score "Failing Verdicts".html_safe,
-                             project.failing_verdicts,
-                             project.score_options(:failing_verdicts) %>
+                  <% s.score "Failing Tickets".html_safe,
+                             project.failing_tickets,
+                             project.score_options(:failing_tickets) %>
                   <% s.score "Unreleased<br/>Commits".html_safe,
                              project.unreleased_commits,
                              project.score_options(:unreleased_commits) %>
