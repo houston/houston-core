@@ -5,5 +5,4 @@ $:.unshift Rails.root.join("lib", "unfuddle", "lib").to_s
 require 'freight_train'
 require 'lail/core_extensions'
 require 'unfuddle'
-require 'unfuddle_dump'
 require 'parallel_enumerable'

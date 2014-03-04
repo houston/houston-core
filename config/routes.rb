@@ -179,7 +179,6 @@ Houston::Application.routes.draw do
   # Other
   
   # Experiments
-  match "tickets", :to => "tickets#index", :via => :get
   match "pull_requests", :to => "pull_requests#index", via: :get, as: :pull_requests
   
   # Tester Bar

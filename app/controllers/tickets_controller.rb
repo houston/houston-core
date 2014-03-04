@@ -1,22 +1,5 @@
 class TicketsController < ApplicationController
   
-  def index
-    @tickets = UnfuddleDump.load!
-    @last_updated = UnfuddleDump.last_updated
-    
-    users = Unfuddle.instance.get("people.json?removed=true").json
-    @user_names_by_ids = {}
-    users.each do |user|
-      @user_names_by_ids[user["id"]] = "#{user["first_name"].strip} #{user["last_name"].strip}"
-    end
-    
-    projects = Unfuddle.instance.get("projects.json?removed=true").json
-    @project_names_by_ids = {}
-    projects.each do |project|
-      @project_names_by_ids[project["id"]] = project["title"]
-    end
-  end
-  
   def show
     ticket = Ticket.find(params[:id])
     render :json => TicketPresenter.new(ticket).with_testing_notes
