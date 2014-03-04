@@ -249,7 +249,7 @@
     
     &.works { img { border-color: #0a0; } color: #0a0; }
     &.fails { img { border-color: #c11; } color: #c11; }
-    &.badticket { img { border-color: #F5ED28; } color: #F5ED28; .tester-comment { color: #333; } }
+    &.badticket { img { border-color: #F5ED28; } color: #F5ED28; .tester-comment, form { color: #333; } }
     &.none { img { border-color: #777777; } color: #777777; }
   }
 }

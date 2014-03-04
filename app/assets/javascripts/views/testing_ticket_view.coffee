@@ -99,6 +99,10 @@ class window.TestingTicketView extends Backbone.View
       $testingNotes.append @renderNewTestingNote(params)
       
       $tr.find('form#new_testing_note').submit _.bind(@createTestingNote, @)
+      $tr.find('form#new_testing_note :radio[name="verdict"]').click =>
+        verdict = $tr.find('form#new_testing_note :radio[name="verdict"]:checked').val() || 'none'
+        $tr.find('.testing-note.new').attr('class', "testing-note new by-tester #{verdict}")
+      
       $tr.find('.btn-post-and-reset').click _.bind(@createTestingNoteAndResetTicket, @)
     
     $testingNotes
@@ -156,6 +160,7 @@ class window.TestingTicketView extends Backbone.View
     testingNote.save params,
       success: (model, response)=>
         $('.alert').remove()
+        $form.closest('.testing-note.new').attr('class', 'testing-note new by-tester')
         $form.reset()
         @addTestingNote(testingNote)
         @trigger('testing_note:refresh')

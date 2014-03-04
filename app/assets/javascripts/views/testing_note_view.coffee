@@ -6,6 +6,7 @@ class window.TestingNoteView extends Backbone.View
     'click .edit-note': 'edit'
     'click .destroy-note': 'destroy'
     'click .btn-cancel': 'cancel'
+    'click :radio': 'changeVerdict'
   
   initialize: ->
     @isInEditMode = false
@@ -59,11 +60,16 @@ class window.TestingNoteView extends Backbone.View
           errors.renderToAlert().prependTo($(@el)).alert()
     @
   
+  changeVerdict: (e)->
+    verdict = @$el.find(':radio[name="verdict"]:checked').val() || 'none'
+    @$el.attr('class', "testing-note by-tester #{verdict}")
+  
   cancel: (e)->
     if e
       e.preventDefault()
       e.stopImmediatePropagation()
     if @isInEditMode
+      @$el.attr('class', "testing-note #{@model.get('verdict')}")
       @isInEditMode = false
       @render()
       @trigger('edit:cancel', @)
