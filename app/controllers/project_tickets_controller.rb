@@ -18,20 +18,24 @@ class ProjectTicketsController < ApplicationController
     @labels = []
     @labels = Houston::TMI::TICKET_LABELS_FOR_MEMBERS if @project.slug =~ /^360|members$/
     @labels = Houston::TMI::TICKET_LABELS_FOR_UNITE if @project.slug == "unite"
-    @tickets = @project.tickets.includes(:project).map do |ticket|
-      { id: ticket.id,
-        summary: ticket.summary,
-        closed: ticket.closed_at.present?,
-        ticketUrl: ticket.ticket_tracker_ticket_url,
-        number: ticket.number }
-    end
+    benchmark "\e[33mLoad tickets\e[0m" do
+      @tickets = @project.tickets
+        .pluck(:id, :summary, :number, :closed_at)
+        .map do |id, summary, number, closed_at|
+        { id: id,
+          summary: summary,
+          closed: closed_at.present?,
+          ticketUrl: @project.ticket_tracker_ticket_url(number),
+          number: number }
+      end
+  end
     
     if request.xhr?
-      render json: {
+      render json: MultiJson.dump({
         tickets: @tickets,
         project: { slug: @project.slug },
         labels: @labels
-      }
+      })
     end
   end
   
