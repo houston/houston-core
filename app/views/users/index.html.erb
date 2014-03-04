@@ -6,32 +6,71 @@
 <% end %>
 
 <% if @users.any? %>
-  <% users_by_role(@users) do |role, users| %>
-    <h4><%= role.pluralize %></h4>
-    <div class="users">
-      <%= in_groups_of(users, 2, "user-row") do |user| %>
-        <div class="user">
-          <span class="user-avatar avatar-54"><%= avatar_for(user, size: 112) %></span>
-          <h3 class="user-name">
-            <%= link_to user.name, user_path(user) %>
-            <% if user.administrator? %>
-              <small>(Admin)</small>
-            <% end %>
-          </h3>
-          <span class="user-email"><%= mail_to user.email, user.email %></span>
-          <%= link_to "Edit", edit_user_path(user), :class => "btn btn-mini" if can?(:update, user) %>
-          
-          <% if stats = @ticket_stats_by_user[user] %>
-            <%= score_card :small do |s| %>
-              <% s.score "Filed", stats[:tickets] %>
-              <% s.percent "Duplicate<br /><small>or</small> Invalid".html_safe, stats[:invalid_tickets] %>
-              <% s.percent "Fixed", stats[:fixed_tickets] %>
-            <% end %>
-          <% end %>
-        </div>
-      <% end %>
-    </div>
-  <% end %>
+  <div class="nomargin">
+    <table id="users" class="table table-sortable table-striped">
+      <thead>
+        <tr>
+          <td class="table-margin"></td>
+          <td class="user-avatar"></td>
+          <th class="user-name sort-desc">Name</th>
+          <th class="user-email">Email</th>
+          <th class="user-role">Role</th>
+          <th class="user-tickets-filed"><small>Tickets<br />Filed</small></th>
+          <th class="user-tickets-invalid"><small>Dupicate<br />or Invalid</small></th>
+          <th class="user-tickets-fixed"><small>Fixed</small></th>
+          <td class="user-actions"></td>
+          <td class="table-margin"></td>
+        </tr>
+      </thead>
+      <tbody>
+        <% @users.each do |user|; stats = @ticket_stats_by_user[user] %>
+          <tr id="user_<%= user.id %>">
+            <td class="table-margin"></td>
+            <td class="user-avatar"><%= avatar_for(user, size: 32) %></td>
+            <td class="user-name">
+              <%= link_to user_path(user) do %>
+                <span class="first-name"><%= user.first_name %></span>
+                <span class="last-name"><%= user.last_name %></span>
+              <% end %>
+            </td>
+            <td class="user-email"><%= mail_to user.email %></td>
+            <td class="user-role"><%= user.role %><%= ", Admin" if user.administrator? %></td>
+            <td class="user-tickets-filed"><%= stats[:tickets] %></td>
+            <td class="user-tickets-invalid">
+              <%= number_to_percentage stats[:invalid_tickets], precision: 0 if stats[:tickets] > 0 %>
+            </td>
+            <td class="user-tickets-fixed">
+              <%= number_to_percentage stats[:fixed_tickets], precision: 0 if stats[:tickets] > 0 %>
+            </td>
+            <td class="user-actions"></td>
+            <td class="table-margin"></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 <% else %>
-  <div class="alert alert-info">No users have been created yet.</div>
+  <div class="alert alert-info">There are no team members yet. Click <b>New Team Member</b> to create one.</div>
+<% end %>
+
+<% content_for :javascripts do %>
+  <script type="text/javascript">
+    $.tablesorter.addParser({
+      id: 'name',
+      type: 'text',
+      is: function(s) { return false; }, // return false so this parser is not auto detected 
+      format: function(s, table, td) {
+        var $td = $(td),
+            firstName = $td.find('.first-name').text(),
+            lastName = $td.find('.last-name').text();
+        return lastName + ' ' + firstName;
+      }
+    }); 
+    
+    $(function() {
+      $('#users').tablesorter({
+        headers: { 2: { sorter: 'name' } }
+      });
+    });
+  </script>
 <% end %>

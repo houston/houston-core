@@ -13,56 +13,10 @@
 li.user_credentials { line-height: 2em; }
 .user-credentials-service { display: inline-block; width: 20em; }
 
-.user-row {
-  clear: left;
-  overflow: hidden;
-
-  &:after {
-    content: ".";
-    display: block;
-    clear: both;
-    visibility: hidden;
-    line-height: 0;
-    height: 0;
-  }
-}
-
-.user {
-  display: block;
-  float: left;
-  list-style-type: none;
-  margin: .5em;
-  overflow: hidden;
-  width: 420px;
-  
-  padding: 12px;
-  border-radius: 4px;
-  background-color: #F7F7F9;
-  border: 1px solid #E1E1E8;
-  
-  .user-name { margin: 0; }
-  
-  .user-avatar {
-    float: left;
-    margin: -1em 1em -1em -1em;
-    padding: 1em;
-    border-right: 1px solid #E1E1E8;
-    background: white;
-    display: block;
-  }
-  
-  .score { 
-    p {
-      margin: 0 0 0 6px;
-      width: auto;
-      min-width: 48px;
-    }
-    
-    .google-chart { margin: -8px -8px -8px 0; }
-  }
-}
-
-.stats-fresh-date { 
-  float: right;
-  font-weight: normal;
+th > small { font-weight: 500; }
+.user-avatar { width: 32px; }
+table#users  {
+  th { line-height: 1em; }
+  td { line-height: 32px; }
+  .user-tickets-filed, .user-tickets-invalid, .user-tickets-fixed { text-align: right; }
 }
