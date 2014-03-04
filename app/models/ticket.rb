@@ -13,8 +13,6 @@ class Ticket < ActiveRecord::Base
   
   default_scope order(:number).where(destroyed_at: nil)
   
-  serialize :extended_attributes, ActiveRecord::Coders::Hstore
-  
   validates :project_id, presence: true
   validates :summary, presence: true
   validates :number, presence: true

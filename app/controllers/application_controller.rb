@@ -1,7 +1,10 @@
 class ApplicationController < ActionController::Base
   include FreightTrain
   include UrlHelper
-  protect_from_forgery
+  
+  # Prevent CSRF attacks by raising an exception.
+  # For APIs, you may want to use :null_session instead.
+  protect_from_forgery with: :exception
   
   
   

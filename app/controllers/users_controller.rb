@@ -38,7 +38,7 @@ class UsersController < ApplicationController
   
   
   def create
-    @user = User.new(params[:user])
+    @user = User.new(user_params)
     
     if params[:send_invitation]
       User.invite!(params[:user])
@@ -102,6 +102,13 @@ private
       invalid_tickets: invalid_tickets * percent,
       fixed_tickets: fixed_tickets * percent
     }
+  end
+  
+  
+  def user_params
+    params.require(:user).permit(:first_name, :last_name, :email,
+                    :role, :password, :password_confirmation, :remember_me,
+                    :environments_subscribed_to, :view_options, :alias_emails)
   end
   
   

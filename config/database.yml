@@ -3,12 +3,14 @@ development:
   encoding: utf8
   database: houston_development
   host: localhost
+  prepared_statements: false
 
 test: &test
   adapter: postgresql
   encoding: utf8
   database: houston_test
   host: localhost
+  prepared_statements: false
 
 cucumber:
 <<: *test

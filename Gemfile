@@ -1,8 +1,7 @@
-source 'http://rubygems.org'
+source 'https://rubygems.org'
 
-gem 'rails', '~> 3.2.13'
-gem 'activerecord-postgres-hstore' # remove when Rails 4.0
-gem 'activerecord-postgres-array' # remove when Rails 4.0 and convert 'string_array' in migrations to string :array => true
+# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
+gem 'rails', '4.0.3'
 
 gem 'pg'
 
@@ -13,8 +12,8 @@ gem 'cancan'
 gem 'childprocess'
 gem 'codeclimate-test-reporter', '0.2.0'
 gem 'default_value_for'
-gem 'devise',           '~> 2.2.3'
-gem 'devise_invitable', '~> 1.1.6'
+gem 'devise',           '~> 3.0.0'
+gem 'devise_invitable'
 gem 'devise_ldap_authenticatable', :git => 'https://github.com/houstonmc/devise_ldap_authenticatable.git'
 gem 'faraday'
 gem 'faraday-http-cache'
@@ -37,9 +36,9 @@ gem 'whenever' # a DSL for writing CRON jobs
 gem 'backbone-rails'
 gem 'handlebars_assets', '0.8.2'
 gem 'jquery-rails'
-gem 'sass-rails',   '~> 3.2.3' # Sass is required in production (see layouts/email.html.erb)
 gem 'sugar-rails'
 gem 'twitter-bootstrap-rails'
+gem 'less-rails' # for Twitter Bootstrap
 
 # Tooling
 gem 'airbrake', '~> 3.1.15' # exception notification
@@ -58,16 +57,17 @@ end
 
 
 
-# Gems used only for assets and not required
-# in production environments by default.
-group :assets do
-  gem 'coffee-rails', '~> 3.2.1'
-  gem 'therubyracer' # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  gem 'less-rails' # For Twitter Bootstrap
-  gem 'uglifier', '>= 1.0.3'
-  
-  # gem 'turbo-sprockets-rails3', '>= 0.3.6'
-end
+# Use SCSS for stylesheets
+gem 'sass-rails', '~> 4.0.0'
+
+# Use Uglifier as compressor for JavaScript assets
+gem 'uglifier', '>= 1.3.0'
+
+# Use CoffeeScript for .js.coffee assets and views
+gem 'coffee-rails', '~> 4.0.0'
+
+# See https://github.com/sstephenson/execjs#readme for more supported runtimes
+gem 'therubyracer', platforms: :ruby
 
 group :development do
   gem 'unicorn-rails'

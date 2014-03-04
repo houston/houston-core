@@ -29,11 +29,11 @@ class Role < ActiveRecord::Base
     end
     
     def to_users
-      User.where(id: scoped.select(:user_id).build_arel)
+      User.where(id: scoped.select(:user_id))
     end
     
     def to_projects
-      Project.where(id: scoped.select(:project_id).build_arel)
+      Project.where(id: scoped.select(:project_id))
     end
     
     def for_user(user_or_id)
