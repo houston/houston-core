@@ -33,7 +33,6 @@ gem 'strongbox' # for encrypting user credentials
 gem 'sucker_punch' # for Airbrake
 gem 'unfuddle', github: 'boblail/unfuddle', branch: 'master'
 gem 'whenever' # a DSL for writing CRON jobs
-gem 'yajl-ruby', :require => 'yajl/json_gem'
 
 gem 'backbone-rails'
 gem 'handlebars_assets', '0.8.2'

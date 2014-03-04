@@ -91,7 +91,7 @@ module Houston
           def get(path, params={})
             params = params.merge(auth_token: config[:auth_token])
             response = Project.benchmark("[errbit] GET \"#{path}\" (#{params.inspect})") { @connection.get(path, params) }
-            Yajl.load(response.body)
+            MultiJson.load(response.body)
           end
           
           def put(path, params={})
