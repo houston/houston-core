@@ -20,7 +20,7 @@ module AvatarHelper
   # http://en.gravatar.com/site/implement/ruby
   # http://en.gravatar.com/site/implement/url
   def gravatar_url(email, options={})
-    url = "http://www.gravatar.com/avatar/#{Digest::MD5::hexdigest(email)}?r=g&d=identicon"
+    url = "http://www.gravatar.com/avatar/#{Digest::MD5::hexdigest(email)}?r=g&d=retro"
     url << "&s=#{options[:size] * 2}" if options.key?(:size)
     url
   end
