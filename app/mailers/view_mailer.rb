@@ -1,6 +1,8 @@
 class ViewMailer < ActionMailer::Base
   include AbstractController::Callbacks
   
+  
+  # !todo: quote the display name
   def self.format_email_address(user)
     "#{user.name} <#{user.email}>"
   end

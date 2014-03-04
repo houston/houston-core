@@ -33,7 +33,6 @@ module Houston
             @connection ||= self::Connection.new
           end
           
-          # delegate :problems_during, :notices_during, :to => :connection
           def problems_during(*args)
             connection.problems_during(*args)
           end
@@ -41,6 +40,8 @@ module Houston
           def notices_during(*args)
             connection.notices_during(*args)
           end
+          
+          
           
         private
           
