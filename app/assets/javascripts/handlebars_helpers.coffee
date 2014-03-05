@@ -15,6 +15,10 @@ Handlebars.registerHelper 'formatDuration', (seconds)->
 Handlebars.registerHelper 'formatDate', (timestamp)->
   Date.create(timestamp).format('ddd mmm d')
 
+Handlebars.registerHelper 'formatDateWithYear', (timestamp)->
+  date = Date.create(timestamp)
+  date.format('mmm d') + "<span class=\"year\">#{date.format('yyyy')}</span>"
+
 Handlebars.registerHelper 'formatTime', (timestamp)->
   Date.create(timestamp).format('ddd mmm d, yyyy h:mmt')
 
