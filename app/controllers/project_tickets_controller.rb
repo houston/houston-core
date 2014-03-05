@@ -33,7 +33,7 @@ class ProjectTicketsController < ApplicationController
     if request.xhr?
       render json: MultiJson.dump({
         tickets: @tickets,
-        project: { slug: @project.slug },
+        project: { slug: @project.slug, ticketTrackerName: @project.ticket_tracker_name },
         labels: @labels
       })
     end

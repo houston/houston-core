@@ -21,7 +21,7 @@ class UserCredentials < ActiveRecord::Base
     case service
     when "Unfuddle" then test_unfuddle_connection
     when "Github" then test_github_connection
-    else raise NotImplementedError
+    else raise NotImplementedError, "The service #{service.inspect} is not recognized"
     end
   end
   

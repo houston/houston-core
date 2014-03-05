@@ -7,7 +7,10 @@
   $(function() {
     new NewTicketView({
       tickets: <%= raw @tickets.to_json %>,
-      project: { slug: <%= raw @project.slug.to_json %> },
+      project: {
+        slug: <%= raw @project.slug.to_json %>,
+        ticketTrackerName: <%= raw @project.ticket_tracker_name.to_json %><%# so that we can log in %>
+      },
       labels: <%= raw @labels.to_json %>
     }).render();
   });
