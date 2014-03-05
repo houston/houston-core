@@ -19,7 +19,7 @@ GIT
 
 GIT
   remote: git://github.com/houstonmc/houston-scheduler.git
-  revision: d9606fac249cb39dfba6a3802945bc9718a5bc20
+  revision: 015f4665523d6f6d9e671b04d078ec4214fec6e3
   branch: master
   specs:
     houston-scheduler (0.0.1)
@@ -162,7 +162,7 @@ GEM
     method_source (0.8.1)
     mime-types (1.25.1)
     minitest (4.7.5)
-    multi_json (1.8.4)
+    multi_json (1.9.0)
     multi_xml (0.5.5)
     multipart-post (1.2.0)
     net-ldap (0.3.1)
