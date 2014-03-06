@@ -14,6 +14,25 @@ require 'turn'
 Houston.observer.async = false
 
 
+
+class CollectingSender
+  attr_reader :collected
+  
+  def initialize
+    @collected = []
+  end
+  
+  def send_to_airbrake(data)
+    @collected << data
+  end
+end
+
+Airbrake.sender = CollectingSender.new
+Airbrake.configuration.development_environments = []
+Airbrake.configuration.async = false
+
+
+
 class ActiveSupport::TestCase
   ActiveRecord::Migration.check_pending!
 
