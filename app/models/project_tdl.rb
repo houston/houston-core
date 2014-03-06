@@ -49,6 +49,7 @@ class ProjectTDL < SimpleDelegator
        { href: "/scheduler/by_project/#{slug}#sequence" }
     when :pull_requests
       return {} unless pull_requests
+      return {} unless repo.respond_to? :pull_requests_url
       { href: repo.pull_requests_url }
     when :failing_tickets
       { href: "/testing_report/#{slug}" }
