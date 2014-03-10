@@ -1,10 +1,6 @@
 <%= render partial: "projects/header", locals: {project: @project, subtitle: @queue.name} %>
 
-<% if @errors.any? %>
-  <% @errors.each do |error| %>
-    <div class="alert alert-error"><%= error %></div>
-  <% end %>
-<% elsif @tickets.any? %>
+<% if @tickets.any? %>
   <table class="tickets">
     <thead>
       <th class="ticket-number">#</th>
