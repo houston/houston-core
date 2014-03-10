@@ -28,7 +28,7 @@ gem 'octokit' # for adapting to GitHub Issues
 gem 'oj'
 gem 'premailer' # for inlining CSS in HTML emails
 gem 'progressbar' # for long migrations
-gem 'rugged', '0.17.0.b7' # for speaking to Git
+gem 'rugged' # for speaking to Git
 gem 'skylight'
 gem 'simplecov'
 gem 'strongbox' # for encrypting user credentials
@@ -36,11 +36,11 @@ gem 'sucker_punch' # for Airbrake
 gem 'unfuddle', github: 'boblail/unfuddle', branch: 'master'
 gem 'whenever' # a DSL for writing CRON jobs
 
-gem 'backbone-rails'
+gem 'backbone-rails', '~> 1.0.0'
 gem 'handlebars_assets', '0.8.2'
-gem 'jquery-rails'
+gem 'jquery-rails', '2.2.1'
 gem 'sugar-rails'
-gem 'twitter-bootstrap-rails'
+gem 'twitter-bootstrap-rails', '2.2.6'
 gem 'less-rails' # for Twitter Bootstrap
 
 # Tooling
