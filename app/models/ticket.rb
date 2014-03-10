@@ -51,12 +51,12 @@ class Ticket < ActiveRecord::Base
       queue = KanbanQueue.find_by_slug(queue) unless queue.is_a?(KanbanQueue)
       transaction do
         queue.filter(scoped).tap do |tickets_in_queue|
-        
-          ticket_ids_were_in_queue = TicketQueue.where(queue: queue.slug).merge(scoped).pluck(:ticket_id)
+          
+          ticket_ids_were_in_queue = TicketQueue.where(queue: queue.slug, ticket_id: pluck(:id)).pluck(:ticket_id)
           ticket_ids_in_queue = tickets_in_queue.pluck(:id)
           TicketQueue.enter! queue, ticket_ids_in_queue - ticket_ids_were_in_queue
           TicketQueue.exit!  queue, ticket_ids_were_in_queue - ticket_ids_in_queue
-        
+          
         end
       end
     end
