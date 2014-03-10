@@ -1,7 +1,9 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.0.3'
+# gem 'rails', '4.0.3'
+# We need the fix for https://github.com/rails/rails/issues/12867 (which isn't in 4.0.3 yet)
+gem 'rails', github: 'rails/rails', branch: '4-0-stable'
 
 gem 'pg'
 
@@ -12,7 +14,7 @@ gem 'cancan'
 gem 'childprocess'
 gem 'codeclimate-test-reporter', '0.2.0'
 gem 'default_value_for'
-gem 'devise',           '~> 3.0.0'
+gem 'devise', '~> 3.0.0'
 gem 'devise_invitable'
 gem 'devise_ldap_authenticatable', :git => 'https://github.com/houstonmc/devise_ldap_authenticatable.git'
 gem 'faraday'
