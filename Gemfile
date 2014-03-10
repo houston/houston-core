@@ -27,6 +27,7 @@ gem 'oj'
 gem 'premailer' # for inlining CSS in HTML emails
 gem 'progressbar' # for long migrations
 gem 'rugged', '0.17.0.b7' # for speaking to Git
+gem 'skylight'
 gem 'simplecov'
 gem 'strongbox' # for encrypting user credentials
 gem 'sucker_punch' # for Airbrake

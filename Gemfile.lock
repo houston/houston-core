@@ -236,6 +236,8 @@ GEM
       multi_json
       simplecov-html (~> 0.8.0)
     simplecov-html (0.8.0)
+    skylight (0.3.1)
+      activesupport (>= 3.0.0)
     slop (3.4.3)
     spring (1.0.0)
     sprockets (2.11.0)
@@ -336,6 +338,7 @@ DEPENDENCIES
   shoulda-context
   simplecov
   simplecov-json!
+  skylight
   spring
   strongbox
   sucker_punch
