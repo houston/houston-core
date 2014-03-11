@@ -198,6 +198,10 @@ module Houston
       @github_configuration ||= {}
     end
     
+    def supports_pull_requests?
+      github[:organization].present?
+    end
+    
     
     
     

@@ -1,7 +1,8 @@
 class ProjectTDL < SimpleDelegator
   
   def self.for(projects, current_user)
-    pull_requests_by_repo = current_user.developer? ? Github::PullRequests.new(current_user).to_h : {}
+    pull_requests_by_repo = {}
+    pull_requests_by_repo = Github::PullRequests.new(current_user).to_h if current_user.developer? && Houston.config.supports_pull_requests?
     projects.map do |project|
       self.new(project, pull_requests_by_repo.fetch(project.slug, []))
     end

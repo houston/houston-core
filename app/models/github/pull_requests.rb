@@ -29,7 +29,7 @@ module Github
     
     def fetch!
       ActiveRecord::Base.benchmark "\e[33mFetching pull requests \e[0m" do
-        @results = client.org_issues(Houston::TMI::NAME_OF_GITHUB_ORGANIZATION, filter: "all", state: "open")
+        @results = client.org_issues(Houston.config.github[:organization], filter: "all", state: "open")
           .select(&method(:pull_request?))
           .map(&::Github::PullRequest.method(:new))
           .sort_by { |pull| [pull.repo, -pull.number] }

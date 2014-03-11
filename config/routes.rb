@@ -180,7 +180,7 @@ Houston::Application.routes.draw do
   # Other
   
   # Experiments
-  get "pull_requests", to: "pull_requests#index", as: :pull_requests
+  get "pull_requests", to: "pull_requests#index", as: :pull_requests if Houston.config.supports_pull_requests?
   
   # Tester Bar
   match "tester_bar/:action", :controller => "tester_bar", via: [:get, :post] if Rails.env.development?

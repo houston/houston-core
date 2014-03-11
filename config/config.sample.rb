@@ -244,6 +244,11 @@ Houston.config do
     access_token "GITHUB_ACCESS_TOKEN"
     key "GITHUB_OAUTH_KEY"
     secret "GITHUB_OAUTH_SECRET"
+    
+    # If you specify a GitHub organization, Houston can
+    # grab Pull Requests for that organization and put them
+    # into your To-Do Lists.
+    # organization "GITHUB_ORGANIZATION"
   end
   
   
