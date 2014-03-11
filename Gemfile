@@ -29,7 +29,6 @@ gem 'oj'
 gem 'premailer', '1.7.3' # for inlining CSS in HTML emails
 gem 'progressbar' # for long migrations
 gem 'rugged' # for speaking to Git
-gem 'skylight'
 gem 'simplecov'
 gem 'strongbox' # for encrypting user credentials
 gem 'sucker_punch' # for Airbrake
@@ -71,6 +70,10 @@ gem 'coffee-rails', '~> 4.0.0'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 gem 'therubyracer', platforms: :ruby
+
+group :production do
+  gem 'skylight'
+end
 
 group :development do
   gem 'unicorn-rails'
