@@ -112,6 +112,10 @@ class User < ActiveRecord::Base
     roles.to_projects.member?(project)
   end
   
+  def view_options
+    super || {}
+  end
+  
   
   
   # LDAP Overrides

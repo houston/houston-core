@@ -59,6 +59,10 @@ class Project < ActiveRecord::Base
     current_sprint.id == ticket.sprint_id
   end
   
+  def view_options
+    super || {}
+  end
+  
   
   
   
