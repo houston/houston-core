@@ -1,4 +1,9 @@
-<h2>Sign in</h2>
+<% content_for :title do %>
+<h1 class="project-banner space-below">
+  Sign in
+</h1>
+<% end %>
+
 
 <%= form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => {:class => "form-horizontal"}) do |f| %>
   <fieldset>
