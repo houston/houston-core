@@ -41,7 +41,7 @@ gem 'handlebars_assets', '0.8.2'
 gem 'jquery-rails', '2.2.1'
 gem 'sugar-rails'
 gem 'twitter-bootstrap-rails', '2.2.6'
-gem 'less-rails' # for Twitter Bootstrap
+gem 'less-rails', '2.3.2' # for Twitter Bootstrap
 
 # Tooling
 gem 'airbrake', '~> 3.1.15' # exception notification
