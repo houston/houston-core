@@ -5,7 +5,7 @@ class AddExtendedAttributesToTickets < ActiveRecord::Migration
     Ticket.reset_column_information
     
     Ticket.nosync do
-      Ticket.find_each do |ticket|
+      Ticket.unscoped.find_each do |ticket|
         
         if ticket.project.nil?
           ticket.delete

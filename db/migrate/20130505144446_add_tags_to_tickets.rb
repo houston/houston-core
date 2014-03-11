@@ -1,6 +1,6 @@
 class AddTagsToTickets < ActiveRecord::Migration
   def up
-    add_column :tickets, :tags, :string_array
+    add_column :tickets, :tags, :string, array: true
   end
   
   def down

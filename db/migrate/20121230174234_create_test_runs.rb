@@ -17,6 +17,6 @@ class CreateTestRuns < ActiveRecord::Migration
     end
     
     add_index :test_runs, :project_id
-    add_index :test_runs, :commit, :uniq => true
+    add_index :test_runs, :commit, :unique => true
   end
 end

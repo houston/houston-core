@@ -1,10 +1,10 @@
 class AddAntecedentsToTickets < ActiveRecord::Migration
   def up
-    add_column :tickets, :antecedents, :string_array
+    add_column :tickets, :antecedents, :string, array: true
     
     Ticket.reset_column_information
     
-    Ticket.find_each do |ticket|
+    Ticket.unscoped.find_each do |ticket|
       goldmine_numbers = ticket.goldmine || ""
       
       antecedents = []
