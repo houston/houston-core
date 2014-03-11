@@ -5,10 +5,10 @@
 # uncertain whether it is set up.
 
 git submodule update --init
-bundle
-bundle exec rake db:create
-bundle exec rake db:migrate
-bundle exec rake test:all
+if [ ! -f config/config.rb ] ; then cp config/config.sample.rb config/config.rb ; fi
+bundle || exit
+bundle exec rake db:create db:migrate || exit
+bundle exec rake test
 
-echo "If this is the first time you've clone epic-auth"
+echo "If this is the first time you've cloned Houston"
 echo "You might want to run \`bundle exec rake db:seed\`"
