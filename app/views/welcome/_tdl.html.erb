@@ -1,0 +1,31 @@
+<table>
+  <tbody>
+    <% @project_tdls.each do |project| %>
+      <tr>
+        <td>
+          <b class="bubble <%= project.color %>"></b>
+          <span class="project-name"><%= project.name %></span>
+        </td>
+        <td>
+          <%= score_card :medium do |s| %>
+            <% s.score "Unprioritized<br/>Tickets".html_safe,
+                       project.unprioritized_tickets,
+                       project.score_options(:unprioritized_tickets) %>
+            <% s.score "Unestimated<br/>Tickets".html_safe,
+                       project.unestimated_tickets,
+                       project.score_options(:unestimated_tickets) %>
+            <% s.score "Pull Requests".html_safe,
+                       project.pull_requests,
+                       project.score_options(:pull_requests) %>
+            <% s.score "Failing Tickets".html_safe,
+                       project.failing_tickets,
+                       project.score_options(:failing_tickets) %>
+            <% s.score "Unreleased<br/>Commits".html_safe,
+                       project.unreleased_commits,
+                       project.score_options(:unreleased_commits) %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

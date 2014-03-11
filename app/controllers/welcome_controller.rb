@@ -3,6 +3,22 @@ class WelcomeController < ApplicationController
   layout "minimal"
   
   def index
+    load_activity
+  end
+  
+  def activity
+    load_activity
+    render partial: "activity/events"
+  end
+  
+  def tdl
+    @project_tdls = ProjectTDL.for(followed_projects, current_user)
+    render partial: "welcome/tdl"
+  end
+  
+private
+  
+  def load_activity
     if params[:since]
       time = Time.parse(params[:since])
       @last_date = time.to_date
@@ -12,12 +28,6 @@ class WelcomeController < ApplicationController
     end
     
     @events = ActivityFeed.new(followed_projects, time, count: 150).events
-    @project_tdls = ProjectTDL.for(followed_projects, current_user)
-    
-    if request.xhr?
-      render partial: "activity/events"
-    end
   end
   
 end
-  
