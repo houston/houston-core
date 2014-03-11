@@ -57,9 +57,8 @@ module Houston
             end
           end
           
-          def sync!(origin_uri, temp_path, arg = :force)
-            return clone!(origin_uri, temp_path) unless File.exists?(temp_path)
-            pull!(temp_path) if arg == :force || stale?(temp_path)
+          def sync!(origin, local_path)
+            File.exists?(local_path) ? pull!(local_path) : clone!(origin, local_path)
           end
           
           def clone!(origin_uri, temp_path)
@@ -75,10 +74,6 @@ module Houston
             ActiveRecord::Base.benchmark("[git:pull] #{local_path}") do
              `git --git-dir=#{local_path} remote update --prune`
             end
-          end
-          
-          def stale?(temp_path)
-            Time.now - time_of_last_pull(temp_path) > 1.day
           end
           
           def time_of_last_pull(git_dir)
