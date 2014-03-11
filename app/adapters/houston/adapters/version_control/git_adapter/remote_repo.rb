@@ -25,8 +25,8 @@ module Houston
             pull_and_retry(1) { super(sha) }
           end
           
-          def refresh!
-            GitAdapter.sync!(location, connection.path)
+          def refresh!(async: false)
+            GitAdapter.sync!(location, connection.path, async: async)
           end
           
           # ------------------------------------------------------------------------- #

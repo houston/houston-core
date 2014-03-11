@@ -57,22 +57,35 @@ module Houston
             end
           end
           
-          def sync!(origin, local_path)
-            File.exists?(local_path) ? pull!(local_path) : clone!(origin, local_path)
-          end
-          
-          def clone!(origin_uri, temp_path)
-            local_path = File.dirname(temp_path)
-            target = File.basename(temp_path)
-            
-            ActiveRecord::Base.benchmark("[git:clone] #{origin_uri} => #{temp_path}") do
-              `cd #{local_path} && git clone --mirror #{origin_uri} #{target}`
+          def sync!(origin, local_path, async: false)
+            if File.exists?(local_path)
+              pull!(local_path, async: async)
+            else
+              clone!(origin, local_path, async: async)
             end
           end
           
-          def pull!(local_path)
-            ActiveRecord::Base.benchmark("[git:pull] #{local_path}") do
-             `git --git-dir=#{local_path} remote update --prune`
+          def clone!(origin_uri, temp_path, async: false)
+            local_path = File.dirname(temp_path)
+            target = File.basename(temp_path)
+            
+            ActiveRecord::Base.benchmark("\e[33m[git:clone] #{origin_uri} => #{temp_path} #{"\e[1;4mAsync" if async}\e[0m") do
+              execute "cd #{local_path} && git clone --mirror #{origin_uri} #{target}", async: async
+            end
+          end
+          
+          def pull!(local_path, async: false)
+            ActiveRecord::Base.benchmark("\e[33m[git:pull] #{local_path} #{"\e[1;4mAsync" if async}\e[0m") do
+              execute "git --git-dir=#{local_path} remote update --prune", async: async
+            end
+          end
+          
+          def execute(command, async: false)
+            if async
+              pid = spawn command
+              Process.detach pid
+            else
+              system command
             end
           end
           

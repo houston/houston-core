@@ -43,7 +43,7 @@ module Houston
           nil
         end
         
-        def refresh!
+        def refresh!(async: false)
         end
         
         # ------------------------------------------------------------------------- #

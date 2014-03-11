@@ -87,7 +87,7 @@ STR
     connection = OpenStruct.new(path: local_path)
     stub(connection).lookup { |*args| raise Houston::Adapters::VersionControl::CommitNotFound }
     
-    mock(Houston::Adapters::VersionControl::GitAdapter).pull!(local_path) { }
+    mock(Houston::Adapters::VersionControl::GitAdapter).pull!(local_path, async: false)
     
     assert_raises Houston::Adapters::VersionControl::CommitNotFound do
       repo = Houston::Adapters::VersionControl::GitAdapter::RemoteRepo.new(connection, remote_path)

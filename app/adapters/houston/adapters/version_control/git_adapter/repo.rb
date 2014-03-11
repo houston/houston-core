@@ -79,7 +79,7 @@ module Houston
             blob && blob.content
           end
           
-          def refresh!
+          def refresh!(async: false)
           end
           
           # ------------------------------------------------------------------------- #
