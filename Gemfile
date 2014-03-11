@@ -26,7 +26,7 @@ gem 'nokogiri'
 gem 'oauth-plugin', '~> 0.5.1'
 gem 'octokit' # for adapting to GitHub Issues
 gem 'oj'
-gem 'premailer' # for inlining CSS in HTML emails
+gem 'premailer', '1.7.3' # for inlining CSS in HTML emails
 gem 'progressbar' # for long migrations
 gem 'rugged' # for speaking to Git
 gem 'skylight'
