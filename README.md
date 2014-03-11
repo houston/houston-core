@@ -1,39 +1,77 @@
 # Houston [![Code Climate](https://codeclimate.com/github/houstonmc/houston.png)](https://codeclimate.com/github/houstonmc/houston)
 
-### Mission Control for your projects and teammates.
+### Mission Control for your projects and teams.
 
 Houston interfaces with your version-control, ticket-tracking, continuous integration, and other systems to stitch together a picture of your projects and teams.
  
 <table>
   <tr>
     <td align="center" vertical-align="top">
-      <a href="http://houstonmc.github.com/houston/images/screenshots/kanban.png" target="_blank" title="Kanban">
-        <img src="http://houstonmc.github.com/houston/images/screenshots/kanban.png" width="180" alt="Kanban" />
+      <a href="http://houstonmc.github.com/houston/images/screenshots/burndown-chart.png" target="_blank" title="Ticket Workflow">
+        <img src="http://houstonmc.github.com/houston/images/screenshots/burndown-chart.png" width="180" alt="Ticket Workflow" />
       </a>
     </td>
     <td align="center" vertical-align="top">
-      <a href="http://houstonmc.github.com/houston/images/screenshots/testing-conversation.png" target="_blank" title="Testing Workflow">
-        <img src="http://houstonmc.github.com/houston/images/screenshots/testing-conversation.png" width="180" alt="Testing Workflow" />
+      <a href="http://houstonmc.github.com/houston/images/screenshots/testing-conversation-2.png" target="_blank" title="Testing Workflow">
+        <img src="http://houstonmc.github.com/houston/images/screenshots/testing-conversation-2.png" width="180" alt="Testing Workflow" />
       </a>
     </td>
     <td align="center" vertical-align="top">
-      <a href="http://houstonmc.github.com/houston/images/screenshots/new-release.png" target="_blank" title="Reports">
-        <img src="http://houstonmc.github.com/houston/images/screenshots/new-release.png" width="180" alt="Reports" />
+      <a href="http://houstonmc.github.com/houston/images/screenshots/new-release-2.png" target="_blank" title="Automatic Release Notes">
+        <img src="http://houstonmc.github.com/houston/images/screenshots/new-release-2.png" width="180" alt="Automatic Release Notes" />
       </a>
     </td>
     <td align="center" vertical-align="top">
-      <a href="http://houstonmc.github.com/houston/images/screenshots/weekly-report-commits.png" target="_blank" title="Reports">
-        <img src="http://houstonmc.github.com/houston/images/screenshots/weekly-report-commits.png" width="180" alt="Reports" />
+      <a href="http://houstonmc.github.com/houston/images/screenshots/timeline.png" target="_blank" title="Reports">
+        <img src="http://houstonmc.github.com/houston/images/screenshots/timeline.png" width="180" alt="Reports" />
       </a>
     </td>
   </tr>
   <tr>
-    <th>Kanban</th>
+    <th>Ticket Workflow</th>
     <th>Testing Workflow</th>
     <th>Automatic Release Notes</th>
     <th>Reports</th>
   </tr>
 </table>
+
+
+
+## Getting Started
+
+#### Requirements
+
+  * Ruby 2.0+
+  * Postgres
+
+#### Getting Houston Running
+
+Clone Houston:
+
+    git clone git@github.com:houstonmc/houston.git
+    cd houston
+    script/bootstrap
+    bundle exec rake db:seed
+    bundle exec rails server
+
+#### Configuring Houston
+
+You can control Houston's feature, permissions, events, colors, and more in `config/config.rb`.
+
+#### Writing your own modules
+
+To create a new module for Houston, run:
+
+    gem install houston-cli
+    houston_new_module warpcore
+
+This will generate a gem for a Rails Engine named `houston-warpcore`.
+
+Then add something like the following to `config/config.rb`:
+
+    use :warpcore, github: "mscott/warpcore", branch: "master"
+
+(You can use the same options after `use :warpcore` that you'd use after `gem "houston-warpcore"` in a `Gemfile`.)
 
 
 
@@ -82,13 +120,3 @@ Houston uses adapters to support multiple systems. There are three right now:
 ### Configuration
 
 The specific details of Houston's operation are described in config/config.rb ([example](https://github.com/houstonmc/houston/blob/master/config/config.sample.rb)).
-
-
-
-## Roadmap
-
- 1. Finish extracting existing features into engines like [houston-scheduler](https://github.com/houstonmc/houston-scheduler)
- 2. Extract Errbit and New Relic support to adapters
- 3. Expand implementations of adapters as needed
-
-See [TODO.mdown](https://github.com/houstonmc/houston/blob/master/TODO.mdown)
