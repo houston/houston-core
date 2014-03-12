@@ -50,7 +50,7 @@ module Houston
           
           def get_local_path_to_repo(repo_uri, temp_path)
             if repo_uri.absolute?
-              sync!(repo_uri, temp_path, false)
+              clone!(origin_uri, temp_path) unless File.exists?(temp_path)
               temp_path
             else
               repo_uri.to_s
