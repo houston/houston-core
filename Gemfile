@@ -1,9 +1,7 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-# gem 'rails', '4.0.3'
-# We need the fix for https://github.com/rails/rails/issues/12867 (which isn't in 4.0.3 yet)
-gem 'rails', github: 'rails/rails', branch: '4-0-stable'
+gem 'rails', '~> 4.0.4'
 
 gem 'pg'
 
