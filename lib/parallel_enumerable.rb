@@ -17,7 +17,11 @@ class ParallelEnumerable
   def each
     enumerable.map do |item|
       Thread.new do
-        yield item
+        begin
+          yield item
+        ensure
+          ActiveRecord::Base.clear_active_connections!
+        end
       end
     end.each(&:join)
   end

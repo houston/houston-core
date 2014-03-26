@@ -476,7 +476,11 @@ module Houston
     
     def invoke_callback_async(block, *args)
       Thread.new do
-        invoke_callback(block, *args)
+        begin
+          invoke_callback(block, *args)
+        ensure
+          ActiveRecord::Base.clear_active_connections!
+        end
       end
     end
     
