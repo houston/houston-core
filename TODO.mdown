@@ -11,7 +11,6 @@
 
  - **Prune**
    - Remove `all_commit_times` from the Version Control Repo API
-   - Remove `ticket_prerequisites`
  
  - **Roles Refactor**
    - Replace hard-coded knowledge of roles:

@@ -474,8 +474,8 @@ CREATE TABLE changes (
     release_id integer,
     description character varying(255),
     ticket_number integer,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
     tag_slug character varying(255),
     project_id integer NOT NULL
 );
@@ -511,8 +511,8 @@ CREATE TABLE commits (
     message text,
     committer character varying(255),
     date date,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
     committer_email character varying(255),
     project_id integer NOT NULL,
     authored_at timestamp without time zone NOT NULL,
@@ -582,8 +582,8 @@ CREATE TABLE consumer_tokens (
     secret character varying(255),
     expires_at integer,
     expires_in character varying(255),
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -615,8 +615,8 @@ CREATE TABLE deploys (
     project_id integer,
     environment_id integer,
     commit character varying(255),
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
     environment_name character varying(255) DEFAULT 'Production'::character varying NOT NULL,
     deployer character varying(255)
 );
@@ -651,8 +651,8 @@ CREATE TABLE errors (
     category character varying(255),
     message character varying(255),
     backtrace text,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -687,8 +687,8 @@ CREATE TABLE milestones (
     tickets_count integer DEFAULT 0,
     completed_at timestamp without time zone,
     extended_attributes hstore,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
     destroyed_at timestamp without time zone
 );
 
@@ -721,8 +721,8 @@ CREATE TABLE project_quotas (
     project_id integer NOT NULL,
     week date NOT NULL,
     value integer NOT NULL,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -753,8 +753,8 @@ CREATE TABLE projects (
     id integer NOT NULL,
     name character varying(255),
     slug character varying(255),
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
     color character varying(255),
     new_relic_id integer,
     retired_at timestamp without time zone,
@@ -801,8 +801,8 @@ CREATE TABLE releases (
     name character varying(255),
     commit0 character varying(255),
     commit1 character varying(255),
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
     user_id integer NOT NULL,
     message text DEFAULT ''::text NOT NULL,
     deploy_id integer,
@@ -849,8 +849,8 @@ CREATE TABLE roles (
     user_id integer,
     project_id integer,
     name character varying(255) NOT NULL,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -920,8 +920,8 @@ CREATE TABLE sprints (
     id integer NOT NULL,
     project_id integer NOT NULL,
     end_date date,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -959,8 +959,8 @@ CREATE TABLE test_runs (
     fail_count integer DEFAULT 0 NOT NULL,
     pass_count integer DEFAULT 0 NOT NULL,
     skip_count integer DEFAULT 0 NOT NULL,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
     tests text,
     total_count integer DEFAULT 0 NOT NULL,
     agent_email character varying(255),
@@ -1001,8 +1001,8 @@ CREATE TABLE testing_notes (
     ticket_id integer,
     verdict character varying(255) NOT NULL,
     comment text DEFAULT ''::character varying NOT NULL,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
     expires_at timestamp without time zone,
     unfuddle_id integer,
     project_id integer NOT NULL
@@ -1029,39 +1029,6 @@ ALTER SEQUENCE testing_notes_id_seq OWNED BY testing_notes.id;
 
 
 --
--- Name: ticket_prerequisites; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE ticket_prerequisites (
-    id integer NOT NULL,
-    ticket_id integer,
-    project_id integer,
-    prerequisite_ticket_number integer,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
-);
-
-
---
--- Name: ticket_prerequisites_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE ticket_prerequisites_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: ticket_prerequisites_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE ticket_prerequisites_id_seq OWNED BY ticket_prerequisites.id;
-
-
---
 -- Name: ticket_queues; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1070,8 +1037,8 @@ CREATE TABLE ticket_queues (
     ticket_id integer,
     queue character varying(255),
     destroyed_at timestamp without time zone,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -1104,15 +1071,15 @@ CREATE TABLE tickets (
     number integer,
     summary character varying(255),
     description text,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
     remote_id integer,
     deployment character varying(255),
     last_release_at timestamp without time zone,
     expires_at timestamp without time zone,
     extended_attributes hstore,
-    antecedents character varying(255)[],
-    tags character varying(255)[],
+    antecedents character varying[],
+    tags character varying[],
     type character varying(255),
     closed_at timestamp without time zone,
     reporter_email character varying(255),
@@ -1161,8 +1128,8 @@ CREATE TABLE user_credentials (
     password bytea,
     password_key bytea,
     password_iv bytea,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -1202,8 +1169,8 @@ CREATE TABLE users (
     last_sign_in_at timestamp without time zone,
     current_sign_in_ip character varying(255),
     last_sign_in_ip character varying(255),
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
     invitation_token character varying(60),
     invitation_sent_at timestamp without time zone,
     invitation_accepted_at timestamp without time zone,
@@ -1344,13 +1311,6 @@ ALTER TABLE ONLY testing_notes ALTER COLUMN id SET DEFAULT nextval('testing_note
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY ticket_prerequisites ALTER COLUMN id SET DEFAULT nextval('ticket_prerequisites_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
 ALTER TABLE ONLY ticket_queues ALTER COLUMN id SET DEFAULT nextval('ticket_queues_id_seq'::regclass);
 
 
@@ -1485,14 +1445,6 @@ ALTER TABLE ONLY test_runs
 
 ALTER TABLE ONLY testing_notes
     ADD CONSTRAINT testing_notes_pkey PRIMARY KEY (id);
-
-
---
--- Name: ticket_prerequisites_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY ticket_prerequisites
-    ADD CONSTRAINT ticket_prerequisites_pkey PRIMARY KEY (id);
 
 
 --
@@ -1668,17 +1620,17 @@ CREATE INDEX index_sprints_on_project_id_and_end_date ON sprints USING btree (pr
 
 
 --
+-- Name: index_test_runs_on_commit; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_test_runs_on_commit ON test_runs USING btree (sha);
+
+
+--
 -- Name: index_test_runs_on_project_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_test_runs_on_project_id ON test_runs USING btree (project_id);
-
-
---
--- Name: index_test_runs_on_sha; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE UNIQUE INDEX index_test_runs_on_sha ON test_runs USING btree (sha);
 
 
 --
@@ -1700,13 +1652,6 @@ CREATE INDEX index_testing_notes_on_ticket_id ON testing_notes USING btree (tick
 --
 
 CREATE INDEX index_testing_notes_on_user_id ON testing_notes USING btree (user_id);
-
-
---
--- Name: index_ticket_prerequisites_on_ticket_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_ticket_prerequisites_on_ticket_id ON ticket_prerequisites USING btree (ticket_id);
 
 
 --
@@ -2029,3 +1974,5 @@ INSERT INTO schema_migrations (version) VALUES ('20140217150735');
 INSERT INTO schema_migrations (version) VALUES ('20140217160450');
 
 INSERT INTO schema_migrations (version) VALUES ('20140217195942');
+
+INSERT INTO schema_migrations (version) VALUES ('20140327020121');
