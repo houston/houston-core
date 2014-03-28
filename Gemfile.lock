@@ -235,7 +235,7 @@ GEM
       multi_json
       simplecov-html (~> 0.8.0)
     simplecov-html (0.8.0)
-    skylight (0.3.1)
+    skylight (0.3.6)
       activesupport (>= 3.0.0)
     slop (3.4.7)
     spring (1.1.2)
