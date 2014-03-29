@@ -1,4 +1,6 @@
 class Ticket < ActiveRecord::Base
+  extend Nosync
+  
   self.inheritance_column = nil
   
   belongs_to :project
@@ -29,6 +31,7 @@ class Ticket < ActiveRecord::Base
   attr_readonly :number, :project_id
   
   delegate :testers, :maintainers, to: :project
+  delegate :nosync?, to: "self.class"
   
   
   
@@ -361,28 +364,6 @@ class Ticket < ActiveRecord::Base
         committers                       #   - anyone who has comitted to it
     end                                  #
   end
-  
-  
-  
-  def self.nosync
-    value = nosync?
-    begin
-      self.nosync = true
-      yield
-    ensure
-      self.nosync = value
-    end
-  end
-  
-  def self.nosync=(value)
-    @nosync = value
-  end
-  
-  def self.nosync?
-    !!@nosync
-  end
-  
-  delegate :nosync?, to: "self.class"
   
   
   
