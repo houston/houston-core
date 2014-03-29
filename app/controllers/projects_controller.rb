@@ -11,6 +11,7 @@ class ProjectsController < ApplicationController
       .includes(:maintainers)
       .includes(:last_test_run)
       .unretired
+    @releases = Release.most_recent.index_by { |release| [release.project_id, release.environment_name] }
   end
   
   

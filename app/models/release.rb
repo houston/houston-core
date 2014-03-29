@@ -54,6 +54,19 @@ class Release < ActiveRecord::Base
     last
   end
   
+  def self.most_recent
+    joins <<-SQL
+      INNER JOIN (
+        SELECT project_id, environment_name, MAX(created_at) AS created_at
+        FROM releases
+        GROUP BY project_id, environment_name
+      ) AS most_recent_releases
+      ON releases.project_id=most_recent_releases.project_id
+      AND releases.environment_name=most_recent_releases.environment_name
+      AND releases.created_at=most_recent_releases.created_at
+    SQL
+  end
+  
   
   
   def can_read_commits?

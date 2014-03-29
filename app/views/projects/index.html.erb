@@ -96,7 +96,7 @@
             </td>
             <% Houston.config.environments.each do |environment_name| %>
             <td class="project-last-release">
-              <% if release = project.releases.to_environment(environment_name).first %>
+              <% with_most_recent_release(project, environment_name) do |release| %>
                 <%= link_to format_release_age(release), release_path(release) %>
               <% end %>
             </td>
