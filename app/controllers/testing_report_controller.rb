@@ -29,23 +29,9 @@ private
   
   
   def default_render
-    @tickets = tickets_for_testing_report(@tickets)
-    @tickets = TicketPresenter.new(@tickets).with_testing_notes
-    render json: @tickets if request.xhr?
+    @tickets = TestingReportTicketPresenter.new(@tickets).as_json
+    render json: @tickts if request.xhr?
     super
-  end
-  
-  
-  def tickets_for_testing_report(tickets)
-    tickets
-      .unclosed
-      .fixed
-      .deployed
-      .includes(:project)
-      .includes(:testing_notes)
-      .includes(:releases)
-      .includes(:commits)
-      .order("projects.name ASC")
   end
   
   

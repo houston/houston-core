@@ -10,6 +10,7 @@ class Ticket < ActiveRecord::Base
   has_many :testing_notes
   has_and_belongs_to_many :releases, before_add: :ignore_release_if_duplicate
   has_and_belongs_to_many :commits, conditions: {unreachable: false}
+  has_and_belongs_to_many :released_commits, -> { reachable.released }, class_name: "Commit", association_foreign_key: "commit_id"
   
   default_scope order(:number).where(destroyed_at: nil)
   
