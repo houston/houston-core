@@ -9,6 +9,7 @@ class Project < ActiveRecord::Base
   has_many :sprints, :dependent => :destroy
   has_many :testing_notes, :dependent => :destroy
   has_many :test_runs, :dependent => :destroy
+  has_one :last_test_run, class_name: "TestRun", readonly: true
   has_many :deploys
   has_many :roles, :dependent => :destroy
   
@@ -32,10 +33,6 @@ class Project < ActiveRecord::Base
   
   
   default_scope order(:name)
-  
-  def last_test_run
-    test_runs.order("created_at DESC").first
-  end
   
   def to_param
     slug

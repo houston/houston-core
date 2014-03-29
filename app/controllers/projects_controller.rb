@@ -9,6 +9,7 @@ class ProjectsController < ApplicationController
     @projects = Project \
       .includes(:owners)
       .includes(:maintainers)
+      .includes(:last_test_run)
       .unretired
   end
   
