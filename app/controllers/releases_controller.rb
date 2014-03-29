@@ -110,7 +110,10 @@ private
     @project = Project.find_by_slug!(params[:project_id])
     @environment = params[:environment]
     @environment = Houston.config.environments.first unless Houston.config.environments.member?(@environment)
-    @releases = @project.releases.to_environment(@environment)
+    @releases = @project.releases
+      .to_environment(@environment)
+      .includes(:project)
+      .includes(:changes)
   end
   
   def load_tickets
