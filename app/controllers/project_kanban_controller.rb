@@ -16,8 +16,6 @@ class ProjectKanbanController < ApplicationController
       .includes(:project)
       .includes(:testing_notes)
       .includes(:ticket_queues)
-      .includes(:releases)
-      .includes(:commits)
       .in_queue(@queue, :refresh)
     
     respond_to do |format|
@@ -26,7 +24,7 @@ class ProjectKanbanController < ApplicationController
       end
       format.json do
         response.headers["X-Revision"] = revision
-        render json: TicketPresenter.new(@tickets).with_testing_notes
+        render json: KanbanTicketPresenter.new(@tickets).as_json
       end
     end
   end
