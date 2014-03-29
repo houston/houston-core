@@ -309,20 +309,6 @@ class Ticket < ActiveRecord::Base
   
   
   
-  # c.f. app/assets/models/ticket.coffee
-  def verdict
-    return "" if testers.none?
-    
-    verdicts = verdicts_by_tester.values
-    if verdicts.member? "failing"
-      "Failing"
-    elsif verdicts.length >= min_passing_verdicts && verdicts.all? { |verdict| verdict == "passing" }
-      "Passing"
-    else
-      "Pending"
-    end
-  end
-  
   def verdicts_by_tester(notes=testing_notes_since_last_release)
     return {} if notes.empty?
     
