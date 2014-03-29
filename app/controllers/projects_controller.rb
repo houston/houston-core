@@ -6,7 +6,10 @@ class ProjectsController < ApplicationController
   
   def index
     @title = "Projects"
-    @projects = Project.unretired
+    @projects = Project \
+      .includes(:owners)
+      .includes(:maintainers)
+      .unretired
   end
   
   

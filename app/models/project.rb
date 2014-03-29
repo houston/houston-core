@@ -12,6 +12,14 @@ class Project < ActiveRecord::Base
   has_many :deploys
   has_many :roles, :dependent => :destroy
   
+  Houston.config.project_roles.each do |role|
+    collection_name = role.downcase.gsub(' ', '_').pluralize
+    class_eval <<-RUBY
+      has_many :#{collection_name}, -> { where(Role.arel_table[:name].eq("#{role}")) }, class_name: "User", through: :roles, source: :user
+    RUBY
+  end
+  
+  
   accepts_nested_attributes_for :roles, :allow_destroy => true, # <-- !todo: authorized access only
     reject_if: proc { |attrs| attrs[:user_id].blank? or attrs[:name].blank? }
   
@@ -72,21 +80,6 @@ class Project < ActiveRecord::Base
   
   def teammates
     roles.participants.to_users
-  end
-  
-  Houston.config.project_roles.each do |role|
-    method_name = role.downcase.gsub(' ', '_')
-    collection_name = method_name.pluralize
-    
-    class_eval <<-RUBY
-      def #{collection_name}
-        @#{collection_name} ||= roles.#{collection_name}.to_users
-      end
-      
-      def #{collection_name}_ids
-        @#{collection_name}_ids ||= roles.#{collection_name}.to_users.reorder("").pluck(:id)
-      end
-    RUBY
   end
   
   def followers # <-- redefine followers to be everyone who participates in or follows the project
