@@ -23,7 +23,7 @@ class ProjectKanbanController < ApplicationController
       end
       format.json do
         response.headers["X-Revision"] = revision
-        render json: KanbanTicketPresenter.new(@tickets).as_json
+        render json: KanbanTicketPresenter.new(@tickets)
       end
     end
   end

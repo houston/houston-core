@@ -2,7 +2,7 @@ class TicketsController < ApplicationController
   
   def show
     ticket = Ticket.find(params[:id])
-    render :json => TicketPresenter.new(ticket).with_testing_notes
+    render json: TicketPresenter.new(ticket)
   end
   
   def update

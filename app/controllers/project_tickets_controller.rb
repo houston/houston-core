@@ -5,7 +5,7 @@ class ProjectTicketsController < ApplicationController
   
   
   def index
-    render json: TicketPresenter.new(@project.tickets).with_extended_attributes
+    render json: TicketPresenter.new(@project.tickets)
   end
   
   
