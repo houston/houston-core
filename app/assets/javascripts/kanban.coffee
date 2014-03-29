@@ -98,7 +98,6 @@ class window.Kanban
     $tickets
       .popoverForTicket()
       .pseudoHover()
-    $tickets.illustrateTicketVerdict() if $queue.attr('id') == 'in_testing'
     
     @resizeColumn $queue
   

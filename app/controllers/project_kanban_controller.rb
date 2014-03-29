@@ -14,7 +14,6 @@ class ProjectKanbanController < ApplicationController
     @queue = KanbanQueue.find_by_slug(params[:queue])
     @tickets = @project.tickets
       .includes(:project)
-      .includes(:testing_notes)
       .includes(:ticket_queues)
       .in_queue(@queue, :refresh)
     

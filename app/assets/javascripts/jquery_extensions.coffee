@@ -19,25 +19,6 @@ $.fn.extend
         content = if content[1] then "<strong>#{content[0]}: </strong>#{content[1]}" else content[0]
         if is_manual_queue then content + '<span class="remove-instructions">Shift + Click to remove</span>' else content
   
-  illustrateTicketVerdict: ->
-    $(@).each ->
-      $ticket = $(@)
-      # <li class="ticket" data-tester-1="failing">...</li>
-      if $ticket.is('[data-tester-1]')
-        $el = $('<div class="ticket-badge"></div>')
-        if $ticket.hasClass('failing')
-          $el.appendTicketBadge('failing')
-        else if $ticket.hasClass('passing')
-          $el.appendTicketBadge('passing')
-        $ticket.find('a').append $el
-        testers = window.testers.length
-        for i in [1..testers]
-          verdict = $ticket.attr("data-tester-#{i}")
-          new Badge($el, i, testers, verdict) if verdict
-  
-  appendTicketBadge: (status)->
-    $(@).append("<img src=\"#{App.relativeRoot()}/images/badge-#{status}.png\" width=\"38\" height=\"38\" style=\"opacity: 0.3;\" />")
-  
   appendView: (view)->
     el = @append(view.el)
     view.render()

@@ -44,14 +44,6 @@ Handlebars.registerHelper 'classForAge', (seconds)->
   else
     'ancient'
 
-Handlebars.registerHelper 'attributesForVerdict', (verdictsByTester)->
-  return '' if Object.keys(verdictsByTester).length == 0
-  
-  attributes = ""
-  for i, verdict of verdictsByTester
-    attributes += " data-tester-#{i}=\"#{verdict}\""
-  attributes
-
 Handlebars.registerHelper 'radioButton', (object, id, name, value, selectedValue)->
   id = "#{object}_#{id}_#{name}_#{value}"
   input = "<input type=\"radio\" id=\"#{id}\" name=\"#{name}\" value=\"#{value}\""

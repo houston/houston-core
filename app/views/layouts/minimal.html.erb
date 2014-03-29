@@ -26,7 +26,7 @@
     
     <!-- Templates -->
     <script id="ticket_template" type="text/x-handlebars-template">
-      <li class="ticket {{projectSlug}} {{projectColor}} {{classForAge age}} {{verdict}}" id="ticket_{{id}}" data-number="{{number}}" data-project="{{projectTitle}}" {{{attributesForVerdict verdictsByTester}}}>
+      <li class="ticket {{projectSlug}} {{projectColor}} {{classForAge age}}" id="ticket_{{id}}" data-number="{{number}}" data-project="{{projectTitle}}">
         <a href="{{ticketUrl}}" target="_blank">
           <h3 class="ticket-number">{{number}} <span class="ticket-age">{{formatDuration age}}</span></h3>
           <p class="ticket-summary">{{summary}}</p>

@@ -26,7 +26,6 @@ class KanbanTicketPresenter
           tags: ticket.tags.map(&:to_h),
         
           # specific to Kanban
-          verdictsByTester: ticket.verdicts_by_tester_index,
           queues: ticket.age_in_queues }
       end
     end
