@@ -309,28 +309,6 @@ class Ticket < ActiveRecord::Base
   
   
   
-  def verdicts_by_tester(notes=testing_notes_since_last_release)
-    return {} if notes.empty?
-    
-    verdicts_by_tester = Hash[testers.map(&:id).zip([nil])]
-    notes.each do |note|
-      tester_id = note.user_id
-      next unless verdicts_by_tester.key?(tester_id) # not was not by a tester
-      
-      if note.fail?
-        verdicts_by_tester[tester_id] = "failing"
-      elsif note.pass?
-        verdicts_by_tester[tester_id] ||= "passing"
-      end
-    end
-    verdicts_by_tester
-  end
-  
-  def verdicts_by_tester_index
-    verdicts = verdicts_by_tester
-    testers.each_with_index.each_with_object({}) { |(tester, i), response| response[i + 1] = verdicts[tester.id] if verdicts.key?(tester.id) }
-  end
-  
   def testing_notes_since_last_release
     last_release_at ? testing_notes.where(["created_at > ?", last_release_at]) : testing_notes
   end
