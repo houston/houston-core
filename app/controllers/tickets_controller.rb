@@ -1,12 +1,13 @@
 class TicketsController < ApplicationController
+  before_filter :find_ticket, only: [:show, :update, :close, :reopen]
+  
+  attr_reader :ticket
   
   def show
-    ticket = Ticket.find(params[:id])
     render json: TicketPresenter.new(ticket)
   end
   
   def update
-    ticket = Ticket.find(params[:id])
     params[:last_release_at] = params.fetch(:lastReleaseAt, params[:last_release_at])
     attributes = params.pick(:last_release_at, :priority)
     
@@ -22,19 +23,23 @@ class TicketsController < ApplicationController
   end
   
   def close
-    ticket = Ticket.find(params[:id])
     ticket.close_ticket!
-    render json: [], :status => :ok
+    render json: []
   rescue
-    render json: [$!.message], :status => :unprocessable_entity
+    render json: [$!.message], status: :unprocessable_entity
   end
   
   def reopen
-    ticket = Ticket.find(params[:id])
     ticket.reopen!
-    render json: [], :status => :ok
+    render json: []
   rescue
-    render json: [$!.message], :status => :unprocessable_entity
+    render json: [$!.message], status: :unprocessable_entity
+  end
+  
+private
+  
+  def find_ticket
+    @ticket = Ticket.find(params[:id])
   end
   
 end
