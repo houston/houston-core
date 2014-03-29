@@ -30,7 +30,7 @@ class Ticket < ActiveRecord::Base
   
   attr_readonly :number, :project_id
   
-  delegate :testers, :maintainers, to: :project
+  delegate :testers, :maintainers, :min_passing_verdicts, to: :project
   delegate :nosync?, to: "self.class"
   
   
@@ -347,10 +347,6 @@ class Ticket < ActiveRecord::Base
   
   def testing_notes_since_last_release
     last_release_at ? testing_notes.where(["created_at > ?", last_release_at]) : testing_notes
-  end
-  
-  def min_passing_verdicts
-    project.min_passing_verdicts
   end
   
   
