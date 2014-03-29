@@ -35,13 +35,28 @@ class ActivityFeed
   
   
   
-  TicketCreatedEvent = Struct.new(:time, :ticket) do
-    def initialize(ticket)
-      super(ticket.created_at, ticket)
-    end
-    
+  class Event < Struct.new(:time, :project)
     def date
       time.to_date
+    end
+  end
+  
+  class TicketEvent < Event
+    attr_reader :ticket
+    
+    def initialize(time, ticket)
+      @ticket = ticket
+      super time, ticket.project
+    end
+    
+    def actor
+      ticket.reporter
+    end
+  end
+  
+  class TicketCreatedEvent < TicketEvent
+    def initialize(ticket)
+      super(ticket.created_at, ticket)
     end
     
     def css
@@ -51,21 +66,11 @@ class ActivityFeed
     def icon
       "icon-plus"
     end
-    
-    def actor
-      ticket.reporter
-    end
-    
-    delegate :project, to: :ticket
   end
   
-  TicketClosedEvent = Struct.new(:time, :ticket) do
+  class TicketClosedEvent < TicketEvent
     def initialize(ticket)
       super(ticket.closed_at, ticket)
-    end
-    
-    def date
-      time.to_date
     end
     
     def css
@@ -75,21 +80,14 @@ class ActivityFeed
     def icon
       "icon-minus"
     end
-    
-    def actor
-      ticket.reporter
-    end
-    
-    delegate :project, to: :ticket
   end
   
-  ReleaseEvent = Struct.new(:time, :release) do
-    def initialize(release)
-      super(release.created_at, release)
-    end
+  class ReleaseEvent < Event
+    attr_reader :release
     
-    def date
-      time.to_date
+    def initialize(release)
+      @release = release
+      super(release.created_at, release.project)
     end
     
     def css
@@ -103,8 +101,6 @@ class ActivityFeed
     def actor
       release.user
     end
-    
-    delegate :project, to: :release
   end
   
 end
