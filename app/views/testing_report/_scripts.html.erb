@@ -1,15 +1,12 @@
 <% content_for :javascripts do %>
   <script type="text/javascript">
     $(function() {
-      
       var tickets = new Tickets(<%= raw tickets.to_json %>);
-      
       new TestingReportView({
         el: '#testing_report',
         projectsCanCloseTicketsFor: <%= raw @projects.select { |project| can?(:close, project.tickets.build) }.map(&:id).to_json %>,
         tickets: tickets
       });
-      
     });
   </script>
 <% end %>
