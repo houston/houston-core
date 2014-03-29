@@ -3,7 +3,7 @@ class window.Kanban
   constructor: (options)->
     @projects = options.projects
     @queues = options.queues
-    @renderTicket = Handlebars.compile($('#ticket_template').html())
+    @renderTicket = HandlebarsTemplates['kanban/ticket']
     
     @observer = new Observer()
     self = @
