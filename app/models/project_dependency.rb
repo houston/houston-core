@@ -8,6 +8,7 @@ class ProjectDependency
   end
   
   def self.for(project)
+    project = ProjectDependencies.new(project)
     KeyDependency.all.map { |dependency| self.new(project, dependency) }.select(&:valid?)
   end
   
