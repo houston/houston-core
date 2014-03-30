@@ -327,7 +327,7 @@ class Ticket < ActiveRecord::Base
   
   
   
-  TicketCommitter = Struct.new(:name, :email) do
+  class TicketCommitter < Struct.new(:name, :email)
     
     def tester?
       false
