@@ -337,7 +337,7 @@ module Houston
     
     attr_reader :values
     
-    def gem(slug, target_versions, options={})
+    def gem(slug, target_versions=[], options={})
       @values << options.merge(type: :gem, slug: slug, target_versions: target_versions)
     end
     
