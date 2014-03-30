@@ -33,6 +33,18 @@ class TestRun < ActiveRecord::Base
     def failed
       where(result: "fail")
     end
+    
+    def most_recent
+      joins <<-SQL
+        INNER JOIN (
+          SELECT project_id, MAX(completed_at) AS completed_at
+          FROM test_runs
+          GROUP BY project_id
+        ) AS most_recent_test_runs
+        ON test_runs.project_id=most_recent_test_runs.project_id
+        AND test_runs.completed_at=most_recent_test_runs.completed_at
+      SQL
+    end
   end
   
   

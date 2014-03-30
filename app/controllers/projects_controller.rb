@@ -9,8 +9,8 @@ class ProjectsController < ApplicationController
     @projects = Project \
       .includes(:owners)
       .includes(:maintainers)
-      .includes(:last_test_run)
       .unretired
+    @test_runs = TestRun.most_recent.index_by(&:project_id)
     @releases = Release.most_recent.index_by { |release| [release.project_id, release.environment_name] }
   end
   

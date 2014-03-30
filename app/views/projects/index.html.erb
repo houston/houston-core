@@ -87,7 +87,7 @@
               <%= project.category %>
             </td>
             <td class="project-last-build">
-              <% if test_run = project.last_test_run %>
+              <% with_most_recent_test_run(project) do |test_run| %>
                 <h5 class="test-result-banner <%= test_run.result || "pending" %>" rel="tooltip" title="<%= test_run_summary(test_run) %>">
                   <%= link_to test_run.result, test_run.results_url, target: "_blank" %>
                 </h5>
