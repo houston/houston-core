@@ -113,7 +113,9 @@
           <% tests.each do |test| %>
             <li class="test <%= test_status(test) %>">
               <span class="test-status <%= test_status(test) %>"><%= test_status(test) %></span><span class="test-name"><%= test[:name] %></span>&nbsp;
-              <span class="test-duration">( <%= test[:duration].round(1) %>ms )</span>
+              <% if test[:duration] %>
+                <span class="test-duration">( <%= test[:duration].round(1) %>ms )</span>
+              <% end %>
               <% if test.fetch(:error_backtrace, []).any? %>
                 <ol class="test-backtrace">
                   <li class="test-backtrace-line error-message"><%= test[:error_message] %></li>
