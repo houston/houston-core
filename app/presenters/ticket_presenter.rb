@@ -6,9 +6,10 @@ class TicketPresenter
   end
   
   def as_json(*args)
+    tickets = @tickets
     tickets = ActiveRecord::Base.benchmark "\e[33m[#{self.class.name.underscore}] Load objects\e[0m" do
-      @tickets.load
-    end
+      tickets.load
+    end if tickets.is_a?(ActiveRecord::Relation)
     ActiveRecord::Base.benchmark "\e[33m[#{self.class.name.underscore}] Prepare JSON\e[0m" do
       tickets.map(&method(:ticket_to_json))
     end

@@ -1,19 +1,12 @@
-class OneOrMany
+class OneOrMany < SimpleDelegator
   
-  def initialize(one_or_many)
-    @one_or_many = one_or_many
-  end
-  
-  def load
-    @one_or_many.load if @one_or_many.respond_to?(:load)
-    self
-  end
+  delegate :is_a?, to: :__getobj__
   
   def map(&block)
-    if @one_or_many.respond_to?(:map)
-      @one_or_many.map(&block)
+    if __getobj__.respond_to?(:map)
+      __getobj__.map(&block)
     else
-      yield @one_or_many
+      yield __getobj__
     end
   end
   
