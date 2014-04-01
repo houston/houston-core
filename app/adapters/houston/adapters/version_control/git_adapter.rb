@@ -85,7 +85,9 @@ module Houston
               pid = spawn command
               Process.detach pid
             else
-              system command
+              Skylight.instrument title: "git remote update" do
+                system command
+              end
             end
           end
           

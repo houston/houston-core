@@ -76,55 +76,69 @@ module Houston
           
           def resolve!
             unless %w{resolved closed}.member? @raw_attributes["status"].to_s.downcase
-              ticket = unfuddle.ticket(remote_id)
-              ticket.update_attributes!("status" => "Resolved", "resolution" => "fixed")
+              Skylight.instrument title: "Resolve Unfuddle Ticket" do
+                ticket = unfuddle.ticket(remote_id)
+                ticket.update_attributes!("status" => "Resolved", "resolution" => "fixed")
+              end
             end
           end
           
           def close!
-            ticket = unfuddle.ticket(remote_id)
-            ticket.update_attributes!("status" => "closed")
+            Skylight.instrument title: "Close Unfuddle Ticket" do
+              ticket = unfuddle.ticket(remote_id)
+              ticket.update_attributes!("status" => "closed")
+            end
           end
           
           def reopen!
             unless %w{closed}.member? @raw_attributes["status"].to_s.downcase
-              ticket = unfuddle.ticket(remote_id)
-              ticket.update_attributes!("status" => "Reopened", "resolution" => "", deployment_field => 0)
+              Skylight.instrument title: "Reopen Unfuddle Ticket" do
+                ticket = unfuddle.ticket(remote_id)
+                ticket.update_attributes!("status" => "Reopened", "resolution" => "", deployment_field => 0)
+              end
             end
           end
           
           
           
           def set_milestone!(milestone_id)
-            ticket = unfuddle.ticket(remote_id)
-            ticket.update_attribute("milestone_id", milestone_id || 0)
+            Skylight.instrument title: "Update Unfuddle Ticket" do
+              ticket = unfuddle.ticket(remote_id)
+              ticket.update_attribute("milestone_id", milestone_id || 0)
+            end
           end
           
           
           
           def create_comment!(comment)
-            unfuddle.as_user(comment.user) do
-              ticket = unfuddle.ticket(remote_id)
-              ticket.create_comment("body" => comment.body).id
+            Skylight.instrument title: "Create Unfuddle Comment" do
+              unfuddle.as_user(comment.user) do
+                ticket = unfuddle.ticket(remote_id)
+                ticket.create_comment("body" => comment.body).id
+              end
             end
           end
           
           def update_comment!(comment)
-            unfuddle.as_user(comment.user) do
-              unfuddle_comment = comment(comment.remote_id)
-              return unless unfuddle_comment
-              
-              unfuddle_comment.project_id = unfuddle.project_id
-              unfuddle_comment.update_attributes!("body" => comment.body)
+            Skylight.instrument title: "Update Unfuddle Comment" do
+              unfuddle.as_user(comment.user) do
+                unfuddle_comment = comment(comment.remote_id)
+                return unless unfuddle_comment
+                
+                unfuddle_comment.project_id = unfuddle.project_id
+                unfuddle_comment.update_attributes!("body" => comment.body)
+              end
             end
           end
           
           def destroy_comment!(comment)
-            unfuddle_comment = comment(comment.remote_id)
-            return unless unfuddle_comment
-            
-            unfuddle_comment.project_id = unfuddle.project_id
-            unfuddle_comment.destroy!
+            Skylight.instrument title: "Destroy Unfuddle Comment" do
+              unfuddle_comment = comment(comment.remote_id)
+              return unless unfuddle_comment
+              
+              unfuddle_comment.project_id = unfuddle.project_id
+              unfuddle_comment.destroy!
+            end
           end
           
           
@@ -133,9 +147,11 @@ module Houston
           def update_attribute(attribute, value)
             case attribute
             when :deployment
-              id = unfuddle.find_custom_field_value_by_value!(Houston::TMI::NAME_OF_DEPLOYMENT_FIELD, value).id
-              ticket = unfuddle.ticket(remote_id)
-              ticket.update_attributes!(deployment_field => id)
+              Skylight.instrument title: "Update Unfuddle Ticket" do
+                id = unfuddle.find_custom_field_value_by_value!(Houston::TMI::NAME_OF_DEPLOYMENT_FIELD, value).id
+                ticket = unfuddle.ticket(remote_id)
+                ticket.update_attributes!(deployment_field => id)
+              end
               
             else
               raise NotImplementedError

@@ -42,7 +42,7 @@ gem 'less-rails', '2.3.2' # for Twitter Bootstrap
 
 # Tooling
 gem 'airbrake', '~> 3.1.15' # exception notification
-gem 'newrelic_rpm'
+gem 'skylight'
 
 
 
@@ -68,10 +68,6 @@ gem 'coffee-rails', '~> 4.0.0'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 gem 'therubyracer', platforms: :ruby
-
-group :production do
-  gem 'skylight'
-end
 
 group :development do
   gem 'unicorn-rails'
