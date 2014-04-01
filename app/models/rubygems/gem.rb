@@ -18,8 +18,8 @@ module Rubygems
     
     
     def self.request_releases_of(name)
-      Skylight.instrument title: "GET rubygems.org" do
-        response = Faraday.get("https://rubygems.org/api/v1/versions/#{name}.json")
+      response = Skylight.instrument title: "GET rubygems.org" do
+        Faraday.get("https://rubygems.org/api/v1/versions/#{name}.json")
       end
       raise Rubygems::Error, "Unexpected response from rubygems. Status: #{response.status}" unless response.status == 200
       
