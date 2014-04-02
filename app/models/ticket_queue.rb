@@ -34,10 +34,12 @@ class TicketQueue < ActiveRecord::Base
     
     
     def enter!(slug, ids)
+      return if ids.none?
       in_queue(slug).create! ids.map { |id| { ticket_id: id } }
     end
     
     def exit!(slug, ids)
+      return if ids.none?
       in_queue(slug).where(ticket_id: ids).exit_all!
     end
     

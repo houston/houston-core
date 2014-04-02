@@ -1655,6 +1655,20 @@ CREATE INDEX index_testing_notes_on_user_id ON testing_notes USING btree (user_i
 
 
 --
+-- Name: index_ticket_queues_on_queue; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_ticket_queues_on_queue ON ticket_queues USING btree (queue);
+
+
+--
+-- Name: index_ticket_queues_on_ticket_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_ticket_queues_on_ticket_id ON ticket_queues USING btree (ticket_id);
+
+
+--
 -- Name: index_tickets_on_destroyed_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1976,3 +1990,5 @@ INSERT INTO schema_migrations (version) VALUES ('20140217160450');
 INSERT INTO schema_migrations (version) VALUES ('20140217195942');
 
 INSERT INTO schema_migrations (version) VALUES ('20140327020121');
+
+INSERT INTO schema_migrations (version) VALUES ('20140401234330');

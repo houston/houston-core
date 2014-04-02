@@ -56,7 +56,10 @@ class Ticket < ActiveRecord::Base
       transaction do
         queue.filter(scoped).tap do |tickets_in_queue|
           
-          ticket_ids_were_in_queue = TicketQueue.where(queue: queue.slug, ticket_id: pluck(:id)).pluck(:ticket_id)
+          ids = pluck(:id).uniq # <-- for some reason this performs a CRAZY query
+          ticket_ids_were_in_queue = TicketQueue
+            .where(queue: queue.slug, destroyed_at: nil, ticket_id: ids)
+            .pluck(:ticket_id)
           ticket_ids_in_queue = tickets_in_queue.pluck(:id)
           TicketQueue.enter! queue, ticket_ids_in_queue - ticket_ids_were_in_queue
           TicketQueue.exit!  queue, ticket_ids_were_in_queue - ticket_ids_in_queue
