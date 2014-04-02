@@ -29,6 +29,9 @@ module Houston
       class InvalidShaError < ArgumentError
       end
       
+      class CloneRepoFailed < RuntimeError
+      end
+      
     end
   end
 end

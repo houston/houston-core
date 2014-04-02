@@ -14,10 +14,9 @@ module Houston
             location = Addressable::URI.parse(location.to_s)
             connect_to_repo!(location, project.version_control_temp_path)
             {}
-          rescue
-            Rails.logger.error $!.message
-            Rails.logger.error $!.backtrace
-            {git_location: ["might not be right. Houston can't seem to connect to it."]}
+          rescue Rugged::RepositoryError, CloneRepoFailed
+            Rails.logger.error "#{$!.class.name}: #{$!.message}\n  #{$!.backtrace.take(7).join("\n  ")}"
+            { git_location: ["might not be right. Houston can't seem to connect to it."] }
           end
           
           def build(project, location)
@@ -50,7 +49,7 @@ module Houston
           
           def get_local_path_to_repo(repo_uri, temp_path)
             if repo_uri.absolute?
-              clone!(origin_uri, temp_path) unless File.exists?(temp_path)
+              clone!(repo_uri, temp_path) unless File.exists?(temp_path)
               temp_path
             else
               repo_uri.to_s
@@ -86,7 +85,7 @@ module Houston
               Process.detach pid
             else
               Skylight.instrument title: "git remote update" do
-                system command
+                raise CloneRepoFailed.new unless system command
               end
             end
           end
