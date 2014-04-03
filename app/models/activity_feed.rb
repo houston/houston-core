@@ -73,6 +73,11 @@ class ActivityFeed
       super(ticket.closed_at, ticket)
     end
     
+    def resolution
+      return "Closed" if ticket.resolution.blank?
+      ticket.resolution.titleize
+    end
+    
     def css
       "timeline-event-ticket-closed"
     end

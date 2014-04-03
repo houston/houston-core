@@ -10,7 +10,7 @@
     end %></span>
     <span class="ticket-number"><%= link_to_ticket(event.ticket) { "##{event.ticket.number}" } %></span>
   <% when ActivityFeed::TicketClosedEvent %>
-    <span class="ticket-resolution"><%= event.ticket.resolution.to_s.titleize %></span>
+    <span class="ticket-resolution"><%= event.resolution %></span>
     <span class="ticket"><%= link_to_ticket(event.ticket) do
       "<span class=\"ticket-summary\">#{format_with_feature_bolded(event.ticket.summary)}</span>".html_safe
     end %></span>
