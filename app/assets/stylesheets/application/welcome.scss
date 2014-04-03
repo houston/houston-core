@@ -189,8 +189,9 @@
       }
       
       b { font-weight: 400; }
-      .ticket-number { color: #0088cc !important; }
     }
+    
+    .ticket-number a { color: #0088cc !important; }
     
     .bubble {
       border-radius: 13px;
@@ -288,14 +289,20 @@
     }
     
     .ticket-resolution {
+      font-size: 0.88em;
+      font-weight: 800;
+      color: #aaa;
+      
+      &::after { content: ':'; }
+    }
+    
+    .ticket-number {
       display: block;
       position: absolute;
       top: 4px;
       right: 0;
       text-indent: 0;
       font-size: 0.88em;
-      font-weight: 800;
-      color: #aaa;
     }
     
     &.timeline-event-ticket-closed .ticket a {
