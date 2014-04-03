@@ -85,7 +85,9 @@ module Houston
               Process.detach pid
             else
               Skylight.instrument title: "git remote update" do
-                raise CloneRepoFailed.new unless system command
+                unless system command
+                  raise CloneRepoFailed.new("The command #{command.inspect} failed")
+                end
               end
             end
           end
