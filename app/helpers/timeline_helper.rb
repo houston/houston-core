@@ -19,6 +19,13 @@ module TimelineHelper
     end
   end
   
+  def format_time(event)
+    event.time.strftime("%I:%M %p")
+      .gsub(/^0/, "")
+      .gsub(/ AM/, "a")
+      .gsub(/ PM/, "p")
+  end
+  
   def render_timeline_date(date)
     <<-HTML.html_safe
     <div class="timeline-date">
