@@ -43,6 +43,7 @@ module Houston
           end
           
           def fetch_results!(build_url)
+            build_url = build_url.chomp("/")
             results = {}
             results.merge! fetch_overall_report!(build_url)
             results.merge! fetch_test_report!(build_url)
