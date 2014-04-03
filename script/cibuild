@@ -3,4 +3,4 @@
 export RAILS_ENV=test
 cp ./config/config.sample.rb ./config/config.rb
 bundle
-bundle exec rake ci:setup:minitest test COVERAGE=on CI=true
+bundle exec rake test COVERAGE=on CI=true

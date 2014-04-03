@@ -10,6 +10,15 @@ require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
 require 'turn'
 
+if ENV["CI"] == "true"
+  require 'minitest/reporters'
+  MiniTest::Reporters.use! [MiniTest::Reporters::DefaultReporter.new,
+                            MiniTest::Reporters::JUnitReporter.new]
+else
+  require "turn"
+end
+
+
 
 Houston.observer.async = false
 

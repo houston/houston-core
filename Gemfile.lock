@@ -91,8 +91,6 @@ GEM
     childprocess (0.5.1)
       ffi (~> 1.0, >= 1.0.11)
     chronic (0.10.2)
-    ci_reporter (1.9.1)
-      builder (>= 2.1.2)
     codeclimate-test-reporter (0.2.0)
       simplecov (>= 0.7.1, < 1.0.0)
     coderay (1.1.0)
@@ -130,6 +128,7 @@ GEM
       execjs (>= 1.2.9)
       sprockets (>= 2.0.3)
       tilt
+    hashie (2.0.5)
     hike (1.2.3)
     hpricot (0.8.6)
     htmlentities (4.3.1)
@@ -162,6 +161,11 @@ GEM
     mime-types (1.25.1)
     mini_portile (0.5.2)
     minitest (4.7.5)
+    minitest-reporters (0.14.24)
+      ansi
+      builder
+      minitest (>= 2.12, < 5.0)
+      powerbar
     multi_json (1.9.2)
     multi_xml (0.5.5)
     multipart-post (1.2.0)
@@ -186,6 +190,9 @@ GEM
     orm_adapter (0.5.0)
     pg (0.17.1)
     polyglot (0.3.4)
+    powerbar (1.0.11)
+      ansi (~> 1.4.0)
+      hashie (>= 1.1.0)
     premailer (1.7.3)
       css_parser (>= 1.1.9)
       htmlentities (>= 4.0.0)
@@ -299,7 +306,6 @@ DEPENDENCIES
   bundler
   cancan
   childprocess
-  ci_reporter
   codeclimate-test-reporter (= 0.2.0)
   coffee-rails (~> 4.0.0)
   default_value_for
@@ -319,6 +325,7 @@ DEPENDENCIES
   letter_opener
   meta_request
   minitest
+  minitest-reporters
   nokogiri
   oauth-plugin (~> 0.5.1)
   octokit
