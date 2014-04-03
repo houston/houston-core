@@ -1,6 +1,8 @@
 <% content_for :title do %>
 <h1 class="project-banner space-below">
   <span class="light"><%= @pull_requests_by_repo.values.flatten.select(&:eligible?).length %></span> Pull Requests
+  
+  <%= render partial: "projects/keyboard_shortcuts" %>
 </h1>
 <% end %>
 

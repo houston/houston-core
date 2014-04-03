@@ -44,6 +44,15 @@ $ ->
     showNewTicket()
   
   
+  Mousetrap.bind 'g p', -> window.location = '/projects'
+  Mousetrap.bind 'g q', -> window.location = '/pull_requests'
+  Mousetrap.bind 'g i', -> window.location = '/itsm/issues'
+  Mousetrap.bind 'g k', -> window.location = '/kanban'
+  Mousetrap.bind 'g t r', -> window.location = '/testing_report'
+  Mousetrap.bind 'g n t', -> window.location = '/tickets/new'
+  Mousetrap.bind 'g u', -> window.location = '/users'
+  
+  
   Mousetrap.bind '?', ->  $('#keyboard_shortcuts_button').click()
   $('#keyboard_shortcuts_button').click (e)->
     e.preventDefault()

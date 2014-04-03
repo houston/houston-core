@@ -2,6 +2,8 @@
 <h1 class="project-banner space-below">
   Team
   <%= link_to "New Team Member", new_user_path, :class => "btn btn-primary" if can?(:create, User) %>
+  
+  <%= render partial: "projects/keyboard_shortcuts" %>
 </h1>
 <% end %>
 
