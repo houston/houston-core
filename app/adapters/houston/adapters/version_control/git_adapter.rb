@@ -14,7 +14,7 @@ module Houston
             location = Addressable::URI.parse(location.to_s)
             connect_to_repo!(location, project.version_control_temp_path)
             {}
-          rescue Rugged::RepositoryError, CloneRepoFailed
+          rescue Rugged::RepositoryError, CloneRepoFailed, Rugged::OSError
             Rails.logger.error "#{$!.class.name}: #{$!.message}\n  #{$!.backtrace.take(7).join("\n  ")}"
             { git_location: ["might not be right. Houston can't seem to connect to it."] }
           end
