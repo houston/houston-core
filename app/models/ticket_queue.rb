@@ -5,7 +5,7 @@ class TicketQueue < ActiveRecord::Base
   validates :ticket, :presence => true
   validates :queue, :presence => true, :inclusion => KanbanQueue.slugs
   
-  default_scope joins(:ticket)
+  default_scope { joins(:ticket) }
   
   
   

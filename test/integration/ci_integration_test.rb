@@ -3,7 +3,7 @@ require "support/houston/adapters/ci_server/mock_adapter"
 
 
 # Tests config/initializers/run_tests_on_post_receive.rb
-class CIIntegrationTest < ActionController::IntegrationTest
+class CIIntegrationTest < ActionDispatch::IntegrationTest
   include RR::Adapters::TestUnit
   
   

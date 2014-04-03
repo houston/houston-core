@@ -5,7 +5,7 @@ class TestRun < ActiveRecord::Base
   validates_presence_of :project_id, :sha
   validates :results_url, :presence => true, :if => :completed?
   
-  default_scope order("completed_at DESC")
+  default_scope { order("completed_at DESC") }
   
   serialize :tests
   serialize :coverage

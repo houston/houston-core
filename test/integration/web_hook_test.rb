@@ -1,7 +1,7 @@
 require "test_helper"
 
 
-class WebHookTest < ActionController::IntegrationTest
+class WebHookTest < ActionDispatch::IntegrationTest
   include RR::Adapters::TestUnit
   attr_reader :project
   

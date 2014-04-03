@@ -3,7 +3,7 @@ require "support/houston/adapters/version_control/mock_adapter"
 
 
 # Tests config/initializers/sync_commits_on_post_receive.rb
-class SyncCommitsTest < ActionController::IntegrationTest
+class SyncCommitsTest < ActionDispatch::IntegrationTest
   include RR::Adapters::TestUnit
   
   

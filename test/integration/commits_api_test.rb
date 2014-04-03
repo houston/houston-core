@@ -1,7 +1,7 @@
 require "test_helper"
 
 
-class CommitsApiTest < ActionController::IntegrationTest
+class CommitsApiTest < ActionDispatch::IntegrationTest
   include RR::Adapters::TestUnit
   fixtures :all
   

@@ -3,7 +3,7 @@ class Milestone < ActiveRecord::Base
   belongs_to :project
   has_many :tickets
   
-  default_scope where(destroyed_at: nil)
+  default_scope { where(destroyed_at: nil) }
   
   validates :project_id, presence: true
   validates :name, presence: true, uniqueness: {scope: :project_id}

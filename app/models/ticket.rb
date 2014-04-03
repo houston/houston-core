@@ -8,13 +8,13 @@ class Ticket < ActiveRecord::Base
   belongs_to :milestone, counter_cache: true
   belongs_to :sprint
   belongs_to :checked_out_by, class_name: "User"
-  has_many :ticket_queues, conditions: "ticket_queues.destroyed_at IS NULL"
+  has_many :ticket_queues, -> { where(destroyed_at: nil) }
   has_many :testing_notes
   has_and_belongs_to_many :releases, before_add: :ignore_release_if_duplicate
-  has_and_belongs_to_many :commits, conditions: {unreachable: false}
+  has_and_belongs_to_many :commits, -> { where(unreachable: false) }
   has_and_belongs_to_many :released_commits, -> { reachable.released }, class_name: "Commit", association_foreign_key: "commit_id"
   
-  default_scope order(:number).where(destroyed_at: nil)
+  default_scope { order(:number).where(destroyed_at: nil) }
   
   validates :project_id, presence: true
   validates :summary, presence: true

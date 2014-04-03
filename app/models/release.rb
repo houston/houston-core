@@ -11,7 +11,7 @@ class Release < ActiveRecord::Base
   has_and_belongs_to_many :commits
   has_and_belongs_to_many :tickets, autosave: false # <-- a bug with autosave causes ticket_ids to be saved twice
   
-  default_scope order("created_at DESC")
+  default_scope { order("created_at DESC") }
   
   accepts_nested_attributes_for :changes, :allow_destroy => true
   
@@ -42,7 +42,7 @@ class Release < ActiveRecord::Base
   end
   
   def self.before(time)
-    return scoped if time.nil?
+    return all if time.nil?
     where(arel_table[:created_at].lt(time))
   end
   

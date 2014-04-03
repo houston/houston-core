@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
   
   devise *Houston.config.devise_configuration
   
-  default_scope order("last_name, first_name")
+  default_scope { order("last_name, first_name") }
   
   default_value_for :role, Houston.config.default_role
   
