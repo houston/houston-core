@@ -37,6 +37,9 @@ module Houston
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
+    
+    # Automatically compress responses that accept gzip encoding
+    config.middleware.use Rack::Deflater
   end
 end
 
