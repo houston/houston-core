@@ -69,7 +69,7 @@ class window.Tickets extends Backbone.Collection
     
     return [] if words.length == 0
     
-    regexes = (new RegExp("\\b#{word}", 'i') for word in words)
+    regexes = (new RegExp("\\b#{RegExp.escape(word)}", 'i') for word in words)
     
     results = []
     for ticket in @toJSON()
