@@ -19,7 +19,7 @@ module TimelineHelper
     end
   end
   
-  def format_time(event)
+  def format_timeline_time(event)
     event.time.strftime("%I:%M %p")
       .gsub(/^0/, "")
       .gsub(/ AM/, "a")

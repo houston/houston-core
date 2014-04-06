@@ -1,7 +1,7 @@
 <% @events.each do |event| %>
   <%= @last_date ? render_timeline_gap_for(event.date...@last_date) : render_timeline_date(event.date) %>
   <div class="timeline-event <%= event.css %>" data-time="<%= event.time.iso8601 %>">
-    <span class="timeline-event-time"><%= format_time(event) %></span>
+    <span class="timeline-event-time"><%= format_timeline_time(event) %></span>
     <b class="bubble <%= event.project.color %>"><i class="timeline-event-type <%= event.icon %>"></i></b>
     <span class="timeline-event-actor"><%= avatar_for(event.actor, size: 20) %></span>
   <% case event; when ActivityFeed::TicketCreatedEvent %>
