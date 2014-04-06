@@ -26,13 +26,6 @@ module UrlHelper
   
   
   
-  def new_relic_project_url(project)
-    account_id = Houston.config.new_relic[:account_id]
-    "https://rpm.newrelic.com/accounts/#{account_id}/applications/#{project.new_relic_id}"
-  end
-  
-  
-  
   def releases_path(project, *args)
     options = args.extract_options!
     environment_name = args.first

@@ -188,11 +188,6 @@ module Houston
       RUBY
     end
     
-    def new_relic(&block)
-      @new_relic_configuration = HashDsl.hash_from_block(block) if block_given?
-      @new_relic_configuration ||= {}
-    end
-    
     def github(&block)
       @github_configuration = HashDsl.hash_from_block(block) if block_given?
       @github_configuration ||= {}

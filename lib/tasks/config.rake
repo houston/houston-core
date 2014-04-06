@@ -84,8 +84,6 @@ namespace :config do
     port 443
     auth_token "ERRBIT_AUTH_TOKEN"
     TEXT
-    config.remove! /(  \n)+  # Configuration for New Relic/m
-    config.remove_block! "new_relic"
     config.replace_block! "github", <<-TEXT
     access_token "GITHUB_ACCESS_TOKEN"
     key "GITHUB_OAUTH_KEY"

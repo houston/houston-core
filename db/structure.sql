@@ -756,7 +756,6 @@ CREATE TABLE projects (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     color character varying(255),
-    new_relic_id integer,
     retired_at timestamp without time zone,
     category character varying(255),
     version_control_name character varying(255) DEFAULT 'None'::character varying NOT NULL,
@@ -1992,3 +1991,5 @@ INSERT INTO schema_migrations (version) VALUES ('20140217195942');
 INSERT INTO schema_migrations (version) VALUES ('20140327020121');
 
 INSERT INTO schema_migrations (version) VALUES ('20140401234330');
+
+INSERT INTO schema_migrations (version) VALUES ('20140406183224');
