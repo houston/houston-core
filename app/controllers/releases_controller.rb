@@ -24,10 +24,7 @@ class ReleasesController < ApplicationController
     @release = @releases.new(commit0: @commit0, commit1: @commit1, deploy: @deploy)
     authorize! :create, @release
     
-    if @project.repo.nil?
-      render template: "releases/invalid_repo"
-      return
-    end
+    @manual = params[:manual] == "true" || !@project.has_version_control?
     
     if @release.can_read_commits?
       @release.load_commits!
@@ -37,6 +34,8 @@ class ReleasesController < ApplicationController
       noun = @release.changes.length == 1 ? "change has" : "changes have"
       @release.message = "Hey everyone!\n\n#{@release.changes.length} #{noun} been deployed to #{@release.environment_name}."
     end
+    
+    @release.changes.build if @release.changes.select { |change| !change._destroy }.none?
     
     if request.headers['X-PJAX']
       render template: "releases/_new_release", layout: false

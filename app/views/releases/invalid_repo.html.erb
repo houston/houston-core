@@ -1,8 +1,0 @@
-<%= render partial: "projects/header", locals: {project: @project, subtitle: "New Release"} %>
-
-<% unless @project.has_version_control? %>
-  <%= render "configuration_error/no_version_control",
-    message: "To pull release notes from your commit messages, we need to know where to find the project's repo." %>
-<% else %>
-  <%= render "configuration_error/invalid_repo" %>
-<% end %>

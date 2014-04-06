@@ -7,29 +7,43 @@
     <%= link_to "Edit", edit_release_path(@deploy.release) %>
   </div>
 
+<% elsif !@project.has_version_control? %>
+
+  <%= render "configuration_error/no_version_control",
+      message: "To pull release notes from your commit messages, we need to know where to find the project's repo." %>
+
+<% elsif @project.repo.nil? %>
+
+  <%= render "configuration_error/invalid_repo" %>
+
+<% elsif @manual %>
+
+  <div class="control-group form-actions">
+    <h3>New Manual Release</h3>
+    <%= link_to "Create a release from a commit range", {manual: false} %>
+  </div>
+
 <% else %>
 
   <form accept-charset="UTF-8" action="<%= new_release_path(@project, @environment) %>" class="form-horizontal pjax" method="get" id="new_release_commit_range_form">
-    <fieldset>
-      <div class="control-group form-actions">
-        <h3>New Release to <%= @environment %></h3>
-        <p>Create a new release for the following commits</p>
-        <%= hidden_field_tag :deploy_id, params[:deploy_id] %>
-        <%= text_field_tag :commit0, @commit0, :class => "text_field", size: 8 %>
-        ...
-        <%= text_field_tag :commit1, @commit1, :class => "text_field", size: 8 %>
-        <%= submit_tag "Continue", :name => nil, :class => "btn btn-primary" %>
-      </div>
-    </fieldset>
+    <div class="control-group form-actions">
+      <h3>New Release to <%= @environment %></h3>
+      <p>Create a new release for the following commits</p>
+      <%= hidden_field_tag :deploy_id, params[:deploy_id] %>
+      <%= text_field_tag :commit0, @commit0, :class => "text_field", size: 8 %>
+      ...
+      <%= text_field_tag :commit1, @commit1, :class => "text_field", size: 8 %>
+      <%= submit_tag "Continue", :name => nil, :class => "btn btn-primary" %>
+    </div>
   </form>
 
-  <hr />
+<% end %>
 
-  <div id="new_release_form">
-    <%= render partial: "releases/new_release" %>
-  </div>
+<hr />
 
-<% end%>
+<div id="new_release_form">
+  <%= render partial: "releases/new_release" %>
+</div>
 
 <% content_for :javascripts do %>
 <script type="text/javascript">

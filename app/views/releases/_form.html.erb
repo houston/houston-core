@@ -52,6 +52,7 @@
       </div>
     </div>
 
+    <% if @release.commits.any? %>
     <div class="control-group">
       <label class="control-label">Commits</label>
       <div class="controls changes-nested-editor">
@@ -62,6 +63,7 @@
         </ul>
       </div>
     </div>
+    <% end %>
     
     <% if @release.new_record? %>
     <div class="control-group">
