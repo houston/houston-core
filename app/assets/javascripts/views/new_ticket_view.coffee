@@ -36,7 +36,7 @@ class window.NewTicketView extends Backbone.View
     @$summary = $('#ticket_summary')
     @lastSearch = ''
     
-    Mousetrap.bind ['ctrl+enter', 'command+enter'], (e)=>
+    Mousetrap.bindScoped '#ticket_summary, #ticket_description', 'mod+enter', (e)=>
       @$el.find('#create_ticket').click() if @$el.find(':focus').length > 0
   
   render: ->
