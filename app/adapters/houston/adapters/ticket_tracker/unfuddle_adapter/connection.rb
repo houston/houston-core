@@ -63,7 +63,7 @@ module Houston
           end
           
           def project_url
-            "https://#{Unfuddle.instance.subdomain}.unfuddle.com/a#/projects/#{project_id}"
+            @project_url ||= "https://#{Unfuddle.instance.subdomain}.unfuddle.com/a#/projects/#{project_id}"
           end
           
           def ticket_url(ticket_number)
