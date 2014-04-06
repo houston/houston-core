@@ -30,9 +30,6 @@ class ReleasesController < ApplicationController
       @release.load_commits!
       @release.load_tickets!
       @release.build_changes_from_commits
-      
-      noun = @release.changes.length == 1 ? "change has" : "changes have"
-      @release.message = "Hey everyone!\n\n#{@release.changes.length} #{noun} been deployed to #{@release.environment_name}."
     end
     
     @release.changes.build if @release.changes.select { |change| !change._destroy }.none?

@@ -54,6 +54,10 @@ class Release < ActiveRecord::Base
     last
   end
   
+  def self.with_message
+    where arel_table[:message].not_eq("")
+  end
+  
   def self.most_recent
     joins <<-SQL
       INNER JOIN (
@@ -94,6 +98,10 @@ class Release < ActiveRecord::Base
   
   def name
     release_date.strftime("%A, %b %e, %Y")
+  end
+  
+  def message=(value)
+    super value.to_s.strip
   end
   
   

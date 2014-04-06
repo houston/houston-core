@@ -9,9 +9,11 @@
   
   <%= div_for @release do %>
     
+    <% unless @release.message.blank? %>
     <div class="release-message">
       <%= mdown(@release.message) %>
     </div>
+    <% end %>
     
     <% if @release.changes.any? %>
       <%= render partial: "releases/changes", locals: {changes: @release.changes} %>

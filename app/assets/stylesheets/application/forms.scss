@@ -8,3 +8,15 @@ form.form-horizontal {
   .control-group { margin: 10px 0; }
   .control-group.highlight { background-color: #ffd; }
 }
+
+.control-label.optional::after {
+  content: ' (optional)';
+  color: #bbb;
+}
+
+form.form-horizontal {
+  .control-label.optional::after {
+    content: '\A(optional)';
+    white-space: pre;
+  }
+}
