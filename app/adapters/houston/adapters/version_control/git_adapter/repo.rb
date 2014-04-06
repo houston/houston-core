@@ -72,6 +72,8 @@ module Houston
             raise CommitNotFound, "\"#{sha}\" is not a commit"
           rescue Rugged::InvalidError
             raise CommitNotFound, "\"#{sha}\" is not a valid commit"
+          rescue Rugged::ObjectError
+            raise CommitNotFound, "\"#{sha}\" is too short"
           end
           
           def read_file(file_path, options={})
