@@ -28,7 +28,7 @@ class ProjectTicketsController < ApplicationController
           ticketUrl: @project.ticket_tracker_ticket_url(number),
           number: number }
       end
-  end
+    end
     
     if request.xhr?
       render json: MultiJson.dump({
