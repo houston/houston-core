@@ -102,6 +102,10 @@ module Houston
             raise FileNotFound, "\"#{file_path}\" is not in this repo"
           end
           
+          def to_s
+            location
+          end
+          
           
           
         private

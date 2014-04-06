@@ -8,7 +8,7 @@
   </div>
 <% elsif @release.commits.none? && @release.changes.none? %>
   <div class="alert alert-error">
-    There are no commits in the repo <code><%= @project.repo.location %></code> that match <code><%= @commit0 %>...<%= @commit1 %></code>
+    There are no commits in the repo <code><%= @project.repo %></code> that match <code><%= @commit0 %>...<%= @commit1 %></code>
   </div>
 <% else %>
   <%= render partial: "form" %>
