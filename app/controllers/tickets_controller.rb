@@ -4,7 +4,7 @@ class TicketsController < ApplicationController
   attr_reader :ticket
   
   def show
-    render json: TicketPresenter.new(ticket)
+    render json: FullTicketPresenter.new(ticket)
   end
   
   def update
