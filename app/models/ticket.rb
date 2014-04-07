@@ -182,10 +182,6 @@ class Ticket < ActiveRecord::Base
     checked_out_at.present?
   end
   
-  def in_current_sprint?
-    project.in_current_sprint?(self)
-  end
-  
   
   
   def unresolved?

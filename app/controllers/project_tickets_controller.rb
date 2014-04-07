@@ -8,6 +8,10 @@ class ProjectTicketsController < ApplicationController
     render json: TicketPresenter.new(@project.tickets)
   end
   
+  def open
+    render json: TicketPresenter.new(@project.tickets.includes(:project).unclosed)
+  end
+  
   
   def new
     unless @project.has_ticket_tracker?

@@ -1,10 +1,8 @@
 class Sprint < ActiveRecord::Base
   
-  belongs_to :project
   has_many :tickets
   
   before_validation :set_default_end_date, on: :create
-  validates :project_id, :end_date, presence: true
   
   def self.current
     where("end_date >= current_date").order("end_date DESC").first

@@ -917,7 +917,6 @@ ALTER SEQUENCE settings_id_seq OWNED BY settings.id;
 
 CREATE TABLE sprints (
     id integer NOT NULL,
-    project_id integer NOT NULL,
     end_date date,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
@@ -1612,13 +1611,6 @@ CREATE INDEX index_roles_on_user_id_and_project_id_and_name ON roles USING btree
 
 
 --
--- Name: index_sprints_on_project_id_and_end_date; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_sprints_on_project_id_and_end_date ON sprints USING btree (project_id, end_date);
-
-
---
 -- Name: index_test_runs_on_commit; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1995,3 +1987,5 @@ INSERT INTO schema_migrations (version) VALUES ('20140401234330');
 INSERT INTO schema_migrations (version) VALUES ('20140406183224');
 
 INSERT INTO schema_migrations (version) VALUES ('20140406230121');
+
+INSERT INTO schema_migrations (version) VALUES ('20140407010111');

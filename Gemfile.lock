@@ -19,7 +19,7 @@ GIT
 
 GIT
   remote: git://github.com/houstonmc/houston-scheduler.git
-  revision: c5e4de5d736bf22ae1ac550f0a8709b2c8c728f7
+  revision: d238f5c61a997e421163d2a6a39f1bb788768912
   branch: master
   specs:
     houston-scheduler (0.0.1)
@@ -74,7 +74,6 @@ GEM
       multi_json
     ansi (1.4.3)
     arel (4.0.2)
-    atomic (1.1.16)
     backbone-rails (1.0.0.1)
       rails (>= 3.0.0)
     bcrypt (3.1.7)
@@ -264,8 +263,7 @@ GEM
       libv8 (~> 3.16.14.0)
       ref
     thor (0.19.1)
-    thread_safe (0.3.1)
-      atomic (>= 1.1.7, < 2)
+    thread_safe (0.3.2)
     tilt (1.4.1)
     timecop (0.7.1)
     timers (1.1.0)

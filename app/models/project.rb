@@ -6,7 +6,6 @@ class Project < ActiveRecord::Base
   has_many :commits
   has_many :tickets, :dependent => :destroy, extend: TicketSynchronizer
   has_many :milestones, :dependent => :destroy, extend: MilestoneSynchronizer
-  has_many :sprints, :dependent => :destroy
   has_many :testing_notes, :dependent => :destroy
   has_many :test_runs, :dependent => :destroy
   has_many :deploys
@@ -49,22 +48,12 @@ class Project < ActiveRecord::Base
     super || (self.extended_attributes = {})
   end
   
-  def testers
-    @testers ||= User.testers
-  end
-  
-  def current_sprint
-    return @current_sprint if defined?(@current_sprint)
-    @current_sprint = sprints.current
-  end
-  
-  def in_current_sprint?(ticket)
-    return false unless current_sprint
-    current_sprint.id == ticket.sprint_id
-  end
-  
   def view_options
     super || {}
+  end
+  
+  def testers
+    @testers ||= User.testers
   end
   
   
