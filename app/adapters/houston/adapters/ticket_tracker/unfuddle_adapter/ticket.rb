@@ -167,13 +167,13 @@ module Houston
             begin
               custom_field_key = custom_field_name.underscore.gsub(/\s/, "_")
               
-              key = find_in_cache_or_execute("#{custom_field_key}_field") do
+              key = find_in_cache_or_execute(custom_field_key(custom_field_key)) do
                 connection.get_ticket_attribute_for_custom_value_named!(custom_field_name) rescue "undefined"
               end
               
               value_id = unfuddle_ticket[key]
               return nil if value_id.blank?
-              find_in_cache_or_execute("#{custom_field_key}_value_#{value_id}") do
+              find_in_cache_or_execute(custom_value_key(custom_field_key, value_id)) do
                 connection.find_custom_field_value_by_id!(custom_field_name, value_id).value
               end
             rescue
@@ -200,6 +200,7 @@ module Houston
           delegate :find_in_cache_or_execute,
                    :invalidate_cache,
                    :deployment_field,
+                   :project_id,
                    :to => :connection
           
           
@@ -249,6 +250,17 @@ module Houston
             ticket = unfuddle.ticket(remote_id)
             ticket.comment(remote_comment_id)
           end
+          
+          
+          
+          def custom_field_key(custom_field_key)
+            "unfuddle/projects/#{project_id}/custom_field/#{custom_field_key}/name"
+          end
+          
+          def custom_value_key(custom_field_key, value_id)
+            "unfuddle/projects/#{project_id}/custom_field/#{custom_field_key}/value/#{value_id}"
+          end
+          
           
           
         end
