@@ -16,6 +16,7 @@ module CommitHelper
   end
   
   def link_to_release_commit_range(release)
+    return "" if release.commit0.blank? && release.commit1.blank?
     link_to_commit_range(release.project, release.commit0, release.commit1)
   end
   
