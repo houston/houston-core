@@ -19,7 +19,7 @@ GIT
 
 GIT
   remote: git://github.com/houstonmc/houston-scheduler.git
-  revision: d238f5c61a997e421163d2a6a39f1bb788768912
+  revision: 4a5326f2394c0426b3506e21fb6b51f69aa1970d
   branch: master
   specs:
     houston-scheduler (0.0.1)
@@ -263,7 +263,7 @@ GEM
       libv8 (~> 3.16.14.0)
       ref
     thor (0.19.1)
-    thread_safe (0.3.2)
+    thread_safe (0.3.3)
     tilt (1.4.1)
     timecop (0.7.1)
     timers (1.1.0)
