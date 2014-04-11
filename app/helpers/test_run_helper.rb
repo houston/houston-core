@@ -9,8 +9,10 @@ module TestRunHelper
     subject = {
       "pass" => "#{test_run.total_count} tests passed!",
       "fail" => "#{test_run.real_fail_count} of #{test_run.total_count} tests failed",
-      "" => test_run.created_at ? "started #{distance_of_time_in_words(test_run.created_at, Time.now)} ago" : ""
-    }[test_run.result.to_s]
+      "aborted" => "aborted"
+    }.fetch(
+      test_run.result,
+      (test_run.created_at ? "started #{distance_of_time_in_words(test_run.created_at, Time.now)} ago" : ""))
     
     subject << " [#{test_run.branch}]" if test_run.branch
     
