@@ -28,8 +28,9 @@
       <% benchmark "compare commits to #{other_environment}" do %>
         <% other_environment_last_release = @project.releases.to_environment(other_environment).first %>
         <% next unless other_environment_last_release %>
-      
+        
         <% other_head = other_environment_last_release.commit1 %>
+        <% next if other_head.blank? %>
         <% begin %>
           <% commits = @project.repo.commits_between(other_head, head) %>
           <p class="alert alert-info">
@@ -50,7 +51,7 @@
           <% end %>
         <% end %>
       <% end %>
-    <% end %>
+    <% end unless head.blank? %>
   <% end %>
   
   <% date = nil %>
