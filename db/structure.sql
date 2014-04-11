@@ -1184,7 +1184,8 @@ CREATE TABLE users (
     environments_subscribed_to character varying(255) DEFAULT ''::character varying NOT NULL,
     retired_at timestamp without time zone,
     view_options hstore,
-    email_addresses text[]
+    email_addresses text[],
+    invitation_created_at timestamp without time zone
 );
 
 
@@ -1989,3 +1990,5 @@ INSERT INTO schema_migrations (version) VALUES ('20140406183224');
 INSERT INTO schema_migrations (version) VALUES ('20140406230121');
 
 INSERT INTO schema_migrations (version) VALUES ('20140407010111');
+
+INSERT INTO schema_migrations (version) VALUES ('20140411214022');
