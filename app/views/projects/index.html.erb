@@ -74,7 +74,7 @@
               <% platform = project.platform %>
               <% unless platform.blank? %>
                 <% dependency = ProjectDependency.new(project, KeyDependency.new(slug: platform)) %>
-                <%= format_maintenance_light(dependency, with_name: true) if dependency.valid? %>
+                <%= format_maintenance_light(dependency, with_name: true) %>
               <% end %>
             </td>
             <td class="project-database database-<%= (project.database || "none").downcase %>">
