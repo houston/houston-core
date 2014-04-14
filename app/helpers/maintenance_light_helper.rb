@@ -2,7 +2,6 @@ module MaintenanceLightHelper
   
   def format_maintenance_light(arg, options={})
     maintenance_light = arg.respond_to?(:maintenance_light) ? arg.maintenance_light : arg
-    return unless maintenance_light.valid?
     return "&mdash;".html_safe if maintenance_light.nil?
     
     html = <<-HTML
