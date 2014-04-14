@@ -8,8 +8,10 @@ module Houston
             @config = Houston.config.error_tracker_configuration(:errbit)
             raise Houston::MissingConfiguration, "Houston is missing configuration for Errbit" unless config
             
-            protocol = config[:port] == 443 ? "https" : "http"
+            protocol = "http"
+            protocol = "https" if config[:port] == 443
             @errbit_url = "#{protocol}://#{config[:host]}"
+            @errbit_url << ":#{config[:port]}" unless [80, 443].member?(config[:port])
             @connection = Faraday.new(url: errbit_url)
           end
           
