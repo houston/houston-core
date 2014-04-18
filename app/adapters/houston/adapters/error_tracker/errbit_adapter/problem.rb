@@ -12,6 +12,10 @@ module Houston
           attr_accessor :err_ids
           attr_accessor :ticket
           
+          def id
+            attributes[:id]
+          end
+          
           def first_notice_at
             attributes[:first_notice_at]
           end

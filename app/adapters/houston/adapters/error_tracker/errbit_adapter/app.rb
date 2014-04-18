@@ -38,6 +38,9 @@ module Houston
           end
           
           
+          delegate :merge_problems, :unmerge_problems, :delete_problems, to: :connection
+          
+          
         end
       end
     end

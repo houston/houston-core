@@ -11,6 +11,13 @@ class @ProblemsView extends Backbone.View
     $('#problems').html @template(problems: @problems)
     @updateProblemCount()
     
+    $('#problems').on 'click', 'tr', _.bind(@toggleCheckbox, @)
+    $('#problems').on 'click', ':checkbox', _.bind(@styleRow, @)
+    
+    $('#merge_exceptions').click _.bind(@mergeExceptions, @)
+    $('#unmerge_exceptions').click _.bind(@unmergeExceptions, @)
+    $('#delete_exceptions').click _.bind(@deleteExceptions, @)
+    
     $('#exceptions table').tablesorter
       headers:
         2: {sorter: 'timestamp'}
@@ -33,3 +40,52 @@ class @ProblemsView extends Backbone.View
   
   updateProblemCount: ->
     $('#problem_count').html $('.exception:not(.has-ticket)').length
+
+  toggleCheckbox: (e)->
+    return if _.include(['A', 'INPUT', 'BUTTON', 'TEXTAREA'], e.target.nodeName)
+    $exception = $(e.target).closest('.exception')
+    $checkbox = $exception.find(':checkbox')
+    $checkbox.prop('checked', !$checkbox.prop('checked'))
+    $exception.toggleClass('selected', $checkbox.is(':checked'))
+
+  styleRow: (e)->
+    $checkbox = $(e.target)
+    $exception = $checkbox.closest('.exception')
+    $exception.toggleClass('selected', $checkbox.is(':checked'))
+
+
+
+  mergeExceptions: ->
+    problems = @selectedProblems()
+    if problems.length < 2
+      @alert '#merge_exceptions', 'You must select at least two problems to merge'
+    else
+      $.post "/projects/#{@project}/exceptions/merge_several", problems: problems
+      window.location.reload()
+
+  unmergeExceptions: ->
+    problems = @selectedProblems()
+    if problems.length < 2
+      @alert '#unmerge_exceptions', 'You must select at least one problem to unmerge'
+    else
+      $.post "/projects/#{@project}/exceptions/unmerge_several", problems: problems
+      window.location.reload()
+
+  deleteExceptions: ->
+    problems = @selectedProblems()
+    if problems.length < 2
+      @alert '#delete_exceptions', 'You must select at least one problem to delete'
+    else
+      $.post "/projects/#{@project}/exceptions/delete_several", problems: problems
+      window.location.reload()
+
+  selectedProblems: ->
+    $('#problems_form').serializeObject()['problems[]'] || []
+  
+  alert: (button, message)->
+    $(button)
+      .attr('data-content', message)
+      .attr('data-trigger', 'manual')
+      .attr('data-placement', 'top')
+      .popover('show')
+      .blur -> $(@).popover('hide')

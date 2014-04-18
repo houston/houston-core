@@ -1,5 +1,5 @@
 <tr class="exception {{#if ticketId}}has-ticket{{/if}}" data-token="{{token}}" data-url="{{url}}">
-  <td class="expcetion-checkbox"></td>
+  <td class="expcetion-checkbox"><input type="checkbox" name="problems[]" value="{{id}}" /></td>
   <td class="exception-summary">
     <span class="exception-message"><a href="{{url}}" target="_blank">{{message}}</a></span>
     <span class="exception-where">{{where}}</span>

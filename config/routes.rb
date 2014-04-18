@@ -57,6 +57,14 @@ Houston::Application.routes.draw do
   
   
   
+  # Exceptions
+  
+  post "projects/:slug/exceptions/merge_several", to: "project_exceptions#merge_several"
+  post "projects/:slug/exceptions/unmerge_several", to: "project_exceptions#unmerge_several"
+  post "projects/:slug/exceptions/delete_several", to: "project_exceptions#delete_several"
+  
+  
+  
   # Projects
   
   get "projects/dependencies", to: "project_dependencies#index"

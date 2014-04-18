@@ -21,3 +21,6 @@ th.vertical {
     top: -15px;
   }
 }
+
+tr.selected > td { background-color: #ffe; }
+.table-striped tbody > tr.selected:nth-child(odd) > td { background-color: #ffd; }

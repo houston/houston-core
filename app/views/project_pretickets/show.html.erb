@@ -8,19 +8,29 @@
 
 <div class="tab-content">
   <div class="tab-pane active" id="exceptions">
-    <table class="table table-sortable table-striped">
-      <thead>
-        <tr>
-          <td class="expcetion-checkbox"></td>
-          <th class="exception-summary">Summary</th>
-          <th class="exception-first">First Notice</th>
-          <th class="exception-last sort-asc">Last Notice</th>
-          <th class="exception-count">Count</th>
-          <td class="exception-ticket"></td>
-        </tr>
-      </thead>
-      <tbody id="problems"></tbody>
-    </table>
+    <form id="problems_form">
+      <table class="table table-sortable table-striped">
+        <thead>
+          <tr>
+            <td class="expcetion-checkbox"></td>
+            <th class="exception-summary">Summary</th>
+            <th class="exception-first">First Notice</th>
+            <th class="exception-last sort-asc">Last Notice</th>
+            <th class="exception-count">Count</th>
+            <td class="exception-ticket"></td>
+          </tr>
+        </thead>
+        <tbody id="problems"></tbody>
+      </table>
+    </form>
+    
+    <% if @project.error_tracker_name == "Errbit" %>
+      <div class="buttons">
+        <button id="merge_exceptions" class="btn btn-default">Merge</button>
+        <button id="unmerge_exceptions" class="btn btn-default">Unmerge</button>
+        <button id="delete_exceptions" class="btn btn-danger">Delete</button>
+      </div>
+    <% end %>
   </div>
 </div>
 

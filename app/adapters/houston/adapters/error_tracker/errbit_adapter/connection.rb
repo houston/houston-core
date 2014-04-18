@@ -41,6 +41,20 @@ module Houston
           
           
           
+          def merge_problems(problem_ids)
+            post("api/v1/problems/merge_several", problems: problem_ids)
+          end
+          
+          def unmerge_problems(problem_ids)
+            post("api/v1/problems/unmerge_several", problems: problem_ids)
+          end
+          
+          def delete_problems(problem_ids)
+            post("api/v1/problems/destroy_several", problems: problem_ids)
+          end
+          
+          
+          
           def project_url(app_id)
             "#{errbit_url}/apps/#{app_id}"
           end
@@ -63,6 +77,7 @@ module Houston
           
           def to_problem(attributes)
             ::Houston::Adapters::ErrorTracker::ErrbitAdapter::Problem.new(
+              id: attributes["id"],
               first_notice_at: attributes["first_notice_at"].try(:to_time),
               first_notice_commit: attributes["first_notice_commit"],
               first_notice_environment: attributes["first_notice_environment"],
@@ -101,6 +116,12 @@ module Houston
             params = params.merge(auth_token: config[:auth_token])
             response = Houston.benchmark("[errbit] GET #{path}") { @connection.get(path, params) }
             MultiJson.load(response.body)
+          end
+          
+          def post(path, params={})
+            params = params.merge(auth_token: config[:auth_token])
+            response = Houston.benchmark("[errbit] POST #{path}") { @connection.post(path, params) }
+            response.status
           end
           
           def put(path, params={})
