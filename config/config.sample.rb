@@ -142,7 +142,8 @@ Houston.config do
       
       # Developers see the other kinds of changes: Test Fixes and Refactors
       # as well as commit info
-      can :read, [Commit, Change, Sprint] if user.developer?
+      can :read, [Commit, Change] if user.developer?
+      can :manage, Sprint if user.developer?
       
       # Mixers can see all testing notes
       can :read, TestingNote if user.mixer?
@@ -232,7 +233,9 @@ Houston.config do
     port 443
     auth_token "ERRBIT_AUTH_TOKEN"
   end
-
+  
+  
+  
   # Configuration for GitHub
   # Use the following command to generate an access_token
   # for your GitHub account to allow Houston to modify
@@ -276,48 +279,46 @@ Houston.config do
   #   bundle config local.houston-<MODULE> ~/Projects/houston-<MODULE>
   #
   use :scheduler, :github => "houstonmc/houston-scheduler", :branch => "master"
+  use :kanban, :github => "houstonmc/houston-kanban", :branch => "master" do
+    queues do
+      unprioritized do
+        name "To Prioritize"
+        description "Tickets for <b>Product Owners</b> to prioritize"
+        where { |tickets| tickets.unresolved.able_to_prioritize.unprioritized }
+      end
+
+      unestimated do
+        name "To Estimate"
+        description "Tickets for <b>Developers</b> to estimate"
+        where { |tickets| tickets.unresolved.able_to_estimate.unestimated }
+      end
+
+      sprint do
+        name "Sprint"
+        description "Tickets left in the current sprint"
+        where { |tickets| tickets.unresolved.in_current_sprint }
+      end
+
+      testing do
+        name "To Test"
+        description "Tickets for <b>Testers</b> to test"
+        where { |tickets| tickets.resolved.open.deployed }
+      end
+
+      staging do
+        name "To Release"
+        description "Tickets ready for <b>Maintainers</b> to deploy"
+        where { |tickets| tickets.closed.fixed.unreleased }
+      end
+    end
+  end
   
   
   
   # What dependencies to check
   key_dependencies do
-    gem "rails", ["3.2.13", "3.1.12"]
-    gem "devise", ["2.2.3", "2.1.3", "2.0.5", "1.5.4"]
-  end
-  
-  
-  
-  # Queues
-  queues do
-    unprioritized do
-      name "To Prioritize"
-      description "Tickets for <b>Product Owners</b> to prioritize"
-      where { |tickets| tickets.unresolved.able_to_prioritize.unprioritized }
-    end
-    
-    unestimated do
-      name "To Estimate"
-      description "Tickets for <b>Developers</b> to estimate"
-      where { |tickets| tickets.unresolved.able_to_estimate.unestimated }
-    end
-    
-    sprint do
-      name "Sprint"
-      description "Tickets left in the current sprint"
-      where { |tickets| tickets.unresolved.in_current_sprint }
-    end
-    
-    testing do
-      name "To Test"
-      description "Tickets for <b>Testers</b> to test"
-      where { |tickets| tickets.resolved.open.deployed }
-    end
-    
-    staging do
-      name "To Release"
-      description "Tickets ready for <b>Maintainers</b> to deploy"
-      where { |tickets| tickets.closed.fixed.unreleased }
-    end
+    gem "rails"
+    gem "devise"
   end
   
   

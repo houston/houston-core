@@ -2,21 +2,6 @@
   $<%= name %>: <%= value.rgb %>;
 <% end %>
 
-@mixin age($color) {
-  &.infant  { border-color: lighten($color, 14%); background-color: lighten($color, 35%); }
-  &.child   { border-color: lighten($color,  8%); background-color: lighten($color, 28%); }
-  &.adult   { border-color: lighten($color,  2%); background-color: lighten($color, 24%); }
-  &.senior  { border-color:  darken($color,  8%); background-color: lighten($color, 20%); }
-  &.old     { border-color:  darken($color, 12%); background-color: lighten($color, 16%); }
-  &.ancient { border-color:  darken($color, 20%); background-color: lighten($color, 12%); }
-}
-
-#kanban li {
-  <% Houston.config.project_colors.each do |name, value| %>
-    &.<%= name %> { @include age($<%= name %>) }
-  <% end %>
-}
-
 .label {
   vertical-align: baseline;
   

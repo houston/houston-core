@@ -22,17 +22,6 @@ Houston::Application.routes.draw do
   
   
   
-  # Kanban
-  
-  get "kanban" => "kanban#index", :as => :kanban
-  get "kanban/:slug" => "project_kanban#index", :as => :project_kanban
-  
-  constraints queue: Regexp.new(KanbanQueue.slugs.join("|")) do
-    get "kanban/:slug/:queue" => "project_kanban#queue", :as => :project_kanban_queue
-  end
-  
-  
-  
   # Testing Report
   
   get "testing_report" => "testing_report#index", :as => :testing_report
@@ -187,9 +176,5 @@ Houston::Application.routes.draw do
   
   # Tester Bar
   match "tester_bar/:action", :controller => "tester_bar", via: [:get, :post] if Rails.env.development?
-  
-  # This just renders a fake Kanban:
-  # to give you an idea of what your queues, colors, and ages will look like
-  get "demo", to: "demo#index"
   
 end

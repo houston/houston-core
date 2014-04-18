@@ -19,9 +19,6 @@ class @KeyboardShortcutsModal
         keys: ['g', 'i']
         name: 'Go to ITSMs'
       , 
-        keys: ['g', 'k']
-        name: 'Go to Kanban'
-      , 
         keys: ['g', 't', 'r']
         name: 'Go to Testing Report'
       , 

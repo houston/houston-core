@@ -10,13 +10,6 @@
       <div class="container-fluid nav-collapse">
         <ul class="nav">
           
-          <%# Kanban -%>
-          <% projects = followed_projects.select { |project| can?(:read, project.tickets.build) } -%>
-          <%= render_menu "Kanban", [
-              MenuItem.new("All Projects", main_app.kanban_path),
-              MenuItemDivider.new ] +
-              projects.map { |project| ProjectMenuItem.new(project, main_app.project_kanban_path(project)) } if projects.any? -%>
-          
           <%# Testing Reports -%>
           <% projects = followed_projects.select { |project| can?(:read, project.testing_notes.build) } -%>
           <%= render_menu "Testing", [

@@ -208,21 +208,3 @@ h1 {
   padding: 7px 10px;
   margin-bottom: 4px;
 }
-
-a.refresh-queue {
-  color: #333;
-  text-decoration: none;
-  cursor: pointer;
-  
-  img.refresh-icon { opacity: 0.12; }
-  img.preloader-icon { display: none; }
-  
-  &:hover {
-    color: black;
-    img.refresh-icon { opacity: 1; }
-  }
-  &.in-progress {
-    img.refresh-icon { display: none; }
-    img.preloader-icon { display: inline; }
-  }
-}

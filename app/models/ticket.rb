@@ -8,7 +8,6 @@ class Ticket < ActiveRecord::Base
   belongs_to :milestone, counter_cache: true
   belongs_to :sprint
   belongs_to :checked_out_by, class_name: "User"
-  has_many :ticket_queues, -> { where(destroyed_at: nil) }
   has_many :testing_notes
   has_and_belongs_to_many :releases, before_add: :ignore_release_if_duplicate
   has_and_belongs_to_many :commits, -> { where(unreachable: false) }
@@ -42,33 +41,6 @@ class Ticket < ActiveRecord::Base
       where(project_id: ids)
     end
     alias :for_project :for_projects
-    
-    def in_queue(queue, arg=nil)
-      if arg == :refresh
-        sync_tickets_in_queue(queue)
-      else
-        includes(:ticket_queues).merge(TicketQueue.named(queue))
-      end
-    end
-    
-    def sync_tickets_in_queue(queue)
-      queue = KanbanQueue.find_by_slug(queue) unless queue.is_a?(KanbanQueue)
-      transaction do
-        queue.filter(scoped).tap do |tickets_in_queue|
-          
-          ids = pluck(:id).uniq # <-- for some reason this performs a CRAZY query
-          ticket_ids_were_in_queue = TicketQueue
-            .where(queue: queue.slug, destroyed_at: nil, ticket_id: ids)
-            .pluck(:ticket_id)
-          ticket_ids_in_queue = tickets_in_queue.pluck(:id)
-          TicketQueue.enter! queue, ticket_ids_in_queue - ticket_ids_were_in_queue
-          TicketQueue.exit!  queue, ticket_ids_were_in_queue - ticket_ids_in_queue
-          
-        end
-      end
-    end
-    
-    
     
     def numbered(*numbers)
       where(number: numbers.flatten.map(&:to_i))
@@ -145,23 +117,6 @@ class Ticket < ActiveRecord::Base
   def reporter_email=(value)
     value = value.downcase if value
     super(value)
-  end
-  
-  
-  
-  def exit_queues!
-    ticket_queues.exit_all!
-  end
-  
-  
-  
-  def age_in(queue)
-    queue = queue.slug if queue.is_a?(KanbanQueue)
-    age_in_queues.fetch(queue, 0)
-  end
-  
-  def age_in_queues
-    @age_in_queues ||= Hash[ticket_queues.map { |queue| [queue.queue, queue.queue_time] }]
   end
   
   
@@ -281,7 +236,6 @@ class Ticket < ActiveRecord::Base
     remote_ticket.close! if remote_ticket
     
     update_attribute :closed_at, Time.now
-    exit_queues!
     self
   end
   alias :close_ticket! :close!

@@ -213,6 +213,11 @@ module Houston
       modules.any? { |mod| mod.name == module_name }
     end
     
+    def module(module_name)
+      module_name = module_name.to_s
+      modules.detect { |mod| mod.name == module_name }
+    end
+    
     
     
     
@@ -255,15 +260,6 @@ module Houston
       @dependencies || []
     end
     
-    def queues(&block)
-      if block_given?
-        builder = Houston::QueuesBuilder.new
-        builder.instance_eval(&block)
-        @queues = builder.queues
-      end
-      @queues ||= []
-    end
-    
     
     
     
@@ -304,9 +300,10 @@ module Houston
       @name = module_name.to_s
       gem_name = "houston-#{name}"
       @gemspec = [gem_name] + gemconfig
+      @config = moduleconfig
     end
     
-    attr_reader :name, :gemspec
+    attr_reader :name, :gemspec, :config
     
     def engine
       namespace::Engine
@@ -366,53 +363,6 @@ module Houston
       else
         super
       end
-    end
-    
-  end
-  
-  
-  
-  class QueuesBuilder
-    
-    def initialize
-      @queues = []
-    end
-    
-    def method_missing(slug, *args, &block)
-      builder = QueueBuilder.new(slug)
-      builder.instance_eval(&block)
-      @queues << builder.queue
-    end
-    
-    attr_reader :queues
-    
-  end
-  
-  
-  
-  class QueueBuilder
-    
-    def initialize(slug)
-      @slug = slug.to_s
-    end
-    
-    def name(name)
-      @name = name
-    end
-    
-    def description(description)
-      @description = description
-    end
-    
-    def where(&block)
-      @where = block
-    end
-    
-    def queue
-      { slug: @slug,
-        name: @name,
-        description: @description,
-        where: @where }
     end
     
   end

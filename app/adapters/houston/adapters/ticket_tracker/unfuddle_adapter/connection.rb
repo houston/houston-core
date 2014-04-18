@@ -1,5 +1,6 @@
 require_dependency "houston/adapters/ticket_tracker/unfuddle_adapter/ticket"
 require_dependency "houston/adapters/ticket_tracker/unfuddle_adapter/milestone"
+require "unfuddle/neq"
 
 module Houston
   module Adapters
