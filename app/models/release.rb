@@ -113,16 +113,7 @@ class Release < ActiveRecord::Base
   end
   
   def load_commits!
-    native_commits.each do |native|
-      commit = commits.find_by_sha(native.sha)
-      attributes = Commit.attributes_from_native_commit(native).merge(project: project)
-      if commit
-        commit.update_attributes(attributes)
-        commits << commit
-      else
-        commits.build(attributes)
-      end
-    end
+    self.commits = native_commits.map { |native| project.find_commit_by_sha(native.sha) }
   end
   
   
