@@ -18,14 +18,6 @@ GIT
       ruby-ntlm
 
 GIT
-  remote: git://github.com/houstonmc/houston-kanban.git
-  revision: 601229d65b49f3c19eb1c344df6ef7549c426812
-  branch: master
-  specs:
-    houston-kanban (0.0.1)
-      rails (>= 3.2.17, < 4.1.0)
-
-GIT
   remote: git://github.com/houstonmc/houston-scheduler.git
   revision: 614a5921aa3401499db961ca8dbbbf67f5073d1e
   branch: master
@@ -324,7 +316,6 @@ DEPENDENCIES
   googlecharts
   handlebars_assets (= 0.8.2)
   houston-itsm!
-  houston-kanban!
   houston-scheduler!
   hpricot
   jquery-rails (= 2.2.1)

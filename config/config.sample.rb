@@ -363,7 +363,6 @@ Houston.config do
   # using the DSL defined by the Whenever gem.
   # Learn more: http://github.com/javan/whenever
   cron do
-    
     every 3.hours do
       runner "UpdateKanbanQueueJob.run!", environment: "production"
     end
@@ -387,7 +386,6 @@ Houston.config do
     every :monday, :at => "6am" do
       runner "WeeklyReport.new(1.week.ago).deliver_to!(#{WEEKLY_REPORT_RECIPIENTS.inspect})", environment: "production"
     end
-    
   end
   
   

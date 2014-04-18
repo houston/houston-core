@@ -18,6 +18,10 @@ module ConfigSanitizer
     gsub! text, ''
   end
   
+  def insert_after!(regex, text)
+    gsub! /(#{regex})/, "\\1\n#{text.chomp}"
+  end
+  
   def remove_block!(name)
     gsub! /^  #{name} do( \|[^\|]+\|)?\n.*?^  end\s*/m, '  '
   end
@@ -101,7 +105,66 @@ namespace :config do
     config.remove_block! 'on "ticket:release"'
     config.remove_block! 'on "boot"'
     config.remove! /^  use :itsm,[^\n]+\n/
+    config.insert_after! /^  use :scheduler.*$/, <<-TEXT
+  use :kanban, :github => "houstonmc/houston-kanban", :branch => "master" do
+    queues do
+      unprioritized do
+        name "To Prioritize"
+        description "Tickets for <b>Product Owners</b> to prioritize"
+        where { |tickets| tickets.unresolved.able_to_prioritize.unprioritized }
+      end
+
+      unestimated do
+        name "To Estimate"
+        description "Tickets for <b>Developers</b> to estimate"
+        where { |tickets| tickets.unresolved.able_to_estimate.unestimated }
+      end
+
+      sprint do
+        name "Sprint"
+        description "Tickets left in the current sprint"
+        where { |tickets| tickets.unresolved.in_current_sprint }
+      end
+
+      testing do
+        name "To Test"
+        description "Tickets for <b>Testers</b> to test"
+        where { |tickets| tickets.resolved.open.deployed }
+      end
+
+      staging do
+        name "To Release"
+        description "Tickets ready for <b>Maintainers</b> to deploy"
+        where { |tickets| tickets.closed.fixed.unreleased }
+      end
+    end
+  end
+    TEXT
+    config.replace_block! "cron", <<-TEXT
+    every 3.hours do
+      runner "UpdateKanbanQueueJob.run!", environment: "production"
+    end
     
+    every 6.hours do
+      runner "SyncAllTicketsJob.run!", environment: "production"
+    end
+    
+    every :day, :at => "2:00am" do
+      runner "SyncCommits.run!", environment: "production"
+    end
+    
+    every :day, :at => "6:30am" do
+      runner "DailyReport.deliver_all!", environment: "production"
+    end
+    
+    every :weekday, :at => "3:00pm" do
+      runner "PullRequestsMailer.deliver_to!(\#{PULL_REQUEST_RECIPIENTS.inspect})", environment: "production"
+    end
+    
+    every :monday, :at => "6am" do
+      runner "WeeklyReport.new(1.week.ago).deliver_to!(\#{WEEKLY_REPORT_RECIPIENTS.inspect})", environment: "production"
+    end
+    TEXT
     config.gsub! /^end.*\Z/m, "end\n"
     
     File.open Rails.root.join("config", "config.sample.rb"), "w" do |f|
