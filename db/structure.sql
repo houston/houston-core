@@ -1076,7 +1076,7 @@ CREATE TABLE tickets (
     last_release_at timestamp without time zone,
     expires_at timestamp without time zone,
     extended_attributes hstore,
-    antecedents character varying[],
+    antecedents text[],
     tags character varying[],
     type character varying(255),
     closed_at timestamp without time zone,
@@ -1992,3 +1992,5 @@ INSERT INTO schema_migrations (version) VALUES ('20140406230121');
 INSERT INTO schema_migrations (version) VALUES ('20140407010111');
 
 INSERT INTO schema_migrations (version) VALUES ('20140411214022');
+
+INSERT INTO schema_migrations (version) VALUES ('20140418133005');
