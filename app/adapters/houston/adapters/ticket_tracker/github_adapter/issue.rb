@@ -24,6 +24,7 @@ module Houston
             
             # optional
             @tags             = get_tags
+            @antecedents      = get_antecedents
           end
           
           attr_reader :raw_attributes,
@@ -37,6 +38,7 @@ module Houston
                       :milestone_id,
                       :type,
                       :tags,
+                      :antecedents,
                       :created_at,
                       :closed_at
           
@@ -56,10 +58,6 @@ module Houston
               antecedents:    antecedents,
               deployment:     deployment,
               prerequisites:  [] }
-          end
-          
-          def antecedents
-            []
           end
           
           def deployment
@@ -108,6 +106,12 @@ module Houston
             identify_tags_proc = github.config[:identify_tags]
             return Array(attributes["labels"]).map(&method(:tag_from_label)) unless identify_tags_proc
             identify_tags_proc.call(self)
+          end
+          
+          def get_antecedents
+            identify_antecedents_proc = github.config[:identify_antecedents]
+            return [] unless identify_antecedents_proc
+            identify_antecedents_proc.call(self)
           end
           
           def tag_from_label(label)
