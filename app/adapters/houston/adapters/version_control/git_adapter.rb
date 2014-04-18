@@ -68,13 +68,13 @@ module Houston
             local_path = File.dirname(temp_path)
             target = File.basename(temp_path)
             
-            ActiveRecord::Base.benchmark("\e[33m[git:clone] #{origin_uri} => #{temp_path} #{"\e[1;4mAsync" if async}\e[0m") do
+            Houston.benchmark("[git:clone] #{origin_uri} => #{temp_path} #{"\e[1;4mAsync" if async}") do
               execute "cd #{local_path} && git clone --mirror #{origin_uri} #{target}", async: async
             end
           end
           
           def pull!(local_path, async: false)
-            ActiveRecord::Base.benchmark("\e[33m[git:pull] #{local_path} #{"\e[1;4mAsync" if async}\e[0m") do
+            Houston.benchmark("[git:pull] #{local_path} #{"\e[1;4mAsync" if async}") do
               execute "git --git-dir=#{local_path} remote update --prune", async: async
             end
           end
@@ -84,10 +84,8 @@ module Houston
               pid = spawn command
               Process.detach pid
             else
-              Skylight.instrument title: "git remote update" do
-                unless system command
-                  raise CloneRepoFailed.new("The command #{command.inspect} failed")
-                end
+              unless system command
+                raise CloneRepoFailed.new("The command #{command.inspect} failed")
               end
             end
           end

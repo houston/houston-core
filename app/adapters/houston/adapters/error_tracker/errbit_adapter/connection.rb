@@ -91,13 +91,13 @@ module Houston
           
           def get(path, params={})
             params = params.merge(auth_token: config[:auth_token])
-            response = Project.benchmark("[errbit] GET \"#{path}\" (#{params.inspect})") { @connection.get(path, params) }
+            response = Houston.benchmark("[errbit] GET \"#{path}\" (#{params.inspect})") { @connection.get(path, params) }
             MultiJson.load(response.body)
           end
           
           def put(path, params={})
             params = params.merge(auth_token: config[:auth_token])
-            response = Project.benchmark("[errbit] PUT \"#{path}\" (#{params.inspect})") { @connection.put(path, params) }
+            response = Houston.benchmark("[errbit] PUT \"#{path}\" (#{params.inspect})") { @connection.put(path, params) }
             response.status
           end
           

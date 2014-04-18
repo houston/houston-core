@@ -2,19 +2,19 @@ module TicketSynchronizer
   
   
   def fetch_all
-    Skylight.instrument title: "GET All Tickets" do
+    Houston.benchmark "GET All Tickets" do
       synchronize ticket_tracker.all_tickets
     end
   end
   
   def fetch_open
-    Skylight.instrument title: "GET Open Tickets" do
+    Houston.benchmark "GET Open Tickets" do
       synchronize ticket_tracker.open_tickets
     end
   end
   
   def fetch_numbered(numbers)
-    Skylight.instrument title: "GET Numbered Tickets" do
+    Houston.benchmark "GET Numbered Tickets" do
       synchronize ticket_tracker.find_tickets_numbered(numbers)
     end
   end
@@ -34,43 +34,41 @@ module TicketSynchronizer
     
     map_milestone_id = project.milestones.remote_id_map
     
-    Project.benchmark("\e[33m[tickets.synchronize] synchronizing #{unsynchronized_tickets.length} tickets\e[0m") do
-      Skylight.instrument title: "Synchronize Tickets" do
-        numbers = unsynchronized_tickets.map(&:number)
-        tickets = Ticket.unscoped { where(number: numbers) }
+    Houston.benchmark("[tickets.synchronize] synchronizing #{unsynchronized_tickets.length} tickets") do
+      numbers = unsynchronized_tickets.map(&:number)
+      tickets = Ticket.unscoped { where(number: numbers) }
+      
+      unsynchronized_tickets.map do |unsynchronized_ticket|
+        ticket = tickets.detect { |ticket| ticket.number == unsynchronized_ticket.number }
+        attributes = unsynchronized_ticket.attributes.merge(destroyed_at: nil)
         
-        unsynchronized_tickets.map do |unsynchronized_ticket|
-          ticket = tickets.detect { |ticket| ticket.number == unsynchronized_ticket.number }
-          attributes = unsynchronized_ticket.attributes.merge(destroyed_at: nil)
+        # Convert remote milestone IDs to local milestone IDs
+        attributes[:milestone_id] = map_milestone_id[attributes[:milestone_id]]
+        
+        if ticket
           
-          # Convert remote milestone IDs to local milestone IDs
-          attributes[:milestone_id] = map_milestone_id[attributes[:milestone_id]]
+          # This is essentially a call to update_attributes,
+          # but I broke it down so that we don't begin a
+          # transaction if we don't have any changes to save.
+          # This is pretty much just to reduce log verbosity.
+          ticket.assign_attributes(attributes)
           
-          if ticket
-            
-            # This is essentially a call to update_attributes,
-            # but I broke it down so that we don't begin a
-            # transaction if we don't have any changes to save.
-            # This is pretty much just to reduce log verbosity.
-            ticket.assign_attributes(attributes)
-            
-            # hstore always thinks it has changed
-            has_legitimate_changes = ticket.changed?
-            if has_legitimate_changes && ticket.changed == %w{extended_attributes}
-              before, after = ticket.changes["extended_attributes"]
-              has_legitimate_changes = false if before == after
-            end
-            Ticket.nosync { ticket.save } if has_legitimate_changes
-          else
-            ticket = Ticket.nosync { create(attributes) }
+          # hstore always thinks it has changed
+          has_legitimate_changes = ticket.changed?
+          if has_legitimate_changes && ticket.changed == %w{extended_attributes}
+            before, after = ticket.changes["extended_attributes"]
+            has_legitimate_changes = false if before == after
           end
-          
-          # There's no reason why this shouldn't be set,
-          # but in order to reduce a bunch of useless hits
-          # to the cache and a bunch of log output...
-          ticket.project = project
-          ticket
+          Ticket.nosync { ticket.save } if has_legitimate_changes
+        else
+          ticket = Ticket.nosync { create(attributes) }
         end
+        
+        # There's no reason why this shouldn't be set,
+        # but in order to reduce a bunch of useless hits
+        # to the cache and a bunch of log output...
+        ticket.project = project
+        ticket
       end
     end
   end

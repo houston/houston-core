@@ -22,7 +22,7 @@ class ProjectTicketsController < ApplicationController
     @labels = []
     @labels = Houston::TMI::TICKET_LABELS_FOR_MEMBERS if @project.slug =~ /^360|members$/
     @labels = Houston::TMI::TICKET_LABELS_FOR_UNITE if @project.slug == "unite"
-    benchmark "\e[33mLoad tickets\e[0m" do
+    Houston.benchmark "Load tickets" do
       @tickets = @project.tickets
         .pluck(:id, :summary, :number, :closed_at)
         .map do |id, summary, number, closed_at|

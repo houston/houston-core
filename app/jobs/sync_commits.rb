@@ -15,7 +15,7 @@ class SyncCommits
   end
   
   def sync_commits_for_project!(project, options={})
-    Commit.benchmark("[commits:sync] synced commits for #{project.name}") do
+    Houston.benchmark("[commits:sync] synced commits for #{project.name}") do
       existing_commits = project.commits.pluck(:sha)
       expected_commits = project.repo.all_commits
       

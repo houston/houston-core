@@ -28,7 +28,7 @@ module Github
     attr_reader :results, :token
     
     def fetch!
-      ActiveRecord::Base.benchmark "\e[33mFetching pull requests \e[0m" do
+      Houston.benchmark "Fetching pull requests" do
         @results = client.org_issues(Houston.config.github[:organization], filter: "all", state: "open")
           .select(&method(:pull_request?))
           .map(&::Github::PullRequest.method(:new))

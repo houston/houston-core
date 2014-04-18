@@ -76,7 +76,7 @@ module Houston
           
           def resolve!
             unless %w{resolved closed}.member? @raw_attributes["status"].to_s.downcase
-              Skylight.instrument title: "Resolve Unfuddle Ticket" do
+              Houston.benchmark title: "Resolve Unfuddle Ticket" do
                 ticket = unfuddle.ticket(remote_id)
                 ticket.update_attributes!("status" => "Resolved", "resolution" => "fixed")
               end
@@ -84,7 +84,7 @@ module Houston
           end
           
           def close!
-            Skylight.instrument title: "Close Unfuddle Ticket" do
+            Houston.benchmark title: "Close Unfuddle Ticket" do
               ticket = unfuddle.ticket(remote_id)
               ticket.update_attributes!("status" => "closed")
             end
@@ -92,7 +92,7 @@ module Houston
           
           def reopen!
             unless %w{closed}.member? @raw_attributes["status"].to_s.downcase
-              Skylight.instrument title: "Reopen Unfuddle Ticket" do
+              Houston.benchmark title: "Reopen Unfuddle Ticket" do
                 ticket = unfuddle.ticket(remote_id)
                 ticket.update_attributes!("status" => "Reopened", "resolution" => "", deployment_field => 0)
               end
@@ -102,7 +102,7 @@ module Houston
           
           
           def set_milestone!(milestone_id)
-            Skylight.instrument title: "Update Unfuddle Ticket" do
+            Houston.benchmark title: "Update Unfuddle Ticket" do
               ticket = unfuddle.ticket(remote_id)
               ticket.update_attribute("milestone_id", milestone_id || 0)
             end
@@ -111,7 +111,7 @@ module Houston
           
           
           def create_comment!(comment)
-            Skylight.instrument title: "Create Unfuddle Comment" do
+            Houston.benchmark title: "Create Unfuddle Comment" do
               unfuddle.as_user(comment.user) do
                 ticket = unfuddle.ticket(remote_id)
                 ticket.create_comment("body" => comment.body).id
@@ -120,7 +120,7 @@ module Houston
           end
           
           def update_comment!(comment)
-            Skylight.instrument title: "Update Unfuddle Comment" do
+            Houston.benchmark title: "Update Unfuddle Comment" do
               unfuddle.as_user(comment.user) do
                 unfuddle_comment = comment(comment.remote_id)
                 return unless unfuddle_comment
@@ -132,7 +132,7 @@ module Houston
           end
           
           def destroy_comment!(comment)
-            Skylight.instrument title: "Destroy Unfuddle Comment" do
+            Houston.benchmark title: "Destroy Unfuddle Comment" do
               unfuddle_comment = comment(comment.remote_id)
               return unless unfuddle_comment
               
@@ -147,7 +147,7 @@ module Houston
           def update_attribute(attribute, value)
             case attribute
             when :deployment
-              Skylight.instrument title: "Update Unfuddle Ticket" do
+              Houston.benchmark title: "Update Unfuddle Ticket" do
                 id = unfuddle.find_custom_field_value_by_value!(Houston::TMI::NAME_OF_DEPLOYMENT_FIELD, value).id
                 ticket = unfuddle.ticket(remote_id)
                 ticket.update_attributes!(deployment_field => id)
