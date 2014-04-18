@@ -4,7 +4,32 @@
     <span class="exception-message"><a href="{{url}}" target="_blank">{{message}}</a></span>
     <span class="exception-where">{{where}}</span>
   </td>
-  <td class="exception-latest" data-timestamp="{{lastNoticeAt}}">{{lastNoticeAgo}}</td>
+  {{#firstNotice}}
+  <td class="exception-first" data-timestamp="{{at}}">
+    {{ago}}
+    {{#if commit}}
+      <span class="exception-commit">
+        {{#if commitUrl}}<a href="{{commitUrl}}" target="_blank">{{commit}}</a>{{else}}{{commit}}{{/if}}
+      </span>
+    {{/if}}
+    {{#release}}
+      <span class="exception-release"><a href="{{url}}" target="_blank">Released {{at}}</a></span>
+    {{/release}}
+  </td>
+  {{/firstNotice}}
+  {{#lastNotice}}
+  <td class="exception-last" data-timestamp="{{at}}">
+    {{ago}}
+    {{#if commit}}
+      <span class="exception-commit">
+        {{#if commitUrl}}<a href="{{commitUrl}}" target="_blank">{{commit}}</a>{{else}}{{commit}}{{/if}}
+      </span>
+    {{/if}}
+    {{#release}}
+      <span class="exception-release"><a href="{{url}}" target="_blank">Released {{at}}</a></span>
+    {{/release}}
+  </td>
+  {{/lastNotice}}
   <td class="exception-count"><span class="badge">{{noticesCount}}</span></td>
   <td class="exception-ticket">{{#if ticketId}}{{else}}<button class="btn btn-new-ticket">New Ticket</button>{{/if}}</td>
 </tr>

@@ -2,6 +2,8 @@
   .exception.has-ticket {
     opacity: 0.1;
   }
+  
+  th { white-space: nowrap; }
   .exception-summary {
     max-width: 30em;
     word-wrap: break-word;
@@ -12,5 +14,19 @@
     font-weight: 500;
     font-style: italic;
     color: #727272;
+  }
+  .exception-first, .exception-last {
+    white-space: nowrap;
+  }
+  .exception-commit {
+    display: block;
+    font-family: consolas, fixed;
+    font-size: 0.75em;
+    line-height: 14px;
+  }
+  .exception-release {
+    display: block;
+    font-size: 0.88em;
+    line-height: 10px;
   }
 }

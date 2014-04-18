@@ -16,8 +16,24 @@ module Houston
             attributes[:first_notice_at]
           end
           
+          def first_notice_commit
+            attributes[:first_notice_commit]
+          end
+          
+          def first_notice_environment
+            attributes[:first_notice_environment]
+          end
+          
           def last_notice_at
             attributes[:last_notice_at]
+          end
+          
+          def last_notice_commit
+            attributes[:last_notice_commit]
+          end
+          
+          def last_notice_environment
+            attributes[:last_notice_environment]
           end
           
           def notices_count

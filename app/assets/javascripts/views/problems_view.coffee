@@ -1,6 +1,7 @@
 class @ProblemsView extends Backbone.View
   
   initialize: ->
+    @project = @options.project
     @problems = @options.problems
     @template = HandlebarsTemplates['problems/index']
     renderProblem = HandlebarsTemplates['problems/show']
@@ -10,8 +11,10 @@ class @ProblemsView extends Backbone.View
     $('#problems').html @template(problems: @problems)
     @updateProblemCount()
     
-    $('#exceptions > table').tablesorter
-      headers: { 2: {sorter: 'timestamp'} }
+    $('#exceptions table').tablesorter
+      headers:
+        2: {sorter: 'timestamp'}
+        3: {sorter: 'timestamp'}
     
     $('#exceptions').on 'click', '.btn-new-ticket', (e)=>
       $button = $(e.target)

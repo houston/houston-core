@@ -13,7 +13,8 @@
         <tr>
           <td class="expcetion-checkbox"></td>
           <th class="exception-summary">Summary</th>
-          <th class="exception-latest sort-asc">Latest</th>
+          <th class="exception-first">First Notice</th>
+          <th class="exception-last sort-asc">Last Notice</th>
           <th class="exception-count">Count</th>
           <td class="exception-ticket"></td>
         </tr>
@@ -26,8 +27,11 @@
 <% content_for :javascripts do %>
   <script type="text/javascript">
     $(function() {
-      var problems = <%= raw ProblemPresenter.new(@problems).to_json %>;
-      new ProblemsView({problems: problems}).render();
+      var problems = <%= raw ProblemPresenter.new(@project, @problems).to_json %>;
+      new ProblemsView({
+        project: <%= raw @project.slug.to_json %>,
+        problems: problems
+      }).render();
     });
   </script>
 <% end %>

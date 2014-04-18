@@ -64,7 +64,11 @@ module Houston
           def to_problem(attributes)
             ::Houston::Adapters::ErrorTracker::ErrbitAdapter::Problem.new(
               first_notice_at: attributes["first_notice_at"].try(:to_time),
+              first_notice_commit: attributes["first_notice_commit"],
+              first_notice_environment: attributes["first_notice_environment"],
               last_notice_at: attributes["last_notice_at"].try(:to_time),
+              last_notice_commit: attributes["last_notice_commit"],
+              last_notice_environment: attributes["last_notice_environment"],
               notices_count: attributes["notices_count"],
               
               resolved: attributes["resolved"],
