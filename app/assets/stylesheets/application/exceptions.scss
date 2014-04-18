@@ -1,0 +1,16 @@
+#exceptions {
+  .exception.has-ticket {
+    opacity: 0.1;
+  }
+  .exception-summary {
+    max-width: 30em;
+    word-wrap: break-word;
+  }
+  .exception-where {
+    display: block;
+    font-size: 0.9em;
+    font-weight: 500;
+    font-style: italic;
+    color: #727272;
+  }
+}

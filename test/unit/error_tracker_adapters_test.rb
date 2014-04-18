@@ -28,6 +28,7 @@ class ErrorTrackerAdatersApiTest < ActiveSupport::TestCase
       assert_respond_to app, :error_url
       
       assert_respond_to app, :problems_during
+      assert_respond_to app, :open_problems
       assert_respond_to app, :resolve!
     end
   end

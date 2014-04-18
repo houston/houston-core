@@ -1,0 +1,10 @@
+<tr class="exception {{#if ticketId}}has-ticket{{/if}}" data-token="{{token}}" data-url="{{url}}">
+  <td class="expcetion-checkbox"></td>
+  <td class="exception-summary">
+    <span class="exception-message"><a href="{{url}}" target="_blank">{{message}}</a></span>
+    <span class="exception-where">{{where}}</span>
+  </td>
+  <td class="exception-latest" data-timestamp="{{lastNoticeAt}}">{{lastNoticeAgo}}</td>
+  <td class="exception-count"><span class="badge">{{noticesCount}}</span></td>
+  <td class="exception-ticket">{{#if ticketId}}{{else}}<button class="btn btn-new-ticket">New Ticket</button>{{/if}}</td>
+</tr>

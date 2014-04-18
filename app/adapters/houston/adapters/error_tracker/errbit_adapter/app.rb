@@ -22,9 +22,11 @@ module Houston
           
           
           def problems_during(range)
-            connection
-              .problems_during(range)
-              .select { |problem| problem.app_id == app_id }
+            connection.problems_during(range, app_id: app_id)
+          end
+          
+          def open_problems
+            connection.open_problems(app_id: app_id)
           end
           
           def resolve!(problem_id)

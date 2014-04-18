@@ -19,12 +19,16 @@ module Houston
           
           
           
-          def problems_during(range)
-            fetch_problems start_date: range.begin.iso8601, end_date: range.end.iso8601
+          def problems_during(range, params={})
+            fetch_problems params.merge(start_date: range.begin.iso8601, end_date: range.end.iso8601)
           end
           
-          def notices_during(range)
-            fetch_notices start_date: range.begin.iso8601, end_date: range.end.iso8601
+          def notices_during(range, params={})
+            fetch_notices params.merge(start_date: range.begin.iso8601, end_date: range.end.iso8601)
+          end
+          
+          def open_problems(params={})
+            fetch_problems params.merge(open: true)
           end
           
           def resolve!(problem_id)
@@ -58,7 +62,7 @@ module Houston
           end
           
           def to_problem(attributes)
-            Problem.new(
+            ::Houston::Adapters::ErrorTracker::ErrbitAdapter::Problem.new(
               first_notice_at: attributes["first_notice_at"].try(:to_time),
               last_notice_at: attributes["last_notice_at"].try(:to_time),
               notices_count: attributes["notices_count"],
@@ -82,7 +86,7 @@ module Houston
           
           def to_notice(attributes)
             attributes = attributes["notice"]
-            Notice.new(
+            ::Houston::Adapters::ErrorTracker::ErrbitAdapter::Notice.new(
               created_at: attributes["created_at"].try(:to_time),
               app_id: attributes["app_id"])
           end

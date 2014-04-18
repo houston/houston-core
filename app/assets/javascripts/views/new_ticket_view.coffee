@@ -34,7 +34,13 @@ class window.NewTicketView extends Backbone.View
     @renderSuggestion = HandlebarsTemplates['new_ticket/suggestion']
     @$suggestions = $('#ticket_suggestions')
     @$summary = $('#ticket_summary')
+    @$summary.val "[#{@options.type}] " if @options.type
     @lastSearch = ''
+    
+    if @options.antecedents
+      description = '### Antecedents\n' + (" - #{antecedent}" for antecedent in @options.antecedents).join("\n")
+      $('#ticket_description').val(description)
+      @showNewTicket(animate: false)
     
     Mousetrap.bindScoped '#ticket_summary, #ticket_description', 'mod+enter', (e)=>
       @$el.find('#create_ticket').click() if @$el.find(':focus').length > 0
@@ -101,7 +107,8 @@ class window.NewTicketView extends Backbone.View
           else
             false
     
-    $('#ticket_summary').focus().select()
+    $('#ticket_summary').focus().putCursorAtEnd()
+    @onTicketSummaryChange()
   
   
   onTicketSummaryChange: ->
@@ -154,6 +161,7 @@ class window.NewTicketView extends Backbone.View
       @resetNewTicket()
       $("<div class=\"alert alert-success\">Ticket <a href=\"#{ticket.ticketUrl}\" target=\"_blank\">##{ticket.number}</a> was created.</div>").appendAsAlert()
       @$el.enable()
+      @options.onCreate(ticket) if @options.onCreate
       $(document).trigger 'ticket:create', [ticket]
     
     xhr.error (response)=>
@@ -167,9 +175,15 @@ class window.NewTicketView extends Backbone.View
 
 
 
-  showNewTicket: ->
+  showNewTicket: (options)->
+    options ?= {}
+    animate = options.animate ? true
     $('#ticket_suggestions').hide()
-    $('.sequence-new-ticket-full').slideDown 200, ->
+    if animate
+      $('.sequence-new-ticket-full').slideDown 200, ->
+        $('#ticket_description').autosize()
+    else
+      $('.sequence-new-ticket-full').show()
       $('#ticket_description').autosize()
 
   hideNewTicket: ->

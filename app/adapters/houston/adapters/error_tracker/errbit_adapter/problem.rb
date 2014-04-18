@@ -9,7 +9,8 @@ module Houston
           end
           
           attr_reader :attributes
-          
+          attr_accessor :err_ids
+          attr_accessor :ticket
           
           def first_notice_at
             attributes[:first_notice_at]

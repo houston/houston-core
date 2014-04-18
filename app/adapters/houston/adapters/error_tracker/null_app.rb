@@ -17,6 +17,10 @@ module Houston
           []
         end
         
+        def open_problems
+          []
+        end
+        
         def resolve!(problem_id)
         end
         

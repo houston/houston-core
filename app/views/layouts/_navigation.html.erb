@@ -10,6 +10,11 @@
       <div class="container-fluid nav-collapse">
         <ul class="nav">
           
+          <%# Pretickets -%>
+          <% projects = followed_projects.select { |project| can?(:read, project.releases.build) } -%>
+          <%= render_menu "Pretickets",
+              projects.map { |project| ProjectMenuItem.new(project, main_app.project_pretickets_path(project)) } -%>
+          
           <%# Modules -%>
           <% Houston.config.modules.each do |mod| -%>
             <% next unless mod.namespace.respond_to?(:menu_items_for) -%>

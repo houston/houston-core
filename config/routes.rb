@@ -51,6 +51,12 @@ Houston::Application.routes.draw do
   
   
   
+  # Pretickets
+  
+  get "pretickets/by_project/:slug", to: "project_pretickets#show", :as => :project_pretickets
+  
+  
+  
   # Projects
   
   get "projects/dependencies", to: "project_dependencies#index"

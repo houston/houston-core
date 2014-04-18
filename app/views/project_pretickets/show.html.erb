@@ -1,0 +1,33 @@
+<%= render partial: "projects/header", locals: {project: @project, subtitle: "Pretickets for"} %>
+
+<ul class="nav nav-tabs">
+  <li class="active"><a href="#exceptions" data-toggle="tab">
+    Exceptions <span id="problem_count" class="badge badge-inverse zero">0</span>
+  </a></li>
+</ul>
+
+<div class="tab-content">
+  <div class="tab-pane active" id="exceptions">
+    <table class="table table-sortable table-striped">
+      <thead>
+        <tr>
+          <td class="expcetion-checkbox"></td>
+          <th class="exception-summary">Summary</th>
+          <th class="exception-latest sort-asc">Latest</th>
+          <th class="exception-count">Count</th>
+          <td class="exception-ticket"></td>
+        </tr>
+      </thead>
+      <tbody id="problems"></tbody>
+    </table>
+  </div>
+</div>
+
+<% content_for :javascripts do %>
+  <script type="text/javascript">
+    $(function() {
+      var problems = <%= raw ProblemPresenter.new(@problems).to_json %>;
+      new ProblemsView({problems: problems}).render();
+    });
+  </script>
+<% end %>
