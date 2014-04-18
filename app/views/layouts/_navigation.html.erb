@@ -10,19 +10,19 @@
       <div class="container-fluid nav-collapse">
         <ul class="nav">
           
-          <%# Testing Reports -%>
-          <% projects = followed_projects.select { |project| can?(:read, project.testing_notes.build) } -%>
-          <%= render_menu "Testing", [
-              MenuItem.new("All Projects", main_app.testing_report_path),
-              MenuItemDivider.new ] +
-              projects.map { |project| ProjectMenuItem.new(project, main_app.project_testing_report_path(project)) } if projects.any? -%>
-          
           <%# Modules -%>
           <% Houston.config.modules.each do |mod| -%>
             <% next unless mod.namespace.respond_to?(:menu_items_for) -%>
             <% menu_items = mod.namespace.menu_items_for(projects: followed_projects, ability: current_ability, user: current_user) -%>
             <%= render_menu mod.name.humanize, menu_items -%>
           <% end -%>
+          
+          <%# Testing Reports -%>
+          <% projects = followed_projects.select { |project| can?(:read, project.testing_notes.build) } -%>
+          <%= render_menu "Testing", [
+              MenuItem.new("All Projects", main_app.testing_report_path),
+              MenuItemDivider.new ] +
+              projects.map { |project| ProjectMenuItem.new(project, main_app.project_testing_report_path(project)) } if projects.any? -%>
           
           <%# Releases -%>
           <% projects = followed_projects.select { |project| can?(:read, project.releases.build) } -%>
