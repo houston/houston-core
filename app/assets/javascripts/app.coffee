@@ -74,6 +74,14 @@ window.App =
       $body.toggleClass('full-screen')
       kanbanObj.setKanbanHeight() if window.kanbanObj # TMI: extract to events
   
+  showNewTicket: (options)->
+    options ?= {}
+    $banner = $('.project-banner')
+    slug = $banner.attr('data-project-slug')
+    color = $banner.attr('data-project-color')
+    if slug and $('#new_ticket_modal').length is 0
+      new NewTicketModal(_.extend(options, slug: slug, color: color)).show()
+  
   oauth: (url)->
     window.location = url
   
