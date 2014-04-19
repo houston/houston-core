@@ -21,6 +21,7 @@ class Release < ActiveRecord::Base
   validates_uniqueness_of :deploy_id, :allow_nil => true
   validates_associated :changes
   before_validation :ensure_changes_are_associated_with_project
+  validate :commits_must_exist_in_repo
   
   
   
@@ -166,6 +167,25 @@ private
   def release_each_ticket
     tickets.each do |ticket|
       ticket.release!(self)
+    end
+  end
+  
+  
+  def commits_must_exist_in_repo
+    [:commit0, :commit1].each do |attribute|
+      commit = read_attribute(attribute)
+      next if commit.blank?
+      
+      begin
+        commit = project.repo.native_commit(commit).sha
+        write_attribute(attribute, commit)
+      rescue Houston::Adapters::VersionControl::CommitNotFound
+        message = $!.message
+        message << " in the repo \"#{project.repo}\"" if project
+        errors.add attribute, message
+      rescue Houston::Adapters::VersionControl::InvalidShaError
+        errors.add attribute, $!.message
+      end
     end
   end
   
