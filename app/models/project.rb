@@ -56,6 +56,10 @@ class Project < ActiveRecord::Base
     @testers ||= User.testers
   end
   
+  def gemnasium_branch
+    "master"
+  end
+  
   
   
   

@@ -6,7 +6,6 @@ gem "rails", "~> 4.0.4"
 gem "pg"
 
 gem "addressable", :require => "addressable/uri"
-gem "redcarpet"
 gem "bundler" # used to parse Gemfiles
 gem "cancan"
 gem "childprocess"
@@ -18,6 +17,7 @@ gem "devise_ldap_authenticatable", :git => "https://github.com/houstonmc/devise_
 gem "faraday"
 gem "faraday-http-cache"
 gem "gemoji"
+gem "gemnasium"
 gem "googlecharts"
 gem "hpricot"
 gem "nokogiri"
@@ -26,6 +26,7 @@ gem "octokit" # for adapting to GitHub Issues
 gem "oj"
 gem "premailer", "1.7.3" # for inlining CSS in HTML emails
 gem "progressbar" # for long migrations
+gem "redcarpet"
 gem "rugged" # for speaking to Git
 gem "simplecov"
 gem "strongbox" # for encrypting user credentials
@@ -86,6 +87,7 @@ group :development, :test do
   gem "shoulda-context"
   gem "timecop"
   gem "rr"
+  gem "webmock", require: "webmock/minitest"
   
   # For Jenkins
   gem "simplecov-json", :require => false, :git => "git://github.com/houstonmc/simplecov-json.git"

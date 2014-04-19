@@ -767,7 +767,8 @@ CREATE TABLE projects (
     code_climate_repo_token character varying(255) DEFAULT ''::character varying NOT NULL,
     last_ticket_tracker_sync_at timestamp without time zone,
     ticket_tracker_sync_started_at timestamp without time zone,
-    view_options hstore
+    view_options hstore,
+    gemnasium_slug character varying(255)
 );
 
 
@@ -1994,3 +1995,5 @@ INSERT INTO schema_migrations (version) VALUES ('20140407010111');
 INSERT INTO schema_migrations (version) VALUES ('20140411214022');
 
 INSERT INTO schema_migrations (version) VALUES ('20140418133005');
+
+INSERT INTO schema_migrations (version) VALUES ('20140419152214');

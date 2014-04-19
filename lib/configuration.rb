@@ -193,6 +193,11 @@ module Houston
       @github_configuration ||= {}
     end
     
+    def gemnasium(&block)
+      @gemnasium_configuration = HashDsl.hash_from_block(block) if block_given?
+      @gemnasium_configuration ||= {}
+    end
+    
     def supports_pull_requests?
       github[:organization].present?
     end
