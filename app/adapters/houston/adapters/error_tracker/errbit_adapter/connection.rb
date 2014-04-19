@@ -120,14 +120,12 @@ module Houston
           
           def post(path, params={})
             params = params.merge(auth_token: config[:auth_token])
-            response = Houston.benchmark("[errbit] POST #{path}") { @connection.post(path, params) }
-            response.status
+            Houston.benchmark("[errbit] POST #{path}") { @connection.post(path, params) }
           end
           
           def put(path, params={})
             params = params.merge(auth_token: config[:auth_token])
-            response = Houston.benchmark("[errbit] PUT #{path}") { @connection.put(path, params) }
-            response.status
+            Houston.benchmark("[errbit] PUT #{path}") { @connection.put(path, params) }
           end
           
         end

@@ -68,24 +68,27 @@ class @ProblemsView extends Backbone.View
     if problems.length < 2
       @alert '#merge_exceptions', 'You must select at least two problems to merge'
     else
-      $.post "/projects/#{@project}/exceptions/merge_several", problems: problems
-      window.location.reload()
+      xhr = $.post "/projects/#{@project}/exceptions/merge_several", problems: problems
+      xhr.success -> window.location.reload()
+      xhr.error (response)=> @alert('#merge_exceptions', response.responseText)
 
   unmergeExceptions: ->
     problems = @selectedProblems()
     if problems.length < 2
       @alert '#unmerge_exceptions', 'You must select at least one problem to unmerge'
     else
-      $.post "/projects/#{@project}/exceptions/unmerge_several", problems: problems
-      window.location.reload()
+      xhr = $.post "/projects/#{@project}/exceptions/merge_several", problems: problems
+      xhr.success -> window.location.reload()
+      xhr.error (response)=> @alert('#unmerge_exceptions', response.responseText)
 
   deleteExceptions: ->
     problems = @selectedProblems()
     if problems.length < 2
       @alert '#delete_exceptions', 'You must select at least one problem to delete'
     else
-      $.post "/projects/#{@project}/exceptions/delete_several", problems: problems
-      window.location.reload()
+      xhr = $.post "/projects/#{@project}/exceptions/merge_several", problems: problems
+      xhr.success -> window.location.reload()
+      xhr.error (response)=> @alert('#delete_exceptions', response.responseText)
 
   selectedProblems: ->
     $('#problems_form').serializeObject()['problems[]'] || []
