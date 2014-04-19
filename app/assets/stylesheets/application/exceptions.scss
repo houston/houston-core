@@ -1,15 +1,16 @@
 #exceptions {
   .exception.has-ticket {
-    opacity: 0.1;
+    .icon-check-sign {
+      font-size: 19px;
+      color: #666;
+    }
   }
   
   th { white-space: nowrap; }
   
   .buttons { text-align: center; }
-  .exception-summary {
-    max-width: 30em;
-    word-wrap: break-word;
-  }
+  .exception-summary { max-width: 30em; }
+  .exception-message { word-break: break-all; }
   .exception-where {
     display: block;
     font-size: 0.9em;
@@ -30,5 +31,8 @@
     display: block;
     font-size: 0.88em;
     line-height: 10px;
+  }
+  .exception-ticket .ticket-number {
+    font-size: 0.88em;
   }
 }

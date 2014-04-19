@@ -4,12 +4,11 @@ class @ProblemsView extends Backbone.View
     @project = @options.project
     @problems = @options.problems
     @template = HandlebarsTemplates['problems/index']
-    renderProblem = HandlebarsTemplates['problems/show']
-    Handlebars.registerPartial 'problem', renderProblem
+    @renderProblem = HandlebarsTemplates['problems/show']
+    Handlebars.registerPartial 'problem', @renderProblem
 
   render: ->
-    $('#problems').html @template(problems: @problems)
-    @updateProblemCount()
+    @refresh()
     
     $('#problems').on 'click', 'tr', _.bind(@toggleCheckbox, @)
     $('#problems').on 'click', ':checkbox', _.bind(@styleRow, @)
@@ -28,6 +27,9 @@ class @ProblemsView extends Backbone.View
       $button.attr('disabled', 'disabled')
       $exception = $button.closest('.exception')
       token = $exception.attr('data-token')
+      url = $exception.attr('data-url')
+      problem = _.find(@problems, (problem)-> problem.url == url)
+      return unless problem
       App.showNewTicket
         type: 'bug'
         antecedents: ["Errbit: #{token}"]
@@ -35,8 +37,14 @@ class @ProblemsView extends Backbone.View
           $button.removeAttr('disabled')
         onCreate: (ticket, modal)=>
           modal.modal('hide')
-          $exception.addClass('has-ticket')
-          @updateProblemCount()
+          problem.ticketId = ticket.id
+          problem.ticketUrl = ticket.url
+          problem.ticketNumber = ticket.number
+          @refresh()
+  
+  refresh: ->
+    $('#problems').html @template(problems: @problems)
+    @updateProblemCount()
   
   updateProblemCount: ->
     $('#problem_count').html $('.exception:not(.has-ticket)').length

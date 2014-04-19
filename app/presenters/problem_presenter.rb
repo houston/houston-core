@@ -18,6 +18,8 @@ class ProblemPresenter
   def problem_to_json(problem)
     { id: problem.id,
       ticketId: problem.ticket.try(:id),
+      ticketUrl: (@project.ticket_tracker.ticket_url(problem.ticket) if problem.ticket),
+      ticketNumber: problem.ticket.try(:number),
       token: problem.err_ids.first,
       url: problem.url,
       message: problem.message,
