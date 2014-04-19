@@ -14,6 +14,7 @@ module TicketSynchronizer
   end
   
   def fetch_numbered(numbers)
+    return [] if numbers.empty?
     Houston.benchmark "GET Numbered Tickets" do
       synchronize ticket_tracker.find_tickets_numbered(numbers)
     end

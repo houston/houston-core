@@ -119,8 +119,7 @@ class Project < ActiveRecord::Base
     
     results = tickets.numbered(numbers)
     missing_numbers = numbers - results.map(&:number)
-    results.concat tickets.fetch_numbered(missing_numbers) if missing_numbers.any?
-    results
+    results.concat tickets.fetch_numbered(missing_numbers)
   end
   
   def all_tickets
