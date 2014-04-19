@@ -19,4 +19,9 @@ class Deploy < ActiveRecord::Base
   end
   
   
+  def commit=(value)
+    super value.strip
+  end
+  
+  
 end
