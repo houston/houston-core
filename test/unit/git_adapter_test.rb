@@ -74,6 +74,14 @@ STR
   end
   
   
+  context "Looking up a commit" do
+    should "disregard trailing white space" do
+      commit = @test_repo.native_commit("22924bbf4378f83cab93bfd5fa7d7777cbc1f3b4\r\n")
+      assert commit, "Expected to find the commit in spite of the trailing line break"
+    end
+  end
+  
+  
   test "should return a NullRepo if you give it an invalid path" do
     path = Rails.root.join("nope")
     repo = Houston::Adapters::VersionControl::GitAdapter.build(Project.new, path)
