@@ -1,7 +1,7 @@
 class WeeklyReport
   class MaintenanceStats
     
-    def initialize(projects: Project.scoped)
+    def initialize(projects: Project.unretired)
       @projects = projects
     end
     

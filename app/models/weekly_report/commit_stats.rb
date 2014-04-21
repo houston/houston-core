@@ -3,7 +3,7 @@ class WeeklyReport
     include HistoricalWeeklyStats
     
     
-    def initialize(this_week, weeks_of_history: 26, projects: Project.scoped)
+    def initialize(this_week, weeks_of_history: 26, projects: Project.unretired)
       @this_week = this_week
       @weeks_of_history = weeks_of_history
       @count = 0 # commits this week

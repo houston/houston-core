@@ -8,7 +8,7 @@ class ProjectDependenciesController < ApplicationController
     @environments = Houston.config.environments
     
     @project_dependencies = []
-    projects = Project.scoped
+    projects = Project.unretired
     projects = Project.where(slug: "360") if Rails.env.development?
     projects.each do |project|
       dependency_versions = []

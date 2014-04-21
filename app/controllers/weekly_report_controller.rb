@@ -4,7 +4,7 @@ class WeeklyReportController < ApplicationController
   skip_before_filter :verify_authenticity_token, :only => :send_email
   
   def show
-    @projects = Project.scoped
+    @projects = Project.unretired
   end
   
   def prepare_email
