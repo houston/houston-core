@@ -8,7 +8,7 @@ class Release < ActiveRecord::Base
   belongs_to :user
   belongs_to :deploy
   has_many :changes, :dependent => :destroy
-  has_and_belongs_to_many :commits
+  has_and_belongs_to_many :commits, autosave: false # <-- a bug with autosave causes commit_ids to be saved twice
   has_and_belongs_to_many :tickets, autosave: false # <-- a bug with autosave causes ticket_ids to be saved twice
   
   default_scope { order("created_at DESC") }
