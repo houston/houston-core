@@ -24,3 +24,30 @@ th.vertical {
 
 tr.selected > td { background-color: #ffe; }
 .table-striped tbody > tr.selected:nth-child(odd) > td { background-color: #ffd; }
+.table-expandable, .table-hoverable {
+  tbody > tr:hover td { background-color: rgba(128, 212, 255, 0.1); }
+}
+.table-expandable {
+  tbody > tr {
+    cursor: pointer;
+    
+    &.expanded {
+      td {
+        color: #eee !important;
+        border-top: 2px solid #222;
+        background-color: #505050;
+        
+        a:hover { color: rgb(2, 160, 240); }
+        .label-inverse { background-color: black; }
+      }
+    }
+    
+    &.expansion {
+      td {
+        border-top: none;
+        border-bottom: 2px solid #222;
+        background-color: #505050;
+      }
+    }
+  }
+}

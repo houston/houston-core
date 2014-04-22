@@ -24,8 +24,6 @@
   td { vertical-align: top; }
   
   tbody {
-    tr.ticket { cursor: pointer; }
-    tr:hover td { background-color: rgba(128, 212, 255, 0.1); }
     tr.passing td {
       background-color: rgba(26, 223, 18, 0.18);
       color: rgb(70, 156, 44);
@@ -41,17 +39,9 @@
       .label-inverse { background-color: #B50000; }
     }
     tr.expanded td {
-      color: #eee !important;
-      border-top: 2px solid #222;
-      a:hover { color: rgb(2, 160, 240); }
-      .label-inverse { background-color: black; }
       &.ticket-due-date { text-decoration: none; }
     }
     tr.deleting { opacity: 0.2 !important; }
-    tr.ticket-testing-notes td { border-top: none; border-bottom: 2px solid #222; }
-    tr.expanded, tr.ticket-testing-notes { 
-      td { background-color: #505050; }
-    }
   }
   
   .ticket-project { white-space: nowrap; font-weight: bold; }
