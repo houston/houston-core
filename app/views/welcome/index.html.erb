@@ -13,7 +13,7 @@
   
   <div id="triptych">
     <div id="timeline_body">
-      <div class="timeline">
+      <div class="timeline infinite-scroll">
         <p class="spinner"><i class="icon-spinner icon-spin icon-large"></i> Loading...</p>
         <%= render "activity/events" %>
       </div>
@@ -28,26 +28,12 @@
 <script type="text/javascript">
 $(function() {
   new WelcomeView();
-  var $window = $(window),
-      $document = $(document),
-      $timeline = $('.timeline'),
-      offset = 50;
-  $window.scroll(function () { 
-    if($timeline.hasClass('loading')) { return; }
-    if(!/#?timeline/.test(window.location.hash)) { return; }
-    
-    if($window.scrollTop() >= $document.height() - $window.height() - offset) {
-      var time = $timeline.find('.timeline-event:last').attr('data-time');
+  new InfiniteScroll({
+    load: function($timeline) {
+      if(!/#?timeline/.test(window.location.hash)) { return false; }
       
-      $timeline.addClass('loading');
-      var xhr = $.get('/activity', {since: time});
-      xhr.success(function(html) {
-        $timeline.removeClass('loading');
-        $('.timeline').append(html);
-      });
-      xhr.error(function() {
-        $timeline.removeClass('loading');
-      });
+      var time = $timeline.find('.timeline-event:last').attr('data-time');
+      return $.get('/activity', {since: time});
     }
   });
 });

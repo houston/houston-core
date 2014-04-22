@@ -309,23 +309,6 @@
       font-size: 0.88em;
     }
   }
-  
-  
-  
-  padding-bottom: 6em;
-  position: relative;
-  .spinner { display: none; }
-  &.loading .spinner {
-    position: absolute;
-    bottom: 0;
-    text-align: center;
-    font-weight: 200;
-    font-size: 1.5em;
-    display: block;
-    background: #f4f4f4;
-    width: 100%;
-    padding: 0.5em;
-  }
 }
 
 .to-do {
