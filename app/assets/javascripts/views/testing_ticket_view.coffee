@@ -40,27 +40,8 @@ class window.TestingTicketView extends Backbone.View
     $el.find('.close-button').toggleClass('btn-success', ticket.passing)
     @
   
-  expand: ->
-    @trigger('expanding')
-    @$el.addClass('expanded in-transition')
+  renderExpandedRow: ->
     @$testingNotes = @renderTestingNotes()
-    @$testingNotes.slideDown =>
-      @$el.removeClass('in-transition')
-      @trigger('expanded')
-  
-  collapse: (speed)->
-    return unless @$testingNotes
-    
-    finish = =>
-      @$el.removeClass('expanded in-transition')
-      @$testingNotes.closest('tr').remove()
-      @$testingNotes = null
-    
-    if speed == 'fast'
-      finish()
-    else
-      @$el.addClass('in-transition')
-      @$testingNotes.slideUp(finish)
   
   renderTestingNotes: ->
     id = "ticket_#{@ticket.get('id')}_testing_notes"
