@@ -12,16 +12,17 @@ class window.TestingReportView extends Backbone.View
     @render()
   
   render: ->
-    @expandedView = null
     $el = $(@el)
     $ul = $el
     $ul.empty()
-    @tickets.each (ticket)=>
+    views = @tickets.map (ticket)=>
       view = new TestingTicketView
         ticket: ticket
         canClose: _.include(@projectsCanCloseTicketsFor, ticket.get('projectId'))
-      view.on 'expanding', => @onViewExpanding(view)
       $ul.appendView view
+      view
+    
+    @setupExpandableViews(views)
     
     $("[data-tester-id=#{window.userId}]").addClass('current-tester') if window.userId
     
@@ -29,6 +30,14 @@ class window.TestingReportView extends Backbone.View
     $table.tablesorter(headers: {'4': {sorter: 'text'}})
     $table.bind 'sortStart', =>
       @collapseExpandedView('fast')
+  
+  
+  
+  
+  setupExpandableViews: (views)->
+    @expandedView = null
+    views.each (view)=>
+      view.on 'expanding', => @onViewExpanding(view)
   
   onViewExpanding: (view)->
     @collapseExpandedView()
