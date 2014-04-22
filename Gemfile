@@ -82,6 +82,10 @@ group :development do
 end
 
 group :development, :test do
+  gem "pry" # for debugging
+end
+
+group :test do
   gem "minitest"
   gem "turn", :require => false # for prettier tests
   gem "shoulda-context"
@@ -92,6 +96,4 @@ group :development, :test do
   # For Jenkins
   gem "simplecov-json", :require => false, :git => "git://github.com/houstonmc/simplecov-json.git"
   gem "minitest-reporters", require: false
-  
-  gem "pry" # for debugging
 end
