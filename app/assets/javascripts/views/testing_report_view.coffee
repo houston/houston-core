@@ -33,7 +33,20 @@ class window.TestingReportView extends Backbone.View
     @expandedView = null
     views.each (view)=>
       view.on 'expanding', => @onViewExpanding(view)
+      view.$el.click (e)=>
+        return if $(e.target).is('button, a, input')
+        @expandOrCollapseView(view)
+    
     $('.table-sortable').bind 'sortStart', => @collapseExpandedView('fast')
+  
+  expandOrCollapseView: (view)->
+    return if view.$el.hasClass('in-transition')
+    return if view.$el.hasClass('deleting')
+
+    if view.$el.hasClass('expanded')
+      view.collapse()
+    else
+      view.expand()
   
   onViewExpanding: (view)->
     @collapseExpandedView()

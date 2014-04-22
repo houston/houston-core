@@ -3,7 +3,6 @@ class window.TestingTicketView extends Backbone.View
   className: 'ticket'
   
   events:
-    'click': 'showOrHideTestingNotes'
     'click .close-button': 'closeTicket'
     'click .reopen-button': 'reopenTicket'
     'click a.ticket-set-priority': 'setPriority'
@@ -41,16 +40,6 @@ class window.TestingTicketView extends Backbone.View
     $el.find('.close-button').toggleClass('btn-success', ticket.passing)
     @
   
-  showOrHideTestingNotes: (e)->
-    return if @$el.hasClass('in-transition')
-    return if @$el.hasClass('deleting')
-    return if $(e.target).is('button, a, input')
-    
-    if @$el.hasClass('expanded')
-      @collapse()
-    else
-      @expand()
-      
   expand: ->
     @trigger('expanding')
     @$el.addClass('expanded in-transition')
