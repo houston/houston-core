@@ -24,11 +24,8 @@ class window.TestingReportView extends Backbone.View
     
     $("[data-tester-id=#{window.userId}]").addClass('current-tester') if window.userId
     
-    $table = $('table.testing-report-table')
-    $table.tablesorter(headers: {'4': {sorter: 'text'}})
-    $table.bind 'sortStart', =>
-      @collapseExpandedView('fast')
-  
+    $('table.testing-report-table').tablesorter
+      headers: {'4': {sorter: 'text'}}
   
   
   
@@ -36,6 +33,7 @@ class window.TestingReportView extends Backbone.View
     @expandedView = null
     views.each (view)=>
       view.on 'expanding', => @onViewExpanding(view)
+    $('.table-sortable').bind 'sortStart', => @collapseExpandedView('fast')
   
   onViewExpanding: (view)->
     @collapseExpandedView()
