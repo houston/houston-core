@@ -12,14 +12,12 @@ class window.TestingReportView extends Backbone.View
     @render()
   
   render: ->
-    $el = $(@el)
-    $ul = $el
-    $ul.empty()
+    @$el.empty()
     views = @tickets.map (ticket)=>
       view = new TestingTicketView
         ticket: ticket
         canClose: _.include(@projectsCanCloseTicketsFor, ticket.get('projectId'))
-      $ul.appendView view
+      @$el.appendView view
       view
     
     @setupExpandableViews(views)
