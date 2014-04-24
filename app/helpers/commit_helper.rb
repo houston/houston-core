@@ -33,10 +33,6 @@ module CommitHelper
     sha[0...7]
   end
   
-  def format_change(change)
-    mdown change.description
-  end
-  
   def format_with_tickets_linked(project, message)
     message = h(message)
     
