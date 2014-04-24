@@ -110,6 +110,7 @@ private
       .to_environment(@environment)
       .includes(:project)
       .includes(:changes)
+      .includes(:deploy)
   end
   
   def load_tickets
