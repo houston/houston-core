@@ -16,7 +16,16 @@
     <% end %>
     
     <% if @release.changes.any? %>
-      <%= render partial: "releases/changes", locals: {changes: @release.changes} %>
+      <div class="release-changes">
+        <% ordered_by_tag(@release.changes).each do |change| %>
+          <% if can?(:read, change) %>
+            <%= div_for(change) do %>
+              <%= format_change_tag change.tag %>
+              <div class="change-summary"><%= format_change(change) %></div>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
     <% else %>
       <div class="release-no-changes">No changes</div>
     <% end %>
