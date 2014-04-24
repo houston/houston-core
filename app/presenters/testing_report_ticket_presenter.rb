@@ -11,7 +11,10 @@ class TestingReportTicketPresenter < TicketPresenter
       .includes(:releases)
       .includes(:commits) # so we can present committers
       .includes(:released_commits)
-      .order("projects.name ASC")
+  end
+  
+  def as_json(*args)
+    super(*args).sort_by { |ticket| ticket[:projectTitle] }
   end
   
   def ticket_to_json(ticket)
