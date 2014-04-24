@@ -10,11 +10,11 @@ GIT
 
 GIT
   remote: git://github.com/concordia-publishing-house/houston-itsm.git
-  revision: d88429edaa0b86049b8c2cd0fe594cb317e0ae86
+  revision: 798f7d5812ef7761b737e11e5e6ae2acc8585ad7
   branch: master
   specs:
     houston-itsm (0.0.1)
-      rails (~> 4.0.0)
+      rails (~> 4.0.3)
       ruby-ntlm
 
 GIT
