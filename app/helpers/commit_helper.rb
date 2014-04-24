@@ -34,10 +34,7 @@ module CommitHelper
   end
   
   def format_change(change)
-    message = change.description
-    message = format_with_tickets_linked(change.project, message)
-    message = mdown(message)
-    message
+    mdown change.description
   end
   
   def format_with_tickets_linked(project, message)
