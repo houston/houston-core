@@ -2,7 +2,7 @@
   <% ordered_by_tag(changes).each do |change| %>
     <% if can?(:read, change) %>
       <%= div_for(change) do %>
-        <%= render change.tag %>
+        <%= format_change_tag change.tag %>
         <div class="change-summary"><%= format_change(change) %></div>
       <% end %>
     <% end %>

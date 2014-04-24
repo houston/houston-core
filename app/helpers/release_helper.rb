@@ -20,4 +20,8 @@ module ReleaseHelper
     h(string).gsub(/&quot;(.+?)&quot;/, '<code>\1</code>').html_safe
   end
   
+  def format_change_tag(tag)
+    "<div class=\"change-tag\" style=\"background-color: ##{tag.color};\">#{tag.name}</div>".html_safe
+  end
+  
 end

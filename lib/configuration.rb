@@ -514,19 +514,15 @@ class NullTag
   end
   
   def color
-    "EFEFEF"
+    "CCCCCC"
   end
   
   def name
-    "&mdash;".html_safe
+    "No tag"
   end
   
   def position
     999
-  end
-  
-  def to_partial_path
-    "tags/null_tag"
   end
   
 end
