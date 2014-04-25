@@ -105,7 +105,7 @@ Houston.config do
       end
       
       # Customers are allowed to see Features, Improvements, and Bugfixes
-      can :read, Change, tag_slug: %w{feature improvement fix}
+      can :read, ReleaseChange, tag_slug: %w{feature improvement fix}
       
     else
       
@@ -113,7 +113,7 @@ Houston.config do
       can :read, Release
       
       # Everyone is allowed to see Features, Improvements, and Bugfixes
-      can :read, Change, tag_slug: %w{feature improvement fix}
+      can :read, ReleaseChange, tag_slug: %w{feature improvement fix}
       
       # Everyone can see Projects
       can :read, Project
@@ -142,7 +142,7 @@ Houston.config do
       
       # Developers see the other kinds of changes: Test Fixes and Refactors
       # as well as commit info
-      can :read, [Commit, Change] if user.developer?
+      can :read, [Commit, ReleaseChange] if user.developer?
       can :manage, Sprint if user.developer?
       
       # Mixers can see all testing notes

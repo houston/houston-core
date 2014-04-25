@@ -7,20 +7,16 @@ class Release < ActiveRecord::Base
   belongs_to :project
   belongs_to :user
   belongs_to :deploy
-  has_many :changes, :dependent => :destroy
   has_and_belongs_to_many :commits, autosave: false # <-- a bug with autosave causes commit_ids to be saved twice
   has_and_belongs_to_many :tickets, autosave: false # <-- a bug with autosave causes ticket_ids to be saved twice
   
   default_scope { order("created_at DESC") }
   
-  accepts_nested_attributes_for :changes, :allow_destroy => true
-  
   delegate :maintainers, :to => :project
   
   validates_presence_of :user_id
   validates_uniqueness_of :deploy_id, :allow_nil => true
-  validates_associated :changes
-  before_validation :ensure_changes_are_associated_with_project
+  validates_associated :release_changes
   validate :commits_must_exist_in_repo
   
   
@@ -105,12 +101,25 @@ class Release < ActiveRecord::Base
     super value.to_s.strip
   end
   
+  def release_changes
+    super.lines.map { |s| ReleaseChange.from_s(self, s) }
+  end
+  
+  def release_changes=(changes)
+    super changes.map(&:to_s).join("\n")
+  end
+  
+  def release_changes_attributes=(params)
+    self.release_changes = params.values
+      .reject { |attrs| attrs["_destroy"] == "1" }
+      .map { |attrs| ReleaseChange.new(self, attrs["tag_slug"], attrs["description"]) }
+  end
+  
   
   
   def build_changes_from_commits
-    commits.each do |commit|
-      changes.build Change.attributes_from_commit(commit).merge(release: self, project: project) unless commit.skip?
-    end
+    self.release_changes = commits.reject(&:skip?)
+      .map { |commit| ReleaseChange.from_commit(self, commit) }
   end
   
   def load_commits!
@@ -154,13 +163,6 @@ private
   rescue Houston::Adapters::VersionControl::InvalidShaError
     @commit_not_found_error_message = $!.message
     []
-  end
-  
-  
-  def ensure_changes_are_associated_with_project
-    changes.each do |change|
-      change.project = project
-    end
   end
   
   

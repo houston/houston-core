@@ -6,7 +6,7 @@
   <div class="alert alert-error">
     <%= replace_quotes(@release.commit_not_found_error_message) %>
   </div>
-<% elsif !@manual && @release.commits.none? && @release.changes.none? %>
+<% elsif !@manual && @release.commits.none? && @release.release_changes.none? %>
   <div class="alert alert-error">
     There are no commits in the repo <code><%= @project.repo %></code> that match <code><%= @commit0 %>...<%= @commit1 %></code>
   </div>

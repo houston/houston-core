@@ -32,7 +32,7 @@ class ReleasesController < ApplicationController
       @release.build_changes_from_commits
     end
     
-    @release.changes.build if @release.changes.select { |change| !change._destroy }.none?
+    @release.release_changes = [ReleaseChange.new(@release, "", "")] if @release.release_changes.none?
     
     if request.headers['X-PJAX']
       render template: "releases/_new_release", layout: false
@@ -46,7 +46,6 @@ class ReleasesController < ApplicationController
     authorize! :update, @release
     
     if params[:recreate]
-      @release.changes.each { |change| change._destroy = true }
       if @release.can_read_commits?
         @release.load_commits!
         @release.load_tickets!
@@ -54,7 +53,7 @@ class ReleasesController < ApplicationController
       end
     end
     
-    @release.changes.build if @release.changes.select { |change| !change._destroy }.none?
+    @release.release_changes = [ReleaseChange.new(@release, "", "")] if @release.release_changes.none?
     @release.valid?
   end
 
@@ -109,7 +108,6 @@ private
     @releases = @project.releases
       .to_environment(@environment)
       .includes(:project)
-      .includes(:changes)
       .includes(:deploy)
   end
   

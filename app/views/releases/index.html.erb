@@ -74,14 +74,14 @@
           <% end %>
         </p>
         
-        <% if release.changes.any? %>
+        <% if release.release_changes.any? %>
           <div class="release-changes">
-            <% ordered_by_tag(release.changes).each do |change| %>
+            <% ordered_by_tag(release.release_changes).each do |change| %>
               <% if can?(:read, change) %>
-                <%= div_for(change) do %>
+                <div class="change">
                   <%= format_change_tag change.tag %>
                   <div class="change-summary"><%= format_change(change) %></div>
-                <% end %>
+                </div>
               <% end %>
             <% end %>
           </div>
