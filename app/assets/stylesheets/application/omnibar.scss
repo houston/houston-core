@@ -1,0 +1,55 @@
+input[type="text"].omnibar {
+  font-size: 2em;
+  height: 1em;
+  margin: 0;
+  width: 516px;
+}
+
+.dropdown-menu > li.omnibar-item > a {
+  padding: 8px 16px;
+  line-height: 1em;
+}
+
+.omnibar-item {
+  width: 528px;
+  
+  .bubble {
+    width: 0.75em;
+    height: 0.75em;
+    border-radius: 0.75em;
+  }
+  
+  .commit-sha {
+    font-family: consolas, fixed;
+    font-size: 0.75em;
+    opacity: 0.5;
+  }
+  
+  .commit-message {
+    line-height: 1em;
+    display: block;
+    text-overflow: ellipsis;
+    max-width: 488px;
+    overflow: hidden;
+    text-indent: 3px;
+  }
+  
+  .project-title {
+    font-size: 0.75em;
+    opacity: 0.5;
+  }
+  
+  .project-link-title {
+    line-height: 1em;
+    display: block;
+    text-overflow: ellipsis;
+    max-width: 488px;
+    overflow: hidden;
+    text-indent: 3px;
+  }
+  
+  img {
+    float: left;
+    margin: 2px 6px 2px 0;
+  }
+}

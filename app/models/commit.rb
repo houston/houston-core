@@ -36,6 +36,10 @@ class Commit < ActiveRecord::Base
     message[/^.*$/]
   end
   
+  def description
+    message.lines[1..-1].join("\n")
+  end
+  
   
   
   def self.from_native_commit(native)

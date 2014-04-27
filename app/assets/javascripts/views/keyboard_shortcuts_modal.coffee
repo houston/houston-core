@@ -10,6 +10,10 @@ class @KeyboardShortcutsModal
         name: 'Refresh Tickets'
       
       , 
+        keys: ['G']
+        name: 'Go to...'
+      
+      , 
         keys: ['g', 'p']
         name: 'Go to Projects'
       , 

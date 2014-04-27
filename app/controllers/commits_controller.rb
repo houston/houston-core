@@ -23,4 +23,11 @@ class CommitsController < ApplicationController
     render json: CommitPresenter.new(commits).verbose
   end
   
+  
+  
+  def show
+    @commit = Commit.find_by_sha(params[:sha])
+    @project = @commit.project
+  end
+  
 end

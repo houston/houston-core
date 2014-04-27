@@ -179,6 +179,9 @@ h1 {
     font-size: .75em;
     text-transform: uppercase;
     color: white;
+    
+    &.colon { font-family: arial; }
+    &.postfix { text-transform: lowercase; }
   }
   
   .light { font-weight: 100; }

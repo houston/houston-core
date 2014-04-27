@@ -36,6 +36,30 @@ $ ->
     App.showNewTicket()
   
   
+  Mousetrap.bind 'G', (e)->
+    e.preventDefault()
+    
+    renderItem = (item)-> HandlebarsTemplates["omnibar/#{item.type}"](item)
+    renderItems = (items)-> _.reduce items, ((html, item)-> html + renderItem(item)), ''
+    
+    $modal = $(HandlebarsTemplates['omnibar/modal']()).modal()
+    $modal.on 'hidden', => $modal.remove()
+    $('#omnibar').focus().putCursorAtEnd().typeahead
+      minLength: 2
+      source: (query, process)->
+        $.get '/omnibar', query: query, process
+        false # don't render anything now, wait for $.get to call process
+      updater: (url)->
+        $modal.remove() # remove the modal but not the backdrop
+        window.location.href = url
+      matcher: (item)-> true # they all match (the server did the matching)
+      sorter: (items)-> items # apply no sorting (return them in the order given)
+    $('#omnibar').data('typeahead').render = (items)->
+      @$menu.html(renderItems(items))
+      @$menu.find('li:first').addClass('active')
+      @
+    $('#omnibar').on 'keyup', (e)-> $modal.modal('hide') if e.keyCode is 27
+  
   Mousetrap.bind 'g p', -> window.location = '/projects'
   Mousetrap.bind 'g q', -> window.location = '/pull_requests'
   Mousetrap.bind 'g i', -> window.location = '/itsm/issues'

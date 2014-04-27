@@ -19,6 +19,7 @@ Houston::Application.routes.draw do
   # Dashboard
   
   get "dashboard" => "dashboard#index", :as => :dashboard
+  get "omnibar" => "omnibar#show"
   
   
   
@@ -155,6 +156,8 @@ Houston::Application.routes.draw do
   scope "self" do
     get "commits", to: "commits#self"
   end
+  
+  get "commits/:sha", to: "commits#show"
   
   
   
