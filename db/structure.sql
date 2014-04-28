@@ -1068,7 +1068,7 @@ ALTER SEQUENCE ticket_queues_id_seq OWNED BY ticket_queues.id;
 CREATE TABLE tickets (
     id integer NOT NULL,
     project_id integer,
-    number integer,
+    number integer NOT NULL,
     summary character varying(255),
     description text,
     created_at timestamp without time zone NOT NULL,
@@ -2002,3 +2002,5 @@ INSERT INTO schema_migrations (version) VALUES ('20140419152214');
 INSERT INTO schema_migrations (version) VALUES ('20140425141946');
 
 INSERT INTO schema_migrations (version) VALUES ('20140427235508');
+
+INSERT INTO schema_migrations (version) VALUES ('20140428023146');

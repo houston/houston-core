@@ -20,7 +20,7 @@ class Ticket < ActiveRecord::Base
   validates :number, presence: true
   validates :priority, inclusion: { in: %w{low normal high} }
   validates :type, presence: true, inclusion: { in: Houston.config.ticket_types, message: "\"%{value}\" is unknown. It must be #{Houston.config.ticket_types.to_sentence(last_word_connector: ", or ")}" }
-  validates_uniqueness_of :number, scope: :project_id, on: :create, if: :number
+  validates_uniqueness_of :number, scope: :project_id, on: :create
   
   before_save :find_reporter, if: :find_reporter?
   after_save :propagate_milestone_change, if: :milestone_id_changed?
