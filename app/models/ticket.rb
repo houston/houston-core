@@ -191,21 +191,16 @@ class Ticket < ActiveRecord::Base
   
   
   
-  def create_comment!(testing_note)
-    return unless remote_ticket.respond_to?(:create_comment!)
-    remote_id = remote_ticket.create_comment!(testing_note.to_comment)
-    raise RuntimeError, "remote_id must not be nil" unless remote_id
-    testing_note.unfuddle_id = remote_id
+  def create_comment!(comment)
+    remote.create_comment!(comment) if remote.respond_to?(:create_comment!)
   end
   
-  def update_comment!(testing_note)
-    return unless remote_ticket.respond_to?(:update_comment!)
-    remote_ticket.update_comment!(testing_note.to_comment)
+  def update_comment!(comment)
+    remote.update_comment!(comment) if remote.respond_to?(:update_comment!)
   end
   
-  def destroy_comment!(testing_note)
-    return unless remote_ticket.respond_to?(:destroy_comment!)
-    remote_ticket.destroy_comment!(testing_note.to_comment)
+  def destroy_comment!(comment)
+    remote.destroy_comment!(comment) if remote.respond_to?(:destroy_comment!)
   end
   
   
@@ -313,6 +308,7 @@ private
   def remote_ticket
     @remote_ticket ||= ticket_tracker.find_ticket_by_number(number)
   end
+  alias :remote :remote_ticket
   
   def cache_release_attributes(release)
     attributes = { last_release_at: release.created_at, deployment: release.environment_name }

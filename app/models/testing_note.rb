@@ -1,8 +1,8 @@
 class TestingNote < ActiveRecord::Base
   
-  before_create  { ticket.create_comment! self }
-  before_update  { ticket.update_comment! self }
-  before_destroy { ticket.destroy_comment! self }
+  before_create  :create_ticket_comment!
+  before_update  :update_ticket_comment!
+  before_destroy :destroy_ticket_comment!
   after_create { Houston.observer.fire "testing_note:create", self }
   after_update { Houston.observer.fire "testing_note:update", self }
   after_save   { Houston.observer.fire "testing_note:save", self }
@@ -48,6 +48,24 @@ class TestingNote < ActiveRecord::Base
     return false unless fail?
     first_fail = ticket.testing_notes_since_last_release.where(verdict: "fails").order("created_at ASC").first
     first_fail == nil || first_fail.id == self.id
+  end
+  
+  
+  
+private
+  
+  def create_ticket_comment!
+    remote_id = ticket.create_comment!(to_comment)
+    raise RuntimeError, "remote_id must not be nil" unless remote_id
+    self.unfuddle_id = remote_id
+  end
+  
+  def update_ticket_comment!
+    ticket.update_comment!(to_comment)
+  end
+  
+  def destroy_ticket_comment!
+    ticket.destroy_comment!(to_comment)
   end
   
 end
