@@ -210,20 +210,10 @@ class Ticket < ActiveRecord::Base
   
   
   
-  def remote_ticket
-    @remote_ticket ||= project && project.ticket_tracker.find_ticket_by_number(number)
-  end
-  
   def release!(release)
     self.releases << release unless releases.exists?(release.id)
     cache_release_attributes(release)
     Houston.observer.fire "ticket:release", self, release
-  end
-  
-  def cache_release_attributes(release)
-    attributes = { last_release_at: release.created_at, deployment: release.environment_name }
-    attributes.merge!(first_release_at: release.created_at) if unreleased?
-    update_attributes attributes
   end
   
   def resolve!
@@ -318,6 +308,16 @@ private
   
   def close_antecedents!
     antecedents.each(&:close!)
+  end
+  
+  def remote_ticket
+    @remote_ticket ||= ticket_tracker.find_ticket_by_number(number)
+  end
+  
+  def cache_release_attributes(release)
+    attributes = { last_release_at: release.created_at, deployment: release.environment_name }
+    attributes.merge!(first_release_at: release.created_at) if unreleased?
+    update_attributes attributes
   end
   
 end
