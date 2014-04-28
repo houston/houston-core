@@ -38,12 +38,14 @@ module Houston
           def find_ticket_by_number(number)
             attributes = client.issue(repo_path, number) unless number.blank?
             build_ticket(attributes) if attributes
+          rescue Octokit::NotFound
+            nil
           end
           
           def find_tickets_numbered(*numbers)
             numbers = numbers.flatten
             return [] if numbers.empty?
-            return numbers.map(&method(:find_ticket_by_number)) if numbers.length < 5
+            return numbers.map(&method(:find_ticket_by_number)).compact if numbers.length < 5
             open_tickets.select { |ticket| numbers.member?(ticket.number) }
           end
           
