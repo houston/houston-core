@@ -1,20 +1,20 @@
-<%= form_for @release, :url => @release.new_record? ? releases_path(@project, @environment) : release_path(@release), :html => { :class => 'form-horizontal' } do |f| %>
+<%= form_for @release, :url => @release.new_record? ? releases_path(@project, @environment) : release_path(@release), :html => { :class => "form-horizontal release-form" } do |f| %>
   <%= f.hidden_field :commit0 %>
   <%= f.hidden_field :commit1 %>
   <%= f.hidden_field :deploy_id %>
   <%= hidden_field_tag :recreate, params[:recreate] %>
   
 
-  <fieldset>
+  <fieldset class="release-detail">
     <div class="control-group">
-      <%= f.label :message, :class => 'control-label optional' %>
+      <%= f.label :message, :class => "control-label optional" %>
       <div class="controls">
-        <%= f.text_area :message, :class => 'text_field' %>
+        <%= f.text_area :message, :class => "text_field" %>
       </div>
     </div>
 
-    <div class="control-group">
-      <%= f.label :release_changes, :class => 'control-label' %>
+    <div class="release-detail-section">
+      <%= f.label :release_changes, "Changes", :class => "control-label" %>
       <div class="controls changes-nested-editor">
         <%= f.nested_editor_for :release_changes do |f| -%>
           <div class="change-tag"><%= f.collection_select :tag_slug, [NullTag.instance] + Houston.config.change_tags, :slug, :name %></div>
@@ -23,8 +23,8 @@
       </div>
     </div>
     
-    <div class="control-group">
-      <%= f.label :tickets, "Tickets", :class => 'control-label' %>
+    <div class="release-detail-section release-tickets">
+      <%= f.label :tickets, "Tickets", :class => "control-label" %>
       <div class="controls changes-nested-editor">
         <ol id="release_tickets">
           <% @release.tickets.each do |ticket| %>
@@ -41,19 +41,23 @@
       </div>
     </div>
     
-    <div class="control-group">
+    <div class="release-detail-section release-antecedents">
       <label class="control-label">Antecedents</label>
       <div class="controls changes-nested-editor">
-        <ul class="antecedents">
-          <% @release.antecedents.each do |antecedent| %>
-            <li><%= format_antecedent(antecedent) %></li>
-          <% end %>
-        </ul>
+        <% if @release.antecedents.any? %>
+          <ul class="antecedents">
+            <% @release.antecedents.each do |antecedent| %>
+              <li><%= format_antecedent(antecedent) %></li>
+            <% end %>
+          </ul>
+        <% else %>
+          <p class="no-items">No antecedents were associated with this release.</p>
+        <% end %>
       </div>
     </div>
 
     <% if @release.commits.any? %>
-    <div class="control-group">
+    <div class="release-detail-section release-commits">
       <label class="control-label">Commits</label>
       <div class="controls changes-nested-editor">
         <ul class="commits">
@@ -66,7 +70,7 @@
     <% end %>
     
     <% if @release.new_record? %>
-    <div class="control-group">
+    <div class="release-detail-section">
       <div class="controls">
         <label for="send_release_email">
           <input type="checkbox" id="send_release_email" name="send_release_email" value="1" checked="checked" /> Send notifications about this release 
@@ -76,8 +80,8 @@
     <% end %>
 
     <div class="form-actions">
-      <%= f.submit nil, :class => 'btn btn-primary' %>
-      <%= link_to 'Cancel', releases_path(@project), :class => 'btn' %>
+      <%= f.submit nil, :class => "btn btn-primary" %>
+      <%= link_to "Cancel", releases_path(@project), :class => "btn" %>
       <%= link_to "Delete", release_path(@release), :method => "delete", :confirm => "Are you sure?", :class => "btn btn-danger btn-delete" if @release.persisted? && can?(:destroy, @release) %>
     </div>
   </fieldset>
