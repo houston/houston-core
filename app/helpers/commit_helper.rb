@@ -51,7 +51,7 @@ module CommitHelper
   
   def link_to_err(project, err)
     link_to project.error_tracker_error_url(err), "target" => "_blank" do
-      image_tag image_url("bug-fixed-32.png"), "data-tooltip-placement" => "right", :rel => "tooltip", :title => "View Exception in Errbit", :width => 16, :height => 16
+      (image_tag(image_url("bug-fixed-32.png"), "data-tooltip-placement" => "right", rel: "tooltip", title: "View Exception in Errbit", width: 16, height: 16) + err).html_safe
     end
   end
   
