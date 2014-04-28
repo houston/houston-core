@@ -11,7 +11,7 @@ class SyncCommitsTest < ActionDispatch::IntegrationTest
   test "should sync commits on hooks:post_receive" do
     @project = Project.create!(name: "Test", slug: "test", version_control_name: "Mock")
     
-    mock(Houston::Adapters::VersionControl::NullRepo).refresh!(async: true)
+    mock(Houston::Adapters::VersionControl::NullRepo).refresh!
     
     post "/projects/#{@project.slug}/hooks/post_receive"
   end
