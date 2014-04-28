@@ -3,16 +3,17 @@ require 'test_helper'
 class TicketTest < ActiveSupport::TestCase
   include RR::Adapters::TestUnit
   
-  attr_reader :ticket, :release, :released_at
+  attr_reader :project, :ticket, :release, :released_at
   
   setup do
     Ticket.nosync = true
+    @project = Project.create!(name: "Test", slug: "test")
   end
   
   
   
   test "creating a valid ticket" do
-    ticket = Ticket.new(project_id: 1, number: 1, summary: "Test summary", type: "Bug")
+    ticket = Ticket.new(project: project, number: 1, summary: "Test summary", type: "Bug")
     assert_equal true, ticket.valid?
   end
   
@@ -24,7 +25,7 @@ class TicketTest < ActiveSupport::TestCase
       @released_at = Time.zone.now
       stub(@release).created_at { @released_at }
       
-      @ticket = Ticket.create!(project_id: 1, number: 1, summary: "Test summary", type: "Bug")
+      @ticket = Ticket.create!(project: project, number: 1, summary: "Test summary", type: "Bug")
     end
     
     should "trigger the ticket:release event" do
@@ -77,7 +78,7 @@ class TicketTest < ActiveSupport::TestCase
   
   context "#resolve!" do
     setup do
-      @ticket = Ticket.create!(project_id: 1, number: 1, summary: "Test summary", type: "Bug")
+      @ticket = Ticket.create!(project: project, number: 1, summary: "Test summary", type: "Bug")
     end
     
     should "resolve antecedents" do
@@ -93,7 +94,7 @@ class TicketTest < ActiveSupport::TestCase
   
   context "#close!" do
     setup do
-      @ticket = Ticket.create!(project_id: 1, number: 1, summary: "Test summary", type: "Bug")
+      @ticket = Ticket.create!(project: project, number: 1, summary: "Test summary", type: "Bug")
     end
     
     should "close antecedents" do
@@ -110,7 +111,7 @@ class TicketTest < ActiveSupport::TestCase
   context "#reopen!" do
     setup do
       @ticket = Ticket.create!(
-        project_id: 1,
+        project: project,
         number: 1,
         summary: "Test summary",
         resolution: "fixed",
@@ -172,7 +173,7 @@ class TicketTest < ActiveSupport::TestCase
   
   context "#tags" do
     setup do
-      @ticket = Ticket.create!(project_id: 1, number: 1, summary: "Test summary", type: "Bug")
+      @ticket = Ticket.create!(project: project, number: 1, summary: "Test summary", type: "Bug")
     end
     
     should "accept an array of strings" do

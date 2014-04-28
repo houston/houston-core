@@ -29,7 +29,7 @@ class Ticket < ActiveRecord::Base
   
   attr_readonly :number, :project_id
   
-  delegate :testers, :maintainers, :min_passing_verdicts, to: :project
+  delegate :testers, :maintainers, :min_passing_verdicts, :ticket_tracker, to: :project
   delegate :nosync?, to: "self.class"
   
   
@@ -209,10 +209,6 @@ class Ticket < ActiveRecord::Base
   end
   
   
-  
-  def ticket_tracker
-    project.ticket_tracker
-  end
   
   def remote_ticket
     @remote_ticket ||= project && project.ticket_tracker.find_ticket_by_number(number)
