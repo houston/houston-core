@@ -9,7 +9,7 @@ class Ticket < ActiveRecord::Base
   belongs_to :sprint
   belongs_to :checked_out_by, class_name: "User"
   has_many :testing_notes
-  has_and_belongs_to_many :releases, before_add: :ignore_release_if_duplicate
+  has_and_belongs_to_many :releases
   has_and_belongs_to_many :commits, -> { where(unreachable: false) }
   has_and_belongs_to_many :released_commits, -> { reachable.released }, class_name: "Commit", association_foreign_key: "commit_id"
   
@@ -290,10 +290,6 @@ class Ticket < ActiveRecord::Base
   
   
 private
-  
-  def ignore_release_if_duplicate(release)
-    raise ActiveRecord::Rollback if self.releases.exists?(release.id)
-  end
   
   def find_reporter?
     reporter_email_changed? or (reporter_email.present? and reporter_id.nil?)
