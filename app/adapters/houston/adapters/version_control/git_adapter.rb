@@ -84,9 +84,8 @@ module Houston
               pid = spawn command
               Process.detach pid
             else
-              unless system command
-                raise CloneRepoFailed.new("The command #{command.inspect} failed")
-              end
+              output = `#{command}`
+              raise CloneRepoFailed.new("The command #{command.inspect} failed:\n#{output}") unless $?.success?
             end
           end
           
