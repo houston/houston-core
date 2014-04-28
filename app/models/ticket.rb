@@ -227,7 +227,6 @@ class Ticket < ActiveRecord::Base
   def cache_release_attributes(release)
     attributes = { last_release_at: release.created_at, deployment: release.environment_name }
     attributes.merge!(first_release_at: release.created_at) if unreleased?
-    remote_ticket.update_attribute(:deployment, release.environment_name) if remote_ticket # <-- !todo: remove
     update_attributes attributes
   end
   

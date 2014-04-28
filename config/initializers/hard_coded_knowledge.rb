@@ -5,7 +5,6 @@
 module Houston
   module TMI
     
-    NAME_OF_DEPLOYMENT_FIELD = "Fixed in"
     FIELD_USED_FOR_LDAP_LOGIN = "samaccountname"
     INSTRUCTIONS_FOR_LOGIN = "You can log in with your CPH domain account"
     TICKET_LABELS_FOR_MEMBERS = [

@@ -5,7 +5,6 @@ class TestingReportTicketPresenter < TicketPresenter
     super tickets
       .unclosed
       .fixed
-      .deployed
       .includes(:project)
       .includes(:testing_notes => :user)
       .includes(:releases)

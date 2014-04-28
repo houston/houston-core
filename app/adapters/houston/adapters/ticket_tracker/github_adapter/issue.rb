@@ -56,12 +56,7 @@ module Houston
               
               tags:           tags,
               antecedents:    antecedents,
-              deployment:     deployment,
               prerequisites:  [] }
-          end
-          
-          def deployment
-            nil
           end
           
           
@@ -76,18 +71,6 @@ module Houston
           
           def reopen!
             connection.reopen_issue(number)
-          end
-          
-          
-          
-          # !todo: refactor this method to be more generic and abstract
-          def update_attribute(attribute, value)
-            case attribute
-            when :deployment
-              # do nothing
-            else
-              raise NotImplementedError
-            end
           end
           
           

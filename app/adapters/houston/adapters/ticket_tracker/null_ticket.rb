@@ -51,10 +51,6 @@ module Houston
           []
         end
         
-        def deployment
-          nil
-        end
-        
         def attributes
           {}
         end
@@ -63,9 +59,6 @@ module Houston
         end
         
         def reopen!
-        end
-        
-        def update_attribute(*args)
         end
         
         

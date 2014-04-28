@@ -27,7 +27,6 @@ module Houston
             # optional
             @tags             = get_tags
             @antecedents      = get_antecedents
-            @deployment       = get_custom_value(Houston::TMI::NAME_OF_DEPLOYMENT_FIELD)
             @prerequisites    = parse_prerequisites(attributes["associations"])
             @due_date         = attributes["due_on"]
           end
@@ -47,7 +46,6 @@ module Houston
                       
                       :tags,
                       :antecedents,
-                      :deployment,
                       :prerequisites,
                       :severity,
                       :component,
@@ -67,7 +65,6 @@ module Houston
               
               tags:           tags,
               antecedents:    antecedents,
-              deployment:     deployment,
               prerequisites:  prerequisites,
               due_date:       due_date }
           end
@@ -94,7 +91,7 @@ module Houston
             unless %w{closed}.member? @raw_attributes["status"].to_s.downcase
               Houston.benchmark title: "Reopen Unfuddle Ticket" do
                 ticket = unfuddle.ticket(remote_id)
-                ticket.update_attributes!("status" => "Reopened", "resolution" => "", deployment_field => 0)
+                ticket.update_attributes!("status" => "Reopened", "resolution" => "")
               end
             end
           end
@@ -143,23 +140,6 @@ module Houston
           
           
           
-          # !todo: refactor this method to be more generic and abstract
-          def update_attribute(attribute, value)
-            case attribute
-            when :deployment
-              Houston.benchmark title: "Update Unfuddle Ticket" do
-                id = unfuddle.find_custom_field_value_by_value!(Houston::TMI::NAME_OF_DEPLOYMENT_FIELD, value).id
-                ticket = unfuddle.ticket(remote_id)
-                ticket.update_attributes!(deployment_field => id)
-              end
-              
-            else
-              raise NotImplementedError
-            end
-          end
-          
-          
-          
           def get_custom_value(custom_field_name)
             unfuddle_ticket = @raw_attributes
             
@@ -199,7 +179,6 @@ module Houston
           
           delegate :find_in_cache_or_execute,
                    :invalidate_cache,
-                   :deployment_field,
                    :project_id,
                    :to => :connection
           
