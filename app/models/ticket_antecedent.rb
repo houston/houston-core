@@ -1,4 +1,5 @@
 class TicketAntecedent
+  include Comparable
   
   def initialize(ticket_or_commit, kind, id)
     @ticket_or_commit = ticket_or_commit
@@ -15,6 +16,10 @@ class TicketAntecedent
   
   def to_s
     "#{kind}:#{id}"
+  end
+  
+  def <=>(other)
+    [kind, id] <=> [other.kind, other.id]
   end
   
   

@@ -141,8 +141,10 @@ class Release < ActiveRecord::Base
   
   
   def antecedents
-    @antecedents ||= (tickets.map(&:antecedents).flatten +
-                      commits.map(&:antecedents).flatten).uniq
+    @antecedents ||= (tickets.map(&:antecedents) + commits.map(&:antecedents))
+      .flatten
+      .uniq
+      .sort
   end
   
   
