@@ -28,11 +28,18 @@ window.App.NewReleaseForm =
     addTicket = (ticket)->
       return if $("#ticket_#{ticket.id}").length > 0
       html = """
-      <li id="ticket_#{ticket.id}">
-        <input type="hidden" name="release[ticket_ids][]" value="#{ticket.id}" />
-        <a href="#{ticket.ticketUrl}" target="_blank">[##{ticket.number}] #{App.formatTicketSummary(ticket.summary)}</a>
-        <a class="delete-link delete-nested-link" href="#" title="Delete" tabindex="-1">Delete</a>
-      </li>
+      <tr id="ticket_#{ticket.id}">
+        <td class="release-ticket-summary">
+          <input type="hidden" name="release[ticket_ids][]" value="#{ticket.id}" />
+          #{App.formatTicketSummary(ticket.summary)}
+        </td>
+        <td class="release-ticket-number">
+          <a href="#{ticket.ticketUrl}" target="_blank">##{ticket.number}
+        </td>
+        <td class="release-ticket-remove">
+          <a class="delete-link delete-nested-link" href="#" title="Delete" tabindex="-1">Delete</a>
+        </td>
+      </tr>
       """
       $('#new_ticket_li').before(html)
     

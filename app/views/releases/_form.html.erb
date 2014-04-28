@@ -26,18 +26,29 @@
     <div class="release-detail-section release-tickets">
       <%= f.label :tickets, "Tickets", :class => "control-label" %>
       <div class="controls changes-nested-editor">
-        <ol id="release_tickets">
-          <% @release.tickets.each do |ticket| %>
-            <li id="ticket_<%= ticket.id %>">
-              <input type="hidden" name="release[ticket_ids][]" value="<%= ticket.id %>" />
-              <%= link_to_ticket(ticket) %>
-              <a class="delete-link delete-nested-link" href="#" title="Delete" tabindex="-1">Delete</a>
-            </li>
-          <% end %>
-          <li id="new_ticket_li">
-            <input type="text" id="new_ticket_field" placeholder="Look up ticket to add to this release" />
-          </li>
-        </ol>
+        <table>
+          <tbody id="release_tickets">
+            <% @release.tickets.each do |ticket| %>
+              <tr id="ticket_<%= ticket.id %>">
+                <td class="release-ticket-summary">
+                  <input type="hidden" name="release[ticket_ids][]" value="<%= ticket.id %>" />
+                  <%= format_with_feature_bolded(ticket.summary) %>
+                </td>
+                <td class="release-ticket-number">
+                  <%= link_to_ticket(ticket) { "##{ticket.number}" } %>
+                </td>
+                <td class="release-ticket-remove">
+                  <a class="delete-link delete-nested-link" href="#" title="Delete" tabindex="-1">Delete</a>
+                </td>
+              </tr>
+            <% end %>
+            <tr id="new_ticket_li">
+              <td>
+                <input type="text" id="new_ticket_field" placeholder="Look up ticket to add to this release" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
     
