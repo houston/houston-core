@@ -12,7 +12,7 @@ module CommitHelper
     short_sha = commit.sha[0...8]
     return short_sha unless github_url?(project)
     
-    link_to short_sha, github_commit_url(project, commit.sha), target: "_blank"
+    link_to short_sha, github_commit_url(project, commit.sha), target: "_blank", class: "commit-sha"
   end
   
   def link_to_release_commit_range(release)

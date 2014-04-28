@@ -5,6 +5,11 @@
   .ellipsis { letter-spacing: -2px; margin: 0 1px 0 -1px; }
 }
 
+.commit-sha {
+  font-family: consolas, fixed;
+  font-size: 0.88em;
+}
+
 .-houston-changelog {
   clear: both;
   
@@ -45,6 +50,8 @@
   }
   
   .release { padding-left: 1em; }
+  
+  .commit-sha { float: right; }
   
   .change {
     margin: 0 0 10px 0;
@@ -127,11 +134,12 @@
     padding: 0;
     
     &.typeahead { margin: 2px 0 0; }
+    &.commits { max-width: 720px; }
     
     li {
       list-style-type: none;
       
-      p { display: inline; }
+      p { margin: 0; }
     }
   }
 }
