@@ -40,15 +40,10 @@ window.App.NewReleaseForm =
       e.preventDefault()
       $(@).closest('li').remove()
     
-    selectedTicket = null
     $('#new_ticket_field')
       .typeahead
         source: ticketSummaries
         updater: (item)->
           selectedTicket = ticketBySummary[item]
-          item
-      .keydown (e)->
-        if e.keyCode is 13
-          e.preventDefault()
           addTicket(selectedTicket) if selectedTicket
-          $('#new_ticket_field').val('')
+          ''
