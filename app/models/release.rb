@@ -184,21 +184,24 @@ private
   
   def commits_must_exist_in_repo
     [:commit0, :commit1].each do |attribute|
-      commit = read_attribute(attribute)
-      next if commit.blank?
-      
-      begin
-        commit = project.repo.native_commit(commit).sha
-        write_attribute(attribute, commit)
-      rescue Houston::Adapters::VersionControl::CommitNotFound
-        message = $!.message
-        message << " in the repo \"#{project.repo}\"" if project
-        errors.add attribute, message
-      rescue Houston::Adapters::VersionControl::InvalidShaError
-        errors.add attribute, $!.message
-      end
+      commit_must_exist_in_repo attribute, read_attribute(attribute)
     end
   end
   
+  def commit_must_exist_in_repo(attribute, commit)
+    return if commit.blank?
+    
+    write_attribute attribute, normalize_sha(commit)
+  rescue Houston::Adapters::VersionControl::CommitNotFound
+    message = $!.message
+    message << " in the repo \"#{project.repo}\"" if project
+    errors.add attribute, message
+  rescue Houston::Adapters::VersionControl::InvalidShaError
+    errors.add attribute, $!.message
+  end
+  
+  def normalize_sha(sha)
+    project.repo.native_commit(sha).sha
+  end
   
 end
