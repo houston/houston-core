@@ -1,7 +1,8 @@
 class Release < ActiveRecord::Base
   
   after_create :load_commits!, :if => :can_read_commits?
-  after_create :release_each_ticket
+  after_create :release_each_ticket!
+  after_create :release_each_antecedent!
   after_create { Houston.observer.fire "release:create", self }
   
   belongs_to :project
@@ -140,7 +141,8 @@ class Release < ActiveRecord::Base
   
   
   def antecedents
-    @antecedents ||= tickets.map(&:antecedents).flatten.uniq
+    @antecedents ||= (tickets.map(&:antecedents).flatten +
+                      commits.map(&:antecedents).flatten).uniq
   end
   
   
@@ -166,9 +168,16 @@ private
   end
   
   
-  def release_each_ticket
+  def release_each_ticket!
     tickets.each do |ticket|
       ticket.release!(self)
+    end
+  end
+  
+  
+  def release_each_antecedent!
+    antecedents.each do |antecedent|
+      antecedent.release!(self)
     end
   end
   

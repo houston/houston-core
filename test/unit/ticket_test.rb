@@ -33,14 +33,6 @@ class TicketTest < ActiveSupport::TestCase
       end
     end
     
-    should "release antecedents" do
-      antecedent = TicketAntecedent.new(ticket, "Test", 4)
-      mock(antecedent).release!
-      stub(ticket).antecedents { [antecedent] }
-      
-      ticket.release!(release)
-    end
-    
     should "assign first_release_at and last_release_at" do
       ticket.release!(release)
       
@@ -104,7 +96,7 @@ class TicketTest < ActiveSupport::TestCase
       @ticket = Ticket.create!(project_id: 1, number: 1, summary: "Test summary", type: "Bug")
     end
     
-    should "resolve antecedents" do
+    should "close antecedents" do
       antecedent = TicketAntecedent.new(ticket, "Test", 4)
       mock(antecedent).close!
       stub(ticket).antecedents { [antecedent] }

@@ -96,6 +96,10 @@ class Commit < ActiveRecord::Base
     parsed_message[:attributes]
   end
   
+  def antecedents
+    extra_attributes.fetch("err", []).map { |id| TicketAntecedent.new(self, "Errbit", id) }
+  end
+  
   
   
   def identify_committers

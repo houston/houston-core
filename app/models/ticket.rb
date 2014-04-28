@@ -159,6 +159,10 @@ class Ticket < ActiveRecord::Base
     deployment.blank?
   end
   
+  def unreleased?
+    releases.before(reopened_at).empty?
+  end
+  
   
   
   def antecedents
@@ -215,14 +219,16 @@ class Ticket < ActiveRecord::Base
   end
   
   def release!(release)
-    first_release = self.releases.before(reopened_at).empty?
-    self.releases << release unless self.releases.exists?(release.id)
-    update_attribute(:first_release_at, release.created_at) if first_release
-    update_attribute(:last_release_at, release.created_at)
-    set_deployment_to!(release.environment_name)
-    
+    self.releases << release unless releases.exists?(release.id)
+    cache_release_attributes(release)
     Houston.observer.fire "ticket:release", self, release
-    antecedents.each(&:release!)
+  end
+  
+  def cache_release_attributes(release)
+    attributes = { last_release_at: release.created_at, deployment: release.environment_name }
+    attributes.merge!(first_release_at: release.created_at) if unreleased?
+    remote_ticket.update_attribute(:deployment, release.environment_name) if remote_ticket # <-- !todo: remove
+    update_attributes attributes
   end
   
   def resolve!
@@ -252,12 +258,6 @@ class Ticket < ActiveRecord::Base
       reopened_at: Time.now,
       first_release_at: nil,
       last_release_at: nil)
-  end
-  
-  def set_deployment_to!(environment_name)
-    remote_ticket.update_attribute(:deployment, environment_name) if remote_ticket
-    
-    update_attribute(:deployment, environment_name)
   end
   
   

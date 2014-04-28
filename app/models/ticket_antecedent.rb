@@ -1,13 +1,13 @@
 class TicketAntecedent
   
-  def initialize(ticket, kind, id)
-    @ticket = ticket
+  def initialize(ticket_or_commit, kind, id)
+    @ticket_or_commit = ticket_or_commit
     @kind = kind
     @id = id
   end
   
-  attr_reader :ticket, :kind, :id
-  delegate :project, to: :ticket
+  attr_reader :ticket_or_commit, :kind, :id
+  delegate :project, to: :ticket_or_commit
   
   def self.from_s(ticket, string)
     new ticket, *string.split(":")
@@ -19,7 +19,7 @@ class TicketAntecedent
   
   
   
-  def release!
+  def release!(release=nil)
     Houston.observer.fire "antecedent:#{kind.downcase.underscore}:released", self
   end
   
