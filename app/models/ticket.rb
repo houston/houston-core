@@ -212,17 +212,13 @@ class Ticket < ActiveRecord::Base
   end
   
   def resolve!
-    remote_ticket.resolve! if remote_ticket and remote_ticket.respond_to?(:resolve!)
-    
+    remote_ticket.resolve! if remote_ticket.respond_to?(:resolve!)
     update_attribute :resolution, "fixed"
-    self
   end
   
   def close!
     remote_ticket.close! if remote_ticket
-    
     update_attribute :closed_at, Time.now
-    self
   end
   
   def reopen!
