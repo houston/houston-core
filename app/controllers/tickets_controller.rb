@@ -23,7 +23,7 @@ class TicketsController < ApplicationController
   end
   
   def close
-    ticket.close_ticket!
+    ticket.close!
     render json: []
   rescue
     render json: [$!.message], status: :unprocessable_entity

@@ -224,7 +224,6 @@ class Ticket < ActiveRecord::Base
     update_attribute :closed_at, Time.now
     self
   end
-  alias :close_ticket! :close!
   
   def reopen!
     raise "Instead of reopening a closed ticket, make a new one!" if closed?
