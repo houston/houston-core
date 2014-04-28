@@ -114,12 +114,7 @@ class Project < ActiveRecord::Base
   
   
   def find_or_create_tickets_by_number(*numbers)
-    numbers = numbers.flatten.map(&:to_i).uniq
-    return [] if numbers.empty?
-    
-    results = tickets.numbered(numbers)
-    missing_numbers = numbers - results.map(&:number)
-    results.concat tickets.fetch_numbered(missing_numbers)
+    tickets.numbered(*numbers, sync: true)
   end
   
   def all_tickets
