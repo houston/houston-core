@@ -34,8 +34,8 @@ tr.selected > td { background-color: #ffe; }
     &.expanded {
       td {
         color: #eee !important;
-        border-top: 2px solid #222;
-        background-color: #505050;
+        border-top: 2px solid #222 !important;
+        background-color: #505050 !important;
         
         a:hover { color: rgb(2, 160, 240); }
         .label-inverse { background-color: black; }
