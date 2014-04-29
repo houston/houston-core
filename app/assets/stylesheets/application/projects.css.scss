@@ -79,17 +79,6 @@ th.project-releases,
   &.database-mysql { background-image: url(/images/mysql.png); }
   &.database-mongodb { background-image: url(/images/mongodb.png); }
   &.database-sqlite { background-image: url(/images/sqlite.png); }
-//  &.database-postgres::after {
-//    margin-left: 2px;
-//    content: '.';
-//    display: inline-block;
-//    height: 24px;
-//    width: 24px;
-//    line-height: 24px;
-//    background-image: url(/images/postgres.png);
-//    background-position: center left;
-//    background-repeat: no-repeat;
-//  }
 }
 
 h5.test-result-banner { border-radius: 3px; }
