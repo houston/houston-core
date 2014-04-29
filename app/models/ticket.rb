@@ -191,6 +191,12 @@ class Ticket < ActiveRecord::Base
   
   
   
+  def commit_time
+    @commit_time ||= commits.map(&:committer_hours).compact.sum
+  end
+  
+  
+  
   def create_comment!(comment)
     remote.create_comment!(comment) if remote.respond_to?(:create_comment!)
   end

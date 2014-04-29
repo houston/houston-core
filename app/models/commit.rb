@@ -102,6 +102,12 @@ class Commit < ActiveRecord::Base
   
   
   
+  def committer_hours
+    (hours_worked || 0) * committers.count
+  end
+  
+  
+  
   def identify_committers
     proc = Houston.config.identify_committers_proc
     emails = proc ? Array(proc[self]) : [committer_email]
