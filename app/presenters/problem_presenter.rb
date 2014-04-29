@@ -41,7 +41,8 @@ class ProblemPresenter
   def present_release(sha, environment_name)
     release = @project.releases.where(["LOWER(environment_name) = ?", environment_name.downcase]).find_by_commit1(sha) if environment_name && !sha.blank?
     { url: "/projects/#{@project.slug}/environments/#{environment_name}/releases/#{release.id}",
-      at: release.created_at.strftime("%b %d") } if release
+      at: release.created_at.strftime("%b %d"),
+      environment: environment_name.humanize } if release
   end
   
 end
