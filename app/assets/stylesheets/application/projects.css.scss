@@ -81,14 +81,23 @@ th.project-releases,
   &.database-sqlite { background-image: url(/images/sqlite.png); }
 }
 
-h5.test-result-banner { border-radius: 3px; }
-
-.test-result-banner.pending {
-  background: rgba(0, 0, 0, 0.02);
-  border: 2px dotted #bbb;
+.project-last-build {
+  text-align: center !important;
+  
+  .test-result-banner {
+    border-radius: 3px;
+  }
+  
+  .commit-sha {
+    font-size: 0.75em;
+    display: block;
+  }
+  
+  .test-result-banner.pending {
+    background: rgba(0, 0, 0, 0.02);
+    border: 2px dotted #bbb;
+  }
 }
-
-.test-run-commit { font-size: 0.75em; }
 
 td.project-participants .hidden-text { display: inline-block; }
 

@@ -97,7 +97,7 @@
                 <h5 class="test-result-banner <%= test_run.result || "pending" %>" rel="tooltip" title="<%= test_run_summary(test_run) %>">
                   <%= link_to test_run.result, test_run.results_url, target: "_blank" %>
                 </h5>
-                <span class="test-run-commit">(<%= link_to_commit(OpenStruct.new(project: project, sha: test_run.sha)) %>)</span>
+                <%= link_to_commit(OpenStruct.new(project: project, sha: test_run.sha)) %>
               <% end %>
             </td>
             <% Houston.config.environments.each do |environment_name| %>
