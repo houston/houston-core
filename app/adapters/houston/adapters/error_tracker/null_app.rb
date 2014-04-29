@@ -17,7 +17,7 @@ module Houston
           []
         end
         
-        def open_problems
+        def open_problems(params={})
           []
         end
         

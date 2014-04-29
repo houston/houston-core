@@ -18,6 +18,21 @@
     font-style: italic;
     color: #727272;
   }
+  .exception-comments {
+    background: #f4f4f4;
+    padding: 3px 6px;
+    margin-top: 6px;
+  }
+  .table-striped tbody > tr:nth-child(odd) > td .exception-comments { background: #efefef; }
+  .exception-comment {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.9em;
+    color: #484848;
+    
+    p { display: inline; }
+  }
   .exception-first, .exception-last {
     white-space: nowrap;
   }

@@ -4,7 +4,7 @@ class ProjectPreticketsController < ApplicationController
   
   
   def show
-    @problems = @project.error_tracker.open_problems.sort_by(&:last_notice_at).reverse
+    @problems = @project.error_tracker.open_problems(comments: true).sort_by(&:last_notice_at).reverse
     @problems.each do |problem|
       problem.err_ids = [problem.url[/problems\/(\d+)\/?/, 1]].compact.map(&:to_i)
     end

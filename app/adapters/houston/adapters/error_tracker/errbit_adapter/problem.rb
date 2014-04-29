@@ -74,6 +74,11 @@ module Houston
             attributes[:url]
           end
           
+          
+          def comments
+            attributes[:comments]
+          end
+          
         end
       end
     end

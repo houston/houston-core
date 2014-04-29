@@ -93,7 +93,9 @@ module Houston
               message: attributes["message"],
               where: attributes["where"],
               environment: attributes["environment"],
-              url: attributes["url"])
+              url: attributes["url"],
+              
+              comments: attributes["comments"])
           end
           
           

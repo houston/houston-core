@@ -3,6 +3,13 @@
   <td class="exception-summary">
     <span class="exception-message"><a href="{{url}}" target="_blank">{{message}}</a></span>
     <span class="exception-where">{{where}}</span>
+    {{#if comments}}
+      <div class="exception-comments">
+        {{#comments}}
+          <div class="exception-comment">{{{avatar userEmail 16 userEmail}}} {{{markdown body}}}</div>
+        {{/comments}}
+      </div>
+    {{/if}}
   </td>
   {{#firstNotice}}
   <td class="exception-first" data-timestamp="{{at}}">

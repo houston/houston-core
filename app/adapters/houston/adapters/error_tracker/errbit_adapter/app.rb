@@ -25,8 +25,8 @@ module Houston
             connection.problems_during(range, app_id: app_id)
           end
           
-          def open_problems
-            connection.open_problems(app_id: app_id)
+          def open_problems(params={})
+            connection.open_problems params.merge(app_id: app_id)
           end
           
           def resolve!(problem_id)

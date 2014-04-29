@@ -25,6 +25,7 @@ class ProblemPresenter
       message: problem.message,
       where: problem.where,
       noticesCount: problem.notices_count,
+      comments: problem.comments,
       
       firstNotice: present_notice(problem.first_notice_at, problem.first_notice_commit, problem.first_notice_environment),
       lastNotice:  present_notice( problem.last_notice_at,  problem.last_notice_commit,  problem.last_notice_environment) }
