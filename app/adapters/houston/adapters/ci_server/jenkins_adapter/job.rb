@@ -215,10 +215,10 @@ module Houston
           
           
           RESULT_MAP = {
-            "FAILURE" => :fail,
-            "UNSTABLE" => :fail,
-            "SUCCESS" => :pass,
-            "ABORTED" => :aborted }.freeze
+            "FAILURE" => "fail",
+            "UNSTABLE" => "fail",
+            "SUCCESS" => "pass",
+            "ABORTED" => "aborted" }.freeze
           STATUS_MAP = {
             "FAILED" => :fail,
             "REGRESSION" => :regression,

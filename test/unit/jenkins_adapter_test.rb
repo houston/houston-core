@@ -11,7 +11,7 @@ class JenkinsAdapterTest < ActiveSupport::TestCase
     coverage_report_url = "#{build_url}/artifact/coverage/coverage.json"
     
     expected_results = {
-      result:       :fail,
+      result:       "fail",
       duration:     884.9784,
       total_count:  4,
       fail_count:   1,
