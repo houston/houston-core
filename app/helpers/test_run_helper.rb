@@ -9,6 +9,7 @@ module TestRunHelper
     subject = {
       "pass" => "#{test_run.total_count} tests passed!",
       "fail" => "#{test_run.real_fail_count} of #{test_run.total_count} tests failed",
+      "error" => "tests are broken",
       "aborted" => "aborted"
     }.fetch(
       test_run.result.to_s,

@@ -34,6 +34,10 @@ class TestRun < ActiveRecord::Base
       where(result: "fail")
     end
     
+    def errored
+      where(result: "error")
+    end
+    
     def most_recent
       joins <<-SQL
         INNER JOIN (
@@ -53,6 +57,10 @@ class TestRun < ActiveRecord::Base
     result.to_s == "fail"
   end
   
+  def failed_or_errored?
+    %w{fail error}.member?(result.to_s)
+  end
+  
   def passed?
     result.to_s == "pass"
   end
@@ -62,7 +70,7 @@ class TestRun < ActiveRecord::Base
   end
   
   def broken?
-    return false unless failed?
+    return false unless failed_or_errored?
     
     last_tested_ancestor = commits_since_last_test_run.last
     return false if last_tested_ancestor.nil?
@@ -76,7 +84,7 @@ class TestRun < ActiveRecord::Base
     last_tested_ancestor = commits_since_last_test_run.last
     return false if last_tested_ancestor.nil?
     
-    project.test_runs.find_by_sha(last_tested_ancestor.sha).failed?
+    project.test_runs.find_by_sha(last_tested_ancestor.sha).failed_or_errored?
   end
   
   
@@ -142,12 +150,14 @@ class TestRun < ActiveRecord::Base
     self.results_url = results_url
     save!
     fetch_results!
+    fire_complete! if has_results?
   end
   
   def fetch_results!
-    attributes = project.ci_server.fetch_results!(results_url)
-    update_attributes! attributes
-    fire_complete! if has_results?
+    update_attributes! project.ci_server.fetch_results!(results_url)
+  rescue Houston::Adapters::CIServer::Error
+    update_column :result, "error"
+    Rails.logger.error "#{$!.message}\n  #{$!.backtrace.join("\n  ")}"
   end
   
   def fire_complete!

@@ -32,6 +32,7 @@
   </div>
 </div>
 
+<% unless @test_run.tests.nil? %>
 <table class="test-result-top-matter">
   <tr>
     <td class="test-result-graph">
@@ -70,6 +71,7 @@
     </td>
   </tr>
 </table>
+<% end %>
 
 <% if @test_run.failed? %>
   <% if (blamable_commits = @test_run.blamable_commits).any? %>

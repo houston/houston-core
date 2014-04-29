@@ -115,9 +115,7 @@ class RunTestsOnPostReceive
       return
     end
     
-    notify_of_invalid_configuration(test_run) do
-      test_run.completed!(results_url)
-    end
+    test_run.completed!(results_url)
   end
   
   

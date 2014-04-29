@@ -42,6 +42,7 @@ h2.test-result-banner {
   padding: 0;
   
   &.pass  { @include badge-style(#5DB64C); letter-spacing: 0.088em; } // grass
+  &.error  { @include badge-style(#DDC522); letter-spacing: 0.088em; } // mustard
   &.aborted  { @include badge-style(#888888); letter-spacing: 0.088em; } // gray
   &.fail  { @include badge-style(#E24E32); letter-spacing: 0.160em; } // tomato
   

@@ -64,7 +64,7 @@ class CIIntegrationTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
   
-  test "should alert maintainers when a build cannot be processed" do
+  test "should mark the build as \"error\" when a build cannot be processed" do
     commit = "whatever"
     results_url = "http://example.com/results"
     @project = Project.create!(name: "Test", slug: "test", ci_server_name: "Mock")
@@ -75,12 +75,9 @@ class CIIntegrationTest < ActionDispatch::IntegrationTest
       mock(job).fetch_results!(results_url) { raise Houston::Adapters::CIServer::Error }
     end
     
-    assert_difference "ActionMailer::Base.deliveries.count", +1 do
-      post "/projects/#{@project.slug}/hooks/post_build", {commit: commit, results_url: results_url}
-    end
+    post "/projects/#{@project.slug}/hooks/post_build", {commit: commit, results_url: results_url}
     
-    configuration_error = ActionMailer::Base.deliveries.last
-    assert_equal "Test: configuration error", configuration_error.subject
+    assert_equal "error", @test_run.reload.result
   end
   
   
@@ -90,7 +87,7 @@ class CIIntegrationTest < ActionDispatch::IntegrationTest
     test_run = TestRun.new(project: @project, sha: "whatever")
     
     any_instance_of(Houston::Adapters::CIServer::MockAdapter::Job) do |job|
-      stub(job).fetch_results! { |results_url| {result: "success"} }
+      stub(job).fetch_results! { |results_url| {result: "pass"} }
     end
     
     assert_triggered "test_run:complete" do
