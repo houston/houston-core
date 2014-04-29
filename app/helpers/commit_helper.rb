@@ -10,7 +10,7 @@ module CommitHelper
   def link_to_commit(commit)
     project = commit.project
     short_sha = commit.sha[0...8]
-    return short_sha unless github_url?(project)
+    return "<span class=\"commit-sha\">#{short_sha}</span>".html_safe unless github_url?(project)
     
     link_to short_sha, github_commit_url(project, commit.sha), target: "_blank", class: "commit-sha"
   end

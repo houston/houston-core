@@ -119,6 +119,16 @@ th, td {
   }
 }
 
+td.project-feature-error {
+  padding-right: 0;
+  
+  .icon {
+    font-size: 1.25em;
+    color: #d5b120;
+    color: #555;
+  }
+}
+
 .project-platform { white-space: nowrap; }
 
 .project-following form { margin-bottom: 0; }

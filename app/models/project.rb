@@ -1,6 +1,7 @@
 class Project < ActiveRecord::Base
   extend ProjectAdapter
   include Retirement
+  include FeatureState
   
   has_many :releases, :dependent => :destroy
   has_many :commits

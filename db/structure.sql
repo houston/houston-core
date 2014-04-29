@@ -768,7 +768,8 @@ CREATE TABLE projects (
     last_ticket_tracker_sync_at timestamp without time zone,
     ticket_tracker_sync_started_at timestamp without time zone,
     view_options hstore,
-    gemnasium_slug character varying(255)
+    gemnasium_slug character varying(255),
+    feature_states hstore
 );
 
 
@@ -2004,3 +2005,5 @@ INSERT INTO schema_migrations (version) VALUES ('20140425141946');
 INSERT INTO schema_migrations (version) VALUES ('20140427235508');
 
 INSERT INTO schema_migrations (version) VALUES ('20140428023146');
+
+INSERT INTO schema_migrations (version) VALUES ('20140429000919');
