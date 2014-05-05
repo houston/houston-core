@@ -16,6 +16,10 @@ module Houston
             attributes[:id]
           end
           
+          def err_ids
+            attributes[:err_ids]
+          end
+          
           def first_notice_at
             attributes[:first_notice_at]
           end
