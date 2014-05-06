@@ -6,6 +6,7 @@ class @ProblemsView extends Backbone.View
     @template = HandlebarsTemplates['problems/index']
     @renderProblem = HandlebarsTemplates['problems/show']
     Handlebars.registerPartial 'problem', @renderProblem
+    $('#show_completed_exceptions').click _.bind(@toggleShowCompleted, @)
 
   render: ->
     @refresh()
@@ -100,3 +101,14 @@ class @ProblemsView extends Backbone.View
       .attr('data-placement', 'top')
       .popover('show')
       .blur -> $(@).popover('hide')
+
+
+
+  toggleShowCompleted: (e)->
+    $button = $(e.target)
+    if $button.hasClass('active')
+      $button.removeClass('btn-success')
+      $('#exceptions').addClass('hide-completed')
+    else
+      $button.addClass('btn-success')
+      $('#exceptions').removeClass('hide-completed')

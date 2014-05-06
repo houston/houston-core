@@ -1,10 +1,21 @@
+$completed-background: #E6F3E2;
+$completed-foreground: rgb(42, 133, 19);
+
 #exceptions {
   .exception.has-ticket {
+    td {
+      background: $completed-background;
+      color: $completed-foreground;
+      a { color: $completed-foreground; }
+      .exception-comments { background: #DFECDC; }
+    }
+    
     .icon-check-sign {
       font-size: 19px;
       color: #666;
     }
   }
+  &.hide-completed .exception.has-ticket { display: none; }
   
   th { white-space: nowrap; }
   
@@ -48,6 +59,8 @@
     line-height: 10px;
   }
   .exception-ticket .ticket-number {
-    font-size: 0.88em;
+//    font-size: 0.88em;
+    font-size: 1.5em;
+    font-weight: 100;
   }
 }
