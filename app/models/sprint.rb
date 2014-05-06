@@ -8,6 +8,14 @@ class Sprint < ActiveRecord::Base
     where("end_date >= current_date").order("end_date DESC").first
   end
   
+  def lock!
+    update_column :locked, true
+  end
+  
+  def unlock!
+    update_column :locked, false
+  end
+  
 private
   
   def set_default_end_date

@@ -922,7 +922,8 @@ CREATE TABLE sprints (
     id integer NOT NULL,
     end_date date,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    locked boolean DEFAULT false NOT NULL
 );
 
 
@@ -2007,3 +2008,5 @@ INSERT INTO schema_migrations (version) VALUES ('20140427235508');
 INSERT INTO schema_migrations (version) VALUES ('20140428023146');
 
 INSERT INTO schema_migrations (version) VALUES ('20140429000919');
+
+INSERT INTO schema_migrations (version) VALUES ('20140506032958');
