@@ -10,7 +10,7 @@ class Project < ActiveRecord::Base
   has_many :testing_notes, :dependent => :destroy
   has_many :test_runs, :dependent => :destroy
   has_many :deploys
-  has_many :roles, :dependent => :destroy
+  has_many :roles, :dependent => :destroy, validate: false
   
   Houston.config.project_roles.each do |role|
     collection_name = role.downcase.gsub(' ', '_').pluralize
