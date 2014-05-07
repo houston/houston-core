@@ -1213,6 +1213,37 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 
 
 --
+-- Name: value_statements; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE value_statements (
+    id integer NOT NULL,
+    project_id integer NOT NULL,
+    weight double precision NOT NULL,
+    text character varying(255) NOT NULL
+);
+
+
+--
+-- Name: value_statements_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE value_statements_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: value_statements_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE value_statements_id_seq OWNED BY value_statements.id;
+
+
+--
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1336,6 +1367,13 @@ ALTER TABLE ONLY user_credentials ALTER COLUMN id SET DEFAULT nextval('user_cred
 --
 
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY value_statements ALTER COLUMN id SET DEFAULT nextval('value_statements_id_seq'::regclass);
 
 
 --
@@ -1480,6 +1518,14 @@ ALTER TABLE ONLY user_credentials
 
 ALTER TABLE ONLY users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: value_statements_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY value_statements
+    ADD CONSTRAINT value_statements_pkey PRIMARY KEY (id);
 
 
 --
@@ -2010,3 +2056,5 @@ INSERT INTO schema_migrations (version) VALUES ('20140428023146');
 INSERT INTO schema_migrations (version) VALUES ('20140429000919');
 
 INSERT INTO schema_migrations (version) VALUES ('20140506032958');
+
+INSERT INTO schema_migrations (version) VALUES ('20140506035755');
