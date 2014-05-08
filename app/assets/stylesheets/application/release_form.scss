@@ -4,6 +4,11 @@
   .form-actions { padding-left: 180px; padding-bottom: 20px; }
 }
 
+.collapsed {
+  display: none;
+  overflow: hidden;
+}
+
 .release-form {
   .change-tag select { width: 10em; }
   .change-tag .help-inline { display: none; }
@@ -18,6 +23,14 @@
   
   .controls > ul { margin-left: 0; }
   .controls > p.no-items { margin-left: 0; }
+  .controls > p.expander {
+    a { color: #777; }
+    
+    &.optional::after {
+      content: ' (optional)';
+      color: #bbb;
+    }
+  }
   
   .control-label {
     font-weight: bold;

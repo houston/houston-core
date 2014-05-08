@@ -7,9 +7,14 @@
 
   <fieldset class="release-detail">
     <div class="control-group">
-      <%= f.label :message, :class => "control-label optional" %>
+      <%= f.label :message, :class => "control-label" %>
       <div class="controls">
-        <%= f.text_area :message, :class => "text_field" %>
+        <p class="expander optional" data-expand="ticket_message_block">
+          <a href="#">Click to add a message to the release</a>
+        </p>
+        <div id="ticket_message_block" class="collapsed">
+          <%= f.text_area :message, :class => "text_field" %>
+        </div>
       </div>
     </div>
 
@@ -71,11 +76,17 @@
     <div class="release-detail-section release-commits">
       <label class="control-label">Commits</label>
       <div class="controls changes-nested-editor">
-        <ul class="commits">
-          <% @release.commits.each do |commit| %>
-            <li><%= format_commit(commit) %></li>
-          <% end %>
-        </ul>
+        <p class="expander" data-expand="commits_block">
+          <%= pluralize @release.commits.length, "commits" %> hidden •
+          <a href="#">show all</a>
+        </p>
+        <div id="commits_block" class="collapsed">
+          <ul class="commits">
+            <% @release.commits.each do |commit| %>
+              <li><%= format_commit(commit) %></li>
+            <% end %>
+          </ul>
+        </div>
       </div>
     </div>
     <% end %>
@@ -96,4 +107,23 @@
       <%= link_to "Delete", release_path(@release), :method => "delete", :confirm => "Are you sure?", :class => "btn btn-danger btn-delete" if @release.persisted? && can?(:destroy, @release) %>
     </div>
   </fieldset>
+<% end %>
+
+<% content_for :javascripts do %>
+  <script type="text/javascript">
+    $(function() {
+      $('[data-expand]').click(function(e) {
+        e.preventDefault();
+        
+        var $a = $(this),
+            $target = $('#' + $a.attr('data-expand'));
+        if($target.length) {
+          $a.hide();
+          $target.slideDown(200, function() {
+            $target.find('textarea').autosize();
+          });
+        }
+      });
+    });
+  </script>
 <% end %>
