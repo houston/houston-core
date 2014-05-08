@@ -27,7 +27,6 @@
 //= require Markdown.Converter
 //= require date_format
 //= require md5
-//= require raphael
 //= require d3.v3.js
 //= require_tree ../templates
 //= require_tree .
