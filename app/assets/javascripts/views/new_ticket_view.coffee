@@ -180,14 +180,14 @@ class window.NewTicketView extends Backbone.View
     animate = options.animate ? true
     $('#ticket_suggestions').hide()
     if animate
-      $('.sequence-new-ticket-full').slideDown 200, ->
+      $('.new-ticket-full').slideDown 200, ->
         $('#ticket_description').autosize()
     else
-      $('.sequence-new-ticket-full').show()
+      $('.new-ticket-full').show()
       $('#ticket_description').autosize()
 
   hideNewTicket: ->
-    $('.sequence-new-ticket-full').slideUp 200, ->
+    $('.new-ticket-full').slideUp 200, ->
       $('#ticket_suggestions').show()
 
 
