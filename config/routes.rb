@@ -126,12 +126,14 @@ Houston::Application.routes.draw do
   delete "tickets/:id/close", to: "tickets#close"
   delete "tickets/:id/reopen", to: "tickets#reopen"
   
-  get "projects/:slug/tickets", to: "project_tickets#index", as: :project_tickets
-  get "projects/:slug/tickets/open", to: "project_tickets#open"
-  post "projects/:slug/tickets", to: "project_tickets#create"
-  
   scope "projects/:slug" do
+    get "tickets", to: "project_tickets#index", as: :project_tickets
+    get "tickets/open", to: "project_tickets#open"
+    
+    get "tickets/by_number/:number", to: "project_tickets#show"
+    
     get "tickets/new", to: "project_tickets#new", as: :new_ticket
+    post "tickets", to: "project_tickets#create"
   end
   
   scope "projects/:slug" do

@@ -23,10 +23,10 @@ class @InfiniteScroll
     return unless xhr
     
     @$el.addClass('loading')
-    xhr.success (html)=>
+    xhr.done (html)=>
       @$el.removeClass('loading')
       @$el.append(html)
       @success() if @success
-    xhr.error =>
+    xhr.fail =>
       @$el.removeClass('loading')
       @error() if @error

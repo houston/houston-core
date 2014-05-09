@@ -20,6 +20,11 @@ class ProjectTicketsController < ApplicationController
   end
   
   
+  def show
+    redirect_to @project.tickets.find_by_number(params[:number]).ticket_tracker_ticket_url
+  end
+  
+  
   def new
     unless @project.has_ticket_tracker?
       render template: "project_tickets/no_ticket_tracker"

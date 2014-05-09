@@ -14,6 +14,18 @@ class TicketReport
     def antecedents
       (super || []).map { |s| TicketAntecedent.from_s(self, s) }
     end
+    
+    def as_json(options={})
+      { id: id,
+        number: number,
+        type: type.downcase,
+        summary: summary,
+        reporterEmail: reporter_email,
+        reporterName: reporter_name,
+        antecedents: antecedents.map { |antecedent| { id: antecedent.id, kind: antecedent.kind } },
+        openedAt: opened_at,
+        closedAt: closed_at }
+    end
   end
   
   def initialize(tickets)

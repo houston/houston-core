@@ -16,6 +16,7 @@ Handlebars.registerHelper 'formatDate', (timestamp)->
   Date.create(timestamp).format('ddd mmm d')
 
 Handlebars.registerHelper 'formatDateWithYear', (timestamp)->
+  return "" unless timestamp
   date = Date.create(timestamp)
   date.format('mmm d') + "<span class=\"year\">#{date.format('yyyy')}</span>"
 
@@ -71,6 +72,7 @@ Handlebars.registerHelper 'userAvatar', (size)->
   "<img src=\"#{gravatarUrl}\" width=\"#{size}\" height=\"#{size}\" rel=\"tooltip\" title=\"#{user.get('name')}\" />"
   
 Handlebars.registerHelper 'avatar', (email, size, title)->
+  return "" unless email
   gravatarUrl = "http://www.gravatar.com/avatar/#{MD5(email.toLowerCase().trim())}?r=g&d=retro&s=#{size * 2}"
   if title
     "<img src=\"#{gravatarUrl}\" width=\"#{size}\" height=\"#{size}\" rel=\"tooltip\" title=\"#{title}\" />"
@@ -82,7 +84,9 @@ Handlebars.registerHelper 'ifEq', (v1, v2, block)->
     block.fn(@)
   else
     block.inverse(@)
-  # if context == options.hash.compare
-  #   options.fn(context)
-  # else
-  #   options.inverse(context)
+
+Handlebars.registerHelper 'summarizeAntecedents', (antecedents)->
+  html = ''
+  for kind, antecedents of _.groupBy(antecedents, (antecedent)-> antecedent.kind)
+    html += "#{kind} <span class=\"badge\">#{antecedents.length}</span>"
+  html
