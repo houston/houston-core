@@ -10,3 +10,23 @@
   -moz-border-radius: 3px;
   border-radius: 3px;
 }
+
+#tickets th {
+  white-space: nowrap;
+}
+
+.table td {
+  &.ticket-reporter {
+    width: 24px;
+    min-width: 24px;
+    max-width: 24px;
+    padding-right: 0;
+  }
+  
+  &.ticket-opened, &.ticket-closed {
+    line-height: 1em;
+    text-align: right;
+
+    .year { display: block; font-size: 10px; }
+  }
+}

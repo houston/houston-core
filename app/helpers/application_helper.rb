@@ -62,6 +62,11 @@ module ApplicationHelper
     HTML
   end
   
+  def format_date_with_year(date)
+    return "" if date.nil?
+    "#{date.strftime("%b %d")}<span class=\"year\">#{date.strftime("%Y")}</span>".html_safe
+  end
+  
   
   
   def follows?(project)

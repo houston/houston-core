@@ -1,0 +1,66 @@
+<%= render partial: "projects/header", locals: {
+           project: @project,
+           subtitle: "#{pluralize(@tickets.count, "tickets")} for"} %>
+
+<%= link_to "New Ticket", new_ticket_path(@project), :class => "btn btn-default" if can?(:create, @project.tickets.build) %>
+
+<%= link_to "Download for Excel", project_tickets_path(@project, format: :xls), :class => "btn btn-default" %>
+
+<% if @tickets.any? %>
+  <div class="nomargin">
+    <table id="tickets" class="table table-sortable table-striped">
+      <thead>
+        <tr>
+          <td class="table-margin"></td>
+          <th class="ticket-number">#</th>
+          <td class="ticket-type ticket-type-na"></td>
+          <td class="ticket-reporter"></td>
+          <th class="ticket-summary">Summary</th>
+          <th class="ticket-antecedents">Antecedents</th>
+          <th class="ticket-opened sort-asc">Opened</th>
+          <th class="ticket-closed">Closed</th>
+          <td class="table-margin"></td>
+        </tr>
+      </thead>
+      <tbody>
+        <% @tickets.each do |ticket| %>
+          <tr id="ticket_<%= ticket.id %>">
+            <td class="table-margin"></td>
+            <td class="ticket-number">
+              <%= link_to ticket.number, @project.ticket_tracker_ticket_url(ticket.number), target: "_blank" %>
+            </td>
+            <td class="ticket-type ticket-type-<%= ticket.type.downcase %>"></td>
+            <td class="ticket-reporter">
+              <%= gravatar_image ticket.reporter_email, alt: ticket.reporter_name, size: 24 %>
+            </td>
+            <td class="ticket-summary"><%= ticket.summary %></td>
+            <td class="ticket-antecedents" data-position="<%= ticket.antecedents.length %>">
+              <% ticket.antecedents.group_by(&:kind).each do |kind, antecedents| %>
+                <%= kind %> <span class="badge"><%= antecedents.length %></span>
+              <% end %>
+            </td>
+            <td class="ticket-opened" data-timestamp="<%= ticket.opened_at.iso8601 %>"><%= format_date_with_year(ticket.opened_at) %></td>
+            <td class="ticket-closed" data-timestamp="<%= ticket.closed_at.iso8601 if ticket.closed_at %>"><%= format_date_with_year(ticket.closed_at) %></td>
+            <td class="table-margin"></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else %>
+  <div class="alert alert-info">There are no tickets for this project yet. Click <b>New Ticket</b> to create one.</div>
+<% end %>
+
+<% content_for :javascripts do %>
+  <script type="text/javascript">
+    $(function() {
+      $('#tickets').tablesorter({
+        headers: {
+          5: {sorter: 'property'},
+          6: {sorter: 'timestamp'},
+          7: {sorter: 'timestamp'}
+        }
+      });
+    });
+  </script>
+<% end %>

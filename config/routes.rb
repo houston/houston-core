@@ -126,7 +126,7 @@ Houston::Application.routes.draw do
   delete "tickets/:id/close", to: "tickets#close"
   delete "tickets/:id/reopen", to: "tickets#reopen"
   
-  get "projects/:slug/tickets", to: "project_tickets#index"
+  get "projects/:slug/tickets", to: "project_tickets#index", as: :project_tickets
   get "projects/:slug/tickets/open", to: "project_tickets#open"
   post "projects/:slug/tickets", to: "project_tickets#create"
   

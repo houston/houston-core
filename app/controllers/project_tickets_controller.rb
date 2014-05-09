@@ -1,11 +1,18 @@
 class ProjectTicketsController < ApplicationController
   before_filter :find_project
   before_filter :api_authenticate!, :only => :create
+  helper ExcelHelpers
   
   
   
   def index
-    render json: TicketPresenter.new(@project.tickets)
+    return render json: TicketPresenter.new(@project.tickets) if request.format.json?
+    
+    if request.format.xls?
+      response.headers["Content-Disposition"] = "attachment; filename=\"#{@project.name} Tickets.xls\""
+    end
+    
+    @tickets = TicketReport.new(@project.tickets).to_a
   end
   
   def open

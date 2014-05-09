@@ -11,6 +11,8 @@ module AvatarHelper
   
   
   def gravatar_image(email, options={})
+    return "" if email.blank?
+    
     size = options.fetch(:size, 24)
     alt = options[:alt]
     "<img class=\"avatar\" src=\"#{gravatar_url(email, options)}\" width=\"#{size}\" height=\"#{size}\" alt=\"#{alt}\" />".html_safe
