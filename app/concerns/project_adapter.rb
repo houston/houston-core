@@ -58,7 +58,9 @@ module ProjectAdapter
         end
         
         def #{attribute_name}
-          @#{attribute_name} ||= #{attribute_name}_adapter.build(self, *parameters_for_#{attribute_name}_adapter.values)
+          @#{attribute_name} ||= #{attribute_name}_adapter
+              .build(self, *parameters_for_#{attribute_name}_adapter.values)
+              .extend(FeatureSupport)
         end
         
         def parameters_for_#{attribute_name}_adapter

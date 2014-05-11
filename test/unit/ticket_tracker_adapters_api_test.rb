@@ -10,7 +10,7 @@ class TicketTrackerAdatersApiTest < ActiveSupport::TestCase
   connections = []
   Houston::Adapters::TicketTracker.adapters.each do |adapter_name|
     adapter = Houston::Adapters::TicketTracker.adapter(adapter_name)
-    connections << adapter.build(Project.new, 1)
+    connections << adapter.build(Project.new, 1).extend(FeatureSupport)
     
     test "#{adapter.name} responds to the TicketTracker::Adapter interface" do
       assert_respond_to adapter, :errors_with_parameters
@@ -24,17 +24,24 @@ class TicketTrackerAdatersApiTest < ActiveSupport::TestCase
     tickets << connection.build_ticket({})
     
     test "#{connection.class.name} responds to the TicketTracker::Connection interface" do
+      assert_respond_to connection, :features
       assert_respond_to connection, :build_ticket # <-- for creating a TicketTracker::Ticket from a native ticket,
-                                                  #     used internally except for TestingReportController:17
+                                                  #     used internally except for this test...
       assert_respond_to connection, :create_ticket! # <-- for creating a remote ticket from attributes
       assert_respond_to connection, :find_ticket_by_number
-      assert_respond_to connection, :find_tickets_numbered
-      assert_respond_to connection, :all_tickets
-      assert_respond_to connection, :open_tickets
-      assert_respond_to connection, :all_milestones
-      assert_respond_to connection, :open_milestones
       assert_respond_to connection, :project_url
       assert_respond_to connection, :ticket_url
+      
+      if connection.supports? :syncing_tickets
+        assert_respond_to connection, :find_tickets_numbered
+        assert_respond_to connection, :all_tickets
+        assert_respond_to connection, :open_tickets
+      end
+      
+      if connection.supports? :syncing_milestones
+        assert_respond_to connection, :all_milestones
+        assert_respond_to connection, :open_milestones
+      end
     end
   end
   

@@ -12,11 +12,15 @@ class SyncProjectTicketsJob
     start_time = Time.now
     @project.update_column :ticket_tracker_sync_started_at, start_time
     
-    milestones = project.all_milestones
-    project.milestones.without(milestones).update_all(destroyed_at: Time.now)
+    if @project.ticket_tracker.supports?(:syncing_milestones)
+      milestones = project.all_milestones
+      project.milestones.without(milestones).update_all(destroyed_at: Time.now)
+    end
     
-    tickets = project.all_tickets
-    project.tickets.without(tickets).update_all(destroyed_at: Time.now)
+    if @project.ticket_tracker.supports?(:syncing_tickets)
+      tickets = project.all_tickets
+      project.tickets.without(tickets).update_all(destroyed_at: Time.now)
+    end
     
     @project.update_column :last_ticket_tracker_sync_at, Time.now
   ensure

@@ -19,6 +19,10 @@ module Houston
           
           # Required API
           
+          def features
+            [:syncing_tickets, :syncing_milestones]
+          end
+          
           def build_ticket(attributes)
             attributes["reporter_email"] = find_reporter_email(attributes["reporter_id"])
             Houston::Adapters::TicketTracker::UnfuddleAdapter::Ticket.new(self, attributes)

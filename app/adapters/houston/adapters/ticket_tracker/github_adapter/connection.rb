@@ -13,6 +13,10 @@ module Houston
           
           # Required API
           
+          def features
+            [:syncing_tickets, :syncing_milestones]
+          end
+          
           def build_ticket(attributes)
             attributes["user"] = {} unless attributes["user"]
             attributes["user"]["email"] = find_user_email(attributes["user"]["login"])

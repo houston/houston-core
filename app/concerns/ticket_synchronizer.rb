@@ -2,12 +2,16 @@ module TicketSynchronizer
   
   
   def fetch_all
+    return all if !ticket_tracker.supports?(:syncing_tickets)
+    
     Houston.benchmark "GET All Tickets" do
       synchronize ticket_tracker.all_tickets
     end
   end
   
   def fetch_open
+    return open if !ticket_tracker.supports?(:syncing_tickets)
+    
     Houston.benchmark "GET Open Tickets" do
       synchronize ticket_tracker.open_tickets
     end
@@ -18,13 +22,15 @@ module TicketSynchronizer
     return none if numbers.empty?
     
     results = super(*numbers)
-    return results unless sync
+    return results unless sync && ticket_tracker.supports?(:syncing_tickets)
     
     results.concat fetch_numbered(numbers - results.map(&:number))
   end
   
   def fetch_numbered(numbers)
     return [] if numbers.empty?
+    return numbered(numbers) if !ticket_tracker.supports?(:syncing_tickets)
+    
     Houston.benchmark "GET Numbered Tickets" do
       synchronize ticket_tracker.find_tickets_numbered(numbers)
     end

@@ -7,6 +7,10 @@ module Houston
         # Public API for a TicketTracker connection
         # ------------------------------------------------------------------------- #
         
+        def features
+          []
+        end
+        
         def build_ticket(attributes)
           NullTicket
         end
@@ -19,32 +23,12 @@ module Houston
           nil
         end
         
-        def find_tickets_numbered(*numbers)
-          []
-        end
-        
-        def all_tickets
-          []
-        end
-        
-        def open_tickets
-          []
-        end
-        
         def project_url
           nil
         end
         
         def ticket_url(ticket_number)
           nil
-        end
-        
-        def all_milestones
-          []
-        end
-        
-        def open_milestones
-          []
         end
         
         # ------------------------------------------------------------------------- #
