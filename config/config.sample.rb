@@ -201,10 +201,6 @@ Houston.config do
   #   username "UNFUDDLE_USERNAME"
   #   password "UNFUDDLE_PASSWORD"
   #   
-  #   identify_antecedents lambda { |ticket|
-  #     # ...
-  #   }
-  #   
   #   identify_tags lambda { |ticket|
   #     # ...
   #   }
@@ -218,6 +214,14 @@ Houston.config do
   #   }
   # end
 
+  # parse_ticket_description do |ticket|
+  #   This block is invoked whenever a ticket's description is changed,
+  #   allowing you to parse its contents and trigger behavior when
+  #   certain patterns are recognized.
+  # end
+  
+  
+  
   # Configure the Jenkins CIServer adapter
   ci_server :jenkins do
     host "jenkins.example.com"

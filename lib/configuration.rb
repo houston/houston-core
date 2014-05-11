@@ -104,6 +104,14 @@ module Houston
     
     
     
+    def parse_ticket_description(ticket=nil, &block)
+      if block_given?
+        @parse_ticket_description_proc = block
+      elsif ticket
+        @parse_ticket_description_proc.call(ticket) if @parse_ticket_description_proc
+      end
+    end
+    
     def identify_committers(commit=nil, &block)
       if block_given?
         @identify_committers_proc = block

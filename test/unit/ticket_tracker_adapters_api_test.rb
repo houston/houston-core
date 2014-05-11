@@ -51,7 +51,6 @@ class TicketTrackerAdatersApiTest < ActiveSupport::TestCase
       assert_respond_to ticket, :tags
       assert_respond_to ticket, :created_at
       assert_respond_to ticket, :closed_at
-      assert_respond_to ticket, :antecedents
       
       assert_respond_to ticket, :close!
       assert_respond_to ticket, :reopen!

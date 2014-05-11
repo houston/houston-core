@@ -195,4 +195,29 @@ class TicketTest < ActiveSupport::TestCase
   
   
   
+  context "Houston.config.parse_ticket_description" do
+    should "be invoked when creating a ticket" do
+      ticket = Ticket.new default_ticket_attributes.merge(description: "Original description")
+      mock(Houston.config).parse_ticket_description(ticket)
+      ticket.save!
+    end
+    
+    should "be invoked when updating a ticket's description" do
+      ticket = Ticket.create! default_ticket_attributes
+      mock(Houston.config).parse_ticket_description(ticket)
+      ticket.update_attributes(description: "New description")
+    end
+  end
+  
+  
+  
+private
+  
+  def default_ticket_attributes
+    { project: project,
+      type: "Bug",
+      number: 1,
+      summary: "Test summary" }
+  end
+  
 end

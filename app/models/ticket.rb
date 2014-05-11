@@ -22,6 +22,7 @@ class Ticket < ActiveRecord::Base
   validates :type, presence: true, inclusion: { in: Houston.config.ticket_types, message: "\"%{value}\" is unknown. It must be #{Houston.config.ticket_types.to_sentence(last_word_connector: ", or ")}" }
   validates_uniqueness_of :number, scope: :project_id, on: :create
   
+  before_save :parse_ticket_description, if: :description_changed?
   before_save :find_reporter, if: :find_reporter?
   after_save :propagate_milestone_change, if: :milestone_id_changed?
   after_save :resolve_antecedents!, if: :just_resolved?
@@ -170,7 +171,7 @@ class Ticket < ActiveRecord::Base
   end
   
   def antecedents=(antecedents)
-    super antecedents.map(&:to_s)
+    super Array(antecedents).map(&:to_s)
   end
   
   
@@ -301,6 +302,10 @@ private
     attributes = { last_release_at: release.created_at, deployment: release.environment_name }
     attributes.merge!(first_release_at: release.created_at) if unreleased?
     update_attributes attributes
+  end
+  
+  def parse_ticket_description
+    Houston.config.parse_ticket_description(self)
   end
   
 end

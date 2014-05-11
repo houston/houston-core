@@ -26,7 +26,6 @@ module Houston
             
             # optional
             @tags             = get_tags
-            @antecedents      = get_antecedents
             @prerequisites    = parse_prerequisites(attributes["associations"])
             @due_date         = attributes["due_on"]
           end
@@ -45,7 +44,6 @@ module Houston
                       :closed_at,
                       
                       :tags,
-                      :antecedents,
                       :prerequisites,
                       :severity,
                       :component,
@@ -64,7 +62,6 @@ module Houston
               closed_at:      closed_at,
               
               tags:           tags,
-              antecedents:    antecedents,
               prerequisites:  prerequisites,
               due_date:       due_date }
           end
@@ -193,12 +190,6 @@ module Houston
             identify_tags_proc = unfuddle.config[:identify_tags]
             return [] unless identify_tags_proc
             identify_tags_proc.call(self)
-          end
-          
-          def get_antecedents
-            identify_antecedents_proc = unfuddle.config[:identify_antecedents]
-            return [] unless identify_antecedents_proc
-            identify_antecedents_proc.call(self)
           end
           
           

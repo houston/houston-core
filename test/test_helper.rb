@@ -9,6 +9,7 @@ ENV["RAILS_ENV"] ||= "test"
 require File.expand_path("../../config/environment", __FILE__)
 require "rails/test_help"
 require "turn"
+require "support/houston/adapters/version_control/mock_adapter"
 
 if ENV["CI"] == "true"
   require "minitest/reporters"

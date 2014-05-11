@@ -47,10 +47,6 @@ module Houston
           nil
         end
         
-        def antecedents
-          []
-        end
-        
         def attributes
           {}
         end

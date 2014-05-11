@@ -60,10 +60,6 @@ namespace :config do
     username "UNFUDDLE_USERNAME"
     password "UNFUDDLE_PASSWORD"
     
-    identify_antecedents lambda { |ticket|
-      # ...
-    }
-    
     identify_tags lambda { |ticket|
       # ...
     }
@@ -97,6 +93,11 @@ namespace :config do
     # grab Pull Requests for that organization and put them
     # into your To-Do Lists.
     # organization "GITHUB_ORGANIZATION"
+    TEXT
+    config.replace_block! "parse_ticket_description", <<-TEXT, comment_out: true
+    This block is invoked whenever a ticket's description is changed,
+    allowing you to parse its contents and trigger behavior when
+    certain patterns are recognized.
     TEXT
     config.remove_block! 'on "deploy:create"'
     config.remove_block! 'on "hooks:exception_report"'
