@@ -274,7 +274,7 @@ private
   
   def propagate_milestone_change
     return if nosync?
-    remote_ticket.set_milestone! milestone && milestone.remote_id
+    remote_ticket.set_milestone!(milestone && milestone.remote_id) if remote_ticket.respond_to?(:set_milestone!)
   end
   
   def just_resolved?

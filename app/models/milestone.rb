@@ -30,7 +30,7 @@ class Milestone < ActiveRecord::Base
   end
   
   def close!
-    project.ticket_tracker.close_milestone!(self)
+    project.ticket_tracker.close_milestone!(self) if project.ticket_tracker.respond_to?(:close_milestone!)
     touch :completed_at
   end
   
