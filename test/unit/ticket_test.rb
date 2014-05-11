@@ -1,4 +1,5 @@
-require 'test_helper'
+require "test_helper"
+
 
 class TicketTest < ActiveSupport::TestCase
   include RR::Adapters::TestUnit

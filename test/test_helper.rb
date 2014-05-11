@@ -1,4 +1,4 @@
-if ENV['COVERAGE'] == 'on'
+if ENV["COVERAGE"] == "on"
   require "simplecov"
   require "simplecov-json"
   SimpleCov.formatter = SimpleCov::Formatter::JSONFormatter
@@ -6,12 +6,12 @@ if ENV['COVERAGE'] == 'on'
 end
 
 ENV["RAILS_ENV"] ||= "test"
-require File.expand_path('../../config/environment', __FILE__)
-require 'rails/test_help'
-require 'turn'
+require File.expand_path("../../config/environment", __FILE__)
+require "rails/test_help"
+require "turn"
 
 if ENV["CI"] == "true"
-  require 'minitest/reporters'
+  require "minitest/reporters"
   MiniTest::Reporters.use! [MiniTest::Reporters::DefaultReporter.new,
                             MiniTest::Reporters::JUnitReporter.new]
 else
