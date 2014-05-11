@@ -145,10 +145,7 @@ class CommitTest < ActiveSupport::TestCase
     end
     
     should "find users only once when several email addresses match" do
-      stub(Houston.config).identify_committers_proc do
-        Proc.new { |commit| %w{bob@example.com bob@gmail.com} }
-      end
-      
+      stub(Houston.config).identify_committers(anything).returns %w{bob@example.com bob@gmail.com}
       mock.proxy(User).with_email_address(%w{bob@example.com bob@gmail.com}).once
       
       commit = Commit.new

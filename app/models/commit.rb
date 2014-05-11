@@ -109,8 +109,7 @@ class Commit < ActiveRecord::Base
   
   
   def identify_committers
-    proc = Houston.config.identify_committers_proc
-    emails = proc ? Array(proc[self]) : [committer_email]
+    emails = Houston.config.identify_committers(self)
     User.with_email_address(emails).to_a
   end
   

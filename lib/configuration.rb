@@ -102,11 +102,15 @@ module Houston
     
     
     
-    def identify_committers(&block)
-      @identify_committers_proc = block
-    end
     
-    attr_reader :identify_committers_proc
+    
+    def identify_committers(commit=nil, &block)
+      if block_given?
+        @identify_committers_proc = block
+      elsif commit
+        @identify_committers_proc ? Array(@identify_committers_proc.call(commit)) : [commit.committer_email]
+      end
+    end
     
     
     

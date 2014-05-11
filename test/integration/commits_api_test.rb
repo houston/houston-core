@@ -6,9 +6,7 @@ class CommitsApiTest < ActionDispatch::IntegrationTest
   fixtures :all
   
   setup do
-    stub(Houston.config).identify_committers_proc do
-      Proc.new { |commit| ["bob.lail@cph.org", "robert.lail@cph.org", "bob.lailfamily@gmail.com", "bob@example.com"] }
-    end
+    stub(Houston.config).identify_committers(anything).returns(["bob.lail@cph.org", "robert.lail@cph.org", "bob.lailfamily@gmail.com", "bob@example.com"])
     
     project = Project.create!({
       name: "Test",
