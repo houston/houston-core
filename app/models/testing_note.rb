@@ -31,7 +31,7 @@ class TestingNote < ActiveRecord::Base
     TicketComment.new(
       user: user,
       body: "**#{verdict}** #{comment}",
-      remote_id: unfuddle_id )
+      remote_id: remote_id )
   end
   
   
@@ -57,7 +57,7 @@ private
   def create_ticket_comment!
     remote_id = ticket.create_comment!(to_comment)
     raise RuntimeError, "remote_id must not be nil" unless remote_id
-    self.unfuddle_id = remote_id
+    self.remote_id = remote_id
   end
   
   def update_ticket_comment!

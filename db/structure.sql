@@ -1006,7 +1006,7 @@ CREATE TABLE testing_notes (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     expires_at timestamp without time zone,
-    unfuddle_id integer,
+    remote_id integer,
     project_id integer NOT NULL
 );
 
@@ -2058,3 +2058,5 @@ INSERT INTO schema_migrations (version) VALUES ('20140429000919');
 INSERT INTO schema_migrations (version) VALUES ('20140506032958');
 
 INSERT INTO schema_migrations (version) VALUES ('20140506035755');
+
+INSERT INTO schema_migrations (version) VALUES ('20140511024021');
