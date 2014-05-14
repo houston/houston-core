@@ -24,6 +24,11 @@ window.App =
     relativeRoot = relativeRoot.substring(0, relativeRoot.length - 1) if /\/$/.test(relativeRoot)
     relativeRoot
   
+  mdown: (markdown)->
+    converter = new Markdown.Converter()
+    html = converter.makeHtml(markdown)
+    App.emojify(html)
+
   emojify: (string)->
     string.replace /:([a-z0-9\+\-_]+):/, (match, $1)->
       if _.contains(Emoji.names, $1)

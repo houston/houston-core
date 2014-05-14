@@ -9,8 +9,8 @@ class TicketsController < ApplicationController
   
   def update
     params[:last_release_at] = params.fetch(:lastReleaseAt, params[:last_release_at])
-    attributes = params.pick(:last_release_at, :priority)
-    
+    attributes = params.pick(:last_release_at, :priority, :summary, :description)
+
     if ticket.update_attributes(attributes)
       render json: []
     else

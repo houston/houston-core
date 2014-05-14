@@ -23,13 +23,9 @@ Handlebars.registerHelper 'formatDateWithYear', (timestamp)->
 Handlebars.registerHelper 'formatTime', (timestamp)->
   Date.create(timestamp).format('ddd mmm d, yyyy h:mmt')
 
-Handlebars.registerHelper 'markdown', (markdown)->
-  converter = new Markdown.Converter()
-  html = converter.makeHtml(markdown)
-  App.emojify(html)
+Handlebars.registerHelper 'markdown', (markdown)-> App.mdown(markdown)
 
-Handlebars.registerHelper 'emojify', (string)->
-  App.emojify(string)
+Handlebars.registerHelper 'emojify', (string)-> App.emojify(string)
 
 Handlebars.registerHelper 'classForAge', (seconds)->
   if seconds < (6 * Duration.HOUR)

@@ -3,38 +3,38 @@
 
 .testing-report-table {
   margin-bottom: 4em;
-  
+
   th {
     font-weight: bold;
     text-align: left;
     height: 7.5em;
     white-space: nowrap;
-    
+
     &.ticket-participants {
       padding: 0 0 8px 0;
-      
-      &::after { 
+
+      &::after {
         display: inline-block;
         width: 28px;
         text-align: center;
       }
     }
   }
-  
+
   td { vertical-align: top; }
-  
+
   tbody {
     tr.passing td {
       background-color: rgba(26, 223, 18, 0.18);
       color: rgb(70, 156, 44);
       color: rgba(70, 156, 44, 0.66);
-      
+
       &.ticket-due-date { text-decoration: line-through; }
       .label-inverse { background-color: rgb(70, 156, 44); }
     }
     tr.failing td {
       background-color: rgba(223, 92, 18, 0.18);
-      
+
       &.ticket-summary { color: #B50000; }
       .label-inverse { background-color: #B50000; }
     }
@@ -43,7 +43,7 @@
     }
     tr.deleting { opacity: 0.2 !important; }
   }
-  
+
   .ticket-project { white-space: nowrap; font-weight: bold; }
   .ticket-due-date { white-space: nowrap; }
   td.ticket-due-date { color: #B50000; font-size: 0.8333em; }
@@ -51,7 +51,7 @@
     width: 28px;
     max-width: 28px;
     padding: 4px 0;
-    
+
     &.current-tester { font-weight: bold; }
   }
 }
@@ -62,8 +62,8 @@
 .committer-avatar {
   display: block;
   margin: 1px;
-  
-  img { 
+
+  img {
     background-color: white;
     border: 2px solid black;
   }
@@ -72,15 +72,15 @@
 .ticket-verdict {
   display: block;
   margin: 1px;
-  
-  img { 
+
+  img {
     background-color: white;
     margin: 2px;
     opacity: 0.15;
   }
-  
+
   &.current-tester img { opacity: 0.60; }
-  
+
   &[data-verdict="passing"] img { opacity: 1.0; margin: 0; border: solid 2px #55c832; }
   &[data-verdict="comment"] img { opacity: 1.0; margin: 0; border: solid 2px #777777; }
   &[data-verdict="badticket"] img { opacity: 1.0; margin: 0; border: solid 2px #FFF51D; }
@@ -91,9 +91,9 @@
   display: block;
   max-width: 600px;
   margin-bottom: 2em;
-  
+
   &.collapse { display: none; }
-  
+
   .commit, .testing-note, .ticket-description {
     display: block;
     position: relative;
@@ -104,42 +104,23 @@
     border-width: 2px;
     border-style: solid;
     clear: both;
-    
+
     .testing-note-timestamp { line-height: 1em; color: #333; display: block; font-size: 0.88em; }
-    
-    // formatting for markdown, etc within comments, ticket description
-    h1 { font-size: 22px; line-height: 30px; }
-    h2 { font-size: 18px; line-height: 23px; }
-    h3 { font-size: 15px; line-height: 20px; }
-    h4 { font-size: 14px; line-height: 18px; }
-    blockquote { border-left: 5px solid #ccc; margin-top: 1em; margin-bottom: 1em; }
-    blockquote p { font-size: 14.5px; }
-    
-    // so as not to look like project banners
-    h1 {
-      background: none;
-      color: inherit;
-      padding: 0;
-      margin: 0.25em 0;
-      -moz-box-shadow: none;
-      -webkit-box-shadow: none;
-      box-shadow: none;
-    }
   }
-  
+
   .ticket-description {
     background: #e9e9e9;
     border-color: #777777;
     margin: 0.5em 0;
     word-wrap: break-word;
     color: #333;
-    
+
     hr { border-top-color: #ccc; }
   }
-  
+
   .commit, .testing-note {
     margin: 0.5em 60px 0.5em 40px;
-    
+
     .tester-avatar,
     .committer-avatar {
       float: left;
@@ -148,81 +129,81 @@
       margin-right: -40px;
       background-color: white;
     }
-    
+
     &::before {
       content: '';
       position: absolute;
       border-style: solid;
       display: block;
       width: 0;
-      
+
       top: 19px;
       bottom: auto;
       border-top-color: transparent;
       border-bottom-color: transparent;
-      
+
       left: -12px;
       right: auto;
       border-width: 8px 12px 8px 0;
     }
-    
+
     &::after {
       content: '';
       position: absolute;
       border-style: solid;
       display: block;
       width: 0;
-      
+
       top: 21px;
       bottom: auto;
       border-top-color: transparent;
       border-bottom-color: transparent;
-      
+
       left: -7px;
       right: auto;
       border-width: 6px 9px 6px 0;
     }
   }
-  
+
   .commit {
     background: #e9e9e9;
     border-color: #222;
-    
+
     &::before {
       border-left-color: #222;
       border-right-color: #222;
     }
-    
+
     &::after {
       border-left-color: #e9e9e9;
       border-right-color: #e9e9e9;
     }
   }
-  
+
   .testing-note {
     background-color: white;
-    
+
     &::after {
       border-left-color: white;
       border-right-color: white;
     }
-    
+
     &.by-tester {
       margin: 0.5em 40px 0.5em 60px;
-      
+
       &::before {
         left: auto;
         right: -12px;
         border-width: 8px 0 8px 12px;
       }
-      
+
       &::after {
         left: auto;
         right: -7px;
         border-width: 6px 0 6px 9px;
         border-color: transparent white;
       }
-      
+
       .tester-avatar {
         float: right;
         position: relative;
@@ -231,12 +212,12 @@
         background-color: white;
       }
     }
-    
+
     textarea {
       width: 80%;
       height: 80px;
     }
-    
+
     &.works { img { border-color: #0a0; } color: #0a0; }
     &.fails { img { border-color: #c11; } color: #c11; }
     &.badticket { img { border-color: #F5ED28; } color: #F5ED28; .tester-comment, form { color: #333; } }
@@ -246,7 +227,7 @@
 
 
 .testing-note {
-  
+
   // no style when verdict is 'none'
 }
 
@@ -254,7 +235,7 @@
   margin-bottom: 0;
   label {
     display: inline-block;
-    
+
     input {
       display: inline;
       margin: 0;
@@ -288,7 +269,7 @@ tbody .ticket-testingPriority {
   a:hover {
     text-decoration: none;
     cursor: pointer;
-    
+
     &.icon-arrow-down { color: rgba(35, 156, 231, 0.6); }
     &.icon-arrow-up { color: rgba(231, 76, 35, 0.6); }
   }

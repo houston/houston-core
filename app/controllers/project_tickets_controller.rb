@@ -1,5 +1,6 @@
 class ProjectTicketsController < ApplicationController
   before_filter :find_project
+  before_filter :find_ticket, only: [:show, :close, :reopen]
   before_filter :api_authenticate!, :only => :create
   helper ExcelHelpers
   
@@ -21,7 +22,7 @@ class ProjectTicketsController < ApplicationController
   
   
   def show
-    redirect_to @project.tickets.find_by_number(params[:number]).ticket_tracker_ticket_url
+    redirect_to @ticket.ticket_tracker_ticket_url unless @project.ticket_tracker_name == "Houston"
   end
   
   
@@ -72,10 +73,25 @@ class ProjectTicketsController < ApplicationController
   end
   
   
+  def close
+    @ticket.close!
+    redirect_to project_ticket_path(slug: @project.slug, number: @ticket.number)
+  end
+
+  def reopen
+    @ticket.reopen!
+    redirect_to project_ticket_path(slug: @project.slug, number: @ticket.number)
+  end
+
+
 private
   
   def find_project
     @project = Project.find_by_slug!(params[:slug])
   end
   
+  def find_ticket
+    @ticket = @project.tickets.find_by_number!(params[:number])
+  end
+
 end

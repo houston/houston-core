@@ -120,19 +120,7 @@ class TicketTest < ActiveSupport::TestCase
         last_release_at: 1.month.ago,
         type: "Bug")
     end
-    
-    context "a closed ticket" do
-      setup do
-        ticket.update_column :closed_at, Time.now
-      end
-      
-      should "raise an exception if the ticket is closed" do
-        assert_raises RuntimeError do
-          ticket.reopen!
-        end
-      end
-    end
-    
+
     context "an unresolved ticket" do
       setup do
         ticket.update_column :resolution, ""

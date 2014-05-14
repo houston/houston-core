@@ -1,0 +1,99 @@
+@mixin badge-style($color) {
+  background-color: $color;
+  -moz-box-shadow: 0 0 0.22em $color;
+  -webkit-box-shadow: 0 0 0.22em $color;
+  box-shadow: 0 0 0.22em $color;
+}
+
+.ticket-page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 104px;
+
+  > h2 {
+    font-size: 36px;
+    margin: 0;
+    position: relative;
+  }
+
+  .ticket-number {
+    display: block;
+    float: left;
+    width: 104px;
+    text-align: right;
+    padding: 4px 0;
+    line-height: 1em;
+    font-weight: 400;
+    color: #ccc;
+    position: absolute;
+    left: -104px;
+  }
+  .ticket-summary {
+    display: block;
+    font-weight: 200;
+    font-size: 32px;
+    line-height: 1.136em;
+    position: relative;
+
+    // To style the plaintext like the input
+    .show { padding: 4px 7px; }
+
+    input {
+      margin: 0 0 2px 0;
+      font-size: 32px;
+      height: 1em;
+      font-weight: 200;
+      width: 100%;
+    }
+  }
+  .ticket-state {
+    clear: left;
+    float: left;
+    color: white;
+    padding: 2px 6px;
+
+    border-radius: 0.25em;
+    -webkit-border-radius: 0.25em;
+    -moz-border-radius: 0.25em;
+
+    &.open { background: #5DB64C; } // grass
+    &.closed { background: #E24E32; } // tomato
+  }
+  .ticket-reporter {
+    float: left;
+    margin-left: 0.5em;
+    line-height: 1.5em;
+    padding: 2px 0;
+  }
+  .ticket-opened {
+    color: #bfbfbf;
+    font-weight: 500;
+  }
+
+  hr {
+    clear: both;
+    margin: 3em 0 1em;
+  }
+
+  .ticket-description {
+    .show { min-height: 1em; }
+    &.hover .show { background: #ffd; }
+
+    textarea {
+      box-sizing: border-box;
+      width: 100%;
+      min-height: 10em;
+    }
+  }
+
+  .buttons { text-align: right; }
+
+  .editable {
+    .edit { display: none; }
+
+    &.in-edit {
+      .show { display: none; }
+      .edit { display: block; }
+    }
+  }
+}

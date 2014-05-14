@@ -229,15 +229,15 @@ class Ticket < ActiveRecord::Base
   end
   
   def reopen!
-    raise "Instead of reopening a closed ticket, make a new one!" if closed?
     return unless resolved?
-    
     remote_ticket.reopen! if remote_ticket
-    
+
     update_attributes(
-      deployment: nil,
       resolution: "",
-      reopened_at: Time.now,
+      closed_at: nil,
+      reopened_at: Time.now, # <-- !todo: get rid of this after introducing tasks
+
+      deployment: nil, # <-- !todo: is this necessary?
       first_release_at: nil,
       last_release_at: nil)
   end
