@@ -98,8 +98,12 @@ class PushGemfileToGemnasiumTest < ActiveSupport::TestCase
     end
     
     should "be stubbed according to Gemnasium's behavior" do
-      stub(Gemnasium).load_config(project_path).returns(Gemnasium.config) # do nothing
-      Gemnasium.push(project_path: project_path)
+      if head == "refs/heads/master"
+        stub(Gemnasium).load_config(project_path).returns(Gemnasium.config) # do nothing
+        Gemnasium.push(project_path: project_path)
+      else
+        pending "This test cannot be run unless Houston is on master, but HEAD is #{head}"
+      end
     end
     
     should "work the way Gemnasium does" do
@@ -107,5 +111,14 @@ class PushGemfileToGemnasiumTest < ActiveSupport::TestCase
     end
   end
   
+  
+  
+private
+  
+  def head
+    name = Rugged::Repository.new(Rails.root.to_s).head.name
+    name = "(unknown)" if name == "HEAD"
+    name
+  end
   
 end
