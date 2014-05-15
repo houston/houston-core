@@ -71,7 +71,8 @@ class PushGemfileToGemnasiumTest < ActiveSupport::TestCase
       
       expected_url = "https://X:#{Gemnasium.config.api_key}@gemnasium.com/api/v3" <<
                      "/projects/#{Gemnasium.config.project_slug}/dependency_files/compare"
-      expected_body = JSON.dump(Gemnasium::DependencyFiles.get_sha1s_hash(project_path))
+      expected_body = JSON.dump(Hash[Gemnasium::DependencyFiles.get_sha1s_hash(project_path).sort])
+      
       expected_headers = {
         "Accept" => "application/json",
         "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
