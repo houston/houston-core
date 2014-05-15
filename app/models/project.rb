@@ -176,7 +176,11 @@ class Project < ActiveRecord::Base
   end
   
   def find_commit_by_sha(sha)
-    commits.find_by_sha(sha) || commits.from_native_commit(repo.native_commit(sha))
+    # !todo: introduce a commit_synchronizer
+    commits.find_by_sha(sha) || commits.from_native_commit(repo.native_commit(sha)).tap do |commit|
+      commit.project = self
+      commit.save!
+    end
   rescue Houston::Adapters::VersionControl::CommitNotFound
     nil
   end

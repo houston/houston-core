@@ -3,25 +3,25 @@ class @ShowSprintView extends Backbone.View
   
   events:
     'click .check-out-button': 'toggleCheckOut'
-    'click #show_completed_tickets': 'toggleShowCompleted'
+    'click #show_completed_tasks': 'toggleShowCompleted'
     'click #lock_sprint_button': 'confirmLockSprint'
-    'click .remove-ticket-button': 'removeTicket'
-    'submit #add_ticket_form': 'addTicket'
+    'click .remove-task-button': 'removeTask'
+    'submit #add_task_form': 'addTask'
   
   initialize: ->
     @sprintId = @options.sprintId
     @locked = @options.sprintLocked
     @template = HandlebarsTemplates['sprints/show']
     @typeaheadTemplate = HandlebarsTemplates['sprints/typeahead']
-    @tickets = _.sortBy @options.sprintTickets, (ticket)-> ticket.projectTitle
-    @openTickets = @options.openTickets
+    @tasks = _.sortBy @options.sprintTasks, (task)-> task.projectTitle
+    @openTasks = @options.openTasks
     super
   
   render: ->
-    return @ unless @tickets
+    return @ unless @tasks
     html = @template
       locked: @locked
-      tickets: @tickets
+      tasks: @tasks
       sprintId: @sprintId
     @$el.html html
     
@@ -29,36 +29,36 @@ class @ShowSprintView extends Backbone.View
       @showAsLocked()
     else
       @$el.addClass 'edit-mode'
-      $('#add_ticket').focus()
+      $('#add_task').focus()
     
-    @renderBurndownChart(@tickets)
+    @renderBurndownChart(@tasks)
     @updateTotalEffort()
     
     typeaheadTemplate = @typeaheadTemplate
     view = @
-    $add_ticket = @$el.find('#add_ticket').attr('autocomplete', 'off').typeahead
-      source: @openTickets
+    $add_task = @$el.find('#add_task').attr('autocomplete', 'off').typeahead
+      source: @openTasks
       matcher: (item)->
-        return false if _.detect(view.tickets, (ticket)-> ticket.id == item.id)
-        ~item.summary.toLowerCase().indexOf(@query.toLowerCase()) ||
+        return false if _.detect(view.tasks, (task)-> task.id == item.id)
+        ~item.description.toLowerCase().indexOf(@query.toLowerCase()) ||
         ~item.projectTitle.toLowerCase().indexOf(@query.toLowerCase()) ||
-        ~item.number.toString().toLowerCase().indexOf(@query.toLowerCase())
+        ~item.shorthand.toString().toLowerCase().indexOf(@query.toLowerCase())
       
       sorter: (items)-> items # apply no sorting (return them in order of priority)
       
-      highlighter: (ticket)->
+      highlighter: (task)->
         query = @query.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&')
         regex = new RegExp("(#{query})", 'ig')
-        ticket.summary.replace regex, ($1, match)-> "<strong>#{match}</strong>"
+        task.description.replace regex, ($1, match)-> "<strong>#{match}</strong>"
         typeaheadTemplate
-          sequence: ticket.extendedAttributes?.sequence
-          summary: ticket.summary.replace regex, ($1, match)-> "<strong>#{match}</strong>"
-          number: ticket.number.toString().replace regex, ($1, match)-> "<strong>#{match}</strong>"
-          projectTitle: ticket.projectTitle.replace regex, ($1, match)-> "<strong>#{match}</strong>"
-          projectColor: ticket.projectColor
+          sequence: task.extendedAttributes?.sequence
+          description: task.description.replace regex, ($1, match)-> "<strong>#{match}</strong>"
+          shorthand: task.shorthand.toString().replace regex, ($1, match)-> "<strong>#{match}</strong>"
+          projectTitle: task.projectTitle.replace regex, ($1, match)-> "<strong>#{match}</strong>"
+          projectColor: task.projectColor
     
-    $add_ticket.data('typeahead').render = (tickets)->
-      items = $(tickets).map (i, item)=>
+    $add_task.data('typeahead').render = (tasks)->
+      items = $(tasks).map (i, item)=>
         i = $(@options.item).attr('data-value', item.id)
         i.find('a').html(@highlighter(item))
         i[0]
@@ -67,12 +67,12 @@ class @ShowSprintView extends Backbone.View
       @$menu.html(items)
       @
     
-    addTicket = _.bind(@addTicket, @)
-    $add_ticket.data('typeahead').select = ->
+    addTask = _.bind(@addTask, @)
+    $add_task.data('typeahead').select = ->
       id = @$menu.find('.active').attr('data-value')
       @$element.val('')
       @hide()
-      addTicket(id)
+      addTask(id)
     
     
     
@@ -81,40 +81,40 @@ class @ShowSprintView extends Backbone.View
   
   
   
-  addTicket: (id)->
+  addTask: (id)->
     e?.preventDefault()
-    $('#add_ticket_form').addClass('loading')
+    $('#add_task_form').addClass('loading')
     
-    $.post("/sprints/#{@sprintId}/tickets/#{id}")
+    $.post("/sprints/#{@sprintId}/tasks/#{id}")
       .error =>
-        $('#add_ticket_form').removeClass('loading')
-      .success (ticket)=>
-        @tickets.push ticket
-        @rerenderTickets()
-        @renderBurndownChart(@tickets)
-        $('#add_ticket_form').removeClass('loading')
+        $('#add_task_form').removeClass('loading')
+      .success (task)=>
+        @tasks.push task
+        @rerenderTasks()
+        @renderBurndownChart(@tasks)
+        $('#add_task_form').removeClass('loading')
   
-  removeTicket: (e)->
+  removeTask: (e)->
     $button = $(e.target)
-    $ticket = $button.closest('.ticket')
-    id = +$ticket.attr('data-ticket-id')
-    $.destroy("/sprints/#{@sprintId}/tickets/#{id}")
+    $task = $button.closest('.task')
+    id = +$task.attr('data-task-id')
+    $.destroy("/sprints/#{@sprintId}/tasks/#{id}")
       .error =>
-        $ticket.removeClass('deleting')
-      .success (ticket)=>
-        @tickets = _.reject(@tickets, (ticket)-> ticket.id == id)
-        $ticket.remove()
-        @renderBurndownChart(@tickets)
+        $task.removeClass('deleting')
+      .success (task)=>
+        @tasks = _.reject(@tasks, (task)-> task.id == id)
+        $task.remove()
+        @renderBurndownChart(@tasks)
     
-  rerenderTickets: ->
-    template = HandlebarsTemplates['sprints/ticket']
-    $tickets = @$el.find('#tickets').empty()
-    for ticket in @tickets
-      $tickets.append template(ticket)
+  rerenderTasks: ->
+    template = HandlebarsTemplates['sprints/task']
+    $tasks = @$el.find('#tasks').empty()
+    for task in @tasks
+      $tasks.append template(task)
   
   
   
-  renderBurndownChart: (tickets)->
+  renderBurndownChart: (tasks)->
     
     # The time range of the Sprint
     today = new Date()
@@ -126,11 +126,11 @@ class @ShowSprintView extends Backbone.View
     # Find the total amount of effort to accomplish
     progressByDay = {}
     totalEffort = 0
-    for ticket in tickets
-      effort = +ticket.estimatedEffort
-      if ticket.firstReleaseAt
-        day = @truncateDate App.parseDate(ticket.firstReleaseAt)
-        effort = 0 if day < monday # this ticket was released before this sprint started!
+    for task in tasks
+      effort = +task.effort
+      if task.firstReleaseAt
+        day = @truncateDate App.parseDate(task.firstReleaseAt)
+        effort = 0 if day < monday # this task was released before this sprint started!
         progressByDay[day] = (progressByDay[day] || 0) + effort
       totalEffort += effort
     
@@ -229,31 +229,31 @@ class @ShowSprintView extends Backbone.View
   
   toggleCheckOut: (e)->
     $button = $(e.target)
-    $ticket = $button.closest('tr')
-    id = +$ticket.attr('data-ticket-id')
-    ticket = _.find @tickets, (ticket)-> ticket.id == id
+    $task = $button.closest('tr')
+    id = +$task.attr('data-task-id')
+    task = _.find @tasks, (task)-> task.id == id
     
     if $button.hasClass('active')
-      @checkIn($button, $ticket, id, ticket)
+      @checkIn($button, $task, id, task)
     else
-      @checkOut($button, $ticket, id, ticket)
+      @checkOut($button, $task, id, task)
   
-  checkIn: ($button, $ticket, id, ticket)->
-    $.destroy("/tickets/#{id}/lock")
+  checkIn: ($button, $task, id, task)->
+    $.destroy("/tasks/#{id}/lock")
       .success =>
-        ticket.checkedOutAt = null
-        ticket.checkedOutBy = null
+        task.checkedOutAt = null
+        task.checkedOutBy = null
         $button.removeClass('btn-danger').addClass('btn-info').html('Check out')
         @updateTotalEffort()
       .error (xhr)=>
         errors = Errors.fromResponse(response)
         errors.renderToAlert().appendAsAlert()
   
-  checkOut: ($button, $ticket, id, ticket)->
-    $.post("/tickets/#{id}/lock")
+  checkOut: ($button, $task, id, task)->
+    $.post("/tasks/#{id}/lock")
       .success =>
-        ticket.checkedOutAt = new Date()
-        ticket.checkedOutBy =
+        task.checkedOutAt = new Date()
+        task.checkedOutBy =
           id: window.user.id
           name: window.user.get('name')
           email: window.user.get('email')
@@ -265,8 +265,8 @@ class @ShowSprintView extends Backbone.View
 
   updateTotalEffort: ->
     effort = 0
-    for ticket in @tickets when ticket.checkedOutBy?.id == window.user.id
-      effort += +ticket.estimatedEffort
+    for task in @tasks when task.checkedOutBy?.id == window.user.id
+      effort += +task.effort
     $('#total_effort').html(effort.toFixed(1))
 
 
@@ -289,7 +289,7 @@ class @ShowSprintView extends Backbone.View
         <h3>Lock Sprint</h3>
       </div>
       <div class="modal-body">
-        Once you lock a Sprint, you will be unable to add or remove tickets.
+        Once you lock a Sprint, you will be unable to add or remove tasks.
       </div>
       <div class="modal-footer">
         <button class="btn" data-dismiss="modal">Back away slowly</button>

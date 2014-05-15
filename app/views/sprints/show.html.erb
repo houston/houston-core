@@ -6,20 +6,20 @@
 </h1>
 <% end %>
 
-<div id="sprints_view"></div>
+<div id="sprint_view"></div>
 
 <% content_for :javascripts do %>
 <script type="text/javascript">
   $(function() {
-    $('#sprints_view').appendView(new ShowSprintView({
+    $('#sprint_view').appendView(new ShowSprintView({
       sprintId: <%= @sprint.try(:id).to_json %>,
       sprintLocked: <%= @sprint.try(:locked?).to_json %>,
-      sprintTickets: <%= raw SprintTicketPresenter.new(@tickets).to_json %>.map(function(ticket) {
-        ticket.checkedOut = !!ticket.checkedOutBy;
-        ticket.checkedOutByMe = ticket.checkedOutBy && (ticket.checkedOutBy.id == window.user.id);
-        return ticket;
+      sprintTasks: <%= raw SprintTaskPresenter.new(@tasks).to_json %>.map(function(task) {
+        task.checkedOut = !!task.checkedOutBy;
+        task.checkedOutByMe = task.checkedOutBy && (task.checkedOutBy.id == window.user.id);
+        return task;
       }),
-      openTickets: <%= raw TicketPresenter.new(@open_tickets).to_json %>
+      openTasks: <%= raw TaskPresenter.new(@open_tasks).to_json %>
     }));
   });
 </script>

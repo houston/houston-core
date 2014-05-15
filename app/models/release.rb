@@ -2,6 +2,7 @@ class Release < ActiveRecord::Base
   
   after_create :load_commits!, :if => :can_read_commits?
   after_create :release_each_ticket!
+  after_create :release_each_task!
   after_create :release_each_antecedent!
   after_create { Houston.observer.fire "release:create", self }
   
@@ -10,6 +11,7 @@ class Release < ActiveRecord::Base
   belongs_to :deploy
   has_and_belongs_to_many :commits, autosave: false # <-- a bug with autosave causes commit_ids to be saved twice
   has_and_belongs_to_many :tickets, autosave: false # <-- a bug with autosave causes ticket_ids to be saved twice
+  has_many :tasks, through: :commits
   
   default_scope { order("created_at DESC") }
   
@@ -127,15 +129,8 @@ class Release < ActiveRecord::Base
     self.commits = native_commits.map { |native| project.find_commit_by_sha(native.sha) }
   end
   
-  
-  
-  def ticket_numbers
-    commits.each_with_object([]) { |commit, ticket_numbers|
-      ticket_numbers.concat commit.ticket_numbers }
-  end
-  
   def load_tickets!
-    self.tickets = project.find_or_create_tickets_by_number(ticket_numbers).to_a
+    self.tickets = commits.map(&:tickets).flatten
   end
   
   
@@ -176,6 +171,11 @@ private
     end
   end
   
+  def release_each_task!
+    tasks.each do |task|
+      task.release!(self)
+    end
+  end
   
   def release_each_antecedent!
     antecedents.each do |antecedent|

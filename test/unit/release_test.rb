@@ -26,6 +26,14 @@ class ReleaseTest < ActiveSupport::TestCase
       mock(an_antecedent).release!(release)
       release.save!
     end
+    
+    should "trigger `release!` on each task" do
+      a_task = Object.new
+      stub(release).tasks { [a_task] }
+      stub(release).antecedents { [] }
+      mock(a_task).release!(release)
+      release.save!
+    end
   end
   
   

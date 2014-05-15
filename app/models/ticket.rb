@@ -6,9 +6,8 @@ class Ticket < ActiveRecord::Base
   belongs_to :project
   belongs_to :reporter, class_name: "User"
   belongs_to :milestone, counter_cache: true
-  belongs_to :sprint
-  belongs_to :checked_out_by, class_name: "User"
   has_many :testing_notes
+  has_many :tasks, validate: false
   has_and_belongs_to_many :releases
   has_and_belongs_to_many :commits, -> { where(unreachable: false) }
   has_and_belongs_to_many :released_commits, -> { reachable.released }, class_name: "Commit", association_foreign_key: "commit_id"
@@ -20,8 +19,10 @@ class Ticket < ActiveRecord::Base
   validates :number, presence: true
   validates :priority, inclusion: { in: %w{low normal high} }
   validates :type, presence: true, inclusion: { in: Houston.config.ticket_types, message: "\"%{value}\" is unknown. It must be #{Houston.config.ticket_types.to_sentence(last_word_connector: ", or ")}" }
+  validate :must_have_at_least_one_task
   validates_uniqueness_of :number, scope: :project_id, on: :create
   
+  before_validation :ensure_that_ticket_has_a_task, on: :create
   before_save :parse_ticket_description, if: :description_changed?
   before_save :find_reporter, if: :find_reporter?
   after_save :propagate_milestone_change, if: :milestone_id_changed?
@@ -100,8 +101,14 @@ class Ticket < ActiveRecord::Base
       where(arel_table[:deployment].not_eq("Production"))
     end
     
-    def in_current_sprint
-      joins(:sprint).where("sprints.end_date >= current_date")
+    def estimated
+      # !todo: will change: must be defined in terms of tasks
+      where("NULLIF(tickets.extended_attributes->'estimated_effort', '')::numeric > 0")
+    end
+    
+    def unestimated
+      # !todo: will change: must be defined in terms of tasks
+      where("NOT defined(tickets.extended_attributes, 'estimated_effort') OR NULLIF(tickets.extended_attributes->'estimated_effort', '')::numeric <= 0")
     end
     
   end
@@ -134,12 +141,6 @@ class Ticket < ActiveRecord::Base
   
   def ticket_tracker_ticket_url
     project.ticket_tracker_ticket_url(number)
-  end
-  
-  
-  
-  def checked_out?
-    checked_out_at.present?
   end
   
   
@@ -198,6 +199,10 @@ class Ticket < ActiveRecord::Base
   
   def commit_time
     @commit_time ||= commits.map(&:committer_hours).compact.sum
+  end
+  
+  def effort
+    @effort ||= tasks.map(&:effort).sum
   end
   
   
@@ -310,6 +315,14 @@ private
   
   def parse_ticket_description
     Houston.config.parse_ticket_description(self)
+  end
+  
+  def ensure_that_ticket_has_a_task
+    tasks.build(description: summary) if tasks.none?
+  end
+  
+  def must_have_at_least_one_task
+    errors.add :base, "must have at least one task" if tasks.length.zero?
   end
   
 end

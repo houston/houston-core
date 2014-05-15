@@ -4,9 +4,13 @@ class Commit < ActiveRecord::Base
   has_and_belongs_to_many :committers, class_name: "User"
   has_and_belongs_to_many :releases
   has_and_belongs_to_many :tickets
+  has_and_belongs_to_many :tasks
+  
+  default_scope { order("created_at ASC") }
   
   after_create :associate_committers_with_self
   after_create :associate_tickets_with_self
+  after_create :associate_tasks_with_self
   
   validates :project, :presence => true
   validates :sha, :presence => true, :uniqueness => true
@@ -23,6 +27,14 @@ class Commit < ActiveRecord::Base
   
   def self.reachable
     where(unreachable: false)
+  end
+  
+  def self.latest
+    last
+  end
+  
+  def self.earliest
+    first
   end
   
   def self.released
@@ -89,7 +101,9 @@ class Commit < ActiveRecord::Base
   end
   
   def ticket_tasks
-    parsed_message[:tickets].select { |(number, task)| !task.blank? }
+    @ticket_tasks ||= parsed_message[:tickets].each_with_object({}) do |(number, task), tasks_by_ticket|
+      (tasks_by_ticket[number] ||= []).push(task) unless task.blank?
+    end
   end
   
   def hours_worked
@@ -161,7 +175,26 @@ class Commit < ActiveRecord::Base
     end
   end
   
-  
+  def associate_tasks_with_self
+    tickets.each do |ticket|
+      
+      # Allow committers who are not using the Tasks feature
+      # to mention a ticket (e.g. [#45]) and record progress
+      # against its only (default) task.
+      #
+      # Note: this behavior is complected with time. Tasks
+      # added _after_ this commit would alter the behavior
+      # of this method if it were run later, retroactively.
+      #
+      letters = ticket_tasks.fetch(ticket.number) do
+        ticket.tasks.count == 1 ? [ticket.tasks.first.letter] : []
+      end
+      
+      ticket.tasks.lettered(*letters).each do |task|
+        task.committed!(self)
+      end
+    end
+  end
   
   def associate_committers_with_self
     self.committers = identify_committers
