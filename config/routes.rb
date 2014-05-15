@@ -138,13 +138,17 @@ Houston::Application.routes.draw do
     post "tickets", to: "project_tickets#create"
   end
   
-  post "tickets/:id/lock", :to => "ticket_locks#create", constraints: {id: /\d+/}
-  delete "tickets/:id/lock", :to => "ticket_locks#destroy", constraints: {id: /\d+/}
-  
   scope "projects/:slug" do
     get "tickets/sync", to: "project_tickets_sync#show", as: :project_tickets_sync
     post "tickets/sync", to: "project_tickets_sync#create"
   end
+  
+  
+  
+  # Tasks
+  
+  post "tasks/:id/lock", :to => "task_locks#create", constraints: {id: /\d+/}
+  delete "tasks/:id/lock", :to => "task_locks#destroy", constraints: {id: /\d+/}
   
   
   
@@ -179,8 +183,8 @@ Houston::Application.routes.draw do
   get "sprints/current", :to => "sprints#current", :as => :current_sprint
   get "sprints/:id", :to => "sprints#show", constraints: {id: /\d+/}, :as => :sprint
   put "sprints/:id/lock", :to => "sprints#lock", constraints: {id: /\d+/}
-  post "sprints/:id/tickets/:ticket_id", :to => "sprints#add_ticket", constraints: {id: /\d+/, ticket_id: /\d+/}
-  delete "sprints/:id/tickets/:ticket_id", :to => "sprints#remove_ticket", constraints: {id: /\d+/, ticket_id: /\d+/}
+  post "sprints/:id/tasks/:task_id", :to => "sprints#add_task", constraints: {id: /\d+/, task_id: /\d+/}
+  delete "sprints/:id/tasks/:task_id", :to => "sprints#remove_task", constraints: {id: /\d+/, task_id: /\d+/}
   
   
   

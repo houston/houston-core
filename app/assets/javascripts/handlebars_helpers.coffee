@@ -87,5 +87,5 @@ Handlebars.registerHelper 'summarizeAntecedents', (antecedents)->
     html += "#{kind} <span class=\"badge\">#{antecedents.length}</span>"
   html
 
-Handlebars.registerPartial 'sprintTicket', (ticket)->
-  HandlebarsTemplates['sprints/ticket'](ticket)
+Handlebars.registerPartial 'sprintTask', (task)->
+  HandlebarsTemplates['sprints/task'](task)

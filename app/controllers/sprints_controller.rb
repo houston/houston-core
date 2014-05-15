@@ -2,7 +2,7 @@ class SprintsController < ApplicationController
   attr_reader :sprint
   
   before_filter :authenticate_user!
-  before_filter :find_sprint, only: [:show, :lock, :add_ticket, :remove_ticket]
+  before_filter :find_sprint, only: [:show, :lock, :add_task, :remove_task]
   
   
   def current
@@ -13,11 +13,11 @@ class SprintsController < ApplicationController
   
   def show
     authorize! :read, sprint
-    @open_tickets = Ticket.joins(:project).includes(:project)
-      .unclosed
-      .unresolved
-      .able_to_estimate # <-- knows about Houston scheduler
-    @tickets = @sprint.tickets.includes(:checked_out_by)
+    @open_tasks = Task.open
+      .joins(:ticket)
+      .joins("INNER JOIN projects ON tickets.project_id=projects.id")
+      .merge(Ticket.able_to_estimate)  # <-- knows about Houston scheduler
+    @tasks = @sprint.tasks.includes(:checked_out_by)
     render template: "sprints/show"
   end
   
@@ -29,16 +29,16 @@ class SprintsController < ApplicationController
   end
   
   
-  def add_ticket
+  def add_task
     authorize! :update, sprint
-    ticket = ::Ticket.find(params[:ticket_id])
-    ticket.update_column :sprint_id, sprint.id
-    render json: SprintTicketPresenter.new(ticket).to_json
+    task = Task.find(params[:task_id])
+    task.update_column :sprint_id, sprint.id
+    render json: SprintTaskPresenter.new(task).to_json
   end
   
-  def remove_ticket
+  def remove_task
     authorize! :update, sprint
-    Ticket.where(id: params[:ticket_id]).update_all(sprint_id: nil)
+    Task.where(id: params[:task_id]).update_all(sprint_id: nil)
     head :ok
   end
   

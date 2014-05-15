@@ -3,122 +3,126 @@ require 'test_helper'
 class CommitTest < ActiveSupport::TestCase
   include RR::Adapters::TestUnit
   
+  attr_reader :project, :ticket, :task
   
   
-  should "extract an array of tags from the front of a commit" do
-    commits = [
-      "[skip] don't look at me",
-      "[new-feature] i'm fancy",
-      "[fix] [refactor] [c_i] i don't like talking about my flare",
-      "[tight-fit]right up by the text"
-    ]
+  
+  context "When parsing the commit message, it" do
+    should "extract an array of tags from the front of a commit" do
+      commits = [
+        "[skip] don't look at me",
+        "[new-feature] i'm fancy",
+        "[fix] [refactor] [c_i] i don't like talking about my flare",
+        "[tight-fit]right up by the text"
+      ]
+      
+      expectations = [
+        %w{skip},
+        %w{new-feature},
+        %w{fix refactor c_i},
+        %w{tight-fit}
+      ]
+      
+      commits.zip(expectations) do |commit_message, expectation|
+        assert_equal expectation, Commit.new(message: commit_message).tags
+      end
+    end
     
-    expectations = [
-      %w{skip},
-      %w{new-feature},
-      %w{fix refactor c_i},
-      %w{tight-fit}
-    ]
     
-    commits.zip(expectations) do |commit_message, expectation|
-      assert_equal expectation, Commit.new(message: commit_message).tags
+    should "extract an array of ticket numbers from the end of a commit" do
+      commits = [
+        "I did some work [#1347]",
+        "Two birds, one stone [#45] [#88]",
+        "This one mentions tasks [#14a] [#1388gg]"
+      ]
+      
+      expectations = [
+        [1347],
+        [45, 88],
+        [14, 1388]
+      ]
+      
+      commits.zip(expectations) do |commit_message, expectation|
+        assert_equal expectation, Commit.new(message: commit_message).ticket_numbers
+      end
+    end
+    
+    
+    should "extract task letters and ticket numbers when tasks are mentioned" do
+      commits = [
+        "This one mentions tasks [#14a] [#1388gg]",
+        "This one mentions tasks inconsistently [#1] [#130i]",
+        "This one mentions one ticket twice [#5a] [#5b]"
+      ]
+      
+      expectations = [
+        { 14 => %w{a}, 1388 => %w{gg} },
+        { 130 => %w{i} },
+        { 5 => %w{a b} }
+      ]
+      
+      commits.zip(expectations) do |commit_message, expectation|
+        assert_equal expectation, Commit.new(message: commit_message).ticket_tasks
+      end
+    end
+    
+    
+    should "extract extra attributes from a commit" do
+      commits = [
+        "I did some work {{attr:value}}",
+        "I set this one twice {{attr:v1}} {{attr:v2}}"
+      ]
+      
+      expectations = [
+        {"attr" => ["value"]},
+        {"attr" => ["v1", "v2"]}
+      ]
+      
+      commits.zip(expectations) do |commit_message, expectation|
+        assert_equal expectation, Commit.new(message: commit_message).extra_attributes
+      end
+    end
+    
+    
+    should "extract time from a commit" do
+      commits = [
+        "I did some work (45m)",
+        "I did some work (6 min)",
+        "I did some work (.2hrs)",
+        "I did some work (1hr)"
+      ]
+      
+      expectations = [
+        0.75,
+        0.1,
+        0.2,
+        1
+      ]
+      
+      commits.zip(expectations) do |commit_message, expectation|
+        assert_equal expectation, Commit.new(message: commit_message).hours_worked
+      end
+    end
+    
+    
+    
+    should "extract a clean message from a commit" do
+      commits = [
+        "[tag] I did some work {{attr:value}} [#45] (18m)"
+      ]
+      
+      expectations = [
+        "I did some work"
+      ]
+      
+      commits.zip(expectations) do |commit_message, expectation|
+        assert_equal expectation, Commit.new(message: commit_message).clean_message
+      end
     end
   end
-  
-  
-  
-  should "extract an array of ticket numbers from the end of a commit" do
-    commits = [
-      "I did some work [#1347]",
-      "Two birds, one stone [#45] [#88]",
-      "This one mentions tasks [#14a] [#1388gg]"
-    ]
     
-    expectations = [
-      [1347],
-      [45, 88],
-      [14, 1388]
-    ]
     
-    commits.zip(expectations) do |commit_message, expectation|
-      assert_equal expectation, Commit.new(message: commit_message).ticket_numbers
-    end
-  end
-  
-  should "extract task letters and ticket numbers when tasks are mentioned" do
-    commits = [
-      "This one mentions tasks [#14a] [#1388gg]",
-      "This one mentions tasks inconsistently [#1] [#130i]"
-    ]
     
-    expectations = [
-      [[14, "a"], [1388, "gg"]],
-      [[130, "i"]]
-    ]
-    
-    commits.zip(expectations) do |commit_message, expectation|
-      assert_equal expectation, Commit.new(message: commit_message).ticket_tasks
-    end
-  end
-  
-  
-  
-  should "extract extra attributes from a commit" do
-    commits = [
-      "I did some work {{attr:value}}",
-      "I set this one twice {{attr:v1}} {{attr:v2}}"
-    ]
-    
-    expectations = [
-      {"attr" => ["value"]},
-      {"attr" => ["v1", "v2"]}
-    ]
-    
-    commits.zip(expectations) do |commit_message, expectation|
-      assert_equal expectation, Commit.new(message: commit_message).extra_attributes
-    end
-  end
-  
-  
-  
-  should "extract time from a commit" do
-    commits = [
-      "I did some work (45m)",
-      "I did some work (6 min)",
-      "I did some work (.2hrs)",
-      "I did some work (1hr)"
-    ]
-    
-    expectations = [
-      0.75,
-      0.1,
-      0.2,
-      1
-    ]
-    
-    commits.zip(expectations) do |commit_message, expectation|
-      assert_equal expectation, Commit.new(message: commit_message).hours_worked
-    end
-  end
-  
-  
-  
-  should "extract a clean message from a commit" do
-    commits = [
-      "[tag] I did some work {{attr:value}} [#45] (18m)"
-    ]
-    
-    expectations = [
-      "I did some work"
-    ]
-    
-    commits.zip(expectations) do |commit_message, expectation|
-      assert_equal expectation, Commit.new(message: commit_message).clean_message
-    end
-  end
-  
-  
-  
   should "skip merge commits" do
     merge_commits = [
       "Merge branch example",
@@ -128,6 +132,54 @@ class CommitTest < ActiveSupport::TestCase
     
     merge_commits.each do |commit_message|
       assert_equal true, Commit.new(message: commit_message).skip?, "Was supposed to recognize #{commit_message.inspect} as a merge commit"
+    end
+  end
+  
+  
+  
+  context "When a new commit is recorded" do
+    setup do
+      @project = Project.create!(name: "Test", slug: "test")
+    end
+    
+    context "that mentions a ticket with several tasks" do
+      setup do
+        @ticket = Ticket.create!(project: project, type: "Bug", number: 378, summary: "Test summary")
+        @task = ticket.tasks.create!(description: "Second task")
+      end
+      
+      should "be associated with any tickets it mentions" do
+        commit = Commit.create! params(message: "[skip] Hi [#378b]")
+        assert_equal [commit], ticket.commits
+      end
+      
+      should "be associated with any tasks it mentions" do
+        commit = Commit.create! params(message: "[skip] Hi [#378b]")
+        assert_equal [commit], task.commits
+      end
+      
+      should "not be associated with tasks that it doesn't explicitly mention" do
+        commit = Commit.create! params(message: "[skip] Hi [#378]")
+        assert_equal [], task.commits
+      end
+      
+      should "trigger `committed!` on each task" do
+        commit = Commit.new params(message: "[skip] Hi [#378b]")
+        mock.instance_of(Task).committed!(commit)
+        commit.save!
+      end
+    end
+    
+    context "that mentions a ticket with one task" do
+      setup do
+        @ticket = Ticket.create!(project: project, type: "Bug", number: 378, summary: "Test summary")
+        @task = ticket.tasks.first
+      end
+      
+      should "be associated with the ticket's only task" do
+        commit = Commit.create! params(message: "[skip] Hi [#378]")
+        assert_equal [commit], task.commits
+      end
     end
   end
   
@@ -193,5 +245,18 @@ class CommitTest < ActiveSupport::TestCase
   end
   
   
+  
+private
+  
+  def params(overrides)
+    overrides.reverse_merge({
+      project: project,
+      sha: SecureRandom.hex(16),
+      message: "nothing to see here",
+      authored_at: Time.now,
+      committer: "Houston",
+      committer_email: "commitbot@houston.com"
+    })
+  end
   
 end

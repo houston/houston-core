@@ -13,13 +13,6 @@ class TicketTest < ActiveSupport::TestCase
   
   
   
-  test "creating a valid ticket" do
-    ticket = Ticket.new(project: project, number: 1, summary: "Test summary", type: "Bug")
-    assert_equal true, ticket.valid?
-  end
-  
-  
-  
   context "#release!" do
     setup do
       @release = Release.new
@@ -199,6 +192,47 @@ class TicketTest < ActiveSupport::TestCase
   
   
   
+  context "Tasks:" do
+    context "a new ticket" do
+      setup do
+        @ticket = Ticket.new default_ticket_attributes
+      end
+      
+      should "implicitly create a task if none are defined" do
+        assert_equal 0, ticket.tasks.length, "Expected the ticket not to have any tasks before being saved"
+        ticket.save!
+        assert_equal 1, ticket.tasks.count, task_wasnt_created(ticket)
+      end
+    end
+    
+    context "a ticket" do
+      should "be invalid if it has no tasks" do
+        ticket = Ticket.new default_ticket_attributes
+        stub(ticket).ensure_that_ticket_has_a_task # prevent ticket from creating a task
+        refute ticket.valid?, "Expected a ticket without a task to be invalid"
+        assert_match /must have at least one task/, ticket.errors.full_messages.join,
+          "Expected the ticket to report that it must have a task"
+      end
+    end
+  end
+  
+  
+  
+  context "#effort" do
+    setup do
+      @ticket = Ticket.new default_ticket_attributes
+    end
+    
+    should "report the sum of its tasks effort" do
+      @ticket.tasks.build(description: "1", effort: 5)
+      @ticket.tasks.build(description: "2", effort: 1)
+      @ticket.tasks.build(description: "3", effort: 12)
+      assert_equal 18, @ticket.effort
+    end
+  end
+  
+  
+  
 private
   
   def default_ticket_attributes
@@ -206,6 +240,14 @@ private
       type: "Bug",
       number: 1,
       summary: "Test summary" }
+  end
+  
+  def task_wasnt_created(ticket)
+    if ticket.tasks.length == 0
+      "Expected the ticket to have implicitly create its only task"
+    else
+      "Expected the implicitly-created task to be valid, but #{ticket.tasks.first.errors.full_messages.join(", ")}"
+    end
   end
   
 end

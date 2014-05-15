@@ -550,6 +550,16 @@ CREATE TABLE commits_releases (
 
 
 --
+-- Name: commits_tasks; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE commits_tasks (
+    commit_id integer,
+    task_id integer
+);
+
+
+--
 -- Name: commits_tickets; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -833,6 +843,16 @@ ALTER SEQUENCE releases_id_seq OWNED BY releases.id;
 
 
 --
+-- Name: releases_tasks; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE releases_tasks (
+    release_id integer,
+    task_id integer
+);
+
+
+--
 -- Name: releases_tickets; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -944,6 +964,45 @@ CREATE SEQUENCE sprints_id_seq
 --
 
 ALTER SEQUENCE sprints_id_seq OWNED BY sprints.id;
+
+
+--
+-- Name: tasks; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE tasks (
+    id integer NOT NULL,
+    ticket_id integer NOT NULL,
+    number integer NOT NULL,
+    description character varying(255) NOT NULL,
+    effort numeric(6,2),
+    first_release_at timestamp without time zone,
+    first_commit_at timestamp without time zone,
+    sprint_id integer,
+    checked_out_at timestamp without time zone,
+    checked_out_by_id integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: tasks_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE tasks_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: tasks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE tasks_id_seq OWNED BY tasks.id;
 
 
 --
@@ -1331,6 +1390,13 @@ ALTER TABLE ONLY sprints ALTER COLUMN id SET DEFAULT nextval('sprints_id_seq'::r
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY tasks ALTER COLUMN id SET DEFAULT nextval('tasks_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY test_runs ALTER COLUMN id SET DEFAULT nextval('test_runs_id_seq'::regclass);
 
 
@@ -1473,6 +1539,14 @@ ALTER TABLE ONLY sprints
 
 
 --
+-- Name: tasks_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY tasks
+    ADD CONSTRAINT tasks_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: test_runs_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1554,6 +1628,13 @@ CREATE INDEX index_commits_on_unreachable ON commits USING btree (unreachable);
 --
 
 CREATE UNIQUE INDEX index_commits_releases_on_commit_id_and_release_id ON commits_releases USING btree (commit_id, release_id);
+
+
+--
+-- Name: index_commits_tasks_on_commit_id_and_task_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_commits_tasks_on_commit_id_and_task_id ON commits_tasks USING btree (commit_id, task_id);
 
 
 --
@@ -1641,6 +1722,13 @@ CREATE INDEX index_releases_on_project_id_and_environment_name ON releases USING
 
 
 --
+-- Name: index_releases_tasks_on_release_id_and_task_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_releases_tasks_on_release_id_and_task_id ON releases_tasks USING btree (release_id, task_id);
+
+
+--
 -- Name: index_releases_tickets_on_release_id_and_ticket_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1659,6 +1747,13 @@ CREATE INDEX index_roles_on_user_id_and_project_id ON roles USING btree (user_id
 --
 
 CREATE INDEX index_roles_on_user_id_and_project_id_and_name ON roles USING btree (user_id, project_id, name);
+
+
+--
+-- Name: index_tasks_on_ticket_id_and_number; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_tasks_on_ticket_id_and_number ON tasks USING btree (ticket_id, number);
 
 
 --
@@ -2060,3 +2155,11 @@ INSERT INTO schema_migrations (version) VALUES ('20140506032958');
 INSERT INTO schema_migrations (version) VALUES ('20140506035755');
 
 INSERT INTO schema_migrations (version) VALUES ('20140511024021');
+
+INSERT INTO schema_migrations (version) VALUES ('20140515174322');
+
+INSERT INTO schema_migrations (version) VALUES ('20140515200824');
+
+INSERT INTO schema_migrations (version) VALUES ('20140516005310');
+
+INSERT INTO schema_migrations (version) VALUES ('20140516012049');

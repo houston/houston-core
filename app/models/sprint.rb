@@ -1,6 +1,6 @@
 class Sprint < ActiveRecord::Base
   
-  has_many :tickets
+  has_many :tasks
   
   before_validation :set_default_end_date, on: :create
   
