@@ -3,7 +3,9 @@ require 'test_helper'
 class CommitTest < ActiveSupport::TestCase
   include RR::Adapters::TestUnit
   
-  test "should extract an array of tags from the front of a commit" do
+  
+  
+  should "extract an array of tags from the front of a commit" do
     commits = [
       "[skip] don't look at me",
       "[new-feature] i'm fancy",
@@ -23,7 +25,9 @@ class CommitTest < ActiveSupport::TestCase
     end
   end
   
-  test "should extract an array of tickets from the end of a commit" do
+  
+  
+  should "extract an array of tickets from the end of a commit" do
     commits = [
       "I did some work [#1347]",
       "Two birds, one stone [#45] [#88]"
@@ -39,7 +43,9 @@ class CommitTest < ActiveSupport::TestCase
     end
   end
   
-  test "should extract extra attributes from a commit" do
+  
+  
+  should "extract extra attributes from a commit" do
     commits = [
       "I did some work {{attr:value}}",
       "I set this one twice {{attr:v1}} {{attr:v2}}"
@@ -55,7 +61,9 @@ class CommitTest < ActiveSupport::TestCase
     end
   end
   
-  test "should extract time from a commit" do
+  
+  
+  should "extract time from a commit" do
     commits = [
       "I did some work (45m)",
       "I did some work (6 min)",
@@ -75,7 +83,9 @@ class CommitTest < ActiveSupport::TestCase
     end
   end
   
-  test "should extract a clean message from a commit" do
+  
+  
+  should "extract a clean message from a commit" do
     commits = [
       "[tag] I did some work {{attr:value}} [#45] (18m)"
     ]
@@ -91,7 +101,7 @@ class CommitTest < ActiveSupport::TestCase
   
   
   
-  test "should skip merge commits" do
+  should "skip merge commits" do
     merge_commits = [
       "Merge branch example",
       "Merge remote-tracking branch example",
@@ -105,24 +115,35 @@ class CommitTest < ActiveSupport::TestCase
   
   
   
-  test "should omit manual line breaks" do
-    # Many committers follow a convention where a commit message is manually
-    # broken to fit within 80-character lines. When this convention is used,
-    # we will remove the manual line breaks and let the commit message be 
-    # wrapped in whatever context it is used.
-    commit_message = "Long line that might\nexceed 80 characters"
+  context "The clean commit message" do
+    should "not include recognized tickets, tags, and time" do
+      commit_message = "[tag] I did some work {{attr:value}} [#45] (18m)"
+      
+      assert_equal "I did some work", Commit.new(message: commit_message).clean_message,
+        "Expected the clean message not to contain the extra information"
+    end
     
-    assert_equal "Long line that might exceed 80 characters", Commit.new(message: commit_message).clean_message, "Should remove manual line breaks from commit messages"
-  end
-  
-  test "should omit descriptions" do
-    # Git Tower follows a convention where a commit can have a shorter summary
-    # and a longer detailed description. It puts two line breaks between the summary
-    # and the description when composing the commit message. When this convention
-    # is used, we are interested in just the summary
-    commit_message = "Short summary\n\nDetailed Description"
+    should "omit manual line breaks" do
+      # Many committers follow a convention where a commit message is manually
+      # broken to fit within 80-character lines. When this convention is used,
+      # we will remove the manual line breaks and let the commit message be 
+      # wrapped in whatever context it is used.
+      commit_message = "Long line that might\nexceed 80 characters"
+      
+      assert_equal "Long line that might exceed 80 characters", Commit.new(message: commit_message).clean_message,
+        "Expected the clean message to replace single line breaks with spaces"
+    end
     
-    assert_equal "Short summary", Commit.new(message: commit_message).clean_message, "Should omit the detailed description from commit messages"
+    should "omit descriptions" do
+      # Git Tower follows a convention where a commit can have a shorter summary
+      # and a longer detailed description. It puts two line breaks between the summary
+      # and the description when composing the commit message. When this convention
+      # is used, we are interested in just the summary
+      commit_message = "Short summary\n\nDetailed Description"
+      
+      assert_equal "Short summary", Commit.new(message: commit_message).clean_message,
+        "Expected the clean message not to contain the commit description"
+    end
   end
   
   
@@ -152,5 +173,7 @@ class CommitTest < ActiveSupport::TestCase
       assert_equal 1, commit.identify_committers.count, "Should find the user given two of his email addresses"
     end
   end
+  
+  
   
 end
