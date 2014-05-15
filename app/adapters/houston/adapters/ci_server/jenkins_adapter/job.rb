@@ -222,6 +222,7 @@ module Houston
           STATUS_MAP = {
             "FAILED" => :fail,
             "REGRESSION" => :regression,
+            "SKIPPED" => :skip,
             "PASSED" => :pass,
             "FIXED"  => :pass }.freeze
           

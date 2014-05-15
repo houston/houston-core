@@ -1,8 +1,13 @@
 module TestRunHelper
   
   def test_status(test)
-    return "pass" if test[:status] == :pass
-    "fail" # may be :fail or :regresion
+    case test[:status].to_s
+    when "pass"; "pass"
+    when "skip"; "skip"
+    when "fail", "regression"; "fail"
+    else
+      raise NotImplementedError.new "TestRunHelper#test_status doesn't know about the status #{test[:status].inspect}"
+    end
   end
   
   def test_run_summary(test_run)

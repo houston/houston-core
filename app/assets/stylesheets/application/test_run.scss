@@ -122,6 +122,7 @@ h2.test-result-banner {
   
   &.pass  { color: #5DB64C; } // grass
   &.fail  { color: #E24E32; } // tomato
+  &.skip  { color: #239ce7; } // sky
   &.error { color: #DFCC3D; }
   &.skip  { }
 }
