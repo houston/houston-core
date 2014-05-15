@@ -17,6 +17,10 @@ module TicketSynchronizer
     end
   end
   
+  def find_by_number!(number)
+    numbered(number, sync: true).first || (raise ActiveRecord::RecordNotFound)
+  end
+  
   def numbered(*numbers, sync: false)
     numbers = numbers.flatten.map(&:to_i).uniq
     return none if numbers.empty?

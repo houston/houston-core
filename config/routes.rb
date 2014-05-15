@@ -170,6 +170,17 @@ Houston::Application.routes.draw do
   
   get "commits/:sha", to: "commits#show"
   
+  namespace "api" do
+    namespace "v1" do
+      scope "projects/:slug" do
+        scope "tickets/by_number/:number" do
+          get "tasks", to: "ticket_tasks#index"
+          post "tasks", to: "ticket_tasks#create"
+        end
+      end
+    end
+  end
+  
   
   
   # Modules
