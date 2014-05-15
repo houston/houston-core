@@ -27,19 +27,37 @@ class CommitTest < ActiveSupport::TestCase
   
   
   
-  should "extract an array of tickets from the end of a commit" do
+  should "extract an array of ticket numbers from the end of a commit" do
     commits = [
       "I did some work [#1347]",
-      "Two birds, one stone [#45] [#88]"
+      "Two birds, one stone [#45] [#88]",
+      "This one mentions tasks [#14a] [#1388gg]"
     ]
     
     expectations = [
-      ["1347"],
-      ["45", "88"]
+      [1347],
+      [45, 88],
+      [14, 1388]
     ]
     
     commits.zip(expectations) do |commit_message, expectation|
       assert_equal expectation, Commit.new(message: commit_message).ticket_numbers
+    end
+  end
+  
+  should "extract task letters and ticket numbers when tasks are mentioned" do
+    commits = [
+      "This one mentions tasks [#14a] [#1388gg]",
+      "This one mentions tasks inconsistently [#1] [#130i]"
+    ]
+    
+    expectations = [
+      [[14, "a"], [1388, "gg"]],
+      [[130, "i"]]
+    ]
+    
+    commits.zip(expectations) do |commit_message, expectation|
+      assert_equal expectation, Commit.new(message: commit_message).ticket_tasks
     end
   end
   

@@ -85,7 +85,11 @@ class Commit < ActiveRecord::Base
   end
   
   def ticket_numbers
-    parsed_message[:tickets]
+    parsed_message[:tickets].map { |(number, task)| number }
+  end
+  
+  def ticket_tasks
+    parsed_message[:tickets].select { |(number, task)| !task.blank? }
   end
   
   def hours_worked
@@ -122,7 +126,7 @@ class Commit < ActiveRecord::Base
     hours = 0
     clean_message = normalize_commit_message(message)
     
-    clean_message.gsub!(TICKET_PATTERN) { tickets << $1; "" }
+    clean_message.gsub!(TICKET_PATTERN) { tickets << [$1.to_i, $2]; "" }
     clean_message.gsub!(TIME_PATTERN) { hours = $1.to_f; hours /= 60 if $2.starts_with?("m"); "" }
     clean_message.gsub!(EXTRA_ATTRIBUTE_PATTERN) { (attributes[$1] ||= []).push($2); "" }
     while clean_message.gsub!(TAG_PATTERN) { tags << $1; "" }; end
@@ -139,7 +143,7 @@ class Commit < ActiveRecord::Base
   
   TAG_PATTERN = /^\s*\[([^\]]+)\]\s*/
   
-  TICKET_PATTERN = /\[#(\d+)\]/
+  TICKET_PATTERN = /\[#(\d+)([a-z]*)\]/
   
   TIME_PATTERN = /\((\d*\.?\d+) ?(h|hrs?|hours?|m|min|minutes?)\)/
   
