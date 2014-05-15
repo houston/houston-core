@@ -108,7 +108,9 @@
   <% elsif @test_run.tests.none? %>
     <p>This project does not have any tests.</p>
   <% else %>
-    <% @test_run.tests.group_by { |test| test[:suite] }.each do |suite, tests| %>
+    <% tests = @test_run.tests %>
+    <% tests = tests.select { |test| test[:status] == :fail } if @test_run.failed? %>
+    <% tests.group_by { |test| test[:suite] }.each do |suite, tests| %>
       <div class="test-suite">
         <h3 class="test-suite-name"><%= suite %></h3>
         <ul class="tests">
