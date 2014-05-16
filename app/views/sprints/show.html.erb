@@ -1,0 +1,26 @@
+<% content_for :title do %>
+<h1 class="project-banner space-below">
+  Sprint
+  
+  <%= render partial: "projects/keyboard_shortcuts" %>
+</h1>
+<% end %>
+
+<div id="sprints_view"></div>
+
+<% content_for :javascripts do %>
+<script type="text/javascript">
+  $(function() {
+    $('#sprints_view').appendView(new ShowSprintView({
+      sprintId: <%= @sprint.try(:id).to_json %>,
+      sprintLocked: <%= @sprint.try(:locked?).to_json %>,
+      sprintTickets: <%= raw SprintTicketPresenter.new(@tickets).to_json %>.map(function(ticket) {
+        ticket.checkedOut = !!ticket.checkedOutBy;
+        ticket.checkedOutByMe = ticket.checkedOutBy && (ticket.checkedOutBy.id == window.user.id);
+        return ticket;
+      }),
+      openTickets: <%= raw TicketPresenter.new(@open_tickets).to_json %>
+    }));
+  });
+</script>
+<% end %>

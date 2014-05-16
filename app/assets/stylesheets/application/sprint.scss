@@ -1,0 +1,19 @@
+.sprint-total-effort {
+  float: right;
+  margin-bottom: 12px;
+}
+
+.ticket-project { white-space: nowrap; }
+
+#add_ticket {
+  width: 48em;
+  margin-bottom: 0;
+  padding: 0.5em 1em;
+}
+
+#add_ticket_form, .icon-spinner, .ticket-remove { display: none; }
+.edit-mode {
+  #add_ticket_form { display: block; }
+  .ticket-remove { display: table-cell; }
+} 
+#add_ticket_form.loading .icon-spinner { display: inline-block; }

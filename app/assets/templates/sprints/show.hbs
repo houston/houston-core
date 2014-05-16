@@ -1,0 +1,41 @@
+<div id="graph" class="burndown-chart"></div>
+
+<div class="score score-medium sprint-total-effort">
+  <p class="positive">
+    <span class="score-count" id="total_effort"></span>
+    <span class="score-label">Checked Out</span>
+  </p>
+</div>
+
+<p>
+  <button class="btn btn-danger" id="lock_sprint_button">
+    <i class="icon icon-lock" />
+    Lock Sprint
+  </button>
+  <a class="btn" id="show_completed_tickets" data-toggle="button">Show Completed Tickets</a>
+</p>
+
+<div>
+  <form id="add_ticket_form">
+    <label for="add_ticket">Add Ticket</label>
+    <input type="text" placeholder="Enter a ticket number or summary" id="add_ticket" />
+    <i class="icon-spinner icon-spin icon-large"></i>
+    <hr />
+  </form>
+</div>
+
+<table class="table table-sortable table-milestone-tickets">
+  <thead>
+    <tr>
+      <td class="ticket-remove"></td>
+      <th class="ticket-effort">Effort</th>
+      <th class="ticket-project sort-desc">Project</th>
+      <td class="ticket-type ticket-type-na"></td>
+      <th class="ticket-summary">Summary</th>
+      <th class="ticket-worker">Worker</th>
+    </tr>
+  </thead>
+  <tbody id="tickets">
+    {{#tickets}}{{> sprintTicket}}{{/tickets}}
+  </tbody>
+</table>

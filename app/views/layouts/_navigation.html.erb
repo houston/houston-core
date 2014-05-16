@@ -27,6 +27,11 @@
             <%= render_menu mod.name.humanize, menu_items -%>
           <% end -%>
           
+          <%# Sprint -%>
+          <% if can?(:read, Sprint) -%>
+            <li><%= link_to "Sprint", main_app.current_sprint_path %></li>
+          <% end -%>
+          
           <%# Testing Reports -%>
           <% projects = followed_projects.select { |project| can?(:read, project.testing_notes.build) } -%>
           <%= render_menu "Testing", [
@@ -48,7 +53,7 @@
           <% if can?(:read, Project) -%>
             <li><%= link_to "Projects", main_app.projects_path %></li>
           <% end -%>
-
+          
           <% if can?(:read, User) -%>
             <li><%= link_to "Team", main_app.users_path %></li>
           <% end -%>
