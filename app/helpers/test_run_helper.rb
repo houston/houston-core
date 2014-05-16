@@ -13,7 +13,7 @@ module TestRunHelper
   def test_run_summary(test_run)
     subject = {
       "pass" => "#{test_run.total_count} tests passed!",
-      "fail" => "#{test_run.real_fail_count} of #{test_run.total_count} tests failed",
+      "fail" => test_run_fail_summary(test_run),
       "error" => "tests are broken",
       "aborted" => "aborted"
     }.fetch(
@@ -23,6 +23,14 @@ module TestRunHelper
     subject << " [#{test_run.branch}]" if test_run.branch
     
     subject
+  end
+  
+  def test_run_fail_summary(test_run)
+    if test_run.real_fail_count.zero?
+      "the build exited unsuccessfully after running #{test_run.total_count} #{test_run.total_count == 1 ? "test" : "tests"}"
+    else
+      "#{test_run.real_fail_count} #{test_run.real_fail_count == 1 ? "test" : "tests"} failed"
+    end
   end
   
 end
