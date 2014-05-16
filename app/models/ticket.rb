@@ -100,6 +100,10 @@ class Ticket < ActiveRecord::Base
       where(arel_table[:deployment].not_eq("Production"))
     end
     
+    def in_current_sprint
+      joins(:sprint).where("sprints.end_date >= current_date")
+    end
+    
   end
   
   

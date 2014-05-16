@@ -136,8 +136,10 @@ Houston::Application.routes.draw do
 
     get "tickets/new", to: "project_tickets#new", as: :new_ticket
     post "tickets", to: "project_tickets#create"
-
   end
+  
+  post "tickets/:id/lock", :to => "ticket_locks#create", constraints: {id: /\d+/}
+  delete "tickets/:id/lock", :to => "ticket_locks#destroy", constraints: {id: /\d+/}
   
   scope "projects/:slug" do
     get "tickets/sync", to: "project_tickets_sync#show", as: :project_tickets_sync
@@ -171,6 +173,14 @@ Houston::Application.routes.draw do
   Houston.config.modules.each do |mod|
     mount mod.engine => mod.path
   end
+  
+  # Sprints (pull out into a module)
+  
+  get "sprints/current", :to => "sprints#current", :as => :current_sprint
+  get "sprints/:id", :to => "sprints#show", constraints: {id: /\d+/}, :as => :sprint
+  put "sprints/:id/lock", :to => "sprints#lock", constraints: {id: /\d+/}
+  post "sprints/:id/tickets/:ticket_id", :to => "sprints#add_ticket", constraints: {id: /\d+/, ticket_id: /\d+/}
+  delete "sprints/:id/tickets/:ticket_id", :to => "sprints#remove_ticket", constraints: {id: /\d+/, ticket_id: /\d+/}
   
   
   

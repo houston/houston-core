@@ -1,0 +1,29 @@
+ul.typeahead {
+  li { overflow: hidden; }
+  
+  .ticket-typeahead-sequence { 
+    float: left;
+    display: block;
+    position: relative;
+    left: -6px;
+    font-weight: 100;
+    width: 1.25em;
+    height: 30px;
+    font-size: 1.18em;
+    text-align: right;
+    line-height: 30px;
+    vertical-align: middle;
+    color: #ccc;
+  }
+  
+  .ticket-typeahead-project {
+    display: block;
+    font-size: 10px;
+    line-height: 1em;
+    b { font-size: 9px; }
+  }
+  
+  .ticket-typeahead-number {
+    font-weight: 200;
+  }
+}

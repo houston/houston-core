@@ -86,3 +86,6 @@ Handlebars.registerHelper 'summarizeAntecedents', (antecedents)->
   for kind, antecedents of _.groupBy(antecedents, (antecedent)-> antecedent.kind)
     html += "#{kind} <span class=\"badge\">#{antecedents.length}</span>"
   html
+
+Handlebars.registerPartial 'sprintTicket', (ticket)->
+  HandlebarsTemplates['sprints/ticket'](ticket)

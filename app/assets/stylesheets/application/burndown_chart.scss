@@ -1,0 +1,52 @@
+.burndown-chart {
+  margin: 0 0 2em 0;
+  
+  circle {
+    fill: white;
+    stroke: steelblue;
+    stroke-width: 1.5px;
+  }
+  
+  .legend { font-size: 10px; }
+  
+  .effort-remaining {
+    font-size: 11px;
+    font-weight: bold;
+    fill: #1B4E72;
+  }
+  
+  .axis path,
+  .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+  }
+  
+  .axis text {
+    font-size: 10px;
+  }
+  
+  .regression {
+    fill: none;
+    stroke-dasharray: 5px, 4px;
+    stroke-width: 1.5px;
+  }
+  
+  .regression-all {
+    stroke: #e0e0e0;
+  }
+  
+  .regression-last-3 {
+    stroke: #93C9E5;
+  }
+  
+  .regression-last-2 {
+    stroke: #F8E3BE;
+  }
+  
+  .line {
+    fill: none;
+    stroke: #1f77b4;
+    stroke-width: 1.5px;
+  }
+}
