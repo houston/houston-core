@@ -109,7 +109,7 @@
     <p>This project does not have any tests.</p>
   <% else %>
     <% tests = @test_run.tests %>
-    <% tests = tests.select { |test| test[:status] == :fail } if @test_run.failed? %>
+    <% tests = tests.select { |test| test_status(test[:status]) == "fail" } if @test_run.failed? %>
     <% tests.group_by { |test| test[:suite] }.each do |suite, tests| %>
       <div class="test-suite">
         <h3 class="test-suite-name"><%= suite %></h3>
