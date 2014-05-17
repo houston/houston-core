@@ -11,7 +11,7 @@ class @TicketsView extends Backbone.View
     @template = HandlebarsTemplates['tickets/index']
     @render()
     
-    @$el.on 'click', 'th', (e)=> @toggleSort $(e.target)
+    @$el.on 'click', 'th', (e)=> @toggleSort $(e.target).closest('th')
     
     new InfiniteScroll
       load: ($what)=>
@@ -43,8 +43,6 @@ class @TicketsView extends Backbone.View
   performSort: (attribute, order)->
     sorter = @["#{attribute}Sorter"]
     return console.log "#{attribute}Sorter is undefined!" unless sorter
-    
-    window.__tickets = @tickets
     
     @tickets = @tickets.sortBy(sorter)
     @tickets = @tickets.reverse() if order == 'desc'
