@@ -696,7 +696,7 @@ CREATE TABLE milestones (
     name character varying(255) NOT NULL,
     tickets_count integer DEFAULT 0,
     completed_at timestamp without time zone,
-    extended_attributes hstore,
+    extended_attributes hstore DEFAULT ''::hstore NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     destroyed_at timestamp without time zone
@@ -773,13 +773,13 @@ CREATE TABLE projects (
     ci_server_name character varying(255) DEFAULT 'None'::character varying NOT NULL,
     min_passing_verdicts integer DEFAULT 1 NOT NULL,
     error_tracker_name character varying(255) DEFAULT 'None'::character varying,
-    extended_attributes hstore,
+    extended_attributes hstore DEFAULT ''::hstore NOT NULL,
     code_climate_repo_token character varying(255) DEFAULT ''::character varying NOT NULL,
     last_ticket_tracker_sync_at timestamp without time zone,
     ticket_tracker_sync_started_at timestamp without time zone,
-    view_options hstore,
+    view_options hstore DEFAULT ''::hstore NOT NULL,
     gemnasium_slug character varying(255),
-    feature_states hstore
+    feature_states hstore DEFAULT ''::hstore NOT NULL
 );
 
 
@@ -1138,7 +1138,7 @@ CREATE TABLE tickets (
     deployment character varying(255),
     last_release_at timestamp without time zone,
     expires_at timestamp without time zone,
-    extended_attributes hstore,
+    extended_attributes hstore DEFAULT ''::hstore NOT NULL,
     antecedents text[],
     tags character varying[],
     type character varying(255),
@@ -1246,7 +1246,7 @@ CREATE TABLE users (
     last_name character varying(255),
     environments_subscribed_to character varying(255) DEFAULT ''::character varying NOT NULL,
     retired_at timestamp without time zone,
-    view_options hstore,
+    view_options hstore DEFAULT ''::hstore NOT NULL,
     email_addresses text[],
     invitation_created_at timestamp without time zone
 );
@@ -2163,3 +2163,5 @@ INSERT INTO schema_migrations (version) VALUES ('20140515200824');
 INSERT INTO schema_migrations (version) VALUES ('20140516005310');
 
 INSERT INTO schema_migrations (version) VALUES ('20140516012049');
+
+INSERT INTO schema_migrations (version) VALUES ('20140517012626');
