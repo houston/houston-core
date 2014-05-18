@@ -30,6 +30,14 @@ class Task < ActiveRecord::Base
       numbered letters.flatten.map { |letter| to_number(letter) }
     end
     
+    def committed
+      where(arel_table[:first_commit_at].not_eq(nil))
+    end
+    
+    def released
+      where(arel_table[:first_release_at].not_eq(nil))
+    end
+    
     def in_current_sprint
       joins(:sprint).where("sprints.end_date >= current_date")
     end
