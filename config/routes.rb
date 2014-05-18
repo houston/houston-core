@@ -178,6 +178,9 @@ Houston::Application.routes.draw do
           post "tasks", to: "ticket_tasks#create"
         end
       end
+      
+      get "sprint/tasks", to: "sprint_tasks#index"
+      get "sprint/tasks/mine", to: "sprint_tasks#mine"
     end
   end
   

@@ -33,6 +33,10 @@ class Task < ActiveRecord::Base
     def in_current_sprint
       joins(:sprint).where("sprints.end_date >= current_date")
     end
+    
+    def checked_out_by(user)
+      where(checked_out_by_id: user.id)
+    end
   end
   
   
