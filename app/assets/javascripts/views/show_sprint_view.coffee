@@ -124,31 +124,49 @@ class @ShowSprintView extends Backbone.View
     
     # Sum progress by day;
     # Find the total amount of effort to accomplish
-    progressByDay = {}
+    committedByDay = {}
+    completedByDay = {}
     totalEffort = 0
     for task in tasks
       effort = +task.effort
       if task.firstReleaseAt
         day = @truncateDate App.parseDate(task.firstReleaseAt)
         effort = 0 if day < monday # this task was released before this sprint started!
-        progressByDay[day] = (progressByDay[day] || 0) + effort
+        completedByDay[day] = (completedByDay[day] || 0) + effort
+        committedByDay[day] = (committedByDay[day] || 0) + effort unless task.firstCommitAt
+      if task.firstCommitAt
+        day = @truncateDate App.parseDate(task.firstCommitAt)
+        effort = 0 if day < monday # this task was released before this sprint started!
+        committedByDay[day] = (committedByDay[day] || 0) + effort
       totalEffort += effort
     
     # for debugging
-    window.progressByDay = progressByDay
+    window.completedByDay = completedByDay
     
     # Transform into remaining effort by day:
     # Iterate by day in case there are some days
     # where no progress was made
-    remainingEffort = totalEffort - (progressByDay[monday] || 0)
-    data = [
+    remainingEffort = totalEffort - (completedByDay[monday] || 0)
+    data1 = [
       day: monday
       effort: Math.ceil(remainingEffort)
     ]
     for day in days.slice(1)
-      unless day > today
-        remainingEffort -= (progressByDay[day] || 0)
-        data.push
+      unless false # day > today
+        remainingEffort -= (completedByDay[day] || 0)
+        data1.push
+          day: day
+          effort: Math.ceil(remainingEffort)
+    
+    remainingEffort = totalEffort - (committedByDay[monday] || 0)
+    data2 = [
+      day: monday
+      effort: Math.ceil(remainingEffort)
+    ]
+    for day in days.slice(1)
+      unless false # day > today
+        remainingEffort -= (committedByDay[day] || 0)
+        data2.push
           day: day
           effort: Math.ceil(remainingEffort)
     
@@ -170,7 +188,7 @@ class @ShowSprintView extends Backbone.View
       .orient('left')
     
     line = d3.svg.line()
-      .interpolate('cardinal')
+      .interpolate('linear')
       .x((d)-> x(d.day))
       .y((d)-> y(d.effort))
     
@@ -198,24 +216,50 @@ class @ShowSprintView extends Backbone.View
         .style('text-anchor', 'end')
         .text('Points Remaining')
     
-    svg.append('path')
-      .attr('class', 'line')
-      .attr('d', line(data))
     
-    svg.selectAll('circle')
-      .data(data)
+    
+    svg.append('path')
+      .attr('class', 'line line-committed')
+      .attr('d', line(data2))
+    
+    svg.selectAll('circle.circle-committed')
+      .data(data2)
       .enter()
       .append('circle')
+        .attr('class', 'circle-committed')
         .attr('r', 5)
         .attr('cx', (d)-> x(d.day))
         .attr('cy', (d)-> y(d.effort))
     
-    svg.selectAll('.effort-remaining')
-      .data(data)
+    svg.selectAll('.effort-remaining.effort-committed')
+      .data(data2)
       .enter()
       .append('text')
         .text((d) -> d.effort)
-        .attr('class', 'effort-remaining')
+        .attr('class', 'effort-remaining effort-committed')
+        .attr('transform', (d)-> "translate(#{x(d.day) + 5.5}, #{y(d.effort) - 10}) rotate(-75)")
+    
+    
+    
+    svg.append('path')
+      .attr('class', 'line line-completed')
+      .attr('d', line(data1))
+    
+    svg.selectAll('circle.circle-completed')
+      .data(data1)
+      .enter()
+      .append('circle')
+        .attr('class', 'circle-completed')
+        .attr('r', 5)
+        .attr('cx', (d)-> x(d.day))
+        .attr('cy', (d)-> y(d.effort))
+    
+    svg.selectAll('.effort-remaining.effort-completed')
+      .data(data1)
+      .enter()
+      .append('text')
+        .text((d) -> d.effort)
+        .attr('class', 'effort-remaining effort-completed')
         .attr('transform', (d)-> "translate(#{x(d.day) + 5.5}, #{y(d.effort) - 10}) rotate(-75)")
   
   truncateDate: (date)->

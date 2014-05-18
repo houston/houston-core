@@ -1,19 +1,7 @@
 .burndown-chart {
   margin: 0 0 2em 0;
   
-  circle {
-    fill: white;
-    stroke: steelblue;
-    stroke-width: 1.5px;
-  }
-  
   .legend { font-size: 10px; }
-  
-  .effort-remaining {
-    font-size: 11px;
-    font-weight: bold;
-    fill: #1B4E72;
-  }
   
   .axis path,
   .axis line {
@@ -46,7 +34,24 @@
   
   .line {
     fill: none;
-    stroke: #1f77b4;
     stroke-width: 1.5px;
+    
+    &.line-completed { stroke: #1f77b4; }
+    &.line-committed { stroke: #cccccc; }
   }
+  circle {
+    fill: white;
+    stroke-width: 1.5px;
+    
+    &.circle-completed { stroke: #1f77b4; }
+    &.circle-committed { stroke: #cccccc; }
+  }
+  .effort-remaining {
+    font-size: 11px;
+    font-weight: bold;
+    
+    &.effort-completed { fill: #1B4E72; }
+    &.effort-committed { fill: #b0b0b0; }
+  }
+  
 }
