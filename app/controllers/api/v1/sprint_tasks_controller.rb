@@ -8,15 +8,20 @@ module Api
       attr_reader :sprint
       
       def index
-        render json: sprint.tasks.map { |task| present_task(task) }
+        render json: sprint.tasks
+          .includes(:ticket => :project)
+          .map { |task| present_task(task) }
       end
       
       def mine
-        render json: sprint.tasks.checked_out_by(current_user).map { |task| present_task(task) }
+        render json: sprint.tasks
+          .includes(:ticket => :project)
+          .checked_out_by(current_user)
+          .map { |task| present_task(task) }
       end
       
     private
-    
+      
       def present_task(task)
         { projectSlug: task.project.slug,
           number: task.number,
