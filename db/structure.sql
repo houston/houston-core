@@ -974,7 +974,7 @@ CREATE TABLE tasks (
     id integer NOT NULL,
     ticket_id integer NOT NULL,
     number integer NOT NULL,
-    description character varying(255) NOT NULL,
+    description character varying(255),
     effort numeric(6,2),
     first_release_at timestamp without time zone,
     first_commit_at timestamp without time zone,
@@ -2165,3 +2165,5 @@ INSERT INTO schema_migrations (version) VALUES ('20140516005310');
 INSERT INTO schema_migrations (version) VALUES ('20140516012049');
 
 INSERT INTO schema_migrations (version) VALUES ('20140517012626');
+
+INSERT INTO schema_migrations (version) VALUES ('20140521014652');

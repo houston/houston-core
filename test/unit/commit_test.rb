@@ -145,7 +145,8 @@ class CommitTest < ActiveSupport::TestCase
     context "that mentions a ticket with several tasks" do
       setup do
         @ticket = Ticket.create!(project: project, type: "Bug", number: 378, summary: "Test summary")
-        @task = ticket.tasks.create!(description: "Second task")
+                ticket.tasks.create!(description: "New Step 1")
+        @task = ticket.tasks.create!(description: "Step 2")
       end
       
       should "be associated with any tickets it mentions" do
@@ -170,7 +171,7 @@ class CommitTest < ActiveSupport::TestCase
       end
     end
     
-    context "that mentions a ticket with one task" do
+    context "that mentions a ticket with only one task" do
       setup do
         @ticket = Ticket.create!(project: project, type: "Bug", number: 378, summary: "Test summary")
         @task = ticket.tasks.first

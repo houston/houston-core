@@ -6,9 +6,11 @@ class Task < ActiveRecord::Base
   has_and_belongs_to_many :releases
   has_and_belongs_to_many :commits
   
-  validates :ticket_id, :number, :description, presence: true
+  validates :ticket_id, :number, presence: true
+  validate :description_must_be_present, :unless => :default_task?
   
   before_validation :assign_number, on: :create
+  before_create :replace_the_tickets_default_task
   before_destroy :prevent_destroying_a_tickets_last_task
   
   attr_readonly :number
@@ -19,7 +21,7 @@ class Task < ActiveRecord::Base
   
   class << self
     def open
-      where first_release_at: nil
+      uncommitted.unreleased
     end
     
     def numbered(*numbers)
@@ -30,8 +32,20 @@ class Task < ActiveRecord::Base
       numbered letters.flatten.map { |letter| to_number(letter) }
     end
     
+    def default
+      where description: nil
+    end
+    
+    def uncommitted
+      where first_commit_at: nil
+    end
+    
     def committed
       where(arel_table[:first_commit_at].not_eq(nil))
+    end
+    
+    def unreleased
+      where first_release_at: nil
     end
     
     def released
@@ -57,6 +71,10 @@ class Task < ActiveRecord::Base
       remaining = (remaining - 1) / 26
     end
     bytes.pack "c*"
+  end
+  
+  def description
+    super || ticket.summary
   end
   
   def shorthand
@@ -91,10 +109,26 @@ class Task < ActiveRecord::Base
   
   
   
+  def default_task?
+    number == 1 && read_attribute(:description).nil?
+  end
+  
+  
+  
 private
   
   def assign_number
     self.number = (Task.where(ticket_id: ticket_id).maximum(:number) || 0) + 1
+  end
+  
+  def replace_the_tickets_default_task
+    # the task we're creating might take this old task's number
+    assign_number if ticket.tasks.open.default.delete_all > 0
+    true # <-- this callback isn't preventing task from being saved
+  end
+  
+  def description_must_be_present
+    errors.add :description, "can't be blank" if read_attribute(:description).blank?
   end
   
   def prevent_destroying_a_tickets_last_task

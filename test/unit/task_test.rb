@@ -4,14 +4,22 @@ require "test_helper"
 class TaskTest < ActiveSupport::TestCase
   include RR::Adapters::TestUnit
   
+  attr_reader :task1, :task2
+  
   
   
   context "When a task is created, it" do
     should "be assigned the next sequential number for its ticket" do
+      task1 = a_ticket.tasks.create!(description: "New Step 1")
       task2 = a_ticket.tasks.create!(description: "Step 2")
-      task3 = a_ticket.tasks.create!(description: "Step 3")
-      assert_equal [2, 3], [task2.number, task3.number],
+      assert_equal [1, 2], [task1.number, task2.number],
         "Expected the tasks to have been assigned the correct numbers"
+    end
+    
+    should "require description to be supplied" do
+      task = a_ticket.tasks.build
+      refute task.valid?, "Expected task to be invalid: it has no description and it's not the default task"
+      assert_match /can't be blank/, task.errors.full_messages.join
     end
   end
   
@@ -41,36 +49,41 @@ class TaskTest < ActiveSupport::TestCase
   
   
   
-  context "Given a ticket," do
-    should "be able to look up its tasks by number" do
-      target_task = a_ticket.tasks.create!(description: "The task I'm going to look for")
-      assert_equal target_task, a_ticket.tasks.numbered(2).first
-    end
-    
-    should "be able to look up its tasks by letter" do
-      target_task = a_ticket.tasks.create!(description: "The task I'm going to look for")
-      assert_equal target_task, a_ticket.tasks.lettered("b").first
-    end
-    
-    
-    
-    context "with more than one task," do
-      setup do
-        a_ticket.tasks.create!(description: "Another task, another dollar")
+  context "Given a ticket" do
+    context "with the default task, it" do
+      should "replace the default task when I add a new task" do
+        task = a_ticket.tasks.create!(description: "I replaced the default task")
+        assert_equal 1, a_ticket.tasks.count, "Expected there to only be one task"
+        assert_equal 1, task.number, "Expected the new task to be the new #1 task"
       end
       
-      should "be able to delete an uncompleted task" do
+      should "not allow deleting its only task" do
         ticket = a_ticket
-        assert_difference "Task.count", -1, "Expected to be able to delete an uncompleted task" do
+        assert_no_difference "Task.count", "Expected to be prevented from deleting a ticket's only task" do
           ticket.tasks.first.destroy
         end
       end
     end
     
-    should "not be able to delete its only task" do
-      ticket = a_ticket
-      assert_no_difference "Task.count", "Expected to be prevented from deleting a ticket's only task" do
-        ticket.tasks.first.destroy
+    
+    context "with more than one task," do
+      setup do
+        @task1 = a_ticket.tasks.create!(description: "Another task") # replaces the default task -> a
+        @task2 = a_ticket.tasks.create!(description: "Another dollar") # a second task -> b
+      end
+      
+      should "be able to look up its tasks by number" do
+        assert_equal task1, a_ticket.tasks.numbered(1).first
+      end
+      
+      should "be able to look up its tasks by letter" do
+        assert_equal task2, a_ticket.tasks.lettered("b").first
+      end
+      
+      should "be able to delete an uncompleted task" do
+        assert_difference "Task.count", -1, "Expected to be able to delete an uncompleted task" do
+          task1.destroy
+        end
       end
     end
   end

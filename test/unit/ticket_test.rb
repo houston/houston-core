@@ -193,15 +193,16 @@ class TicketTest < ActiveSupport::TestCase
   
   
   context "Tasks:" do
-    context "a new ticket" do
+    context "a new ticket with no tasks defined" do
       setup do
         @ticket = Ticket.new default_ticket_attributes
       end
       
-      should "implicitly create a task if none are defined" do
-        assert_equal 0, ticket.tasks.length, "Expected the ticket not to have any tasks before being saved"
+      should "implicitly create a task with the same description as the ticket" do
         ticket.save!
         assert_equal 1, ticket.tasks.count, task_wasnt_created(ticket)
+        assert_equal ticket.summary, ticket.tasks.first.description,
+          "Expected the default tasks' description to match the ticket's summary"
       end
     end
     

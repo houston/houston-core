@@ -318,7 +318,7 @@ private
   end
   
   def ensure_that_ticket_has_a_task
-    tasks.build(description: summary) if tasks.none?
+    tasks.build if tasks.none?
   end
   
   def must_have_at_least_one_task
