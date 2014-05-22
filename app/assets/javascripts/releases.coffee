@@ -45,7 +45,7 @@ window.App.NewReleaseForm =
     
     $('#release_tickets').delegate '.delete-link', 'click', (e)->
       e.preventDefault()
-      $(@).closest('li').remove()
+      $(@).closest('tr').remove()
     
     $('#new_ticket_field')
       .typeahead
