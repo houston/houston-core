@@ -23,7 +23,8 @@ class ReleaseChange
     def from_commit(release, commit)
       message = commit.clean_message[0..255]
       message[0] = message[0].upcase if message[0]
-      new release, commit.tags.first, message
+      tag = Houston.config.fetch_tag(commit.tags.first)
+      new release, tag.slug, message
     end
     
   end
