@@ -74,11 +74,13 @@ class ProjectTicketsController < ApplicationController
   
   
   def close
+    authorize! :close, @ticket
     @ticket.close!
     redirect_to project_ticket_path(slug: @project.slug, number: @ticket.number)
   end
 
   def reopen
+    authorize! :close, @ticket
     @ticket.reopen!
     redirect_to project_ticket_path(slug: @project.slug, number: @ticket.number)
   end
