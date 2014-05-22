@@ -199,6 +199,12 @@ h1 {
   }
 }
 
+@media (max-width: 979px) {
+  h1.project-banner.affix {
+    top: -48px;
+  }
+}
+
 #body {
   padding-top: 77px;
 }
