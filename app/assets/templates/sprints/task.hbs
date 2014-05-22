@@ -12,7 +12,7 @@
   <td class="ticket-type ticket-type-{{ticketType}}"></td>
   <td class="task-summary">
     {{description}}
-    <a href="{{ticketUrl}}" target="_blank" rel="tooltip" data-tooltip-placement="right" data-original-title="View in {{ticketSystem}}">[#{{shorthand}}]</a>
+    <a href="{{ticketUrl}}" target="_blank" rel="ticket" data-number="{{ticketNumber}}" data-project="{{projectSlug}}">[#{{shorthand}}]</a>
   </td>
   <td class="task-worker">
     {{#if checkedOut}}

@@ -7,7 +7,7 @@ module TicketHelper
   def link_to_ticket(ticket)
     contents = block_given? ? yield : format_ticket(ticket)
     if ticket.project
-      link_to contents, ticket.ticket_tracker_ticket_url, target: "_blank"
+      link_to contents, ticket.ticket_tracker_ticket_url, target: "_blank", rel: "ticket", "data-number" => ticket.number, "data-project" => ticket.project.slug
     else
       contents
     end

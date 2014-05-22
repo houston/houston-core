@@ -1,9 +1,9 @@
 class @TicketsView extends Backbone.View
-  # !todo: finish view
   
   initialize: ->
     @$el = $('#tickets')
     @el = @$el[0]
+    @project = @options.project
     @tickets = for ticket in @options.tickets
       ticket.openedAt = new Date(ticket.openedAt)
       ticket.closedAt = new Date(ticket.closedAt) if ticket.closedAt
@@ -12,6 +12,12 @@ class @TicketsView extends Backbone.View
     @render()
     
     @$el.on 'click', 'th', (e)=> @toggleSort $(e.target).closest('th')
+    
+    @$el.on 'click', 'a', (e)=>
+      e.preventDefault()
+      number = +$(e.target).closest('.ticket').attr('data-number')
+      App.showTicket number, @project,
+        ticketNumbers: _.pluck(@tickets, 'number')
     
     new InfiniteScroll
       load: ($what)=>

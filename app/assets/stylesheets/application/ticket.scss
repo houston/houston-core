@@ -5,52 +5,57 @@
   box-shadow: 0 0 0.22em $color;
 }
 
-.ticket-page {
+.ticket-view {
   max-width: 960px;
   margin: 0 auto;
-  padding: 0 104px;
-
-  > h2 {
-    font-size: 36px;
-    margin: 0;
+  
+  .ticket-header {
     position: relative;
+    
+    > h2 {
+      margin: 0 0 0 104px;
+    }
+    
+    &::after {
+      content: '.';
+      clear: both;
+      color: transparent;
+      display: block;
+      height: 1em;
+    }
+    
+    .ticket-tracker-link {
+      position: absolute;
+      right: 1.5em;
+      bottom: 0.5em;
+    }
   }
 
   .ticket-number {
     display: block;
-    float: left;
-    width: 104px;
+    font-size: 0.9em;
     text-align: right;
-    padding: 4px 0;
-    line-height: 1em;
     font-weight: 400;
-    color: #ccc;
-    position: absolute;
-    left: -104px;
-  }
-  .ticket-summary {
-    display: block;
     font-weight: 200;
-    font-size: 32px;
-    line-height: 1.136em;
-    position: relative;
-
-    // To style the plaintext like the input
-    .show { padding: 4px 7px; }
-
-    input {
-      margin: 0 0 2px 0;
-      font-size: 32px;
-      height: 1em;
-      font-weight: 200;
-      width: 100%;
-    }
+    color: #ccc;
+    
+    position: absolute;
+    width: 96px;
+    left: 0;
+    top: -1px;
   }
+  
+  .ticket-state-position {
+    position: absolute;
+    width: 96px;
+    text-align: right;
+    top: 35px;
+  }
+  
   .ticket-state {
-    clear: left;
-    float: left;
     color: white;
     padding: 2px 6px;
+    display: inline-block;
 
     border-radius: 0.25em;
     -webkit-border-radius: 0.25em;
@@ -59,21 +64,39 @@
     &.open { background: #5DB64C; } // grass
     &.closed { background: #E24E32; } // tomato
   }
+  
+  
+  .ticket-summary {
+    display: block;
+    font-weight: 200;
+    font-size: 1em;
+    line-height: 1.136em;
+    position: relative;
+    left: -6px;
+
+    // To style the plaintext like the input
+    .show { padding: 4px 7px; }
+
+    input {
+      margin: 0 0 2px 0;
+      font-size: 1em;
+      height: 1em;
+      font-weight: 200;
+      width: 100%;
+    }
+  }
   .ticket-reporter {
-    float: left;
-    margin-left: 0.5em;
-    line-height: 1.5em;
-    padding: 2px 0;
+    margin: 0 0 0 104px;
+    padding: 0 0 0 2px;
+    line-height: 1em;
+    white-space: nowrap;
   }
   .ticket-opened {
     color: #bfbfbf;
     font-weight: 500;
   }
 
-  hr {
-    clear: both;
-    margin: 3em 0 1em;
-  }
+  hr { margin: 0 0 1em; }
 
   .ticket-description {
     .show { min-height: 1em; }

@@ -1,6 +1,6 @@
 <tbody>
   {{#each tickets}}
-  <tr id="ticket_{{id}}">
+  <tr id="ticket_{{id}}" class="ticket" data-number="{{number}}">
     <td class="table-margin"></td>
     <td class="ticket-number">
       <a href="tickets/by_number/{{number}}" target="_blank">{{number}}</a>
@@ -9,10 +9,6 @@
     <td class="ticket-reporter">{{{avatar reporterEmail 24 reporterName}}}</td>
     <td class="ticket-summary">{{summary}}</td>
     <td class="ticket-antecedents">{{{summarizeAntecedents antecedents}}}</td>
-      <!-- ticket.antecedents.group_by(&:kind).each do |kind, antecedents| %>
-        <%= kind %> <span class="badge"><%= antecedents.length %></span>
-      <% end -->
-    </td>
     <td class="ticket-opened">{{{formatDateWithYear openedAt}}}</td>
     <td class="ticket-closed">{{{formatDateWithYear closedAt}}}</td>
     <td class="table-margin"></td>

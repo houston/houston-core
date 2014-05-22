@@ -22,6 +22,7 @@ class ProjectTicketsController < ApplicationController
   
   
   def show
+    return render layout: false if request.xhr?
     redirect_to @ticket.ticket_tracker_ticket_url unless @project.ticket_tracker_name == "Houston"
   end
   

@@ -59,15 +59,5 @@
       });
     </script>
     <%= yield :javascripts %>
-    <script type="text/javascript">
-      $(function(){
-        $('[rel="tooltip"]').each(function() {
-          var $el = $(this),
-              placement = $el.attr('data-tooltip-placement') || 'bottom';
-          $el.tooltip({placement: placement});
-        });
-        $('.project-banner').affix({offset: {top: 66}})
-      });
-    </script>
   </body>
 </html>

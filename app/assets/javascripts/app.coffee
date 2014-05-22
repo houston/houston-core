@@ -90,6 +90,17 @@ window.App =
   oauth: (url)->
     window.location = url
   
+  showTicket: (number, project, options)->
+    project = project || $('.project-banner').attr('data-project-slug')
+    return false unless number and project
+    
+    options ||= {}
+    options.project = project
+    $context = options.$context || $('#tickets')
+    numbers = _.map($context.find('[rel="ticket"]:visible'), (el)-> +$(el).attr('data-number'))
+    options.ticketNumbers = numbers if numbers.length > 0
+    new TicketModalView(options).show(number)
+  
   promptForCredentialsTo: (service)->
     html = """
     <div class="modal hide fade">
