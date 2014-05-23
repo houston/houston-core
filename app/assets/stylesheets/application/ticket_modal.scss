@@ -24,9 +24,10 @@ body.noscroll {
   
   button.close {
     z-index: 9999;
-    position: relative;
-    line-height: 14px;
-    top: -3px;
+    position: absolute;
+    top: -9px;
+    right: 4px;
+    padding: 7px;
   }
   
   .modal-body {

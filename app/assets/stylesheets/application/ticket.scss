@@ -88,7 +88,7 @@
   .ticket-reporter {
     margin: 0 0 0 104px;
     padding: 0 0 0 2px;
-    line-height: 1em;
+    line-height: 16px; // height of avatar
     white-space: nowrap;
   }
   .ticket-opened {

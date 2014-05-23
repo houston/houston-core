@@ -21,8 +21,11 @@
     </div>
 
     <div class="ticket-reporter">
-      Opened by
-      <b>{{#if reporterName}}{{reporterName}}{{else}}Unknown{{/if}}</b>
+      Opened
+      {{#if reporterName}}
+        by {{{avatar reporterEmail 16}}}
+        <b>{{#if reporterName}}{{reporterName}}{{else}}Unknown{{/if}}</b>
+      {{/if}}
       <span class="ticket-opened" title="{{formatTime openedAt}}">{{formatTimeAgo openedAt}}</span>
     </div>
 
