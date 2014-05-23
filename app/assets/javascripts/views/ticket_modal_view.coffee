@@ -27,12 +27,12 @@ class @TicketModalView extends Backbone.View
     $.get "/projects/#{@project}/tickets/by_number/#{number}.json", (json)=>
       @number = number
       @index = _.indexOf(@ticketNumbers, number) if @ticketNumbers
-      @html = @renderTicket(json)
+      @ticket = json
       @render()
 
   render: ->
     @$el.html @template
-      ticket: @html
+      ticket: @renderTicket(@ticket)
       index: @index + 1
       count: @count
     $modal = @$el.modal()
