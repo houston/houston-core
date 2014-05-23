@@ -11,8 +11,16 @@ class @TicketModalView extends Backbone.View
     
     if @ticketNumbers
       @count = @ticketNumbers.length
-      Mousetrap.bind 'left',  (e)=> @show(@prev()) if @$el.is(':visible')
-      Mousetrap.bind 'right', (e)=> @show(@next()) if @$el.is(':visible')
+      Mousetrap.bind 'up',  (e)=>
+        if @$el.is(':visible')
+          e.preventDefault()
+          e.stopImmediatePropagation()
+          @show(@prev())
+      Mousetrap.bind 'down', (e)=>
+        if @$el.is(':visible')
+          e.preventDefault()
+          e.stopImmediatePropagation()
+          @show(@next())
 
   show: (number)->
     return unless number
