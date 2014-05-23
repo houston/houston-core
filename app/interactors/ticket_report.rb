@@ -20,8 +20,9 @@ class TicketReport
         number: number,
         type: type.downcase,
         summary: summary,
-        reporterEmail: reporter_email,
-        reporterName: reporter_name,
+        reporter: {
+          email: reporter_email,
+          name: reporter_name },
         antecedents: antecedents.map { |antecedent| { id: antecedent.id, kind: antecedent.kind } },
         openedAt: opened_at,
         closedAt: closed_at }

@@ -5,8 +5,14 @@ class FullTicketPresenter < TicketPresenter
     reporter = ticket.reporter
     super.merge(
       description: mdown(ticket.description),
-      reporterEmail: reporter && reporter.email,
-      reporterName: reporter && reporter.name)
+      tasks: ticket.tasks.map { |task| task.ticket = ticket; {
+        id: task.id,
+        description: task.description,
+        letter: task.letter,
+        effort: task.effort } },
+      reporter: reporter && {
+        email: reporter.email,
+        name: reporter.name })
   end
 
 end
