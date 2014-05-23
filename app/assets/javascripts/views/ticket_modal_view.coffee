@@ -6,6 +6,7 @@ class @TicketModalView extends Backbone.View
     @ticketNumbers = @options.ticketNumbers
     @onClose = @options.onClose
     @template = HandlebarsTemplates['tickets/modal']
+    @renderTicket = HandlebarsTemplates['tickets/show']
     @$el.attr('tabindex', -1) # so that ESC works
     
     if @ticketNumbers
@@ -15,10 +16,10 @@ class @TicketModalView extends Backbone.View
 
   show: (number)->
     return unless number
-    $.get "/projects/#{@project}/tickets/by_number/#{number}", (html)=>
+    $.get "/projects/#{@project}/tickets/by_number/#{number}.json", (json)=>
       @number = number
       @index = _.indexOf(@ticketNumbers, number) if @ticketNumbers
-      @html = html
+      @html = @renderTicket(json)
       @render()
 
   render: ->

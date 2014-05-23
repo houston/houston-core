@@ -16,6 +16,7 @@
 //= require jquery.pjax.js
 //= require jquery.tablesorter.js
 //= require jquery.autosize.js
+//= require jquery.timeago.js
 //= require mousetrap
 //= require twitter/bootstrap
 //= require freight_train

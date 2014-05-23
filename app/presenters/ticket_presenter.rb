@@ -18,6 +18,8 @@ class TicketPresenter
   def ticket_to_json(ticket)
     project = ticket.project
     { id: ticket.id,
+      openedAt: ticket.created_at,
+      closedAt: ticket.closed_at,
       projectId: project.id,
       projectSlug: project.slug,
       projectTitle: project.name,

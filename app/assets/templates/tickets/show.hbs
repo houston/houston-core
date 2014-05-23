@@ -1,0 +1,50 @@
+<div class="ticket ticket-view" id="ticket_view">
+  <div class="ticket-header">
+    <h2>
+      <span class="ticket-number">#{{number}}</span>
+      <span class="ticket-summary editable" id="ticket_summary">
+        <span class="show" title="{{summary}}">{{summary}}</span>
+        <span class="edit"><input type="text" name="summary" /></span>
+      </span>
+    </h2>
+
+    <div class="ticket-state-position">
+      {{#if closedAt}}
+      <div class="ticket-state closed">
+        <i class="icon icon-ban-circle"></i> Closed
+      </div>
+      {{else}}
+      <div class="ticket-state open">
+        <i class="icon icon-circle-blank"></i> Open
+      </div>
+      {{/if}}
+    </div>
+
+    <div class="ticket-reporter">
+      Opened by
+      <b>{{#if reporterName}}{{reporterName}}{{else}}Unknown{{/if}}</b>
+      <span class="ticket-opened" title="{{formatTime openedAt}}">{{formatTimeAgo openedAt}}</span>
+    </div>
+
+    {{#ifEq ticketSystem "Houston"}}{{else}}
+    <div class="ticket-tracker-link">
+      <a href="{{ticketUrl}}">Open in {{ticketSystem}}</a>
+    </div>
+    {{/ifEq}}
+  </div>
+
+  <div class="ticket-body">
+    <div class="ticket-description editable primary-frame" id="ticket_description">
+      <div class="show">{{{description}}}</div>
+      <div class="edit">
+        <textarea name="description"></textarea>
+        <p class="buttons">
+          <button type="reset" class="btn btn-link">Cancel</button>
+          <button type="submit" class="btn btn-default">Save</button>
+        </p>
+      </div>
+    </div>
+    <div class="task-frame">
+    </div>
+  </div>
+</div>

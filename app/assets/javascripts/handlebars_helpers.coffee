@@ -23,6 +23,9 @@ Handlebars.registerHelper 'formatDateWithYear', (timestamp)->
 Handlebars.registerHelper 'formatTime', (timestamp)->
   Date.create(timestamp).format('ddd mmm d, yyyy h:mmt')
 
+Handlebars.registerHelper 'formatTimeAgo', (timestamp)->
+  $.timeago Date.create(timestamp)
+
 Handlebars.registerHelper 'markdown', (markdown)-> App.mdown(markdown)
 
 Handlebars.registerHelper 'emojify', (string)-> App.emojify(string)
