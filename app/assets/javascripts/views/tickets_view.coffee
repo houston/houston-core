@@ -13,9 +13,10 @@ class @TicketsView extends Backbone.View
     
     @$el.on 'click', 'th', (e)=> @toggleSort $(e.target).closest('th')
     
-    @$el.on 'click', 'a', (e)=>
+    @$el.on 'click', '[rel="ticket"]', (e)=>
       e.preventDefault()
-      number = +$(e.target).closest('.ticket').attr('data-number')
+      e.stopImmediatePropagation()
+      number = +$(e.target).closest('[rel="ticket"]').  attr('data-number')
       App.showTicket number, @project,
         ticketNumbers: _.pluck(@tickets, 'number')
     
@@ -32,6 +33,7 @@ class @TicketsView extends Backbone.View
     @offset = 0
     html = @template(tickets: @tickets.slice(0, 50))
     @$el.append(html)
+    @$el.find('.ticket').pseudoHover()
 
   toggleSort: ($th)->
     if $th.hasClass('sort-asc')

@@ -1,10 +1,8 @@
 <tbody>
   {{#each tickets}}
-  <tr id="ticket_{{id}}" class="ticket" data-number="{{number}}">
+  <tr id="ticket_{{id}}" class="ticket" rel="ticket" data-number="{{number}}">
     <td class="table-margin"></td>
-    <td class="ticket-number">
-      <a href="tickets/by_number/{{number}}" target="_blank">{{number}}</a>
-    </td>
+    <td class="ticket-number">#{{number}}</td>
     <td class="ticket-type ticket-type-{{type}}"></td>
     <td class="ticket-reporter">{{{avatar reporterEmail 24 reporterName}}}</td>
     <td class="ticket-summary">{{summary}}</td>
