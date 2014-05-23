@@ -16,7 +16,7 @@ class @TicketsView extends Backbone.View
     @$el.on 'click', '[rel="ticket"]', (e)=>
       e.preventDefault()
       e.stopImmediatePropagation()
-      number = +$(e.target).closest('[rel="ticket"]').  attr('data-number')
+      number = +$(e.target).closest('[rel="ticket"]').attr('data-number')
       App.showTicket number, @project,
         ticketNumbers: _.pluck(@tickets, 'number')
     
