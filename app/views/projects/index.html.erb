@@ -40,7 +40,7 @@
                 <i class="icon icon-bolt" rel="tooltip" data-tooltip-placement="top" title="<%= broken_features.map(&:titleize).to_sentence %> <%= broken_features.one? ? "is" : "are" %> not working"></i>
               <% end %>
             </td>
-            <td class="project-title" style="white-space: nowrap;">
+            <td class="project-title">
               <b class="bubble <%= project.color %>" rel="tooltip" title="<%= project.color.titleize %>" data-tooltip-placement="right"></b>
               <%= link_to_if can?(:update, project), project.name, edit_project_path(project) %>
               

@@ -17,8 +17,6 @@ $completed-foreground: rgb(42, 133, 19);
   }
   &.hide-completed .exception.has-ticket { display: none; }
   
-  th { white-space: nowrap; }
-  
   .buttons { text-align: center; }
   .exception-summary { max-width: 30em; }
   .exception-message { word-break: break-all; }

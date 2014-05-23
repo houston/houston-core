@@ -16,6 +16,10 @@
 }
 
 .table td {
+  &.ticket-number {
+    text-align: right;
+  }
+  
   &.ticket-reporter {
     width: 24px;
     min-width: 24px;

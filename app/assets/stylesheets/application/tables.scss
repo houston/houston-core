@@ -1,7 +1,22 @@
+.table {
+  td, th {
+    padding: 6px 8px;
+    vertical-align: middle;
+  }
+  td {
+    border-top: none;
+    border-bottom: 4px solid white;
+  }
+  th {
+    white-space: nowrap;
+  }
+}
+
 th.vertical {
   width: 28px;
   max-width: 28px;
   padding: 4px 0;
+  white-space: normal;
   
   > span {
     display: block;
@@ -27,7 +42,12 @@ tr.selected > td { background-color: #ffe; }
 .table-expandable, .table-hoverable {
   tbody > tr:hover td { background-color: rgba(128, 212, 255, 0.1); }
 }
-.table-expandable {
+.table.table-expandable {
+  td, th {
+    border-top: 1px solid #ddd;
+    border-bottom: none;
+  }
+  
   tbody > tr {
     cursor: pointer;
     

@@ -1,8 +1,3 @@
-#projects {
-  th, td { vertical-align: middle; }
-  th { white-space: nowrap; }
-}
-
 @media (min-width:1400px) {
   th.project-last-release {
     &::before { content: 'Last Release: '; }
@@ -127,6 +122,8 @@ th, td {
     padding-right: 2px !important;
   }
 }
+
+td.project-title { white-space: nowrap; }
 
 td.project-feature-error {
   padding-right: 0;
