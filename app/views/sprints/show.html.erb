@@ -13,6 +13,7 @@
   $(function() {
     $('#sprint_view').appendView(new ShowSprintView({
       sprintId: <%= @sprint.try(:id).to_json %>,
+      sprintStart: new Date(<%= @sprint.start_date.year %>, <%= @sprint.start_date.month - 1 %>, <%= @sprint.start_date.day %>),
       sprintLocked: <%= @sprint.try(:locked?).to_json %>,
       sprintTasks: <%= raw SprintTaskPresenter.new(@tasks).to_json %>.map(function(task) {
         task.checkedOut = !!task.checkedOutBy;

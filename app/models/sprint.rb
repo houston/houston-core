@@ -8,6 +8,10 @@ class Sprint < ActiveRecord::Base
     where("end_date >= current_date").order("end_date DESC").first
   end
   
+  def start_date
+    end_date.beginning_of_week
+  end
+  
   def lock!
     update_column :locked, true
   end

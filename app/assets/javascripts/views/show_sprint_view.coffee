@@ -10,6 +10,7 @@ class @ShowSprintView extends Backbone.View
   
   initialize: ->
     @sprintId = @options.sprintId
+    @sprintStart = @options.sprintStart
     @locked = @options.sprintLocked
     @template = HandlebarsTemplates['sprints/show']
     @typeaheadTemplate = HandlebarsTemplates['sprints/typeahead']
@@ -118,8 +119,7 @@ class @ShowSprintView extends Backbone.View
     
     # The time range of the Sprint
     today = new Date()
-    daysSinceMonday = 1 - today.getWeekday()
-    monday = @truncateDate daysSinceMonday.days().after(today)
+    monday = @sprintStart
     days = (i.days().after(monday) for i in [0..4])
     
     # Sum progress by day;
@@ -152,7 +152,7 @@ class @ShowSprintView extends Backbone.View
       effort: Math.ceil(remainingEffort)
     ]
     for day in days.slice(1)
-      unless false # day > today
+      unless day > today
         remainingEffort -= (completedByDay[day] || 0)
         data1.push
           day: day
@@ -164,7 +164,7 @@ class @ShowSprintView extends Backbone.View
       effort: Math.ceil(remainingEffort)
     ]
     for day in days.slice(1)
-      unless false # day > today
+      unless day > today
         remainingEffort -= (committedByDay[day] || 0)
         data2.push
           day: day
