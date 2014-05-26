@@ -376,7 +376,7 @@ Houston.config do
     end
     
     every :day, :at => "2:00am" do
-      runner "SyncCommits.run!", environment: "production"
+      runner "SyncCommitsJob.run!", environment: "production"
     end
     
     every :day, :at => "6:30am" do
