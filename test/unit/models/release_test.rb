@@ -1,9 +1,11 @@
-require 'test_helper'
+require "test_helper"
 
 class ReleaseTest < ActiveSupport::TestCase
-  include RR::Adapters::TestUnit
-  
   attr_reader :release, :project
+  
+  setup do
+    @project = Project.new(name: "Test", slug: "test", version_control_name: "Mock")
+  end
   
   
   context "a new release" do
@@ -34,26 +36,24 @@ class ReleaseTest < ActiveSupport::TestCase
       mock(a_task).release!(release)
       release.save!
     end
-  end
-  
-  
-  context "Given a project that uses Git" do
-    setup do
-      @project = Project.new
-      test_repo = Houston::Adapters::VersionControl::GitAdapter.build(project,
-        Rails.root.join("test", "data", "bare_repo.git"))
-      stub(project).repo.returns(test_repo)
+    
+    
+    
+    context "when assigning commit0" do
+      should "identify the before-commit" do
+        commit = Commit.new(sha: "b62c3f32f72423b81a0282a1a4b97cad2cf129d4")
+        stub(project).find_commit_by_sha(anything).returns(commit)
+        release = Release.new(project: project, commit0: commit.sha[0...8])
+        assert_equal commit, release.commit_before
+      end
     end
     
-    context "before saving a release" do
-      setup do
-        @expected_sha = "b62c3f32f72423b81a0282a1a4b97cad2cf129d4"
-        @release = Release.new(project: project, commit1: @expected_sha[0...8])
-      end
-      
-      should "normalize the commit SHAs" do
-        release.valid?
-        assert_equal @expected_sha, release.commit1
+    context "when assigning commit1" do
+      should "identify the after-commit" do
+        commit = Commit.new(sha: "b62c3f32f72423b81a0282a1a4b97cad2cf129d4")
+        stub(project).find_commit_by_sha(anything).returns(commit)
+        release = Release.new(project: project, commit1: commit.sha[0...8])
+        assert_equal commit, release.commit_after
       end
     end
   end

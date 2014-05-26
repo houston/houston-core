@@ -56,7 +56,10 @@ module Houston
           end
           
           def commits_between(sha1, sha2)
-            native_commit(sha1)
+            sha1 = sha1.sha if sha1.respond_to?(:sha)
+            sha2 = sha2.sha if sha2.respond_to?(:sha)
+            
+            native_commit(sha1) # ensure that sha1 exists in the repo
             matces_sha = lambda { |commit| commit.sha.start_with?(sha1) }
             ancestors_until(sha2, :including_self, &matces_sha).reverse[1..-1]
           end

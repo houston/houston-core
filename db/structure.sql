@@ -820,7 +820,9 @@ CREATE TABLE releases (
     deploy_id integer,
     project_id integer DEFAULT (-1) NOT NULL,
     environment_name character varying(255) DEFAULT 'Production'::character varying NOT NULL,
-    release_changes text DEFAULT ''::text NOT NULL
+    release_changes text DEFAULT ''::text NOT NULL,
+    commit_before_id integer,
+    commit_after_id integer
 );
 
 
@@ -2170,3 +2172,5 @@ INSERT INTO schema_migrations (version) VALUES ('20140517012626');
 INSERT INTO schema_migrations (version) VALUES ('20140521014652');
 
 INSERT INTO schema_migrations (version) VALUES ('20140526155845');
+
+INSERT INTO schema_migrations (version) VALUES ('20140526162645');

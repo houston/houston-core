@@ -9,6 +9,8 @@ class Release < ActiveRecord::Base
   belongs_to :project
   belongs_to :user
   belongs_to :deploy
+  belongs_to :commit_before, class_name: "Commit"
+  belongs_to :commit_after, class_name: "Commit"
   has_and_belongs_to_many :commits, autosave: false # <-- a bug with autosave causes commit_ids to be saved twice
   has_and_belongs_to_many :tickets, autosave: false # <-- a bug with autosave causes ticket_ids to be saved twice
   has_many :tasks, through: :commits
@@ -20,7 +22,6 @@ class Release < ActiveRecord::Base
   validates_presence_of :user_id
   validates_uniqueness_of :deploy_id, :allow_nil => true
   validates_associated :release_changes
-  validate :commits_must_exist_in_repo
   
   
   
@@ -75,13 +76,27 @@ class Release < ActiveRecord::Base
   
   
   
-  def can_read_commits?
-    valid_sha?(commit0) && valid_sha?(commit1)
+  def commit0
+    super || commit_before.try(:sha)
   end
   
-  def valid_sha?(sha)
-    sha.present?
+  def commit0=(sha)
+    super; self.commit_before = identify_commit(sha)
   end
+  
+  def commit1
+    super || commit_after.try(:sha)
+  end
+  
+  def commit1=(sha)
+    super; self.commit_after = identify_commit(sha)
+  end
+  
+  def can_read_commits?
+    commit_before.present? && commit_after.present?
+  end
+  
+  
   
   attr_reader :commit_not_found_error_message
   
@@ -155,15 +170,19 @@ class Release < ActiveRecord::Base
 private
   
   
-  def native_commits
-    project.repo.commits_between(commit0, commit1)
+  def identify_commit(sha)
+    project.find_commit_by_sha(sha)
   rescue Houston::Adapters::VersionControl::CommitNotFound
     @commit_not_found_error_message = $!.message
     @commit_not_found_error_message << " in the repo \"#{project.repo}\"" if project
-    []
+    nil
   rescue Houston::Adapters::VersionControl::InvalidShaError
     @commit_not_found_error_message = $!.message
-    []
+    nil
+  end
+  
+  def native_commits
+    project.repo.commits_between(commit_before, commit_after)
   end
   
   
@@ -183,29 +202,6 @@ private
     antecedents.each do |antecedent|
       antecedent.release!(self)
     end
-  end
-  
-  
-  def commits_must_exist_in_repo
-    [:commit0, :commit1].each do |attribute|
-      commit_must_exist_in_repo attribute, read_attribute(attribute)
-    end
-  end
-  
-  def commit_must_exist_in_repo(attribute, commit)
-    return if commit.blank?
-    
-    write_attribute attribute, normalize_sha(commit)
-  rescue Houston::Adapters::VersionControl::CommitNotFound
-    message = $!.message
-    message << " in the repo \"#{project.repo}\"" if project
-    errors.add attribute, message
-  rescue Houston::Adapters::VersionControl::InvalidShaError
-    errors.add attribute, $!.message
-  end
-  
-  def normalize_sha(sha)
-    project.repo.native_commit(sha).sha
   end
   
 end
