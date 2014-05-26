@@ -71,7 +71,7 @@ Handlebars.registerHelper 'userAvatar', (size)->
   "<img src=\"#{gravatarUrl}\" width=\"#{size}\" height=\"#{size}\" rel=\"tooltip\" title=\"#{user.get('name')}\" />"
   
 Handlebars.registerHelper 'avatar', (email, size, title)->
-  return "" unless email
+  return "<img width=\"#{size}\" height=\"#{size}\" />" unless email
   gravatarUrl = "http://www.gravatar.com/avatar/#{MD5(email.toLowerCase().trim())}?r=g&d=retro&s=#{size * 2}"
   if title
     "<img src=\"#{gravatarUrl}\" width=\"#{size}\" height=\"#{size}\" rel=\"tooltip\" title=\"#{title}\" />"

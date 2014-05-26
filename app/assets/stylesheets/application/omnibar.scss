@@ -19,18 +19,19 @@ input[type="text"].omnibar {
     border-radius: 0.75em;
   }
   
-  .commit-sha {
+  .commit-sha, .ticket-number {
     font-size: 0.75em;
     opacity: 0.5;
   }
   
-  .commit-message {
+  .commit-message, .ticket-summary {
     line-height: 1em;
     display: block;
     text-overflow: ellipsis;
     max-width: 488px;
     overflow: hidden;
     text-indent: 3px;
+    margin-left: 32px;
   }
   
   .project-title {
