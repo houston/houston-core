@@ -12,6 +12,10 @@ class @EditTicketView extends Backbone.View
       $editable = $(e.target).closest('.editable')
       $editable.addClass('in-edit')
       $editable.find('input').val(@ticket.get 'summary').focus().select()
+      $editable.find('input').blur ->
+        $input = $(e.target)
+        $editable = $input.closest('.editable')
+        $editable.removeClass('in-edit')
 
     @$description.find('.show').click (e)=>
       $editable = $(e.target).closest('.editable')
