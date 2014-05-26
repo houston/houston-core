@@ -13,6 +13,16 @@ module CommitSynchronizer
   end
   
   
+  def find_or_create_by_sha(sha)
+    find_by_sha(sha) || from_native_commit(repo.native_commit(sha)).tap do |commit|
+      commit.project = project
+      commit.save!
+    end
+  rescue Houston::Adapters::VersionControl::CommitNotFound
+    nil
+  end
+  
+  
 private
   
   def create_missing_commits!(missing_commits)
