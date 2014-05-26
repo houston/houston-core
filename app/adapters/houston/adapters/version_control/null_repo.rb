@@ -36,7 +36,7 @@ module Houston
         end
         
         def native_commit(sha)
-          nil
+          raise Houston::Adapters::VersionControl::CommitNotFound
         end
         
         def read_file(file_path, options={})
