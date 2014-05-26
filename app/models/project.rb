@@ -4,7 +4,7 @@ class Project < ActiveRecord::Base
   include FeatureState
   
   has_many :releases, :dependent => :destroy
-  has_many :commits
+  has_many :commits, :dependent => :destroy, extend: CommitSynchronizer
   has_many :tickets, :dependent => :destroy, extend: TicketSynchronizer
   has_many :milestones, :dependent => :destroy, extend: MilestoneSynchronizer
   has_many :testing_notes, :dependent => :destroy
