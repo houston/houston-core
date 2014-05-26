@@ -5,7 +5,7 @@ class SyncCommitsJob
   end
   
   def run!
-    Project.find_each do |project|
+    Project.unretired.find_each do |project|
       project.commits.sync!
     end
   end
