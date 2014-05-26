@@ -21,29 +21,31 @@ class Commit < ActiveRecord::Base
   
   
   
-  def self.find_by_sha(sha)
-    where(["sha LIKE ?", "#{sha}%"]).first
-  end
-  
-  def self.during(range)
-    where(authored_at: range)
-  end
-  
-  def self.reachable
-    where(unreachable: false)
-  end
-  
-  def self.latest
-    last
-  end
-  
-  def self.earliest
-    first
-  end
-  
-  def self.released
-    commits_releases = Arel::Table.new("commits_releases")
-    where(arel_table[:id].in(commits_releases.project(:commit_id)))
+  class << self
+    def find_by_sha(sha)
+      where(["sha LIKE ?", "#{sha}%"]).first
+    end
+    
+    def during(range)
+      where(authored_at: range)
+    end
+    
+    def reachable
+      where(unreachable: false)
+    end
+    
+    def latest
+      last
+    end
+    
+    def earliest
+      first
+    end
+    
+    def released
+      commits_releases = Arel::Table.new("commits_releases")
+      where(arel_table[:id].in(commits_releases.project(:commit_id)))
+    end
   end
   
   
