@@ -12,12 +12,12 @@ class Commit < ActiveRecord::Base
   after_create :associate_tickets_with_self
   after_create :associate_tasks_with_self
   
-  validates :project, :presence => true
-  validates :sha, :presence => true, :uniqueness => {scope: :project_id}
-  validates :message, :presence => true
-  validates :authored_at, :presence => true
-  validates :committer, :presence => true
-  validates :committer_email, :presence => true
+  validates :project, presence: true
+  validates :sha, presence: true, :uniqueness => {scope: :project_id}
+  validates :message, presence: true
+  validates :authored_at, presence: true
+  validates :committer, presence: true
+  validates :committer_email, presence: true
   
   
   
