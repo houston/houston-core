@@ -34,7 +34,7 @@ class ReleasesController < ApplicationController
     
     @release.release_changes = [ReleaseChange.new(@release, "", "")] if @release.release_changes.none?
     
-    if request.headers['X-PJAX']
+    if request.headers["X-PJAX"]
       render template: "releases/_new_release", layout: false
     else
       render
