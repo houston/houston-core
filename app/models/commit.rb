@@ -21,6 +21,10 @@ class Commit < ActiveRecord::Base
   
   
   
+  def self.find_by_sha(sha)
+    where(["sha LIKE ?", "#{sha}%"]).first
+  end
+  
   def self.during(range)
     where(authored_at: range)
   end

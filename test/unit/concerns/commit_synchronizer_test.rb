@@ -3,7 +3,7 @@ require "support/houston/adapters/version_control/mock_adapter"
 
 
 class CommitSynchronizerTest < ActiveSupport::TestCase
-  attr_reader :project, :unreachable_commit, :reachable_commit
+  attr_reader :project, :commit, :unreachable_commit, :reachable_commit
   delegate :repo, to: :project
   
   setup do
@@ -46,9 +46,50 @@ class CommitSynchronizerTest < ActiveSupport::TestCase
   end
   
   
+  context "#find_or_create_by_sha!" do
+    context "when a commit exists locally with the given sha" do
+      setup do
+        @commit = project.commits.create!(params)
+      end
+      
+      should "find the commit by the full sha" do
+        assert_equal commit, project.find_commit_by_sha(commit.sha)
+      end
+      
+      should "find the commit by the partial sha" do
+        assert_equal commit, project.find_commit_by_sha(commit.sha[0...8])
+      end
+    end
+    
+    context "when the repo contains an unsycned commit with the given sha" do
+      setup do
+        mock(repo).native_commit("aaaaaaaa").returns native_commit(sha: "aaaaaaaa")
+      end
+      
+      should "find and synchronize the commit" do
+        assert_difference "project.commits.count", +1, "Expected a commit to have been created" do
+          assert project.find_commit_by_sha("aaaaaaaa"), "Expected to find a commit"
+        end
+      end
+    end
+    
+    context "when the repo does not even contain a commit with that sha" do
+      setup do
+        mock(repo).native_commit(anything) do
+          raise Houston::Adapters::VersionControl::CommitNotFound
+        end
+      end
+      
+      should "return nil" do
+        assert_equal nil, project.find_commit_by_sha("aaaaaaaa")
+      end
+    end
+  end
+  
+  
 private
   
-  def params(overrides)
+  def params(overrides={})
     overrides.reverse_merge({
       project: project,
       sha: SecureRandom.hex(16),
@@ -59,7 +100,7 @@ private
     })
   end
   
-  def native_commit(overrides)
+  def native_commit(overrides={})
     OpenStruct.new(overrides.reverse_merge({
       sha: SecureRandom.hex(16),
       message: "nothing to see here",
