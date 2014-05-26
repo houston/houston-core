@@ -143,7 +143,7 @@ class Release < ActiveRecord::Base
   end
   
   def load_commits!
-    self.commits = native_commits.map { |native| project.find_commit_by_sha(native.sha) }
+    self.commits = project.commits.between(commit_before, commit_after)
   end
   
   def load_tickets!
@@ -169,7 +169,6 @@ class Release < ActiveRecord::Base
   
 private
   
-  
   def identify_commit(sha)
     project.find_commit_by_sha(sha)
   rescue Houston::Adapters::VersionControl::CommitNotFound
@@ -180,11 +179,6 @@ private
     @commit_not_found_error_message = $!.message
     nil
   end
-  
-  def native_commits
-    project.repo.commits_between(commit_before, commit_after)
-  end
-  
   
   def release_each_ticket!
     tickets.each do |ticket|

@@ -15,12 +15,16 @@ module CommitSynchronizer
   
   def find_or_create_by_sha(sha)
     sha = sha.sha if sha.respond_to?(:sha)
-    find_by_sha(sha) || from_native_commit(repo.native_commit(sha)).tap do |commit|
-      commit.project = project
-      commit.save!
-    end
+    find_by_sha(sha) || create_missing_commit!(repo.native_commit(sha))
   rescue Houston::Adapters::VersionControl::CommitNotFound
     nil
+  end
+  
+  
+  def between(commit0, commit1)
+    repo.commits_between(commit0, commit1).map do |native_commit|
+      find_by_sha(native_commit.sha) || create_missing_commit!(native_commit)
+    end
   end
   
   
@@ -31,10 +35,17 @@ private
     
     missing_commits.each do |sha|
       native_commit = repo.native_commit(sha)
-      project.commits.from_native_commit(native_commit).save! if native_commit
+      create_missing_commit!(native_commit) if native_commit
     end
     
     Rails.logger.info "[commits:sync] #{missing_commits.length} new commits for #{project.name}"
+  end
+  
+  def create_missing_commit!(native_commit)
+    from_native_commit(native_commit).tap do |commit|
+      commit.project = project
+      commit.save!
+    end
   end
   
   def flag_unreachable_commits!(unreachable_commits)
