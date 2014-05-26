@@ -8,6 +8,7 @@ class FullTicketPresenter < TicketPresenter
       tasks: ticket.tasks.map { |task| task.ticket = ticket; {
         id: task.id,
         description: task.description,
+        number: task.number,
         letter: task.letter,
         effort: task.effort } },
       reporter: reporter && {

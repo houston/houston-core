@@ -11,9 +11,7 @@
   padding: 0.5em 1em;
 }
 
-#add_task_form, .icon-spinner, .task-remove { display: none; }
-.edit-mode {
-  #add_task_form { display: block; }
-  .task-remove { display: table-cell; }
-} 
-#add_task_form.loading .icon-spinner { display: inline-block; }
+#sprint_view {
+  .icon-spinner { display: none; }
+  #add_task_form.loading .icon-spinner { display: inline-block; }
+}
