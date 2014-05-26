@@ -24,51 +24,53 @@ class Release < ActiveRecord::Base
   
   
   
-  def self.to_environment(environment_name)
-    where(environment_name: environment_name)
-  end
-  
-  def self.for_projects(*projects)
-    ids = projects.flatten.map { |project| project.is_a?(Project) ? project.id : project }
-    where(project_id: ids)
-  end
-  
-  def self.for_deploy(deploy)
-    where(deploy_id: deploy.id)
-  end
-  
-  def self.most_recent_commit
-    (release = first) && release.commit1
-  end
-  
-  def self.before(time)
-    return all if time.nil?
-    where(arel_table[:created_at].lt(time))
-  end
-  
-  def self.latest
-    first
-  end
-  
-  def self.earliest
-    last
-  end
-  
-  def self.with_message
-    where arel_table[:message].not_eq("")
-  end
-  
-  def self.most_recent
-    joins <<-SQL
-      INNER JOIN (
-        SELECT project_id, environment_name, MAX(created_at) AS created_at
-        FROM releases
-        GROUP BY project_id, environment_name
-      ) AS most_recent_releases
-      ON releases.project_id=most_recent_releases.project_id
-      AND releases.environment_name=most_recent_releases.environment_name
-      AND releases.created_at=most_recent_releases.created_at
-    SQL
+  class << self
+    def to_environment(environment_name)
+      where(environment_name: environment_name)
+    end
+    
+    def for_projects(*projects)
+      ids = projects.flatten.map { |project| project.is_a?(Project) ? project.id : project }
+      where(project_id: ids)
+    end
+    
+    def for_deploy(deploy)
+      where(deploy_id: deploy.id)
+    end
+    
+    def most_recent_commit
+      (release = first) && release.commit1
+    end
+    
+    def before(time)
+      return all if time.nil?
+      where(arel_table[:created_at].lt(time))
+    end
+    
+    def latest
+      first
+    end
+    
+    def earliest
+      last
+    end
+    
+    def with_message
+      where arel_table[:message].not_eq("")
+    end
+    
+    def most_recent
+      joins <<-SQL
+        INNER JOIN (
+          SELECT project_id, environment_name, MAX(created_at) AS created_at
+          FROM releases
+          GROUP BY project_id, environment_name
+        ) AS most_recent_releases
+        ON releases.project_id=most_recent_releases.project_id
+        AND releases.environment_name=most_recent_releases.environment_name
+        AND releases.created_at=most_recent_releases.created_at
+      SQL
+    end
   end
   
   
