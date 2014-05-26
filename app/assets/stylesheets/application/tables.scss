@@ -40,6 +40,7 @@ th.vertical {
 tr.selected > td { background-color: #ffe; }
 .table-striped tbody > tr.selected:nth-child(odd) > td { background-color: #ffd; }
 .table-expandable, .table-hoverable {
+  tbody td { cursor: pointer; }
   tbody > tr:hover td { background-color: rgba(128, 212, 255, 0.1); }
 }
 .table.table-expandable {
