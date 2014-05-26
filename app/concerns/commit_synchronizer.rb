@@ -42,10 +42,7 @@ private
   end
   
   def create_missing_commit!(native_commit)
-    from_native_commit(native_commit).tap do |commit|
-      commit.project = project
-      commit.save!
-    end
+    create!(attributes_from_native_commit(native_commit))
   end
   
   def flag_unreachable_commits!(unreachable_commits)

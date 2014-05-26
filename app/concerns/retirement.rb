@@ -1,10 +1,7 @@
 module Retirement
   extend ActiveSupport::Concern
   
-  
-  
   module ClassMethods
-    
     def unretired
       where(retired_at: nil)
     end
@@ -12,9 +9,7 @@ module Retirement
     def retired
       where(arel_table[:retired_at].not_eq(nil))
     end
-    
   end
-  
   
   
   def retire!
@@ -24,6 +19,10 @@ module Retirement
   
   def unretire!
     update_column(:retired_at, nil)
+  end
+  
+  def retired?
+    retired_at.present?
   end
   
 end

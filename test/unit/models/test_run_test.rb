@@ -28,7 +28,7 @@ class TestRunTest < ActiveSupport::TestCase
   
   test "#commit returns a Commit for the test_run's sha" do
     path = Rails.root.join("test", "data", "bare_repo.git").to_s
-    project = Project.new(
+    project = Project.create!(
       name: "Test",
       slug: "test",
       version_control_name: "Git",

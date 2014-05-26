@@ -23,7 +23,7 @@ class Commit < ActiveRecord::Base
   
   class << self
     def find_by_sha(sha)
-      where(["sha LIKE ?", "#{sha}%"]).first
+      where(["sha LIKE ?", "#{sha.strip}%"]).first
     end
     
     def during(range)
