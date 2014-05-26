@@ -57,6 +57,8 @@ body.noscroll {
     box-sizing: border-box;
     padding: 15px;
     border-top: 1px solid #e4e4e4;
+    overflow-x: hidden;
+    overflow-y: auto;
   }
   
   .task-frame {
