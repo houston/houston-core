@@ -19,7 +19,7 @@ module Houston
           end
           
           def all_commits
-            `git --git-dir=#{git_dir} log --all --pretty='%H'`.split(/\n/)
+            `git --git-dir=#{git_dir} log --all --pretty='%H'`.split(/\n/).uniq
           end
           
           def ancestors(sha)
