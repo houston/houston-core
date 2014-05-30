@@ -6,12 +6,13 @@
 </h1>
 <% end %>
 
-<div id="sprint_view"></div>
+<div id="sprint_view" class="hide-completed"></div>
 
 <% content_for :javascripts do %>
 <script type="text/javascript">
   $(function() {
-    $('#sprint_view').appendView(new ShowSprintView({
+    new ShowSprintView({
+      el: $('#sprint_view')[0],
       sprintId: <%= @sprint.try(:id).to_json %>,
       sprintStart: new Date(<%= @sprint.start_date.year %>, <%= @sprint.start_date.month - 1 %>, <%= @sprint.start_date.day %>),
       sprintLocked: <%= @sprint.try(:locked?).to_json %>,
@@ -21,7 +22,7 @@
         return task;
       }),
       openTasks: <%= raw TaskPresenter.new(@open_tasks).to_json %>
-    }));
+    }).render();
   });
 </script>
 <% end %>

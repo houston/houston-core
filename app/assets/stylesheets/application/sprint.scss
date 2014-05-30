@@ -1,3 +1,6 @@
+$completed-background: #E6F3E2;
+$completed-foreground: rgb(42, 133, 19);
+
 .sprint-total-effort {
   float: right;
   margin-bottom: 12px;
@@ -14,4 +17,11 @@
 #sprint_view {
   .icon-spinner { display: none; }
   #add_task_form.loading .icon-spinner { display: inline-block; }
+  
+  &.hide-completed .task-completed { display: none; }
+  .task-completed {
+    background: $completed-background;
+    color: $completed-foreground;
+    a { color: $completed-foreground; }
+  }
 }

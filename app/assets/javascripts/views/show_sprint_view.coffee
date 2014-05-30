@@ -1,5 +1,4 @@
 class @ShowSprintView extends Backbone.View
-  className: 'hide-completed'
   
   events:
     'click .check-out-button': 'toggleCheckOut'
@@ -20,6 +19,10 @@ class @ShowSprintView extends Backbone.View
   
   render: ->
     return @ unless @tasks
+    for task in @tasks
+      task.completed = !!task.firstReleaseAt || !!task.firstCommitAt
+      task.open = !task.completed
+    
     html = @template
       locked: @locked
       tasks: @tasks
@@ -111,6 +114,8 @@ class @ShowSprintView extends Backbone.View
     template = HandlebarsTemplates['sprints/task']
     $tasks = @$el.find('#tasks').empty()
     for task in @tasks
+      task.completed = !!task.firstReleaseAt || !!task.firstCommitAt
+      task.open = !task.completed
       $tasks.append template(task)
   
   
