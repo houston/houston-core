@@ -2,8 +2,6 @@ require "test_helper"
 
 
 class TaskTest < ActiveSupport::TestCase
-  include RR::Adapters::TestUnit
-  
   attr_reader :task1, :task2
   
   

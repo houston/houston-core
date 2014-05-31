@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class JenkinsAdapterTest < ActiveSupport::TestCase
-  include RR::Adapters::TestUnit
   
   
   test "#fetch_results! should correctly parse Jenkins build data" do

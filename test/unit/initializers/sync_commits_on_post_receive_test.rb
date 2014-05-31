@@ -2,7 +2,6 @@ require "test_helper"
 
 
 class SyncCommitsOnPostReceiveTest < ActiveSupport::TestCase
-  include RR::Adapters::TestUnit
   
   context "When GitHub posts to /projects/:slug/hooks/post_receive, Houston" do
     should "sync commits for that project" do

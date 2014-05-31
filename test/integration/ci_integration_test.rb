@@ -4,7 +4,6 @@ require "support/houston/adapters/ci_server/mock_adapter"
 
 # Tests config/initializers/run_tests_on_post_receive.rb
 class CIIntegrationTest < ActionDispatch::IntegrationTest
-  include RR::Adapters::TestUnit
   
   
   
@@ -57,7 +56,7 @@ class CIIntegrationTest < ActionDispatch::IntegrationTest
     @test_run = TestRun.create!(project: @project, sha: commit)
     
     any_instance_of(Houston::Adapters::CIServer::MockAdapter::Job) do |job|
-      mock(job).fetch_results!(results_url)
+      mock(job).fetch_results!(results_url).returns({})
     end
     
     post "/projects/#{@project.slug}/hooks/post_build", {commit: commit, results_url: results_url}

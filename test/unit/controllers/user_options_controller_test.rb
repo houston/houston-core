@@ -2,7 +2,6 @@ require "test_helper"
 
 class UserOptionsControllerTest < ActionController::TestCase
   include Devise::TestHelpers
-  include RR::Adapters::TestUnit
   
   attr_reader :user
   

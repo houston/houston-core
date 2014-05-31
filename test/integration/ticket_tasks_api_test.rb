@@ -2,8 +2,6 @@ require "test_helper"
 
 
 class TicketTasksApiTest < ActionDispatch::IntegrationTest
-  include RR::Adapters::TestUnit
-  
   attr_reader :project, :ticket
   
   setup do

@@ -29,11 +29,11 @@ class Role < ActiveRecord::Base
     end
     
     def to_users
-      User.where(id: scoped.select(:user_id))
+      User.where(id: all.select(:user_id))
     end
     
     def to_projects
-      Project.where(id: scoped.select(:project_id))
+      Project.where(id: all.select(:project_id))
     end
     
     def for_user(user_or_id)
@@ -47,7 +47,7 @@ class Role < ActiveRecord::Base
     end
     
     def any?
-      scoped.count > 0
+      count > 0
     end
     
   end

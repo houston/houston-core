@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class TestRunTest < ActiveSupport::TestCase
-  include RR::Adapters::TestUnit
   
   
   test "#retry! triggers a new build" do
@@ -21,7 +20,7 @@ class TestRunTest < ActiveSupport::TestCase
     stub(test_run).save! { } # skip the database
     stub(test_run).fire_complete! { } # skip the callbacks
     
-    mock(project.ci_server).fetch_results!(results_url)
+    mock(project.ci_server).fetch_results!(results_url).returns({})
     test_run.completed!(results_url)
   end
   

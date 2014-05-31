@@ -2,8 +2,6 @@ require 'test_helper'
 
 
 class CodeClimateCoverageReportTest < ActiveSupport::TestCase
-  include RR::Adapters::TestUnit
-  
   attr_reader :sha, :report, :project, :test_run
   
   setup do

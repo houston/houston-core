@@ -103,7 +103,7 @@ class PushGemfileToGemnasiumTest < ActiveSupport::TestCase
         stub(Gemnasium).load_config(project_path).returns(Gemnasium.config) # do nothing
         Gemnasium.push(project_path: project_path)
       else
-        pending "This test cannot be run unless Houston is on master, but HEAD is #{head}"
+        skip "This test cannot be run unless Houston is on master, but HEAD is #{head}"
       end
     end
     

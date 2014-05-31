@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class SourceFileCoverageTest < ActiveSupport::TestCase
-  include RR::Adapters::TestUnit
   
   
   # https://github.com/colszowka/simplecov/blob/v0.7.1/test/test_source_file.rb

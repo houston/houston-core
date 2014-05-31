@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
-  include RR::Adapters::TestUnit
   attr_reader :user
   
   

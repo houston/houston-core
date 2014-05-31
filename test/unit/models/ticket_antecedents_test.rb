@@ -1,8 +1,6 @@
 require 'test_helper'
 
 class TicketAntecedentsTest < ActiveSupport::TestCase
-  include RR::Adapters::TestUnit
-  
   attr_reader :antecedent
   
   setup do

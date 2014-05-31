@@ -86,7 +86,7 @@
       <%= f.label :roles, "Teammates", :class => 'control-label' %>
       <div class="controls changes-nested-editor">
         <%= f.nested_editor_for :roles do |f| -%>
-          <%= f.select :user_id, [nil] + User.scoped.map { |user| [user.name, user.id] } %>
+          <%= f.select :user_id, [nil] + User.all.map { |user| [user.name, user.id] } %>
           <%= f.select :name, [nil] + Houston.config.project_roles %>
         <% end -%>
       </div>

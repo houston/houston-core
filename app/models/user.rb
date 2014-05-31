@@ -69,8 +69,8 @@ class User < ActiveRecord::Base
   
   def self.with_email_address(*email_addresses)
     email_addresses = email_addresses.flatten.compact
-    return where("1<>1") if email_addresses.none? # <-- !todo: replace with 'none' in later Rails
-    values = email_addresses.map { |email| quote_value(email.downcase) }.join(",")
+    return none if email_addresses.none?
+    values = email_addresses.map { |email| connection.quote(email.downcase) }.join(",")
     where("ARRAY[\"email_addresses\"] && ARRAY[#{values}]")
   end
   

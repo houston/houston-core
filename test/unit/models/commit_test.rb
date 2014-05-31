@@ -1,8 +1,6 @@
 require 'test_helper'
 
 class CommitTest < ActiveSupport::TestCase
-  include RR::Adapters::TestUnit
-  
   attr_reader :project, :ticket, :task
   
   

@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class GitAdapterTest < ActiveSupport::TestCase
-  include RR::Adapters::TestUnit
   
   setup do
     path = Rails.root.join("test", "data", "bare_repo.git")

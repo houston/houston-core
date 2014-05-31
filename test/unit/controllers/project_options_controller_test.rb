@@ -2,7 +2,6 @@ require "test_helper"
 
 class ProjectOptionsControllerTest < ActionController::TestCase
   include Devise::TestHelpers
-  include RR::Adapters::TestUnit
   
   attr_reader :project
   

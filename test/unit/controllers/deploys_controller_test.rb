@@ -2,7 +2,6 @@ require "test_helper"
 
 
 class DeploysControllerTest < ActionController::TestCase
-  include RR::Adapters::TestUnit
   
   setup do
     @project = Project.create!(name: "Test", slug: "test", ci_server_name: "Mock")

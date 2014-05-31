@@ -4,11 +4,7 @@ require 'rails/all'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
-Bundler.require(:default, Rails.env)
-
-# Load Houston configuration early, so that it
-# can be used throughout Rails' initialization.
-require './lib/configuration'
+Bundler.require(*Rails.groups)
 
 module Houston
   class Application < Rails::Application

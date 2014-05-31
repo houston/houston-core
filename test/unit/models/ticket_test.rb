@@ -2,8 +2,6 @@ require "test_helper"
 
 
 class TicketTest < ActiveSupport::TestCase
-  include RR::Adapters::TestUnit
-  
   attr_reader :project, :ticket, :release, :released_at
   
   setup do
@@ -15,10 +13,8 @@ class TicketTest < ActiveSupport::TestCase
   
   context "#release!" do
     setup do
-      @release = Release.new
-      @released_at = Time.zone.now
-      stub(@release).created_at { @released_at }
-      
+      @release = Release.new(project: project, user_id: 1)
+      @released_at = release.created_at = Time.zone.now
       @ticket = Ticket.create!(project: project, number: 1, summary: "Test summary", type: "Bug")
     end
     

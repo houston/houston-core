@@ -8,7 +8,6 @@ end
 ENV["RAILS_ENV"] ||= "test"
 require File.expand_path("../../config/environment", __FILE__)
 require "rails/test_help"
-require "turn"
 require "support/houston/adapters/version_control/mock_adapter"
 
 if ENV["CI"] == "true"
@@ -16,7 +15,8 @@ if ENV["CI"] == "true"
   MiniTest::Reporters.use! [MiniTest::Reporters::DefaultReporter.new,
                             MiniTest::Reporters::JUnitReporter.new]
 else
-  require "turn"
+  require "idioms/minitest/reporter"
+  MiniTest::Reporters.use! Idioms::Minitest::Reporter.new
 end
 
 

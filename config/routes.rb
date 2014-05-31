@@ -1,4 +1,4 @@
-Houston::Application.routes.draw do
+Rails.application.routes.draw do
   
   resources :oauth_consumers do
     member do
