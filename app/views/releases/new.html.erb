@@ -1,6 +1,6 @@
 <%= render partial: "projects/header", locals: {project: @project, subtitle: "New Release of" } %>
 
-<% if @deploy && @deploy.release %>
+<% if @deploy && @deploy.release && @deploy.release.persisted? %>
 
   <div class="alert alert-error">
     Release notes have already been created for this deploy.
