@@ -15,6 +15,8 @@ class Task < ActiveRecord::Base
   
   attr_readonly :number
   
+  default_scope order(:number)
+  
   delegate :project, :to => :ticket
   
   
