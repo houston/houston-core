@@ -148,7 +148,8 @@ class window.NewTicketView extends Backbone.View
     @hideNewTicket()
     @$summary.focus()
   
-  createNewTicket: ->
+  createNewTicket: (e)->
+    e?.preventDefault()
     attributes = @$el.serializeObject()
     
     @$el.disable()
