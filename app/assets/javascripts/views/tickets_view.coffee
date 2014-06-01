@@ -4,10 +4,7 @@ class @TicketsView extends Backbone.View
     @$el = $('#tickets')
     @el = @$el[0]
     @project = @options.project
-    @tickets = for ticket in @options.tickets
-      ticket.openedAt = new Date(ticket.openedAt)
-      ticket.closedAt = new Date(ticket.closedAt) if ticket.closedAt
-      ticket
+    @tickets = @options.tickets
     @template = HandlebarsTemplates['tickets/index']
     @render()
     
@@ -18,20 +15,21 @@ class @TicketsView extends Backbone.View
       e.stopImmediatePropagation()
       number = +$(e.target).closest('[rel="ticket"]').attr('data-number')
       App.showTicket number, @project,
-        ticketNumbers: _.pluck(@tickets, 'number')
+        ticketNumbers: @tickets.pluck('number')
     
     new InfiniteScroll
       load: ($what)=>
         promise = new $.Deferred()
         @offset += 50
-        promise.resolve @template(tickets: @tickets.slice(@offset, @offset + 50))
+        promise.resolve @template(tickets: (ticket.toJSON() for ticket in @tickets.slice(@offset, @offset + 50)))
         promise
   
   render: ->
     @$el.find('tbody').remove()
     
     @offset = 0
-    html = @template(tickets: @tickets.slice(0, 50))
+    html = @template
+      tickets: (ticket.toJSON() for ticket in @tickets.slice(0, 50))
     @$el.append(html)
     @$el.find('.ticket').pseudoHover()
 
@@ -49,15 +47,5 @@ class @TicketsView extends Backbone.View
     @performSort attribute, order
   
   performSort: (attribute, order)->
-    sorter = @["#{attribute}Sorter"]
-    return console.log "#{attribute}Sorter is undefined!" unless sorter
-    
-    @tickets = @tickets.sortBy(sorter)
-    @tickets = @tickets.reverse() if order == 'desc'
+    @tickets = @tickets.orderBy(attribute, order)
     @render()
-
-  numberSorter: (ticket)-> ticket.number
-  summarySorter: (ticket)-> ticket.summary.toLowerCase().replace(/^\W/, '')
-  antecedentsSorter: (ticket)-> ticket.antecedents.length
-  openedAtSorter: (ticket)-> ticket.openedAt
-  closedAtSorter: (ticket)-> ticket.closedAt

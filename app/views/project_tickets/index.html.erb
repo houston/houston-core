@@ -28,7 +28,7 @@
   <% content_for :javascripts do %>
     <script type="text/javascript">
       $(function() {
-        var tickets = <%=raw MultiJson.dump(@tickets.map(&:as_json)) %>;
+        var tickets = new Tickets(<%=raw MultiJson.dump(@tickets.map(&:as_json)) %>, {parse: true});
         new TicketsView({tickets: tickets, project: <%=raw @project.slug.to_json %>});
       });
     </script>

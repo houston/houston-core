@@ -18,29 +18,29 @@ class @TicketModalView extends Backbone.View
           e.preventDefault()
           e.stopImmediatePropagation()
           @taskView?.saveChanges?()
-          @show(@prev())
+          @show(@prev(), true)
       Mousetrap.bind 'down', (e)=>
         if @$el.is(':visible')
           e.preventDefault()
           e.stopImmediatePropagation()
           @taskView?.saveChanges?()
-          @show(@next())
+          @show(@next(), false)
 
-  show: (number)->
+  show: (number, prev)->
     return unless number
     if @tickets
-      @showTicket @tickets.findWhere(number: number)
+      @showTicket @tickets.findWhere(number: number), prev
     else
       $.get "/projects/#{@project}/tickets/by_number/#{number}.json", (json)=>
-        @showTicket new Ticket(json)
+        @showTicket new Ticket(json), prev
 
-  showTicket: (ticket)->
+  showTicket: (ticket, prev)->
     @ticket = ticket
     @number = ticket.get 'number'
     @index = _.indexOf(@ticketNumbers, @number) if @ticketNumbers
-    @render()
+    @render(prev)
 
-  render: ->
+  render: (prev)->
     @$el.html @template
       ticket: @renderTicket(@ticket.toJSON())
       index: @index + 1
@@ -51,7 +51,8 @@ class @TicketModalView extends Backbone.View
     $modal.find('[title]').tooltip
       placement: 'bottom'
     
-    @taskView = @renderTaskView?(@$el.find('.task-frame')[0], @ticket)
+    @taskView = @renderTaskView? @$el.find('.task-frame')[0], @ticket,
+      prev: !!prev
     @$el.find('.ticket-body').toggleClass 'show-task-frame', @taskView
     @taskView?.render()
     

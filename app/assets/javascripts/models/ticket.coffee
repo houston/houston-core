@@ -1,11 +1,16 @@
 class window.Ticket extends Backbone.Model
-  url: ->
-    if @isNew()
-      "#{App.relativeRoot()}/tickets"
-    else
-      "#{App.relativeRoot()}/tickets/#{@get('id')}"
+  urlRoot: '/tickets'
   
-  
+  tasks: -> @_tasks ?= new Tasks(@get('tasks'))
+  estimatedEffort: ->
+    effort = @tasks().reduce ((sum, task)-> sum + +task.get('effort')), 0
+    if effort == 0 then null else effort
+  severity: ->
+    seriousness = @get('seriousness')
+    likelihood = @get('likelihood')
+    clumsiness = @get('clumsiness')
+    return false unless seriousness && likelihood && clumsiness
+    (0.6 * seriousness + 0.3 * likelihood + 0.1 * clumsiness).toFixed(1)
   
   testingNotes: ->
     @testingNotesCollection ||= new TestingNotes(@get('testingNotes'), ticket: @)
@@ -19,6 +24,11 @@ class window.Ticket extends Backbone.Model
   activityStream: ->
     @testingNotes().models.concat(@commits().models).sortBy (item)-> item.get('createdAt')
   
+  
+  parse: (ticket)->
+    ticket.openedAt = new Date(ticket.openedAt) if ticket.openedAt
+    ticket.closedAt = new Date(ticket.closedAt) if ticket.closedAt
+    ticket
   
   
   testerVerdicts: ->
@@ -103,5 +113,21 @@ class window.Tickets extends Backbone.Collection
     _.select words, (word)=>
       word.length > 1 and @IGNORED_WORDS.indexOf(word) is -1
 
+  orderBy: (attribute, ascOrDesc)->
+    tickets = @sortBy(@sorterFor(attribute))
+    tickets = tickets.reverse() if ascOrDesc == 'desc'
+    new @constructor(tickets)
 
-
+  sorterFor: (attribute)->
+    switch attribute
+      when 'effort'       then (ticket)-> ticket.estimatedEffort()
+      when 'severity'     then (ticket)-> ticket.severity()
+      when 'seriousness'  then (ticket)-> +ticket.get('seriousness')
+      when 'likelihood'   then (ticket)-> +ticket.get('likelihood')
+      when 'clumsiness'   then (ticket)-> +ticket.get('clumsiness')
+      when 'summary'      then (ticket)-> ticket.get('summary').toLowerCase().replace(/^\W/, '')
+      when 'openedAt'     then (ticket)-> ticket.get('openedAt')
+      when 'number'       then (ticket)-> ticket.get('number')
+      when 'antecedents'  then (ticket)-> ticket.get('antecedents').length
+      when 'closedAt'     then (ticket)-> ticket.get('closedAt')
+      else throw "Tickets#sorterFor doesn't know how to sort #{attribute}!"
