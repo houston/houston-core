@@ -222,8 +222,8 @@ class Ticket < ActiveRecord::Base
   
   
   def release!(release)
-    self.releases << release unless releases.exists?(release.id)
     cache_release_attributes(release)
+    self.releases << release unless releases.exists?(release.id)
     Houston.observer.fire "ticket:release", self, release
   end
   
