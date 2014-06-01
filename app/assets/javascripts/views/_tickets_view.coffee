@@ -2,6 +2,7 @@ class @TicketsView extends Backbone.View
 
   initialize: ->
     @tickets = @options.tickets
+    @project = @options.project
     
     @$el.on 'click', 'th', (e)=>
       @toggleSort $(e.target).closest('th')
@@ -10,7 +11,7 @@ class @TicketsView extends Backbone.View
       e.preventDefault()
       e.stopImmediatePropagation()
       number = +$(e.target).closest('[rel="ticket"]').attr('data-number')
-      @showTicketModal(number)
+      App.showTicket number, @project, @showTicketModal(number)
     
     if @options.infiniteScroll
       new InfiniteScroll
@@ -25,7 +26,7 @@ class @TicketsView extends Backbone.View
     @render()
 
   showTicketModal: (number)->
-    App.showTicket number
+    {}
 
   toggleSort: ($th)->
     if $th.hasClass('sort-asc')
