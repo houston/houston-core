@@ -29,7 +29,12 @@
     <script type="text/javascript">
       $(function() {
         var tickets = new Tickets(<%=raw MultiJson.dump(@tickets.map(&:as_json)) %>, {parse: true});
-        new TicketsView({tickets: tickets, project: <%=raw @project.slug.to_json %>});
+        new AllTicketsView({
+          el: document.getElementById('tickets'),
+          infiniteScroll: true,
+          tickets: tickets,
+          project: <%=raw @project.slug.to_json %>
+        }).render();
       });
     </script>
   <% end %>

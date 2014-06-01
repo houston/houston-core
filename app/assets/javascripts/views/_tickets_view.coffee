@@ -1,37 +1,31 @@
 class @TicketsView extends Backbone.View
-  
+
   initialize: ->
-    @$el = $('#tickets')
-    @el = @$el[0]
-    @project = @options.project
     @tickets = @options.tickets
-    @template = HandlebarsTemplates['tickets/index']
-    @render()
     
-    @$el.on 'click', 'th', (e)=> @toggleSort $(e.target).closest('th')
+    @$el.on 'click', 'th', (e)=>
+      @toggleSort $(e.target).closest('th')
     
     @$el.on 'click', '[rel="ticket"]', (e)=>
       e.preventDefault()
       e.stopImmediatePropagation()
       number = +$(e.target).closest('[rel="ticket"]').attr('data-number')
-      App.showTicket number, @project,
-        ticketNumbers: @tickets.pluck('number')
+      @showTicketModal(number)
     
-    new InfiniteScroll
-      load: ($what)=>
-        promise = new $.Deferred()
-        @offset += 50
-        promise.resolve @template(tickets: (ticket.toJSON() for ticket in @tickets.slice(@offset, @offset + 50)))
-        promise
-  
-  render: ->
-    @$el.find('tbody').remove()
-    
-    @offset = 0
-    html = @template
-      tickets: (ticket.toJSON() for ticket in @tickets.slice(0, 50))
-    @$el.append(html)
-    @$el.find('.ticket').pseudoHover()
+    if @options.infiniteScroll
+      new InfiniteScroll
+        load: ($what)=>
+          promise = new $.Deferred()
+          @offset += 50
+          promise.resolve @template
+            tickets: (ticket.toJSON() for ticket in @tickets.slice(@offset, @offset + 50))
+          promise
+
+  renderTickets: ->
+    @render()
+
+  showTicketModal: (number)->
+    App.showTicket number
 
   toggleSort: ($th)->
     if $th.hasClass('sort-asc')
@@ -45,7 +39,7 @@ class @TicketsView extends Backbone.View
     attribute = $th.attr('data-attribute')
     order = if $th.hasClass('sort-desc') then 'desc' else 'asc'
     @performSort attribute, order
-  
+
   performSort: (attribute, order)->
     @tickets = @tickets.orderBy(attribute, order)
-    @render()
+    @renderTickets()
