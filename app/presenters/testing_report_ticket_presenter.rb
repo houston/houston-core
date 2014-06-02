@@ -8,8 +8,20 @@ class TestingReportTicketPresenter < TicketPresenter
       .includes(:project)
       .includes(:testing_notes => :user)
       .includes(:releases)
-      .includes(:commits) # so we can present committers
-      .includes(:released_commits)
+    @committers_by_ticket = Commit
+      .joins("INNER JOIN commits_tickets ON commits_tickets.commit_id=commits.id")
+      .where(["commits_tickets.ticket_id IN (?)", @tickets.pluck(:id)])
+      .where(unreachable: false)
+      .pluck("commits_tickets.ticket_id", :committer, :committer_email)
+      .each_with_object({}) { |(ticket_id, committer_name, committer_email), map|
+        (map[ticket_id] ||= Set.new) << TicketCommitter.new(committer_name, committer_email) }
+    @released_commits_by_ticket = Commit
+      .joins("INNER JOIN commits_tickets ON commits_tickets.commit_id=commits.id")
+      .where(["commits_tickets.ticket_id IN (?)", @tickets.pluck(:id)])
+      .reachable
+      .released
+      .select("commits.*, commits_tickets.ticket_id")
+      .group_by(&:ticket_id)
   end
   
   def as_json(*args)
@@ -18,7 +30,7 @@ class TestingReportTicketPresenter < TicketPresenter
   
   def ticket_to_json(ticket)
     super.merge(
-      committers: ticket.committers(&:to_h),
+      committers: @committers_by_ticket.fetch(ticket.id, Set.new).map(&:to_h),
       deployment: ticket.deployment,
       description: mdown(ticket.description),
       priority: ticket.priority,
@@ -26,7 +38,7 @@ class TestingReportTicketPresenter < TicketPresenter
       dueDate: ticket.due_date,
       minPassingVerdicts: ticket.min_passing_verdicts,
       testingNotes: TestingNotePresenter.new(ticket.testing_notes).as_json,
-      commits: CommitPresenter.new(ticket.released_commits).as_json,
+      commits: CommitPresenter.new(@released_commits_by_ticket.fetch(ticket.id, [])).as_json,
       releases: ReleasePresenter.new(ticket.releases).as_json,
       lastReleaseAt: ticket.last_release_at)
   end
