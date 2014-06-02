@@ -50,7 +50,7 @@ module Github
     end
     
     def pull_request?(issue)
-      issue.pull_request._rels.size > 0
+      !issue.pull_request.nil?
     end
     
   end
