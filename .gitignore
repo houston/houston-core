@@ -14,7 +14,6 @@
 config/config.rb
 config/keypair.pem
 config/skylight.yml
-config/secrets.yml
 
 # Ignore all logfiles and tempfiles.
 /log/*.log

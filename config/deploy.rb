@@ -13,6 +13,8 @@ namespace :deploy do
     run "ln -nfs #{shared_path}/config/config.rb #{release_path}/config/config.rb"
     run "ln -nfs #{shared_path}/config/skylight.yml #{release_path}/config/skylight.yml"
     run "ln -nfs #{shared_path}/config/keypair.pem #{release_path}/config/keypair.pem"
+    run "rm -f #{release_path}/config/secrets.yml"
+    run "ln -nfs #{shared_path}/config/secrets.yml #{release_path}/config/secrets.yml"
     run "rm -rf #{release_path}/tmp"
     run "ln -nfs #{shared_path}/tmp #{release_path}"
     run "ln -nfs #{shared_path}/extras #{release_path}/public/extras"
