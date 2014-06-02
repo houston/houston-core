@@ -14,6 +14,7 @@ module CommitSynchronizer
   
   
   def find_or_create_by_sha(sha)
+    return nil if sha.nil?
     sha = sha.sha if sha.respond_to?(:sha)
     find_by_sha(sha) || create_missing_commit!(repo.native_commit(sha))
   rescue Houston::Adapters::VersionControl::CommitNotFound
