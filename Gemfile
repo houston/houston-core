@@ -88,6 +88,7 @@ end
 group :test do
   gem "minitest"
   gem "idioms", github: "concordia-publishing-house/idioms", branch: "master"
+  gem "capybara"
   gem "shoulda-context"
   gem "timecop"
   gem "rr"
