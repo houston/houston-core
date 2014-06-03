@@ -77,7 +77,7 @@
   <% if (blamable_commits = @test_run.blamable_commits).any? %>
     <div class="test-result-credit">
       <p>
-        <%= blamable_commits.uniq_by(&:author_email).map { |commit|
+        <%= blamable_commits.uniq(&:author_email).map { |commit|
               "<span class=\"test-result-committer\">#{gravatar_image commit.author_email, size: 48} #{commit.author_name}</span>"
             }.to_sentence(two_words_connector: " or ", last_word_connector: ", or ").html_safe %>
         broke the build.
@@ -91,7 +91,7 @@
   <% praisable_commits = @test_run.commits_since_last_test_run %>
   <div class="test-result-credit">
     <p>
-      <%= praisable_commits.uniq_by(&:author_email).map { |commit|
+      <%= praisable_commits.uniq(&:author_email).map { |commit|
             "<span class=\"test-result-committer\">#{gravatar_image commit.author_email, size: 48} #{commit.author_name}</span>"
           }.to_sentence.html_safe %>
       fixed the build!
