@@ -84,6 +84,8 @@ class window.Tickets extends Backbone.Collection
     results = []
     for ticket in @models
       wordsMatched = _.select(regexes, (rx)-> rx.test(ticket.get('summary'))).length
+      reporter = ticket.get('reporter')
+      wordsMatched += _.select(regexes, (rx)-> rx.test(reporter.name)).length if reporter
       if wordsMatched > 0
         ticket.wordsMatched = wordsMatched
         results.push(ticket)
