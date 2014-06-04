@@ -24,6 +24,6 @@ class @AllTicketsView extends @TicketsView
     search = $(e.target).val()
     unless @lastSearch is search
       @lastSearch = search
-      @tickets = if search then @allTickets.search(search) else @allTickets
+      @tickets = if search then new Tickets(@allTickets.search(search)) else @allTickets
       @render()
 
