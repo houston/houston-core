@@ -75,43 +75,42 @@ class window.Tickets extends Backbone.Collection
   
   search: (summary)->
     words = @getWords(summary)
-    console.log(summary, '->', words)
+    # console.log(summary, '->', words)
     
     return [] if words.length == 0
     
     regexes = (new RegExp("\\b#{RegExp.escape(word)}", 'i') for word in words)
     
     results = []
-    for ticket in @toJSON()
-      value = _.select(regexes, (rx)-> rx.test(ticket.summary)).length
-      if value > 0
-        ticket.value = value
+    for ticket in @models
+      wordsMatched = _.select(regexes, (rx)-> rx.test(ticket.get('summary'))).length
+      if wordsMatched > 0
+        ticket.wordsMatched = wordsMatched
         results.push(ticket)
     results.sort(@compareTickets).slice(0, 12)
-  
+
   compareTickets: (a, b)->
-    if a.value > b.value
+    if a.wordsMatched > b.wordsMatched
       -1
-    else if b.value > a.value
+    else if b.wordsMatched > a.wordsMatched
       1
-    else if a.closed && !b.closed
+    else if a.get('closed') && !b.get('closed')
       1
-    else if b.closed && !a.closed
+    else if b.get('closed') && !a.get('closed')
       -1
     else
       0
-  
+
   IGNORED_WORDS: ['an', 'the',
                   'if', 'when', 'then',
                   'i', 'my',
                   'and', 'or', 'but',
                   'for', 'of', 'from',
                   'should']
-  
+
   getWords: (string)->
     words = (word.replace(/[:\|.,;!?]/, '') for word in string.split(' '))
-    _.select words, (word)=>
-      word.length > 1 and @IGNORED_WORDS.indexOf(word) is -1
+    _.select words, (word)=> @IGNORED_WORDS.indexOf(word) is -1
 
   orderBy: (attribute, ascOrDesc)->
     tickets = @sortBy(@sorterFor(attribute))

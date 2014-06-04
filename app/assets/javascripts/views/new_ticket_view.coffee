@@ -132,7 +132,7 @@ class window.NewTicketView extends Backbone.View
     unless @lastSearch is @nextSearch
       @lastSearch = @nextSearch
       results = @tickets.search(@nextSearch)
-      list = (@renderSuggestion(ticket) for ticket in results)
+      list = (@renderSuggestion(ticket.toJSON()) for ticket in results)
       @$suggestions.empty().append list
   
 
