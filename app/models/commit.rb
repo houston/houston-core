@@ -6,7 +6,7 @@ class Commit < ActiveRecord::Base
   has_and_belongs_to_many :tickets
   has_and_belongs_to_many :tasks
   
-  default_scope { order("created_at ASC") }
+  default_scope { order(:created_at) }
   
   after_create :associate_committers_with_self
   after_create :associate_tickets_with_self
