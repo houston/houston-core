@@ -33,7 +33,7 @@
    <Protection/>
   </Style>
   <Style ss:ID="s64">
-   <NumberFormat ss:Format="[$-F400]h:mm:ss\ AM/PM"/>
+   <NumberFormat ss:Format="Short Date"/>
   </Style>
   <Style ss:ID="s65">
    <Alignment ss:Horizontal="Center" ss:Vertical="Bottom"/>
@@ -64,7 +64,11 @@
     <Cell><Data ss:Type="String"><%= ticket.reporter_name %></Data></Cell>
     <Cell><Data ss:Type="String"><%= ticket.summary %></Data></Cell>
     <Cell ss:StyleID="s64"><Data ss:Type="DateTime"><%= xls_time ticket.opened_at %></Data></Cell>
-    <Cell ss:StyleID="s64"><Data ss:Type="DateTime"><%= xls_time ticket.closed_at if ticket.closed_at %></Data></Cell>
+    <% if ticket.closed_at %>
+    <Cell ss:StyleID="s64"><Data ss:Type="DateTime"><%= xls_time ticket.closed_at  %></Data></Cell>
+    <% else %>
+    <Cell ss:StyleID="s64"/>
+    <% end %>
    </Row>
    <% end %>
   </Table>
