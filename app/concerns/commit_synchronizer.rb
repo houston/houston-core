@@ -24,6 +24,8 @@ module CommitSynchronizer
   
   def between(commit0, commit1)
     synchronize repo.commits_between(commit0, commit1)
+  rescue Houston::Adapters::VersionControl::CommitNotFound
+    []
   end
   
   
