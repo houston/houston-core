@@ -44,6 +44,14 @@ class Ticket < ActiveRecord::Base
     end
     alias :for_project :for_projects
     
+    def mentioned_by_commits(*commits)
+      ids = commits.flatten.map { |commit| commit.is_a?(Commit) ? commit.id : commit }
+      commits_tickets = Arel::Table.new("commits_tickets")
+      where arel_table[:id].in(commits_tickets
+        .where(commits_tickets[:commit_id].in(ids))
+        .project(commits_tickets[:ticket_id]))
+    end
+    
     def numbered(*numbers)
       where(number: numbers.flatten.map(&:to_i))
     end

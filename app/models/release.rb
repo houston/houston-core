@@ -147,7 +147,7 @@ class Release < ActiveRecord::Base
   end
   
   def load_tickets!
-    self.tickets = commits.map(&:tickets).flatten
+    self.tickets = project.tickets.mentioned_by_commits(commits)
   end
   
   
