@@ -23,8 +23,28 @@ module CommitSynchronizer
   
   
   def between(commit0, commit1)
-    repo.commits_between(commit0, commit1).map do |native_commit|
-      find_by_sha(native_commit.sha) || create_missing_commit!(native_commit)
+    synchronize repo.commits_between(commit0, commit1)
+  end
+  
+  
+  def synchronize(native_commits)
+    native_commits = native_commits.reject(&:nil?)
+    return [] if native_commits.empty?
+    
+    Houston.benchmark("[commits.synchronize] synchronizing #{native_commits.length} commits") do
+      shas = native_commits.map(&:sha)
+      commits = where(sha: shas)
+      
+      native_commits.map do |native_commit|
+        commit = commits.detect { |commit| commit.sha == native_commit.sha } ||
+                 create_missing_commit!(native_commit)
+        
+        # There's no reason why this shouldn't be set,
+        # but in order to reduce a bunch of useless hits
+        # to the cache and a bunch of log output...
+        commit.project = project
+        commit
+      end
     end
   end
   
