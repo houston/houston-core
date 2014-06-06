@@ -13,11 +13,20 @@ class ProjectTicketsController < ApplicationController
       response.headers["Content-Disposition"] = "attachment; filename=\"#{@project.name} Tickets.xls\""
     end
     
+    @filter = :all
     @tickets = TicketReport.new(@project.tickets).to_a
   end
   
   def open
-    render json: TicketPresenter.new(@project.tickets.includes(:project).unclosed)
+    render json: TicketPresenter.new(@project.tickets.open) if request.format.json?
+    
+    if request.format.xls?
+      response.headers["Content-Disposition"] = "attachment; filename=\"#{@project.name} Tickets.xls\""
+    end
+    
+    @filter = :open
+    @tickets = TicketReport.new(@project.tickets.open).to_a
+    render action: "index"
   end
   
   

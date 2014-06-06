@@ -128,7 +128,7 @@ Rails.application.routes.draw do
   
   scope "projects/:slug" do
     get "tickets", to: "project_tickets#index", as: :project_tickets
-    get "tickets/open", to: "project_tickets#open"
+    get "tickets/open", to: "project_tickets#open", as: :project_open_tickets
 
     get "tickets/by_number/:number", to: "project_tickets#show", as: :project_ticket
     post "tickets/by_number/:number/close", to: "project_tickets#close", as: :close_ticket

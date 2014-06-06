@@ -1,16 +1,22 @@
 <%= render partial: "projects/header", locals: {
            project: @project,
-           subtitle: "#{pluralize(@tickets.count, "tickets")} for"} %>
+           subtitle: "#{pluralize(@tickets.count, @filter == :open ? "open tickets" : "tickets")} for"} %>
 
 <input type="text" id="tickets_filter" placeholder="Filter Tickets" style="margin: 0" />
 
+<% if @filter == :all %>
+<%= link_to "Open Tickets", project_open_tickets_path(@project), class: "btn btn-default btn-toggle" %>
+<% else %>
+<%= link_to "Open Tickets", project_tickets_path(@project), class: "btn btn-default btn-toggle active" %>
+<% end %>
+
 <%= link_to "New Ticket", new_ticket_path(@project), :class => "btn btn-default" if can?(:create, @project.tickets.build) %>
 
-<%= link_to "Download for Excel", project_tickets_path(@project, format: :xls), :class => "btn btn-default" %>
+<%= link_to "Download for Excel", {format: :xls}, :class => "btn btn-default" %>
 
 <% if @tickets.any? %>
   <div class="nomargin">
-    <table id="tickets" class="table table-sortable table-striped table-hoverable infinite-scroll">
+    <table id="tickets" class="table table-sortable table-striped table-hoverable infinite-scroll" data-filter="<%= @filter %>">
       <thead>
         <tr>
           <td class="table-margin"></td>
