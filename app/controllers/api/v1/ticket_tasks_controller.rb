@@ -17,6 +17,7 @@ module Api
       
       def create
         task = ticket.tasks.build params.slice(:description, :effort)
+        task.updated_by = current_user
         if task.save
           render json: present_task(task), status: :created
         else

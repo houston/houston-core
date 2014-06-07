@@ -1306,6 +1306,45 @@ ALTER SEQUENCE value_statements_id_seq OWNED BY value_statements.id;
 
 
 --
+-- Name: versions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE versions (
+    id integer NOT NULL,
+    versioned_id integer,
+    versioned_type character varying(255),
+    user_id integer,
+    user_type character varying(255),
+    user_name character varying(255),
+    modifications text,
+    number integer,
+    reverted_from integer,
+    tag character varying(255),
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: versions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE versions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: versions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE versions_id_seq OWNED BY versions.id;
+
+
+--
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1443,6 +1482,13 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 --
 
 ALTER TABLE ONLY value_statements ALTER COLUMN id SET DEFAULT nextval('value_statements_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY versions ALTER COLUMN id SET DEFAULT nextval('versions_id_seq'::regclass);
 
 
 --
@@ -1603,6 +1649,14 @@ ALTER TABLE ONLY users
 
 ALTER TABLE ONLY value_statements
     ADD CONSTRAINT value_statements_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: versions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY versions
+    ADD CONSTRAINT versions_pkey PRIMARY KEY (id);
 
 
 --
@@ -1876,6 +1930,48 @@ CREATE INDEX index_users_on_invited_by_id ON users USING btree (invited_by_id);
 --
 
 CREATE UNIQUE INDEX index_users_on_reset_password_token ON users USING btree (reset_password_token);
+
+
+--
+-- Name: index_versions_on_created_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_versions_on_created_at ON versions USING btree (created_at);
+
+
+--
+-- Name: index_versions_on_number; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_versions_on_number ON versions USING btree (number);
+
+
+--
+-- Name: index_versions_on_tag; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_versions_on_tag ON versions USING btree (tag);
+
+
+--
+-- Name: index_versions_on_user_id_and_user_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_versions_on_user_id_and_user_type ON versions USING btree (user_id, user_type);
+
+
+--
+-- Name: index_versions_on_user_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_versions_on_user_name ON versions USING btree (user_name);
+
+
+--
+-- Name: index_versions_on_versioned_id_and_versioned_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_versions_on_versioned_id_and_versioned_type ON versions USING btree (versioned_id, versioned_type);
 
 
 --
@@ -2176,3 +2272,6 @@ INSERT INTO schema_migrations (version) VALUES ('20140526155845');
 INSERT INTO schema_migrations (version) VALUES ('20140526162645');
 
 INSERT INTO schema_migrations (version) VALUES ('20140526180608');
+
+INSERT INTO schema_migrations (version) VALUES ('20140606232907');
+

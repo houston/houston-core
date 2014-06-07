@@ -32,6 +32,7 @@ gem "simplecov"
 gem "strongbox" # for encrypting user credentials
 gem "sucker_punch" # for Airbrake
 gem "unfuddle", github: "boblail/unfuddle", branch: "master"
+gem "vestal_versions", github: "houstonmc/vestal_versions", branch: "master"
 gem "whenever" # a DSL for writing CRON jobs
 
 gem "backbone-rails", "~> 1.0.0"

@@ -1,5 +1,7 @@
 class Task < ActiveRecord::Base
   
+  versioned initial_version: true, only: [:description, :effort]
+  
   belongs_to :ticket
   belongs_to :sprint
   belongs_to :checked_out_by, class_name: "User"

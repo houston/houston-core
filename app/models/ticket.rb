@@ -3,6 +3,10 @@ class Ticket < ActiveRecord::Base
   
   self.inheritance_column = nil
   
+  versioned only: [:summary, :description, :type,
+                   :tags, :antecedents, :prerequisites,
+                   :closed_at, :resolution, :milestone_id]
+  
   belongs_to :project
   belongs_to :reporter, class_name: "User"
   belongs_to :milestone, counter_cache: true

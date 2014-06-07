@@ -80,7 +80,10 @@ module TicketSynchronizer
             before, after = ticket.changes["extended_attributes"]
             has_legitimate_changes = false if before == after
           end
-          Ticket.nosync { ticket.save } if has_legitimate_changes
+          if has_legitimate_changes
+            ticket.updated_by = project.ticket_tracker_name
+            Ticket.nosync { ticket.save }
+          end
         else
           ticket = Ticket.nosync { create(attributes) }
         end

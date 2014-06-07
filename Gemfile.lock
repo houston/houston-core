@@ -27,7 +27,7 @@ GIT
 
 GIT
   remote: git://github.com/houstonmc/houston-scheduler.git
-  revision: 24f9eed032f27a4d3e60830bc3d32b0e110cc68a
+  revision: 0c2bcd387ed1352a5f46702550deaf93fdbecb6a
   branch: master
   specs:
     houston-scheduler (0.0.1)
@@ -40,6 +40,15 @@ GIT
     simplecov-json (0.1.1)
       json
       simplecov
+
+GIT
+  remote: git://github.com/houstonmc/vestal_versions.git
+  revision: a3bec7ce5e4238b146dfa66ab918b3d78051a164
+  branch: master
+  specs:
+    vestal_versions (2.0.0)
+      activerecord (>= 3, < 5)
+      activesupport (>= 3, < 5)
 
 GIT
   remote: https://github.com/houstonmc/devise_ldap_authenticatable.git
@@ -376,5 +385,6 @@ DEPENDENCIES
   uglifier (>= 1.3.0)
   unfuddle!
   unicorn-rails
+  vestal_versions!
   webmock
   whenever
