@@ -92,3 +92,45 @@ Handlebars.registerHelper 'summarizeAntecedents', (antecedents)->
 
 Handlebars.registerPartial 'sprintTask', (task)->
   HandlebarsTemplates['sprints/task'](task)
+
+
+
+Handlebars.registerHelper 'timelineDateRange', (lastDate, date)->
+  return Handlebars.helpers.timelineDate(date) unless lastDate
+  days = (lastDate - date) / Duration.DAY
+  return Handlebars.helpers.timelineDateAfterGap(date) if days >= 3
+  
+  _.inject [0...days],
+    ((html, i)-> html + Handlebars.helpers.timelineDate((i + 1).days().before(lastDate)))
+  , ''
+  
+Handlebars.registerHelper 'timelineDate', (date)->
+  date = Date.create(date)
+  """
+  <div class="timeline-date">
+    <span class="weekday">#{date.format('ddd')}</span>
+    <span class="month">#{date.format('mmm')}</span>
+    <span class="day">#{date.format('d')}</span>
+    <span class="year">#{date.format('yyyy')}</span>
+  </div>
+  """
+  
+Handlebars.registerHelper 'timelineTime', (time)->
+  time = Date.create(time).format('h:MMt')
+  "<span class=\"timeline-event-time\">#{time}</span>"
+
+Handlebars.registerHelper 'timelineDateAfterGap', (date)->
+  '<div class="timeline-date-gap"></div>' + Handlebars.helpers.timelineDate(date)
+
+Handlebars.registerHelper 'timeline', (events, options)->
+  lastDate = null
+  events ?= []
+  if events.length > 0
+    html = '<div class="timeline">'
+    for event in events
+      date = App.truncateDate(Date.create(event.date || event.time))
+      html += Handlebars.helpers.timelineDateRange(lastDate, date)
+      html += options.fn(event)
+      lastDate = date
+    html += '</div>'
+  html

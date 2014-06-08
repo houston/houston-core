@@ -1,0 +1,203 @@
+.timeline {
+  
+  .timeline-date {
+    width: 38px;
+    font-size: 0.75em;
+    text-align: right;
+    border-right: 2px solid #eee;
+    padding-right: 12px;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    line-height: 1em;
+    position: relative;
+    
+    &::after {
+      content: '.';
+      width: 8px;
+      height: 2px;
+      background: #eee;
+      display: block;
+      color: transparent;
+      position: absolute;
+      right: 0;
+      top: 1.25em;
+    }
+    
+    .weekday { display: block; }
+    .year { display: none; }
+  }
+  
+  .timeline-date-gap {
+    margin-left: 50px;
+    padding-left: 12px;
+    border-left: dashed 2px #eee;
+    height: 48px;
+  }
+  
+  .timeline-event {
+    margin-left: 50px;
+    padding: 4px 4px 4px 16px;
+    border-left: solid 2px #eee;
+    position: relative;
+    font-size: 0.92em;
+    text-indent: -21px;
+    line-height: 1.25em;
+    
+    .timeline-event-time {
+      font-size: 10px;
+      text-align: right;
+      line-height: 1em;
+      position: absolute;
+      left: -14px;
+      top: 10px;
+      color: #eee;
+    }
+    
+    a {
+      color: #333;
+      font-weight: 200;
+      
+      &:hover {
+        text-decoration: none;
+        background: #EDF9FF;
+      }
+      
+      b { font-weight: 400; }
+    }
+    
+    .ticket-number a { color: #0088cc !important; }
+    
+    .bubble {
+      border-radius: 13px;
+      width: 13px;
+      height: 13px;
+      position: relative;
+      top: 2px;
+      text-indent: 0;
+      margin: 0 4px;
+    }
+    
+    .timeline-event-type {
+      color: white;
+      font-size: 9px;
+      display: inline-block;
+      width: 12px;
+      text-indent: 0;
+      position: absolute;
+      top: 2px;
+      left: 1px;
+      text-align: center;
+    }
+    
+    &::after {
+      content: '.';
+      width: 7px;
+      height: 7px;
+      border-radius: 7px;
+      border: solid 2px #eee;
+      display: block;
+      background: white;
+      color: transparent;
+      position: absolute;
+      left: -6px;
+      top: 10px;
+    }
+    
+    &::before {
+      content: '.';
+      width: 12px;
+      height: 2px;
+      background: #eee;
+      display: block;
+      color: transparent;
+      position: absolute;
+      left: 0;
+      top: 14px;
+    }
+    
+    &.timeline-event-audit {
+      padding-left: 37px;
+      
+      em {
+        background: #ffd;
+        font-style: normal;
+      }
+    }
+    
+    &.timeline-event-release,
+    &.timeline-event-ticket-created,
+    &.timeline-event-ticket-closed {
+      padding-right: 100px;
+      text-indent: -57px;
+      padding-left: 70px;
+    }
+    
+    &.timeline-event-release {
+      font-size: 1.10em;
+      
+      a { font-weight: 400;
+        b { font-weight: 800; }
+      }
+      
+      .bubble {
+        width: 21px;
+        height: 21px;
+        left: -4px;
+        border-radius: 21px;
+        top: 6px;
+        margin-right: -4px;
+      }
+      
+      .timeline-event-type {
+        font-size: 17px;
+        left: 2px;
+        top: 2px;
+      }
+      
+      .timeline-event-time {
+        top: 14px;
+      }
+      
+      &::before { top: 19px; width: 8px; }
+      &::after { top: 15px; }
+    }
+    
+    .timeline-event-actor {
+      width: 20px;
+      display: inline-block;
+      text-indent: 0;
+      margin: 0 4px;
+      position: relative;
+      top: -1px;
+    }
+    
+    .commit-range { 
+      display: block;
+      position: absolute;
+      top: 11px;
+      right: 0;
+      text-indent: 0;
+      font-size: 10px;
+      letter-spacing: 1px;
+      
+      a { color: #0088cc !important; }
+    }
+    
+    .ticket-resolution {
+      font-size: 0.88em;
+      font-weight: 800;
+      color: #aaa;
+      
+      &::after { content: ':'; }
+    }
+    
+    .ticket-number {
+      display: block;
+      position: absolute;
+      top: 4px;
+      right: 0;
+      text-indent: 0;
+      font-size: 0.88em;
+    }
+  }
+}

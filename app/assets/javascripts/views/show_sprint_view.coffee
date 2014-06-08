@@ -146,12 +146,12 @@ class @ShowSprintView extends Backbone.View
     for task in tasks
       effort = +task.effort
       if task.firstReleaseAt
-        day = @truncateDate App.parseDate(task.firstReleaseAt)
+        day = App.truncateDate App.parseDate(task.firstReleaseAt)
         effort = 0 if day < monday # this task was released before this sprint started!
         completedByDay[day] = (completedByDay[day] || 0) + effort
         committedByDay[day] = (committedByDay[day] || 0) + effort unless task.firstCommitAt
       if task.firstCommitAt
-        day = @truncateDate App.parseDate(task.firstCommitAt)
+        day = App.truncateDate App.parseDate(task.firstCommitAt)
         effort = 0 if day < monday # this task was released before this sprint started!
         committedByDay[day] = (committedByDay[day] || 0) + effort
       totalEffort += effort
@@ -277,13 +277,6 @@ class @ShowSprintView extends Backbone.View
         .text((d) -> d.effort)
         .attr('class', 'effort-remaining effort-completed')
         .attr('transform', (d)-> "translate(#{x(d.day) + 5.5}, #{y(d.effort) - 10}) rotate(-75)")
-  
-  truncateDate: (date)->
-    date.setHours(0)
-    date.setMinutes(0)
-    date.setSeconds(0)
-    date.setMilliseconds(0)
-    date
   
   
   

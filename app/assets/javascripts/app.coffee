@@ -90,6 +90,14 @@ window.App =
   oauth: (url)->
     window.location = url
   
+  truncateDate: (date)->
+    return date unless date.setHours
+    date.setHours(0)
+    date.setMinutes(0)
+    date.setSeconds(0)
+    date.setMilliseconds(0)
+    date
+  
   showTicket: (number, project, options)->
     project = project || $('.project-banner').attr('data-project-slug')
     return false unless number and project

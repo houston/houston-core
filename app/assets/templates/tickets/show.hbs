@@ -46,6 +46,16 @@
           <button type="submit" class="btn btn-default">Save</button>
         </p>
       </div>
+      
+      <hr />
+      
+      {{#timeline changes}}
+        <div class="timeline-event timeline-event-audit">
+          {{{timelineTime time}}}
+          {{{avatar actor/email 16 actor/name}}}
+          {{{description}}}
+        </div>
+      {{/timeline}}
     </div>
     <div class="task-frame">
     </div>

@@ -63,6 +63,10 @@ class Task < ActiveRecord::Base
     def checked_out_by(user)
       where(checked_out_by_id: user.id)
     end
+    
+    def versions
+      VestalVersions::Version.where(versioned_type: "Task", versioned_id: pluck(:id))
+    end
   end
   
   
