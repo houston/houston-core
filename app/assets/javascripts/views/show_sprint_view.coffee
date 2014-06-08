@@ -5,7 +5,7 @@ class @ShowSprintView extends Backbone.View
     'click #show_completed_tasks': 'toggleShowCompleted'
     'click #lock_sprint_button': 'confirmLockSprint'
     'click .remove-task-button': 'removeTask'
-    'submit #add_task_form': 'addTask'
+    'submit #add_task_form': 'submitAddTaskForm'
   
   initialize: ->
     @sprintId = @options.sprintId
@@ -85,8 +85,10 @@ class @ShowSprintView extends Backbone.View
   
   
   
+  submitAddTaskForm: (e)->
+    e.preventDefault()
+  
   addTask: (id)->
-    e?.preventDefault()
     $('#add_task_form').addClass('loading')
     
     $.post("/sprints/#{@sprintId}/tasks/#{id}")
