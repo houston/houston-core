@@ -1,4 +1,5 @@
 class ProjectTicketsController < ApplicationController
+  attr_reader :ticket
   before_filter :find_project
   before_filter :find_ticket, only: [:show, :close, :reopen]
   before_filter :api_authenticate!, :only => :create
@@ -31,7 +32,7 @@ class ProjectTicketsController < ApplicationController
   
   
   def show
-    return render json: FullTicketPresenter.new(@ticket) if request.format.json?
+    return render json: FullTicketPresenter.new(ticket) if request.format.json?
     return render layout: false if request.xhr?
   end
   
@@ -84,15 +85,15 @@ class ProjectTicketsController < ApplicationController
   
   
   def close
-    authorize! :close, @ticket
-    @ticket.close!
-    redirect_to project_ticket_path(slug: @project.slug, number: @ticket.number)
+    authorize! :close, ticket
+    ticket.close!
+    redirect_to project_ticket_path(slug: @project.slug, number: ticket.number)
   end
 
   def reopen
-    authorize! :close, @ticket
-    @ticket.reopen!
-    redirect_to project_ticket_path(slug: @project.slug, number: @ticket.number)
+    authorize! :close, ticket
+    ticket.reopen!
+    redirect_to project_ticket_path(slug: @project.slug, number: ticket.number)
   end
 
 
@@ -104,6 +105,7 @@ private
   
   def find_ticket
     @ticket = @project.tickets.find_by_number!(params[:number])
+    @ticket.updated_by = current_user
   end
 
 end

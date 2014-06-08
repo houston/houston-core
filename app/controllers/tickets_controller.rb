@@ -11,7 +11,6 @@ class TicketsController < ApplicationController
     params[:last_release_at] = params.fetch(:lastReleaseAt, params[:last_release_at])
     attributes = params.pick(:last_release_at, :priority, :summary, :description)
 
-    ticket.updated_by = current_user
     if ticket.update_attributes(attributes)
       render json: []
     else
@@ -24,7 +23,7 @@ class TicketsController < ApplicationController
   end
   
   def close
-    ticket.updated_by = current_user
+    authorize! :close, ticket
     ticket.close!
     render json: []
   rescue
@@ -32,7 +31,7 @@ class TicketsController < ApplicationController
   end
   
   def reopen
-    ticket.updated_by = current_user
+    authorize! :close, ticket
     ticket.reopen!
     render json: []
   rescue
@@ -43,6 +42,7 @@ private
   
   def find_ticket
     @ticket = Ticket.find(params[:id])
+    @ticket.updated_by = current_user
   end
   
 end
