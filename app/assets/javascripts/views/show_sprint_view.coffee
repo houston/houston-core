@@ -92,9 +92,18 @@ class @ShowSprintView extends Backbone.View
     $('#add_task_form').addClass('loading')
     
     $.post("/sprints/#{@sprintId}/tasks/#{id}")
-      .error =>
+      .error( (response) =>
         $('#add_task_form').removeClass('loading')
-      .success (task)=>
+        $('#add_task')
+          .tooltip
+            animation: false
+            title: response.responseText
+            placement: 'bottom'
+            trigger: 'manual'
+          .tooltip('show')
+        window.setTimeout((-> $('#add_task').tooltip('destroy')), 3000)
+
+      ).success (task)=>
         @tasks.push task
         @rerenderTasks()
         @renderBurndownChart(@tasks)

@@ -113,6 +113,12 @@ class Task < ActiveRecord::Base
   
   
   
+  def completed?
+    committed? || released?
+  end
+  
+  
+  
   def default_task?
     number == 1 && read_attribute(:description).nil?
   end

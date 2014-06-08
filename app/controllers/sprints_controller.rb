@@ -13,10 +13,10 @@ class SprintsController < ApplicationController
   
   def show
     authorize! :read, sprint
-    @open_tasks = Task.open
+    @open_tasks = Task
       .joins(:ticket)
       .joins("INNER JOIN projects ON tickets.project_id=projects.id")
-      .merge(Ticket.able_to_estimate)  # <-- knows about Houston scheduler
+      .merge(Ticket.open.able_to_estimate)  # <-- knows about Houston scheduler
     @tasks = @sprint.tasks.includes(:checked_out_by)
     render template: "sprints/show"
   end
@@ -32,8 +32,13 @@ class SprintsController < ApplicationController
   def add_task
     authorize! :update, sprint
     task = Task.find(params[:task_id])
-    task.update_column :sprint_id, sprint.id
-    render json: SprintTaskPresenter.new(task).to_json
+    if task.completed?
+      render text: "Task ##{task.shorthand} cannot be added to the Sprint because it has been completed",
+        status: :unprocessable_entity
+    else
+      task.update_column :sprint_id, sprint.id
+      render json: SprintTaskPresenter.new(task).to_json
+    end
   end
   
   def remove_task
