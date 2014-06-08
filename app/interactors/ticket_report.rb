@@ -30,7 +30,8 @@ class TicketReport
   end
   
   def initialize(tickets)
-    @tickets = tickets.joins(:reporter).order(Ticket.arel_table[:created_at].desc)
+    # Using includes so that we get a LEFT OUTER JOIN on users
+    @tickets = tickets.includes(:reporter).order(Ticket.arel_table[:created_at].desc)
   end
   
   def to_a
