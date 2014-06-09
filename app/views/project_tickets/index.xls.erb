@@ -49,11 +49,13 @@
    <Column ss:AutoFitWidth="0" ss:Width="700"/>
    <Column ss:AutoFitWidth="0" ss:Width="85"/>
    <Column ss:AutoFitWidth="0" ss:Width="85"/>
+   <Column ss:AutoFitWidth="0" ss:Width="85"/>
    <Row ss:StyleID="s65">
     <Cell><Data ss:Type="String">Number</Data></Cell>
     <Cell><Data ss:Type="String">Type</Data></Cell>
     <Cell><Data ss:Type="String">Reporter Name</Data></Cell>
     <Cell><Data ss:Type="String">Summary</Data></Cell>
+    <Cell><Data ss:Type="String">Effort</Data></Cell>
     <Cell><Data ss:Type="String">Opened</Data></Cell>
     <Cell><Data ss:Type="String">Closed</Data></Cell>
    </Row>
@@ -63,6 +65,11 @@
     <Cell><Data ss:Type="String"><%= ticket.type %></Data></Cell>
     <Cell><Data ss:Type="String"><%= ticket.reporter_name %></Data></Cell>
     <Cell><Data ss:Type="String"><%= ticket.summary %></Data></Cell>
+    <% if ticket.effort.blank? %>
+    <Cell />
+    <% else %>
+    <Cell><Data ss:Type="Number"><%= ticket.effort %></Data></Cell>
+    <% end %>
     <Cell ss:StyleID="s64"><Data ss:Type="DateTime"><%= xls_time ticket.opened_at %></Data></Cell>
     <% if ticket.closed_at %>
     <Cell ss:StyleID="s64"><Data ss:Type="DateTime"><%= xls_time ticket.closed_at  %></Data></Cell>

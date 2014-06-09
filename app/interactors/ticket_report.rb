@@ -9,7 +9,8 @@ class TicketReport
       :reporter_name,
       :antecedents,
       :opened_at,
-      :closed_at)
+      :closed_at,
+      :effort)
     
     def antecedents
       (super || []).map { |s| TicketAntecedent.from_s(self, s) }
@@ -23,6 +24,7 @@ class TicketReport
         reporter: {
           email: reporter_email,
           name: reporter_name },
+        effort: effort,
         antecedents: antecedents.map { |antecedent| { id: antecedent.id, kind: antecedent.kind } },
         openedAt: opened_at,
         closedAt: closed_at }
@@ -30,8 +32,11 @@ class TicketReport
   end
   
   def initialize(tickets)
-    # Using includes so that we get a LEFT OUTER JOIN on users
-    @tickets = tickets.includes(:reporter).order(Ticket.arel_table[:created_at].desc)
+    @tickets = tickets
+      .joins("LEFT OUTER JOIN users ON tickets.reporter_id=users.id")
+      .joins("LEFT OUTER JOIN tasks ON tasks.ticket_id=tickets.id")
+      .group("tickets.id", "tickets.number", :type, :summary, "users.email", "users.name", :antecedents, "tickets.created_at", :closed_at)
+      .order(Ticket.arel_table[:created_at].desc)
   end
   
   def to_a
@@ -44,7 +49,8 @@ class TicketReport
         "users.name",
         :antecedents,
         :created_at,
-        :closed_at
+        :closed_at,
+        "SUM(tasks.effort)"
       ).map { |args| ViewTicket.new(*args) }
   end
   

@@ -3,6 +3,7 @@ class window.Ticket extends Backbone.Model
   
   tasks: -> @_tasks ?= new Tasks(@get('tasks'))
   estimatedEffort: ->
+    return @get('effort') unless _.isUndefined(@attributes.effort)
     effort = @tasks().reduce ((sum, task)-> sum + +task.get('effort')), 0
     if effort == 0 then null else effort
   severity: ->
@@ -28,6 +29,7 @@ class window.Ticket extends Backbone.Model
   parse: (ticket)->
     ticket.openedAt = new Date(ticket.openedAt) if ticket.openedAt
     ticket.closedAt = new Date(ticket.closedAt) if ticket.closedAt
+    ticket.effort = +ticket.effort if ticket.effort
     ticket
   
   
