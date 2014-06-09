@@ -118,8 +118,16 @@ class window.Tickets extends Backbone.Collection
     _.select words, (word)=> @IGNORED_WORDS.indexOf(word) is -1
 
   orderBy: (attribute, ascOrDesc)->
-    tickets = @sortBy(@sorterFor(attribute))
-    tickets = tickets.reverse() if ascOrDesc == 'desc'
+    sortBy = @sorterFor(attribute)
+    [asc, desc] = if ascOrDesc == 'asc' then [1, -1] else [-1, 1]
+    tickets = @models.sort (a, b)->
+      [a, b] = [sortBy(a), sortBy(b)]
+      aIsNull = (a is '' or !a?)
+      bIsNull = (b is '' or !b?)
+      return  1 if aIsNull and !bIsNull
+      return -1 if bIsNull and !aIsNull
+      return 0 if a == b
+      if a > b then asc else desc
     new @constructor(tickets)
 
   sorterFor: (attribute)->
@@ -132,6 +140,8 @@ class window.Tickets extends Backbone.Collection
       when 'summary'      then (ticket)-> ticket.get('summary').toLowerCase().replace(/^\W/, '')
       when 'openedAt'     then (ticket)-> ticket.get('openedAt')
       when 'number'       then (ticket)-> ticket.get('number')
-      when 'antecedents'  then (ticket)-> ticket.get('antecedents').length
+      when 'antecedents'  then (ticket)->
+        len = ticket.get('antecedents').length
+        if len is 0 then null else len
       when 'closedAt'     then (ticket)-> ticket.get('closedAt')
       else throw "Tickets#sorterFor doesn't know how to sort #{attribute}!"
