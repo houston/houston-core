@@ -48,6 +48,11 @@ class Release < ActiveRecord::Base
       where(arel_table[:created_at].lt(time))
     end
     
+    def after(time)
+      return all if time.nil?
+      where(arel_table[:created_at].gt(time))
+    end
+    
     def latest
       first
     end
