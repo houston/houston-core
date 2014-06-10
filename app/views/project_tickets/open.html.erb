@@ -1,10 +1,10 @@
 <%= render partial: "projects/header", locals: {
            project: @project,
-           subtitle: "#{pluralize(@tickets.count, "tickets")} for"} %>
+           subtitle: "#{pluralize(@tickets.count, "open tickets")} for"} %>
 
 <input type="text" id="tickets_filter" placeholder="Filter Tickets" style="margin: 0" />
 
-<%= link_to "Open Tickets", project_open_tickets_path(@project), class: "btn btn-default btn-toggle" %>
+<%= link_to "Open Tickets", project_tickets_path(@project), class: "btn btn-default btn-toggle active" %>
 <%= link_to "New Ticket", new_ticket_path(@project), :class => "btn btn-default" if can?(:create, @project.tickets.build) %>
 <%= link_to "Download for Excel", {format: :xls}, :class => "btn btn-default" %>
 

@@ -8,26 +8,34 @@ class ProjectTicketsController < ApplicationController
   
   
   def index
-    return render json: TicketPresenter.new(@project.tickets) if request.format.json?
-    
-    if request.format.xls?
-      response.headers["Content-Disposition"] = "attachment; filename=\"#{@project.name} Tickets.xls\""
-    end
-    
+    @tickets = @project.tickets
     @filter = :all
-    @tickets = TicketReport.new(@project.tickets).to_a
   end
   
   def open
-    render json: TicketPresenter.new(@project.tickets.open) if request.format.json?
-    
-    if request.format.xls?
-      response.headers["Content-Disposition"] = "attachment; filename=\"#{@project.name} Tickets.xls\""
-    end
-    
+    @tickets = @project.tickets.open
     @filter = :open
-    @tickets = TicketReport.new(@project.tickets.open).to_a
-    render action: "index"
+  end
+  
+  
+  def ideas
+    @tickets = @project.tickets.ideas
+    @filter = :all
+  end
+  
+  def open_ideas
+    @tickets = @project.tickets.ideas.open
+    @filter = :open
+  end
+  
+  def bugs
+    @tickets = @project.tickets.bugs
+    @filter = :all
+  end
+  
+  def open_bugs
+    @tickets = @project.tickets.bugs.open
+    @filter = :open
   end
   
   
@@ -98,6 +106,19 @@ class ProjectTicketsController < ApplicationController
 
 
 private
+  
+  def default_render
+    return render json: TicketPresenter.new(@tickets) if request.format.json?
+    
+    @tickets = TicketReport.new(@tickets).to_a
+    
+    if request.format.xls?
+      response.headers["Content-Disposition"] = "attachment; filename=\"#{@project.name} Tickets.xls\""
+      render action: "index"
+    else
+      render
+    end
+  end
   
   def find_project
     @project = Project.find_by_slug!(params[:slug])

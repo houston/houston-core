@@ -15,10 +15,14 @@
           <%= render_menu "Pretickets",
               projects.map { |project| ProjectMenuItem.new(project, main_app.project_pretickets_path(project)) } -%>
           
-          <%# Tickets -%>
+          <%# Bugs -%>
           <% projects = followed_projects.select { |project| can?(:read, project.tickets.build) } -%>
-          <%= render_menu "Tickets",
-              projects.map { |project| ProjectMenuItem.new(project, main_app.project_open_tickets_path(project)) } -%>
+          <%= render_menu "Bugs",
+              projects.map { |project| ProjectMenuItem.new(project, main_app.project_open_bugs_path(project)) } -%>
+          
+          <%# Ideas -%>
+          <%= render_menu "Ideas",
+              projects.map { |project| ProjectMenuItem.new(project, main_app.project_open_ideas_path(project)) } -%>
           
           <%# Modules -%>
           <% Houston.config.modules.each do |mod| -%>
