@@ -43,7 +43,6 @@ class @ShowSprintView extends Backbone.View
     $add_task = @$el.find('#add_task').attr('autocomplete', 'off').typeahead
       source: @openTasks
       matcher: (item)->
-        return false if _.detect(view.tasks, (task)-> task.id == item.id)
         ~item.description.toLowerCase().indexOf(@query.toLowerCase()) ||
         ~item.projectTitle.toLowerCase().indexOf(@query.toLowerCase()) ||
         ~item.shorthand.toString().toLowerCase().indexOf(@query.toLowerCase())
@@ -104,9 +103,12 @@ class @ShowSprintView extends Backbone.View
         window.setTimeout((-> $('#add_task').tooltip('destroy')), 3000)
 
       ).success (task)=>
-        @tasks.push task
-        @rerenderTasks()
-        @renderBurndownChart(@tasks)
+        if _.detect(@tasks, (_task)-> _task.id == task.id)
+          # notify the user?
+        else
+          @tasks.push task
+          @rerenderTasks()
+          @renderBurndownChart(@tasks)
         $('#add_task_form').removeClass('loading')
   
   removeTask: (e)->
