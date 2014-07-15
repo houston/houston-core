@@ -42,6 +42,7 @@ class ProjectTicketsController < ApplicationController
   def show
     return render json: FullTicketPresenter.new(ticket) if request.format.json?
     return render layout: false if request.xhr?
+    render
   end
   
   
@@ -72,6 +73,8 @@ class ProjectTicketsController < ApplicationController
         project: { slug: @project.slug, ticketTrackerName: @project.ticket_tracker_name },
         labels: @labels
       })
+    else
+      render
     end
   end
   
