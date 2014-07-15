@@ -108,6 +108,7 @@ class @ShowSprintView extends Backbone.View
           @tasks.push task
           @rerenderTasks()
           @renderBurndownChart(@tasks)
+        $(".task[data-task-id=#{task.id}]").highlight()
         $('#add_task_form').removeClass('loading')
   
   removeTask: (e)->
