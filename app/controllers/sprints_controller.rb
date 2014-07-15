@@ -7,7 +7,7 @@ class SprintsController < ApplicationController
   
   def current
     @sprint = Sprint.current || Sprint.create!
-    show
+    redirect_to @sprint
   end
   
   
