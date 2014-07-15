@@ -103,9 +103,8 @@ class @ShowSprintView extends Backbone.View
         window.setTimeout((-> $('#add_task').tooltip('destroy')), 3000)
 
       ).success (task)=>
-        if _.detect(@tasks, (_task)-> _task.id == task.id)
-          # notify the user?
-        else
+        @showCompletedTasks() if !task.open
+        unless _.detect(@tasks, (_task)-> _task.id == task.id)
           @tasks.push task
           @rerenderTasks()
           @renderBurndownChart(@tasks)
@@ -333,6 +332,12 @@ class @ShowSprintView extends Backbone.View
     else
       $button.addClass('btn-success')
       @$el.removeClass('hide-completed')
+
+  showCompletedTasks: ->
+    $button = $('#show_completed_tasks')
+    $button.addClass('active')
+    $button.addClass('btn-success')
+    @$el.removeClass('hide-completed')
 
 
   confirmLockSprint: ->

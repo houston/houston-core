@@ -121,6 +121,10 @@ class Task < ActiveRecord::Base
     committed? || released?
   end
   
+  def completed_at
+    first_commit_at || first_release_at
+  end
+  
   
   
   def default_task?

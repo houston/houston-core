@@ -12,6 +12,10 @@ class Sprint < ActiveRecord::Base
     end_date.beginning_of_week
   end
   
+  def starts_at
+    start_date.beginning_of_day
+  end
+  
   def lock!
     update_column :locked, true
   end

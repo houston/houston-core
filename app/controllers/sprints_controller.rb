@@ -33,8 +33,8 @@ class SprintsController < ApplicationController
     # Putting a task into a Sprint implies that you're able to estimate this ticket
     task.ticket.able_to_estimate! if task.ticket.respond_to?(:able_to_estimate!)
     
-    if task.completed?
-      render text: "Task ##{task.shorthand} cannot be added to the Sprint because it has been completed",
+    if task.completed? && task.completed_at < sprint.starts_at
+      render text: "Task ##{task.shorthand} cannot be added to the Sprint because it was completed before the Sprint began",
         status: :unprocessable_entity
     else
       task.update_column :sprint_id, sprint.id
