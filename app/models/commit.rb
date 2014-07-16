@@ -178,31 +178,14 @@ class Commit < ActiveRecord::Base
   
   
   def associate_tickets_with_self
-    return if ticket_numbers.empty?
-    
-    project.find_or_create_tickets_by_number(ticket_numbers).each do |ticket|
-      ticket.commits << self unless ticket.commits.exists?(id)
-    end
+    self.tickets = identify_tickets
   end
   
   def associate_tasks_with_self
-    tickets.each do |ticket|
-      
-      # Allow committers who are not using the Tasks feature
-      # to mention a ticket (e.g. [#45]) and record progress
-      # against its only (default) task.
-      #
-      # Note: this behavior is complected with time. Tasks
-      # added _after_ this commit would alter the behavior
-      # of this method if it were run later, retroactively.
-      #
-      letters = ticket_tasks.fetch(ticket.number) do
-        ticket.tasks.count == 1 ? [ticket.tasks.first.letter] : []
-      end
-      
-      ticket.tasks.lettered(*letters).each do |task|
-        task.committed!(self)
-      end
+    self.tasks = identify_tasks
+    
+    tasks.each do |task|
+      task.committed!(self)
     end
   end
   
@@ -216,6 +199,29 @@ private
   
   def parsed_message
     @parsed_message ||= self.class.parse_message(message)
+  end
+  
+  def identify_tickets
+    project.find_or_create_tickets_by_number(ticket_numbers)
+  end
+  
+  def identify_tasks
+    tickets.each_with_object([]) do |ticket, tasks|
+      
+      # Allow committers who are not using the Tasks feature
+      # to mention a ticket (e.g. [#45]) and record progress
+      # against its only (default) task.
+      #
+      # Note: this behavior is complected with time. Tasks
+      # added _after_ this commit would alter the behavior
+      # of this method if it were run later, retroactively.
+      #
+      letters = ticket_tasks.fetch(ticket.number) do
+        ticket.tasks.count == 1 ? [ticket.tasks.first.letter] : []
+      end
+      
+      tasks.concat ticket.tasks.lettered(*letters)
+    end
   end
   
 end

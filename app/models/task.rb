@@ -107,7 +107,6 @@ class Task < ActiveRecord::Base
   
   
   def committed!(commit)
-    self.commits << commit unless commits.exists?(commit.id)
     cache_commit_attributes commit
   end
   
