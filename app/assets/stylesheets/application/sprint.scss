@@ -15,6 +15,22 @@ $completed-foreground: rgb(42, 133, 19);
 }
 
 #sprint_view {
+  h2 {
+    font-weight: 200;
+    display: inline-block;
+    margin: 0;
+  }
+  
+  #lock_sprint_button, #show_completed_tasks {
+    margin-bottom: 12px;
+  }
+  
+  .shaded-chart {
+     margin: -2em -2em 2em;
+     padding: 2em;
+     background: #efefef;
+  }
+  
   .icon-spinner { display: none; }
   #add_task_form.loading .icon-spinner { display: inline-block; }
   
@@ -24,6 +40,8 @@ $completed-foreground: rgb(42, 133, 19);
     color: $completed-foreground;
     a { color: $completed-foreground; }
   }
+  
+  .task-worker button { white-space: nowrap; }
 }
 
 .remove-task-button {

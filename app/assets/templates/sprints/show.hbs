@@ -1,4 +1,4 @@
-<div id="graph" class="burndown-chart"></div>
+<div id="graph" class="burndown-chart shaded-chart"></div>
 
 <div class="score score-medium sprint-total-effort">
   <p class="positive">
@@ -7,17 +7,16 @@
   </p>
 </div>
 
-<p>
-  <button class="btn btn-danger" id="lock_sprint_button">
-    <i class="icon icon-lock" />
-    Lock Sprint
-  </button>
-  <a class="btn" id="show_completed_tasks" data-toggle="button">Show Completed Tickets</a>
-</p>
+<h2>Tasks</h2>
+
+<button class="btn btn-danger" id="lock_sprint_button">
+  <i class="icon icon-lock" />
+  Lock Sprint
+</button>
+<a class="btn" id="show_completed_tasks" data-toggle="button">Show Completed Tickets</a>
 
 <div>
   <form id="add_task_form">
-    <label for="add_task">Add Ticket</label>
     <input type="text" placeholder="Enter a task number or summary" id="add_task" />
     <i class="icon-spinner icon-spin icon-large"></i>
     <hr />

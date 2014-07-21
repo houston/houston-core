@@ -236,9 +236,9 @@ class @ShowSprintView extends Backbone.View
           day: day
           effort: Math.ceil(remainingEffort)
     
-    margin = {top: 40, right: 80, bottom: 32, left: 50}
+    margin = {top: 40, right: 80, bottom: 20, left: 50}
     width = 960 - margin.left - margin.right
-    height = 320 - margin.top - margin.bottom
+    height = 260 - margin.top - margin.bottom
     formatDate = d3.time.format('%A')
     
     x = d3.scale.ordinal().rangePoints([0, width], 0.75).domain(days)
@@ -276,7 +276,7 @@ class @ShowSprintView extends Backbone.View
       .append('text')
         .attr('transform', 'rotate(-90)')
         .attr('y', -45)
-        .attr('x', -160)
+        .attr('x', 160 - 260)
         .attr('dy', '.71em')
         .attr('class', 'legend')
         .style('text-anchor', 'end')
