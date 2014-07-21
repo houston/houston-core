@@ -88,6 +88,11 @@ class @ShowSprintView extends Backbone.View
     e.preventDefault()
   
   addTask: (id)->
+    task = _.detect @openTasks, (task)-> +task.id == +id
+    if task && +task.effort <= 0
+      @promptForEffort(task).done(=> @addTask(id))
+      return
+    
     $('#add_task_form').addClass('loading')
     
     $.post("/sprints/#{@sprintId}/tasks/#{id}")
@@ -130,6 +135,49 @@ class @ShowSprintView extends Backbone.View
       task.completed = !!task.firstReleaseAt || !!task.firstCommitAt
       task.open = !task.completed
       $tasks.append template(task)
+  
+  promptForEffort: (task)->
+    promise = $.Deferred()
+    html = """
+    <form class="modal hide">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>Estimate Task ##{task.shorthand}</h3>
+      </div>
+      <div class="modal-body">
+        <p>#{task.description}</p>
+        <div style="text-align: right">
+          <label for="task_effort">
+            Effort:
+            <input autofocus type="number" id="task_effort" class="ticket-effort" style="text-align: right; width: 80px;" />
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-default" type="reset" data-dismiss="modal">Close</button>
+        <button class="btn btn-primary" type="submit">Submit</button>
+      </div>
+    </form>
+    """
+    $modal = $(html).modal()
+    $modal.on 'hidden', -> $modal.remove()
+    $modal.on 'keypress', 'input[type="number"]', (e)->
+      character = String.fromCharCode(e.charCode)
+      value = $(e.target).val() + character
+      e.preventDefault() unless /^\d+(\.\d{0,2})?$/.test(value)
+      e.preventDefault() if +value > 999.99
+    $modal.submit (e)->
+      e.preventDefault()
+      effort = +$('#task_effort').val()
+      xhr = $.put "/tasks/#{task.id}", effort: effort
+      xhr.success ->
+        task.effort = effort
+        promise.resolve()
+        $modal.modal('hide')
+      xhr.error ->
+        $('#task_effort').focus()
+        console.log('error', arguments)
+    promise
   
   
   

@@ -155,6 +155,8 @@ Rails.application.routes.draw do
   post "tasks/:id/lock", :to => "task_locks#create", constraints: {id: /\d+/}
   delete "tasks/:id/lock", :to => "task_locks#destroy", constraints: {id: /\d+/}
   
+  put "tasks/:id", :to => "tasks#update", constraints: {id: /\d+/}
+  
   
   
   
