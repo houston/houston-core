@@ -1,7 +1,4 @@
 <tr class="task {{#firstReleaseAt}}task-released{{/firstReleaseAt}} {{#firstCommitAt}}task-committed{{/firstCommitAt}} {{#completed}}task-completed{{/completed}}" data-task-id="{{id}}">
-  <td class="task-remove">
-    {{#if open}}<button class="btn btn-danger remove-task-button">Remove</button>{{/if}}
-  </td>
   <td class="task-effort">
     {{effort}}
     {{#firstReleaseAt}}
@@ -28,5 +25,8 @@
         <button class="btn btn-info check-out-button" data-toggle="button">Check out</button>
       {{/if}}
     {{/if}}
+  </td>
+  <td class="task-remove">
+    {{#if open}}<a class="remove-task-button"></a>{{/if}}
   </td>
 </tr>

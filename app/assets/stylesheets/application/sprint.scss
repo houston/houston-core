@@ -25,3 +25,20 @@ $completed-foreground: rgb(42, 133, 19);
     a { color: $completed-foreground; }
   }
 }
+
+.remove-task-button {
+  color: #e0e0e0;
+  display: inline-block;
+  cursor: pointer;
+  
+  &::after {
+    content: '\f056';
+    font-family: 'FontAwesome';
+    font-size: 1.5em;
+  }
+  
+  &:hover {
+    color: #E52F26;
+    text-decoration: none;
+  }
+}
