@@ -217,121 +217,27 @@ class @ShowSprintView extends Backbone.View
     # Transform into remaining effort by day:
     # Iterate by day in case there are some days
     # where no progress was made
-    remainingEffort = totalEffort
-    data1 = [
-      day: monday
-      effort: Math.ceil(remainingEffort)
-    ]
-    for day in days.slice(1)
-      unless day > tomorrow
-        remainingEffort -= (completedByDay[day] || 0)
-        data1.push
-          day: day
-          effort: Math.ceil(remainingEffort)
+    toChartData = (progressByDay)->
+      remainingEffort = totalEffort
+      data = [
+        day: monday
+        effort: Math.ceil(remainingEffort)
+      ]
+      for day in days.slice(1)
+        unless day > tomorrow
+          remainingEffort -= (progressByDay[day] || 0)
+          data.push
+            day: day
+            effort: Math.ceil(remainingEffort)
+      data
     
-    remainingEffort = totalEffort
-    data2 = [
-      day: monday
-      effort: Math.ceil(remainingEffort)
-    ]
-    for day in days.slice(1)
-      unless day > tomorrow
-        remainingEffort -= (committedByDay[day] || 0)
-        data2.push
-          day: day
-          effort: Math.ceil(remainingEffort)
-    
-    margin = {top: 40, right: 80, bottom: 20, left: 50}
-    width = 960 - margin.left - margin.right
-    height = 260 - margin.top - margin.bottom
-    formatDate = d3.time.format('%A')
-    
-    x = d3.scale.ordinal().rangePoints([0, width], 0.75).domain(days)
-    y = d3.scale.linear().range([height, 0]).domain([0, totalEffort])
-    
-    xAxis = d3.svg.axis()
-      .scale(x)
-      .orient('bottom')
-      .tickFormat((d)-> formatDate(new Date(d)))
-    
-    yAxis = d3.svg.axis()
-      .scale(y)
-      .orient('left')
-    
-    line = d3.svg.line()
-      .interpolate('linear')
-      .x((d)-> x(d.day))
-      .y((d)-> y(d.effort))
-    
-    $('#graph').empty()
-    svg = d3.select('#graph').append('svg')
-        .attr('width', width + margin.left + margin.right)
-        .attr('height', height + margin.top + margin.bottom)
-      .append('g')
-        .attr('transform', "translate(#{margin.left},#{margin.top})")
-    
-    svg.append('g')
-      .attr('class', 'x axis')
-      .attr('transform', "translate(0,#{height})")
-      .call(xAxis)
-    
-    svg.append('g')
-        .attr('class', 'y axis')
-        .call(yAxis)
-      .append('text')
-        .attr('transform', 'rotate(-90)')
-        .attr('y', -45)
-        .attr('x', 160 - 260)
-        .attr('dy', '.71em')
-        .attr('class', 'legend')
-        .style('text-anchor', 'end')
-        .text('Points Remaining')
-    
-    
-    
-    svg.append('path')
-      .attr('class', 'line line-committed')
-      .attr('d', line(data2))
-    
-    svg.selectAll('circle.circle-committed')
-      .data(data2)
-      .enter()
-      .append('circle')
-        .attr('class', 'circle-committed')
-        .attr('r', 5)
-        .attr('cx', (d)-> x(d.day))
-        .attr('cy', (d)-> y(d.effort))
-    
-    svg.selectAll('.effort-remaining.effort-committed')
-      .data(data2)
-      .enter()
-      .append('text')
-        .text((d) -> d.effort)
-        .attr('class', 'effort-remaining effort-committed')
-        .attr('transform', (d)-> "translate(#{x(d.day) + 5.5}, #{y(d.effort) - 10}) rotate(-75)")
-    
-    
-    
-    svg.append('path')
-      .attr('class', 'line line-completed')
-      .attr('d', line(data1))
-    
-    svg.selectAll('circle.circle-completed')
-      .data(data1)
-      .enter()
-      .append('circle')
-        .attr('class', 'circle-completed')
-        .attr('r', 5)
-        .attr('cx', (d)-> x(d.day))
-        .attr('cy', (d)-> y(d.effort))
-    
-    svg.selectAll('.effort-remaining.effort-completed')
-      .data(data1)
-      .enter()
-      .append('text')
-        .text((d) -> d.effort)
-        .attr('class', 'effort-remaining effort-completed')
-        .attr('transform', (d)-> "translate(#{x(d.day) + 5.5}, #{y(d.effort) - 10}) rotate(-75)")
+    new Houston.BurndownChart()
+      .selector('#graph')
+      .days(days)
+      .totalEffort(totalEffort)
+      .addLine('committed', toChartData(committedByDay))
+      .addLine('completed', toChartData(completedByDay))
+      .render()
   
   
   

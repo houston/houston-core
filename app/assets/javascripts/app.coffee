@@ -153,3 +153,5 @@ window.App =
           $form = $('#user_credentials_form')
           $form.find('.alert').remove()
           Errors.fromResponse(response).renderToAlert().prependTo $form
+
+@Houston = @App
