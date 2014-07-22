@@ -184,7 +184,7 @@ class @ShowSprintView extends Backbone.View
   renderBurndownChart: (tasks)->
     
     # The time range of the Sprint
-    today = new Date()
+    tomorrow = 1.day().after(new Date())
     monday = @sprintStart
     days = (i.days().after(monday) for i in [0..4])
     
@@ -198,11 +198,16 @@ class @ShowSprintView extends Backbone.View
       if task.firstReleaseAt
         day = App.truncateDate App.parseDate(task.firstReleaseAt)
         effort = 0 if day < monday # this task was released before this sprint started!
+        
+        day = 1.day().after(day)
         completedByDay[day] = (completedByDay[day] || 0) + effort
         committedByDay[day] = (committedByDay[day] || 0) + effort unless task.firstCommitAt
+      
       if task.firstCommitAt
         day = App.truncateDate App.parseDate(task.firstCommitAt)
         effort = 0 if day < monday # this task was released before this sprint started!
+        
+        day = 1.day().after(day)
         committedByDay[day] = (committedByDay[day] || 0) + effort
       totalEffort += effort
     
@@ -212,25 +217,25 @@ class @ShowSprintView extends Backbone.View
     # Transform into remaining effort by day:
     # Iterate by day in case there are some days
     # where no progress was made
-    remainingEffort = totalEffort - (completedByDay[monday] || 0)
+    remainingEffort = totalEffort
     data1 = [
       day: monday
       effort: Math.ceil(remainingEffort)
     ]
     for day in days.slice(1)
-      unless day > today
+      unless day > tomorrow
         remainingEffort -= (completedByDay[day] || 0)
         data1.push
           day: day
           effort: Math.ceil(remainingEffort)
     
-    remainingEffort = totalEffort - (committedByDay[monday] || 0)
+    remainingEffort = totalEffort
     data2 = [
       day: monday
       effort: Math.ceil(remainingEffort)
     ]
     for day in days.slice(1)
-      unless day > today
+      unless day > tomorrow
         remainingEffort -= (committedByDay[day] || 0)
         data2.push
           day: day
