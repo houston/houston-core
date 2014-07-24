@@ -1,5 +1,5 @@
-require 'test_helper'
-require 'support/houston/adapters/ci_server/mock_adapter'
+require "test_helper"
+require "support/houston/adapters/ci_server/mock_adapter"
 
 class CIServerAdatersApiTest < ActiveSupport::TestCase
   

@@ -1,5 +1,5 @@
-require 'test_helper'
-require 'support/houston/adapters/version_control/mock_adapter'
+require "test_helper"
+require "support/houston/adapters/version_control/mock_adapter"
 
 class VersionControlAdatersApiTest < ActiveSupport::TestCase
   

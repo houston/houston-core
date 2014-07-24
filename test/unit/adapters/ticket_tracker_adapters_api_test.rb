@@ -1,5 +1,5 @@
-require 'test_helper'
-require 'support/houston/adapters/ticket_tracker/mock_adapter'
+require "test_helper"
+require "support/houston/adapters/ticket_tracker/mock_adapter"
 
 class TicketTrackerAdatersApiTest < ActiveSupport::TestCase
   

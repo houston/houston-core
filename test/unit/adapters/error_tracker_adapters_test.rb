@@ -1,5 +1,5 @@
-require 'test_helper'
-require 'support/houston/adapters/error_tracker/mock_adapter'
+require "test_helper"
+require "support/houston/adapters/error_tracker/mock_adapter"
 
 class ErrorTrackerAdatersApiTest < ActiveSupport::TestCase
   
