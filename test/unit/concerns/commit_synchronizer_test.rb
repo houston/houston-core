@@ -7,7 +7,7 @@ class CommitSynchronizerTest < ActiveSupport::TestCase
   delegate :repo, to: :project
   
   setup do
-    @project = Project.create!(name: "Test", slug: "test", version_control_name: "Mock")
+    @project = create(:project, version_control_name: "Mock")
   end
   
   

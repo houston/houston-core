@@ -7,12 +7,7 @@ class UserTest < ActiveSupport::TestCase
   
   context "#email_addresses" do
     setup do
-      @user = User.create!(
-        first_name: "Gene",
-        last_name: "Doyel",
-        email: "gene@example.com",
-        password: "password",
-        password_confirmation: "password")
+      @user = create(:user, first_name: "Gene", last_name: "Doyel", email: "gene@example.com")
     end
     
     should "always include the primary email" do

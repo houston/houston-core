@@ -6,7 +6,7 @@ class TicketTest < ActiveSupport::TestCase
   
   setup do
     Ticket.nosync = true
-    @project = Project.create!(name: "Test", slug: "test")
+    @project = create(:project)
   end
   
   
@@ -15,7 +15,7 @@ class TicketTest < ActiveSupport::TestCase
     setup do
       @release = Release.new(project: project, user_id: 1)
       @released_at = release.created_at = Time.zone.now
-      @ticket = Ticket.create!(project: project, number: 1, summary: "Test summary", type: "Bug")
+      @ticket = create(:ticket, project: project)
     end
     
     should "trigger the ticket:release event" do
@@ -68,7 +68,7 @@ class TicketTest < ActiveSupport::TestCase
   
   context "#resolve!" do
     setup do
-      @ticket = Ticket.create!(project: project, number: 1, summary: "Test summary", type: "Bug")
+      @ticket = create(:ticket, project: project)
     end
     
     should "resolve antecedents" do
@@ -84,7 +84,7 @@ class TicketTest < ActiveSupport::TestCase
   
   context "#close!" do
     setup do
-      @ticket = Ticket.create!(project: project, number: 1, summary: "Test summary", type: "Bug")
+      @ticket = create(:ticket, project: project)
     end
     
     should "close antecedents" do
@@ -151,7 +151,7 @@ class TicketTest < ActiveSupport::TestCase
   
   context "#tags" do
     setup do
-      @ticket = Ticket.create!(project: project, number: 1, summary: "Test summary", type: "Bug")
+      @ticket = create(:ticket, project: project)
     end
     
     should "accept an array of strings" do

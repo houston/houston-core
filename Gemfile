@@ -95,6 +95,7 @@ group :test do
   gem "timecop"
   gem "rr"
   gem "webmock", require: "webmock/minitest"
+  gem "factory_girl_rails"
   
   # For Jenkins
   gem "simplecov-json", :require => false, :git => "git://github.com/houstonmc/simplecov-json.git"

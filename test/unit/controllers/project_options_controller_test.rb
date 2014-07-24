@@ -6,15 +6,8 @@ class ProjectOptionsControllerTest < ActionController::TestCase
   attr_reader :project
   
   setup do
-    sign_in User.create!(
-      first_name: "Bob",
-      last_name: "Lail",
-      email: "bob.lail@houston.test",
-      password: "password",
-      password_confirmation: "password")
-    @project = Project.create!(
-      name: "Test",
-      slug: "test",
+    sign_in User.first
+    @project = create(:project,
       view_options: {
         "speed" => "plaid",
         "helmet" => "dark" })

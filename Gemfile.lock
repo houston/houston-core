@@ -143,6 +143,11 @@ GEM
     docile (1.1.3)
     erubis (2.7.0)
     execjs (2.1.0)
+    factory_girl (4.4.0)
+      activesupport (>= 3.0.0)
+    factory_girl_rails (4.4.1)
+      factory_girl (~> 4.4.0)
+      railties (>= 3.0.0)
     faraday (0.8.9)
       multipart-post (~> 1.2.0)
     faraday-http-cache (0.4.0)
@@ -342,6 +347,7 @@ DEPENDENCIES
   devise (~> 3.0.0)
   devise_invitable
   devise_ldap_authenticatable!
+  factory_girl_rails
   faraday
   faraday-http-cache
   gemnasium

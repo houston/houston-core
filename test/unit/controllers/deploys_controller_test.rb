@@ -4,7 +4,7 @@ require "test_helper"
 class DeploysControllerTest < ActionController::TestCase
   
   setup do
-    @project = Project.create!(name: "Test", slug: "test", ci_server_name: "Mock")
+    @project = create(:project, ci_server_name: "Mock")
     @environment = "Production"
   end
   

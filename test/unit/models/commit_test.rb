@@ -137,12 +137,12 @@ class CommitTest < ActiveSupport::TestCase
   
   context "When a new commit is recorded" do
     setup do
-      @project = Project.create!(name: "Test", slug: "test")
+      @project = create(:project)
     end
     
     context "that mentions a ticket with several tasks" do
       setup do
-        @ticket = Ticket.create!(project: project, type: "Bug", number: 378, summary: "Test summary")
+        @ticket = create(:ticket, project: project, number: 378)
                 ticket.tasks.create!(description: "New Step 1")
         @task = ticket.tasks.create!(description: "Step 2")
       end
@@ -171,7 +171,7 @@ class CommitTest < ActiveSupport::TestCase
     
     context "that mentions a ticket with only one task" do
       setup do
-        @ticket = Ticket.create!(project: project, type: "Bug", number: 378, summary: "Test summary")
+        @ticket = create(:ticket, project: project, number: 378)
         @task = ticket.tasks.first
       end
       

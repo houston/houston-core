@@ -6,7 +6,7 @@ class DeployTest < ActiveSupport::TestCase
   
   context "a new deploy" do
     setup do
-      @project = Project.create!(name: "Test", slug: "test", version_control_name: "Mock")
+      @project = create(:project, version_control_name: "Mock")
       @deploy = Deploy.new(project: project, environment_name: "Production")
     end
     

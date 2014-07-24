@@ -6,12 +6,7 @@ class UserOptionsControllerTest < ActionController::TestCase
   attr_reader :user
   
   setup do
-    @user = User.create!(
-      first_name: "Bob",
-      last_name: "Lail",
-      email: "bob.lail@houston.test",
-      password: "password",
-      password_confirmation: "password",
+    @user = create(:user,
       view_options: {
         "speed" => "plaid",
         "helmet" => "dark" })

@@ -8,7 +8,7 @@ class CIIntegrationTest < ActionDispatch::IntegrationTest
   
   
   test "should trigger a build when the hooks:post_receive event is fired for a project that uses a CI server" do
-    @project = Project.create!(name: "Test", slug: "test", ci_server_name: "Mock")
+    @project = create(:project, ci_server_name: "Mock")
     
     stub.instance_of(PostReceivePayload).commit { "63cd1ef" }
     
@@ -19,7 +19,7 @@ class CIIntegrationTest < ActionDispatch::IntegrationTest
   end
   
   test "should do nothing when the hooks:post_receive event is fired for a project that does not use a CI server" do
-    @project = Project.create!(name: "Test", slug: "test", ci_server_name: "None")
+    @project = create(:project, ci_server_name: "None")
     
     assert_no_difference "TestRun.count" do
       post "/projects/#{@project.slug}/hooks/post_receive"
@@ -28,7 +28,7 @@ class CIIntegrationTest < ActionDispatch::IntegrationTest
   end
   
   test "should alert maintainers when a build cannot be triggered" do
-    @project = Project.create!(name: "Test", slug: "test", ci_server_name: "Mock")
+    @project = create(:project, ci_server_name: "Mock")
     @project.add_teammate users(:boblail), "Maintainer"
     
     any_instance_of(Houston::Adapters::CIServer::MockAdapter::Job) do |job|
@@ -52,7 +52,7 @@ class CIIntegrationTest < ActionDispatch::IntegrationTest
   test "should fetch results_url when the hooks:post_build event is fired" do
     commit = "whatever"
     results_url = "http://example.com/results"
-    @project = Project.create!(name: "Test", slug: "test", ci_server_name: "Mock")
+    @project = create(:project, ci_server_name: "Mock")
     @test_run = TestRun.create!(project: @project, sha: commit)
     
     any_instance_of(Houston::Adapters::CIServer::MockAdapter::Job) do |job|
@@ -66,7 +66,7 @@ class CIIntegrationTest < ActionDispatch::IntegrationTest
   test "should mark the build as \"error\" when a build cannot be processed" do
     commit = "whatever"
     results_url = "http://example.com/results"
-    @project = Project.create!(name: "Test", slug: "test", ci_server_name: "Mock")
+    @project = create(:project, ci_server_name: "Mock")
     @project.add_teammate users(:boblail), "Maintainer"
     @test_run = TestRun.create!(project: @project, sha: commit)
     
@@ -82,7 +82,7 @@ class CIIntegrationTest < ActionDispatch::IntegrationTest
   
   
   test "should fire test_run:complete when the results of the test run are saved" do
-    @project = Project.create!(name: "Test", slug: "test", ci_server_name: "Mock")
+    @project = create(:project, ci_server_name: "Mock")
     test_run = TestRun.new(project: @project, sha: "whatever")
     
     any_instance_of(Houston::Adapters::CIServer::MockAdapter::Job) do |job|
@@ -143,7 +143,7 @@ class CIIntegrationTest < ActionDispatch::IntegrationTest
   
   
   test "should publish test results to CodeClimate" do
-    @project = Project.create!(name: "Test", slug: "test", code_climate_repo_token: "repo_token")
+    @project = create(:project, code_climate_repo_token: "repo_token")
     test_run = TestRun.new(project: @project, sha: "bd3e9e2", result: "pass", completed_at: Time.now, coverage: [
       { filename: "lib/test1.rb", coverage: [1,nil,nil,1,1,nil,1] },
       { filename: "lib/test2.rb", coverage: [1,nil,1,0,0,0,0,1,nil,1] }

@@ -4,7 +4,7 @@ require "test_helper"
 class TestRunsControllerTest < ActionController::TestCase
   
   setup do
-    @project = Project.create!(name: "Test", slug: "test", ci_server_name: "Mock")
+    @project = create(:project, ci_server_name: "Mock")
     @test_run = @project.test_runs.create!(sha: "whatever")
     @environment = "Production"
   end

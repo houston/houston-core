@@ -91,11 +91,7 @@ class TaskTest < ActiveSupport::TestCase
 private
   
   def a_ticket
-    @a_ticket ||= Ticket.create!(project: a_project, type: "Bug", number: 1, summary: "Test summary")
-  end
-  
-  def a_project
-    @a_project ||= Project.create!(name: "Test", slug: "test")
+    @a_ticket ||= create(:ticket)
   end
   
 end

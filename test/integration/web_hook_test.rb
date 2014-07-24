@@ -5,7 +5,7 @@ class WebHookTest < ActionDispatch::IntegrationTest
   attr_reader :project
   
   setup do
-    @project = Project.create!(name: "Test", slug: "test")
+    @project = create(:project)
   end
   
   

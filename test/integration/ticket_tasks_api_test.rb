@@ -5,8 +5,8 @@ class TicketTasksApiTest < ActionDispatch::IntegrationTest
   attr_reader :project, :ticket
   
   setup do
-    @project = Project.create!(name: "Test", slug: "test")
-    @ticket = Ticket.create!(project: project, type: "Bug", number: 1, summary: "Test summary")
+    @project = create(:project)
+    @ticket = create(:ticket, project: project)
     @ticket.tasks.first.update_attributes!(description: "Step 1", effort: 3)
     @ticket.tasks.create!(description: "Step 2", effort: 7)
   end
