@@ -160,10 +160,13 @@ class @ShowSprintView extends Backbone.View
     </form>
     """
     $modal = $(html).modal()
-    $modal.on 'hidden', -> $modal.remove()
+    $modal.find('#task_effort').focus()
+    $modal.on 'hidden', ->
+      $modal.remove()
+      $('#add_task').focus()
     $modal.on 'keypress', 'input[type="number"]', (e)->
-      character = String.fromCharCode(e.charCode)
-      value = $(e.target).val() + character
+      return if e.keyCode in [13, 27] # <-- allow Enter and Escape
+      value = $(e.target).val() + String.fromCharCode(e.charCode)
       e.preventDefault() unless /^\d+(\.\d{0,2})?$/.test(value)
       e.preventDefault() if +value > 999.99
     $modal.submit (e)->
