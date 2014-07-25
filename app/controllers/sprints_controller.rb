@@ -34,17 +34,16 @@ class SprintsController < ApplicationController
     task.ticket.able_to_estimate! if task.ticket.respond_to?(:able_to_estimate!)
     
     if task.completed? && task.completed_at < sprint.starts_at
-      render text: "Task ##{task.shorthand} cannot be added to the Sprint because it was completed before the Sprint began",
-        status: :unprocessable_entity
+      render text: "Task ##{task.shorthand} cannot be added to the Sprint because it was completed before the Sprint began", status: :unprocessable_entity
     else
-      task.update_column :sprint_id, sprint.id
+      sprint.tasks.add task
       render json: SprintTaskPresenter.new(task).to_json
     end
   end
   
   def remove_task
     authorize! :update, sprint
-    Task.where(id: params[:task_id]).update_all(sprint_id: nil)
+    SprintTask.where(sprint_id: sprint.id, task_id: params[:task_id]).delete_all
     head :ok
   end
   

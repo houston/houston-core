@@ -1,6 +1,7 @@
 class Sprint < ActiveRecord::Base
   
-  has_many :tasks
+  has_many :sprint_tasks
+  has_many :tasks, through: :sprint_tasks, extend: UniqueAdd
   
   before_validation :set_default_end_date, on: :create
   

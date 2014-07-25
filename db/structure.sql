@@ -970,6 +970,16 @@ ALTER SEQUENCE sprints_id_seq OWNED BY sprints.id;
 
 
 --
+-- Name: sprints_tasks; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE sprints_tasks (
+    sprint_id integer NOT NULL,
+    task_id integer NOT NULL
+);
+
+
+--
 -- Name: tasks; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1807,6 +1817,13 @@ CREATE INDEX index_roles_on_user_id_and_project_id_and_name ON roles USING btree
 
 
 --
+-- Name: index_sprints_tasks_on_sprint_id_and_task_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_sprints_tasks_on_sprint_id_and_task_id ON sprints_tasks USING btree (sprint_id, task_id);
+
+
+--
 -- Name: index_tasks_on_ticket_id_and_number; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2274,4 +2291,6 @@ INSERT INTO schema_migrations (version) VALUES ('20140526162645');
 INSERT INTO schema_migrations (version) VALUES ('20140526180608');
 
 INSERT INTO schema_migrations (version) VALUES ('20140606232907');
+
+INSERT INTO schema_migrations (version) VALUES ('20140724231918');
 

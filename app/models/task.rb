@@ -3,8 +3,8 @@ class Task < ActiveRecord::Base
   versioned initial_version: true, only: [:description, :effort]
   
   belongs_to :ticket
-  belongs_to :sprint
   belongs_to :checked_out_by, class_name: "User"
+  has_and_belongs_to_many :sprints, extend: UniqueAdd
   has_and_belongs_to_many :releases
   has_and_belongs_to_many :commits
   
