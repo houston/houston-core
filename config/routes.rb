@@ -231,6 +231,11 @@ Rails.application.routes.draw do
   # Experiments
   get "pull_requests", to: "pull_requests#index", as: :pull_requests if Houston.config.supports_pull_requests?
   
+  get "reports", to: "reports#index"
+  %w{queue-age cycle-time time-to-first-test time-to-release}.each do |report|
+    get "reports/#{report}", to: "reports##{report.underscore}"
+  end
+  
   # Tester Bar
   match "tester_bar/:action", :controller => "tester_bar", via: [:get, :post] if Rails.env.development?
   

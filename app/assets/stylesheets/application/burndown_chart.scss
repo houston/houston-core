@@ -1,14 +1,54 @@
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.line {
+  fill: none;
+  stroke-width: 1.5px;
+  stroke: #000;
+}
+
+.graph { position: relative; }
+
+dl.legend {
+  position: absolute;
+  margin: 0;
+  top: 1em;
+  left: 6em;
+  border: 1px solid #999;
+  background: white;
+  overflow: hidden;
+  padding: 0.5em;
+  display: inline-block;
+  line-height: 1em;
+  font-size: 11px;
+  
+  dt {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    border-radius: 1em;
+  }
+  
+  dd {
+    display: inline;
+    line-height: 1.25em;
+    margin-left: 0.5em;
+
+    &:after {
+      content: '\A';
+      white-space: pre;
+    }
+  }
+}
+
 .burndown-chart {
   margin: 0 0 2em 0;
   
   .legend { font-size: 10px; }
-  
-  .axis path,
-  .axis line {
-    fill: none;
-    stroke: #000;
-    shape-rendering: crispEdges;
-  }
   
   .axis text {
     font-size: 10px;
@@ -33,9 +73,6 @@
   }
   
   .line {
-    fill: none;
-    stroke-width: 1.5px;
-    
     &.line-completed { stroke: #1f77b4; }
     &.line-committed { stroke: #cccccc; }
   }
