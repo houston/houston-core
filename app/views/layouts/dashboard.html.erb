@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <%= csrf_meta_tags %>
+    <meta name="relative_url_root" value="<%= main_app.root_url %>" />
+    <meta name="revision" value="<%= revision %>" />
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <%= stylesheet_link_tag "application", :media => "all" %>
+    <%= stylesheet_link_tag "print", :media => "print" %>
+    <%= yield :stylesheets %><%# so that Engines can hook in and add styles %>
+
+    <!-- Le fav and touch icons -->
+    <link rel="icon" type="image/x-icon" href="<%= ENV['RAILS_RELATIVE_URL_ROOT'] %>/favicon.png" />
+    <link href="images/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="images/apple-touch-icon-72x72.png" rel="apple-touch-icon" sizes="72x72">
+    <link href="images/apple-touch-icon-114x114.png" rel="apple-touch-icon" sizes="114x114">
+  </head>
+  <body class="dashboard">
+    <%= yield -%>
+    
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <%= javascript_include_tag :application %>
+    <%= yield :javascripts %>
+  </body>
+</html>

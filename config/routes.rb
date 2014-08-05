@@ -203,6 +203,8 @@ Rails.application.routes.draw do
   
   get "sprints/current", :to => "sprints#current", :as => :current_sprint
   get "sprints/:id", :to => "sprints#show", constraints: {id: /\d+/}, :as => :sprint
+  get "sprints/:id/dashboard", :to => "sprints#dashboard", constraints: {id: /\d+/}
+  get "sprints/dashboard", :to => "sprints#dashboard", :as => :sprint_dashboard
   put "sprints/:id/lock", :to => "sprints#lock", constraints: {id: /\d+/}
   post "sprints/:id/tasks/:task_id", :to => "sprints#add_task", constraints: {id: /\d+/, task_id: /\d+/}
   delete "sprints/:id/tasks/:task_id", :to => "sprints#remove_task", constraints: {id: /\d+/, task_id: /\d+/}

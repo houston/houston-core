@@ -1,7 +1,7 @@
 class SprintsController < ApplicationController
   attr_reader :sprint
   
-  before_filter :authenticate_user!
+  before_filter :authenticate_user!, except: [:dashboard]
   before_filter :find_sprint, only: [:show, :lock, :add_task, :remove_task]
   
   
@@ -16,6 +16,18 @@ class SprintsController < ApplicationController
     @open_tasks = Task.joins(:ticket => :project).merge(Ticket.open)
     @tasks = @sprint.tasks.includes(:checked_out_by)
     render template: "sprints/show"
+  end
+  
+  
+  def dashboard
+    @sprint = Sprint.find_by_id(params[:id]) || Sprint.current || Sprint.create!
+    
+    respond_to do |format|
+      format.json { render json: {
+        start: @sprint.start_date,
+        tasks: TaskPresenter.new(@sprint.tasks).as_json } }
+      format.html { render layout: "dashboard" }
+    end
   end
   
   

@@ -1,12 +1,20 @@
+$background: #191919;
+$foreground: #49A8EB;
+
 .dashboard {
-  background: #191919;
+  background: $background;
   position: fixed;
   top: 40px;
   left: 0;
   right: 0;
   bottom: 0;
-  
   padding: 12px;
+  
+  #container {
+    max-width: 960px;
+    margin: 0 auto;
+    position: relative;
+  }
   
   h2 {
     color: white;
@@ -24,4 +32,28 @@
     text-align: center;
   }
   
+  .refresher {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+  .refresher-track { fill: rgba(255,255,255,0.06); }
+  .refresher-path { fill: rgba(255,255,255,0.18); }
+  
+  
+  .burndown-chart {
+    .axis {
+      text { fill: #666; }
+      path, line { stroke: #333; }
+    }
+    
+    circle { fill: $background; }
+    .effort-remaining { font-weight: 400; }
+    
+    .circle-completed, .line.line-completed { stroke: $foreground; }
+    .effort-remaining.effort-completed { fill: $foreground; }
+    
+    .circle-committed, .line.line-committed { stroke: #666; }
+    .effort-remaining.effort-committed { fill: #666; }
+  }
 }
