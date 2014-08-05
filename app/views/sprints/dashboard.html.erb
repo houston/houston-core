@@ -1,4 +1,4 @@
-<div id="container">
+<div id="container" <% if params[:zoom].to_f > 0 %> style="transform: scale(<%= params[:zoom].to_f %>); transform-origin: 50% 0;" <% end %>>
   <div id="sprint_view"></div>
 <div>
 
