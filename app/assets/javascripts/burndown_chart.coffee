@@ -3,7 +3,6 @@ class Houston.BurndownChart
   constructor: ->
     @_margin = {top: 40, right: 80, bottom: 20, left: 50}
     @_width = 960
-    @_height = 260
     @_totalEffort = 0
     @_lines = {}
   
@@ -18,8 +17,9 @@ class Houston.BurndownChart
     @
   
   render: ->
+    height = @_height || (@_width * 0.27)
     graphWidth = @_width - @_margin.left - @_margin.right
-    graphHeight = @_height - @_margin.top - @_margin.bottom
+    graphHeight = height - @_margin.top - @_margin.bottom
     
     totalEffort = @_totalEffort
     unless totalEffort
@@ -48,7 +48,7 @@ class Houston.BurndownChart
     $(@selector).empty()
     svg = d3.select(@selector).append('svg')
         .attr('width', @_width)
-        .attr('height', @_height)
+        .attr('height', height)
       .append('g')
         .attr('transform', "translate(#{@_margin.left},#{@_margin.top})")
     
@@ -63,7 +63,7 @@ class Houston.BurndownChart
       .append('text')
         .attr('transform', 'rotate(-90)')
         .attr('y', -45)
-        .attr('x', 160 - @_height)
+        .attr('x', 160 - height)
         .attr('dy', '.71em')
         .attr('class', 'legend')
         .style('text-anchor', 'end')
