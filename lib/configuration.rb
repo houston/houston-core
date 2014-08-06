@@ -331,7 +331,7 @@ module Houston
     end
     
     def namespace
-      @namespace ||= "houston/#{name}".classify.constantize
+      @namespace ||= "houston/#{name}".camelize.constantize
     end
     
   end
