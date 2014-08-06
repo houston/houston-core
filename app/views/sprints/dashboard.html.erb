@@ -1,6 +1,5 @@
-<div id="container" <% if params[:zoom].to_f > 0 %> style="transform: scale(<%= params[:zoom].to_f %>); transform-origin: 50% 0; -webkit-transform: scale(<%= params[:zoom].to_f %>); -webkit-transform-origin: 50% 0; -moz-transform: scale(<%= params[:zoom].to_f %>); -moz-transform-origin: 50% 0;" <% end %>>
-  <div id="sprint_view"></div>
-<div>
+<h1>Sprint</h1>
+<div id="sprint_view"></div>
 
 <% content_for :javascripts do %>
 <script type="text/javascript">

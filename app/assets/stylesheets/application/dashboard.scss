@@ -1,8 +1,12 @@
-$background: #191919;
-$foreground: #49A8EB;
+$background: #000000;
+$subtle: #292929;
+$foreground: #777;
+$vivid: #3F8BC0;
+$link: #3878A5;
 
 .dashboard {
   background: $background;
+  color: $foreground;
   position: fixed;
   top: 40px;
   left: 0;
@@ -16,44 +20,41 @@ $foreground: #49A8EB;
     position: relative;
   }
   
-  h2 {
-    color: white;
+  h1 {
+    color: $foreground;
     font-size: 4em;
     font-weight: 100;
-    margin: 0.5em 0 1em 0;
-    text-align: right;
+    margin: 0 0 0.5em 0;
+    padding: 0;
+    background: none;
   }
   
-  &.coming-soon {
-    line-height: 800px;
-    font-size: 4em;
-    color: #333;
-    font-weight: 800;
-    text-align: center;
-  }
+  a, a:visited { color: $foreground; }
+  a:hover, a:active { color: $link; }
   
   .refresher {
     position: absolute;
     top: 0;
     right: 0;
   }
-  .refresher-track { fill: rgba(255,255,255,0.06); }
-  .refresher-path { fill: rgba(255,255,255,0.18); }
+  .refresher-track { fill: rgba(255,255,255,0.1); }
+  .refresher-path { fill: rgba(255,255,255,0.2); }
   
   
   .burndown-chart {
     .axis {
-      text { fill: #666; }
-      path, line { stroke: #333; }
+      text { font-size: 13px; fill: $foreground; }
+      text.legend { fill: $subtle; }
+      path, line { stroke: $subtle; }
     }
     
     circle { fill: $background; }
     .effort-remaining { font-weight: 400; }
     
-    .circle-completed, .line.line-completed { stroke: $foreground; }
-    .effort-remaining.effort-completed { fill: $foreground; }
+    .circle-completed, .line.line-completed { stroke: $vivid; }
+    .effort-remaining.effort-completed { fill: $vivid; }
     
-    .circle-committed, .line.line-committed { stroke: #666; }
-    .effort-remaining.effort-committed { fill: #666; }
+    .circle-committed, .line.line-committed { stroke: $foreground; }
+    .effort-remaining.effort-committed { fill: $foreground; }
   }
 }

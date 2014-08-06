@@ -25,7 +25,9 @@
     <link href="images/apple-touch-icon-114x114.png" rel="apple-touch-icon" sizes="114x114">
   </head>
   <body class="dashboard">
-    <%= yield -%>
+    <div id="container" <% if params[:zoom].to_f > 0 %> style="transform: scale(<%= params[:zoom].to_f %>); transform-origin: 50% 0; -webkit-transform: scale(<%= params[:zoom].to_f %>); -webkit-transform-origin: 50% 0; -moz-transform: scale(<%= params[:zoom].to_f %>); -moz-transform-origin: 50% 0;" <% end %>>
+      <%= yield -%>
+    </div>
     
     <!-- Le javascript
     ================================================== -->
