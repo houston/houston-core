@@ -1,4 +1,11 @@
 GIT
+  remote: git://github.com/boblail/neat-rails.git
+  revision: dcfd547063bdc03db8ccba5e035211f9f81edf64
+  branch: master
+  specs:
+    neat-rails (0.0.2)
+
+GIT
   remote: git://github.com/boblail/unfuddle.git
   revision: 11112f3009f3582f48c435a28d9504359f884731
   branch: master
@@ -24,6 +31,14 @@ GIT
   specs:
     idioms (0.0.1)
       activesupport (>= 3.2.0)
+
+GIT
+  remote: git://github.com/houstonmc/houston-roadmap.git
+  revision: 9c82f70482a123cb97db0da0a36e89a3b1b4887f
+  branch: master
+  specs:
+    houston-roadmap (0.0.1)
+      rails
 
 GIT
   remote: git://github.com/houstonmc/houston-scheduler.git
@@ -355,6 +370,7 @@ DEPENDENCIES
   googlecharts
   handlebars_assets (= 0.8.2)
   houston-itsm!
+  houston-roadmap!
   houston-scheduler!
   hpricot
   idioms!
@@ -364,6 +380,7 @@ DEPENDENCIES
   meta_request
   minitest
   minitest-reporters
+  neat-rails!
   nokogiri
   oauth-plugin (~> 0.5.1)
   octokit

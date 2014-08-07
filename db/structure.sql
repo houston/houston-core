@@ -22,6 +22,20 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
+--
+-- Name: pg_stat_statements; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pg_stat_statements WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION pg_stat_statements; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION pg_stat_statements IS 'track execution statistics of all SQL statements executed';
+
+
 SET search_path = public, pg_catalog;
 
 --
@@ -700,7 +714,8 @@ CREATE TABLE milestones (
     extended_attributes hstore DEFAULT ''::hstore NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    destroyed_at timestamp without time zone
+    destroyed_at timestamp without time zone,
+    "position" integer
 );
 
 
@@ -2293,4 +2308,6 @@ INSERT INTO schema_migrations (version) VALUES ('20140526180608');
 INSERT INTO schema_migrations (version) VALUES ('20140606232907');
 
 INSERT INTO schema_migrations (version) VALUES ('20140724231918');
+
+INSERT INTO schema_migrations (version) VALUES ('20140806233301');
 

@@ -89,6 +89,11 @@ module Houston
               .map { |attributes | build_milestone(attributes) }
           end
           
+          def find_milestone(id)
+            attributes = unfuddle.find_milestone(id)
+            build_milestone(attributes) if attributes
+          end
+          
           
           
           # Optional API
@@ -132,6 +137,7 @@ module Houston
                    :find_custom_field_value_by_id!,
                    :find_custom_field_value_by_value!,
                    :ticket,
+                   :milestone,
                    :severities,
                    :components,
                    :to => :unfuddle

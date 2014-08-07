@@ -3,18 +3,20 @@ class Houston.BurndownChart
   constructor: ->
     @_margin = {top: 40, right: 80, bottom: 20, left: 50}
     @_width = 960
+    @_selector = '#graph'
     @_totalEffort = 0
     @_lines = {}
+    @_regressions = {}
   
   margin: (@_margin)-> @
   width: (@_width)-> @
   height: (@_height)-> @
-  selector: (@selector)-> @ 
+  selector: (@_selector)-> @ 
+  dateFormat: (@_dateFormat)-> @ 
   days: (@days)-> @
   totalEffort: (@_totalEffort)-> @
-  addLine: (slug, data)->
-    @_lines[slug] = data
-    @
+  addLine: (slug, data)-> @_lines[slug] = data; @
+  addRegression: (slug, data)-> @_regressions[slug] = data; @
   
   render: ->
     height = @_height || (@_width * 0.27)
@@ -26,10 +28,12 @@ class Houston.BurndownChart
       for slug, data of @_lines
         totalEffort = data[0].effort if data[0] and data[0].effort > totalEffort
     
-    formatDate = d3.time.format('%A')
+    formatDate = @_dateFormat || d3.time.format('%A')
     
+    [min, max] = d3.extent(@days)
     x = d3.scale.ordinal().rangePoints([0, graphWidth], 0.75).domain(@days)
     y = d3.scale.linear().range([graphHeight, 0]).domain([0, totalEffort])
+    rx = d3.scale.linear().range([x(min), x(max)]).domain([min, max])
     
     xAxis = d3.svg.axis()
       .scale(x)
@@ -45,8 +49,8 @@ class Houston.BurndownChart
       .x((d)-> x(d.day))
       .y((d)-> y(d.effort))
     
-    $(@selector).empty()
-    svg = d3.select(@selector).append('svg')
+    $(@_selector).empty()
+    svg = d3.select(@_selector).append('svg')
         .attr('width', @_width)
         .attr('height', height)
       .append('g')
@@ -68,6 +72,16 @@ class Houston.BurndownChart
         .attr('class', 'legend')
         .style('text-anchor', 'end')
         .text('Points Remaining')
+    
+    
+    
+    for slug, data of @_regressions
+      svg.append('line')
+        .attr('class', "regression regression-#{slug}")
+        .attr('x1', rx(data.x1))
+        .attr('y1', y(data.y1))
+        .attr('x2', rx(data.x2))
+        .attr('y2', y(data.y2))
     
     
     

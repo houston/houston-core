@@ -72,7 +72,6 @@ class @ShowSprintView extends Backbone.View
       data
     
     new Houston.BurndownChart()
-      .selector('#graph')
       .days(days)
       .totalEffort(totalEffort)
       .addLine('committed', toChartData(committedByDay))

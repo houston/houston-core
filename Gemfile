@@ -41,6 +41,7 @@ gem "jquery-rails", "2.2.1"
 gem "sugar-rails"
 gem "twitter-bootstrap-rails", "2.2.6"
 gem "less-rails", "2.3.2" # for Twitter Bootstrap
+gem "neat-rails", github: "boblail/neat-rails", branch: "master"
 
 # Tooling
 gem "airbrake", "~> 3.1.15" # exception notification

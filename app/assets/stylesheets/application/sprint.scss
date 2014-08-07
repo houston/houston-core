@@ -13,26 +13,27 @@ $completed-foreground: rgb(42, 133, 19);
   margin-bottom: 0;
   padding: 0.5em 1em;
 }
+#add_task_form .icon-spinner { display: none; }
+#add_task_form.loading .icon-spinner { display: inline-block; }
+
+.shaded-chart {
+  height: 260px;
+  margin: -2em -20px 2em;
+  padding: 2em;
+  background: #efefef;
+}
+
+h2.light {
+  font-weight: 200;
+  display: inline-block;
+  margin: 0;
+}
 
 #sprint_view {
-  h2 {
-    font-weight: 200;
-    display: inline-block;
-    margin: 0;
-  }
   
   #lock_sprint_button, #show_completed_tasks {
     margin-bottom: 12px;
   }
-  
-  .shaded-chart {
-     margin: -2em -2em 2em;
-     padding: 2em;
-     background: #efefef;
-  }
-  
-  .icon-spinner { display: none; }
-  #add_task_form.loading .icon-spinner { display: inline-block; }
   
   &.hide-completed .task-completed { display: none; }
   .task-completed {

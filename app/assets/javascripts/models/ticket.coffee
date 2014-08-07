@@ -2,10 +2,12 @@ class window.Ticket extends Backbone.Model
   urlRoot: '/tickets'
   
   tasks: -> @_tasks ?= new Tasks(@get('tasks'))
+  
   estimatedEffort: ->
     return @get('effort') unless _.isUndefined(@attributes.effort)
     effort = @tasks().reduce ((sum, task)-> sum + +task.get('effort')), 0
     if effort == 0 then null else effort
+  
   severity: ->
     seriousness = @get('seriousness')
     likelihood = @get('likelihood')
