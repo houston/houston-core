@@ -4,6 +4,8 @@ class Milestone < ActiveRecord::Base
   belongs_to :project
   has_many :tickets
   
+  versioned only: [:name, :position]
+  
   default_scope { where(destroyed_at: nil).order(:position) }
   
   validates :project_id, presence: true
