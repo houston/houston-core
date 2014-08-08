@@ -283,6 +283,8 @@ Houston.config do
   #   bundle config local.houston-<MODULE> ~/Projects/houston-<MODULE>
   #
   use :scheduler, :github => "houstonmc/houston-scheduler", :branch => "master"
+  use :roadmap, :github => "houstonmc/houston-roadmap", :branch => "master"
+  use :alerts, :github => "houstonmc/houston-alerts", :branch => "master"
   use :kanban, :github => "houstonmc/houston-kanban", :branch => "master" do
     queues do
       unprioritized do

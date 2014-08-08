@@ -17,7 +17,7 @@ GIT
 
 GIT
   remote: git://github.com/concordia-publishing-house/houston-itsm.git
-  revision: b64ebafa938c2d23b9cf306efbe455ff5c1df8c0
+  revision: 326022e902902cc05ed10a656b9cccc3c78590ea
   branch: master
   specs:
     houston-itsm (0.0.1)
@@ -31,6 +31,14 @@ GIT
   specs:
     idioms (0.0.1)
       activesupport (>= 3.2.0)
+
+GIT
+  remote: git://github.com/houstonmc/houston-alerts.git
+  revision: a8f0655ba77eb5202e1e29245db74ef8c597b2a0
+  branch: master
+  specs:
+    houston-alerts (0.0.1)
+      rails
 
 GIT
   remote: git://github.com/houstonmc/houston-roadmap.git
@@ -371,6 +379,7 @@ DEPENDENCIES
   gemoji
   googlecharts
   handlebars_assets (= 0.8.2)
+  houston-alerts!
   houston-itsm!
   houston-roadmap!
   houston-scheduler!

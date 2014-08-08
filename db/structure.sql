@@ -480,6 +480,42 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
+-- Name: alerts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE alerts (
+    id integer NOT NULL,
+    type character varying(255) NOT NULL,
+    key character varying(255) NOT NULL,
+    summary character varying(255) NOT NULL,
+    url character varying(255) NOT NULL,
+    project_id integer,
+    checked_out_by_id integer,
+    opened_at timestamp without time zone NOT NULL,
+    closed_at timestamp without time zone
+);
+
+
+--
+-- Name: alerts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE alerts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: alerts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE alerts_id_seq OWNED BY alerts.id;
+
+
+--
 -- Name: changes; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1373,6 +1409,13 @@ ALTER SEQUENCE versions_id_seq OWNED BY versions.id;
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY alerts ALTER COLUMN id SET DEFAULT nextval('alerts_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY changes ALTER COLUMN id SET DEFAULT nextval('changes_id_seq'::regclass);
 
 
@@ -1514,6 +1557,14 @@ ALTER TABLE ONLY value_statements ALTER COLUMN id SET DEFAULT nextval('value_sta
 --
 
 ALTER TABLE ONLY versions ALTER COLUMN id SET DEFAULT nextval('versions_id_seq'::regclass);
+
+
+--
+-- Name: alerts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY alerts
+    ADD CONSTRAINT alerts_pkey PRIMARY KEY (id);
 
 
 --
@@ -1682,6 +1733,27 @@ ALTER TABLE ONLY value_statements
 
 ALTER TABLE ONLY versions
     ADD CONSTRAINT versions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: index_alerts_on_closed_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_alerts_on_closed_at ON alerts USING btree (closed_at);
+
+
+--
+-- Name: index_alerts_on_opened_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_alerts_on_opened_at ON alerts USING btree (opened_at);
+
+
+--
+-- Name: index_alerts_on_type_and_key; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_alerts_on_type_and_key ON alerts USING btree (type, key);
 
 
 --
@@ -2310,4 +2382,6 @@ INSERT INTO schema_migrations (version) VALUES ('20140606232907');
 INSERT INTO schema_migrations (version) VALUES ('20140724231918');
 
 INSERT INTO schema_migrations (version) VALUES ('20140806233301');
+
+INSERT INTO schema_migrations (version) VALUES ('20140807212311');
 
