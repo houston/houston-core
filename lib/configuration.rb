@@ -5,6 +5,7 @@ require "houston/adapters"
 
 module Houston
   class Configuration
+    attr_reader :timers
     
     def initialize
       @modules = []
@@ -13,6 +14,7 @@ module Houston
       @ticket_tracker_configuration = {}
       @ci_server_configuration = {}
       @error_tracker_configuration = {}
+      @timers = []
     end
     
     
@@ -285,6 +287,10 @@ module Houston
     
     def on(event, &block)
       Houston.observer.on(event, &block)
+    end
+    
+    def every(interval, &block)
+      @timers.push [interval, block]
     end
     
     def cron(&block)

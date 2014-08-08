@@ -27,6 +27,7 @@ gem "oj"
 gem "premailer", "1.7.3" # for inlining CSS in HTML emails
 gem "progressbar" # for long migrations
 gem "redcarpet"
+gem "rufus-scheduler"
 gem "rugged" # for speaking to Git
 gem "simplecov"
 gem "strongbox" # for encrypting user credentials
