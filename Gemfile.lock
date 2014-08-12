@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/boblail/neat-rails.git
-  revision: dcfd547063bdc03db8ccba5e035211f9f81edf64
+  revision: d2bf2cf83d3fd0fdac676e789f4381e369a82d87
   branch: master
   specs:
     neat-rails (0.0.2)
@@ -42,7 +42,7 @@ GIT
 
 GIT
   remote: git://github.com/houstonmc/houston-roadmap.git
-  revision: 9127296ad290db3fe8a2dcba85c46aaa0293f60c
+  revision: 8678edbf44a9694038cb1647e157d1abcfc5534b
   branch: master
   specs:
     houston-roadmap (0.0.1)
@@ -331,7 +331,7 @@ GEM
       actionpack (>= 3.1)
       execjs
       railties (>= 3.1)
-    tzinfo (1.2.1)
+    tzinfo (1.2.2)
       thread_safe (~> 0.1)
     uglifier (2.5.0)
       execjs (>= 0.3.0)

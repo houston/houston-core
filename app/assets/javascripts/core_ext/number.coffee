@@ -2,6 +2,14 @@ class window.Duration
   constructor: (@n, @units)->
   after:  (date)-> Duration.transformDateBy(date, +@n, @units)
   before: (date)-> Duration.transformDateBy(date, -@n, @units)
+  valueOf: ->
+    switch units
+      when 'minutes' then n * Duration.MINUTE
+      when 'hours' then n * Duration.HOUR
+      when 'days' then n * Duration.DAY
+      when 'weeks' then n * Duration.WEEK
+      when 'months' then n * Duration.AVGMONTH
+      when 'years' then n * Duration.AVGYEAR
 
 Duration::from = Duration::after
 
@@ -9,6 +17,8 @@ Duration.MINUTE = 60
 Duration.HOUR = Duration.MINUTE * 60
 Duration.DAY = Duration.HOUR * 24
 Duration.WEEK = Duration.DAY * 7
+Duration.AVGMONTH = Duration.WEEK * 4.3452380952381
+Duration.AVGYEAR = Duration.AVGMONTH * 12
 Duration.transformDateBy = (date, n, units)->
   switch units
     when 'minutes' then new Date(date.getTime() + (n * Duration.MINUTE))

@@ -751,7 +751,10 @@ CREATE TABLE milestones (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     destroyed_at timestamp without time zone,
-    "position" integer
+    "position" integer,
+    size integer,
+    units character varying(255),
+    start_date date
 );
 
 
@@ -2384,4 +2387,6 @@ INSERT INTO schema_migrations (version) VALUES ('20140724231918');
 INSERT INTO schema_migrations (version) VALUES ('20140806233301');
 
 INSERT INTO schema_migrations (version) VALUES ('20140807212311');
+
+INSERT INTO schema_migrations (version) VALUES ('20140810224209');
 
