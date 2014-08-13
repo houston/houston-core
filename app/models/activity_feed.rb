@@ -64,7 +64,7 @@ class ActivityFeed
     end
     
     def icon
-      "icon-plus"
+      "fa fa-plus"
     end
   end
   
@@ -83,7 +83,7 @@ class ActivityFeed
     end
     
     def icon
-      "icon-minus"
+      "fa fa-minus"
     end
   end
   
@@ -100,7 +100,7 @@ class ActivityFeed
     end
     
     def icon
-      "icon-rocket"
+      "fa fa-rocket"
     end
     
     def actor

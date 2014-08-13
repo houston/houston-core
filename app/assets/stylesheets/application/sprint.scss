@@ -13,8 +13,8 @@ $completed-foreground: rgb(42, 133, 19);
   margin-bottom: 0;
   padding: 0.5em 1em;
 }
-#add_task_form .icon-spinner { display: none; }
-#add_task_form.loading .icon-spinner { display: inline-block; }
+#add_task_form .fa-spinner { display: none; }
+#add_task_form.loading .fa-spinner { display: inline-block; }
 
 .shaded-chart {
   height: 260px;

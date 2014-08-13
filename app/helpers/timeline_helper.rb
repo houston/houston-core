@@ -14,8 +14,8 @@ module TimelineHelper
   
   def icon_for_resolution(resolution)
     case resolution
-    when nil, "", "fixed" then "icon-ok"
-    else "icon-minus"
+    when nil, "", "fixed" then "fa fa-ok"
+    else "fa fa-minus"
     end
   end
   

@@ -11,6 +11,5 @@
  *= require_self
  *= require bootstrap_and_overrides
  *= require jquery-ui
- *= require font-awesome
  *= require_tree ./application
 */

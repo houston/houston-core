@@ -37,7 +37,7 @@
                   publish_status_to_github
                   publish_coverage_to_code_climate}) %>
               <% if broken_features.any? %>
-                <i class="icon icon-bolt" rel="tooltip" data-tooltip-placement="top" title="<%= broken_features.map(&:titleize).to_sentence %> <%= broken_features.one? ? "is" : "are" %> not working"></i>
+                <i class="fa fa-bolt" rel="tooltip" data-tooltip-placement="top" title="<%= broken_features.map(&:titleize).to_sentence %> <%= broken_features.one? ? "is" : "are" %> not working"></i>
               <% end %>
             </td>
             <td class="project-title">

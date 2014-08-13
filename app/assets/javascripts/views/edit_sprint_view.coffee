@@ -255,7 +255,7 @@ class @EditSprintView extends @ShowSprintView
       <div class="modal-footer">
         <button class="btn" data-dismiss="modal">Back away slowly</button>
         <button id="confirm_lock_sprint" class="btn btn-danger" data-dismiss="modal">
-          <i class="icon icon-lock" /> Lock It!
+          <i class="fa fa-lock" /> Lock It!
         </button>
       </div>
     </div>
@@ -275,4 +275,4 @@ class @EditSprintView extends @ShowSprintView
       .attr('disabled', 'disabled')
       .addClass('active')
       .removeClass('btn-danger')
-      .html('<i class="icon icon-lock" /> Locked')
+      .html('<i class="fa fa-lock" /> Locked')

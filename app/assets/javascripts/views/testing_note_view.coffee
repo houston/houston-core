@@ -42,7 +42,7 @@ class window.TestingNoteView extends Backbone.View
       e.stopImmediatePropagation()
     if @isInEditMode
       $form = $(@el).find('form')
-      $form.disable().find('.btn-primary').html('<i class="icon-spinner icon-spin"></i> Saving...')
+      $form.disable().find('.btn-primary').html('<i class="fa fa-spinner fa-spin"></i> Saving...')
       params = $form.serializeObject()
       previousAttributes = @model.previousAttributes()
       @model.save params,
