@@ -492,7 +492,8 @@ CREATE TABLE alerts (
     project_id integer,
     checked_out_by_id integer,
     opened_at timestamp without time zone NOT NULL,
-    closed_at timestamp without time zone
+    closed_at timestamp without time zone,
+    checked_out_by_email character varying(255)
 );
 
 
@@ -2389,4 +2390,6 @@ INSERT INTO schema_migrations (version) VALUES ('20140806233301');
 INSERT INTO schema_migrations (version) VALUES ('20140807212311');
 
 INSERT INTO schema_migrations (version) VALUES ('20140810224209');
+
+INSERT INTO schema_migrations (version) VALUES ('20140813010452');
 
