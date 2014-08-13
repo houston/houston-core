@@ -21,12 +21,6 @@ class TestingNote < ActiveRecord::Base
   
   
   
-  def self.for_tickets(tickets)
-    where(ticket_id: tickets)
-  end
-  
-  
-  
   def to_comment
     TicketComment.new(
       user: user,

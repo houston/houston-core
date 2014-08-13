@@ -26,10 +26,6 @@ module Houston
             "https://api.github.com/repos/#{path}/statuses/#{full_sha}"
           end
           
-          def pull_requests_url
-             "#{project_url}/pulls"
-          end
-          
           
         end
       end

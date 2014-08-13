@@ -4,22 +4,13 @@
       Projects I Follow
       <%= avatar_for(current_user, size: 132) %>
     </h1>
-    
-    <ul class="nav nav-pills">
-      <li id="nav_timeline" class="active"><a href="#timeline">Timeline</a></li>
-      <li id="nav_todo"><a href="#to-do">To Do</a></li>
-    </ul>
   </div>
   
-  <div id="triptych">
-    <div id="timeline_body">
-      <div class="timeline infinite-scroll">
-        <p class="spinner"><i class="fa fa-spinner fa-spin fa-large"></i> Loading...</p>
-        <%= render "activity/events" %>
-      </div>
+  <div id="timeline_body">
+    <div class="timeline infinite-scroll">
+      <p class="spinner"><i class="fa fa-spinner fa-spin fa-large"></i> Loading...</p>
+      <%= render "activity/events" %>
     </div>
-    
-    <div id="todo_body" class="to-do out"></div>
   </div>
   
 </div>
@@ -27,7 +18,6 @@
 <% content_for :javascripts do %>
 <script type="text/javascript">
 $(function() {
-  new WelcomeView();
   new InfiniteScroll({
     load: function($timeline) {
       if(!/#?timeline/.test(window.location.hash)) { return false; }

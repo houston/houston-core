@@ -1,8 +1,8 @@
 #welcome {
   max-width: 920px;
   margin: 0 auto;
-  overflow-x: hidden;
-  position: relative;
+//  overflow-x: hidden;
+//  position: relative;
   
   &.loading {
     &::before {
@@ -36,7 +36,7 @@
   h1 {
     background: none;
     padding: 0;
-    margin: 1em 0 0.33em;
+    margin: 1em 0;
     font-size: 4em;
     font-weight: 100;
     color: black;
@@ -45,90 +45,14 @@
     box-shadow: none;
     
     img.avatar {
-      position: absolute;
-      top: 0.5em;
-      right: 0;
-      margin-right: 0;
+      float: right;
+      position: relative;
+      top: -0.5em;
     }
   }
-  
-  .nav-pills > li > a {
-    font-size: 0.88em;
-    padding: 4px 6px;
-  }
-  
-  .header {
-    margin-bottom: 1.5em;
-  }
-  
-  
-  
-  .project-name {
-    font-weight: 200;
-
-    font-weight: 500;
-    color: #606060;
-  }
-  
-  .score {
-    margin: 0 0 0 1em;
-    
-    a, p {
-      color: #818181;
-      padding: 6px 12px;
-      min-width: 4em;
-      min-height: 46px;
-      -webkit-border-radius: 4px;
-      -moz-border-radius: 4px;
-      border-radius: 4px;
-      
-      &.zero {
-        color: #ddd;
-        .score-label { color: #ddd; }
-      }
-    }
-    
-    .score-label {
-      font-size: 0.66em;
-      color: #999;
-    }
-  }
-  
   
   .timeline {
     max-width: 860px;
     padding-right: 60px;
   }
-}
-
-#triptych {
-  position: relative;
-  width: 200%; // 100 * number-of-panes
-  display: none;
-  
-  left: 0;
-  &[data-page="1"] { left: -100%; }
-  &[data-page="2"] { left: -200%; }
-  
-  & > div {
-    width: 50%; // 100 / number-of-panes
-    float: left;
-    
-    &.collapsed {
-      height: 1px;
-      overflow: hidden;
-    }
-  }
-  
-  &.slider {
-    display: block;
-    -webkit-transition-duration: 0.3s;
-    -moz-transition-duration: 0.3s;
-    -o-transition-duration: 0.3s;
-    transition-duration: 0.3s;
-  }
-}
-
-.to-do {
-  table td { padding: 0; }
 }

@@ -11,11 +11,6 @@ class WelcomeController < ApplicationController
     render partial: "activity/events"
   end
   
-  def tdl
-    @project_tdls = ProjectTDL.for(followed_projects, current_user)
-    render partial: "welcome/tdl"
-  end
-  
 private
   
   def load_activity
