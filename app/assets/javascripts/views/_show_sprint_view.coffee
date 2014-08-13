@@ -24,9 +24,10 @@ class @ShowSprintView extends Backbone.View
   renderBurndownChart: (tasks)->
     
     # The time range of the Sprint
-    tomorrow = 1.day().after(new Date())
+    today = new Date()
     monday = @sprintStart
-    days = (i.days().after(monday) for i in [0..4])
+    sunday = 1.day().before(monday)
+    days = (i.days().after(sunday) for i in [0..5])
     
     # Sum progress by day;
     # Find the total amount of effort to accomplish
@@ -39,7 +40,6 @@ class @ShowSprintView extends Backbone.View
         day = App.truncateDate App.parseDate(task.firstReleaseAt)
         effort = 0 if day < monday # this task was released before this sprint started!
         
-        day = 1.day().after(day)
         completedByDay[day] = (completedByDay[day] || 0) + effort
         committedByDay[day] = (committedByDay[day] || 0) + effort unless task.firstCommitAt
       
@@ -47,7 +47,6 @@ class @ShowSprintView extends Backbone.View
         day = App.truncateDate App.parseDate(task.firstCommitAt)
         effort = 0 if day < monday # this task was released before this sprint started!
         
-        day = 1.day().after(day)
         committedByDay[day] = (committedByDay[day] || 0) + effort
       totalEffort += effort
     
@@ -60,11 +59,11 @@ class @ShowSprintView extends Backbone.View
     toChartData = (progressByDay)->
       remainingEffort = totalEffort
       data = [
-        day: monday
+        day: sunday
         effort: Math.ceil(remainingEffort)
       ]
-      for day in days.slice(1)
-        unless day > tomorrow
+      for day in days
+        unless day > today
           remainingEffort -= (progressByDay[day] || 0)
           data.push
             day: day
