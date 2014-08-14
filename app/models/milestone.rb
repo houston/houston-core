@@ -43,7 +43,7 @@ class Milestone < ActiveRecord::Base
   end
   
   def remote_milestone
-    @remote_milestone ||= ticket_tracker.find_milestone(remote_id)
+    @remote_milestone ||= ticket_tracker.find_milestone(remote_id) if ticket_tracker.respond_to?(:find_milestone)
   end
   alias :remote :remote_milestone
   
