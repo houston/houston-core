@@ -237,6 +237,7 @@ Rails.application.routes.draw do
   %w{queue-age cycle-time time-to-first-test time-to-release}.each do |report|
     get "reports/#{report}", to: "reports##{report.underscore}"
   end
+  get "reports/velocity", to: "reports#velocity"
   
   # Tester Bar
   match "tester_bar/:action", :controller => "tester_bar", via: [:get, :post] if Rails.env.development?

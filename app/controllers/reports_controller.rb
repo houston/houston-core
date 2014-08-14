@@ -146,6 +146,15 @@ class ReportsController < ApplicationController
     end
   end
   
+  
+  
+  def velocity
+    @tickets = ::Ticket.includes(:project, :tasks).estimated.closed
+      .select { |ticket| ticket.commit_time > 0 } # <-- speed up
+  end
+  
+  
+  
 private
   
   CUTOFFS = [3.weeks, 3.months, 9.months, 2.years, 99.years].freeze
