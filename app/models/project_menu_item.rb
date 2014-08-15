@@ -6,7 +6,7 @@ class ProjectMenuItem < MenuItem
   end
   
   def display
-    "#{h @project.name} <b class=\"bubble #{h @project.color}\"></b>".html_safe
+    "<b class=\"bubble #{h @project.color}\"></b> #{h @project.name}".html_safe
   end
   
 end
