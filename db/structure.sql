@@ -493,7 +493,10 @@ CREATE TABLE alerts (
     checked_out_by_id integer,
     opened_at timestamp without time zone NOT NULL,
     closed_at timestamp without time zone,
-    checked_out_by_email character varying(255)
+    checked_out_by_email character varying(255),
+    project_slug character varying(255),
+    priority character varying(255) DEFAULT 'high'::character varying NOT NULL,
+    deadline timestamp without time zone NOT NULL
 );
 
 
@@ -2392,4 +2395,8 @@ INSERT INTO schema_migrations (version) VALUES ('20140807212311');
 INSERT INTO schema_migrations (version) VALUES ('20140810224209');
 
 INSERT INTO schema_migrations (version) VALUES ('20140813010452');
+
+INSERT INTO schema_migrations (version) VALUES ('20140815000804');
+
+INSERT INTO schema_migrations (version) VALUES ('20140815022909');
 

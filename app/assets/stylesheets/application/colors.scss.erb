@@ -10,6 +10,16 @@
   <% end %>
 }
 
+.dashboard .label {
+  <% Houston.config.project_colors.each do |name, value| %>
+    &.<%= name %> {
+      background-color: $<%= name %>;
+      color: rgba(255,255,255,0.9);
+      opacity: 0.95; // slightly darker
+    }
+  <% end %>
+}
+
 .bubble {
   display: inline-block;
   width: 0.92em;
