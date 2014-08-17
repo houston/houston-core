@@ -14,13 +14,22 @@ $link: #3878A5;
   bottom: 0;
   padding: 12px;
   
-  &.green {
-    background: #005E2D;
-    h1 { color: rgba(255, 255, 210, 0.435); }
+  &.red {
+    background: #8B2A17;
+    color: rgba(255, 255, 230, 0.435);
     .refresher-track { fill: rgba(255, 255, 100, 0.07); }
-    .refresher-path { fill: rgba(255, 255, 210, 0.2); }
+    .refresher-path { fill: rgba(255, 255, 230, 0.2); }
+    .label { color: rgba(255, 255, 230, 0.9); }
   }
   
+  &.green {
+    background: #005E2D;
+    color: rgba(255, 255, 210, 0.435);
+    .refresher-track { fill: rgba(255, 255, 100, 0.07); }
+    .refresher-path { fill: rgba(255, 255, 210, 0.2); }
+    .label { color: rgba(255, 255, 210, 0.9); }
+  }
+
   #container {
     max-width: 960px;
     margin: 0 auto;
@@ -28,7 +37,7 @@ $link: #3878A5;
   }
   
   h1 {
-    color: $foreground;
+    color: inherit;
     font-size: 4em;
     font-weight: 100;
     margin: 0 0 0.5em 0;
@@ -37,7 +46,7 @@ $link: #3878A5;
     box-shadow: none;
   }
   
-  a, a:visited { color: $foreground; }
+  a, a:visited { color: inherit; }
   a:hover, a:active { color: #ccc; }
   
   .refresher {
