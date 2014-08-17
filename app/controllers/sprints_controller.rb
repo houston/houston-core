@@ -20,6 +20,7 @@ class SprintsController < ApplicationController
   
   
   def dashboard
+    @title = "Sprint"
     @sprint = Sprint.find_by_id(params[:id]) || Sprint.current || Sprint.create!
     
     respond_to do |format|

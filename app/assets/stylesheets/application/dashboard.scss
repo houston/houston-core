@@ -4,6 +4,12 @@ $foreground: #909090;
 $vivid: #3F8BC0;
 $link: #3878A5;
 
+$background-green: #005e2d;
+$subtle-green: #437043;     // rgba(255, 255, 210, 0.12)
+$foreground-green: #7fa374; // rgba(255, 255, 210, 0.435)
+$vivid-green: #b7cc63;
+$vivid-green: #7ab84a;
+
 .dashboard {
   background: $background;
   color: $foreground;
@@ -23,11 +29,26 @@ $link: #3878A5;
   }
   
   &.green {
-    background: #005E2D;
-    color: rgba(255, 255, 210, 0.435);
+    background: $background-green;
+    color: $foreground-green;
     .refresher-track { fill: rgba(255, 255, 100, 0.07); }
     .refresher-path { fill: rgba(255, 255, 210, 0.2); }
     .label { color: rgba(255, 255, 210, 0.9); }
+    
+    .burndown-chart {
+      circle { fill: $background-green; }
+      .axis {
+        text { fill: $foreground-green; }
+        text.legend { fill: $subtle-green; }
+        path, line { stroke: $subtle-green; }
+      }
+      
+      .circle-completed, .line.line-completed { stroke: $vivid-green; }
+      .effort-remaining.effort-completed { fill: $vivid-green; }
+
+      .circle-committed, .line.line-committed { stroke: $foreground-green; }
+      .effort-remaining.effort-committed { fill: $foreground-green; }
+    }
   }
 
   #container {

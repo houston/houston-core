@@ -70,9 +70,16 @@ class @ShowSprintView extends Backbone.View
             effort: Math.ceil(remainingEffort)
       data
     
+    committed = toChartData(committedByDay)
+    completed = toChartData(completedByDay)
+    toCommit = committed.last().effort
+    toComplete = completed.last().effort
+    
     new Houston.BurndownChart()
       .days(days)
       .totalEffort(totalEffort)
-      .addLine('committed', toChartData(committedByDay))
-      .addLine('completed', toChartData(completedByDay))
+      .addLine('committed', committed)
+      .addLine('completed', completed)
       .render()
+
+    $('body').toggleClass('green', toCommit == 0 or toComplete == 0)
