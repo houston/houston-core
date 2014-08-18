@@ -82,4 +82,4 @@ class @ShowSprintView extends Backbone.View
       .addLine('completed', completed)
       .render()
 
-    $('body').toggleClass('green', toCommit == 0 or toComplete == 0)
+    $('body').toggleClass('green', totalEffort > 0 and (toCommit == 0 or toComplete == 0))
