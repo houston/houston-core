@@ -34,7 +34,7 @@ GIT
 
 GIT
   remote: git://github.com/houstonmc/houston-alerts.git
-  revision: 2e1ce6598a42de7ed6795a6aee6ab558e2664e2e
+  revision: f53c58272f80c5f701e8243f6ff7bd574600106d
   branch: master
   specs:
     houston-alerts (0.0.1)
@@ -50,7 +50,7 @@ GIT
 
 GIT
   remote: git://github.com/houstonmc/houston-scheduler.git
-  revision: c7c5366736e7a29f2a7b50464105bba44bf6ca37
+  revision: 938582e4104a5eeed2acb25247a690a0a5bab93c
   branch: master
   specs:
     houston-scheduler (0.0.1)
