@@ -91,8 +91,8 @@ module Houston
             covered_percent = metrics["covered_percent"] / 100.0 if metrics.key?("covered_percent")
             covered_strength = metrics["covered_strength"] / 100.0 if metrics.key?("covered_strength")
             { coverage: translate_file_coverage(response["files"]),
-              covered_percent: covered_percent,
-              covered_strength: covered_strength }
+              covered_percent: covered_percent || 0,
+              covered_strength: covered_strength || 0 }
           end
           
           
