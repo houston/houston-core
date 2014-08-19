@@ -11,7 +11,7 @@ class TaskPresenter
       tasks.includes(:ticket => :project).load
     end if tasks.is_a?(ActiveRecord::Relation)
     Houston.benchmark "[#{self.class.name.underscore}] Prepare JSON" do
-      tasks.map(&method(:task_to_json))
+      tasks.select(&:ticket).map(&method(:task_to_json))
     end
   end
   
