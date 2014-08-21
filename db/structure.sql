@@ -496,7 +496,8 @@ CREATE TABLE alerts (
     checked_out_by_email character varying(255),
     project_slug character varying(255),
     priority character varying(255) DEFAULT 'high'::character varying NOT NULL,
-    deadline timestamp without time zone NOT NULL
+    deadline timestamp without time zone NOT NULL,
+    hours hstore DEFAULT ''::hstore
 );
 
 
@@ -2399,4 +2400,6 @@ INSERT INTO schema_migrations (version) VALUES ('20140813010452');
 INSERT INTO schema_migrations (version) VALUES ('20140815000804');
 
 INSERT INTO schema_migrations (version) VALUES ('20140815022909');
+
+INSERT INTO schema_migrations (version) VALUES ('20140821000627');
 
