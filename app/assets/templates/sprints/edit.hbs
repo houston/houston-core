@@ -30,7 +30,9 @@
       <th class="task-project sort-desc">Project</th>
       <th class="task-summary">Summary</th>
       <th class="task-worker">Worker</th>
+      {{#unless locked}}
       <td class="task-remove"></td>
+      {{/unless}}
     </tr>
   </thead>
   <tbody id="tasks">

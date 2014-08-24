@@ -20,6 +20,7 @@ class @EditSprintView extends @ShowSprintView
     for task in @tasks
       task.completed = !!task.firstReleaseAt || !!task.firstCommitAt
       task.open = !task.completed
+      task.locked = @locked
     
     html = @template
       locked: @locked
@@ -132,6 +133,7 @@ class @EditSprintView extends @ShowSprintView
     for task in @tasks
       task.completed = !!task.firstReleaseAt || !!task.firstCommitAt
       task.open = !task.completed
+      task.locked = @locked
       $tasks.append template(task)
   
   promptForEffort: (task)->
@@ -276,3 +278,4 @@ class @EditSprintView extends @ShowSprintView
       .addClass('active')
       .removeClass('btn-danger')
       .html('<i class="fa fa-lock" /> Locked')
+    $('td.task-remove').remove()
