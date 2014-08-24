@@ -88,6 +88,38 @@ class TaskTest < ActiveSupport::TestCase
   
   
   
+  context "When a task is committed, it" do
+    should "not be marked completed" do
+      task = a_ticket.tasks.create!(description: "New Step 1")
+      stub(task.project).category.returns "Products"
+      time = Time.now
+      task.committed! Struct.new(:authored_at).new(time)
+      assert_equal nil, task.completed_at
+    end
+  end
+  
+  context "When a task is released, it" do
+    should "also be marked completed" do
+      task = a_ticket.tasks.create!(description: "New Step 1")
+      stub(task.project).category.returns "Products"
+      time = Time.now
+      task.send :cache_release_attributes, Struct.new(:created_at).new(time)
+      assert_equal time, task.completed_at
+    end
+  end
+  
+  context "When a task for a Library is committed, it" do
+    should "also be marked completed" do
+      task = a_ticket.tasks.create!(description: "New Step 1")
+      stub(task.project).category.returns "Libraries"
+      time = Time.now
+      task.committed! Struct.new(:authored_at).new(time)
+      assert_equal time, task.completed_at
+    end
+  end
+  
+  
+  
 private
   
   def a_ticket

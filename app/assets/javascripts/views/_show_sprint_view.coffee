@@ -15,8 +15,7 @@ class @ShowSprintView extends Backbone.View
   render: ->
     return @ unless @tasks
     for task in @tasks
-      task.completed = !!task.firstReleaseAt || !!task.firstCommitAt
-      task.open = !task.completed
+      task.open = !task.completedAt
     
     @$el.html @template()
     @renderBurndownChart(@tasks)
@@ -36,8 +35,8 @@ class @ShowSprintView extends Backbone.View
     totalEffort = 0
     for task in tasks
       effort = +task.effort
-      if task.firstReleaseAt
-        day = App.truncateDate App.parseDate(task.firstReleaseAt)
+      if task.completedAt
+        day = App.truncateDate App.parseDate(task.completedAt)
         effort = 0 if day < monday # this task was released before this sprint started!
         
         completedByDay[day] = (completedByDay[day] || 0) + effort

@@ -35,7 +35,8 @@ class TaskPresenter
       description: task.description,
       effort: task.effort,
       firstReleaseAt: task.first_release_at,
-      firstCommitAt: task.first_commit_at }
+      firstCommitAt: task.first_commit_at,
+      completedAt: task.completed_at }
   end
   
 end

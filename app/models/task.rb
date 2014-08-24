@@ -120,11 +120,7 @@ class Task < ActiveRecord::Base
   
   
   def completed?
-    committed? || released?
-  end
-  
-  def completed_at
-    first_commit_at || first_release_at
+    completed_at.present?
   end
   
   
@@ -160,11 +156,22 @@ private
   end
   
   def cache_release_attributes(release)
-    update_attributes first_release_at: release.created_at unless released?
+    update_attributes _release_attributes(release) unless released?
+  end
+  
+  def _release_attributes(release)
+    { first_release_at: release.created_at,
+      completed_at: release.created_at }
   end
   
   def cache_commit_attributes(commit)
-    update_attributes first_commit_at: commit.authored_at unless committed?
+    update_attributes _commit_attributes(commit) unless committed?
+  end
+  
+  def _commit_attributes(commit)
+    { first_commit_at: commit.authored_at }.tap do |attributes|
+      attributes.merge!(completed_at: commit.authored_at) if project.category == "Libraries"
+    end
   end
   
   def self.to_number(letter)
