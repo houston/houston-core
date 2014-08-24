@@ -8,32 +8,38 @@ class ProjectTicketsController < ApplicationController
   
   
   def index
+    @title = "Tickets • #{@project.name}"
     @tickets = @project.tickets
     @filter = :all
   end
   
   def open
+    @title = "Tickets • #{@project.name}"
     @tickets = @project.tickets.open
     @filter = :open
   end
   
   
   def ideas
+    @title = "Ideas • #{@project.name}"
     @tickets = @project.tickets.ideas
     @filter = :all
   end
   
   def open_ideas
+    @title = "Ideas • #{@project.name}"
     @tickets = @project.tickets.ideas.open
     @filter = :open
   end
   
   def bugs
+    @title = "Bugs • #{@project.name}"
     @tickets = @project.tickets.bugs
     @filter = :all
   end
   
   def open_bugs
+    @title = "Bugs • #{@project.name}"
     @tickets = @project.tickets.bugs.open
     @filter = :open
   end

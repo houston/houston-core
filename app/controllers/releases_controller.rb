@@ -4,7 +4,7 @@ class ReleasesController < ApplicationController
   before_filter :load_tickets, only: [:new, :edit, :create, :update]
   
   def index
-    @title = "#{@project.name}: Releases"
+    @title = "Releases • #{@project.name}"
     @title << " (#{@environment})" if @environment
   end
   
@@ -12,11 +12,11 @@ class ReleasesController < ApplicationController
     @release = @releases.find(params[:id])
     authorize! :show, @release
     
-    @title = "#{@project.name}: #{@release.name}"
+    @title = "Release #{@release.release_date.strftime("%-m/%d")} • #{@project.name}"
   end
   
   def new
-    @title = "#{@project.name}: New Release (#{@environment})"
+    @title = "New Release (#{@environment}) • #{@project.name}"
     
     @deploy = Deploy.find_by_id(params[:deploy_id])
     @commit0 = params.fetch :commit0, @releases.most_recent_commit

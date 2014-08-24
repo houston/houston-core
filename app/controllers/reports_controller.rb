@@ -6,6 +6,7 @@ class ReportsController < ApplicationController
   attr_reader :tickets, :start_date, :end_date
   
   def index
+    @title = "Reports"
   end
   
   def queue_age
@@ -149,11 +150,13 @@ class ReportsController < ApplicationController
   
   
   def velocity
+    @title = "Reports"
     @tickets = ::Ticket.includes(:project, :tasks).estimated.closed
       .select { |ticket| ticket.commit_time > 0 } # <-- speed up
   end
   
   def velocity2
+    @title = "Reports"
     # @start_date = params.fetch(:since, "2014-05-18") # when tasks were added
     @start_date = 8.weeks.ago.strftime "%Y-%m-%d"
     @end_date = Date.today.strftime "%Y-%m-%d"

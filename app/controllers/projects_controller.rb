@@ -33,7 +33,7 @@ class ProjectsController < ApplicationController
     @project = Project.find_by_slug!(params[:id])
     @project.roles.build(user: current_user) if @project.roles.none?
     
-    @title = "#{@project.name}: Edit"
+    @title = "Edit #{@project.name}"
   end
   
   

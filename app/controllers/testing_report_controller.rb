@@ -12,7 +12,7 @@ class TestingReportController < ApplicationController
   
   
   def show
-    @title = "Testing Report: #{@project.name}"
+    @title = "Testing Report • #{@project.name}"
     authorize! :show, @project.testing_notes.build
     
     @projects = [@project]
