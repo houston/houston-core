@@ -1,0 +1,19 @@
+<% @users.each_with_index do |(name, average, _), i| %>
+<h3><%= name %> <small>(Average: <%= "%.1f" % average %>)</h3>
+<div id="velocity_<%= i %>"></div>
+<% end %>
+
+<% content_for :javascripts do %>
+<script type="text/javascript">
+  $(function() {
+    window.data = <%=raw @users.to_json %>;
+    for(var i=0; i<data.length; i++) {
+      new Houston.StackedAreaGraph()
+        .selector('#velocity_' + i)
+        .labels(['velocity'])
+        .data(data[i][2])
+        .render();
+    }
+  });
+</script>
+<% end %>

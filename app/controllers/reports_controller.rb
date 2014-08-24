@@ -153,6 +153,45 @@ class ReportsController < ApplicationController
       .select { |ticket| ticket.commit_time > 0 } # <-- speed up
   end
   
+  def velocity2
+    # @start_date = params.fetch(:since, "2014-05-18") # when tasks were added
+    @start_date = 8.weeks.ago.strftime "%Y-%m-%d"
+    @end_date = Date.today.strftime "%Y-%m-%d"
+    
+    @users = []
+    User.developers.map do |user|
+      data = Ticket.connection.select_rows(<<-SQL)
+        SELECT
+          sprints.end_date,
+          SUM(q.effort)
+        FROM sprints
+        LEFT OUTER JOIN (
+          SELECT DISTINCT ON(tasks.id)
+            tasks.effort,
+            COALESCE(tasks.first_commit_at, tasks.first_release_at) "completed_at",
+            sprints_tasks.sprint_id
+          FROM sprints_tasks
+          INNER JOIN tasks
+            ON sprints_tasks.task_id=tasks.id
+          INNER JOIN commits_tasks
+            ON commits_tasks.task_id=tasks.id
+          INNER JOIN commits_users
+            ON commits_users.commit_id=commits_tasks.commit_id
+            AND commits_users.user_id=#{user.id}
+        ) AS q
+          ON q.sprint_id=sprints.id
+        WHERE sprints.end_date BETWEEN '#{start_date}' AND '#{end_date}'
+        GROUP BY sprints.id, sprints.end_date
+        ORDER BY sprints.end_date ASC
+      SQL
+        .map { |(date, value)| [date.to_date, value.to_i] }
+      
+      next if data.all? { |(_, value)| value.zero? }
+      average = data.avg { |(_, value)| value }
+      @users.push [user.name, average, data] # <- data is pairs: [<date>, <value>]
+    end
+  end
+  
   
   
 private
