@@ -1,5 +1,5 @@
 <% @users.each_with_index do |(name, average, _), i| %>
-<h3><%= name %> <small>(Average: <%= "%.1f" % average %>)</h3>
+<h3><%= name %> <small>(Average: <%= "%.1f" % average %>)</small></h3>
 <div id="velocity_<%= i %>"></div>
 <% end %>
 
