@@ -1054,7 +1054,8 @@ CREATE TABLE tasks (
     checked_out_at timestamp without time zone,
     checked_out_by_id integer,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    project_id integer NOT NULL
 );
 
 
@@ -2402,4 +2403,6 @@ INSERT INTO schema_migrations (version) VALUES ('20140815000804');
 INSERT INTO schema_migrations (version) VALUES ('20140815022909');
 
 INSERT INTO schema_migrations (version) VALUES ('20140821000627');
+
+INSERT INTO schema_migrations (version) VALUES ('20140824194031');
 

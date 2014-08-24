@@ -3,14 +3,17 @@ class Task < ActiveRecord::Base
   versioned initial_version: true, only: [:description, :effort]
   
   belongs_to :ticket
+  belongs_to :project
   belongs_to :checked_out_by, class_name: "User"
   has_and_belongs_to_many :sprints, extend: UniqueAdd
   has_and_belongs_to_many :releases
   has_and_belongs_to_many :commits
   
   validates :ticket_id, :number, presence: true
+  validates :project_id, :number, presence: true
   validate :description_must_be_present, :unless => :default_task?
   
+  before_validation :set_project_id, on: :create
   before_validation :assign_number, on: :create
   before_create :replace_the_tickets_default_task
   before_destroy :prevent_destroying_a_tickets_last_task
@@ -133,6 +136,10 @@ class Task < ActiveRecord::Base
   
   
 private
+  
+  def set_project_id
+    self.project_id = ticket.project_id if ticket
+  end
   
   def assign_number
     self.number = (Task.where(ticket_id: ticket_id).maximum(:number) || 0) + 1
