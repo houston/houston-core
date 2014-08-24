@@ -9,10 +9,10 @@ class TicketAntecedentsTest < ActiveSupport::TestCase
   
   
   
-  context "#release!" do
+  context "#released!" do
     should "raise the release event" do
       assert_triggered "antecedent:gollum:released" do
-        antecedent.release!
+        antecedent.released!
       end
     end
   end

@@ -187,19 +187,19 @@ private
   
   def release_each_ticket!
     tickets.each do |ticket|
-      ticket.release!(self)
+      ticket.released!(self)
     end
   end
   
   def release_each_task!
     tasks.each do |task|
-      task.release!(self)
+      task.released!(self)
     end
   end
   
   def release_each_antecedent!
     antecedents.each do |antecedent|
-      antecedent.release!(self)
+      antecedent.released!(self)
     end
   end
   

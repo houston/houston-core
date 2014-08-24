@@ -98,7 +98,7 @@ class Task < ActiveRecord::Base
   
   
   
-  def release!(release)
+  def released!(release)
     self.releases << release unless releases.exists?(release.id)
     cache_release_attributes release
   end

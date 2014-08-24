@@ -24,7 +24,7 @@ class TicketAntecedent
   
   
   
-  def release!(release=nil)
+  def released!(release=nil)
     Houston.observer.fire "antecedent:#{kind.downcase.underscore}:released", self
   end
   

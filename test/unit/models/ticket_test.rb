@@ -11,7 +11,7 @@ class TicketTest < ActiveSupport::TestCase
   
   
   
-  context "#release!" do
+  context "#released!" do
     setup do
       @release = Release.new(project: project, user_id: 1)
       @released_at = release.created_at = Time.zone.now
@@ -20,12 +20,12 @@ class TicketTest < ActiveSupport::TestCase
     
     should "trigger the ticket:release event" do
       assert_triggered "ticket:release" do
-        ticket.release!(release)
+        ticket.released!(release)
       end
     end
     
     should "assign first_release_at and last_release_at" do
-      ticket.release!(release)
+      ticket.released!(release)
       
       assert_equal released_at, ticket.first_release_at
       assert_equal released_at, ticket.last_release_at
@@ -39,13 +39,13 @@ class TicketTest < ActiveSupport::TestCase
       end
       
       should "assign last_release_at" do
-        ticket.release!(release)
+        ticket.released!(release)
         
         assert_equal released_at, ticket.last_release_at
       end
       
       should "not assign first_release_at" do
-        ticket.release!(release)
+        ticket.released!(release)
         
         refute_equal released_at, ticket.first_release_at
       end
@@ -56,7 +56,7 @@ class TicketTest < ActiveSupport::TestCase
         end
         
         should "assign first_release_at" do
-          ticket.release!(release)
+          ticket.released!(release)
           
           assert_equal released_at, ticket.first_release_at
         end

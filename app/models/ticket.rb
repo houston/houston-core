@@ -241,7 +241,7 @@ class Ticket < ActiveRecord::Base
   
   
   
-  def release!(release)
+  def released!(release)
     cache_release_attributes(release)
     Houston.observer.fire "ticket:release", self, release
   end
