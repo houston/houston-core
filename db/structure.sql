@@ -1914,6 +1914,13 @@ CREATE INDEX index_roles_on_user_id_and_project_id_and_name ON roles USING btree
 
 
 --
+-- Name: index_sprints_on_end_date; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_sprints_on_end_date ON sprints USING btree (end_date);
+
+
+--
 -- Name: index_sprints_tasks_on_sprint_id_and_task_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2408,4 +2415,6 @@ INSERT INTO schema_migrations (version) VALUES ('20140821000627');
 INSERT INTO schema_migrations (version) VALUES ('20140824194031');
 
 INSERT INTO schema_migrations (version) VALUES ('20140824194526');
+
+INSERT INTO schema_migrations (version) VALUES ('20140824211249');
 
