@@ -10,4 +10,13 @@ class OneOrMany < SimpleDelegator
     end
   end
   
+  def select(&block)
+    if __getobj__.respond_to?(:select)
+      __getobj__.select(&block)
+    else
+      return [] unless yield __getobj__
+      self
+    end
+  end
+  
 end
