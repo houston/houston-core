@@ -54,6 +54,8 @@ class SprintsController < ApplicationController
     
     if task.completed? && task.completed_at < sprint.starts_at
       render text: "Task ##{task.shorthand} cannot be added to the Sprint because it was completed before the Sprint began", status: :unprocessable_entity
+    elsif task.effort.nil? or task.effort.zero?
+      render text: "Task ##{task.shorthand} cannot be added to the Sprint because it has no effort", status: :unprocessable_entity
     else
       sprint.tasks.add task
       render json: SprintTaskPresenter.new(task).to_json

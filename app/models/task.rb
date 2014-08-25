@@ -67,6 +67,14 @@ class Task < ActiveRecord::Base
       where(checked_out_by_id: user.id)
     end
     
+    def find_by_project_and_shorthand(project_slug, shorthand)
+      _, ticket_number, letter = shorthand.split /(\d+)([a-z]+)/
+      where(ticket_id: Ticket.joins(:project)
+          .where(Project.arel_table[:slug].eq(project_slug))
+          .where(Ticket.arel_table[:number].eq(ticket_number)))
+        .lettered(letter).first
+    end
+    
     def versions
       VestalVersions::Version.where(versioned_type: "Task", versioned_id: pluck(:id))
     end

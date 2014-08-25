@@ -13,7 +13,7 @@ class SprintsControllerTest < ActionController::TestCase
   
   context "#add_task" do
     should "add the given task to the sprint" do
-      task = create(:task)
+      task = create(:task, effort: 5)
       assert_difference "sprint.tasks.count", +1 do
         post :add_task, id: sprint.id, task_id: task.id
         assert_response :ok
