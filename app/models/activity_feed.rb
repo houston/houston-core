@@ -100,7 +100,7 @@ class ActivityFeed
     end
     
     def icon
-      "fa fa-rocket"
+      "fa fa-paper-plane"
     end
     
     def actor
