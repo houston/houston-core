@@ -28,7 +28,7 @@
         by <%= avatar_for @ticket.reporter, size: 16 %>
         <b><%= @ticket.reporter.name %></b>
       <% end %>
-      <span class="ticket-opened" title="<%= @ticket.created_at.strftime("%b %e %Y, %l:%M %p") %>"><%= time_ago_in_words @ticket.created_at %> ago</span>
+      <span class="ticket-opened date" title="<%= @ticket.created_at.strftime("%b %e %Y, %l:%M %p") %>"><%= time_ago_in_words @ticket.created_at %> ago</span>
     </div>
     
     <% unless @project.ticket_tracker_name == "Houston" %>
