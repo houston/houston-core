@@ -33,6 +33,10 @@ module Houston
             @connection ||= self::Connection.new
           end
           
+          def open_problems(*args)
+            connection.open_problems(*args)
+          end
+          
           def problems_during(*args)
             connection.problems_during(*args)
           end
