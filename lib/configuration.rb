@@ -9,6 +9,7 @@ module Houston
     
     def initialize
       @modules = []
+      @navigation_renderers = {}
       @authentication_strategy = :database
       @authentication_strategy_configuration = {}
       @ticket_tracker_configuration = {}
@@ -64,6 +65,19 @@ module Houston
     def project_categories(*args)
       @project_categories = args if args.any?
       @project_categories ||= []
+    end
+    
+    def navigation(*args)
+      @navigation = args if args.any?
+      @navigation ||= []
+    end
+    
+    def add_navigation_renderer(name, &block)
+      @navigation_renderers[name] = block
+    end
+    
+    def get_navigation_renderer(name)
+      @navigation_renderers.fetch(name)
     end
     
     def project_colors(*args)

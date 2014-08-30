@@ -1,1 +1,38 @@
 .navbar .dropdown-menu .bubble { margin: 0 0.25em 0 0; }
+.navbar .nav-icon {
+  display: inline-block;
+  height: 18px;
+  
+  svg {
+    width: 18px;
+    height: 18px;
+    
+    * { fill: #999; }
+  }
+}
+
+.navbar-inverse .nav > li > a:focus, .navbar-inverse .nav > li > a:hover {
+  svg * { fill: white; }
+}
+
+// Don't let the navbar wrap onto multiple lines
+.navbar .nav {
+  height: 41px;
+  float: none;
+}
+
+.navbar .nav li.dropdown > .dropdown-toggle .caret {
+  border-top-color: #666;
+  border-bottom-color: #666;
+}
+
+.navbar .nav .dropdown-toggle .caret { margin: 9px -4px 0 0; }
+
+@media (max-width: 1024px) {
+  .navbar .nav > li > a { padding: 12px 15px 8px; }
+  .navbar .nav-label { display: none; }
+}
+
+@media (min-width: 1024px) {
+  .navbar .nav-icon { display: none; }
+}

@@ -42,7 +42,7 @@ GIT
 
 GIT
   remote: git://github.com/houstonmc/houston-roadmap.git
-  revision: 30f499b7477a1355aa85f254749bf6f2e289d24a
+  revision: 2076e11cebf4b84c5a918a156c3a03daa716098a
   branch: master
   specs:
     houston-roadmap (0.0.1)
@@ -50,7 +50,7 @@ GIT
 
 GIT
   remote: git://github.com/houstonmc/houston-scheduler.git
-  revision: 2b73a117506b3588ca28c0c5e951e19da28bf591
+  revision: 23112e4d548a502a10f4072e559dc59b5bd5189a
   branch: master
   specs:
     houston-scheduler (0.0.1)
@@ -213,7 +213,7 @@ GEM
     method_source (0.8.2)
     mime-types (1.25.1)
     mini_portile (0.6.0)
-    minitest (5.4.0)
+    minitest (5.4.1)
     minitest-reporters (1.0.4)
       ansi
       builder

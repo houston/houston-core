@@ -1,83 +1,37 @@
 <div class="navbar navbar-fixed-top navbar-inverse">
   <div class="navbar-inner">
-      <div class="container-fluid">
-      <a class="btn btn-navbar" data-target=".nav-collapse" data-toggle="collapse">
-        <i class="fa fa-bars"></i>
-      </a>
+    <div class="container-fluid">
       <%= link_to Houston.config.title, main_app.root_url, class: "brand" %>
-      <div class="container-fluid nav-collapse">
-        <ul class="nav">
-          
-          <%# Pretickets -%>
-          <% projects = followed_projects.select { |project| can?(:read, project.releases.build) } -%>
-          <%= render_menu "Pretickets",
-              projects.map { |project| ProjectMenuItem.new(project, main_app.project_pretickets_path(project)) } -%>
-          
-          <%# Bugs -%>
-          <% projects = followed_projects.select { |project| can?(:read, project.tickets.build) } -%>
-          <%= render_menu "Bugs",
-              projects.map { |project| ProjectMenuItem.new(project, main_app.project_open_bugs_path(project)) } -%>
-          
-          <%# Ideas -%>
-          <%= render_menu "Ideas",
-              projects.map { |project| ProjectMenuItem.new(project, main_app.project_open_ideas_path(project)) } -%>
-          
-          <%# Modules -%>
-          <% Houston.config.modules.each do |mod| -%>
-            <% next unless mod.namespace.respond_to?(:menu_items_for) -%>
-            <% menu_items = mod.namespace.menu_items_for(projects: followed_projects, ability: current_ability, user: current_user) -%>
-            <%= render_menu mod.name.humanize, menu_items -%>
-          <% end -%>
-          
-          <%# Sprint -%>
-          <% if can?(:read, Sprint) -%>
-            <li><%= link_to "Sprint", main_app.current_sprint_path %></li>
-          <% end -%>
-          
-          <%# Testing Reports -%>
-          <% projects = followed_projects.select { |project| can?(:read, project.testing_notes.build) } -%>
-          <%= render_menu "Testing", [
-              MenuItem.new("All Projects", main_app.testing_report_path),
-              MenuItemDivider.new ] +
-              projects.map { |project| ProjectMenuItem.new(project, main_app.project_testing_report_path(project)) } if projects.any? -%>
-          
-          <%# Releases -%>
-          <% projects = followed_projects.select { |project| can?(:read, project.releases.build) } -%>
-          <%= render_menu "Releases",
-              projects.map { |project| ProjectMenuItem.new(project, main_app.releases_path(project)) } -%>
-          
-          
-          
-          <li class="divider-vertical"></li>
-          
-          
-          
-          <% if can?(:read, Project) -%>
-            <li><%= link_to "Projects", main_app.projects_path %></li>
-          <% end -%>
-          
-          <% if can?(:read, User) -%>
-            <li><%= link_to "Team", main_app.users_path %></li>
-          <% end -%>
-          
-        </ul>
-        <ul class="nav pull-right">
-          <% if can?(:manage, Setting) -%>
-            <li><%= link_to "/settings", :class => "settings-link" do %><i class="fa fa-2x fa-cog"></i><% end %></li>
-          <% end -%>
-          <% if current_user -%>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= avatar_for(current_user, size: 68) %> <b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><%= link_to "Settings", main_app.user_path(current_user) %></li>
-                <li><%= link_to "Sign out", main_app.destroy_user_session_path %></li>
-              </ul>
-            </li>
-          <% else -%>
-            <li><%= link_to "Sign in", main_app.new_user_session_path %></li>
-          <% end -%>
-        </ul>
-      </div><!--/.nav-collapse -->
+      <ul class="nav pull-right">
+        <% if current_user -%>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= avatar_for(current_user, size: 68) %> <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><%= link_to "Settings", main_app.user_path(current_user) %></li>
+              <li><%= link_to "Sign out", main_app.destroy_user_session_path %></li>
+            </ul>
+          </li>
+        <% else -%>
+          <li><%= link_to "Sign in", main_app.new_user_session_path %></li>
+        <% end -%>
+      </ul>
+      <ul class="nav">
+        
+        <% Houston.config.navigation.each do |navigation| %>
+          <%= render_navigation navigation %>
+        <% end %>
+        
+        <li class="divider-vertical"></li>
+        
+        <% if can?(:read, Project) -%>
+          <%= render_nav_link "Projects", main_app.projects_path, icon: "fa-database" %>
+        <% end -%>
+        
+        <% if can?(:read, User) -%>
+          <%= render_nav_link "Team", main_app.users_path, icon: "fa-user" %>
+        <% end -%>
+        
+      </ul>
     </div>
   </div>
 </div>
