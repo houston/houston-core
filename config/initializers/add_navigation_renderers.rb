@@ -1,4 +1,3 @@
-
 Houston.config.add_navigation_renderer :pretickets do
   projects = followed_projects.select { |project| can?(:read, project.releases.build) }
   render_nav_menu "Pretickets", projects.map { |project| ProjectMenuItem.new(project, main_app.project_pretickets_path(project)) }
@@ -15,7 +14,9 @@ Houston.config.add_navigation_renderer :ideas do
 end
 
 Houston.config.add_navigation_renderer :sprint do
-  render_nav_link "Sprint", main_app.current_sprint_path, icon: "fa-burndown"
+  if can?(:read, Sprint)
+    render_nav_link "Sprint", main_app.current_sprint_path, icon: "fa-burndown"
+  end
 end
 
 Houston.config.add_navigation_renderer :testing do
