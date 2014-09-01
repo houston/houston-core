@@ -16,21 +16,28 @@ class Milestone < ActiveRecord::Base
   delegate :ticket_tracker, to: :project
   delegate :nosync?, to: "self.class"
   
-  def self.uncompleted
-    where(completed_at: nil)
-  end
-  
-  def self.without(milestones)
-    without_remote_ids(milestones.map(&:remote_id))
-  end
-  
-  def self.without_remote_ids(*ids)
-    where(arel_table[:remote_id].not_in(ids.flatten.map(&:to_i)))
-  end
-  
-  def self.remote_id_map
-    query = select("remote_id, id").to_sql
-    connection.select_rows(query).each_with_object({}) { |(remote_id, id), map| map[remote_id.to_i] = id.to_i }
+  class << self
+    def uncompleted
+      where(completed_at: nil)
+    end
+    alias :open :uncompleted
+    
+    def visible
+      where(arel_table[:size].not_eq(nil)).where(arel_table[:start_date].not_eq(nil))
+    end
+    
+    def without(milestones)
+      without_remote_ids(milestones.map(&:remote_id))
+    end
+    
+    def without_remote_ids(*ids)
+      where(arel_table[:remote_id].not_in(ids.flatten.map(&:to_i)))
+    end
+    
+    def remote_id_map
+      query = select("remote_id, id").to_sql
+      connection.select_rows(query).each_with_object({}) { |(remote_id, id), map| map[remote_id.to_i] = id.to_i }
+    end
   end
   
   def uncompleted?

@@ -11,7 +11,7 @@
 //
 //= require ./jquery-ui/jquery.ui.draggable.js
 //= require ./jquery-ui/jquery.ui.droppable.js
-//  require ./jquery-ui/jquery.ui.resizable.js
+//= require ./jquery-ui/jquery.ui.resizable.js
 //  require ./jquery-ui/jquery.ui.selectable.js
 //= require ./jquery-ui/jquery.ui.sortable.js
 //

@@ -11,7 +11,7 @@
  *= require ./jquery-ui/jquery.ui.core.css
  *= require ./jquery-ui/jquery.ui.theme.css
  *
- *  require ./jquery-ui/jquery.ui.resizable.css
+ *= require ./jquery-ui/jquery.ui.resizable.css
  *  require ./jquery-ui/jquery.ui.selectable.css
  *
  *  require ./jquery-ui/jquery.ui.accordian.css
