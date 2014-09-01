@@ -2,36 +2,36 @@ class window.Duration
   constructor: (@n, @units)->
   after:  (date)-> Duration.transformDateBy(date, +@n, @units)
   before: (date)-> Duration.transformDateBy(date, -@n, @units)
+  ago: -> @before(new Date())
   valueOf: ->
-    switch units
-      when 'minutes' then n * Duration.MINUTE
-      when 'hours' then n * Duration.HOUR
-      when 'days' then n * Duration.DAY
-      when 'weeks' then n * Duration.WEEK
-      when 'months' then n * Duration.AVGMONTH
-      when 'years' then n * Duration.AVGYEAR
+    switch @units
+      when 'minutes' then @n * Duration.MINUTE
+      when 'hours' then @n * Duration.HOUR
+      when 'days' then @n * Duration.DAY
+      when 'weeks' then @n * Duration.WEEK
+      when 'months' then @n * Duration.AVGMONTH
+      when 'years' then @n * Duration.AVGYEAR
 
 Duration::from = Duration::after
 
-Duration.MINUTE = 60
+Duration.MINUTE = 60000
 Duration.HOUR = Duration.MINUTE * 60
 Duration.DAY = Duration.HOUR * 24
 Duration.WEEK = Duration.DAY * 7
 Duration.AVGMONTH = Duration.WEEK * 4.3452380952381
-Duration.AVGYEAR = Duration.AVGMONTH * 12
+Duration.AVGYEAR = Duration.DAY * 365
 Duration.transformDateBy = (date, n, units)->
+  [year, month, day] = [date.getFullYear(), date.getMonth(), date.getDate()]
   switch units
     when 'minutes' then new Date(date.getTime() + (n * Duration.MINUTE))
     when 'hours' then new Date(date.getTime() + (n * Duration.HOUR))
-    when 'days' then new Date(date.getTime() + (n * Duration.DAY))
-    when 'weeks' then new Date(date.getTime() + (n * Duration.WEEK))
+    when 'days' then new Date(year, month, (day + n))
+    when 'weeks' then new Date(year, month, (day + (n * 7)))
     when 'months'
-      [year, month, day] = [date.getFullYear(), date.getMonth() + n, date.getDate()]
+      month = month + n
       lastDayOfMonth = new Date(year, month + 1, 0).getDate()
       new Date(year, month, Math.min(day, lastDayOfMonth))
-    when 'years'
-      [year, month, day] = [date.getFullYear() + n, date.getMonth(), date.getDate()]
-      new Date(year, month, day)
+    when 'years' then new Date(year + n, month, day)
 
 Number::minutes  = ()-> new Duration(Number(@), 'minutes')
 Number::hours    = ()-> new Duration(Number(@), 'hours')
