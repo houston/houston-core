@@ -3,4 +3,4 @@
 export RAILS_ENV=test
 cp ./config/config.jenkins.rb ./config/config.rb
 bundle
-bundle exec rake test COVERAGE=on CI=true
+bundle exec rake db:test:prepare test COVERAGE=on CI=true
