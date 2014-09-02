@@ -147,7 +147,9 @@ class Project < ActiveRecord::Base
     milestone = milestones.build attributes
     if milestone.valid?
       if ticket_tracker.respond_to?(:create_milestone!)
-        milestone = milestones.create ticket_tracker.create_milestone!(milestone).attributes
+        milestone = milestones.create(
+          attributes.merge(
+            ticket_tracker.create_milestone!(milestone).attributes))
       else
         milestone.save
       end
