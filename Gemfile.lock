@@ -34,7 +34,7 @@ GIT
 
 GIT
   remote: git://github.com/houstonmc/houston-alerts.git
-  revision: 5fa94b715476ed97819d5f195047032f1eff79cb
+  revision: 147b0327434aac11ad47f1064fbe200b09d6508d
   branch: master
   specs:
     houston-alerts (0.0.1)
@@ -42,7 +42,7 @@ GIT
 
 GIT
   remote: git://github.com/houstonmc/houston-roadmap.git
-  revision: b4026de0558e02dd7341e33a2c8675132d997de7
+  revision: 1b36ee36fce8cda8aaac4f148ec68689c8cd2dec
   branch: master
   specs:
     houston-roadmap (0.0.1)
@@ -306,7 +306,7 @@ GEM
       multi_json (~> 1.0)
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
-    sprockets-rails (2.1.3)
+    sprockets-rails (2.1.4)
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (~> 2.8)
