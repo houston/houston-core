@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" <%= "class=tester-bar" if Rails.env.development? %>>
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -32,7 +32,6 @@
     <%= yield :title %>
     
     <div class="container-fluid" id="body">
-      <%= flash_messages :alert, :notice, :error %>
       <%= yield -%>
       
       <%= render partial: "layouts/tester_bar" if Rails.env.development? -%>
@@ -46,6 +45,16 @@
     <script type="text/javascript">
       $(function(){
         window.testers = new Testers(<%= raw TesterPresenter.new(User.testers.unretired).to_json %>);
+        
+        <% if flash[:alert] %>
+        alertify.log(<%=raw flash[:alert].to_json %>);
+        <% end %>
+        <% if flash[:notice] %>
+        alertify.success(<%=raw flash[:notice].to_json %>);
+        <% end %>
+        <% if flash[:error] %>
+        alertify.error(<%=raw flash[:error].to_json %>);
+        <% end %>
         
         <% if current_user %>
         window.userId = <%= current_user.id %>;

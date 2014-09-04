@@ -11,5 +11,6 @@
  *= require_self
  *= require bootstrap_and_overrides
  *= require jquery-ui
+ *= require alertify
  *= require_tree ./application
 */

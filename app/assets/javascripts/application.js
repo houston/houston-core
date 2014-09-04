@@ -29,7 +29,8 @@
 //= require date_format
 //= require md5
 //= require d3.v3.js
-//= require neat.js
+//= require neat
+//= require alertify
 //= require_tree ../templates
 //= require_tree .
 
