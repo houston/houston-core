@@ -39,7 +39,7 @@ private
   end
   
   def _nav_icon(icon)
-    ($icons ||= {})[icon] ||= File.read(Rails.root.join("public", "icons", "#{icon}.svg"))
+    ($icons ||= {})[icon] ||= File.read(Rails.root.join("public", "images", "#{icon}.svg"))
   end
   
 end

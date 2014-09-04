@@ -34,7 +34,7 @@ GIT
 
 GIT
   remote: git://github.com/houstonmc/houston-alerts.git
-  revision: 147b0327434aac11ad47f1064fbe200b09d6508d
+  revision: 58266807d37ad6a01177fdd3a81f2f340e4b47ad
   branch: master
   specs:
     houston-alerts (0.0.1)
@@ -42,7 +42,7 @@ GIT
 
 GIT
   remote: git://github.com/houstonmc/houston-roadmap.git
-  revision: 1b36ee36fce8cda8aaac4f148ec68689c8cd2dec
+  revision: 3e10705b18718d6082098c21ef8da18acb68c20f
   branch: master
   specs:
     houston-roadmap (0.0.1)
