@@ -1,7 +1,7 @@
 class Houston.BurndownChart
   
   constructor: ->
-    @_margin = {top: 40, right: 80, bottom: 20, left: 50}
+    @_margin = {top: 40, right: 80, bottom: 24, left: 50}
     @_width = 960
     @_selector = '#graph'
     @_totalEffort = 0
