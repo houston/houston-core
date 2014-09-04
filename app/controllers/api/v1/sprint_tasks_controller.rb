@@ -8,6 +8,10 @@ module Api
       
       attr_reader :sprint, :task
       
+      rescue_from ActiveRecord::RecordNotFound do
+        head 404
+      end
+      
       def index
         render json: sprint.tasks
           .includes(:ticket => :project)
@@ -74,7 +78,7 @@ module Api
       end
       
       def find_task
-        @task = Task.find_by_project_and_shorthand(params[:project_slug], params[:shorthand])
+        @task = Task.find_by_project_and_shorthand(params[:project_slug], params[:shorthand]) || (raise ActiveRecord::RecordNotFound)
       end
       
     end
