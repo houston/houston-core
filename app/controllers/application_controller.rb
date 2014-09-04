@@ -46,7 +46,7 @@ class ApplicationController < ActionController::Base
   
   
   def require_login
-    redirect_to new_user_session_path
+    redirect_to main_app.new_user_session_path
   end
   
   
