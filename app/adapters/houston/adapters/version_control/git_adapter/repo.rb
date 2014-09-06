@@ -23,24 +23,12 @@ module Houston
           end
           
           def ancestors(sha)
-            native_commit(sha)
-            walker = connection.walk(sha)
-            walker.next # don't start with the commit itself, start with its parent
-            
-            walker.map(&method(:to_commit))
+            ancestor_walker(sha).map(&method(:to_commit))
           end
           
           def ancestors_until(sha, *args)
-            # Assert the presence of the commit
-            native_commit(sha)
-            
-            walker = connection.walk(sha)
-            
-            # by default, start with the commit's parent
-            walker.next unless args.member? :including_self
-            
             commits = []
-            walker.each do |commit|
+            ancestor_walker(sha, *args).each do |commit|
               commit = to_commit(commit)
               commits << commit
               return commits if yield commit
@@ -50,8 +38,8 @@ module Houston
           end
           
           def branches_at(sha)
-            Rugged::Branch.each(connection, :local)
-              .select { |branch| branch.tip.oid.start_with?(sha) }
+            connection.branches.each(:local)
+              .select { |branch| branch.target.oid.start_with?(sha) }
               .map(&:name)
           end
           
@@ -92,7 +80,7 @@ module Houston
           
           
           def find_file(file_path, options={})
-            commit = options[:commit] || connection.head.target
+            commit = options[:commit] || connection.head.target.oid
             head = native_commit(commit).original
             tree = head.tree
             file_path.split("/").each do |segment|
@@ -143,6 +131,18 @@ module Houston
               committer_name: rugged_commit.committer[:name],
               committer_email: rugged_commit.committer[:email]
             })
+          end
+          
+          def ancestor_walker(sha, *args)
+            commit = native_commit(sha)
+            shas = [sha]
+            
+            # by default, start with the commit's parent
+            shas = commit.original.parents.map(&:oid) unless args.member? :including_self
+            
+            walker = Rugged::Walker.new(connection)
+            shas.each { |sha| walker.push(sha) }
+            walker
           end
           
         end

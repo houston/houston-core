@@ -274,7 +274,7 @@ GEM
     ruby-progressbar (1.5.1)
     rufus-scheduler (3.0.8)
       tzinfo
-    rugged (0.19.0)
+    rugged (0.21.0)
     safe_yaml (1.0.3)
     sass (3.2.19)
     sass-rails (4.0.3)
