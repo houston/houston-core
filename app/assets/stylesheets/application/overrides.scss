@@ -1,24 +1,13 @@
-@import "twitter/bootstrap/bootstrap";
-body { padding-top: 60px; padding-bottom: 60px; }
-
-@import "twitter/bootstrap/responsive";
-
-// Your custom LESS stylesheets goes here
-//
-// Since bootstrap was imported above you have access to its mixins which
-// you may use and inherit here
-//
-// If you'd like to override bootstrap's own variables, you can do so here as well
-// See http://twitter.github.com/bootstrap/less.html for their names and documentation
-//
-// Example:
-// @linkColor: #ff0000;
-
-li { line-height: 1.5em; }
-
 body {
+  padding-bottom: 60px;
   font-family: "Helvetica Neue", roboto, Helvetica, Arial, sans-serif
 }
+
+@media (min-width: 979px) {
+  body { padding-top: 60px; }
+}
+
+li { line-height: 1.5em; }
 
 .navbar-inverse .brand { color: white; }
 

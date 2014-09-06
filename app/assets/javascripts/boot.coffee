@@ -1,5 +1,9 @@
 $ ->
   
+  $('a[rel=popover]').popover()
+  $('.tooltip').tooltip()
+  $('a[rel=tooltip]').tooltip()
+  
   $('[rel="tooltip"]').each ->
     $el = $(@)
     placement = $el.attr('data-tooltip-placement') || 'bottom'

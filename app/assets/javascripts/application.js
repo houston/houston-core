@@ -13,12 +13,12 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery-ui
+//= require bootstrap
 //= require jquery.pjax.js
 //= require jquery.tablesorter.js
 //= require jquery.autosize.js
 //= require jquery.timeago.js
 //= require mousetrap
-//= require twitter/bootstrap
 //= require freight_train
 //= require lail/delayed_action
 //= require sugar

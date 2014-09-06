@@ -40,8 +40,6 @@ gem "backbone-rails", "~> 1.0.0"
 gem "handlebars_assets", "0.8.2"
 gem "jquery-rails", "2.2.1"
 gem "sugar-rails"
-gem "twitter-bootstrap-rails", "2.2.6"
-gem "less-rails", "2.3.2" # for Twitter Bootstrap
 gem "neat-rails", github: "boblail/neat-rails", branch: "master"
 
 # Tooling
