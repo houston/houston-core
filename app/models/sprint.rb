@@ -7,7 +7,8 @@ class Sprint < ActiveRecord::Base
   before_validation :set_default_end_date, on: :create
   
   def self.current
-    where("end_date >= current_date").order("end_date DESC").first
+    where(arel_table[:end_date].gteq(Date.today))
+      .order("end_date DESC").first
   end
   
   def start_date
