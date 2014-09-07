@@ -31,23 +31,30 @@
         
         <% other_head = other_environment_last_release.commit1 %>
         <% next if other_head.blank? %>
-        <% begin %>
-          <% commits = @project.repo.commits_between(other_head, head) %>
-          <p class="alert alert-info">
-            <%= @environment %> is <%= commits.length %> commits ahead of <%= other_environment %>:
-            <span class="commit-range"><%= link_to_commit_range(@project, other_head, head) %></span>
+        
+        <% if other_head == head %>
+          <p class="alert alert-success">
+            <%= @environment %> and <%= other_environment %> are identical
           </p>
-        <% rescue Houston::Adapters::VersionControl::CommitNotFound %>
+        <% else %>
           <% begin %>
-            <% commits = @project.repo.commits_between(head, other_head) %>
+            <% commits = @project.repo.commits_between(other_head, head) %>
             <p class="alert alert-info">
-              <%= @environment %> is <%= commits.length %> commits behind <%= other_environment %>:
-              <span class="commit-range"><%= link_to_commit_range(@project, head, other_head) %></span>
+              <%= @environment %> is <%= commits.length %> commits ahead of <%= other_environment %>:
+              <span class="commit-range"><%= link_to_commit_range(@project, other_head, head) %></span>
             </p>
           <% rescue Houston::Adapters::VersionControl::CommitNotFound %>
-            <p class="alert">
-              <%= @environment %> isn't in the same history as <%= other_environment %>
-            </p>
+            <% begin %>
+              <% commits = @project.repo.commits_between(head, other_head) %>
+              <p class="alert alert-info">
+                <%= @environment %> is <%= commits.length %> commits behind <%= other_environment %>:
+                <span class="commit-range"><%= link_to_commit_range(@project, head, other_head) %></span>
+              </p>
+            <% rescue Houston::Adapters::VersionControl::CommitNotFound %>
+              <p class="alert">
+                <%= @environment %> isn't in the same history as <%= other_environment %>
+              </p>
+            <% end %>
           <% end %>
         <% end %>
       <% end %>
