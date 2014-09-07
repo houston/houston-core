@@ -497,7 +497,8 @@ CREATE TABLE alerts (
     project_slug character varying(255),
     priority character varying(255) DEFAULT 'high'::character varying NOT NULL,
     deadline timestamp without time zone NOT NULL,
-    hours hstore DEFAULT ''::hstore
+    hours hstore DEFAULT ''::hstore,
+    destroyed_at timestamp without time zone
 );
 
 
@@ -2420,4 +2421,6 @@ INSERT INTO schema_migrations (version) VALUES ('20140824194526');
 INSERT INTO schema_migrations (version) VALUES ('20140824211249');
 
 INSERT INTO schema_migrations (version) VALUES ('20140831210254');
+
+INSERT INTO schema_migrations (version) VALUES ('20140907005810');
 

@@ -31,6 +31,10 @@ module Houston
             fetch_problems params.merge(open: true)
           end
           
+          def all_problems(params={})
+            fetch_problems params
+          end
+          
           def resolve!(problem_id)
             put("api/v1/problems/#{problem_id}/resolve.json")
           end
