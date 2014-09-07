@@ -75,6 +75,10 @@ module Houston
           def refresh!(async: false)
           end
           
+          def exists?
+            File.exists?(connection.path)
+          end
+          
           # ------------------------------------------------------------------------- #
           
           

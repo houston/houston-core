@@ -1,3 +1,2 @@
-# pack-refs with: peeled 
+# pack-refs with: peeled fully-peeled 
 b62c3f32f72423b81a0282a1a4b97cad2cf129d4 refs/heads/master
-b62c3f32f72423b81a0282a1a4b97cad2cf129d4 refs/heads/for-testing

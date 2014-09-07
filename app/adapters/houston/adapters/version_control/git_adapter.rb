@@ -2,7 +2,6 @@ module Houston
   module Adapters
     module VersionControl
       class GitAdapter
-        
         class << self
           
           
@@ -14,24 +13,26 @@ module Houston
             location = Addressable::URI.parse(location.to_s)
             connect_to_repo!(location, project.version_control_temp_path)
             {}
-          rescue Rugged::RepositoryError, CloneRepoFailed, Rugged::OSError
+          rescue Rugged::RepositoryError, Rugged::OSError
             Rails.logger.error "#{$!.class.name}: #{$!.message}\n  #{$!.backtrace.take(7).join("\n  ")}"
             { git_location: ["might not be right. Houston can't seem to connect to it."] }
           end
           
           def build(project, location)
+            connect location, project.version_control_temp_path
+          end
+          
+          def connect(location, temp_path)
             location = Addressable::URI.parse(location.to_s)
             return Houston::Adapters::VersionControl::NullRepo if location.blank?
             
-            begin
-              connection = connect_to_repo!(location, project.version_control_temp_path)
-              
-              return self::Repo.new(connection) unless location.absolute?
-              return self::GithubRepo.new(connection, location) if /github/ === location
-              return self::RemoteRepo.new(connection, location)
-            rescue Rugged::RepositoryError, Rugged::OSError
-              Houston::Adapters::VersionControl::NullRepo
-            end
+            connection = connect_to_repo! location, temp_path
+            
+            return self::Repo.new(connection) unless location.absolute?
+            return self::GithubRepo.new(connection, location) if /github/ === location
+            return self::RemoteRepo.new(connection, location)
+          rescue Rugged::RepositoryError, Rugged::OSError
+            Houston::Adapters::VersionControl::NullRepo
           end
           
           def parameters
@@ -43,7 +44,7 @@ module Houston
           
           
           def connect_to_repo!(repo_uri, temp_path)
-            git_path = get_local_path_to_repo(repo_uri, temp_path)
+            git_path = get_local_path_to_repo(repo_uri, temp_path.to_s)
             Rugged::Repository.new(git_path)
           end
           
@@ -56,47 +57,34 @@ module Houston
             end
           end
           
-          def sync!(origin, local_path, async: false)
-            if File.exists?(local_path)
-              pull!(local_path, async: async)
-            else
-              clone!(origin, local_path, async: async)
-            end
-          end
-          
-          def clone!(origin_uri, temp_path, async: false)
-            local_path = File.dirname(temp_path)
-            target = File.basename(temp_path)
-            
-            Houston.benchmark("[git:clone] #{origin_uri} => #{temp_path} #{"\e[1;4mAsync" if async}") do
-              execute "cd #{local_path} && git clone --mirror #{origin_uri} #{target}", async: async
-            end
-          end
-          
-          def pull!(local_path, async: false)
-            Houston.benchmark("[git:pull] #{local_path} #{"\e[1;4mAsync" if async}") do
-              execute "git --git-dir=#{local_path} remote update --prune", async: async
-            end
-          end
-          
-          def execute(command, async: false)
+          def clone!(origin_uri, local_path, async: false)
             if async
-              pid = spawn command
-              Process.detach pid
+              Houston.async { _clone!(origin_uri, local_path, true) }
             else
-              output = `#{command}`
-              raise CloneRepoFailed.new("The command #{command.inspect} failed:\n#{output}") unless $?.success?
+              _clone!(origin_uri, local_path, false)
             end
           end
           
-          def time_of_last_pull(git_dir)
-            fetch_head = File.join(git_dir, "FETCH_HEAD")
-            return 100.years.ago unless File.exists?(fetch_head)
-            File.mtime fetch_head
+          def credentials
+            @credentials ||= Rugged::Credentials::SshKey.new(
+              username: "git",
+              privatekey: File.expand_path("~/.ssh/id_rsa"),
+              publickey: File.expand_path("~/.ssh/id_rsa.pub"))
+          end
+          
+          
+          
+        private
+          
+          def _clone!(origin_uri, local_path, async)
+            Houston.benchmark("[git:clone#{":async" if async}] #{origin_uri} => #{local_path}") do
+              Rugged::Repository.clone_at origin_uri, local_path.to_s,
+                credentials: GitAdapter.credentials,
+                bare: true
+            end
           end
           
         end
-        
       end
     end
   end
