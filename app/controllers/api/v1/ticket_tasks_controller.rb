@@ -34,7 +34,7 @@ module Api
           effort: task.effort,
           committedAt: task.first_commit_at,
           releasedAt: task.first_release_at,
-          completedAt: task.first_release_at }
+          completedAt: task.completed_at }
       end
       
       def find_project_and_ticket
