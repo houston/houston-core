@@ -522,41 +522,6 @@ ALTER SEQUENCE alerts_id_seq OWNED BY alerts.id;
 
 
 --
--- Name: changes; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE changes (
-    id integer NOT NULL,
-    release_id integer,
-    description character varying(255),
-    ticket_number integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    tag_slug character varying(255),
-    project_id integer NOT NULL
-);
-
-
---
--- Name: changes_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE changes_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: changes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE changes_id_seq OWNED BY changes.id;
-
-
---
 -- Name: commits; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1428,13 +1393,6 @@ ALTER TABLE ONLY alerts ALTER COLUMN id SET DEFAULT nextval('alerts_id_seq'::reg
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY changes ALTER COLUMN id SET DEFAULT nextval('changes_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
 ALTER TABLE ONLY commits ALTER COLUMN id SET DEFAULT nextval('commits_id_seq'::regclass);
 
 
@@ -1577,14 +1535,6 @@ ALTER TABLE ONLY versions ALTER COLUMN id SET DEFAULT nextval('versions_id_seq':
 
 ALTER TABLE ONLY alerts
     ADD CONSTRAINT alerts_pkey PRIMARY KEY (id);
-
-
---
--- Name: changes_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY changes
-    ADD CONSTRAINT changes_pkey PRIMARY KEY (id);
 
 
 --
@@ -1766,13 +1716,6 @@ CREATE INDEX index_alerts_on_opened_at ON alerts USING btree (opened_at);
 --
 
 CREATE UNIQUE INDEX index_alerts_on_type_and_key ON alerts USING btree (type, key);
-
-
---
--- Name: index_changes_on_project_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_changes_on_project_id ON changes USING btree (project_id);
 
 
 --
@@ -2423,4 +2366,6 @@ INSERT INTO schema_migrations (version) VALUES ('20140824211249');
 INSERT INTO schema_migrations (version) VALUES ('20140831210254');
 
 INSERT INTO schema_migrations (version) VALUES ('20140907005810');
+
+INSERT INTO schema_migrations (version) VALUES ('20140907012329');
 
