@@ -308,7 +308,6 @@ Houston.config do
   #   * antecedent:*:closed     When a Ticket has been closed, for each antecedent
   #   * boot                    When the Rails application is booted
   #   * deploy:create           When a deploy has been recorded
-  #   * error:create            When an exception has been reported
   #   * hooks:*                 When a Web Hook as been triggered
   #   * release:create          When a new Release has been created
   #   * test_run:start          When the CI server has begun a build

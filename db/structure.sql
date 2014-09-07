@@ -674,40 +674,6 @@ ALTER SEQUENCE deploys_id_seq OWNED BY deploys.id;
 
 
 --
--- Name: errors; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE errors (
-    id integer NOT NULL,
-    project_id integer,
-    category character varying(255),
-    message character varying(255),
-    backtrace text,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: errors_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE errors_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: errors_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE errors_id_seq OWNED BY errors.id;
-
-
---
 -- Name: milestones; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1414,13 +1380,6 @@ ALTER TABLE ONLY deploys ALTER COLUMN id SET DEFAULT nextval('deploys_id_seq'::r
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY errors ALTER COLUMN id SET DEFAULT nextval('errors_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
 ALTER TABLE ONLY milestones ALTER COLUMN id SET DEFAULT nextval('milestones_id_seq'::regclass);
 
 
@@ -1559,14 +1518,6 @@ ALTER TABLE ONLY consumer_tokens
 
 ALTER TABLE ONLY deploys
     ADD CONSTRAINT deploys_pkey PRIMARY KEY (id);
-
-
---
--- Name: errors_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY errors
-    ADD CONSTRAINT errors_pkey PRIMARY KEY (id);
 
 
 --
@@ -2368,4 +2319,6 @@ INSERT INTO schema_migrations (version) VALUES ('20140831210254');
 INSERT INTO schema_migrations (version) VALUES ('20140907005810');
 
 INSERT INTO schema_migrations (version) VALUES ('20140907012329');
+
+INSERT INTO schema_migrations (version) VALUES ('20140907013836');
 

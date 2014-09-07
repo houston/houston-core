@@ -31,31 +31,19 @@ class SyncAllTicketsJob
   
 private
   
-  
   def initialize
     @connection_retry_count = 0
   end
   
   attr_reader :connection_retry_count
   
-  
   def connection_error!(project)
     Houston.report_exception $!
-    Error.create(
-      category: project.ticket_tracker_adapter.downcase,
-      message: $!.message,
-      backtrace: $!.backtrace)
     raise QuitAll
   end
     
   def query_error!(project)
     Houston.report_exception $!
-    Error.create(
-      project: project,
-      category: "configuration",
-      message: $!.message,
-      backtrace: $!.backtrace)
   end
-  
   
 end
