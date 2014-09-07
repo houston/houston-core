@@ -1,14 +1,20 @@
 <tr class="task {{#released}}task-released{{/released}} {{#committed}}task-committed{{/committed}} {{#completed}}task-completed{{/completed}}" data-task-id="{{id}}">
   <td class="task-effort">
     {{effort}}
-    {{#if released}}
-      <i class="fa fa-check-circle" rel="tooltip" title="Released {{formatDate firstReleaseAt}}"></i>
-    {{/if}}
   </td>
   <td class="task-project"><b class="bubble {{projectColor}}"></b> {{projectTitle}}</td>
   <td class="task-summary">
     {{description}}
     <a href="{{ticketUrl}}" target="_blank" rel="ticket" data-number="{{ticketNumber}}" data-project="{{projectSlug}}">[#{{shorthand}}]</a>
+  </td>
+  <td class="task-status">
+    {{#if released}}
+      <i class="fa fa-paper-plane"></i> Released
+    {{else}}{{#if committed}}
+      <span class="octicon octicon-git-commit"></span> Committed
+    {{else}}
+      Open
+    {{/if}}{{/if}}
   </td>
   <td class="task-worker">
     {{#if checkedOut}}

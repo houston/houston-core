@@ -42,6 +42,8 @@ h2.light {
     a { color: $completed-foreground; }
   }
   
+  .task-status { white-space: nowrap; }
+  
   .task-worker button { white-space: nowrap; }
 }
 
