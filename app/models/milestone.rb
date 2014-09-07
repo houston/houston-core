@@ -27,6 +27,16 @@ class Milestone < ActiveRecord::Base
       where(arel_table[:end_date].not_eq(nil))
     end
     
+    def current
+      during(Date.today..Date.today)
+    end
+    
+    def during(range)
+      visible
+        .where(arel_table[:start_date].lteq(range.end))
+        .where(arel_table[:end_date].gteq(range.begin))
+    end
+    
     def without(milestones)
       without_remote_ids(milestones.map(&:remote_id))
     end

@@ -35,17 +35,18 @@ $vivid-green: #7ab84a;
     .refresher-path { fill: rgba(255, 255, 210, 0.2); }
     .label { color: rgba(255, 255, 210, 0.9); }
     
+    .axis {
+      text { fill: $foreground-green; }
+      text.legend { fill: $subtle-green; }
+      path, line { stroke: $subtle-green; }
+    }
+    
     .burndown-chart {
       circle { fill: $background-green; }
-      .axis {
-        text { fill: $foreground-green; }
-        text.legend { fill: $subtle-green; }
-        path, line { stroke: $subtle-green; }
-      }
       
       .circle-completed, .line.line-completed { stroke: $vivid-green; }
       .effort-remaining.effort-completed { fill: $vivid-green; }
-
+      
       .circle-committed, .line.line-committed { stroke: $foreground-green; }
       .effort-remaining.effort-committed { fill: $foreground-green; }
     }
@@ -79,13 +80,13 @@ $vivid-green: #7ab84a;
   .refresher-path { fill: rgba(255,255,255,0.2); }
   
   
+  .axis {
+    text { font-size: 13px; fill: $foreground; }
+    text.legend { fill: $subtle; }
+    path, line { stroke: $subtle; }
+  }
+  
   .burndown-chart {
-    .axis {
-      text { font-size: 13px; fill: $foreground; }
-      text.legend { fill: $subtle; }
-      path, line { stroke: $subtle; }
-    }
-    
     circle { fill: $background; }
     .effort-remaining { font-weight: 400; }
     
