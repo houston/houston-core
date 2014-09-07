@@ -3,6 +3,7 @@ module Houston
     module VersionControl
       class GitAdapter
         class RemoteRepo < Repo
+          RETRY_COOLDOWN = 4 # seconds
           
           
           def initialize(connection, location)
@@ -16,13 +17,13 @@ module Houston
           # ------------------------------------------------------------------------- #
           
           def ancestors_until(sha, *args)
-            pull_and_retry(1) { super(sha, *args) }
+            pull_and_retry { super(sha, *args) }
           end
           
           attr_reader :location
           
           def native_commit(sha)
-            pull_and_retry(1) { super(sha) }
+            pull_and_retry { super(sha) }
           end
           
           def refresh!(async: false)
@@ -50,17 +51,14 @@ module Houston
           
         private
           
-          def pull_and_retry(retries)
+          def pull_and_retry
             begin
               yield
             rescue CommitNotFound
-              if retries > 0
-                retries -= 1
-                refresh!
-                retry
-              else
-                raise
-              end
+              raise if @last_retry && Time.now - @last_retry < RETRY_COOLDOWN
+              refresh!
+              @last_retry = Time.now
+              retry
             end
           end
           
