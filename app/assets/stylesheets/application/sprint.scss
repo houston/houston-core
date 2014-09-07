@@ -42,8 +42,11 @@ h2.light {
     a { color: $completed-foreground; }
   }
   
-  .task-status { white-space: nowrap; }
+  tr.task td { vertical-align: top; }
   
+  .task-effort { text-align: right; }
+  .task-status { white-space: nowrap; }
+  .task-worker { text-align: right; }
   .task-worker button { white-space: nowrap; }
 }
 
