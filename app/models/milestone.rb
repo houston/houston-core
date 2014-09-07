@@ -4,9 +4,9 @@ class Milestone < ActiveRecord::Base
   belongs_to :project
   has_many :tickets
   
-  versioned only: [:name, :start_date, :size, :units, :band]
+  versioned only: [:name, :start_date, :end_date, :band]
   
-  default_scope { where(destroyed_at: nil).order(:position) }
+  default_scope { where(destroyed_at: nil).order(:start_date) }
   
   validates :project_id, presence: true
   validates :name, presence: true, uniqueness: {scope: :project_id}
@@ -23,7 +23,8 @@ class Milestone < ActiveRecord::Base
     alias :open :uncompleted
     
     def visible
-      where(arel_table[:size].not_eq(nil)).where(arel_table[:start_date].not_eq(nil))
+      where(arel_table[:start_date].not_eq(nil)).
+      where(arel_table[:end_date].not_eq(nil))
     end
     
     def without(milestones)

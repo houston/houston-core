@@ -692,7 +692,8 @@ CREATE TABLE milestones (
     size integer,
     units character varying(255),
     start_date date,
-    band integer DEFAULT 1 NOT NULL
+    band integer DEFAULT 1 NOT NULL,
+    end_date date
 );
 
 
@@ -2321,4 +2322,6 @@ INSERT INTO schema_migrations (version) VALUES ('20140907005810');
 INSERT INTO schema_migrations (version) VALUES ('20140907012329');
 
 INSERT INTO schema_migrations (version) VALUES ('20140907013836');
+
+INSERT INTO schema_migrations (version) VALUES ('20140907212311');
 
