@@ -18,7 +18,7 @@ class @EditSprintView extends @ShowSprintView
   render: ->
     return @ unless @tasks
     for task in @tasks
-      task.open = !task.completedAt
+      task.open = !task.completed
       task.locked = @locked
     
     html = @template
@@ -130,7 +130,7 @@ class @EditSprintView extends @ShowSprintView
     template = HandlebarsTemplates['sprints/task']
     $tasks = @$el.find('#tasks').empty()
     for task in @tasks
-      task.open = !task.completedAt
+      task.open = !task.completed
       task.locked = @locked
       $tasks.append template(task)
   

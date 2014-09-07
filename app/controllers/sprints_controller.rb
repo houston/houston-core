@@ -58,7 +58,7 @@ class SprintsController < ApplicationController
       render text: "Task ##{task.shorthand} cannot be added to the Sprint because it has no effort", status: :unprocessable_entity
     else
       sprint.tasks.add task
-      render json: SprintTaskPresenter.new(task).to_json
+      render json: SprintTaskPresenter.new(sprint, task).to_json
     end
   end
   

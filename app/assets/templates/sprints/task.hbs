@@ -1,9 +1,9 @@
-<tr class="task {{#firstReleaseAt}}task-released{{/firstReleaseAt}} {{#firstCommitAt}}task-committed{{/firstCommitAt}} {{#completedAt}}task-completed{{/completedAt}}" data-task-id="{{id}}">
+<tr class="task {{#released}}task-released{{/released}} {{#committed}}task-committed{{/committed}} {{#completed}}task-completed{{/completed}}" data-task-id="{{id}}">
   <td class="task-effort">
     {{effort}}
-    {{#firstReleaseAt}}
-      <i class="fa fa-check-circle" rel="tooltip" title="Released {{formatDate this}}"></i>
-    {{/firstReleaseAt}}
+    {{#if released}}
+      <i class="fa fa-check-circle" rel="tooltip" title="Released {{formatDate firstReleaseAt}}"></i>
+    {{/if}}
   </td>
   <td class="task-project"><b class="bubble {{projectColor}}"></b> {{projectTitle}}</td>
   <td class="task-summary">
