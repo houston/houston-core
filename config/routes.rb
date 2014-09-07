@@ -18,7 +18,6 @@ Rails.application.routes.draw do
   
   # Dashboard
   
-  get "dashboard" => "dashboard#index", :as => :dashboard
   get "omnibar" => "omnibar#show"
   
   
