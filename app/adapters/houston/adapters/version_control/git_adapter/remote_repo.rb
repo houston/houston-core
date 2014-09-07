@@ -16,10 +16,6 @@ module Houston
           # Public API for a VersionControl::Adapter Repo
           # ------------------------------------------------------------------------- #
           
-          def ancestors_until(sha, *args)
-            pull_and_retry { super(sha, *args) }
-          end
-          
           attr_reader :location
           
           def native_commit(sha)
