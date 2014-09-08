@@ -20,8 +20,6 @@
 $(function() {
   new InfiniteScroll({
     load: function($timeline) {
-      if(!/#?timeline/.test(window.location.hash)) { return false; }
-      
       var time = $timeline.find('.timeline-event:last').attr('data-time');
       return $.get('/activity', {since: time});
     }
