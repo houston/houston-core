@@ -182,6 +182,8 @@ Rails.application.routes.draw do
         scope "tickets/by_number/:number" do
           get "tasks", to: "ticket_tasks#index"
           post "tasks", to: "ticket_tasks#create"
+          put "tasks/:id", to: "ticket_tasks#update"
+          delete "tasks/:id", to: "ticket_tasks#destroy"
         end
       end
       

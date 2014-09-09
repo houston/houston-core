@@ -3,9 +3,10 @@ module Api
     class TicketTasksController < ApplicationController
       before_filter :api_authenticate!
       before_filter :find_project_and_ticket
+      before_filter :find_task, only: [:update, :destroy]
       skip_before_filter :verify_authenticity_token
       
-      attr_reader :project, :ticket
+      attr_reader :project, :ticket, :task
       
       rescue_from ActiveRecord::RecordNotFound do
         head 404
@@ -25,10 +26,26 @@ module Api
         end
       end
       
+      def update
+        task.attributes = params.slice(:description, :effort)
+        task.updated_by = current_user
+        if task.save
+          head :ok
+        else
+          render json: {errors: task.errors.full_messages}, status: :unprocessable_entity
+        end
+      end
+      
+      def destroy
+        task.destroy
+        head :ok
+      end
+      
     private
     
       def present_task(task)
-        { number: task.number,
+        { id: task.id,
+          number: task.number,
           letter: task.letter,
           description: task.description,
           effort: task.effort,
@@ -40,6 +57,10 @@ module Api
       def find_project_and_ticket
         @project = Project.find_by_slug! params[:slug]
         @ticket = project.tickets.find_by_number! params[:number]
+      end
+      
+      def find_task
+        @task = ticket.tasks.find params[:id]
       end
       
     end
