@@ -7,8 +7,9 @@ class TicketTasksApiTest < ActionDispatch::IntegrationTest
   setup do
     @project = create(:project)
     @ticket = create(:ticket, project: project)
-    @ticket.tasks.first.update_attributes!(description: "Step 1", effort: 3)
-    @ticket.tasks.create!(description: "Step 2", effort: 7)
+    @task1 = @ticket.tasks.first
+    @task1.update_attributes!(description: "Step 1", effort: 3)
+    @task2 = @ticket.tasks.create!(description: "Step 2", effort: 7)
   end
   
   
@@ -24,10 +25,10 @@ class TicketTasksApiTest < ActionDispatch::IntegrationTest
       assert_response :success
       
       expected_tasks = [
-        { "number" => 1, "letter" => "a", "description" => "Step 1", "effort" => "3.0",
-          "committedAt" => nil, "releasedAt" => nil, "completedAt" => nil },
-        { "number" => 2, "letter" => "b", "description" => "Step 2", "effort" => "7.0",
-          "committedAt" => nil, "releasedAt" => nil, "completedAt" => nil }
+        { "id" => @task1.id, "number" => 1, "letter" => "a", "description" => "Step 1",
+          "effort" => "3.0", "committedAt" => nil, "releasedAt" => nil, "completedAt" => nil },
+        { "id" => @task2.id, "number" => 2, "letter" => "b", "description" => "Step 2",
+          "effort" => "7.0", "committedAt" => nil, "releasedAt" => nil, "completedAt" => nil }
       ]
       
       response_json = JSON.load(response.body)
