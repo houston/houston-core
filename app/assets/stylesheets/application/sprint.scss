@@ -9,7 +9,9 @@ $completed-foreground: rgb(42, 133, 19);
 .task-project { white-space: nowrap; }
 
 #add_task {
-  width: 48em;
+  width: 100%;
+  box-sizing: border-box;
+  height: 30px;
   margin-bottom: 0;
   padding: 0.5em 1em;
 }

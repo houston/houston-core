@@ -1,17 +1,19 @@
 class Houston.BurndownChart
   
   constructor: ->
-    @_margin = {top: 40, right: 80, bottom: 24, left: 50}
-    @_width = 960
+    @_margin = {top: 40, right: 0, bottom: 24, left: 50}
     @_selector = '#graph'
+    @_height = 260
+    @$el = $(@_selector)
     @_totalEffort = 0
     @_lines = {}
     @_regressions = {}
+    $(window).resize (e)=>
+      @render() if e.target is window
   
   margin: (@_margin)-> @
-  width: (@_width)-> @
   height: (@_height)-> @
-  selector: (@_selector)-> @ 
+  selector: (@_selector)-> @$el = $(@_selector); @
   dateFormat: (@_dateFormat)-> @ 
   days: (@days)-> @
   totalEffort: (@_totalEffort)-> @
@@ -19,8 +21,9 @@ class Houston.BurndownChart
   addRegression: (slug, data)-> @_regressions[slug] = data; @
   
   render: ->
-    height = @_height || (@_width * 0.27)
-    graphWidth = @_width - @_margin.left - @_margin.right
+    width = @$el.width() || 960
+    height = @_height
+    graphWidth = width - @_margin.left - @_margin.right
     graphHeight = height - @_margin.top - @_margin.bottom
     
     totalEffort = @_totalEffort
@@ -49,9 +52,9 @@ class Houston.BurndownChart
       .x((d)-> x(d.day))
       .y((d)-> y(d.effort))
     
-    $(@_selector).empty()
+    @$el.empty()
     svg = d3.select(@_selector).append('svg')
-        .attr('width', @_width)
+        .attr('width', width)
         .attr('height', height)
       .append('g')
         .attr('transform', "translate(#{@_margin.left},#{@_margin.top})")
