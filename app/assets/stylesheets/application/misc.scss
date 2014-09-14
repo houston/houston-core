@@ -20,6 +20,24 @@ button.close {
   margin-left: 3em;
 }
 
+.callout {
+  margin-left: -20px;
+  margin-right: -20px;
+  padding: 2em 20px;
+  background: #efefef;
+}
+
+.callout.callout-banner {
+  margin-top: -2em;
+  margin-bottom: 2em;
+}
+
+.callout.callout-footer {
+  margin-bottom: -60px;
+  margin-top: 2em;
+  padding-bottom: 60px;
+}
+
 .hidden { 
   display: none !important;
 }
@@ -196,12 +214,6 @@ h1 {
       top: -6px;
       z-index: 1029; // right below the navbar
     }
-  }
-}
-
-@media (max-width: 979px) {
-  h1.project-banner.affix {
-    top: -48px;
   }
 }
 

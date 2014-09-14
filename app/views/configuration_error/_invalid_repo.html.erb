@@ -1,5 +1,7 @@
-<div class="control-group form-actions">
-  <h3>Invalid Repo Location</h3>
-  <p>Sorry! We can't find your project at <code><%= @project.repo.location %></code>. Maybe the system is down...</p>
-  <p><%= link_to "My bad. Let me enter a different one.", edit_project_path(@project, anchor: "version_control") %></p>
+<div class="form-horizontal callout callout-banner">
+  <div class="controls">
+    <h3>Invalid Repo Location</h3>
+    <p>Sorry! We can't find your project at <code><%= @project.repo.location %></code>. Maybe the system is down...</p>
+    <p><%= link_to "My bad. Let me enter a different one.", edit_project_path(@project, anchor: "version_control") %></p>
+  </div>
 </div>

@@ -16,11 +16,8 @@ $completed-foreground: rgb(42, 133, 19);
 #add_task_form .fa-spinner { display: none; }
 #add_task_form.loading .fa-spinner { display: inline-block; }
 
-.shaded-chart {
+.burndown-chart.callout {
   height: 260px;
-  margin: -2em -20px 2em;
-  padding: 2em;
-  background: #efefef;
 }
 
 h2.light {

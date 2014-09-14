@@ -91,20 +91,20 @@
     </div>
     <% end %>
     
+    <div class="callout callout-footer">
     <% if @release.new_record? %>
-    <div class="release-detail-section">
       <div class="controls">
         <label for="send_release_email">
           <input type="checkbox" id="send_release_email" name="send_release_email" value="1" checked="checked" /> Send notifications about this release 
         </label>
       </div>
-    </div>
     <% end %>
-
-    <div class="form-actions">
-      <%= f.submit nil, :class => "btn btn-primary" %>
-      <%= link_to "Cancel", releases_path(@project), :class => "btn" %>
-      <%= link_to "Delete", release_path(@release), :method => "delete", :confirm => "Are you sure?", :class => "btn btn-danger btn-delete" if @release.persisted? && can?(:destroy, @release) %>
+      
+      <div class="controls">
+        <%= f.submit nil, :class => "btn btn-primary" %>
+        <%= link_to "Cancel", releases_path(@project), :class => "btn" %>
+        <%= link_to "Delete", release_path(@release), :method => "delete", :confirm => "Are you sure?", :class => "btn btn-danger btn-delete" if @release.persisted? && can?(:destroy, @release) %>
+      </div>
     </div>
   </fieldset>
 <% end %>
