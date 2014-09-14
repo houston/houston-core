@@ -1,10 +1,7 @@
 body {
+  padding-top: 60px;
   padding-bottom: 60px;
   font-family: "Helvetica Neue", roboto, Helvetica, Arial, sans-serif
-}
-
-@media (min-width: 979px) {
-  body { padding-top: 60px; }
 }
 
 li { line-height: 1.5em; }
