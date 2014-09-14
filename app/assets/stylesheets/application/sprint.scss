@@ -42,24 +42,32 @@ h2.light {
   tr.task td { vertical-align: top; }
   
   .task-effort { text-align: right; }
-  .task-status { white-space: nowrap; }
+  .task-status {
+    white-space: nowrap;
+    .fa, .octicon { width: 16px; text-align: center; }
+  }
   .task-worker { text-align: right; }
   .task-worker button { white-space: nowrap; }
 }
 
-.remove-task-button {
+.remove-task-button, .complete-task-button {
   color: #e0e0e0;
   display: inline-block;
   cursor: pointer;
+  font-family: 'FontAwesome';
+  font-size: 1.5em;
   
-  &::after {
-    content: '\f056';
-    font-family: 'FontAwesome';
-    font-size: 1.5em;
-  }
-  
-  &:hover {
-    color: #E52F26;
-    text-decoration: none;
-  }
+  &:hover { text-decoration: none; }
 }
+
+.remove-task-button {
+  font-size: 18px;
+  &::after { content: '\f056'; }
+  &:hover { color: #E52F26; }
+}
+.complete-task-button {
+  font-size: 16px;
+  &::after { content: '\f058'; }
+  &:hover { color: #4CB810; }
+}
+#sprint_view .task-completed a:hover { color: #7F9C6F; }

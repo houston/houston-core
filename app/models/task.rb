@@ -131,6 +131,26 @@ class Task < ActiveRecord::Base
     completed_at.present?
   end
   
+  def manually_completed?
+    completed? && !committed? && !released?
+  end
+  
+  def open?
+    !completed?
+  end
+  
+  
+  
+  def complete!
+    return if completed?
+    touch :completed_at
+  end
+  
+  def reopen!
+    return unless manually_completed?
+    update_column :completed_at, nil
+  end
+  
   
   
   def default_task?

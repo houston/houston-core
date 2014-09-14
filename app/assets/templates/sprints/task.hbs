@@ -12,9 +12,13 @@
       <i class="fa fa-paper-plane"></i> Released
     {{else}}{{#if committed}}
       <span class="octicon octicon-git-commit"></span> Committed
+    {{else}}{{#if completed}}
+      <a class="complete-task-button"></a>
+      Completed
     {{else}}
+      <a class="complete-task-button"></a>
       Open
-    {{/if}}{{/if}}
+    {{/if}}{{/if}}{{/if}}
   </td>
   <td class="task-worker">
     {{#if checkedOut}}

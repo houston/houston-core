@@ -154,6 +154,8 @@ Rails.application.routes.draw do
   delete "tasks/:id/lock", :to => "task_locks#destroy", constraints: {id: /\d+/}
   
   put "tasks/:id", :to => "tasks#update", constraints: {id: /\d+/}
+  put "tasks/:id/complete", :to => "tasks#complete", constraints: {id: /\d+/}
+  put "tasks/:id/reopen", :to => "tasks#reopen", constraints: {id: /\d+/}
   
   
   

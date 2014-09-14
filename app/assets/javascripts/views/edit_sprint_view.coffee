@@ -5,6 +5,7 @@ class @EditSprintView extends @ShowSprintView
     'click #show_completed_tasks': 'toggleShowCompleted'
     'click #lock_sprint_button': 'confirmLockSprint'
     'click .remove-task-button': 'removeTask'
+    'click .complete-task-button': 'toggleTaskCompleted'
     'submit #add_task_form': 'submitAddTaskForm'
   
   initialize: ->
@@ -125,7 +126,31 @@ class @EditSprintView extends @ShowSprintView
         @tasks = _.reject(@tasks, (task)-> task.id == id)
         $task.remove()
         @renderBurndownChart(@tasks)
-    
+  
+  toggleTaskCompleted: (e)->
+    $button = $(e.target)
+    $task = $button.closest('.task')
+    id = +$task.attr('data-task-id')
+    task = _.findWhere @tasks, id: id
+    if task.completed
+      $.put "/tasks/#{id}/reopen"
+        .error => console.log 'error', arguments
+        .success (attrs)=>
+          task.completedAt = null
+          task.completed = false
+          task.open = true
+          @rerenderTasks()
+          @renderBurndownChart(@tasks)
+    else
+      $.put "/tasks/#{id}/complete" 
+        .error => console.log 'error', arguments
+        .success (attrs)=>
+          task.completedAt = attrs.completedAt
+          task.completed = true
+          task.open = false
+          @rerenderTasks()
+          @renderBurndownChart(@tasks)
+  
   rerenderTasks: ->
     template = HandlebarsTemplates['sprints/task']
     $tasks = @$el.find('#tasks').empty()
