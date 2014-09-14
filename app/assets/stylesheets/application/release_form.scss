@@ -9,9 +9,12 @@
 }
 
 .release-form {
-  .change-tag select { width: 10em; }
+  .change-tag, .change-description { box-sizing: border-box; padding-right: 8px; }
+  .change-tag select { width: 100%; }
   .change-tag .help-inline { display: none; }
-  .change-description input { width: 36em; }
+  .change-description input { width: 100%; box-sizing: border-box; height: 30px; }
+  
+  .release-detail-section > .controls { max-width: 920px; }
   
   textarea#release_message {
     width: 46em;

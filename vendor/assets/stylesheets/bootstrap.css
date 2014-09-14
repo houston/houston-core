@@ -1968,9 +1968,8 @@ legend + .control-group {
 
 .form-horizontal .controls {
   *display: inline-block;
-  *padding-left: 20px;
-  margin-left: 180px;
-  *margin-left: 0;
+  padding-left: 180px;
+  box-sizing: border-box;
 }
 
 .form-horizontal .controls:first-child {

@@ -20,10 +20,10 @@
 
     <div class="release-detail-section">
       <%= f.label :release_changes, "Changes", :class => "control-label" %>
-      <div class="controls changes-nested-editor">
+      <div class="controls changes-nested-editor row-fluid">
         <%= f.nested_editor_for :release_changes do |f| -%>
-          <div class="change-tag"><%= f.collection_select :tag_slug, [NullTag.instance] + Houston.config.change_tags, :slug, :name %></div>
-          <div class="change-description"><%= f.text_field :description, maxlength: 255 %></div>
+          <div class="change-tag span3"><%= f.collection_select :tag_slug, [NullTag.instance] + Houston.config.change_tags, :slug, :name %></div>
+          <div class="change-description span8"><%= f.text_field :description, maxlength: 255 %></div>
         <% end -%>
       </div>
     </div>
