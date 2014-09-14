@@ -57,21 +57,6 @@
       </div>
     </div>
     
-    <div class="release-detail-section release-antecedents">
-      <label class="control-label">Antecedents</label>
-      <div class="controls changes-nested-editor">
-        <% if @release.antecedents.any? %>
-          <ul class="antecedents">
-            <% @release.antecedents.each do |antecedent| %>
-              <li><%= format_antecedent(antecedent) %></li>
-            <% end %>
-          </ul>
-        <% else %>
-          <p class="no-items">No antecedents were associated with this release.</p>
-        <% end %>
-      </div>
-    </div>
-
     <% if @release.commits.any? %>
     <div class="release-detail-section release-commits">
       <label class="control-label">Commits</label>
