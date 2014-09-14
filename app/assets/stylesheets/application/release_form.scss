@@ -43,16 +43,18 @@
     color: #777;
   }
   
-  .release-tickets table, .release-antecedents ul, .release-commits ul {
+  .release-antecedents ul, .release-commits ul {
     max-width: 680px;
     margin: 5px 0;
   }
   
   .release-tickets {
+    table { width: 88.67403314917128%; margin: 5px 0; }
     td { vertical-align: top; }
     
     .release-ticket-check {
       width: 1em;
+      padding-right: 0.5em;
       
       input { margin: 0; }
     }
