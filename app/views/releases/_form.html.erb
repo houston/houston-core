@@ -21,6 +21,7 @@
     <div class="release-detail-section">
       <%= f.label :release_changes, "Changes", :class => "control-label" %>
       <div class="controls changes-nested-editor row-fluid">
+        <p class="instructions">Describe, in users&rsquo; terms, what this release changes</p>
         <%= f.nested_editor_for :release_changes do |f| -%>
           <div class="change-tag span3"><%= f.collection_select :tag_slug, [NullTag.instance] + Houston.config.change_tags, :slug, :name %></div>
           <div class="change-description span8"><%= f.text_field :description, maxlength: 255 %></div>
@@ -29,26 +30,28 @@
     </div>
     
     <div class="release-detail-section release-tickets">
-      <%= f.label :tickets, "Tickets", :class => "control-label" %>
-      <div class="controls changes-nested-editor">
-        <table>
+      <%= f.label :tickets, "Tickets".html_safe, :class => "control-label" %>
+      <div class="controls">
+        <p class="instructions">Select the tickets which are being released</p>
+        <table class="release-tickets changes-nested-editor">
           <tbody id="release_tickets">
             <% @release.tickets.each do |ticket| %>
               <tr id="ticket_<%= ticket.id %>">
+                <td class="release-ticket-check">
+                  <input type="checkbox" id="release_ticket_<%= ticket.id %>" name="release[ticket_ids][]" value="<%= ticket.id %>" />
+                </td>
                 <td class="release-ticket-summary">
-                  <input type="hidden" name="release[ticket_ids][]" value="<%= ticket.id %>" />
-                  <%= format_with_feature_bolded(ticket.summary) %>
+                  <label for="release_ticket_<%= ticket.id %>">
+                    <%= format_with_feature_bolded(ticket.summary) %>
+                  </label>
                 </td>
                 <td class="release-ticket-number">
                   <%= link_to_ticket(ticket) { "##{ticket.number}" } %>
                 </td>
-                <td class="release-ticket-remove">
-                  <a class="delete-link delete-nested-link" href="#" title="Delete" tabindex="-1">Delete</a>
-                </td>
               </tr>
             <% end %>
             <tr id="new_ticket_li">
-              <td>
+              <td colspan="3">
                 <input type="text" id="new_ticket_field" placeholder="Look up ticket to add to this release" />
               </td>
             </tr>
@@ -77,15 +80,19 @@
     <% end %>
     
     <div class="callout callout-footer">
-    <% if @release.new_record? %>
-      <div class="controls">
-        <label for="send_release_email">
-          <input type="checkbox" id="send_release_email" name="send_release_email" value="1" checked="checked" /> Send notifications about this release 
-        </label>
-      </div>
-    <% end %>
+      <label class="control-label">Actions</label>
       
       <div class="controls">
+      <% if @release.new_record? %>
+        <p>
+          <label for="send_release_email">
+            <input type="checkbox" id="send_release_email" name="send_release_email" value="1" checked="checked" /> Send notifications about this release 
+          </label>
+        </p>
+      <% end %>
+      </div>
+      
+      <div class="controls" style="margin-top: 1.5em">
         <%= f.submit nil, :class => "btn btn-primary" %>
         <%= link_to "Cancel", releases_path(@project), :class => "btn" %>
         <%= link_to "Delete", release_path(@release), :method => "delete", :confirm => "Are you sure?", :class => "btn btn-danger btn-delete" if @release.persisted? && can?(:destroy, @release) %>

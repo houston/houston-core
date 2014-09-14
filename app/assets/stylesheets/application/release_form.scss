@@ -21,7 +21,7 @@
     height: 80px;
   }
   
-  #new_ticket_field { width: 36em; }
+  #new_ticket_field { width: 100%; box-sizing: border-box; height: 30px; }
   
   .controls > ul { margin-left: 0; }
   .controls > p.no-items { margin-left: 0; }
@@ -32,6 +32,10 @@
       content: ' (optional)';
       color: #bbb;
     }
+  }
+  .controls > p.instructions {
+    color: #777;
+    font-style: italic;
   }
   
   .control-label {
@@ -47,6 +51,11 @@
   .release-tickets {
     td { vertical-align: top; }
     
+    .release-ticket-check {
+      width: 1em;
+      
+      input { margin: 0; }
+    }
     .release-ticket-number {
       font-size: 0.88em;
       text-align: right;
