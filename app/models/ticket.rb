@@ -131,6 +131,27 @@ class Ticket < ActiveRecord::Base
       where("NOT defined(tickets.extended_attributes, 'estimated_effort') OR NULLIF(tickets.extended_attributes->'estimated_effort', '')::numeric <= 0")
     end
     
+    def resolve_all!
+      parallel.each do |ticket|
+        begin
+          retries = 0
+          begin
+            ticket.resolve! if Rails.env.production?
+          rescue Unfuddle::ConnectionError
+            raise unless $!.message =~ /connection reset by peer/i
+            raise unless (retries += 1) <= 3
+            
+            # The firewall has throttled Houston's requests to Unfuddle;
+            # slow down and try again.
+            sleep 2 ** tries
+            retry
+          end
+        rescue
+          Houston.report_exception $!
+        end
+      end
+    end
+    
   end
   
   
