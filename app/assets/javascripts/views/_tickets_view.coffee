@@ -1,11 +1,13 @@
 class @TicketsView extends Backbone.View
+  supportsSorting: true
 
   initialize: ->
     @tickets = @options.tickets
     @project = @options.project
     
-    @$el.on 'click', 'th', (e)=>
-      @toggleSort $(e.target).closest('th')
+    if @supportsSorting
+      @$el.on 'click', 'th', (e)=>
+        @toggleSort $(e.target).closest('th')
     
     @$el.on 'click', '[rel="ticket"]', (e)=>
       e.preventDefault()

@@ -52,7 +52,7 @@ h2.light {
   .task-worker button { white-space: nowrap; }
 }
 
-.remove-task-button, .complete-task-button {
+.remove-button, .complete-task-button {
   color: #e0e0e0;
   display: inline-block;
   cursor: pointer;
@@ -62,7 +62,7 @@ h2.light {
   &:hover { text-decoration: none; }
 }
 
-.remove-task-button {
+.remove-button {
   font-size: 18px;
   &::after { content: '\f056'; }
   &:hover { color: #E52F26; }
