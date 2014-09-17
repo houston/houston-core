@@ -227,7 +227,7 @@ class @EditSprintView extends @ShowSprintView
         @updateTotalEffort()
       .error (xhr)=>
         errors = Errors.fromResponse(response)
-        errors.renderToAlert().appendAsAlert()
+        errors.renderToAlert()
   
   checkOut: ($button, $task, id, task)->
     $.post("/tasks/#{id}/lock")
@@ -241,7 +241,7 @@ class @EditSprintView extends @ShowSprintView
         @updateTotalEffort()
       .error (response)=>
         errors = Errors.fromResponse(response)
-        errors.renderToAlert().appendAsAlert()
+        errors.renderToAlert()
 
   updateTotalEffort: ->
     effort = 0

@@ -21,13 +21,6 @@ class window.Errors
         sentences.push messages[0]
       else
         sentences.push "#{attribute} #{messages[0]}"
-    alert = """
-      <div class="alert alert-block alert-error">
-        <button class="close" data-dismiss="alert">×</button>
-        <h4 class="alert-heading">Oh snap! You got an error!</h4>
-        <p>#{sentences.join('<br />')}</p>
-      </div>
-      """
-    $(alert)
+    alertify.error sentences.join(".\n")
 
 Errors.fromResponse = (response)-> new Errors(response)

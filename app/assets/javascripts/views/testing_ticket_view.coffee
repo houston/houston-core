@@ -138,10 +138,7 @@ class window.TestingTicketView extends Backbone.View
         errors = Errors.fromResponse(response)
         if errors.missingCredentials or errors.invalidCredentials
           App.promptForCredentialsTo('Unfuddle')
-        
-        $el = $('.testing-note.new')
-        $el.find('.alert').remove()
-        errors.renderToAlert().prependTo $el
+        errors.renderToAlert()
       complete: ->
         $form.enable()
   

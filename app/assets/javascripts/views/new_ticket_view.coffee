@@ -160,7 +160,7 @@ class window.NewTicketView extends Backbone.View
     xhr.success (ticket)=>
       @tickets.push(ticket)
       @resetNewTicket()
-      $("<div class=\"alert alert-success\">Ticket <a href=\"#{ticket.ticketUrl}\" target=\"_blank\">##{ticket.number}</a> was created.</div>").appendAsAlert()
+      alertify.success "Ticket <a href=\"#{ticket.ticketUrl}\" target=\"_blank\">##{ticket.number}</a> was created"
       @$el.enable()
       @options.onCreate(ticket) if @options.onCreate
       $(document).trigger 'ticket:create', [ticket]
@@ -172,7 +172,7 @@ class window.NewTicketView extends Backbone.View
       else if errors.oauthLocation
         App.oauth(errors.oauthLocation)
       else
-        errors.renderToAlert().appendAsAlert()
+        errors.renderToAlert()
 
 
 

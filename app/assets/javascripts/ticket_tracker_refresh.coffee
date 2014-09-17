@@ -5,16 +5,16 @@ $ ->
     
     $button.addClass('working')
     
-    $("<div class=\"alert alert-info\">Your project is being synced with #{$button.attr('data-tracker')}</div>").appendAsAlert()
+    alertify.log "Your project is being synced with #{$button.attr('data-tracker')}"
     
     xhr = $.post $button.attr('href')
     xhr.complete => $button.removeClass('working')
     xhr.success =>
-      $("<div class=\"alert alert-success\">Your project is up-to-date! <a href=\"#{window.location}\">Refresh</a> to see the latest tickets.</div>").appendAsAlert()
+      alertify.success "Your project is up-to-date! <a href=\"#{window.location}\">Refresh</a> to see the latest tickets."
       $button.addClass('done')
     
     xhr.error =>
-      $("<div class=\"alert alert-error\">Your project could not be synced with #{$button.attr('data-tracker')}</div>").appendAsAlert()
+      alertify.error "Your project could not be synced with #{$button.attr('data-tracker')}"
   
   
   showKeyboardShortcuts = ->

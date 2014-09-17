@@ -57,7 +57,7 @@ class window.TestingNoteView extends Backbone.View
           errors = Errors.fromResponse(response)
           if errors.missingCredentials or errors.invalidCredentials
             App.promptForCredentialsTo('Unfuddle')
-          errors.renderToAlert().prependTo($(@el)).alert()
+          errors.renderToAlert()
     @
   
   changeVerdict: (e)->
