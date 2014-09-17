@@ -132,7 +132,7 @@ class Ticket < ActiveRecord::Base
     end
     
     def resolve_all!
-      parallel.each do |ticket|
+      all.parallel.each do |ticket|
         begin
           retries = 0
           begin
