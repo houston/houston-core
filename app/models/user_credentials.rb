@@ -12,7 +12,11 @@ class UserCredentials < ActiveRecord::Base
   belongs_to :user
   
   def self.for(service)
-    where(service: service).first || (raise MissingCredentials)
+    credentials = where(service: service).first || (raise MissingCredentials)
+    [credentials.login, credentials.password.decrypt(Houston.config.passphrase)]
+  rescue OpenSSL::PKey::RSAError
+    credentials.delete
+    raise MissingCredentials
   end
   
   
