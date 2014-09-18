@@ -1,6 +1,11 @@
 <% content_for :title do %>
 <h1 class="project-banner space-below">
-  Sprint
+  Sprint<small class="colon">:</small>
+  <small class="postfix">
+    <%= link_to @sprint.previous do %><i class="fa fa-chevron-left"></i><% end %>
+    <%= format_sprint_time_frame(@sprint) %>
+    <%= link_to @sprint.next do %><i class="fa fa-chevron-right"></i><% end %>
+  </small>
   
   <%= render partial: "projects/keyboard_shortcuts" %>
 </h1>

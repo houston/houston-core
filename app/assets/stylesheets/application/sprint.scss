@@ -1,6 +1,12 @@
 $completed-background: #E6F3E2;
 $completed-foreground: rgb(42, 133, 19);
 
+.project-banner {
+  a { color: #999; }
+  a:hover { color: #fff; }
+  a i { vertical-align: text-bottom; font-size: 0.88em; }
+}
+
 .sprint-total-effort {
   float: right;
   margin-bottom: 12px;

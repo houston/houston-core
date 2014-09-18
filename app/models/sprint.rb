@@ -7,8 +7,21 @@ class Sprint < ActiveRecord::Base
   before_validation :set_default_end_date, on: :create
   
   def self.current
-    where(arel_table[:end_date].gteq(Date.today))
-      .order("end_date DESC").first
+    find_by_end_date end_date_for(Date.today) 
+  end
+  
+  def self.end_date_for(date)
+    days_until_friday = 5 - date.wday
+    days_until_friday += 7 if days_until_friday < 0
+    date + days_until_friday
+  end
+  
+  def previous
+    Sprint.find_or_create_by(end_date: end_date - 7)
+  end
+  
+  def next
+    Sprint.find_or_create_by(end_date: end_date + 7)
   end
   
   def start_date
@@ -30,12 +43,7 @@ class Sprint < ActiveRecord::Base
 private
   
   def set_default_end_date
-    self.end_date ||= begin
-      today = Date.today
-      days_until_friday = 5 - today.wday
-      days_until_friday += 7 if days_until_friday < 0
-      today + days_until_friday
-    end
+    self.end_date ||= self.class.end_date_for(Date.today)
   end
   
 end
