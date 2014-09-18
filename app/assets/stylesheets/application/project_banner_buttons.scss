@@ -39,10 +39,10 @@
   
   &.working {
     i {
-      -moz-animation: spin 1.5s infinite linear;
-      -o-animation: spin 1.5s infinite linear;
-      -webkit-animation: spin 1.5s infinite linear;
-      animation: spin 1.5s infinite linear;
+      -moz-animation: fa-spin 2s infinite linear;
+      -o-animation: fa-spin 2s infinite linear;
+      -webkit-animation: fa-spin 2s infinite linear;
+      animation: fa-spin 2s infinite linear;
     }
   }
   
