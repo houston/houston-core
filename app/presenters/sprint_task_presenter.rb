@@ -1,7 +1,7 @@
 class SprintTaskPresenter < TaskPresenter
   attr_reader :sprint
   
-  def initialize(sprint, tasks)
+  def initialize(sprint, tasks=sprint.tasks)
     @sprint = sprint
     super tasks
   end

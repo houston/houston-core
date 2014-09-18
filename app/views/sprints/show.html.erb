@@ -21,7 +21,7 @@
       sprintId: <%= @sprint.try(:id).to_json %>,
       sprintStart: new Date(<%= @sprint.start_date.year %>, <%= @sprint.start_date.month - 1 %>, <%= @sprint.start_date.day %>),
       sprintLocked: <%= @sprint.try(:locked?).to_json %>,
-      sprintTasks: <%= raw SprintTaskPresenter.new(@sprint, @tasks).to_json %>.map(function(task) {
+      sprintTasks: <%= raw SprintTaskPresenter.new(@sprint).to_json %>.map(function(task) {
         task.checkedOut = !!task.checkedOutBy;
         task.checkedOutByMe = task.checkedOutBy && (task.checkedOutBy.id == window.user.id);
         return task;

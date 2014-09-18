@@ -28,7 +28,7 @@ class SprintsController < ApplicationController
     respond_to do |format|
       format.json { render json: {
         start: @sprint.start_date,
-        tasks: TaskPresenter.new(@sprint.tasks).as_json } }
+        tasks: SprintTaskPresenter.new(@sprint).as_json } }
       format.html { render layout: "dashboard" }
     end
   end

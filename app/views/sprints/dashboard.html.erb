@@ -8,7 +8,7 @@
       el: $('#sprint_view')[0],
       sprintId: <%= @sprint.try(:id).to_json %>,
       sprintStart: new Date(<%= @sprint.start_date.year %>, <%= @sprint.start_date.month - 1 %>, <%= @sprint.start_date.day %>),
-      sprintTasks: <%= raw TaskPresenter.new(@sprint.tasks).to_json %>
+      sprintTasks: <%= raw SprintTaskPresenter.new(@sprint).to_json %>
     });
     
     view.render();
