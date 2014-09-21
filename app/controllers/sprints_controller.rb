@@ -53,9 +53,9 @@ class SprintsController < ApplicationController
     task.ticket.able_to_estimate! if task.ticket.respond_to?(:able_to_estimate!)
     
     if task.completed? && task.completed_at < sprint.starts_at
-      render text: "Task ##{task.shorthand} cannot be added to the Sprint because it was completed before the Sprint began", status: :unprocessable_entity
+      render json: {base: ["Task ##{task.shorthand} cannot be added to the Sprint because it was completed before the Sprint began"]}, status: :unprocessable_entity
     elsif task.effort.nil? or task.effort.zero?
-      render text: "Task ##{task.shorthand} cannot be added to the Sprint because it has no effort", status: :unprocessable_entity
+      render json: {base: ["Task ##{task.shorthand} cannot be added to the Sprint because it has no effort"]}, status: :unprocessable_entity
     else
       sprint.tasks.add task
       task.check_out!(sprint, current_user) unless task.checked_out?(sprint)

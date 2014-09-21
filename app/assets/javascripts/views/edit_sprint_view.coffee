@@ -95,18 +95,11 @@ class @EditSprintView extends @ShowSprintView
     $('#add_task_form').addClass('loading')
     
     $.post("/sprints/#{@sprintId}/tasks/#{id}")
-      .error( (response) =>
+      .error (response)=>
         $('#add_task_form').removeClass('loading')
-        $('#add_task')
-          .tooltip
-            animation: false
-            title: response.responseText
-            placement: 'bottom'
-            trigger: 'manual'
-          .tooltip('show')
-        window.setTimeout((-> $('#add_task').tooltip('destroy')), 3000)
-
-      ).success (task)=>
+        errors = Errors.fromResponse(response)
+        errors.renderToAlert()
+      .success (task)=>
         @showCompletedTasks() if !task.open
         unless _.detect(@tasks, (_task)-> _task.id == task.id)
           task.checkedOut = !!task.checkedOutBy
@@ -203,8 +196,8 @@ class @EditSprintView extends @ShowSprintView
         promise.resolve()
         $modal.modal('hide')
       xhr.error ->
-        $('#task_effort').focus()
         console.log('error', arguments)
+        $('#task_effort').focus()
     promise
   
   
@@ -229,7 +222,7 @@ class @EditSprintView extends @ShowSprintView
         task.checkedOutByMe = false
         $button.removeClass('btn-danger').addClass('btn-info').html('Check out')
         @updateTotalEffort()
-      .error (xhr)=>
+      .error (response)=>
         errors = Errors.fromResponse(response)
         errors.renderToAlert()
   
