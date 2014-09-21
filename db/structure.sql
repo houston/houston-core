@@ -498,7 +498,8 @@ CREATE TABLE alerts (
     priority character varying(255) DEFAULT 'high'::character varying NOT NULL,
     deadline timestamp without time zone NOT NULL,
     hours hstore DEFAULT ''::hstore,
-    destroyed_at timestamp without time zone
+    destroyed_at timestamp without time zone,
+    checked_out_remotely boolean DEFAULT false
 );
 
 
@@ -1230,7 +1231,6 @@ ALTER SEQUENCE user_credentials_id_seq OWNED BY user_credentials.id;
 
 CREATE TABLE users (
     id integer NOT NULL,
-    name character varying(255),
     email character varying(255) DEFAULT ''::character varying NOT NULL,
     encrypted_password character varying(255) DEFAULT ''::character varying,
     reset_password_token character varying(255),
@@ -2331,4 +2331,8 @@ INSERT INTO schema_migrations (version) VALUES ('20140907212311');
 INSERT INTO schema_migrations (version) VALUES ('20140916230539');
 
 INSERT INTO schema_migrations (version) VALUES ('20140921190022');
+
+INSERT INTO schema_migrations (version) VALUES ('20140921201441');
+
+INSERT INTO schema_migrations (version) VALUES ('20140921203932');
 
