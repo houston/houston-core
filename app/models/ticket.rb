@@ -143,7 +143,7 @@ class Ticket < ActiveRecord::Base
             
             # The firewall has throttled Houston's requests to Unfuddle;
             # slow down and try again.
-            sleep 2 ** tries
+            sleep 2 ** retries
             retry
           end
         rescue
