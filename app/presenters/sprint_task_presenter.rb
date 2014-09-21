@@ -12,18 +12,38 @@ class SprintTaskPresenter < TaskPresenter
       released: task.first_release_at && task.first_release_at < ends_at,
       committed: task.first_commit_at && task.first_commit_at < ends_at,
       completed: task.completed_at && task.completed_at < ends_at,
-      checkedOutAt: task.checked_out_at,
-      checkedOutBy: present_user(task.checked_out_by))
+      checkedOutAt: checked_out_at(task),
+      checkedOutBy: checked_out_by(task))
   end
   
 private
   
-  def present_user(user)
-    return nil unless user
-    { id: user.id,
-      email: user.email,
-      firstName: user.first_name,
-      name: user.name }
+  def checked_out_at(task)
+    checked_out(task)[:at]
+  end
+  
+  def checked_out_by(task)
+    user_id = checked_out(task)[:by]
+    users[user_id] if user_id
+  end
+  
+  def checked_out(task)
+    locks.fetch(task.id, {})
+  end
+  
+  def locks
+    @locks ||= Hash[SprintTask.where(sprint_id: sprint.id, task_id: tasks.map(&:id))
+      .pluck(:task_id, :checked_out_at, :checked_out_by_id)
+      .map { |task_id, at, id| [task_id, {at: at, by: id}] }]
+  end
+  
+  def users
+    @users ||= Hash[User.where(id: locks.values.map { |attrs| attrs[:by] })
+      .pluck(:id, :email, :first_name)
+      .map { |id, email, first_name| [id,
+        { id: id,
+          email: email,
+          firstName: first_name }] }]
   end
   
 end

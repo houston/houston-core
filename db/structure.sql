@@ -969,7 +969,9 @@ ALTER SEQUENCE sprints_id_seq OWNED BY sprints.id;
 
 CREATE TABLE sprints_tasks (
     sprint_id integer NOT NULL,
-    task_id integer NOT NULL
+    task_id integer NOT NULL,
+    checked_out_at timestamp without time zone,
+    checked_out_by_id integer
 );
 
 
@@ -2327,4 +2329,6 @@ INSERT INTO schema_migrations (version) VALUES ('20140907013836');
 INSERT INTO schema_migrations (version) VALUES ('20140907212311');
 
 INSERT INTO schema_migrations (version) VALUES ('20140916230539');
+
+INSERT INTO schema_migrations (version) VALUES ('20140921190022');
 

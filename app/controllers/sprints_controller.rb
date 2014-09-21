@@ -16,7 +16,7 @@ class SprintsController < ApplicationController
     authorize! :read, sprint
     @title = "Sprint #{sprint.end_date.strftime("%-m/%d")}"
     @open_tasks = Task.joins(:ticket => :project).merge(Ticket.open)
-    @tasks = @sprint.tasks.includes(:checked_out_by)
+    @tasks = @sprint.tasks
     render template: "sprints/show"
   end
   
@@ -57,10 +57,8 @@ class SprintsController < ApplicationController
     elsif task.effort.nil? or task.effort.zero?
       render text: "Task ##{task.shorthand} cannot be added to the Sprint because it has no effort", status: :unprocessable_entity
     else
-      unless task.checked_out?
-        task.update_attributes!(checked_out_at: Time.now, checked_out_by: current_user)
-      end
       sprint.tasks.add task
+      task.check_out!(sprint, current_user) unless task.checked_out?(sprint)
       render json: SprintTaskPresenter.new(sprint, task).to_json
     end
   end

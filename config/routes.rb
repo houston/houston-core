@@ -150,9 +150,6 @@ Rails.application.routes.draw do
   
   # Tasks
   
-  post "tasks/:id/lock", :to => "task_locks#create", constraints: {id: /\d+/}
-  delete "tasks/:id/lock", :to => "task_locks#destroy", constraints: {id: /\d+/}
-  
   put "tasks/:id", :to => "tasks#update", constraints: {id: /\d+/}
   put "tasks/:id/complete", :to => "tasks#complete", constraints: {id: /\d+/}
   put "tasks/:id/reopen", :to => "tasks#reopen", constraints: {id: /\d+/}
@@ -210,8 +207,14 @@ Rails.application.routes.draw do
   get "sprints/:id/dashboard", :to => "sprints#dashboard", constraints: {id: /\d+/}
   get "sprints/dashboard", :to => "sprints#dashboard", :as => :sprint_dashboard
   put "sprints/:id/lock", :to => "sprints#lock", constraints: {id: /\d+/}
-  post "sprints/:id/tasks/:task_id", :to => "sprints#add_task", constraints: {id: /\d+/, task_id: /\d+/}
-  delete "sprints/:id/tasks/:task_id", :to => "sprints#remove_task", constraints: {id: /\d+/, task_id: /\d+/}
+  
+  constraints id: /\d+/, task_id: /\d+/ do
+    post "sprints/:id/tasks/:task_id", :to => "sprints#add_task"
+    delete "sprints/:id/tasks/:task_id", :to => "sprints#remove_task"
+    post "sprints/:id/tasks/:task_id/lock", :to => "sprint_task_locks#create"
+    delete "sprints/:id/tasks/:task_id/lock", :to => "sprint_task_locks#destroy"
+  end
+  
   
   
   

@@ -4,7 +4,6 @@ class Task < ActiveRecord::Base
   
   belongs_to :ticket
   belongs_to :project
-  belongs_to :checked_out_by, class_name: "User"
   has_and_belongs_to_many :sprints, extend: UniqueAdd
   has_and_belongs_to_many :releases
   has_and_belongs_to_many :commits
@@ -100,10 +99,6 @@ class Task < ActiveRecord::Base
     "#{ticket.number}#{letter}"
   end
   
-  def checked_out?
-    checked_out_at.present?
-  end
-  
   
   
   def released!(release)
@@ -149,6 +144,24 @@ class Task < ActiveRecord::Base
   def reopen!
     return unless manually_completed?
     update_column :completed_at, nil
+  end
+  
+  
+  
+  def checked_out?(sprint)
+    SprintTask.where(sprint_id: sprint.id, task_id: id).checked_out.exists?
+  end
+  
+  def checked_out_by_me?(sprint, user)
+    SprintTask.where(sprint_id: sprint.id, task_id: id).checked_out_by(user).exists?
+  end
+  
+  def check_out!(sprint, user)
+    SprintTask.where(sprint_id: sprint.id, task_id: id).check_out!(user)
+  end
+  
+  def check_in!(sprint)
+    SprintTask.where(sprint_id: sprint.id, task_id: id).check_in!
   end
   
   

@@ -221,7 +221,7 @@ class @EditSprintView extends @ShowSprintView
       @checkOut($button, $task, id, task)
   
   checkIn: ($button, $task, id, task)->
-    $.destroy("/tasks/#{id}/lock")
+    $.destroy("/sprints/#{@sprintId}/tasks/#{id}/lock")
       .success =>
         task.checkedOutAt = null
         task.checkedOutBy = null
@@ -234,7 +234,7 @@ class @EditSprintView extends @ShowSprintView
         errors.renderToAlert()
   
   checkOut: ($button, $task, id, task)->
-    $.post("/tasks/#{id}/lock")
+    $.post("/sprints/#{@sprintId}/tasks/#{id}/lock")
       .success =>
         task.checkedOutAt = new Date()
         task.checkedOutBy =

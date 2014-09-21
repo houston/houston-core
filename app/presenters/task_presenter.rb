@@ -1,6 +1,8 @@
 class TaskPresenter
   include UrlHelper
   
+  attr_reader :tasks
+  
   def initialize(tasks)
     @tasks = OneOrMany.new(tasks)
   end
