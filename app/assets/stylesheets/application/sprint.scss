@@ -54,7 +54,7 @@ h2.light {
     white-space: nowrap;
     .fa, .octicon { width: 16px; text-align: center; }
   }
-  .task-worker { text-align: right; }
+  .task-worker { text-align: right; white-space: nowrap; }
   .task-worker button { white-space: nowrap; }
 }
 

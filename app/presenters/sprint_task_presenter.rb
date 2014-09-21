@@ -21,6 +21,7 @@ private
     return nil unless user
     { id: user.id,
       email: user.email,
+      firstName: user.first_name,
       name: user.name }
   end
   
