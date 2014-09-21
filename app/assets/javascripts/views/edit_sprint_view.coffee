@@ -223,6 +223,8 @@ class @EditSprintView extends @ShowSprintView
       .success =>
         task.checkedOutAt = null
         task.checkedOutBy = null
+        task.checkedOut = false
+        task.checkedOutByMe = false
         $button.removeClass('btn-danger').addClass('btn-info').html('Check out')
         @updateTotalEffort()
       .error (xhr)=>
@@ -237,6 +239,8 @@ class @EditSprintView extends @ShowSprintView
           id: window.user.id
           name: window.user.get('name')
           email: window.user.get('email')
+        task.checkedOut = true
+        task.checkedOutByMe = true
         $button.removeClass('btn-info').addClass('btn-danger').html('Check in')
         @updateTotalEffort()
       .error (response)=>
