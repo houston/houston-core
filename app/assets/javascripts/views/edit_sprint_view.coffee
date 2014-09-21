@@ -109,6 +109,8 @@ class @EditSprintView extends @ShowSprintView
       ).success (task)=>
         @showCompletedTasks() if !task.open
         unless _.detect(@tasks, (_task)-> _task.id == task.id)
+          task.checkedOut = !!task.checkedOutBy
+          task.checkedOutByMe = task.checkedOutBy and (task.checkedOutBy.id is window.user.id)
           @tasks.push task
           @rerenderTasks()
           @renderBurndownChart(@tasks)

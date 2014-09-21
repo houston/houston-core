@@ -57,6 +57,9 @@ class SprintsController < ApplicationController
     elsif task.effort.nil? or task.effort.zero?
       render text: "Task ##{task.shorthand} cannot be added to the Sprint because it has no effort", status: :unprocessable_entity
     else
+      unless task.checked_out?
+        task.update_attributes!(checked_out_at: Time.now, checked_out_by: current_user)
+      end
       sprint.tasks.add task
       render json: SprintTaskPresenter.new(sprint, task).to_json
     end
