@@ -21,10 +21,10 @@ class PostReceivePayload
     self.branch = params["ref"].split("/").last if params.key?("ref")
   end
   
-  def parse_github_style_agent(params)
-    return nil unless params.key?("email")
-    return params["email"] unless params.key?("name")
-    "#{params["name"].inspect} <#{params["email"]}>"
+  def parse_github_style_agent(pusher)
+    return nil unless pusher && pusher.key?("email")
+    return pusher["email"] unless pusher.key?("name")
+    "#{pusher["name"].inspect} <#{pusher["email"]}>"
   end
   
 end
