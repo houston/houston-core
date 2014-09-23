@@ -6,7 +6,8 @@ class TicketReport
       :type,
       :summary,
       :reporter_email,
-      :reporter_name,
+      :reporter_first_name,
+      :reporter_last_name,
       :antecedents,
       :opened_at,
       :closed_at,
@@ -14,6 +15,10 @@ class TicketReport
     
     def antecedents
       (super || []).map { |s| TicketAntecedent.from_s(self, s) }
+    end
+    
+    def reporter_name
+      "#{reporter_first_name} #{reporter_last_name}"
     end
     
     def as_json(options={})
@@ -35,7 +40,7 @@ class TicketReport
     @tickets = tickets
       .joins("LEFT OUTER JOIN users ON tickets.reporter_id=users.id")
       .joins("LEFT OUTER JOIN tasks ON tasks.ticket_id=tickets.id")
-      .group("tickets.id", "tickets.number", :type, :summary, "users.email", "users.name", :antecedents, "tickets.created_at", :closed_at)
+      .group("tickets.id", "tickets.number", :type, :summary, "users.email", "users.first_name", "users.last_name", :antecedents, "tickets.created_at", :closed_at)
       .order(Ticket.arel_table[:created_at].desc)
   end
   
@@ -46,7 +51,8 @@ class TicketReport
         :type,
         :summary,
         "users.email",
-        "users.name",
+        "users.first_name",
+        "users.last_name",
         :antecedents,
         :created_at,
         :closed_at,
