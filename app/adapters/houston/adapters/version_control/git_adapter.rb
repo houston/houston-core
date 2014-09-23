@@ -78,7 +78,7 @@ module Houston
           
           def _clone!(origin_uri, local_path, async)
             Houston.benchmark("[git:clone#{":async" if async}] #{origin_uri} => #{local_path}") do
-              Rugged::Repository.clone_at origin_uri, local_path.to_s,
+              Rugged::Repository.clone_at origin_uri.to_s, local_path.to_s,
                 credentials: GitAdapter.credentials,
                 bare: true
             end
