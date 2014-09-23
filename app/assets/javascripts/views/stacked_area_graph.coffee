@@ -8,6 +8,7 @@ class Houston.StackedAreaGraph
     @_labels = []
     @_lines = []
     @_colors = ['rgb(31, 119, 180)', 'rgb(174, 199, 232)', 'rgb(255, 127, 14)', 'rgb(255, 187, 120)', 'rgb(44, 160, 44)']
+    @_axes = ['x', 'y']
   
   margin: (@_margin)-> @
   width: (@_width)-> @
@@ -17,6 +18,7 @@ class Houston.StackedAreaGraph
   labels: (@_labels)-> @
   colors: (@_colors)-> @
   addLine: (line)-> @_lines.push(line); @
+  axes: (@_axes)-> @
   
   render: ->
     graphWidth = @_width - @_margin.left - @_margin.right
@@ -67,14 +69,16 @@ class Houston.StackedAreaGraph
       .append('g')
         .attr('transform', "translate(#{@_margin.left},#{@_margin.top})")
     
-    svg.append('g')
-      .attr('class', 'x axis')
-      .attr('transform', "translate(0,#{graphHeight})")
-      .call(xAxis)
+    if 'x' in @_axes
+      svg.append('g')
+        .attr('class', 'x axis')
+        .attr('transform', "translate(0,#{graphHeight})")
+        .call(xAxis)
     
-    svg.append('g')
-      .attr('class', 'y axis')
-      .call(yAxis)
+    if 'y' in @_axes
+      svg.append('g')
+        .attr('class', 'y axis')
+        .call(yAxis)
     
     section = svg.selectAll('.section').data(data)
     
