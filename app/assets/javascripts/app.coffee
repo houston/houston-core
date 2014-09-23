@@ -98,6 +98,10 @@ window.App =
     date.setMilliseconds(0)
     date
   
+  truncatedDate: (date)->
+    date = new Date(date.getTime())
+    App.truncateDate(date)
+  
   showTicket: (number, project, options)->
     project = project || $('.project-banner').attr('data-project-slug')
     return false unless number and project
