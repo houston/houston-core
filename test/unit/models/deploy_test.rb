@@ -13,13 +13,18 @@ class DeployTest < ActiveSupport::TestCase
     context "for a valid commit" do
       setup do
         @commit = Commit.new(sha: "edd44727c05c93b34737cb48873929fb5af69885")
-        @deploy.commit = "#{commit}\n"
+        deploy.sha = "#{commit.sha[0...8]}\n"
         mock(project).find_commit_by_sha(anything).returns(commit)
       end
       
       should "associate itself with the specified commit" do
         deploy.save!
         assert_equal commit, deploy.commit
+      end
+      
+      should "normalize the sha as well" do
+        deploy.save!
+        assert_equal commit.sha, deploy.sha
       end
     end
     
@@ -28,12 +33,16 @@ class DeployTest < ActiveSupport::TestCase
         mock(project).find_commit_by_sha(anything) do
           raise Houston::Adapters::VersionControl::InvalidShaError
         end
+        deploy.sha = "whatever\n"
       end
       
-      should "associate be invalid given an invalid sha" do
-        deploy.commit = "whatever"
-        refute deploy.valid?, "Expected the deploy not to be valid, given an invalid commit"
-        assert_match /must refer to a valid commit/, deploy.errors.full_messages.join
+      should "save with the given sha" do
+        assert deploy.valid?, "Expected the deploy to be valid"
+      end
+      
+      should "not be associated with a commit" do
+        deploy.save!
+        refute deploy.commit, "Expected the deploy not to be associated with a commit"
       end
     end
   end

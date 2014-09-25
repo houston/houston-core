@@ -15,13 +15,13 @@ class DeploysController < ApplicationController
       return
     end
     
-    commit = params[:commit] || params[:head_long] || params[:head]
+    sha = params[:commit] || params[:head_long] || params[:head]
     deployer = params[:deployer] || params[:user]
     
     Deploy.create!({
       project: @project,
       environment_name: @environment,
-      commit: commit,
+      sha: sha,
       deployer: deployer
     })
     

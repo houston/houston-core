@@ -646,7 +646,7 @@ CREATE TABLE deploys (
     id integer NOT NULL,
     project_id integer,
     environment_id integer,
-    commit character varying(255),
+    sha character varying(255) NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     environment_name character varying(255) DEFAULT 'Production'::character varying NOT NULL,
@@ -2335,4 +2335,6 @@ INSERT INTO schema_migrations (version) VALUES ('20140921190022');
 INSERT INTO schema_migrations (version) VALUES ('20140921201441');
 
 INSERT INTO schema_migrations (version) VALUES ('20140921203932');
+
+INSERT INTO schema_migrations (version) VALUES ('20140925021043');
 

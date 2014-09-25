@@ -1,5 +1,4 @@
 class Deploy < ActiveRecord::Base
-  attr_accessor :sha
   
   belongs_to :project
   has_one :release
@@ -7,7 +6,7 @@ class Deploy < ActiveRecord::Base
   
   before_validation :identify_commit, on: :create
   validates :project_id, :environment_name, presence: true
-  validates :commit, presence: {message: "must refer to a valid commit"}
+  validates :sha, presence: {message: "must refer to a commit"}
   
   after_create { Houston.observer.fire "deploy:create", self }
   
@@ -17,14 +16,8 @@ class Deploy < ActiveRecord::Base
       project: project,
       environment_name: environment_name,
       commit0: project.releases.to_environment(environment_name).most_recent_commit,
-      commit1: commit.try(:sha),
+      commit1: sha,
       deploy: self)
-  end
-  
-  
-  def commit=(value)
-    return self.sha = value if value.is_a?(String)
-    super
   end
   
   
@@ -33,6 +26,7 @@ private
   def identify_commit
     return unless project && sha
     self.commit = project.find_commit_by_sha(sha)
+    self.sha = commit.sha if commit
   rescue Houston::Adapters::VersionControl::InvalidShaError
   end
   
