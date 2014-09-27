@@ -40,6 +40,8 @@ class PushGemfileToGemnasiumTest < ActiveSupport::TestCase
   
   context "#dependency_files_hashes" do
     should "return the same information as Gemnasium::DependencyFiles.get_sha1s_hash" do
+      return skip "This test cannot be run when there are uncommitted changes to Gemfile.lock" if uncommitted_changes_to_gemfile?
+      
       stub(Gemnasium.config).ignored_paths.returns [/lib\/freight_train/]
       hash_created_by_gemnasium = Gemnasium::DependencyFiles.get_sha1s_hash(project_path)
       hash_created_by_houston = PushGemfileToGemnasium.new(project).dependency_files_hashes
@@ -52,6 +54,8 @@ class PushGemfileToGemnasiumTest < ActiveSupport::TestCase
   
   context "#content_to_upload" do
     should "return the same information as Gemnasium::DependencyFiles.get_content_to_upload" do
+      return skip "This test cannot be run when there are uncommitted changes to Gemfile.lock" if uncommitted_changes_to_gemfile?
+      
       files = %w{Gemfile Gemfile.lock}
       hash_created_by_gemnasium = Gemnasium::DependencyFiles.get_content_to_upload(project_path, files)
       hash_created_by_houston = PushGemfileToGemnasium.new(project).content_to_upload(files)
@@ -99,15 +103,15 @@ class PushGemfileToGemnasiumTest < ActiveSupport::TestCase
     end
     
     should "be stubbed according to Gemnasium's behavior" do
-      if head == "refs/heads/master"
-        stub(Gemnasium).load_config(project_path).returns(Gemnasium.config) # do nothing
-        Gemnasium.push(project_path: project_path)
-      else
-        skip "This test cannot be run unless Houston is on master, but HEAD is #{head}"
-      end
+      return skip "This test cannot be run unless Houston is on master, but HEAD is #{head}" if not_on_master?
+      
+      stub(Gemnasium).load_config(project_path).returns(Gemnasium.config) # do nothing
+      Gemnasium.push(project_path: project_path)
     end
     
     should "work the way Gemnasium does" do
+      return skip "This test cannot be run when there are uncommitted changes to Gemfile.lock" if uncommitted_changes_to_gemfile?
+      
       PushGemfileToGemnasium.new(project).perform
     end
   end
@@ -117,9 +121,19 @@ class PushGemfileToGemnasiumTest < ActiveSupport::TestCase
 private
   
   def head
-    name = Rugged::Repository.new(Rails.root.to_s).head.name
-    name = "(unknown)" if name == "HEAD"
-    name
+    @head ||= (repo.head.name == "HEAD" ? "(unknown)" : repo.head.name)
+  end
+  
+  def not_on_master?
+    head != "refs/heads/master"
+  end
+  
+  def uncommitted_changes_to_gemfile?
+    !repo.status("Gemfile.lock").empty?
+  end
+  
+  def repo
+    @repo ||= Rugged::Repository.new(Rails.root.to_s)
   end
   
 end
