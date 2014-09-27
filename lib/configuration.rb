@@ -303,8 +303,8 @@ module Houston
       Houston.observer.on(event, &block)
     end
     
-    def every(interval, &block)
-      @timers.push [interval, block]
+    def every(interval, name, options={}, &block)
+      @timers.push [interval, name, options, block]
     end
     
     def cron(&block)
