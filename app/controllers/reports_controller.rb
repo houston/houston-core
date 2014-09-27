@@ -155,44 +155,59 @@ class ReportsController < ApplicationController
       .select { |ticket| ticket.commit_time > 0 } # <-- speed up
   end
   
-  def velocity2
-    @title = "Reports"
-    # @start_date = params.fetch(:since, "2014-05-18") # when tasks were added
-    @start_date = 8.weeks.ago.strftime "%Y-%m-%d"
+  def sprint
+    @title = "Sprint Reports"
+    @start_date = Date.parse(params.fetch(:since, "2014-05-18")) # when tasks were added
+    @start_date = Date.parse(params.fetch(:since, "2014-08-07"))
+    @start_date = @start_date.strftime "%Y-%m-%d"
     @end_date = Date.today.strftime "%Y-%m-%d"
     
     @users = []
-    User.developers.map do |user|
+    ([nil] + User.developers).each do |user|
       data = Ticket.connection.select_rows(<<-SQL)
         SELECT
           sprints.end_date,
-          SUM(q.effort)
+          SUM(completed.effort),
+          SUM(checked_out.effort)
         FROM sprints
+        
         LEFT OUTER JOIN (
-          SELECT DISTINCT ON(tasks.id)
-            tasks.effort,
-            COALESCE(tasks.first_commit_at, tasks.first_release_at) "completed_at",
-            sprints_tasks.sprint_id
+          SELECT
+            sprints_tasks.sprint_id,
+            SUM(tasks.effort) "effort"
           FROM sprints_tasks
-          INNER JOIN tasks
-            ON sprints_tasks.task_id=tasks.id
-          INNER JOIN commits_tasks
-            ON commits_tasks.task_id=tasks.id
-          INNER JOIN commits_users
-            ON commits_users.commit_id=commits_tasks.commit_id
-            AND commits_users.user_id=#{user.id}
-        ) AS q
-          ON q.sprint_id=sprints.id
+          INNER JOIN tasks ON sprints_tasks.task_id=tasks.id
+          INNER JOIN sprints ON sprints_tasks.sprint_id=sprints.id
+          WHERE COALESCE(tasks.first_commit_at, tasks.completed_at) BETWEEN sprints.end_date - interval '6 days' AND sprints.end_date + interval '1 day'
+          #{"AND sprints_tasks.checked_out_by_id=#{user.id}" if user}
+          GROUP BY sprints_tasks.sprint_id
+        ) AS completed
+          ON completed.sprint_id=sprints.id
+        
+        LEFT OUTER JOIN (
+          SELECT
+            sprints_tasks.sprint_id,
+            SUM(tasks.effort) "effort"
+          FROM sprints_tasks
+          INNER JOIN tasks ON sprints_tasks.task_id=tasks.id
+          #{"WHERE sprints_tasks.checked_out_by_id=#{user.id}" if user}
+          GROUP BY sprints_tasks.sprint_id
+        ) AS checked_out
+          ON checked_out.sprint_id=sprints.id
+        
         WHERE sprints.end_date BETWEEN '#{start_date}' AND '#{end_date}'
-        GROUP BY sprints.id, sprints.end_date
+        GROUP BY sprints.end_date
         ORDER BY sprints.end_date ASC
       SQL
-        .map { |(date, value)| [date.to_date, value.to_i] }
+        .map { |(date, completed, checked_out)| [date.to_date, completed.to_f, checked_out.to_f - completed.to_f] }
       
-      next if data.all? { |(_, value)| value.zero? }
-      average = data.avg { |(_, value)| value }
-      @users.push [user.name, average, data] # <- data is pairs: [<date>, <value>]
+      next if data.all? { |(_, completed, missed)| (completed + missed).zero? }
+      average = data
+        .select { |_, completed, missed| (completed + missed) > 0 }
+        .avg { |(_, completed, _)| completed }
+      @users.push [(user ? user.name : "Team"), average, data] # <- data is: [<date>, <completed>, <missed>]
     end
+    @users.sort_by! { |(_, average, _)| -average }
   end
   
   

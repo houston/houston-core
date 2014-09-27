@@ -1,6 +1,6 @@
 <% @users.each_with_index do |(name, average, _), i| %>
 <h3><%= name %> <small>(Average: <%= "%.1f" % average %>)</small></h3>
-<div id="velocity_<%= i %>"></div>
+<div id="developer_<%= i %>" class="graph"></div>
 <% end %>
 
 <% content_for :javascripts do %>
@@ -8,10 +8,12 @@
   $(function() {
     window.data = <%=raw @users.to_json %>;
     for(var i=0; i<data.length; i++) {
-      new Houston.StackedAreaGraph()
-        .selector('#velocity_' + i)
-        .labels(['velocity'])
+      new Houston.StackedBarGraph()
+        .selector('#developer_' + i)
+        .labels(['Completed', 'Missed'])
+        .colors(['rgb(31, 180, 61)', 'rgb(228, 45, 45)'])
         .data(data[i][2])
+        .range([0, 60])
         .render();
     }
   });

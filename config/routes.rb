@@ -245,7 +245,8 @@ Rails.application.routes.draw do
     get "reports/#{report}", to: "reports##{report.underscore}"
   end
   get "reports/velocity", to: "reports#velocity"
-  get "reports/velocity2", to: "reports#velocity2"
+  
+  get "sprint/reports", to: "reports#sprint"
   
   # Tester Bar
   match "tester_bar/:action", :controller => "tester_bar", via: [:get, :post] if Rails.env.development?
