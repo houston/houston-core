@@ -8,13 +8,11 @@ class Task < ActiveRecord::Base
   has_and_belongs_to_many :releases
   has_and_belongs_to_many :commits
   
-  validates :ticket_id, :number, presence: true
-  validates :project_id, :number, presence: true
+  validates :project_id, :ticket_id, :number, presence: true
   validate :description_must_be_present, :unless => :default_task?
   
   before_validation :set_project_id, on: :create
   before_validation :assign_number, on: :create
-  before_create :replace_the_tickets_default_task
   before_destroy :prevent_destroying_a_tickets_last_task
   
   attr_readonly :number
@@ -180,12 +178,6 @@ private
   
   def assign_number
     self.number = (Task.where(ticket_id: ticket_id).maximum(:number) || 0) + 1
-  end
-  
-  def replace_the_tickets_default_task
-    # the task we're creating might take this old task's number
-    assign_number if ticket.tasks.open.default.delete_all > 0
-    true # <-- this callback isn't preventing task from being saved
   end
   
   def description_must_be_present

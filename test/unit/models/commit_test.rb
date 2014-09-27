@@ -143,7 +143,6 @@ class CommitTest < ActiveSupport::TestCase
     context "that mentions a ticket with several tasks" do
       setup do
         @ticket = create(:ticket, project: project, number: 378)
-                ticket.tasks.create!(description: "New Step 1")
         @task = ticket.tasks.create!(description: "Step 2")
       end
       
