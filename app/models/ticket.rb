@@ -32,6 +32,7 @@ class Ticket < ActiveRecord::Base
   after_save :propagate_milestone_change, if: :milestone_id_changed?
   after_save :resolve_antecedents!, if: :just_resolved?
   after_save :close_antecedents!, if: :just_closed?
+  after_save :updated_milestone_attributes
   
   attr_readonly :number, :project_id
   
@@ -363,6 +364,12 @@ private
   
   def must_have_at_least_one_task
     errors.add :base, "must have at least one task" if tasks.length.zero?
+  end
+  
+  def updated_milestone_attributes
+    return unless milestone_id
+    return unless new_record? or closed_at_changed?
+    milestone.update_closed_tickets_count!
   end
   
 end

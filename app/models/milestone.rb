@@ -17,8 +17,24 @@ class Milestone < ActiveRecord::Base
   delegate :nosync?, to: "self.class"
   
   class << self
+    def empty
+      where(tickets_count: 0)
+    end
+    
+    def populated
+      where(arel_table[:tickets_count].gt(0))
+    end
+    
+    def completed
+      where(
+        arel_table[:tickets_count].gt(0).and(
+        arel_table[:closed_tickets_count].eq(arel_table[:tickets_count])))
+    end
+    
     def uncompleted
-      where(completed_at: nil)
+      where(
+        arel_table[:tickets_count].eq(0).or(
+        arel_table[:closed_tickets_count].lt(arel_table[:tickets_count])))
     end
     alias :open :uncompleted
     
@@ -51,8 +67,14 @@ class Milestone < ActiveRecord::Base
     end
   end
   
+  
+  
+  def completed?
+    tickets_count > 0 && closed_tickets_count == tickets_count
+  end
+  
   def uncompleted?
-    completed_at.nil?
+    !completed?
   end
   
   def close!
@@ -64,6 +86,10 @@ class Milestone < ActiveRecord::Base
     @remote_milestone ||= ticket_tracker.find_milestone(remote_id) if ticket_tracker.respond_to?(:find_milestone)
   end
   alias :remote :remote_milestone
+  
+  def update_closed_tickets_count!
+    update_column :closed_tickets_count, tickets.closed.count
+  end
   
 private
   

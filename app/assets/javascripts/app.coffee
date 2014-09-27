@@ -41,6 +41,9 @@ window.App =
     [feature, sentence] = message.split(':', 2)
     if sentence then "<b>#{feature}:</b>#{sentence}" else message
   
+  formatPercent: (number)->
+    (number * 100).toFixed(0) + '%'
+  
   showErrorMessage: (title, responseText)->
     html = """
     <div class="modal hide">
