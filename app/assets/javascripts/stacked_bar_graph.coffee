@@ -5,10 +5,12 @@ class Houston.StackedBarGraph
     @_width = 960
     @_height = 260
     @_data = []
+    @_legend = true
     @_labels = []
     @_colors = ['rgb(31, 119, 180)', 'rgb(174, 199, 232)', 'rgb(255, 127, 14)', 'rgb(255, 187, 120)', 'rgb(44, 160, 44)']
     @_axes = ['x', 'y']
   
+  legend: (@_legend)-> @
   margin: (@_margin)-> @
   width: (@_width)-> @
   height: (@_height)-> @
@@ -25,7 +27,7 @@ class Houston.StackedBarGraph
     
     formatDate = d3.time.format('%A')
     
-    x = d3.scale.ordinal().rangeRoundBands([0, graphWidth], .1)
+    x = d3.scale.ordinal().rangeRoundBands([0, graphWidth], 0.15)
     y = d3.scale.linear().range([graphHeight, 0])
     
     xAxis = d3.svg.axis()
@@ -47,7 +49,7 @@ class Houston.StackedBarGraph
       values: @_data.map (d)=>
         name: @_labels[i]
         date: new Date(d[0])
-        y: d[i + 1]
+        y: d[i + 1] ? 0
     
     x.domain _.map(data[0].values, (d)-> d.date)
     max = d3.max(data[@_labels.length - 1].values, (d)-> d.y + d.y0)
@@ -94,8 +96,9 @@ class Houston.StackedBarGraph
         .attr('height', (d)-> y(d.y0) - y(d.y1))
         .style('fill', (d)-> color(d.name))
     
-    $legend = $('<dl class="legend"></dl>').appendTo(@_selector)
-    for i in [0...@_labels.length]
-      label = @_labels[i]
-      color = @_colors[i]
-      $legend.append "<dt class=\"circle\" style=\"background: #{color}\"></dt><dd>#{label}</dd>"
+    if @_legend
+      $legend = $('<dl class="legend"></dl>').appendTo(@_selector)
+      for i in [0...@_labels.length]
+        label = @_labels[i]
+        color = @_colors[i]
+        $legend.append "<dt class=\"circle\" style=\"background: #{color}\"></dt><dd>#{label}</dd>"

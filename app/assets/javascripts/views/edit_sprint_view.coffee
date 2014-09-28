@@ -11,10 +11,23 @@ class @EditSprintView extends @ShowSprintView
   initialize: ->
     super
     @sprintStart = @options.sprintStart
+    @sprintEnd = @options.sprintEnd
     @locked = @options.sprintLocked
     @template = HandlebarsTemplates['sprints/edit']
     @typeaheadTemplate = HandlebarsTemplates['sprints/typeahead']
     @openTasks = @options.openTasks
+    @sprintHistory = @options.sprintHistory
+    @sprintGraph = new Houston.StackedBarGraph()
+      .selector('#sprint_history')
+      .legend(false)
+      .labels(['Completed', 'Missed', 'Checked Out'])
+      .colors(['rgb(31, 180, 61)', 'rgb(200, 200, 200)', 'rgb(56, 173, 228)'])
+      .range([0, 60]) # <-- hard-coded range for effort; 60 is arbitrary
+      .axes([])
+      .width(80)
+      .height(40)
+      .margin(top: 0, left: 0, right: 0, bottom: 0)
+    
   
   render: ->
     return @ unless @tasks
@@ -33,6 +46,8 @@ class @EditSprintView extends @ShowSprintView
     else
       @$el.addClass 'edit-mode'
       $('#add_task').focus()
+    
+    $('#average_effort').text d3.mean(@sprintHistory, (bar)-> bar[1]).toFixed(1)
     
     @renderBurndownChart(@tasks)
     @updateTotalEffort()
@@ -247,7 +262,9 @@ class @EditSprintView extends @ShowSprintView
     for task in @tasks when task.checkedOutBy?.id == window.user.id
       effort += +task.effort
     $('#total_effort').html(effort.toFixed(1))
-
+    @sprintGraph
+      .data(@sprintHistory.concat([[@sprintEnd, 0, 0, effort]]))
+      .render()
 
   toggleShowCompleted: (e)->
     $button = $(e.target)

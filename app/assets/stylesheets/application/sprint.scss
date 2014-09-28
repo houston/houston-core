@@ -55,6 +55,10 @@ h2.light {
     .fa, .octicon { width: 16px; text-align: center; }
   }
   .task-worker { white-space: nowrap; }
+  
+  #average_effort {
+    font-weight: 800;
+  }
 }
 
 .remove-button, .complete-task-button {
