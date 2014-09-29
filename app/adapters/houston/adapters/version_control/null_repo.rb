@@ -23,6 +23,10 @@ module Houston
           []
         end
         
+        def branches
+          {}
+        end
+        
         def branches_at(sha)
           []
         end

@@ -37,8 +37,15 @@ module Houston
             raise CommitNotFound, "No matching ancestor of \"#{sha}\" was found"
           end
           
+          def branches
+            Hash[connection.branches
+              .each(:local)
+              .map { |branch| [branch.name, branch.target.oid] }]
+          end
+          
           def branches_at(sha)
-            connection.branches.each(:local)
+            connection.branches
+              .each(:local)
               .select { |branch| branch.target.oid.start_with?(sha) }
               .map(&:name)
           end
