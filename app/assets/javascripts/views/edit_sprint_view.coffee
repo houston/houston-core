@@ -130,8 +130,10 @@ class @EditSprintView extends @ShowSprintView
     $task = $button.closest('.task')
     id = +$task.attr('data-task-id')
     $.destroy("/sprints/#{@sprintId}/tasks/#{id}")
-      .error =>
+      .error (response)=>
         $task.removeClass('deleting')
+        errors = Errors.fromResponse(response)
+        errors.renderToAlert()
       .success (task)=>
         @tasks = _.reject(@tasks, (task)-> task.id == id)
         $task.remove()
