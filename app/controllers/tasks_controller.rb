@@ -4,8 +4,9 @@ class TasksController < ApplicationController
   attr_reader :task
   
   def update
+    authorize! :update, task
+    
     project = task.project
-    authorize! :estimate, project
     effort = params[:effort]
     effort = effort.to_d if effort
     effort = nil if effort && effort <= 0
@@ -15,12 +16,16 @@ class TasksController < ApplicationController
   end
   
   def complete
+    authorize! :update, task
+    
     # !todo: authorize completing a task
     task.complete! unless task.completed?
     render json: TaskPresenter.new(task)
   end
   
   def reopen
+    authorize! :update, task
+    
     # !todo: authorize completing a task
     task.reopen! unless task.open?
     render json: TaskPresenter.new(task)

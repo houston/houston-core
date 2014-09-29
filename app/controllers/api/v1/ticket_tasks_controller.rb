@@ -13,11 +13,14 @@ module Api
       end
       
       def index
+        authorize! :read, Task
         render json: ticket.tasks.map { |task| present_task(task) }
       end
       
       def create
         task = ticket.tasks.build params.slice(:description, :effort)
+        authorize! :create, task
+        
         task.updated_by = current_user
         if task.save
           render json: present_task(task), status: :created
@@ -27,6 +30,8 @@ module Api
       end
       
       def update
+        authorize! :update, task
+        
         task.attributes = params.slice(:description, :effort)
         task.updated_by = current_user
         if task.save
@@ -37,6 +42,8 @@ module Api
       end
       
       def destroy
+        authorize! :destroy, task
+        
         task.destroy
         head :ok
       end
