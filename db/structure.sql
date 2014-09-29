@@ -707,6 +707,43 @@ ALTER SEQUENCE historical_heads_id_seq OWNED BY historical_heads.id;
 
 
 --
+-- Name: milestone_versions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE milestone_versions (
+    id integer NOT NULL,
+    versioned_id integer,
+    versioned_type character varying(255),
+    roadmap_commit_id integer,
+    modifications text,
+    number integer,
+    reverted_from integer,
+    tag character varying(255),
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: milestone_versions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE milestone_versions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: milestone_versions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE milestone_versions_id_seq OWNED BY milestone_versions.id;
+
+
+--
 -- Name: milestones; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -891,6 +928,36 @@ CREATE TABLE releases_tickets (
     release_id integer,
     ticket_id integer
 );
+
+
+--
+-- Name: roadmap_commits; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE roadmap_commits (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    message character varying(255) NOT NULL
+);
+
+
+--
+-- Name: roadmap_commits_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE roadmap_commits_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: roadmap_commits_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE roadmap_commits_id_seq OWNED BY roadmap_commits.id;
 
 
 --
@@ -1424,6 +1491,13 @@ ALTER TABLE ONLY historical_heads ALTER COLUMN id SET DEFAULT nextval('historica
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY milestone_versions ALTER COLUMN id SET DEFAULT nextval('milestone_versions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY milestones ALTER COLUMN id SET DEFAULT nextval('milestones_id_seq'::regclass);
 
 
@@ -1446,6 +1520,13 @@ ALTER TABLE ONLY projects ALTER COLUMN id SET DEFAULT nextval('projects_id_seq':
 --
 
 ALTER TABLE ONLY releases ALTER COLUMN id SET DEFAULT nextval('releases_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY roadmap_commits ALTER COLUMN id SET DEFAULT nextval('roadmap_commits_id_seq'::regclass);
 
 
 --
@@ -1573,6 +1654,14 @@ ALTER TABLE ONLY historical_heads
 
 
 --
+-- Name: milestone_versions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY milestone_versions
+    ADD CONSTRAINT milestone_versions_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: milestones_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1602,6 +1691,14 @@ ALTER TABLE ONLY projects
 
 ALTER TABLE ONLY releases
     ADD CONSTRAINT releases_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: roadmap_commits_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY roadmap_commits
+    ADD CONSTRAINT roadmap_commits_pkey PRIMARY KEY (id);
 
 
 --
@@ -1782,6 +1879,34 @@ CREATE INDEX index_deploys_on_environment_name ON deploys USING btree (environme
 --
 
 CREATE INDEX index_deploys_on_project_id_and_environment_name ON deploys USING btree (project_id, environment_name);
+
+
+--
+-- Name: index_milestone_versions_on_created_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_milestone_versions_on_created_at ON milestone_versions USING btree (created_at);
+
+
+--
+-- Name: index_milestone_versions_on_number; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_milestone_versions_on_number ON milestone_versions USING btree (number);
+
+
+--
+-- Name: index_milestone_versions_on_roadmap_commit_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_milestone_versions_on_roadmap_commit_id ON milestone_versions USING btree (roadmap_commit_id);
+
+
+--
+-- Name: index_milestone_versions_on_versioned_id_and_versioned_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_milestone_versions_on_versioned_id_and_versioned_type ON milestone_versions USING btree (versioned_id, versioned_type);
 
 
 --
@@ -2389,4 +2514,6 @@ INSERT INTO schema_migrations (version) VALUES ('20140925021043');
 INSERT INTO schema_migrations (version) VALUES ('20140927154728');
 
 INSERT INTO schema_migrations (version) VALUES ('20140929004347');
+
+INSERT INTO schema_migrations (version) VALUES ('20140929024130');
 

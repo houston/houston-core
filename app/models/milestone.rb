@@ -4,7 +4,7 @@ class Milestone < ActiveRecord::Base
   belongs_to :project
   has_many :tickets, -> { reorder("NULLIF(tickets.extended_attributes->'milestoneSequence', '')::int") }
   
-  versioned only: [:name, :start_date, :end_date, :band]
+  versioned only: [:name, :start_date, :end_date, :band], class_name: "MilestoneVersion"
   
   default_scope { where(destroyed_at: nil).order(:start_date) }
   
