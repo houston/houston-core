@@ -12,7 +12,8 @@ class @EditSprintView extends @ShowSprintView
     super
     @sprintStart = @options.sprintStart
     @sprintEnd = @options.sprintEnd
-    @locked = @options.sprintLocked
+    @locked = @options.sprintLocked || @options.sprintCompleted
+    @historical = @options.sprintCompleted
     @template = HandlebarsTemplates['sprints/edit']
     @typeaheadTemplate = HandlebarsTemplates['sprints/typeahead']
     @openTasks = @options.openTasks
@@ -34,9 +35,11 @@ class @EditSprintView extends @ShowSprintView
     for task in @tasks
       task.open = !task.completed
       task.locked = @locked
+      task.historical = @historical
     
     html = @template
       locked: @locked
+      historical: @historical
       tasks: @tasks
       sprintId: @sprintId
     @$el.html html
@@ -52,44 +55,45 @@ class @EditSprintView extends @ShowSprintView
     @renderBurndownChart(@tasks)
     @updateTotalEffort()
     
-    typeaheadTemplate = @typeaheadTemplate
-    view = @
-    $add_task = @$el.find('#add_task').attr('autocomplete', 'off').typeahead
-      source: @openTasks
-      matcher: (item)->
-        ~item.description.toLowerCase().indexOf(@query.toLowerCase()) ||
-        ~item.projectTitle.toLowerCase().indexOf(@query.toLowerCase()) ||
-        ~item.shorthand.toString().toLowerCase().indexOf(@query.toLowerCase())
+    unless @historical
+      typeaheadTemplate = @typeaheadTemplate
+      view = @
+      $add_task = @$el.find('#add_task').attr('autocomplete', 'off').typeahead
+        source: @openTasks
+        matcher: (item)->
+          ~item.description.toLowerCase().indexOf(@query.toLowerCase()) ||
+          ~item.projectTitle.toLowerCase().indexOf(@query.toLowerCase()) ||
+          ~item.shorthand.toString().toLowerCase().indexOf(@query.toLowerCase())
+        
+        sorter: (items)-> items # apply no sorting (return them in order of priority)
+        
+        highlighter: (task)->
+          query = @query.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&')
+          regex = new RegExp("(#{query})", 'ig')
+          task.description.replace regex, ($1, match)-> "<strong>#{match}</strong>"
+          typeaheadTemplate
+            sequence: task.extendedAttributes?.sequence
+            description: task.description.replace regex, ($1, match)-> "<strong>#{match}</strong>"
+            shorthand: task.shorthand.toString().replace regex, ($1, match)-> "<strong>#{match}</strong>"
+            projectTitle: task.projectTitle.replace regex, ($1, match)-> "<strong>#{match}</strong>"
+            projectColor: task.projectColor
       
-      sorter: (items)-> items # apply no sorting (return them in order of priority)
+      $add_task.data('typeahead').render = (tasks)->
+        items = $(tasks).map (i, item)=>
+          i = $(@options.item).attr('data-value', item.id)
+          i.find('a').html(@highlighter(item))
+          i[0]
+        
+        items.first().addClass('active')
+        @$menu.html(items)
+        @
       
-      highlighter: (task)->
-        query = @query.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&')
-        regex = new RegExp("(#{query})", 'ig')
-        task.description.replace regex, ($1, match)-> "<strong>#{match}</strong>"
-        typeaheadTemplate
-          sequence: task.extendedAttributes?.sequence
-          description: task.description.replace regex, ($1, match)-> "<strong>#{match}</strong>"
-          shorthand: task.shorthand.toString().replace regex, ($1, match)-> "<strong>#{match}</strong>"
-          projectTitle: task.projectTitle.replace regex, ($1, match)-> "<strong>#{match}</strong>"
-          projectColor: task.projectColor
-    
-    $add_task.data('typeahead').render = (tasks)->
-      items = $(tasks).map (i, item)=>
-        i = $(@options.item).attr('data-value', item.id)
-        i.find('a').html(@highlighter(item))
-        i[0]
-      
-      items.first().addClass('active')
-      @$menu.html(items)
-      @
-    
-    addTask = _.bind(@addTask, @)
-    $add_task.data('typeahead').select = ->
-      id = @$menu.find('.active').attr('data-value')
-      @$element.val('')
-      @hide()
-      addTask(id)
+      addTask = _.bind(@addTask, @)
+      $add_task.data('typeahead').select = ->
+        id = @$menu.find('.active').attr('data-value')
+        @$element.val('')
+        @hide()
+        addTask(id)
     
     
     
@@ -169,6 +173,7 @@ class @EditSprintView extends @ShowSprintView
     for task in @tasks
       task.open = !task.completed
       task.locked = @locked
+      task.historical = @historical
       $tasks.append template(task)
   
   promptForEffort: (task)->

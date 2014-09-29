@@ -32,6 +32,10 @@ class Sprint < ActiveRecord::Base
     start_date.beginning_of_day
   end
   
+  def completed?
+    Date.today > end_date
+  end
+  
   def lock!
     update_column :locked, true
   end

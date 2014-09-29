@@ -15,7 +15,7 @@ class SprintsController < ApplicationController
   def show
     authorize! :read, sprint
     @title = "Sprint #{sprint.end_date.strftime("%-m/%-d")}"
-    @open_tasks = Task.joins(:ticket => :project).merge(Ticket.open)
+    @open_tasks = Task.joins(:ticket => :project).merge(Ticket.open) unless sprint.completed?
     @tasks = @sprint.tasks
     render template: "sprints/show"
   end
@@ -44,8 +44,13 @@ class SprintsController < ApplicationController
   def add_task
     authorize! :update, sprint
     
+    if sprint.completed?
+      render json: {base: ["The Sprint is completed. You cannot add or remove tasks."]}, status: :unprocessable_entity
+      return
+    end
+    
     if sprint.locked? && !task.ticket_id.in?(sprint.ticket_ids)
-      render text: "The Sprint is locked. You can add tasks for tickets that are already in the Sprint, but you can't add new tickets to the Sprint.", status: :unprocessable_entity
+      render json: {base: ["The Sprint is locked. You can add tasks for tickets that are already in the Sprint, but you can't add new tickets to the Sprint."]}, status: :unprocessable_entity
       return
     end
     
@@ -66,8 +71,13 @@ class SprintsController < ApplicationController
   def remove_task
     authorize! :update, sprint
     
+    if sprint.completed?
+      render json: {base: ["The Sprint is completed. You cannot add or remove tasks."]}, status: :unprocessable_entity
+      return
+    end
+    
     if sprint.locked?
-      render text: "The Sprint is locked; tasks cannot be removed", status: :unprocessable_entity
+      render json: {base: ["The Sprint is locked; tasks cannot be removed"]}, status: :unprocessable_entity
       return
     end
     

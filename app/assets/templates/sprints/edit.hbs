@@ -19,6 +19,9 @@
 </button>
 <a class="btn" id="show_completed_tasks" data-toggle="button">Show Completed Tickets</a>
 
+{{#if historical}}
+<hr />
+{{else}}
 <div>
   <form id="add_task_form">
     <input type="text" placeholder="Enter a task number or summary" id="add_task" />
@@ -26,6 +29,7 @@
     <hr />
   </form>
 </div>
+{{/if}}
 
 <table class="table table-sortable table-milestone-tasks">
   <thead>

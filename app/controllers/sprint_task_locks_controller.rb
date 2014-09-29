@@ -6,6 +6,11 @@ class SprintTaskLocksController < ApplicationController
   
   
   def create
+    if sprint.completed?
+      render json: {base: ["The Sprint is completed. You cannot check out or check in tasks."]}, status: :unprocessable_entity
+      return
+    end
+    
     if task.checked_out?(sprint)
       render json: {base: ["Task ##{task.shorthand} is already checked out"]}, status: 422
     else
@@ -16,6 +21,11 @@ class SprintTaskLocksController < ApplicationController
   
   
   def destroy
+    if sprint.completed?
+      render json: {base: ["The Sprint is completed. You cannot check out or check in tasks."]}, status: :unprocessable_entity
+      return
+    end
+    
     if task.checked_out_by_me?(sprint, current_user)
       task.check_in!(sprint)
       head :ok

@@ -7,34 +7,8 @@
     {{description}}
     <a href="{{ticketUrl}}" target="_blank" rel="ticket" data-number="{{ticketNumber}}" data-project="{{projectSlug}}">[#{{shorthand}}]</a>
   </td>
-  <td class="task-status">
-    {{#if released}}
-      <i class="fa fa-paper-plane"></i> Released
-    {{else}}{{#if committed}}
-      <span class="octicon octicon-git-commit"></span> Committed
-    {{else}}{{#if completed}}
-      <a class="complete-task-button"></a>
-      Completed
-    {{else}}
-      <a class="complete-task-button"></a>
-      Open
-    {{/if}}{{/if}}{{/if}}
-  </td>
-  <td class="task-worker">
-    {{#if checkedOut}}
-      {{#if checkedOutByMe}}
-        {{#if open}}
-          <button class="btn btn-danger check-out-button active" data-toggle="button">Check in</button>
-        {{/if}}
-      {{else}}
-        {{{avatar checkedOutBy/email 24 checkedOutBy/firstName}}} {{checkedOutBy/firstName}}
-      {{/if}}
-    {{else}}
-      {{#if open}}
-        <button class="btn btn-info check-out-button" data-toggle="button">Check out</button>
-      {{/if}}
-    {{/if}}
-  </td>
+  <td class="task-status">{{{renderTaskStatus this}}}</td>
+  <td class="task-worker">{{{renderTaskWorker this}}}</td>
   {{#unless locked}}
   <td class="task-remove">
     {{#if open}}<a class="remove-task-button remove-button"></a>{{/if}}

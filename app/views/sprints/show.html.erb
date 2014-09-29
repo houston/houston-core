@@ -18,10 +18,11 @@
   $(function() {
     new EditSprintView({
       el: $('#sprint_view')[0],
-      sprintId: <%= @sprint.try(:id).to_json %>,
+      sprintId: <%= @sprint.id.to_json %>,
       sprintStart: new Date(<%= @sprint.start_date.year %>, <%= @sprint.start_date.month - 1 %>, <%= @sprint.start_date.day %>),
       sprintEnd: new Date(<%= @sprint.end_date.year %>, <%= @sprint.end_date.month - 1 %>, <%= @sprint.end_date.day %>),
-      sprintLocked: <%= @sprint.try(:locked?).to_json %>,
+      sprintLocked: <%= @sprint.locked?.to_json %>,
+      sprintCompleted: <%= @sprint.completed?.to_json %>,
       sprintTasks: <%= raw SprintTaskPresenter.new(@sprint).to_json %>.map(function(task) {
         task.checkedOut = !!task.checkedOutBy;
         task.checkedOutByMe = task.checkedOutBy && (task.checkedOutBy.id == window.user.id);
@@ -31,7 +32,7 @@
         current_user,
         6.weeks.before(@sprint.end_date),
         1.week.before(@sprint.end_date)).to_json %>,
-      openTasks: <%= raw TaskPresenter.new(@open_tasks).to_json %>
+      openTasks: <%= raw (@open_tasks && TaskPresenter.new(@open_tasks)).to_json %>
     }).render();
   });
 </script>

@@ -27,17 +27,22 @@ module Api
       
       def create
         authorize! :update, sprint
-
+        
+        if sprint.completed?
+          render text: "The Sprint is completed. You cannot add or remove tasks.", status: :unprocessable_entity
+          return
+        end
+        
         if sprint.locked? && !task.ticket_id.in?(sprint.ticket_ids)
           render text: "The Sprint is locked. You can add tasks for tickets that are already in the Sprint, but you can't add new tickets to the Sprint.", status: :unprocessable_entity
           return
         end
-
+        
         # Putting a task into a Sprint implies that you're able to estimate this ticket
         task.ticket.able_to_estimate! if task.ticket.respond_to?(:able_to_estimate!)
         
         task.update_attributes(effort: params[:effort]) if params[:effort]
-
+        
         if task.completed? && task.completed_at < sprint.starts_at
           render text: "Task ##{task.shorthand} cannot be added to the Sprint because it was completed before the Sprint began", status: :unprocessable_entity
         elsif task.effort.nil? or task.effort.zero?
@@ -51,12 +56,17 @@ module Api
       
       def destroy
         authorize! :update, sprint
-
+        
+        if sprint.completed?
+          render text: "The Sprint is completed. You cannot add or remove tasks.", status: :unprocessable_entity
+          return
+        end
+        
         if sprint.locked?
           render text: "The Sprint is locked; tasks cannot be removed", status: :unprocessable_entity
           return
         end
-
+        
         SprintTask.where(sprint_id: sprint.id, task_id: task.id).delete_all
         head :ok
       end
