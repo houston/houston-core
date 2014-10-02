@@ -7,6 +7,20 @@ class @EditTicketView extends Backbone.View
     @$el.find('.editable').pseudoHover()
     @$summary = @$el.find('#ticket_summary')
     @$description = @$el.find('#ticket_description')
+    $textarea = @$description.find('textarea')
+
+    $(window).resize =>
+      $textarea.css height: @$description.parent().height() - 61
+    $textarea.css height: @$description.parent().height() - 61
+
+    @$el.find('.ticket-state').pseudoHover().click (e)=>
+      action = if $(e.target).hasClass('open') then 'close' else 'reopen'
+      @ticket[action]()
+        .success (attributes)->
+          $(e.target)
+            .removeClass('hover')
+            .toggleClass('open', !attributes.closedAt)
+            .toggleClass('closed', !!attributes.closedAt)
 
     @$summary.find('.show').click (e)=>
       $editable = $(e.target).closest('.editable')

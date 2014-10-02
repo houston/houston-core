@@ -278,6 +278,11 @@ class Ticket < ActiveRecord::Base
     update_attribute :closed_at, Time.now
   end
   
+  def unclose!
+    remote_ticket.reopen! if remote_ticket
+    update_attribute :closed_at, nil
+  end
+  
   def reopen!
     return unless resolved?
     remote_ticket.reopen! if remote_ticket

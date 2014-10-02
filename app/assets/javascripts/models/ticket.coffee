@@ -71,6 +71,16 @@ class window.Ticket extends Backbone.Model
   testingNotesSinceLastRelease: ->
     date = @get('lastReleaseAt')
     if date then @testingNotes().since(date) else @testingNotes()
+  
+  
+  close: ->
+    url = "/projects/#{@get 'projectSlug'}/tickets/by_number/#{@get 'number'}/close"
+    $.post(url).success (attributes)=> @set attributes
+  
+  reopen: ->
+    url = "/projects/#{@get 'projectSlug'}/tickets/by_number/#{@get 'number'}/reopen"
+    $.post(url).success (attributes)=> @set attributes
+
 
 
 

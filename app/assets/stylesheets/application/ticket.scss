@@ -61,8 +61,35 @@
     -webkit-border-radius: 0.25em;
     -moz-border-radius: 0.25em;
 
-    &.open { background: #5DB64C; } // grass
-    &.closed { background: #E24E32; } // tomato
+    &::before {
+      font-family: FontAwesome;
+    }
+
+    &.open {
+      background: #5DB64C; // grass
+      &::before { content: '\f10c'; }
+      &::after { content: ' Open'; }
+    } 
+    &.closed {
+      background: #E24E32; // tomato
+      &::before { content: '\f05e'; }
+      &::after { content: ' Closed'; }
+    }
+    
+    &.hover {
+      cursor: pointer;
+      
+      &.open {
+        background: #999;
+        &::before { content: '\f05e'; }
+        &::after { content: ' Closed'; }
+      } 
+      &.closed {
+        background: #999;
+        &::before { content: '\f10c'; }
+        &::after { content: ' Open'; }
+      }
+    }
   }
   
   

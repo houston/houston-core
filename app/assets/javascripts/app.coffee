@@ -114,6 +114,7 @@ window.App =
     $context = options.$context || $('#tickets')
     numbers = _.map($context.find('[rel="ticket"]:visible'), (el)-> +$(el).attr('data-number'))
     options.ticketNumbers = numbers if numbers.length > 0
+    options.edit = window.user.canEditTickets() if window.user
     new TicketModalView(options).show(number)
   
   promptForCredentialsTo: (service)->

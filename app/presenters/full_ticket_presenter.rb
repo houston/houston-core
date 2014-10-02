@@ -1,10 +1,9 @@
 class FullTicketPresenter < TicketPresenter
-  include MarkdownHelper
 
   def ticket_to_json(ticket)
     reporter = ticket.reporter
     super.merge(
-      description: mdown(ticket.description),
+      description: ticket.description,
       changes: present_versions(ticket.tasks.versions.includes(:versioned) + ticket.versions),
       tasks: ticket.tasks.map { |task| task.ticket = ticket; {
         id: task.id,

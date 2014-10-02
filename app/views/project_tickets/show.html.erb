@@ -12,13 +12,9 @@
 
     <div class="ticket-state-position">
     <% if @ticket.closed? %>
-      <div class="ticket-state closed">
-        <i class="fa fa-ban"></i> Closed
-      </div>
+      <div class="ticket-state closed"></div>
     <% else %>
-      <div class="ticket-state open">
-        <i class="fa fa-circle-o"></i> Open
-      </div>
+      <div class="ticket-state open"></div>
     <% end %>
     </div>
 
@@ -53,19 +49,6 @@
         </p>
       </div>
     </div>
-    <div class="task-frame">
-      <% if can?(:close, @ticket) %>
-        <% if @ticket.closed? %>
-          <%= form_tag reopen_ticket_path(slug: @project.slug, number: @ticket.number) do %>
-            <button type="submit" class="btn btn-success">Reopen</button>
-          <% end %>
-        <% else %>
-          <%= form_tag close_ticket_path(slug: @project.slug, number: @ticket.number) do %>
-            <button type="submit" class="btn btn-danger">Close</button>
-          <% end %>
-        <% end %>
-      <% end %>
-    </div>
   </div>
 </div>
 
@@ -76,6 +59,8 @@
         el: document.getElementById('ticket_view'),
         ticket: new Ticket(<%=raw({
           id: @ticket.id,
+          projectSlug: @project.slug,
+          number: @ticket.number,
           summary: @ticket.summary,
           description: @ticket.description
         }.to_json) %>)

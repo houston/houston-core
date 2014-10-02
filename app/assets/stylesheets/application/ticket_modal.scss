@@ -6,8 +6,8 @@ body.noscroll {
   margin: 0;
   width: auto;
   top: 4%;
-  left: 6%;
-  right: 6%;
+  left: 4%;
+  right: 4%;
   bottom: 4%;
   
   .modal-header {
@@ -20,6 +20,7 @@ body.noscroll {
     position: absolute;
     left: 0;
     right: 0;
+    z-index: 8;
   }
   
   button.close {
@@ -47,6 +48,15 @@ body.noscroll {
     bottom: 0;
   }
   
+  .buttons { margin-bottom: 0; }
+  
+  .ticket-header {
+    z-index: 5;
+    background: white;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+  }
+  
   .ticket-summary .show {
     white-space: nowrap;
     overflow: hidden;
@@ -55,10 +65,35 @@ body.noscroll {
   
   .primary-frame {
     box-sizing: border-box;
-    padding: 15px;
+    padding: 0 0 0 66px;
     border-top: 1px solid #e4e4e4;
     overflow-x: hidden;
     overflow-y: auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    
+    .show {
+      padding: 15px;
+      box-sizing: border-box;
+      min-height: 100%;
+      border-bottom-right-radius: 6px;
+    }
+    
+    textarea {
+      padding: 15px;
+      border: none;
+      border-radius: 0;
+      margin: 0;
+    }
+    
+    .buttons {
+      padding: 15px;
+      background: #e4e4e4;
+      border-bottom-right-radius: 6px;
+    }
     
     hr { margin: 2em -15px; }
   }
@@ -67,13 +102,34 @@ body.noscroll {
     display: none;
   }
   
+  .ticket-audit-frame {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 66px;
+    overflow: hidden;
+    transition: width 0.4s ease, padding 0.4s ease, box-shadow 0.4s ease;
+    border-top: 1px solid #e4e4e4;
+    border-right: 1px solid #e4e4e4;
+    border-bottom-left-radius: 6px;
+    background: white;
+    z-index: 4;
+    padding-right: 0;
+    
+    &:hover {
+      width: 320px;
+      padding-right: 16px;
+      overflow-y: auto;
+      box-shadow: 2px 0 6px rgba(0, 0, 0, 0.15);
+    }
+    
+    .ticket-audit-timeline { width: 320px; }
+  }
+  
   .ticket-body.show-task-frame {
     .primary-frame {
-      position: absolute;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      width: 50%;
+      width: 60%;
     }
     
     .task-frame {
@@ -83,7 +139,7 @@ body.noscroll {
       top: 0;
       right: 0;
       bottom: 0;
-      width: 50%;
+      width: 40%;
       padding: 15px;
       border-left: 1px solid #e4e4e4;
       border-top: 1px solid #e4e4e4;

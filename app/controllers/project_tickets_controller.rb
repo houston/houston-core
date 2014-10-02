@@ -104,13 +104,23 @@ class ProjectTicketsController < ApplicationController
   def close
     authorize! :close, ticket
     ticket.close!
-    redirect_to project_ticket_path(slug: @project.slug, number: ticket.number)
+    
+    if request.xhr?
+      render json: TicketPresenter.new(ticket)
+    else
+      redirect_to project_ticket_path(slug: @project.slug, number: ticket.number)
+    end
   end
 
   def reopen
     authorize! :close, ticket
-    ticket.reopen!
-    redirect_to project_ticket_path(slug: @project.slug, number: ticket.number)
+    ticket.unclose!
+    
+    if request.xhr?
+      render json: TicketPresenter.new(ticket)
+    else
+      redirect_to project_ticket_path(slug: @project.slug, number: ticket.number)
+    end
   end
 
 
