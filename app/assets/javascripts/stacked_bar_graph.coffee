@@ -20,6 +20,7 @@ class Houston.StackedBarGraph
   colors: (@_colors)-> @
   range: (@_range)-> @
   axes: (@_axes)-> @
+  yTicks: (@_yTicks)-> @
   
   render: ->
     graphWidth = @_width - @_margin.left - @_margin.right
@@ -38,6 +39,7 @@ class Houston.StackedBarGraph
     yAxis = d3.svg.axis()
       .scale(y)
       .orient('left')
+    yAxis.tickValues(@_yTicks) if @_yTicks
     
     color = d3.scale.ordinal().range(@_colors).domain(@_labels)
     
@@ -102,3 +104,5 @@ class Houston.StackedBarGraph
         label = @_labels[i]
         color = @_colors[i]
         $legend.append "<dt class=\"circle\" style=\"background: #{color}\"></dt><dd>#{label}</dd>"
+    
+    @
