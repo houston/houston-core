@@ -1,9 +1,10 @@
 .markdown, .commit, .testing-note, .ticket-description {
   // formatting for markdown, etc within comments, ticket description
-  h1 { font-size: 22px; line-height: 30px; }
-  h2 { font-size: 18px; line-height: 23px; }
-  h3 { font-size: 15px; line-height: 20px; }
-  h4 { font-size: 14px; line-height: 18px; }
+  h1 { font-size: 1.5em; font-weight: 200; margin: 0.66em 0 0.33em 0; line-height: 1.18em; }
+  h2 { font-size: 1.33em; margin: 0.66em 0 0.33em 0; line-height: 1.42857142857143em; }
+  h3 { font-size: 1.08em; font-weight: 500; margin: 0.66em 0 0.33em 0; line-height: 1.42857142857143em; ; }
+  h4 { font-size: 1em; margin: 0.66em 0 0.33em 0; line-height: 1.42857142857143em; }
+  
   blockquote { border-left: 5px solid #ccc; margin-top: 1em; margin-bottom: 1em; }
   blockquote p { font-size: 14.5px; }
 
