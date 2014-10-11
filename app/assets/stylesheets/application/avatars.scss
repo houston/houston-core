@@ -1,0 +1,19 @@
+.avatar {
+  border-radius: 100em;
+}
+
+h1 .avatar {
+  box-shadow: 3px 3px 10px rgba(0,0,0,0.25);
+}
+
+.avatar-24 {
+  display: inline-block;
+  width: 24px;
+  margin-right: 0.5em;
+}
+
+.avatar-42 {
+  display: inline-block;
+  width: 42px;
+  margin-right: 0.5em;
+}

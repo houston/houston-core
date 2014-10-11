@@ -74,9 +74,9 @@ Handlebars.registerHelper 'avatar', (email, size, title)->
   return "<img width=\"#{size}\" height=\"#{size}\" />" unless email
   gravatarUrl = "http://www.gravatar.com/avatar/#{MD5(email.toLowerCase().trim())}?r=g&d=retro&s=#{size * 2}"
   if title
-    "<img src=\"#{gravatarUrl}\" width=\"#{size}\" height=\"#{size}\" rel=\"tooltip\" title=\"#{title}\" />"
+    "<img src=\"#{gravatarUrl}\" class=\"avatar\" width=\"#{size}\" height=\"#{size}\" rel=\"tooltip\" title=\"#{title}\" />"
   else
-    "<img src=\"#{gravatarUrl}\" width=\"#{size}\" height=\"#{size}\" />"
+    "<img src=\"#{gravatarUrl}\" class=\"avatar\" width=\"#{size}\" height=\"#{size}\" />"
   
 Handlebars.registerHelper 'ifEq', (v1, v2, block)->
   if v1 == v2
