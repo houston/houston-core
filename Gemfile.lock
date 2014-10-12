@@ -34,7 +34,7 @@ GIT
 
 GIT
   remote: git://github.com/concordia-publishing-house/xlsx.git
-  revision: 16ed20c45fd17370b67bcaeffb5bb90e1e082e50
+  revision: 4a6e6e7134de3f2b1670a4bf8d3afdec44a1fa6a
   branch: master
   specs:
     xlsx (0.1.0)
