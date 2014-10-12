@@ -25,6 +25,7 @@ window.App =
     relativeRoot
   
   mdown: (markdown)->
+    return '' unless markdown
     converter = new Markdown.Converter()
     html = converter.makeHtml(markdown)
     App.emojify(html)
