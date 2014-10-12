@@ -35,6 +35,7 @@ gem "sucker_punch" # for Airbrake
 gem "unfuddle", github: "boblail/unfuddle", branch: "master"
 gem "vestal_versions", github: "houstonmc/vestal_versions", branch: "master"
 gem "whenever" # a DSL for writing CRON jobs
+gem "xlsx", github: "concordia-publishing-house/xlsx", branch: "master"
 
 gem "backbone-rails", "~> 1.0.0"
 gem "handlebars_assets", "0.8.2"

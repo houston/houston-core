@@ -33,8 +33,17 @@ GIT
       activesupport (>= 3.2.0)
 
 GIT
+  remote: git://github.com/concordia-publishing-house/xlsx.git
+  revision: 16ed20c45fd17370b67bcaeffb5bb90e1e082e50
+  branch: master
+  specs:
+    xlsx (0.1.0)
+      nokogiri
+      open_xml_package
+
+GIT
   remote: git://github.com/houstonmc/houston-alerts.git
-  revision: b75eaf839c7fd7ff05d0a44977ca58a29939501c
+  revision: 02bf9b5841a3d64026b954fb86910f88cf87d855
   branch: master
   specs:
     houston-alerts (0.0.1)
@@ -234,6 +243,8 @@ GEM
     octokit (3.1.0)
       sawyer (~> 0.5.3)
     oj (2.9.4)
+    open_xml_package (0.0.3)
+      rubyzip
     orm_adapter (0.5.0)
     pg (0.17.1)
     polyglot (0.3.5)
@@ -272,6 +283,7 @@ GEM
     rr (1.1.2)
     ruby-ntlm (0.0.1)
     ruby-progressbar (1.5.1)
+    rubyzip (1.1.6)
     rufus-scheduler (3.0.8)
       tzinfo
     rugged (0.21.0)
@@ -411,3 +423,4 @@ DEPENDENCIES
   vestal_versions!
   webmock
   whenever
+  xlsx!
