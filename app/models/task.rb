@@ -19,8 +19,6 @@ class Task < ActiveRecord::Base
   
   default_scope { order(:number) }
   
-  delegate :project, :to => :ticket
-  
   
   
   class << self
