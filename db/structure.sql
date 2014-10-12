@@ -720,7 +720,9 @@ CREATE TABLE milestone_versions (
     reverted_from integer,
     tag character varying(255),
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    user_id integer,
+    user_type character varying(255)
 );
 
 
@@ -2516,4 +2518,6 @@ INSERT INTO schema_migrations (version) VALUES ('20140927154728');
 INSERT INTO schema_migrations (version) VALUES ('20140929004347');
 
 INSERT INTO schema_migrations (version) VALUES ('20140929024130');
+
+INSERT INTO schema_migrations (version) VALUES ('20141012023628');
 
