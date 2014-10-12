@@ -176,6 +176,17 @@ class ReportsController < ApplicationController
   
   
   
+  def tasks_excel
+    authorize! :read, "Report"
+    tasks = Task.completed
+    send_data TasksExcelPresenter.new(tasks),
+      type: :xlsx,
+      filename: "Tasks.xlsx",
+      disposition: "attachment"
+  end
+  
+  
+  
 private
   
   CUTOFFS = [3.weeks, 3.months, 9.months, 2.years, 99.years].freeze

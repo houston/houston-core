@@ -245,6 +245,7 @@ Rails.application.routes.draw do
     get "reports/#{report}", to: "reports##{report.underscore}"
   end
   get "reports/velocity", to: "reports#velocity"
+  get "reports/tasks.xlsx", to: "reports#tasks_excel"
   
   get "sprint/reports", to: "reports#sprint"
   
