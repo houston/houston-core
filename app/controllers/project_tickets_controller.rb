@@ -98,6 +98,8 @@ class ProjectTicketsController < ApplicationController
     else
       render json: ticket.errors, status: :unprocessable_entity
     end
+  rescue Houston::Adapters::TicketTracker::Error
+    render json: {base: ["Unfuddle was unable to create this ticket:<br/>#{$!.message}"]}, status: :unprocessable_entity
   end
   
   

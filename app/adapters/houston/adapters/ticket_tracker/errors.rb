@@ -2,7 +2,7 @@ module Houston
   module Adapters
     module TicketTracker
       
-      class PassThroughError < StandardError
+      class Error < StandardError
         def initialize(original_error)
           @original_error = original_error
           super(original_error.message)
@@ -12,10 +12,10 @@ module Houston
         attr_reader :original_error
       end
       
-      class ConnectionError < PassThroughError
+      class ConnectionError < Error
       end
       
-      class InvalidQueryError < PassThroughError
+      class InvalidQueryError < Error
       end
       
     end

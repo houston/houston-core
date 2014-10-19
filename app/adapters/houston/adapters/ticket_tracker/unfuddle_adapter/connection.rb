@@ -42,6 +42,9 @@ module Houston
               
               build_ticket(native_ticket.attributes)
             end
+            
+          rescue Unfuddle::Error
+            raise Houston::Adapters::TicketTracker::Error.new($!)
           end
           
           def find_ticket_by_number(number)
@@ -124,7 +127,7 @@ module Houston
           rescue Unfuddle::ConnectionError
             raise Houston::Adapters::TicketTracker::ConnectionError.new($!)
           rescue Unfuddle::Error
-            raise Houston::Adapters::TicketTracker::PassThroughError.new($!)
+            raise Houston::Adapters::TicketTracker::Error.new($!)
           end
           
           

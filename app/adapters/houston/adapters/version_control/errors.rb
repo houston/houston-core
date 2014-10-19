@@ -2,7 +2,7 @@ module Houston
   module Adapters
     module VersionControl
       
-      class PassThroughError < StandardError
+      class Error < StandardError
         def initialize(original_error=nil, message=nil)
           original_error, message = nil, original_error if original_error.is_a?(String)
           
@@ -20,10 +20,13 @@ module Houston
         attr_reader :original_error
       end
       
-      class CommitNotFound < PassThroughError
+      class CommitNotFound < Error
       end
       
-      class FileNotFound < PassThroughError
+      class BranchNotFound < Error
+      end
+      
+      class FileNotFound < Error
       end
       
       class InvalidShaError < ArgumentError
