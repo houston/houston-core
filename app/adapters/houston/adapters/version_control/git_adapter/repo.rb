@@ -22,8 +22,8 @@ module Houston
             `git --git-dir=#{git_dir} log --all --pretty='%H'`.split(/\n/).uniq
           end
           
-          def ancestors(sha)
-            ancestor_walker(sha).map(&method(:to_commit))
+          def ancestors(sha, *args)
+            ancestor_walker(sha, *args).map(&method(:to_commit))
           end
           
           def ancestors_until(sha, *args)
@@ -54,9 +54,13 @@ module Houston
             sha1 = sha1.sha if sha1.respond_to?(:sha)
             sha2 = sha2.sha if sha2.respond_to?(:sha)
             
-            native_commit(sha1) # ensure that sha1 exists in the repo
-            matces_sha = lambda { |commit| commit.sha.start_with?(sha1) }
-            ancestors_until(sha2, :including_self, &matces_sha).reverse[1..-1]
+            if sha1.nil? or sha1 == Houston::NULL_GIT_COMMIT
+              ancestors(sha2, :including_self).reverse
+            else
+              native_commit(sha1) # ensure that sha1 exists in the repo
+              matces_sha = lambda { |commit| commit.sha.start_with?(sha1) }
+              ancestors_until(sha2, :including_self, &matces_sha).reverse[1..-1]
+            end
           end
           
           def location
@@ -64,6 +68,7 @@ module Houston
           end
           
           def native_commit(sha)
+            return NullCommit.new if sha == Houston::NULL_GIT_COMMIT
             normalize_sha!(sha)
             to_commit connection.lookup(sha)
           rescue Rugged::OdbError
@@ -113,6 +118,7 @@ module Houston
         private
           
           def normalize_sha!(sha)
+            return if sha == Houston::NULL_GIT_COMMIT
             sha.strip!
             sha.slice!(40)
             validate_sha!(sha)

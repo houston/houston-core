@@ -65,6 +65,7 @@ private
   end
   
   def create_missing_commit!(native_commit)
+    return nil if native_commit.nil? # <-- can be a null object
     create!(attributes_from_native_commit(native_commit))
   end
   

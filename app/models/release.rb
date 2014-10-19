@@ -40,7 +40,7 @@ class Release < ActiveRecord::Base
     end
     
     def most_recent_commit
-      (release = first) && release.commit1
+      (release = first) ? release.commit1 : Houston::NULL_GIT_COMMIT
     end
     
     def before(time)
@@ -98,7 +98,7 @@ class Release < ActiveRecord::Base
   end
   
   def can_read_commits?
-    commit_before.present? && commit_after.present?
+    (commit_before.present? || commit0 == Houston::NULL_GIT_COMMIT) && commit_after.present?
   end
   
   
