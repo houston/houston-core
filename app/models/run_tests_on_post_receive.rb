@@ -80,6 +80,11 @@ class RunTestsOnPostReceive
       return
     end
     
+    unless payload.commit == Houston::NULL_GIT_COMMIT
+      Rails.logger.error "[hooks:post_receive] branch was deleted; not running tests again"
+      return
+    end
+    
     test_run = project.test_runs.find_by_sha(payload.commit)
     
     if test_run

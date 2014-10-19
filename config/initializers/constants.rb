@@ -1,0 +1,5 @@
+module Houston
+  NULL_GIT_COMMIT = "0000000000000000000000000000000000000000".freeze
+  
+  
+end
