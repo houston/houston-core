@@ -3,5 +3,12 @@ html.tester-bar {
 }
 
 .alertify-log {
-  background: rgba(9, 151, 196, 0.9);
+  background: rgba(9, 151, 196, 0.75);
+  text-shadow: none;
+}
+.alertify-log.alertify-log-error {
+  background: rgba(237, 36, 12, 0.75);
+}
+.alertify-log.alertify-log-success {
+  background: rgba(50, 151, 50, 0.75);
 }
