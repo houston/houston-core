@@ -9,7 +9,7 @@ class RunTestsOnPostReceive
   end
   
   def begin!
-    Rails.logger.info "\e[31;1mSetting up observers for RunTestsOnPostReceive\e[0m"
+    Rails.logger.info "\e[34;1mSetting up observers for RunTestsOnPostReceive\e[0m"
     
     # Here's how this works:
     #
@@ -21,14 +21,14 @@ class RunTestsOnPostReceive
     #      then corresponding job:
     #      POST /job/houston/buildWithParameters.
     Houston.observer.on "hooks:post_receive" do |project, params|
-      Rails.logger.info "\e[31;1m[hooks:post_receive] creating a TestRun\e[0m"
+      Rails.logger.info "\e[34m[hooks:post_receive] creating a TestRun\e[0m"
       create_a_test_run(project, params)
     end
     
     #   4. Houston notifies GitHub that the test run has started:
     #      POST /repos/houstonmc/houston/statuses/:sha
     Houston.observer.on "test_run:start" do |test_run|
-      Rails.logger.info "\e[31;1m[test_run:start] publishing status on GitHub\e[0m"
+      Rails.logger.info "\e[34m[test_run:start] publishing status on GitHub\e[0m"
       publish_status_to_github(test_run)
     end
     
@@ -41,26 +41,26 @@ class RunTestsOnPostReceive
     #      fetching additional details from Jenkins:
     #      GET /job/houston/19/testReport/api/json
     Houston.observer.on "hooks:post_build" do |project, params|
-      Rails.logger.info "\e[31;1m[hooks:post_build] fetching TestRun results\e[0m"
+      Rails.logger.info "\e[34m[hooks:post_build] fetching TestRun results\e[0m"
       fetch_test_run_results(project, params)
     end
     
     #   8. Houston emails results of the TestRun.
     Houston.observer.on "test_run:complete" do |test_run|
-      Rails.logger.info "\e[31;1m[test_run:complete] emailing TestRun results\e[0m"
+      Rails.logger.info "\e[34m[test_run:complete] emailing TestRun results\e[0m"
       email_test_run_results(test_run)
     end
     
     #   9. Houston publishes results to GitHub:
     #      POST /repos/houstonmc/houston/statuses/:sha
     Houston.observer.on "test_run:complete" do |test_run|
-      Rails.logger.info "\e[31;1m[test_run:complete] publishing status on GitHub\e[0m"
+      Rails.logger.info "\e[34m[test_run:complete] publishing status on GitHub\e[0m"
       publish_status_to_github(test_run)
     end
     
     #  10. Houston publishes results to Code Climate.
     Houston.observer.on "test_run:complete" do |test_run|
-      Rails.logger.info "\e[31;1m[test_run:complete] publishing status on CodeClimate\e[0m"
+      Rails.logger.info "\e[34m[test_run:complete] publishing status on CodeClimate\e[0m"
       publish_coverage_to_code_climate(test_run)
     end
   end
