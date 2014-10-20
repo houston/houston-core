@@ -23,6 +23,7 @@ REVISION
 .sass-cache
 .rvmrc
 .DS_Store
+.rufus-scheduler.lock
 
 # Ignore test artifacts
 coverage
