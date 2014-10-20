@@ -6,12 +6,12 @@ else
     raise "Rufus::Scheduler cannot be started; it is already running in another process!"
   else
     scheduler.every("10s") do |job|
-      Rails.logger.debug "\e[34m[timer/#{job.original}] Alive\e[0m"
+      Rails.logger.info "\e[34m[timer/#{job.original}] Alive\e[0m"
     end
     
     Houston.config.timers.each do |(interval, name, options, block)|
       scheduler.every(interval, options.merge(tag: name)) do |job|
-        Rails.logger.debug "\e[34m[#{job.tags.first}/#{job.original}] Running job\e[0m"
+        Rails.logger.info "\e[34m[#{job.tags.first}/#{job.original}] Running job\e[0m"
         begin
           block.call
         rescue
