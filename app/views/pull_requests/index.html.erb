@@ -22,7 +22,7 @@
       <li class="pull-request <%= "back-burner" if pull_request.back_burner? %>">
         <%= link_to pull_request.url, target: "_blank" do %>
           <span class="pull-request-number"><%= pull_request.number %></span>
-          <%= image_tag pull_request.gravatar_url, width: 32, height: 32, class: "pull-request-author" %>
+          <%= image_tag pull_request.avatar_url(size: 64), width: 32, height: 32, class: "pull-request-author" %>
           <span class="pull-request-title"><%= emojify pull_request.title %></span>
           <span class="pull-request-age"><%= time_ago_in_words pull_request.created_at %> old</span>
         <% end %>

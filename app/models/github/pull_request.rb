@@ -13,8 +13,10 @@ module Github
     
     attr_reader :raw_pull_request, :title, :number, :url, :user, :created_at, :repo
     
-    def gravatar_url(size: 64)
-      "http://www.gravatar.com/avatar/#{user.gravatar_id}?r=g&d=retro&s=#{size}"
+    def avatar_url(options={})
+      url = user.avatar_url.dup
+      url << "&s=#{options[:size]}" if options.key?(:size)
+      url
     end
     
     def eligible?
