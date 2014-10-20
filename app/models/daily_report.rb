@@ -17,7 +17,7 @@ class DailyReport
   
   
   def recipients
-    @recipients ||= project.followers.developers
+    @recipients ||= project.followers.developers.unretired
   end
   
   def any_news?
