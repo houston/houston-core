@@ -282,7 +282,7 @@ GEM
     ruby-ntlm (0.0.1)
     ruby-progressbar (1.5.1)
     rubyzip (1.1.6)
-    rufus-scheduler (3.0.8)
+    rufus-scheduler (3.0.9)
       tzinfo
     rugged (0.21.0)
     safe_yaml (1.0.3)
@@ -301,7 +301,7 @@ GEM
       multi_json
       simplecov-html (~> 0.8.0)
     simplecov-html (0.8.0)
-    skylight (0.3.20)
+    skylight (0.3.21)
       activesupport (>= 3.0.0)
     slop (3.5.0)
     spring (1.1.3)
