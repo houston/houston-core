@@ -1357,11 +1357,12 @@ CREATE TABLE users (
     unfuddle_id integer,
     first_name character varying(255),
     last_name character varying(255),
-    environments_subscribed_to character varying(255) DEFAULT ''::character varying NOT NULL,
+    old_environments_subscribed_to character varying(255) DEFAULT ''::character varying NOT NULL,
     retired_at timestamp without time zone,
     view_options hstore DEFAULT ''::hstore NOT NULL,
     email_addresses text[],
-    invitation_created_at timestamp without time zone
+    invitation_created_at timestamp without time zone,
+    environments_subscribed_to text[] DEFAULT '{}'::text[] NOT NULL
 );
 
 
@@ -2520,4 +2521,6 @@ INSERT INTO schema_migrations (version) VALUES ('20140929004347');
 INSERT INTO schema_migrations (version) VALUES ('20140929024130');
 
 INSERT INTO schema_migrations (version) VALUES ('20141012023628');
+
+INSERT INTO schema_migrations (version) VALUES ('20141027194819');
 

@@ -8,8 +8,6 @@ class User < ActiveRecord::Base
   has_many :tickets, foreign_key: "reporter_id"
   has_and_belongs_to_many :commits
   
-  serialize :environments_subscribed_to, JSON
-  
   devise *Houston.config.devise_configuration
   
   default_scope { order("last_name, first_name") }
@@ -59,7 +57,7 @@ class User < ActiveRecord::Base
   end
   
   def self.notified_of_releases_to(environment_name)
-    where(["users.environments_subscribed_to LIKE ?", "%#{environment_name.inspect}%"])
+    where "users.environments_subscribed_to && ARRAY[#{connection.quote(environment_name)}]"
   end
   
   def self.with_primary_email(email)
@@ -102,10 +100,6 @@ class User < ActiveRecord::Base
   
   def name
     "#{first_name} #{last_name}"
-  end
-  
-  def environments_subscribed_to
-    super || []
   end
   
   def follows?(project)
