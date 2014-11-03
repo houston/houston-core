@@ -247,6 +247,8 @@ Rails.application.routes.draw do
   get "reports/velocity", to: "reports#velocity"
   get "reports/tasks.xlsx", to: "reports#tasks_excel"
   
+  get "health", to: "health#show"
+  
   get "sprint/reports", to: "reports#sprint"
   
   # Tester Bar

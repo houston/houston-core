@@ -1,0 +1,11 @@
+<h2>Health</h2>
+
+<h3>Scheduler</h3>
+<dl>
+  <dt>Status</dt><dd><%= $scheduler.up? ? "Up" : "Down" %></dd>
+  <dt>Jobs</dt><dd>
+    <% $scheduler.jobs.each do |job| %>
+      <code><%= job.tags.first %></code>
+    <% end %>
+  </dd>
+</dl>
