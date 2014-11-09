@@ -1,6 +1,6 @@
 <div style="position: fixed; left: 0; right: 0; bottom: 0; height: 42px; line-height: 36px; background: black; padding-left: 4px; z-index: 100;">
   <form action="/tester_bar/login_as">
-    <%= select_tag "email", options_for_select(User.all.map { |u| ["#{u.name} (#{u.role}#{", Admin" if u.administrator?})", u.email] }, current_user.try(:email)), :style => "margin-bottom: 0" %>
+    <%= select_tag "email", options_for_select(User.unretired.map { |u| ["#{u.name} (#{u.role}#{", Admin" if u.administrator?})", u.email] }, current_user.try(:email)), :style => "margin-bottom: 0" %>
     <button class="btn btn-primary" type="submit" title="Log in as any user">Login</button>
   </form>
 </div>
