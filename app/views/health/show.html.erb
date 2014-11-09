@@ -2,10 +2,14 @@
 
 <h3>Scheduler</h3>
 <dl>
-  <dt>Status</dt><dd><%= $scheduler.up? ? "Up" : "Down" %></dd>
-  <dt>Jobs</dt><dd>
-    <% $scheduler.jobs.each do |job| %>
-      <code><%= job.tags.first %></code>
-    <% end %>
-  </dd>
+  <% if $scheduler %>
+    <dt>Status</dt><dd><%= $scheduler.up? ? "Up" : "Down" %></dd>
+    <dt>Jobs</dt><dd>
+      <% $scheduler.jobs.each do |job| %>
+        <code><%= job.tags.first %></code>
+      <% end %>
+    </dd>
+  <% else %>
+    <dt>Status</dt><dd>Unavailable</dd>
+  <% end %>
 </dl>
