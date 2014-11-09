@@ -10,8 +10,24 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require_tree ../templates
-//= require_tree ./app
-
-$.tablesorter.defaults.cssAsc = 'sort-asc';
-$.tablesorter.defaults.cssDesc = 'sort-desc';
+//= require jquery
+//= require jquery_ujs
+//= require jquery-ui
+//= require bootstrap
+//= require jquery.pjax.js
+//= require jquery.tablesorter.js
+//= require jquery.autosize.js
+//= require jquery.timeago.js
+//= require mousetrap
+//= require freight_train
+//= require lail/delayed_action
+//= require sugar
+//= require underscore
+//= require backbone
+//= require handlebars
+//= require Markdown.Converter
+//= require date_format
+//= require md5
+//= require d3.v3.js
+//= require neat
+//= require alertify
