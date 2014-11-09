@@ -13,15 +13,18 @@ Handlebars.registerHelper 'formatDuration', (seconds)->
     "#{days} #{unit}"
 
 Handlebars.registerHelper 'formatDate', (timestamp)->
-  Date.create(timestamp).format('ddd mmm d')
+  format = d3.time.format('%a %b %-d')
+  format Date.create(timestamp)
 
 Handlebars.registerHelper 'formatDateWithYear', (timestamp)->
   return "" unless timestamp
-  date = Date.create(timestamp)
-  date.format('mmm d') + "<span class=\"year\">#{date.format('yyyy')}</span>"
+  format = d3.time.format('%b %-d <span class="year">%Y</span>')
+  format Date.create(timestamp)
 
 Handlebars.registerHelper 'formatTime', (timestamp)->
-  Date.create(timestamp).format('ddd mmm d, yyyy h:mmt')
+  format = d3.time.format('%a %b %-d, %Y %-I:%M%p')
+  format Date.create(timestamp)
+    .replace(/[AP]M/, (str)-> str.toLowerCase()[0])
 
 Handlebars.registerHelper 'formatTimeAgo', (timestamp)->
   $.timeago Date.create(timestamp)
@@ -105,19 +108,20 @@ Handlebars.registerHelper 'timelineDateRange', (lastDate, date)->
   , ''
   
 Handlebars.registerHelper 'timelineDate', (date)->
-  date = Date.create(date)
-  """
+  format = d3.time.format """
   <div class="timeline-date">
-    <span class="weekday">#{date.format('ddd')}</span>
-    <span class="month">#{date.format('mmm')}</span>
-    <span class="day">#{date.format('d')}</span>
-    <span class="year">#{date.format('yyyy')}</span>
+    <span class="weekday">%a</span>
+    <span class="month">%b</span>
+    <span class="day">%-d</span>
+    <span class="year">%Y</span>
   </div>
   """
+  format Date.create(date)
   
 Handlebars.registerHelper 'timelineTime', (time)->
-  time = Date.create(time).format('h:MMt')
-  "<span class=\"timeline-event-time\">#{time}</span>"
+  format = d3.time.format('<span class="timeline-event-time">%-I:%M%p</span>')
+  format Date.create(time)
+    .replace(/[AP]M/, (str)-> str.toLowerCase()[0])
 
 Handlebars.registerHelper 'timelineDateAfterGap', (date)->
   '<div class="timeline-date-gap"></div>' + Handlebars.helpers.timelineDate(date)

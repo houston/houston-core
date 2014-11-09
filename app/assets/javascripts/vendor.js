@@ -26,7 +26,6 @@
 //= require backbone
 //= require handlebars
 //= require Markdown.Converter
-//= require date_format
 //= require md5
 //= require d3.v3.js
 //= require neat
