@@ -14,8 +14,8 @@
     <![endif]-->
 
     <!-- Le styles -->
-    <%= stylesheet_link_tag "application", :media => "all" %>
-    <%= stylesheet_link_tag "print", :media => "print" %>
+    <%= stylesheet_link_tag "vendor", :media => "all" %>
+    <%= stylesheet_link_tag "dashboard", :media => "all" %>
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <%= yield :stylesheets %><%# so that Engines can hook in and add styles %>
 
@@ -34,7 +34,7 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <%= javascript_include_tag :vendor %>
-    <%= javascript_include_tag :application %>
+    <%= javascript_include_tag :dashboard %>
     <%= yield :javascripts %>
   </body>
 </html>

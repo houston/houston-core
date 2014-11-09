@@ -10,5 +10,5 @@
  *
  *= require_self
  *= require_tree ./core
- *= require_tree ./application
+ *= require_tree ./dashboard
 */
