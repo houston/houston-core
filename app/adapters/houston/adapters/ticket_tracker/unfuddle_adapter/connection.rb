@@ -37,7 +37,8 @@ module Houston
                 "priority" => "3", # required by Unfuddle
                 "summary" => houston_ticket.summary,
                 "description" => houston_ticket.description,
-                "severity_id" => attrs[:severity] && unfuddle.find_severity_by_name!(attrs[:severity]).id)
+                "severity_id" => attrs[:severity] && unfuddle.find_severity_by_name!(attrs[:severity]).id,
+                "milestone_id" => (houston_ticket.milestone && houston_ticket.milestone.remote_id) || 0)
               native_ticket.fetch! # fetch attributes we don't know yet (like number and created_at)
               
               build_ticket(native_ticket.attributes)

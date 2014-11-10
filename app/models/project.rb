@@ -111,7 +111,7 @@ class Project < ActiveRecord::Base
   
   def create_ticket!(attributes)
     ticket = tickets.build attributes.merge(number: 0)
-    ticket = tickets.create ticket_tracker.create_ticket!(ticket).attributes if ticket.valid?
+    ticket = tickets.create_from_remote ticket_tracker.create_ticket!(ticket) if ticket.valid?
     ticket
   end
   

@@ -65,6 +65,11 @@ class Milestone < ActiveRecord::Base
       query = select("remote_id, id").to_sql
       connection.select_rows(query).each_with_object({}) { |(remote_id, id), map| map[remote_id.to_i] = id.to_i }
     end
+    
+    def id_for_remote_id(remote_id)
+      return nil if remote_id.nil? or remote_id == 0
+      where(remote_id: remote_id).pluck(:id).first
+    end
   end
   
   
