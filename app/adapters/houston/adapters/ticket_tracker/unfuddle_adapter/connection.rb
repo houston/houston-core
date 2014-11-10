@@ -182,7 +182,11 @@ module Houston
           rescue Unfuddle::ConfigurationError
             raise UserCredentials::MissingCredentials
           rescue Unfuddle::UnauthorizedError
-            raise UserCredentials::InvalidCredentials if !credentials.valid?
+            begin
+              Unfuddle.with_config(username: login, password: password) { Unfuddle.instance.get("people/current") }
+            rescue Unfuddle::UnauthorizedError
+              raise UserCredentials::InvalidCredentials
+            end
             raise UserCredentials::InsufficientPermissions, "You do not have permission in Unfuddle to perform this action."
           end
           
