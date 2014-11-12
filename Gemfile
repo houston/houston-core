@@ -21,7 +21,7 @@ gem "gemnasium"
 gem "googlecharts"
 gem "hpricot"
 gem "nokogiri"
-gem "oauth-plugin", "~> 0.5.1"
+gem "oauth-plugin", github: "houstonmc/oauth-plugin", branch: "master"
 gem "octokit" # for adapting to GitHub Issues
 gem "oj"
 gem "premailer" #, "1.7.3" # for inlining CSS in HTML emails
