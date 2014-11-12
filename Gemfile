@@ -9,7 +9,7 @@ gem "addressable", :require => "addressable/uri"
 gem "bundler" # used to parse Gemfiles
 gem "cancan"
 gem "childprocess"
-gem "codeclimate-test-reporter", "0.2.0"
+gem "codeclimate-test-reporter", "0.4.1" # locked because Houston implements its API
 gem "default_value_for"
 gem "devise", "~> 3.0.0"
 gem "devise_invitable"

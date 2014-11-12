@@ -41,6 +41,7 @@ module CodeClimate
     
     
     # https://github.com/codeclimate/ruby-test-reporter/blob/v0.2.0/lib/code_climate/test_reporter/formatter.rb#L58-L75
+    # https://github.com/codeclimate/ruby-test-reporter/blob/v0.4.1/lib/code_climate/test_reporter/formatter.rb#L65-L80
     def code_climate_payload
       {
         repo_token:         repo_token,
@@ -63,6 +64,7 @@ module CodeClimate
     end
     
     # https://github.com/codeclimate/ruby-test-reporter/blob/v0.2.0/lib/code_climate/test_reporter/formatter.rb#L39-L56
+    # https://github.com/codeclimate/ruby-test-reporter/blob/v0.4.1/lib/code_climate/test_reporter/formatter.rb#L51-L60
     def source_files
       @source_files ||= test_run.coverage_detail.map do |file|
         {
@@ -101,6 +103,7 @@ module CodeClimate
     end
     
     # https://github.com/codeclimate/ruby-test-reporter/blob/v0.2.0/lib/code_climate/test_reporter/git.rb
+    # https://github.com/codeclimate/ruby-test-reporter/blob/v0.4.1/lib/code_climate/test_reporter/git.rb#L8-L10
     def commit_info
       {
         head:             test_run.sha,
@@ -110,17 +113,19 @@ module CodeClimate
     end
     
     # https://github.com/codeclimate/ruby-test-reporter/blob/v0.2.0/lib/code_climate/test_reporter/formatter.rb#L67-L73
+    # https://github.com/codeclimate/ruby-test-reporter/blob/v0.4.1/lib/code_climate/test_reporter/formatter.rb#L74-L78
     def environment
       {
         test_framework:   "rspec",  # result.command_name.downcase
         pwd:              Dir.pwd,  # Dir.pwd
         rails_root:       nil,      # (Rails.root.to_s rescue nil)
         simplecov_root:   Dir.pwd,  # ::SimpleCov.root
-        gem_version:      "0.2.0"
+        gem_version:      CodeClimate::TestReporter::VERSION
       }
     end
     
     # https://github.com/codeclimate/ruby-test-reporter/blob/v0.2.0/lib/code_climate/test_reporter/ci.rb
+    # https://github.com/codeclimate/ruby-test-reporter/blob/v0.4.1/lib/code_climate/test_reporter/ci.rb#L28-L32
     def ci_service
       case project.ci_server
       when Houston::Adapters::CIServer::JenkinsAdapter::Job
