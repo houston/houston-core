@@ -87,6 +87,30 @@ class CommitSynchronizerTest < ActiveSupport::TestCase
   end
   
   
+  # If we're synchronizing commits simultaneously on multiple
+  # threads or processes, we may encounter a classic race condition
+  # where another thread creates a commit between when we check
+  # for its existance and when we call create_missing_commit!
+  # We should be able to recover gracefully in this case.
+  context "#create_missing_commit!" do
+    should "return the existing commit if it was called in a race condition" do
+      # Another thread has created the commit
+      commit = project.commits.create! Commit.attributes_from_native_commit(native_commit(sha: "aaaaaaaa"))
+      
+      # This thread attempts to create the commit
+      result = project.commits.send :create_missing_commit!, native_commit(sha: "aaaaaaaa")
+      
+      assert_equal commit, result
+    end
+    
+    should "fail when the commit can't be created" do
+      assert_raises ActiveRecord::RecordInvalid do
+        project.commits.send :create_missing_commit!, native_commit(message: nil)
+      end
+    end
+  end
+  
+  
 private
   
   def params(overrides={})

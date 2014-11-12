@@ -67,6 +67,8 @@ private
   def create_missing_commit!(native_commit)
     return nil if native_commit.nil? # <-- can be a null object
     create!(attributes_from_native_commit(native_commit))
+  rescue
+    find_by_sha(native_commit.sha) || raise
   end
   
   def flag_unreachable_commits!(unreachable_commits)

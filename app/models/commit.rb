@@ -66,10 +66,10 @@ class Commit < ActiveRecord::Base
   
   def self.attributes_from_native_commit(native)
     { :sha => native.sha,
-      :message => native.message.strip,
+      :message => native.message.to_s.strip,
       :authored_at => native.authored_at,
       :committer => native.author_name,
-      :committer_email => native.author_email.downcase }
+      :committer_email => native.author_email.to_s.downcase }
   end
   
   def native_commit
