@@ -5,7 +5,7 @@ gem "rails", "~> 4.1.0"
 
 gem "pg"
 
-gem "addressable", :require => "addressable/uri"
+gem "addressable", require: "addressable/uri"
 gem "bundler" # used to parse Gemfiles
 gem "cancan"
 gem "childprocess"
@@ -13,7 +13,7 @@ gem "codeclimate-test-reporter", "0.4.1" # locked because Houston implements its
 gem "default_value_for"
 gem "devise", "~> 3.0.0"
 gem "devise_invitable"
-gem "devise_ldap_authenticatable", :git => "https://github.com/houstonmc/devise_ldap_authenticatable.git"
+gem "devise_ldap_authenticatable", git: "https://github.com/houstonmc/devise_ldap_authenticatable.git"
 gem "faraday"
 gem "faraday-http-cache"
 gem "gemoji"
@@ -38,7 +38,7 @@ gem "whenever" # a DSL for writing CRON jobs
 gem "xlsx", github: "concordia-publishing-house/xlsx", branch: "master"
 
 gem "backbone-rails", "~> 1.0.0"
-gem "handlebars_assets", "0.8.2"
+gem "handlebars_assets"
 gem "jquery-rails", "2.2.1"
 gem "sugar-rails"
 gem "neat-rails", github: "boblail/neat-rails", branch: "master"
@@ -99,6 +99,6 @@ group :test do
   gem "factory_girl_rails"
   
   # For Jenkins
-  gem "simplecov-json", :require => false, :git => "git://github.com/houstonmc/simplecov-json.git"
+  gem "simplecov-json", require: false, git: "git://github.com/houstonmc/simplecov-json.git"
   gem "minitest-reporters", require: false
 end

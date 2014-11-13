@@ -1,2 +1,2 @@
 window.Emoji =
-  names: <%= Emoji.names.to_json %>;
+  names: <%= Emoji.all.map(&:name).to_json %>;
