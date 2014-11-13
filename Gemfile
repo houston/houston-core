@@ -34,7 +34,7 @@ gem "strongbox" # for encrypting user credentials
 gem "sucker_punch" # for Airbrake
 gem "unfuddle", github: "boblail/unfuddle", branch: "master"
 gem "vestal_versions", github: "houstonmc/vestal_versions", branch: "master"
-gem "whenever" # a DSL for writing CRON jobs
+gem "whenever", "0.9.2" # a DSL for writing CRON jobs
 gem "xlsx", github: "concordia-publishing-house/xlsx", branch: "master"
 
 gem "backbone-rails", "~> 1.0.0"
