@@ -134,7 +134,7 @@ class RunTestsOnPostReceive
     return unless test_run.project.repo.respond_to? :commit_status_url
     Github::CommitStatusReport.publish!(test_run)
     test_run.project.feature_working! :publish_status_to_github
-  rescue Net::OpenTimeout
+  rescue Net::OpenTimeout, Net::ReadTimeout
     test_run.project.feature_broken! :publish_status_to_github
     Rails.logger.warn "\e[31m[push:publish:github] #{$!.class}: #{$!.message}\e[0m"
   rescue
@@ -148,7 +148,7 @@ class RunTestsOnPostReceive
     return if test_run.project.code_climate_repo_token.blank?
     CodeClimate::CoverageReport.publish!(test_run)
     test_run.project.feature_working! :publish_coverage_to_code_climate
-  rescue Net::OpenTimeout
+  rescue Net::OpenTimeout, Net::ReadTimeout
     test_run.project.feature_broken! :publish_coverage_to_code_climate
     Rails.logger.warn "\e[31m[push:publish:codeclimate] #{$!.class}: #{$!.message}\e[0m"
   rescue
