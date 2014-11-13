@@ -43,6 +43,8 @@ class ProjectDependencies < SimpleDelegator
   def lockfile
     @lockfile = read_file("Gemfile.lock")
     @lockfile
+  rescue Houston::Adapters::VersionControl::FileNotFound
+    @lockfile = ""
   end
   
 end

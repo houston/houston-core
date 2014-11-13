@@ -105,7 +105,7 @@ module Houston
               tree = connection.lookup object[:oid]
             end
             tree
-          rescue Rugged::OdbError
+          rescue Rugged::OdbError, Rugged::ReferenceError
             raise FileNotFound, "\"#{file_path}\" is not in this repo"
           end
           
