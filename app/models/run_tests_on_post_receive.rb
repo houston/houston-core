@@ -101,6 +101,9 @@ class RunTestsOnPostReceive
     notify_of_invalid_configuration(test_run) do
       test_run.start!
     end
+    
+  rescue
+    Houston.report_exception $!, parameters: params.merge(project_id: project.id)
   end
   
   
@@ -121,11 +124,16 @@ class RunTestsOnPostReceive
     end
     
     test_run.completed!(results_url)
+    
+  rescue
+    Houston.report_exception $!, parameters: params.merge(project_id: project.id)
   end
   
   
   def email_test_run_results(test_run)
     ProjectNotification.test_results(test_run).deliver!
+  rescue
+    Houston.report_exception $!, parameters: {test_run_id: test_run.id}
   end
   
   
@@ -139,7 +147,7 @@ class RunTestsOnPostReceive
     Rails.logger.warn "\e[31m[push:publish:github] #{$!.class}: #{$!.message}\e[0m"
   rescue
     test_run.project.feature_broken! :publish_status_to_github
-    Houston.report_exception $!
+    Houston.report_exception $!, parameters: {test_run_id: test_run.id}
   end
   
   
@@ -153,7 +161,7 @@ class RunTestsOnPostReceive
     Rails.logger.warn "\e[31m[push:publish:codeclimate] #{$!.class}: #{$!.message}\e[0m"
   rescue
     test_run.project.feature_broken! :publish_coverage_to_code_climate
-    Houston.report_exception $!
+    Houston.report_exception $!, parameters: {test_run_id: test_run.id}
   end
   
   
