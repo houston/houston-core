@@ -31,7 +31,7 @@ module Houston
             url = "#{job_path}/api/json?tree=lastBuild[url]"
             response = connection.get(url)
             last_build_url_error!(url) unless 200 == response.status
-            JSON.load(response.body).fetch("lastBuild").fetch("url")
+            MultiJson.load(response.body).fetch("lastBuild").fetch("url")
           end
           
           def build!(commit)

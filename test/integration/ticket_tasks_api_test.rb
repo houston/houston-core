@@ -31,7 +31,7 @@ class TicketTasksApiTest < ActionDispatch::IntegrationTest
           "effort" => "7.0", "committedAt" => nil, "releasedAt" => nil, "completedAt" => nil }
       ]
       
-      response_json = JSON.load(response.body)
+      response_json = MultiJson.load(response.body)
       assert_equal expected_tasks, response_json,
         "Expected the API to have responded with the expected list of tasks"
     end
@@ -40,7 +40,7 @@ class TicketTasksApiTest < ActionDispatch::IntegrationTest
   
   context "POST /api/v1/projects/SLUG/tickets/by_number/NUMBER/tasks" do
     should "respond with validation effors if description is omitted" do
-      expected_response = JSON.dump(errors: ["Description can't be blank"])
+      expected_response = MultiJson.dump(errors: ["Description can't be blank"])
       
       post tasks_path, {effort: 2.1}, env
       assert_response :unprocessable_entity

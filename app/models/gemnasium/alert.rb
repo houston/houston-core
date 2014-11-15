@@ -11,7 +11,7 @@ module Gemnasium
         return
       end
       
-      projects = JSON.load(response.body).values.flatten
+      projects = MultiJson.load(response.body).values.flatten
       
       projects.parallel.map do |project|
         path = "projects/#{project["slug"]}/alerts"
@@ -21,7 +21,7 @@ module Gemnasium
           next
         end
         
-        Array(JSON.load(response.body)).map { |alert| alert.merge(
+        Array(MultiJson.load(response.body)).map { |alert| alert.merge(
           "project_id" => project["slug"],
           "project_slug" => project["name"]) }
       end.flatten.compact

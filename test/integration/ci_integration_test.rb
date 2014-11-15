@@ -110,7 +110,7 @@ class CIIntegrationTest < ActionDispatch::IntegrationTest
     test_run = TestRun.new(project: @project, sha: "bd3e9e2")
     
     expected_url = "https://api.github.com/repos/houstonmc/fixture/statuses/bd3e9e2e4ddf89a640a4f880cbf55bb46cc7e88a?access_token=#{Houston.config.github[:access_token]}"
-    expected_params = JSON.dump(state: "pending", target_url: nil)
+    expected_params = MultiJson.dump(state: "pending", target_url: nil)
     mock(Faraday).post(expected_url, expected_params) do
       stub(Object.new).success? { true }
     end
@@ -132,7 +132,7 @@ class CIIntegrationTest < ActionDispatch::IntegrationTest
     test_run = TestRun.new(project: @project, sha: "bd3e9e2", result: :pass, completed_at: Time.now)
     
     expected_url = "https://api.github.com/repos/houstonmc/fixture/statuses/bd3e9e2e4ddf89a640a4f880cbf55bb46cc7e88a?access_token=#{Houston.config.github[:access_token]}"
-    expected_params = JSON.dump(state: "success", target_url: nil)
+    expected_params = MultiJson.dump(state: "success", target_url: nil)
     mock(Faraday).post(expected_url, expected_params) do
       stub(Object.new).success? { true }
     end

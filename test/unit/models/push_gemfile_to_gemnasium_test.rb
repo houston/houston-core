@@ -75,14 +75,14 @@ class PushGemfileToGemnasiumTest < ActiveSupport::TestCase
       
       expected_url = "https://X:#{Gemnasium.config.api_key}@gemnasium.com/api/v3" <<
                      "/projects/#{Gemnasium.config.project_slug}/dependency_files/compare"
-      expected_body = JSON.dump(Hash[Gemnasium::DependencyFiles.get_sha1s_hash(project_path).sort])
+      expected_body = MultiJson.dump(Hash[Gemnasium::DependencyFiles.get_sha1s_hash(project_path).sort])
       
       expected_headers = {
         "Accept" => "application/json",
         "Accept-Encoding" => "gzip;q=1.0,deflate;q=0.6,identity;q=0.3",
         "Content-Type" => "application/json",
         "User-Agent" => "Ruby" }
-      response = JSON.dump({
+      response = MultiJson.dump({
         "to_upload" => modified_files,
         "deleted" => []})
       stub_request(:post, expected_url) \
@@ -91,8 +91,8 @@ class PushGemfileToGemnasiumTest < ActiveSupport::TestCase
       
       expected_url = "https://X:#{Gemnasium.config.api_key}@gemnasium.com/api/v3" <<
                      "/projects/#{Gemnasium.config.project_slug}/dependency_files/upload"
-      expected_body = JSON.dump(Gemnasium::DependencyFiles.get_content_to_upload(project_path, modified_files))
-      response = JSON.dump({
+      expected_body = MultiJson.dump(Gemnasium::DependencyFiles.get_content_to_upload(project_path, modified_files))
+      response = MultiJson.dump({
         "added" => modified_files,
         "updated" => [],
         "unchanged" => [],

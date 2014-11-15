@@ -40,7 +40,7 @@ class CommitsApiTest < ActionDispatch::IntegrationTest
       "initial commit"
     ]
     
-    response_json = JSON.load(response.body)
+    response_json = MultiJson.load(response.body)
     commits = Array(response_json).map { |commit| commit["message"] }
     assert_equal expected_commits, commits
   end
@@ -55,7 +55,7 @@ class CommitsApiTest < ActionDispatch::IntegrationTest
       "however improbable, must be true"
     ]
     
-    response_json = JSON.load(response.body)
+    response_json = MultiJson.load(response.body)
     commits = Array(response_json).map { |commit| commit["message"] }
     assert_equal expected_commits, commits
   end

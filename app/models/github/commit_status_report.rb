@@ -46,7 +46,7 @@ module Github
     end
     
     def payload
-      JSON.dump(state: state, target_url: test_run.results_url)
+      MultiJson.dump(state: state, target_url: test_run.results_url)
     end
     
     

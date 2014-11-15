@@ -23,7 +23,7 @@ module Rubygems
       end
       raise Rubygems::Error, "Unexpected response from rubygems. Status: #{response.status}" unless response.status == 200
       
-      JSON.load(response.body)
+      MultiJson.load(response.body)
     rescue Faraday::Error::ConnectionFailed
       raise Rubygems::Error, "Unable to connect to rubygems.org: #{$!.message}"
     end
