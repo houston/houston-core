@@ -12,7 +12,8 @@ module Houston
             protocol = "https" if config[:port] == 443
             @errbit_url = "#{protocol}://#{config[:host]}"
             @errbit_url << ":#{config[:port]}" unless [80, 443].member?(config[:port])
-            @connection = Faraday.new(url: errbit_url)
+            @connection = Faraday.new(url: errbit_url + "/api/v1")
+            @connection.use Houston::HTTP::RaiseErrors
           end
           
           attr_reader :config, :errbit_url
@@ -36,25 +37,25 @@ module Houston
           end
           
           def resolve!(problem_id)
-            put("api/v1/problems/#{problem_id}/resolve.json")
+            put("problems/#{problem_id}/resolve.json")
           end
           
           def unresolve!(problem_id)
-            put("api/v1/problems/#{problem_id}/unresolve.json")
+            put("problems/#{problem_id}/unresolve.json")
           end
           
           
           
           def merge_problems(problem_ids)
-            post("api/v1/problems/merge_several", problems: problem_ids)
+            post("problems/merge_several", problems: problem_ids)
           end
           
           def unmerge_problems(problem_ids)
-            post("api/v1/problems/unmerge_several", problems: problem_ids)
+            post("problems/unmerge_several", problems: problem_ids)
           end
           
           def delete_problems(problem_ids)
-            post("api/v1/problems/destroy_several", problems: problem_ids)
+            post("problems/destroy_several", problems: problem_ids)
           end
           
           
@@ -74,7 +75,7 @@ module Houston
           
           
           def fetch_problems(params)
-            get("api/v1/problems.json", params)
+            get("problems.json", params)
               .reject { |problem| problem["resolved"].present? && problem["resolved_at"].nil? }
               .map(&method(:to_problem))
           end
@@ -106,7 +107,7 @@ module Houston
           
           
           def fetch_notices(params)
-            get("api/v1/notices.json", params)
+            get("notices.json", params)
               .map(&method(:to_notice))
           end
           
