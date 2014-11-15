@@ -29,7 +29,7 @@ else
           block.call
         rescue
           Rails.logger.error "\e[31m[#{job.tags.first}/#{job.original}] \e[1m#{$!.message}\e[0m"
-          Houston.report_exception($!, job_name: job.tags.first, job_id: job.id) rescue nil
+          Houston.report_exception($!, parameters: {job_name: job.tags.first, job_id: job.id})
         ensure
           ActiveRecord::Base.clear_active_connections!
         end
