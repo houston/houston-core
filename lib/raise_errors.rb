@@ -45,7 +45,6 @@ module Houston
     
     class RaiseErrors < Faraday::Response::Middleware
       def on_complete(env)
-        binding.pry
         case env[:status]
         when 404
           raise Faraday::Error::ResourceNotFound, response_values(env)
