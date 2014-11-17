@@ -1,10 +1,9 @@
 module EmailHelper
   
   def render_scss(relative_path)
-    path = Rails.root.join("app/assets/stylesheets", relative_path).to_s
-    stylesheet = File.read(path)
-    stylesheet = ERB.new(stylesheet).result(binding) if File.extname(relative_path) == ".erb"
-    Sass::Engine.new(stylesheet, :syntax => :scss).render
+    asset = Rails.application.assets.find_asset(relative_path)
+    raise "Asset not found #{relative_path.inspect}" unless asset
+    asset.to_s
   end
   
   def for_email?

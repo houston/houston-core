@@ -23,9 +23,22 @@ class ViewMailer < ActionMailer::Base
   helper UrlHelper
   helper WeeklyReportHelper
   
+  class_attribute :stylesheets
+  self.stylesheets = %w{
+    core/colors.scss.erb
+    application/emoji.scss
+    application/scores.scss
+    application/weekly_report.scss
+    application/daily_report.scss
+    application/test_run.scss
+    application/releases.scss
+    application/pull_requests.scss
+    application/follow_up.scss
+  }
   
-  helper_method :can?, :cannot?, :current_ability
-  delegate :can?, :cannot?, :to => :current_ability
+  helper_method :can?, :cannot?, :current_ability, :stylesheets
+  delegate :can?, :cannot?, to: :current_ability
+  delegate :stylesheets, to: "self.class"
   
   # c.f. https://github.com/ryanb/cancan/blob/1.6.7/lib/cancan/controller_additions.rb#L348-L350
   def current_ability
