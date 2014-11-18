@@ -131,7 +131,7 @@ GEM
       thread_safe (~> 0.1)
       tzinfo (~> 1.1)
     addressable (2.3.6)
-    airbrake (3.1.17)
+    airbrake (4.1.0)
       builder
       multi_json
     ansi (1.4.3)
@@ -364,7 +364,7 @@ PLATFORMS
 
 DEPENDENCIES
   addressable
-  airbrake (~> 3.1.15)
+  airbrake
   backbone-rails (~> 1.0.0)
   better_errors
   bundler

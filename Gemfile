@@ -44,7 +44,7 @@ gem "sugar-rails"
 gem "neat-rails", github: "boblail/neat-rails", branch: "master"
 
 # Tooling
-gem "airbrake", "~> 3.1.15" # exception notification
+gem "airbrake"
 gem "skylight"
 
 
