@@ -334,36 +334,4 @@ Houston.config do
   
   
   
-  # Cron:
-  # Define events to occur at scheduled intervals
-  # using the DSL defined by the Whenever gem.
-  # Learn more: http://github.com/javan/whenever
-  cron do
-    every 3.hours do
-      runner "UpdateKanbanQueueJob.run!", environment: "production"
-    end
-    
-    every 6.hours do
-      runner "SyncAllTicketsJob.run!", environment: "production"
-    end
-    
-    every :day, :at => "2:00am" do
-      runner "SyncCommits.run!", environment: "production"
-    end
-    
-    every :day, :at => "6:30am" do
-      runner "DailyReport.deliver_all!", environment: "production"
-    end
-    
-    every :weekday, :at => "3:00pm" do
-      runner "PullRequestsMailer.deliver_to!(#{PULL_REQUEST_RECIPIENTS.inspect})", environment: "production"
-    end
-    
-    every :monday, :at => "6am" do
-      runner "WeeklyReport.new(1.week.ago).deliver_to!(#{WEEKLY_REPORT_RECIPIENTS.inspect})", environment: "production"
-    end
-  end
-  
-  
-  
 end
