@@ -303,13 +303,12 @@ module Houston
       Houston.observer.on(event, &block)
     end
     
-    def every(interval, name, options={}, &block)
-      @timers.push [interval, name, options, block]
+    def at(time, name, options={}, &block)
+      @timers.push [:cron, time, name, options, block]
     end
     
-    def cron(&block)
-      @whenever_configuration = block if block_given?
-      @whenever_configuration ||= nil
+    def every(interval, name, options={}, &block)
+      @timers.push [:every, interval, name, options, block]
     end
     
     

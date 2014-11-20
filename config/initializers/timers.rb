@@ -22,8 +22,8 @@ else
       end
     end
     
-    Houston.config.timers.each do |(interval, name, options, block)|
-      $scheduler.every(interval, options.merge(tag: name)) do |job|
+    Houston.config.timers.each do |(type, param, name, options, block)|
+      wrapped_block = Proc.new do |job|
         Rails.logger.info "\e[34m[#{job.tags.first}/#{job.original}] Running job\e[0m"
         begin
           block.call
@@ -33,6 +33,18 @@ else
         ensure
           ActiveRecord::Base.clear_active_connections!
         end
+      end
+      
+      case type
+      when :cron
+        cronline = Whenever::Output::Cron.new(options.fetch(:every, :day), nil, param)
+        $scheduler.cron cronline.time_in_cron_syntax, options.merge(tag: name), &wrapped_block
+      
+      when :every
+        $scheduler.every param, options.merge(tag: name), &wrapped_block
+      
+      else
+        raise NotImplementedError, "A #{type.inspect} timer is not implemented"
       end
     end
   end
