@@ -34,6 +34,11 @@ module Houston
             MultiJson.load(response.body).fetch("lastBuild").fetch("url")
           end
           
+          def last_build_progress_url
+            url = last_build_url
+            url + "/console" if url
+          end
+          
           def build!(commit)
             url = build_path(commit)
             Rails.logger.info "[jenkins] POST #{url}"

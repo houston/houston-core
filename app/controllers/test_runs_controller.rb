@@ -10,8 +10,18 @@ class TestRunsController < ApplicationController
   
   def retry
     @test_run.retry!
-    last_build_url = @project.ci_server.last_build_url if @project.ci_server.respond_to? :last_build_url
-    redirect_to last_build_url || root_url, notice: "Build for #{@project.name} retried"
+    
+    build_url = if @project.ci_server.respond_to? :last_build_progress_url
+      @project.ci_server.last_build_progress_url
+    elsif @project.ci_server.respond_to? :last_build_url
+      @project.ci_server.last_build_url
+    end
+    
+    if build_url
+      redirect_to build_url
+    else
+      redirect_to root_url, notice: "Build for #{@project.name} retried"
+    end
   end
   
 private
