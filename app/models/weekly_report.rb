@@ -49,8 +49,6 @@ class WeeklyReport
   
   def deliver_to!(recipients)
     ViewMailer.weekly_report(self, recipients).deliver!
-  rescue
-    Houston.report_exception $!
   end
   
   class << self

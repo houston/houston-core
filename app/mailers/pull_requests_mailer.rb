@@ -5,8 +5,6 @@ class PullRequestsMailer < ViewMailer
       user = User.find_by_email!(email)
       pull_requests(user).deliver!
     end
-  rescue
-    Houston.report_exception $!
   end
   
   
