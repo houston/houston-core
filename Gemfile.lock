@@ -26,7 +26,7 @@ GIT
 
 GIT
   remote: git://github.com/concordia-publishing-house/idioms.git
-  revision: 1738bb919470918e46a2f446c707cf1dba2d42f5
+  revision: 085d734928f8033f8e1c5ab7afcfd8eb60851f65
   branch: master
   specs:
     idioms (0.0.1)
