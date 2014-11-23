@@ -49,6 +49,10 @@ module Houston
           end
           
           
+          def opened_at
+            attributes[:opened_at]
+          end
+          
           def resolved_at
             attributes[:resolved_at]
           end

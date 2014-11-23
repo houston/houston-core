@@ -92,6 +92,7 @@ module Houston
               last_notice_environment: attributes["last_notice_environment"],
               notices_count: attributes["notices_count"],
               
+              opened_at: attributes["opened_at"].try(:to_time),
               resolved: attributes["resolved"],
               resolved_at: attributes["resolved_at"].try(:to_time),
               
