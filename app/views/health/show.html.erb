@@ -1,15 +1,69 @@
-<h2>Health</h2>
+<% content_for :title do %>
+<h1 class="project-banner space-below">
+  Health
+</h1>
+<% end %>
 
-<h3>Scheduler</h3>
-<dl>
-  <% if $scheduler %>
-    <dt>Status</dt><dd><%= $scheduler.up? ? "Up" : "Down" %></dd>
-    <dt>Jobs</dt><dd>
-      <% $scheduler.jobs.each do |job| %>
-        <code><%= job.tags.first %></code>
-      <% end %>
-    </dd>
-  <% else %>
-    <dt>Status</dt><dd>Unavailable</dd>
-  <% end %>
-</dl>
+<% if $scheduler %>
+  <p><b>Status:</b> <%= $scheduler.up? ? "Up (Started #{$scheduler.started_at})" : "Down" %></p>
+
+  <div class="nomargin">
+    <table id="jobs" class="table table-sortable table-striped">
+      <thead>
+        <tr>
+          <td class="table-margin"></td>
+          <th class="scheduler-job-name">Name</th>
+          <th class="scheduler-job-schedule">Schedule</th>
+          <td class="table-margin"></td>
+        </tr>
+      </thead>
+      <tbody>
+        <% $scheduler.jobs.each do |job| %>
+          <tr class="scheduler-job">
+            <td class="table-margin"></td>
+            <td class="scheduler-job-name"><%= job.tags.first %></td>
+            <td class="scheduler-job-schedule"><%= job.original %></td>
+            <td class="table-margin"></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+<% else %>
+  <p><b>Status:</b> Unavailable</p>
+<% end %>
+
+
+<% content_for :javascripts do %>
+  <script type="text/javascript">
+    $(function() {
+      $('#jobs').tablesorter();
+      
+      var format = d3.format('02d'),
+          $countdowns, $countdown, label, timeleft, seconds, minutes, hours, days;
+      
+      function updateCountdowns() {
+        $countdowns = $countdowns || $('.countdown');
+        urgent = false;
+        $countdowns.each(function() {
+          $countdown = $(this);
+          timeleft = +$countdown.attr('data-secondsleft') - 1;
+          $countdown.attr('data-secondsleft', timeleft);
+          seconds = Math.abs(timeleft);
+          minutes = Math.floor(seconds / 60);
+          hours = Math.floor(minutes / 60);
+          days = Math.floor(hours / 24);
+          
+          label = format(seconds % 60);
+          if(minutes >= 1) label = format(minutes % 60) + ':' + label;
+          if(hours >= 1) label = Math.floor(hours % 24) + ':' + label;
+          if(days >= 1) label = '<span class="label">' + Math.floor(days) + 'd</span> ' + label;
+          $countdown.html(label);
+        });
+      }
+      
+      setInterval(updateCountdowns, 1000);
+    });
+  </script>
+<% end %>
