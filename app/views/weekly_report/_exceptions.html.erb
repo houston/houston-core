@@ -42,7 +42,7 @@
           <span class="bug-count">0</span><%= image_tag image_url("bug-zero-128.png"), size: 118 %>
         </p>
       <% elsif bugs.change_this_week < 0 %>
-        <p class="exceptions-bugs-summary total-bugs negative" style="-webkit-box-shadow: inset 0 0 <%= -bugs_change_this_week * 2 %>px #42A800; <%= "letter-spacing: -0.15em; text-indent: -0.25em;" if (10..19).cover?(-bugs_change_this_week) %>">
+        <p class="exceptions-bugs-summary total-bugs negative" style="-webkit-box-shadow: inset 0 0 <%= -bugs.change_this_week * 2 %>px #42A800; <%= "letter-spacing: -0.15em; text-indent: -0.25em;" if (10..19).cover?(-bugs.change_this_week) %>">
           <span class="bug-count"><%= -bugs.change_this_week %></span><%= image_tag image_url("bug-fixed-128.png"), size: 118 %>
         </p>
       <% else %>
