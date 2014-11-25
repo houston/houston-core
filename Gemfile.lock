@@ -43,7 +43,7 @@ GIT
 
 GIT
   remote: git://github.com/houstonmc/houston-alerts.git
-  revision: b9091501fd9aa48d1b2952a41f6890443fcbfc83
+  revision: 2c340573e9bfb39cbd77bea9433d4720f13417d4
   branch: master
   specs:
     houston-alerts (0.0.1)
