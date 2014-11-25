@@ -1,7 +1,8 @@
 # Adapted from https://github.com/jmettraux/rufus-scheduler/issues/10#issuecomment-833423
 
-if Rails.const_defined? :Console
-  puts "\e[94mSkipping timers since we're in Rails Console\e[0m"
+if !Houston.server?
+  puts "\e[94mSkipping timers since we're not running as a server\e[0m"
+  Rails.logger.info "\e[94mSkipping timers since we're not running as a server\e[0m"
 else
   
   lockfile = Rails.root.join(".rufus-scheduler.lock").to_s.freeze
