@@ -499,7 +499,8 @@ CREATE TABLE alerts (
     deadline timestamp without time zone NOT NULL,
     hours hstore DEFAULT ''::hstore,
     destroyed_at timestamp without time zone,
-    checked_out_remotely boolean DEFAULT false
+    checked_out_remotely boolean DEFAULT false,
+    can_change_project boolean DEFAULT false
 );
 
 
@@ -2523,4 +2524,6 @@ INSERT INTO schema_migrations (version) VALUES ('20140929024130');
 INSERT INTO schema_migrations (version) VALUES ('20141012023628');
 
 INSERT INTO schema_migrations (version) VALUES ('20141027194819');
+
+INSERT INTO schema_migrations (version) VALUES ('20141125162853');
 
