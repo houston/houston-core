@@ -39,6 +39,15 @@ module Houston
       @mailer_sender ||= nil
     end
     
+    def mailer_from
+      require "mail"
+      
+      Mail::Address.new.tap do |email|
+        email.display_name = title
+        email.address = mailer_sender
+      end.to_s
+    end
+    
     def passphrase(*args)
       @passphrase = args.first if args.any?
       @passphrase ||= nil

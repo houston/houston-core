@@ -1,13 +1,6 @@
 class ViewMailer < ActionMailer::Base
   include AbstractController::Callbacks
   
-  
-  # !todo: quote the display name
-  def self.format_email_address(user)
-    "#{user.name} <#{user.email}>"
-  end
-  
-  default from: format_email_address(OpenStruct.new(name: Houston.config.title, email: Houston.config.mailer_sender))
   helper AvatarHelper
   helper BacktraceHelper
   helper CommitHelper
@@ -96,7 +89,10 @@ protected
   
   def format_email_address(recipient)
     if recipient.respond_to?(:name) && recipient.respond_to?(:email)
-      self.class.format_email_address(recipient)
+      Mail::Address.new.tap do |email|
+        email.display_name = recipient.name
+        email.address = recipient.email
+      end.to_s
     else
       recipient
     end
