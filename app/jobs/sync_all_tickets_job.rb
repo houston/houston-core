@@ -5,8 +5,6 @@ class SyncAllTicketsJob
   
   def self.run!
     new.run!
-  rescue
-    binding.pry if binding.respond_to?(:pry)
   end
   
   def run!
