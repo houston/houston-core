@@ -2,16 +2,24 @@
   padding-bottom: 0;
   min-height: 58px;
   
-  a.project-banner-btn {
+  .project-banner-btn {
     color: #333;
     padding: 6px;
     display: block;
     float: right;
     white-space: nowrap;
     cursor: pointer;
-    margin-right: 8px;
+    margin: 0 8px 0 0;
     position: relative;
     top: -4px;
+
+    label {
+      display: inline-block;
+      font-weight: inherit;
+      font-size: inherit;
+      line-height: inherit;
+      margin-bottom: 0;
+    }
 
     i {
       display: inline-block;

@@ -5,6 +5,7 @@ gem "rails", "~> 4.1.0"
 
 gem "pg"
 
+gem "activerecord-import"
 gem "addressable", require: "addressable/uri"
 gem "bundler" # used to parse Gemfiles
 gem "cancan"
@@ -24,6 +25,7 @@ gem "nokogiri"
 gem "oauth-plugin", github: "houstonmc/oauth-plugin", branch: "master"
 gem "octokit" # for adapting to GitHub Issues
 gem "oj"
+gem "pg_search"
 gem "premailer" #, "1.7.3" # for inlining CSS in HTML emails
 gem "progressbar" # for long migrations
 gem "redcarpet"

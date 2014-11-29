@@ -21,6 +21,11 @@ Handlebars.registerHelper 'formatDateWithYear', (timestamp)->
   format = d3.time.format('%b %-d <span class="year">%Y</span>')
   format Date.create(timestamp)
 
+Handlebars.registerHelper 'formatDateWithYear2', (timestamp)->
+  return "" unless timestamp
+  format = d3.time.format('%b %-d, %Y')
+  format Date.create(timestamp)
+
 Handlebars.registerHelper 'formatTime', (timestamp)->
   format = d3.time.format('%a %b %-d, %Y %-I:%M%p')
   format Date.create(timestamp)

@@ -27,9 +27,18 @@ button.close {
   background: #efefef;
 }
 
+.callout.callout-slim {
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+
 .callout.callout-banner {
-  margin-top: -2em;
+  margin-top: -25px;
   margin-bottom: 2em;
+}
+
+.callout.callout-banner.callout-slim {
+  margin-bottom: 1em;
 }
 
 .callout.callout-footer {
@@ -219,3 +228,9 @@ h1 {
 }
 
 .deleting { opacity: 0.2 !important; }
+
+iframe.upload-target {
+  visibility: hidden;
+  height: 1px;
+  width: 1px;
+}

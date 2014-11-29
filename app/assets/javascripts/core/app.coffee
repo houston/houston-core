@@ -63,6 +63,9 @@ window.App =
     $modal = $(html).modal()
     $modal.on 'hidden', -> $(@).remove()
   
+  uploadComplete: (id, args...)->
+    $(id).trigger('upload:complete', args)
+  
   toggleFullScreen: ->
     $body = $('body')
     
