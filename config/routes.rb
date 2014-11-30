@@ -66,8 +66,6 @@ Rails.application.routes.draw do
   
   # Projects
   
-  get "projects/dependencies", to: "project_dependencies#index"
-  
   resources :projects do
     member do
       put :retire
