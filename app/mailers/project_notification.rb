@@ -103,20 +103,6 @@ class ProjectNotification < ViewMailer
   end
   
   
-  def daily_report(daily_report, recipients)
-    @report = daily_report
-    @project = daily_report.project
-    @title = daily_report.title
-    @date = daily_report.date
-    
-    mail({
-      to: recipients,
-      subject: daily_report.title,
-      template: "daily_report"
-    })
-  end
-  
-  
   def follow_up(antecedent)
     @antecedent = antecedent
     @ticket = antecedent.ticket
@@ -127,7 +113,7 @@ class ProjectNotification < ViewMailer
     mail({
       to: @reporter,
       subject: "Sample Ticket follow-up",
-      template: "follow_up"
+      template: "project_notification/follow_up"
     })
   end
   
@@ -137,7 +123,7 @@ protected
   
   def mail(options={})
     options[:subject] = "#{@project.name}: #{options[:subject]}"
-    options[:template] = "project_notification/#{options[:template]}"
+    options[:template] = "project_notification/#{options[:template]}" unless options[:template].start_with?("/")
     super
   end
   

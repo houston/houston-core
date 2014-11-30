@@ -1,8 +1,0 @@
-<h1 class="project-banner <%= @project.color %>">
-  <small>Activity for</small> <%= @project.name %> <small>on <%= @date.strftime("%A, %B %e") %></small>
-</h1>
-
-<div id="daily_report" class="daily-report">
-  <%= render "daily_report/tickets" if @report.tickets_closed.any? %>
-  <%= render "daily_report/new_exceptions" if @report.new_exceptions.any? %>
-</div>

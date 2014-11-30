@@ -154,10 +154,6 @@ namespace :config do
       runner "SyncCommits.run!", environment: "production"
     end
     
-    every :day, :at => "6:30am" do
-      runner "DailyReport.deliver_all!", environment: "production"
-    end
-    
     every :weekday, :at => "3:00pm" do
       runner "PullRequestsMailer.deliver_to!(\#{PULL_REQUEST_RECIPIENTS.inspect})", environment: "production"
     end

@@ -4,7 +4,6 @@ class ViewMailer < ActionMailer::Base
   helper AvatarHelper
   helper BacktraceHelper
   helper CommitHelper
-  helper DailyReportHelper
   helper EmailHelper
   helper EmojiHelper
   helper MarkdownHelper
@@ -22,7 +21,6 @@ class ViewMailer < ActionMailer::Base
     application/emoji.scss
     application/scores.scss
     application/weekly_report.scss
-    application/daily_report.scss
     application/test_run.scss
     application/releases.scss
     application/pull_requests.scss
