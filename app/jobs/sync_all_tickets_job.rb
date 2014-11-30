@@ -8,9 +8,10 @@ class SyncAllTicketsJob
   end
   
   def run!
-    Project.with_ticket_tracker.each do |project|
-      update_tickets_for_project!(project)
-    end
+    Project \
+      .unretired
+      .where(Project.arel_table[:ticket_tracker_name].not_in(%w{None Houston}))
+      .each(&method(:update_tickets_for_project!))
   rescue QuitAll
   end
   
