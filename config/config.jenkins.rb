@@ -78,8 +78,7 @@ Houston.config do
   # Presently, Houston requires that "Tester" be
   # one of these roles.
   roles "Developer",
-        "Tester",
-        "Mixer"
+        "Tester"
   
   # Project Roles:
   # Each of these roles is project-specific. A user
@@ -137,16 +136,10 @@ Houston.config do
       # Everyone can see project quotas
       can :read, Houston::Scheduler::ProjectQuota
       
-      # Mixers can manage project quotas
-      can :manage, Houston::Scheduler::ProjectQuota if user.mixer?
-      
       # Developers see the other kinds of changes: Test Fixes and Refactors
       # as well as commit info
       can :read, [Commit, ReleaseChange] if user.developer?
       can :manage, Sprint if user.developer?
-      
-      # Mixers can see all testing notes
-      can :read, TestingNote if user.mixer?
       
       # Testers and Developers can see and comment on all testing notes
       can [:create, :read], TestingNote if user.tester? or user.developer?
