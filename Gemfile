@@ -55,7 +55,9 @@ gem "skylight"
 #
 # Here modules are dynamically included in the Gemfile
 #
-require "./lib/configuration.rb" # Loads Houston's configuration
+root = File.dirname(__FILE__)
+root = "./#{root}" unless root.start_with?("/")
+require File.join(root, "lib/configuration.rb") # Loads Houston's configuration
 Houston.config.modules.each do |mod|
   gem *mod.gemspec
 end
