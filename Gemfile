@@ -55,7 +55,7 @@ gem "skylight"
 #
 # Here modules are dynamically included in the Gemfile
 #
-require "./lib/configuration.rb" # Loads Houston"s configuration
+require "./lib/configuration.rb" # Loads Houston's configuration
 Houston.config.modules.each do |mod|
   gem *mod.gemspec
 end
