@@ -578,4 +578,4 @@ end
 
 
 # Load configuration file
-require File.join(root, "config/config.rb")
+require (ENV["HOUSTON_CONFIG"] || File.join(root, "config/config.rb"))
