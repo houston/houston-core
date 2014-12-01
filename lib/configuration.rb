@@ -246,8 +246,8 @@ module Houston
     
     # Modules
     
-    def use(module_name, *args, &block)
-      @modules << ::Houston::Module.new(module_name, *args, &block)
+    def use(module_name, args={}, &block)
+      @modules << ::Houston::Module.new(module_name, args, &block)
     end
     attr_reader :modules
     
@@ -342,10 +342,12 @@ module Houston
   
   class Module
     
-    def initialize(module_name, *gemconfig, &moduleconfig)
+    def initialize(module_name, gemconfig={}, &moduleconfig)
       @name = module_name.to_s
       gem_name = "houston-#{name}"
-      @gemspec = [gem_name] + gemconfig
+      @bundle = gemconfig.fetch(:bundle, true)
+      @gemspec = [gem_name, gemconfig.pick(:group, :groups, :git, :path, :name, :branch, :github,
+        :ref, :tag, :require, :submodules, :platform, :platforms, :type, :source)]
       @config = moduleconfig
     end
     
@@ -353,6 +355,10 @@ module Houston
     
     def engine
       namespace::Engine
+    end
+    
+    def bundle?
+      @bundle
     end
     
     def path

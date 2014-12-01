@@ -59,7 +59,7 @@ root = File.dirname(__FILE__)
 root = "./#{root}" unless root.start_with?("/")
 require File.join(root, "lib/configuration.rb") # Loads Houston's configuration
 Houston.config.modules.each do |mod|
-  gem *mod.gemspec
+  gem *mod.gemspec if mod.bundle?
 end
 
 
