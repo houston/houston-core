@@ -4,7 +4,7 @@ module Houston
     raise if Rails.env.test? || Rails.env.development?
     if defined?(Airbrake)
       case exception
-      when Houston::HTTP::Error
+      when Idioms::HTTP::Error
        (other_data[:parameters] ||= {}).merge!(_normalize_faraday_env(exception.env))
       end
       Airbrake.notify(exception, other_data)
