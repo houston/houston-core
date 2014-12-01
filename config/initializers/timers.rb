@@ -23,6 +23,16 @@ else
       end
     end
     
+    def exceptions_wrapping(error_class)
+      m = Module.new
+      (class << m; self; end).instance_eval do
+        define_method(:===) do |err|
+          err.respond_to?(:original_exception) && error_class === err.original_exception
+        end
+      end
+      m
+    end
+    
     Houston.config.timers.each do |(type, param, name, options, block)|
       wrapped_block = Proc.new do |job|
         Rails.logger.info "\e[34m[#{job.tags.first}/#{job.original}] Running job\e[0m"
@@ -32,8 +42,8 @@ else
                Errno::ECONNREFUSED,
                Errno::ETIMEDOUT,
                Faraday::Error::ConnectionFailed,
-               Houston::HTTP::ServerError,
-               PG::ConnectionBad
+               Idioms::HTTP::ServerError,
+               exceptions_wrapping(PG::ConnectionBad)
           Rails.logger.error "\e[31m[#{job.tags.first}/#{job.original}] #{$!.class}: #{$!.message} [ignored]\e[0m"
         rescue
           Rails.logger.error "\e[31m[#{job.tags.first}/#{job.original}] \e[1m#{$!.message}\e[0m"
