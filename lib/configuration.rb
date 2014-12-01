@@ -1,6 +1,7 @@
-require File.join(File.dirname(__FILE__), 'core_ext/hash')
+root = File.expand_path(File.join(File.dirname(__FILE__), ".."))
+require File.join(root, "lib/core_ext/hash")
 
-$:.unshift File.expand_path("./app/adapters")
+$:.unshift File.expand_path(File.join(root, "app/adapters"))
 require "houston/adapters"
 
 module Houston
@@ -571,4 +572,4 @@ end
 
 
 # Load configuration file
-require File.expand_path("./config/config.rb")
+require File.join(root, "config/config.rb")

@@ -1,4 +1,5 @@
-require './lib/configuration'
+root = File.expand_path(File.join(File.dirname(__FILE__), "../.."))
+require File.join(root, "lib/configuration")
 
 namespace :keypair do
   task :generate do |t|
