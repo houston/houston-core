@@ -652,7 +652,8 @@ CREATE TABLE deploys (
     updated_at timestamp without time zone NOT NULL,
     environment_name character varying(255) DEFAULT 'Production'::character varying NOT NULL,
     deployer character varying(255),
-    commit_id integer
+    commit_id integer,
+    duration integer
 );
 
 
@@ -2589,4 +2590,6 @@ INSERT INTO schema_migrations (version) VALUES ('20141027194819');
 INSERT INTO schema_migrations (version) VALUES ('20141125162853');
 
 INSERT INTO schema_migrations (version) VALUES ('20141128155140');
+
+INSERT INTO schema_migrations (version) VALUES ('20141202004123');
 

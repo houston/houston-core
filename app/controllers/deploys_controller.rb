@@ -17,12 +17,14 @@ class DeploysController < ApplicationController
     
     sha = params[:commit] || params[:head_long] || params[:head]
     deployer = params[:deployer] || params[:user]
+    milliseconds = params[:duration]
     
     Deploy.create!({
       project: @project,
       environment_name: @environment,
       sha: sha,
-      deployer: deployer
+      deployer: deployer,
+      duration: milliseconds
     })
     
     head 200
