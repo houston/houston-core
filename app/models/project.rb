@@ -64,6 +64,10 @@ class Project < ActiveRecord::Base
     "master"
   end
   
+  def self.[](slug)
+    find_by_slug(slug)
+  end
+  
   
   
   
