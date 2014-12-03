@@ -8,7 +8,20 @@ class Deploy < ActiveRecord::Base
   validates :project_id, :environment_name, presence: true
   validates :sha, presence: {message: "must refer to a commit"}
   
+  default_scope { order("created_at DESC") }
+  
   after_create { Houston.observer.fire "deploy:create", self }
+  
+  
+  class << self
+    def to_environment(environment_name)
+      where(environment_name: environment_name)
+    end
+    
+    def before(time)
+      where(arel_table[:created_at].lteq(time))
+    end
+  end
   
   
   def build_release
@@ -21,6 +34,11 @@ class Deploy < ActiveRecord::Base
   end
   
   
+  def commits
+    @commits ||= find_commits
+  end
+  
+  
 private
   
   def identify_commit
@@ -28,6 +46,16 @@ private
     self.commit = project.find_commit_by_sha(sha)
     self.sha = commit.sha if commit
   rescue Houston::Adapters::VersionControl::InvalidShaError
+  end
+  
+  def find_commits
+    return [] unless sha
+    previous_deploy = project.deploys
+      .to_environment(environment_name)
+      .before(created_at || Time.now)
+      .last
+    return [] unless previous_deploy
+    project.commits.between(previous_deploy.sha, sha)
   end
   
 end
