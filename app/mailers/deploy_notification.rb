@@ -27,7 +27,7 @@ private
   end
   
   def it_wasnt_a_maintainer
-    !maintainers.map(&:email).member?(deployer)
+    !maintainers.with_email_address(deployer).exists?
   end
   
 end
