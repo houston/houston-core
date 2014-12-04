@@ -29,8 +29,8 @@ module Houston
             connection.open_problems params.merge(app_id: app_id)
           end
           
-          def resolve!(problem_id)
-            connection.resolve!(problem_id)
+          def resolve!(problem_id, params={})
+            connection.resolve!(problem_id, params)
           end
           
           def unresolve!(problem_id)

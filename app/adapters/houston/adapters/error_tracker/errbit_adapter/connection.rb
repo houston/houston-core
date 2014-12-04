@@ -36,8 +36,8 @@ module Houston
             fetch_problems params
           end
           
-          def resolve!(problem_id)
-            put("problems/#{problem_id}/resolve.json")
+          def resolve!(problem_id, params={})
+            put("problems/#{problem_id}/resolve.json", params.pick(:message))
           end
           
           def unresolve!(problem_id)
