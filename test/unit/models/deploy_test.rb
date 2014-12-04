@@ -68,9 +68,13 @@ class DeployTest < ActiveSupport::TestCase
       stub(project).find_commit_by_sha(previous_commit.sha).returns(previous_commit)
       @previous_deploy = create(:deploy, project: project, sha: previous_commit.sha)
       
+      # This is a red herring: an older commit
+      stub(project).find_commit_by_sha("888f5c5").returns(nil)
+      create(:deploy, project: project, sha: "888f5c5", created_at: 1.week.ago)
+      
       # This is a red herring: a more-recent commit to the wrong environment
-      stub(project).find_commit_by_sha("30301ad0").returns(nil)
-      create(:deploy, project: project, sha: "30301ad0", environment_name: "Nope")
+      stub(project).find_commit_by_sha("30301ad").returns(nil)
+      create(:deploy, project: project, sha: "30301ad", environment_name: "Nope")
     end
 
     context "with a valid commit" do

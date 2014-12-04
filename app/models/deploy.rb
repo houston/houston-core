@@ -19,7 +19,7 @@ class Deploy < ActiveRecord::Base
     end
     
     def before(time)
-      where(arel_table[:created_at].lteq(time))
+      where(arel_table[:created_at].lt(time))
     end
   end
   
@@ -38,6 +38,14 @@ class Deploy < ActiveRecord::Base
     @commits ||= find_commits
   end
   
+  def previous_deploy
+    @previous_deploy ||= project.deploys
+      .to_environment(environment_name)
+      .before(created_at || Time.now)
+      .first
+  end
+  
+  
   
 private
   
@@ -50,10 +58,6 @@ private
   
   def find_commits
     return [] unless sha
-    previous_deploy = project.deploys
-      .to_environment(environment_name)
-      .before(created_at || Time.now)
-      .last
     return [] unless previous_deploy
     project.commits.between(previous_deploy.sha, sha)
   end
