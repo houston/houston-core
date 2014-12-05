@@ -53,7 +53,7 @@ GIT
 
 GIT
   remote: git://github.com/houstonmc/houston-alerts.git
-  revision: 539919d4d53801b12d821bc91c774768a3bdf565
+  revision: 17facdc26aaeb73b949c1ceb714fa9898e839e0a
   branch: master
   specs:
     houston-alerts (0.0.1)
@@ -299,7 +299,7 @@ GEM
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
     raindrops (0.13.0)
-    rake (10.4.0)
+    rake (10.4.2)
     redcarpet (3.2.0)
     ref (1.0.5)
     rr (1.1.2)
