@@ -17,7 +17,7 @@ GIT
 
 GIT
   remote: git://github.com/concordia-publishing-house/houston-feedback.git
-  revision: 66c2892cb8ebe67d3a83c950b94abd8e41bb58c0
+  revision: 30301ad076cecff0fa09c277a513bcb4ca099eaa
   branch: master
   specs:
     houston-feedback (0.0.1)
