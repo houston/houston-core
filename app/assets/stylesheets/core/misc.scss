@@ -216,6 +216,12 @@ h1 {
   }
 }
 
+@media only screen and (max-width: 600px)  {
+  h1 {
+    padding-left: .66em;
+  }
+}
+
 #body {
   padding-top: 77px;
 }

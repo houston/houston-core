@@ -23,3 +23,10 @@ form.form-horizontal {
   
   li { list-style-type: none; } 
 }
+
+@media only screen and (max-width: 600px) {
+  form.form-horizontal {
+    .control-label { float: none; text-align: left; }
+    .controls, .form-actions { padding-left: 0; }
+  }
+}
