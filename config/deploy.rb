@@ -10,14 +10,17 @@ after "deploy:setup", "deploy:create_shared_folders"
 namespace :deploy do
   
   task :symlink_config, :roles => :app do
-    run "ln -nfs #{shared_path}/config/config.rb #{release_path}/config/config.rb"
-    run "ln -nfs #{shared_path}/config/skylight.yml #{release_path}/config/skylight.yml"
-    run "ln -nfs #{shared_path}/config/keypair.pem #{release_path}/config/keypair.pem"
-    run "rm -f #{release_path}/config/secrets.yml"
-    run "ln -nfs #{shared_path}/config/secrets.yml #{release_path}/config/secrets.yml"
-    run "rm -rf #{release_path}/tmp"
-    run "ln -nfs #{shared_path}/tmp #{release_path}"
-    run "ln -nfs #{shared_path}/extras #{release_path}/public/extras"
+    commands = [
+      "ln -nfs #{shared_path}/config/config.rb #{release_path}/config/config.rb",
+      "ln -nfs #{shared_path}/config/skylight.yml #{release_path}/config/skylight.yml",
+      "ln -nfs #{shared_path}/config/keypair.pem #{release_path}/config/keypair.pem",
+      "rm -f #{release_path}/config/secrets.yml",
+      "ln -nfs #{shared_path}/config/secrets.yml #{release_path}/config/secrets.yml",
+      "rm -rf #{release_path}/tmp",
+      "ln -nfs #{shared_path}/tmp #{release_path}",
+      "ln -nfs #{shared_path}/extras #{release_path}/public/extras",
+    ]
+    run commands.join(" && ")
   end
   
   desc "Copy config.rb"
