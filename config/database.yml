@@ -11,3 +11,11 @@ test:
   database: houston_test
   host: localhost
   prepared_statements: false
+
+# Just so we can precompile assets locally
+production:
+  adapter: postgresql
+  encoding: utf8
+  database: houston_development
+  host: localhost
+  prepared_statements: false

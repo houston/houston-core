@@ -27,6 +27,9 @@ Rails.application.configure do
   # number of complex assets.
   config.assets.debug = false
 
+  # Store assets in another path
+  config.assets.prefix = '/dev-assets'
+
   # Test emails
   config.action_mailer.delivery_method = :letter_opener
 
