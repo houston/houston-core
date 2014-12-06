@@ -39,12 +39,6 @@ gem "vestal_versions", github: "houstonmc/vestal_versions", branch: "master"
 gem "whenever", "0.9.2" # a DSL for writing CRON jobs
 gem "xlsx", github: "concordia-publishing-house/xlsx", branch: "master"
 
-gem "backbone-rails", "~> 1.0.0"
-gem "handlebars_assets"
-gem "jquery-rails", "2.2.1"
-gem "sugar-rails"
-gem "neat-rails", github: "boblail/neat-rails", branch: "master"
-
 # Tooling
 gem "airbrake"
 gem "skylight"
@@ -64,7 +58,7 @@ end
 
 
 
-group :development do
+group :development, :test do
   # Use SCSS for stylesheets
   gem "sass-rails", "~> 4.0.0"
 
@@ -76,6 +70,15 @@ group :development do
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   gem "therubyracer", platforms: :ruby
+
+  # Precompiler for handlebars
+  gem "handlebars_assets"
+
+  # Source for unprecompiled assets
+  gem "backbone-rails", "~> 1.0.0"
+  gem "jquery-rails", "2.2.1"
+  gem "sugar-rails"
+  gem "neat-rails", github: "boblail/neat-rails", branch: "master"
 end
 
 group :development do
