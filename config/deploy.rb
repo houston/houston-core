@@ -12,10 +12,10 @@ namespace :deploy do
   task :symlink_config, :roles => :app do
     commands = [
       "ln -nfs #{shared_path}/config/config.rb #{release_path}/config/config.rb",
-      "ln -nfs #{shared_path}/config/skylight.yml #{release_path}/config/skylight.yml",
       "ln -nfs #{shared_path}/config/keypair.pem #{release_path}/config/keypair.pem",
-      "rm -f #{release_path}/config/secrets.yml",
+      "ln -nfs #{shared_path}/config/skylight.yml #{release_path}/config/skylight.yml",
       "ln -nfs #{shared_path}/config/secrets.yml #{release_path}/config/secrets.yml",
+      "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml",
       "rm -rf #{release_path}/tmp",
       "ln -nfs #{shared_path}/tmp #{release_path}",
       "ln -nfs #{shared_path}/extras #{release_path}/public/extras",
