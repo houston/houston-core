@@ -43,6 +43,7 @@ else
                Errno::ETIMEDOUT,
                Faraday::Error::ConnectionFailed,
                Idioms::HTTP::ServerError,
+               Rugged::NetworkError,
                exceptions_wrapping(PG::ConnectionBad)
           Rails.logger.error "\e[31m[#{job.tags.first}/#{job.original}] #{$!.class}: #{$!.message} [ignored]\e[0m"
         rescue
