@@ -71,7 +71,11 @@ module Houston
                 .map { |attrs| attrs[:name] }.grep(/^refs\//)
               prune_refs = local_refs - remote_refs
               prune_refs.each do |ref|
-                connection.references.delete(ref)
+                begin
+                  connection.references.delete(ref)
+                rescue Rugged::ReferenceError
+                  # Ignore
+                end
               end
             end
           end
