@@ -165,15 +165,15 @@ class Commit < ActiveRecord::Base
   
   
   
-  TAG_PATTERN = /^\s*\[([^\]]+)\]\s*/
+  TAG_PATTERN = /^\s*\[([^\]]+)\]\s*/.freeze
   
-  TICKET_PATTERN = /\[#(\d+)([a-z]*)\]/
+  TICKET_PATTERN = /\[#(\d+)([a-z]*)\]/.freeze
   
-  TIME_PATTERN = /\((\d*\.?\d+) ?(h|hrs?|hours?|m|min|minutes?)\)/
+  TIME_PATTERN = /\((\d*\.?\d+) ?(h|hrs?|hours?|m|min|minutes?)\)/.freeze
   
-  EXTRA_ATTRIBUTE_PATTERN = /\{\{([^:\}]+):[ \s]*([^\}]+)\}\}/
+  EXTRA_ATTRIBUTE_PATTERN = /\{\{([^:\}]+):[ \s]*([^\}]+)\}\}/.freeze
   
-  MERGE_COMMIT_PATTERN = /^Merge\b/
+  MERGE_COMMIT_PATTERN = /^Merge\b/.freeze
   
   
   
