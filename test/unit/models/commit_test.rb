@@ -82,6 +82,23 @@ class CommitTest < ActiveSupport::TestCase
     end
     
     
+    should "ignore spaces when extracting extra attributes from a commit" do
+      commits = [
+        "I did some work {{attr: value}}",
+        "I set this one twice {{attr:\tv1}} {{attr: v2}}"
+      ]
+      
+      expectations = [
+        {"attr" => ["value"]},
+        {"attr" => ["v1", "v2"]}
+      ]
+      
+      commits.zip(expectations) do |commit_message, expectation|
+        assert_equal expectation, Commit.new(message: commit_message).extra_attributes
+      end
+    end
+    
+    
     should "extract time from a commit" do
       commits = [
         "I did some work (45m)",

@@ -171,7 +171,7 @@ class Commit < ActiveRecord::Base
   
   TIME_PATTERN = /\((\d*\.?\d+) ?(h|hrs?|hours?|m|min|minutes?)\)/
   
-  EXTRA_ATTRIBUTE_PATTERN = /\{\{([^:\}]+):([^\}]+)\}\}/
+  EXTRA_ATTRIBUTE_PATTERN = /\{\{([^:\}]+):[ \s]*([^\}]+)\}\}/
   
   MERGE_COMMIT_PATTERN = /^Merge\b/
   
