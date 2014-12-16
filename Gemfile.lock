@@ -53,7 +53,7 @@ GIT
 
 GIT
   remote: git://github.com/houstonmc/houston-alerts.git
-  revision: 9a38ac89608a056d67a0d9c5ae62a05f482fef2c
+  revision: 09c8d0e1ad14fcd4c98237f9406a8438fc0729f8
   branch: master
   specs:
     houston-alerts (0.0.1)
@@ -240,7 +240,7 @@ GEM
     method_source (0.8.2)
     mime-types (2.4.3)
     mini_portile (0.6.1)
-    minitest (5.4.3)
+    minitest (5.5.0)
     minitest-reporters (1.0.7)
       ansi
       builder
