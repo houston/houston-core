@@ -21,6 +21,7 @@ gem "gemoji"
 gem "gemnasium"
 gem "googlecharts"
 gem "hpricot"
+gem "intercom-rails"
 gem "nokogiri"
 gem "oauth-plugin", github: "houstonmc/oauth-plugin", branch: "master"
 gem "octokit" # for adapting to GitHub Issues
