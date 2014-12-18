@@ -70,7 +70,9 @@ module Houston
           def native_commit(sha)
             return NullCommit.new if sha == Houston::NULL_GIT_COMMIT
             normalize_sha!(sha)
-            to_commit connection.lookup(sha)
+            object = connection.lookup(sha)
+            object = object.target if object.is_a? Rugged::Tag::Annotation
+            to_commit object
           rescue Rugged::OdbError
             raise CommitNotFound, "\"#{sha}\" is not a commit"
           rescue Rugged::InvalidError
