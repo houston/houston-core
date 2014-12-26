@@ -43,6 +43,16 @@ GIT
       activesupport (>= 3.2.0)
 
 GIT
+  remote: git://github.com/concordia-publishing-house/star.git
+  revision: 35a3669064d483349ad541a080eac801637b61ed
+  branch: master
+  specs:
+    star (0.0.1)
+      multi_json
+      nokogiri
+      ruby-ntlm
+
+GIT
   remote: git://github.com/concordia-publishing-house/xlsx.git
   revision: 4a6e6e7134de3f2b1670a4bf8d3afdec44a1fa6a
   branch: master
@@ -437,6 +447,7 @@ DEPENDENCIES
   simplecov-json!
   skylight
   spring
+  star!
   strongbox
   sucker_punch
   sugar-rails

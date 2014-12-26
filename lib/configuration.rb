@@ -10,6 +10,7 @@ module Houston
     
     def initialize
       @modules = []
+      @gems = []
       @navigation_renderers = {}
       @authentication_strategy = :database
       @authentication_strategy_configuration = {}
@@ -259,6 +260,14 @@ module Houston
     def module(module_name)
       module_name = module_name.to_s
       modules.detect { |mod| mod.name == module_name }
+    end
+    
+    def gem(*gemspec)
+      @gems << gemspec
+    end
+    
+    def gems
+      @gems + modules.select(&:bundle?).map(&:gemspec)
     end
     
     

@@ -21,7 +21,6 @@ gem "gemoji"
 gem "gemnasium"
 gem "googlecharts"
 gem "hpricot"
-gem "intercom-rails"
 gem "nokogiri"
 gem "oauth-plugin", github: "houstonmc/oauth-plugin", branch: "master"
 gem "octokit" # for adapting to GitHub Issues
@@ -42,6 +41,7 @@ gem "xlsx", github: "concordia-publishing-house/xlsx", branch: "master"
 
 # Tooling
 gem "airbrake"
+gem "intercom-rails"
 gem "skylight"
 
 
@@ -53,8 +53,8 @@ gem "skylight"
 root = File.dirname(__FILE__)
 root = "./#{root}" unless root.start_with?("/")
 require File.join(root, "lib/configuration.rb") # Loads Houston's configuration
-Houston.config.modules.each do |mod|
-  gem *mod.gemspec if mod.bundle?
+Houston.config.gems.each do |gemspec|
+  gem *gemspec
 end
 
 
