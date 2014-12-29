@@ -7,7 +7,12 @@ class Sprint < ActiveRecord::Base
   before_validation :set_default_end_date, on: :create
   
   def self.current
-    find_by_end_date end_date_for(Date.today) 
+    find_by_date Date.today
+  end
+  
+  def self.find_by_date(date)
+    date = date.to_date if date.respond_to?(:to_date)
+    find_by_end_date end_date_for(date)
   end
   
   def self.end_date_for(date)
@@ -32,6 +37,10 @@ class Sprint < ActiveRecord::Base
     start_date.beginning_of_day
   end
   
+  def ends_at
+    end_date.end_of_day
+  end
+  
   def completed?
     Date.today > end_date
   end
@@ -42,6 +51,10 @@ class Sprint < ActiveRecord::Base
   
   def unlock!
     update_column :locked, false
+  end
+  
+  def range
+    starts_at..ends_at
   end
   
 private

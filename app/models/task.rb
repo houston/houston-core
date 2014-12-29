@@ -58,6 +58,10 @@ class Task < ActiveRecord::Base
       where(arel_table[:completed_at].not_eq(nil))
     end
     
+    def completed_during(sprint)
+      where(completed_at: sprint.range)
+    end
+    
     def in_current_sprint
       joins(:sprint).where("sprints.end_date >= current_date")
     end

@@ -748,6 +748,40 @@ ALTER SEQUENCE historical_heads_id_seq OWNED BY historical_heads.id;
 
 
 --
+-- Name: measurements; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE measurements (
+    id integer NOT NULL,
+    subject_type character varying(255),
+    subject_id integer,
+    name character varying(255) NOT NULL,
+    value character varying(255) NOT NULL,
+    taken_at timestamp without time zone NOT NULL,
+    taken_on date NOT NULL
+);
+
+
+--
+-- Name: measurements_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE measurements_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: measurements_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE measurements_id_seq OWNED BY measurements.id;
+
+
+--
 -- Name: milestone_versions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1542,6 +1576,13 @@ ALTER TABLE ONLY historical_heads ALTER COLUMN id SET DEFAULT nextval('historica
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY measurements ALTER COLUMN id SET DEFAULT nextval('measurements_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY milestone_versions ALTER COLUMN id SET DEFAULT nextval('milestone_versions_id_seq'::regclass);
 
 
@@ -1710,6 +1751,14 @@ ALTER TABLE ONLY feedback_comments
 
 ALTER TABLE ONLY historical_heads
     ADD CONSTRAINT historical_heads_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: measurements_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY measurements
+    ADD CONSTRAINT measurements_pkey PRIMARY KEY (id);
 
 
 --
@@ -1945,6 +1994,34 @@ CREATE INDEX index_deploys_on_project_id_and_environment_name ON deploys USING b
 --
 
 CREATE INDEX index_feedback_comments_on_tsvector ON feedback_comments USING gin (search_vector);
+
+
+--
+-- Name: index_measurements_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_measurements_on_name ON measurements USING btree (name);
+
+
+--
+-- Name: index_measurements_on_subject_type_and_subject_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_measurements_on_subject_type_and_subject_id ON measurements USING btree (subject_type, subject_id);
+
+
+--
+-- Name: index_measurements_on_taken_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_measurements_on_taken_at ON measurements USING btree (taken_at);
+
+
+--
+-- Name: index_measurements_on_taken_on; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_measurements_on_taken_on ON measurements USING btree (taken_on);
 
 
 --
@@ -2592,4 +2669,6 @@ INSERT INTO schema_migrations (version) VALUES ('20141125162853');
 INSERT INTO schema_migrations (version) VALUES ('20141128155140');
 
 INSERT INTO schema_migrations (version) VALUES ('20141202004123');
+
+INSERT INTO schema_migrations (version) VALUES ('20141226171730');
 
