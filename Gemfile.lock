@@ -74,7 +74,7 @@ GIT
 
 GIT
   remote: git://github.com/houstonmc/houston-alerts.git
-  revision: 09c8d0e1ad14fcd4c98237f9406a8438fc0729f8
+  revision: b73b53cecf248098ae59a228817628849a47f607
   branch: master
   specs:
     houston-alerts (0.0.1)
@@ -240,7 +240,7 @@ GEM
     hike (1.2.3)
     hpricot (0.8.6)
     htmlentities (4.3.2)
-    i18n (0.6.11)
+    i18n (0.7.0)
     intercom-rails (0.2.27)
       activesupport (> 3.0)
     jquery-rails (2.2.1)
@@ -273,7 +273,7 @@ GEM
     multi_xml (0.5.5)
     multipart-post (1.2.0)
     net-ldap (0.9.0)
-    nokogiri (1.6.4.1)
+    nokogiri (1.6.5)
       mini_portile (~> 0.6.0)
     oauth (0.4.7)
     oauth2 (1.0.0)
