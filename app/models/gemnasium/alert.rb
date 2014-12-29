@@ -4,7 +4,7 @@ module Gemnasium
     def self.all
       connection = Faraday.new(url: "https://api.gemnasium.com/v1/")
       connection.basic_auth "X", Houston.config.gemnasium[:api_key]
-      connection.use Idioms::Faraday::RaiseErrors
+      connection.use Faraday::RaiseErrors
       
       response = connection.get "projects"
       projects = MultiJson.load(response.body).values.flatten

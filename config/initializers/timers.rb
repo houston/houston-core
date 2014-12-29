@@ -42,7 +42,7 @@ else
                Errno::ECONNREFUSED,
                Errno::ETIMEDOUT,
                Faraday::Error::ConnectionFailed,
-               Idioms::HTTP::ServerError,
+               Faraday::HTTP::ServerError,
                Rugged::NetworkError,
                Unfuddle::ConnectionError,
                exceptions_wrapping(PG::ConnectionBad)

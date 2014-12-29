@@ -1,4 +1,12 @@
 GIT
+  remote: git://github.com/boblail/faraday-raise-errors.git
+  revision: 312dd28f2bab72fe9a798cff23d1a77877c3ee5a
+  branch: master
+  specs:
+    faraday-raise-errors (0.2.0)
+      faraday
+
+GIT
   remote: git://github.com/boblail/neat-rails.git
   revision: d2bf2cf83d3fd0fdac676e789f4381e369a82d87
   branch: master
@@ -36,18 +44,21 @@ GIT
 
 GIT
   remote: git://github.com/concordia-publishing-house/idioms.git
-  revision: 47ddad7a667fdd444a9e740c4736f73b1c9d42de
+  revision: 358c2e01ea09362cf758288d011fad9adf013022
   branch: master
   specs:
     idioms (0.0.1)
       activesupport (>= 3.2.0)
+      faraday-raise-errors (>= 0.2.0)
 
 GIT
   remote: git://github.com/concordia-publishing-house/star.git
-  revision: 35a3669064d483349ad541a080eac801637b61ed
+  revision: 05602daa01c4235799cad674685b50eea8fc3e62
   branch: master
   specs:
     star (0.0.1)
+      faraday
+      faraday-raise-errors
       multi_json
       nokogiri
       ruby-ntlm
@@ -409,6 +420,7 @@ DEPENDENCIES
   factory_girl_rails
   faraday
   faraday-http-cache
+  faraday-raise-errors!
   gemnasium
   gemoji
   googlecharts
