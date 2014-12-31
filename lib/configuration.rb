@@ -506,6 +506,63 @@ module Houston
   
   
   
+  class Jobs
+    
+    def run_async(slug)
+      block = find_timer_block!(slug)
+      Thread.new do
+        run! "#{slug}/manual", block
+      end
+    end
+    
+    def run_job(job)
+      slug = job.tags.first
+      block = find_timer_block!(slug)
+      run! "#{slug}/#{job.original}", block
+    end
+    
+  private
+    
+    def find_timer_block!(slug)
+      timer = Houston.config.timers.detect { |(_, _, name, _, _)| name == slug }
+      raise ArgumentError, "#{slug} is not a job" unless timer
+      timer.last
+    end
+    
+    def run!(tag, block)
+      Rails.logger.info "\e[34m[#{tag}] Running job\e[0m"
+      block.call
+      
+    rescue SocketError,
+           Errno::ECONNREFUSED,
+           Errno::ETIMEDOUT,
+           Faraday::Error::ConnectionFailed,
+           Faraday::HTTP::ServerError,
+           Rugged::NetworkError,
+           Unfuddle::ConnectionError,
+           exceptions_wrapping(PG::ConnectionBad)
+      Rails.logger.error "\e[31m[#{tag}] #{$!.class}: #{$!.message} [ignored]\e[0m"
+    rescue
+      Rails.logger.error "\e[31m[#{tag}] \e[1m#{$!.message}\e[0m"
+      Houston.report_exception($!, parameters: {job_name: name}) # <-- no job id!
+    ensure
+      ActiveRecord::Base.clear_active_connections!
+    end
+    
+    def exceptions_wrapping(error_class)
+      m = Module.new
+      (class << m; self; end).instance_eval do
+        define_method(:===) do |err|
+          err.respond_to?(:original_exception) && error_class === err.original_exception
+        end
+      end
+      m
+    end
+    
+  end
+  
+  
+  
   class NotConfigured < RuntimeError
     def initialize(message = "Houston has not been configured. Please load config/config.rb before calling Houston.config")
       super
@@ -529,6 +586,10 @@ module_function
   
   def observer
     @observer ||= Observer.new
+  end
+  
+  def jobs
+    @jobs ||= Jobs.new
   end
   
 end
