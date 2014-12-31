@@ -223,6 +223,12 @@ Rails.application.routes.draw do
   
   
   
+  # Jobs
+  
+  get "jobs", to: "jobs#show"
+  
+  
+  
   # Options
   
   put "projects/:slug/options", to: "project_options#update"
@@ -244,8 +250,6 @@ Rails.application.routes.draw do
   end
   get "reports/velocity", to: "reports#velocity"
   get "reports/tasks.xlsx", to: "reports#tasks_excel"
-  
-  get "health", to: "health#show"
   
   get "sprint/reports", to: "reports#sprint"
   

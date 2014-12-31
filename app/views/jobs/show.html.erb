@@ -1,6 +1,6 @@
 <% content_for :title do %>
 <h1 class="project-banner space-below">
-  Health
+  Jobs
 </h1>
 <% end %>
 
@@ -39,31 +39,6 @@
   <script type="text/javascript">
     $(function() {
       $('#jobs').tablesorter();
-      
-      var format = d3.format('02d'),
-          $countdowns, $countdown, label, timeleft, seconds, minutes, hours, days;
-      
-      function updateCountdowns() {
-        $countdowns = $countdowns || $('.countdown');
-        urgent = false;
-        $countdowns.each(function() {
-          $countdown = $(this);
-          timeleft = +$countdown.attr('data-secondsleft') - 1;
-          $countdown.attr('data-secondsleft', timeleft);
-          seconds = Math.abs(timeleft);
-          minutes = Math.floor(seconds / 60);
-          hours = Math.floor(minutes / 60);
-          days = Math.floor(hours / 24);
-          
-          label = format(seconds % 60);
-          if(minutes >= 1) label = format(minutes % 60) + ':' + label;
-          if(hours >= 1) label = Math.floor(hours % 24) + ':' + label;
-          if(days >= 1) label = '<span class="label">' + Math.floor(days) + 'd</span> ' + label;
-          $countdown.html(label);
-        });
-      }
-      
-      setInterval(updateCountdowns, 1000);
     });
   </script>
 <% end %>
