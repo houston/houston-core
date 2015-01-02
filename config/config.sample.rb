@@ -25,6 +25,12 @@ Houston.config do
     domain "10.10.10.10"
   end
 
+  # (Optional) Houston can be used with Intercom
+  # intercom do
+  #   app_id: INTERCOM_HOUSTON_APP_ID
+  #   app_api_key: INTERCOM_HOUSTON_APP_API_KEY
+  # end
+
   # (Optional) These are the categories you can organize your projects by
   project_categories "Products", "Services", "Libraries", "Tools"
 
@@ -271,11 +277,15 @@ Houston.config do
       # as well as commit info
       can :read, [Commit, ReleaseChange] if user.developer?
       can :manage, Sprint if user.developer?
+      
+      # Developers can break tickets into tasks
+      can :manage, Task if user.developer?
 
       # Testers and Developers can see and comment on all testing notes
       can [:create, :read], TestingNote if user.tester? or user.developer?
+      
+      # Testers and Developers can see and manage alerts
       can :manage, Houston::Alerts::Alert if user.developer? or user.tester?
-      can :manage, Task if user.developer?
 
       # The following abilities are project-specific and depend on one's role
       roles = user.roles.participants
@@ -428,9 +438,18 @@ Houston.config do
   #   based on the alert's project or content.
   # end
 
-  on "antecedent:errbit:release" do |antecedent|
-    if antecedent.project.error_tracker_name == "Errbit"
-      antecedent.project.error_tracker.resolve!(antecedent.id)
+  on "deploy:create" do |deploy|
+    if deploy.project.error_tracker_name == "Errbit"
+      errbit, repo = deploy.project.error_tracker, deploy.project.repo
+      deploy.commits.each do |commit|
+        commit.antecedents.each do |antecedent|
+          next unless antecedent.kind == "Errbit"
+          
+          message = "Resolved by Houston when #{commit.sha} was deployed to #{deploy.environment_name}"
+          message << "\n#{repo.commit_url(commit.sha)}" if repo.respond_to?(:commit_url)
+          errbit.resolve! antecedent.id, message: message
+        end
+      end
     end
   end
 
@@ -480,6 +499,10 @@ Houston.config do
 
   at "6:00am", "report:weekly", every: :monday do
     WeeklyReport.new(1.week.ago).deliver_to!(User.developers.pluck(:email))
+  end
+
+  at "11:50pm", "take:measurements", every: :thursday do
+    take_measurements! Time.now
   end
 
 

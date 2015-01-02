@@ -48,6 +48,11 @@ namespace :config do
     domain "10.10.10.10"
     TEXT
     config.remove! /^             :feedback,[^\n]+\n/ # from navigation
+    config.replace_block! :intercom, <<-TEXT, comment_out: true
+    app_id: INTERCOM_HOUSTON_APP_ID
+    app_api_key: INTERCOM_HOUSTON_APP_API_KEY
+    TEXT
+    config.remove! /^             :feedback,[^\n]+\n/ # from navigation
     
     
     
@@ -126,7 +131,9 @@ namespace :config do
   # end
     TEXT
     config.remove! /^  use :itsm,[^\n]+\n/
+    config.remove! /^  use :reports,[^\n]+\n/
     config.remove! /^  use :feedback,[^\n]+\n/
+    config.remove! /^  gem "star",[^\n]+\n/
     
     
     
