@@ -43,8 +43,16 @@ GIT
       ruby-ntlm
 
 GIT
+  remote: git://github.com/concordia-publishing-house/houston-reports.git
+  revision: 4761b0e1ad66e2cc9b37538520c9dfa032a006ea
+  branch: master
+  specs:
+    houston-reports (0.0.1)
+      rails
+
+GIT
   remote: git://github.com/concordia-publishing-house/idioms.git
-  revision: 358c2e01ea09362cf758288d011fad9adf013022
+  revision: 8ba366abd72e1779effd74ed50dafded301a5067
   branch: master
   specs:
     idioms (0.0.1)
@@ -53,7 +61,7 @@ GIT
 
 GIT
   remote: git://github.com/concordia-publishing-house/star.git
-  revision: 05602daa01c4235799cad674685b50eea8fc3e62
+  revision: 12635ebf6b2e3744324ec216d06282f9d2ff8ee1
   branch: master
   specs:
     star (0.0.1)
@@ -428,6 +436,7 @@ DEPENDENCIES
   houston-alerts!
   houston-feedback!
   houston-itsm!
+  houston-reports!
   houston-roadmap!
   houston-scheduler!
   hpricot
