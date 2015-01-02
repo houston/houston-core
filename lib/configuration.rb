@@ -73,6 +73,15 @@ module Houston
       @smtp ||= {}
     end
     
+    def intercom(&block)
+      @intercom = HashDsl.hash_from_block(block) if block_given?
+      @intercom ||= {}
+    end
+    
+    def use_intercom?
+      intercom[:app_id].present?
+    end
+    
     def project_categories(*args)
       @project_categories = args if args.any?
       @project_categories ||= []

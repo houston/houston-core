@@ -66,6 +66,10 @@ class ReleasesController < ApplicationController
       ProjectNotification.release(@release).deliver! if params[:send_release_email]
       @release.tickets.resolve_all! if params[:resolve_tickets]
       
+      Houston.track_event current_user, "created-release",
+        project: @release.project.slug,
+        environment: @release.environment_name
+      
       redirect_to @release
     else
       @commit0 = @release.commit0

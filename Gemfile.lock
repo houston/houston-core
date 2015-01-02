@@ -249,6 +249,8 @@ GEM
     hpricot (0.8.6)
     htmlentities (4.3.2)
     i18n (0.7.0)
+    intercom (2.4.3)
+      json (~> 1.8)
     intercom-rails (0.2.27)
       activesupport (> 3.0)
     jquery-rails (2.2.1)
@@ -441,6 +443,7 @@ DEPENDENCIES
   houston-scheduler!
   hpricot
   idioms!
+  intercom
   intercom-rails
   jquery-rails (= 2.2.1)
   letter_opener
