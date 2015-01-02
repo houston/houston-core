@@ -842,7 +842,8 @@ CREATE TABLE milestones (
     band integer DEFAULT 1 NOT NULL,
     end_date date,
     locked boolean DEFAULT false NOT NULL,
-    closed_tickets_count integer DEFAULT 0 NOT NULL
+    closed_tickets_count integer DEFAULT 0 NOT NULL,
+    lanes integer DEFAULT 1 NOT NULL
 );
 
 
@@ -2671,4 +2672,6 @@ INSERT INTO schema_migrations (version) VALUES ('20141128155140');
 INSERT INTO schema_migrations (version) VALUES ('20141202004123');
 
 INSERT INTO schema_migrations (version) VALUES ('20141226171730');
+
+INSERT INTO schema_migrations (version) VALUES ('20150102192805');
 
