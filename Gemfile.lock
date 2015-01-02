@@ -44,7 +44,7 @@ GIT
 
 GIT
   remote: git://github.com/concordia-publishing-house/houston-reports.git
-  revision: 4761b0e1ad66e2cc9b37538520c9dfa032a006ea
+  revision: e19b41c93c6552f724953c430d696b6afcbc3ffc
   branch: master
   specs:
     houston-reports (0.0.1)
