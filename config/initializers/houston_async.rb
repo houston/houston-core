@@ -4,7 +4,7 @@ module Houston
     Thread.new do
       begin
         yield
-      rescue
+      rescue Exception # rescues StandardError by default; but we want to rescue and report all errors
         Houston.report_exception($!)
       end
     end

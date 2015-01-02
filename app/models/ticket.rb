@@ -147,7 +147,7 @@ class Ticket < ActiveRecord::Base
             sleep 2 ** retries
             retry
           end
-        rescue
+        rescue Exception # rescues StandardError by default; but we want to rescue and report all errors
           Houston.report_exception $!
         end
       end

@@ -501,7 +501,7 @@ module Houston
     
     def invoke_callback(block, *args)
       block.call(*args)
-    rescue
+    rescue Exception # rescues StandardError by default; but we want to rescue and report all errors
       Houston.report_exception($!)
     end
     
@@ -551,7 +551,7 @@ module Houston
            Unfuddle::ConnectionError,
            exceptions_wrapping(PG::ConnectionBad)
       Rails.logger.error "\e[31m[#{tag}] #{$!.class}: #{$!.message} [ignored]\e[0m"
-    rescue
+    rescue Exception # rescues StandardError by default; but we want to rescue and report all errors
       Rails.logger.error "\e[31m[#{tag}] \e[1m#{$!.message}\e[0m"
       Houston.report_exception($!, parameters: {job_name: name}) # <-- no job id!
     ensure
