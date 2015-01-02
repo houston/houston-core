@@ -3,6 +3,7 @@ class window.Duration
   after:  (date)-> Duration.transformDateBy(date, +@n, @units)
   before: (date)-> Duration.transformDateBy(date, -@n, @units)
   ago: -> @before(new Date())
+  fromNow: -> @after(new Date())
   valueOf: ->
     switch @units
       when 'minutes' then @n * Duration.MINUTE
