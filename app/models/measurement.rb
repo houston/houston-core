@@ -29,6 +29,10 @@ class Measurement < ActiveRecord::Base
       where(arel_table[:taken_on].lteq(date))
     end
     
+    def taken_after(date)
+      where(arel_table[:taken_on].gteq(date))
+    end
+    
     def for(subject)
       where(subject_type: subject.class.name, subject_id: subject.id)
     end
