@@ -61,7 +61,7 @@ GIT
 
 GIT
   remote: git://github.com/concordia-publishing-house/star.git
-  revision: 4472bfca87d2cfbc88efdbd3102d88e025bf36d2
+  revision: fdf33f4968ee2f4108950d4dc0e58a7a786454de
   branch: master
   specs:
     star (0.0.1)
@@ -272,7 +272,7 @@ GEM
       railties (>= 3.0.0, < 5.0.0)
     method_source (0.8.2)
     mime-types (2.4.3)
-    mini_portile (0.6.1)
+    mini_portile (0.6.2)
     minitest (5.5.0)
     minitest-reporters (1.0.7)
       ansi
