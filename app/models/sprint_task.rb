@@ -24,4 +24,8 @@ class SprintTask < ActiveRecord::Base
     update_all(checked_out_at: nil, checked_out_by_id: nil)
   end
   
+  def self.completed_during(sprint)
+    all.merge(Task.unscoped.completed_during(sprint))
+  end
+  
 end

@@ -59,7 +59,7 @@ class Task < ActiveRecord::Base
     end
     
     def completed_during(sprint)
-      where(completed_at: sprint.range)
+      where(arel_table[:completed_at].in(sprint.range).or(arel_table[:first_commit_at].in(sprint.range)))
     end
     
     def in_current_sprint
