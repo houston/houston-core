@@ -62,7 +62,16 @@ class Measurement < ActiveRecord::Base
     end
     
     def debug
-      puts includes(:subject).reorder("taken_at ASC, subject_id ASC, name ASC").map { |m| "#{m.taken_on.strftime("%-m/%-d").rjust(5)} #{m.subject.try(:first_name).to_s.ljust(9)} #{m.name.ljust(32)} #{m.value.rjust(8)}" }
+      format_subject = ->(s) { s.is_a?(User) ? s.first_name : s.is_a?(Project) ? s.slug : "" }
+      puts includes(:subject).reorder("taken_at ASC, subject_type ASC, subject_id ASC, name ASC").map { |m|
+        line = [ m.taken_on.strftime("%-m/%-d").rjust(5),
+                 m.taken_at.strftime("%H:%M:%S"),
+                 format_subject[m.subject].ljust(9),
+                 m.name.ljust(40),
+                 m.value.rjust(8) ].join(" ")
+        line = "\e[36m#{line}\e[0m" if m.subject_type == "User"
+        line = "\e[35m#{line}\e[0m" if m.subject_type == "Project"
+        line }
     end
   end
   
