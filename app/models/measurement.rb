@@ -60,6 +60,10 @@ class Measurement < ActiveRecord::Base
       return nil if denominator.zero?
       total.to_f / denominator
     end
+    
+    def debug
+      puts includes(:subject).reorder("taken_at ASC, subject_id ASC, name ASC").map { |m| "#{m.taken_on.strftime("%-m/%-d").rjust(5)} #{m.subject.try(:first_name).to_s.ljust(9)} #{m.name.ljust(32)} #{m.value.rjust(8)}" }
+    end
   end
   
   def taken_at=(value)
