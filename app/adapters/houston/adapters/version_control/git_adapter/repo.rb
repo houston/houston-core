@@ -154,7 +154,7 @@ module Houston
           
           def ancestor_walker(sha, *args)
             commit = native_commit(sha)
-            shas = [sha]
+            shas = [commit.sha]
             
             # by default, start with the commit's parent
             shas = commit.original.parents.map(&:oid) unless args.member? :including_self
