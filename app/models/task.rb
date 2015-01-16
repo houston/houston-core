@@ -107,7 +107,8 @@ class Task < ActiveRecord::Base
   
   def released!(release)
     self.releases << release unless releases.exists?(release.id)
-    cache_release_attributes release
+    update_column :first_release_at, release.created_at unless released?
+    Houston.observer.fire "task:released", self
   end
   
   def released?
@@ -117,7 +118,8 @@ class Task < ActiveRecord::Base
   
   
   def committed!(commit)
-    cache_commit_attributes commit
+    update_column :first_commit_at, commit.authored_at unless committed?
+    Houston.observer.fire "task:committed", self
   end
   
   def committed?
@@ -125,6 +127,13 @@ class Task < ActiveRecord::Base
   end
   
   
+  
+  def completed!
+    return if completed?
+    touch :completed_at
+    Houston.observer.fire "task:completed", self
+  end
+  alias :complete! :completed!
   
   def completed?
     completed_at.present?
@@ -134,20 +143,16 @@ class Task < ActiveRecord::Base
     completed? && !committed? && !released?
   end
   
-  def open?
-    !completed?
-  end
   
-  
-  
-  def complete!
-    return if completed?
-    touch :completed_at
-  end
   
   def reopen!
     return unless manually_completed?
     update_column :completed_at, nil
+    Houston.observer.fire "task:reopened", self
+  end
+  
+  def open?
+    !completed?
   end
   
   
@@ -192,25 +197,6 @@ private
   
   def prevent_destroying_a_tickets_last_task
     return false if ticket.tasks.pluck(:id) == [id]
-  end
-  
-  def cache_release_attributes(release)
-    update_attributes _release_attributes(release) unless released?
-  end
-  
-  def _release_attributes(release)
-    { first_release_at: release.created_at,
-      completed_at: release.created_at }
-  end
-  
-  def cache_commit_attributes(commit)
-    update_attributes _commit_attributes(commit) unless committed?
-  end
-  
-  def _commit_attributes(commit)
-    { first_commit_at: commit.authored_at }.tap do |attributes|
-      attributes.merge!(completed_at: commit.authored_at) if project.category == "Libraries"
-    end
   end
   
   def self.to_number(letter)

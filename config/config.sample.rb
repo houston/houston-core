@@ -416,6 +416,10 @@ Houston.config do
   #   * testing_note:update     When a Testing Note has been updated
   #   * testing_note:save       When a Testing Note has been created or updated
   #   * ticket:release          When a Ticket is mentioned in a Release
+  #   * task:released           When a commit mentioning a Task is released
+  #   * task:committed          When a commit mentioning a Task is pushed
+  #   * task:completed          When a Task is marked completed
+  #   * task:reopened           When a Task is marked reopened
   #   * alert:create            When an Alert is created
   #   * alert:*:create          When an Alert of a particular type is created
   #   * alert:assign            When an Alert is assigned
@@ -425,6 +429,11 @@ Houston.config do
   #     config.api_key          = AIRBRAKE_API_KEY
   #   end
   # end
+
+  on "task:committed" do |task|
+    # Treat tasks as completed when a commit mentioning them is pushed
+    task.completed!
+  end
 
   # on "alert:assign" do |alert|
   #   EXAMPLE

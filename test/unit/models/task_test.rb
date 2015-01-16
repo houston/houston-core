@@ -2,7 +2,7 @@ require "test_helper"
 
 
 class TaskTest < ActiveSupport::TestCase
-  attr_reader :task1, :task2
+  attr_reader :task, :task1, :task2
   
   
   
@@ -82,33 +82,41 @@ class TaskTest < ActiveSupport::TestCase
   
   
   
-  context "When a task is committed, it" do
-    should "not be marked completed" do
-      task = a_ticket.tasks.create!(description: "New Step 1")
-      stub(task.project).category.returns "Products"
-      time = Time.now
-      task.committed! Struct.new(:authored_at).new(time)
-      assert_equal nil, task.completed_at
+  context "When a task" do
+    setup do
+      @task = a_ticket.tasks.create!(description: "New Step 1")
     end
-  end
-  
-  context "When a task is released, it" do
-    should "also be marked completed" do
-      task = a_ticket.tasks.create!(description: "New Step 1")
-      stub(task.project).category.returns "Products"
-      time = Time.now
-      task.send :cache_release_attributes, Struct.new(:created_at).new(time)
-      assert_equal time, task.completed_at
+    
+    context "is committed, it" do
+      should "fire 'task:committed'" do
+        assert_triggered "task:committed" do
+          task.committed! Struct.new(:authored_at).new(time)
+        end
+      end
     end
-  end
-  
-  context "When a task for a Library is committed, it" do
-    should "also be marked completed" do
-      task = a_ticket.tasks.create!(description: "New Step 1")
-      stub(task.project).category.returns "Libraries"
-      time = Time.now
-      task.committed! Struct.new(:authored_at).new(time)
-      assert_equal time, task.completed_at
+    
+    context "is released, it" do
+      should "fire 'task:released'" do
+        a_release = Release.create!(project: project, commit0: "aed80008", user: User.first)
+        assert_triggered "task:released" do
+          task.released! a_release
+        end
+      end
+    end
+    
+    context "is completed, it" do
+      should "fire 'task:completed'" do
+        assert_triggered "task:completed" do
+          task.completed!
+        end
+      end
+      
+      should "not fire 'task:completed' if was already completed" do
+        task.completed!
+        assert_not_triggered "task:completed" do
+          task.completed!
+        end
+      end
     end
   end
   
@@ -118,6 +126,10 @@ private
   
   def a_ticket
     @a_ticket ||= create(:ticket)
+  end
+  
+  def project
+    a_ticket.project
   end
   
 end

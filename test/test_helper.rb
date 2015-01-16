@@ -83,6 +83,20 @@ class ActiveSupport::TestCase
     end
   end
   
+  def assert_not_triggered(event_name, message=nil)
+    with_exclusive_observation do
+      
+      event_triggered = false
+      Houston.observer.on event_name do
+        event_triggered = true
+      end
+      
+      yield
+      
+      refute event_triggered, ["The event \"#{event_name}\" was triggered", message].compact.join
+    end
+  end
+  
   
   
   def assert_deep_equal(expected_value, actual_value)
