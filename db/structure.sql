@@ -758,7 +758,9 @@ CREATE TABLE measurements (
     name character varying(255) NOT NULL,
     value character varying(255) NOT NULL,
     taken_at timestamp without time zone NOT NULL,
-    taken_on date NOT NULL
+    taken_on date NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
 );
 
 
@@ -2674,4 +2676,6 @@ INSERT INTO schema_migrations (version) VALUES ('20141202004123');
 INSERT INTO schema_migrations (version) VALUES ('20141226171730');
 
 INSERT INTO schema_migrations (version) VALUES ('20150102192805');
+
+INSERT INTO schema_migrations (version) VALUES ('20150116153233');
 
