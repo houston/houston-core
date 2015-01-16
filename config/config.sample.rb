@@ -456,7 +456,11 @@ Houston.config do
           
           message = "Resolved by Houston when #{commit.sha} was deployed to #{deploy.environment_name}"
           message << "\n#{repo.commit_url(commit.sha)}" if repo.respond_to?(:commit_url)
-          errbit.resolve! antecedent.id, message: message
+          begin
+            errbit.resolve! antecedent.id, message: message
+          rescue Faraday::Error::ResourceNotFound
+            # Ignore missing antecedents
+          end
         end
       end
     end
