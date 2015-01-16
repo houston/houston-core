@@ -60,12 +60,6 @@ module UrlHelper
   
   
   
-  def weekly_report_path(date=Date.today, options={})
-    super(options.merge(year: date.year, month: date.month, day: date.day))
-  end
-  
-  
-  
   def image_url(image)
     # This method can be called from `emojify` from `mdown` from TicketPresenter
     # In that context, Rails.application.routes.url_helpers isn't included

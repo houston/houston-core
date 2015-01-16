@@ -497,10 +497,6 @@ Houston.config do
     PullRequestsMailer.deliver_to!(User.developers.pluck(:email))
   end
 
-  at "6:00am", "report:weekly", every: :monday do
-    WeeklyReport.new(1.week.ago).deliver_to!(User.developers.pluck(:email))
-  end
-
   at "11:50pm", "take:measurements", every: :thursday do
     take_measurements! Time.now
   end

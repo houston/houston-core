@@ -32,16 +32,6 @@ Rails.application.routes.draw do
   
   
   
-  # Weekly Report
-  
-  get "weekly_report/:year/:month/:day", to: "weekly_report#show", :as => :weekly_report
-  get "weekly_report", to: "weekly_report#show"
-  post "weekly_report/email", to: "weekly_report#send_email"
-  get "weekly_report/:year/:month/:day/email", to: "weekly_report#prepare_email", :as => :send_weekly_report
-  post "weekly_report/:year/:month/:day/email", to: "weekly_report#send_email"
-  
-  
-  
   # Test Runs
   
   get "projects/:slug/test_runs/:commit", to: "test_runs#show", :as => :test_run

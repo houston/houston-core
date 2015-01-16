@@ -128,10 +128,6 @@
   <div class="alert alert-info">There are no projects yet. Click <b>New Project</b> to create one.</div>
 <% end %>
 
-<% if can?(:read, Ticket) && can?(:read, Commit) && can?(:read, TestingNote) %>
-  <p><%= link_to "Weekly Report", "/weekly_report" %></p>
-<% end %>
-
 <% content_for :javascripts do %>
   <script type="text/javascript">
     $(function() {

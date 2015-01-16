@@ -234,9 +234,6 @@ namespace :config do
     config.replace_block! 'at "3:00pm", "report:pull-requests", every: :weekday', <<-TEXT
     PullRequestsMailer.deliver_to!(User.developers.pluck(:email))
     TEXT
-    config.replace_block! 'at "6:00am", "report:weekly", every: :monday', <<-TEXT
-    WeeklyReport.new(1.week.ago).deliver_to!(User.developers.pluck(:email))
-    TEXT
     
     
     

@@ -13,14 +13,12 @@ class ViewMailer < ActionMailer::Base
   helper TestRunHelper
   helper TicketHelper
   helper UrlHelper
-  helper WeeklyReportHelper
   
   class_attribute :stylesheets
   self.stylesheets = %w{
     core/colors.scss.erb
     application/emoji.scss
     application/scores.scss
-    application/weekly_report.scss
     application/test_run.scss
     application/releases.scss
     application/pull_requests.scss
@@ -38,19 +36,6 @@ class ViewMailer < ActionMailer::Base
   
   
   before_filter { @for_email = true }
-  
-  
-  def weekly_report(weekly_report, recipients)
-    @projects = Project.unretired
-    @title = weekly_report.title
-    @weekly_report = weekly_report
-    
-    mail({
-      to: recipients,
-      subject: weekly_report.title,
-      template: "weekly_report/show"
-    })
-  end
   
   
 protected
