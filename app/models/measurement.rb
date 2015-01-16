@@ -102,4 +102,8 @@ class Measurement < ActiveRecord::Base
     self.taken_on = value && value.to_date
   end
   
+  def taken_on?(date)
+    taken_on == date
+  end
+  
 end

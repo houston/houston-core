@@ -61,7 +61,7 @@ GIT
 
 GIT
   remote: git://github.com/concordia-publishing-house/star.git
-  revision: cc697f7585f0d25cbe682003f67a8edfcaf03468
+  revision: 0f33c86e80953926135f978bae993ad71ab333fc
   branch: master
   specs:
     star (0.0.1)
