@@ -716,6 +716,39 @@ ALTER SEQUENCE feedback_comments_id_seq OWNED BY feedback_comments.id;
 
 
 --
+-- Name: feedback_comments_user_flags; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE feedback_comments_user_flags (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    comment_id integer NOT NULL,
+    read boolean DEFAULT false,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: feedback_comments_user_flags_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE feedback_comments_user_flags_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: feedback_comments_user_flags_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE feedback_comments_user_flags_id_seq OWNED BY feedback_comments_user_flags.id;
+
+
+--
 -- Name: historical_heads; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -842,7 +875,9 @@ CREATE TABLE milestones (
     end_date date,
     locked boolean DEFAULT false NOT NULL,
     closed_tickets_count integer DEFAULT 0 NOT NULL,
-    lanes integer DEFAULT 1 NOT NULL
+    lanes integer DEFAULT 1 NOT NULL,
+    goal text,
+    feedback_query character varying(255)
 );
 
 
@@ -1569,6 +1604,13 @@ ALTER TABLE ONLY feedback_comments ALTER COLUMN id SET DEFAULT nextval('feedback
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY feedback_comments_user_flags ALTER COLUMN id SET DEFAULT nextval('feedback_comments_user_flags_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY historical_heads ALTER COLUMN id SET DEFAULT nextval('historical_heads_id_seq'::regclass);
 
 
@@ -1743,6 +1785,14 @@ ALTER TABLE ONLY deploys
 
 ALTER TABLE ONLY feedback_comments
     ADD CONSTRAINT feedback_comments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: feedback_comments_user_flags_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY feedback_comments_user_flags
+    ADD CONSTRAINT feedback_comments_user_flags_pkey PRIMARY KEY (id);
 
 
 --
@@ -1994,6 +2044,13 @@ CREATE INDEX index_deploys_on_project_id_and_environment_name ON deploys USING b
 --
 
 CREATE INDEX index_feedback_comments_on_tsvector ON feedback_comments USING gin (search_vector);
+
+
+--
+-- Name: index_feedback_comments_user_flags_on_user_id_and_comment_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_feedback_comments_user_flags_on_user_id_and_comment_id ON feedback_comments_user_flags USING btree (user_id, comment_id);
 
 
 --
@@ -2674,7 +2731,11 @@ INSERT INTO schema_migrations (version) VALUES ('20141226171730');
 
 INSERT INTO schema_migrations (version) VALUES ('20150102192805');
 
+INSERT INTO schema_migrations (version) VALUES ('20150113025408');
+
 INSERT INTO schema_migrations (version) VALUES ('20150116153233');
 
 INSERT INTO schema_migrations (version) VALUES ('20150119154013');
+
+INSERT INTO schema_migrations (version) VALUES ('20150119155145');
 

@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: git://github.com/concordia-publishing-house/houston-feedback.git
-  revision: 30301ad076cecff0fa09c277a513bcb4ca099eaa
+  revision: 9fb0fc7373c13400c4dec4f900c0782d2c60a9f4
   branch: master
   specs:
     houston-feedback (0.0.1)
@@ -90,7 +90,7 @@ GIT
 
 GIT
   remote: git://github.com/houstonmc/houston-roadmap.git
-  revision: 694b85c89b0660515c820164fa3a70031806c6f5
+  revision: 8185d7ac81a60723fd7819ee93f0b8c58a176fd0
   branch: master
   specs:
     houston-roadmap (0.0.1)
@@ -163,7 +163,7 @@ GEM
       activemodel (= 4.1.9)
       activesupport (= 4.1.9)
       arel (~> 5.0.0)
-    activerecord-import (0.6.0)
+    activerecord-import (0.7.0)
       activerecord (>= 3.0)
     activesupport (4.1.9)
       i18n (~> 0.6, >= 0.6.9)
