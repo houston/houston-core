@@ -45,6 +45,7 @@ protected
     options[:from] = format_email_addresses(options[:from]) if options.key?(:from)
     options[:to] = format_email_addresses(options[:to]).uniq if options.key?(:to)
     options[:cc] = format_email_addresses(options[:cc]).uniq if options.key?(:cc)
+    options[:bcc] = format_email_addresses(options[:bcc]).uniq if options.key?(:bcc)
     
     # Don't CC anyone whose already being mailed
     options[:cc] -= options[:to] if options[:to] && options[:cc]
