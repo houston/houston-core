@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
       if request.xhr?
         render text: exception.message, status: :unauthorized
       else
-        redirect_url = request.referrer.blank? ? root_url : :back
+        redirect_url = request.referrer.blank? ? main_app.root_url : :back
         redirect_to redirect_url, :alert => exception.message
       end
     else

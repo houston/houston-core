@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: git://github.com/concordia-publishing-house/houston-feedback.git
-  revision: c2e9d162bc7384ed44f27d6d146e1f3322aeb01c
+  revision: 985a074716fd99e8cb92c875b4a42cf5422af38e
   branch: master
   specs:
     houston-feedback (0.0.1)
@@ -367,7 +367,7 @@ GEM
       multi_json (~> 1.0)
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
-    sprockets-rails (2.2.3)
+    sprockets-rails (2.2.4)
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (>= 2.8, < 4.0)
