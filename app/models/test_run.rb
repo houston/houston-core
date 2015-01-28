@@ -105,14 +105,16 @@ class TestRun < ActiveRecord::Base
   
   def commits_since_last_test_run
     shas_of_tested_commits = project.test_runs.excluding(self).pluck(:sha)
-    project.repo.ancestors_until(sha, :including_self) { |ancestor| shas_of_tested_commits.member?(ancestor.sha) }
+    project.repo.ancestors_until(sha, including_self: true) { |ancestor|
+      shas_of_tested_commits.member?(ancestor.sha) }
   rescue Houston::Adapters::VersionControl::CommitNotFound
     []
   end
   
   def commits_since_last_passing_test_run
     shas_of_passing_commits = project.test_runs.passed.pluck(:sha)
-    project.repo.ancestors_until(sha, :including_self) { |ancestor| shas_of_passing_commits.member?(ancestor.sha) }
+    project.repo.ancestors_until(sha, including_self: true) { |ancestor|
+      shas_of_passing_commits.member?(ancestor.sha) }
   rescue Houston::Adapters::VersionControl::CommitNotFound
     []
   end

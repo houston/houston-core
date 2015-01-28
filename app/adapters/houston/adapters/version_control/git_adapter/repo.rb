@@ -22,13 +22,13 @@ module Houston
             `git --git-dir=#{git_dir} log --all --pretty='%H'`.split(/\n/).uniq
           end
           
-          def ancestors(sha, *args)
-            ancestor_walker(sha, *args).map(&method(:to_commit))
+          def ancestors(sha, options={})
+            ancestor_walker(sha, options).map(&method(:to_commit))
           end
           
-          def ancestors_until(sha, *args)
+          def ancestors_until(sha, options={})
             commits = []
-            ancestor_walker(sha, *args).each do |commit|
+            ancestor_walker(sha, options).each do |commit|
               commit = to_commit(commit)
               commits << commit
               return commits if yield commit
@@ -55,11 +55,10 @@ module Houston
             sha2 = sha2.sha if sha2.respond_to?(:sha)
             
             if sha1.nil? or sha1 == Houston::NULL_GIT_COMMIT
-              ancestors(sha2, :including_self).reverse
+              ancestors(sha2, including_self: true).reverse
             else
               native_commit(sha1) # ensure that sha1 exists in the repo
-              matces_sha = lambda { |commit| commit.sha.start_with?(sha1) }
-              ancestors_until(sha2, :including_self, &matces_sha).reverse[1..-1]
+              ancestors(sha2, including_self: true, hide: sha1).reverse
             end
           end
           
@@ -152,15 +151,17 @@ module Houston
             })
           end
           
-          def ancestor_walker(sha, *args)
+          def ancestor_walker(sha, options={})
             commit = native_commit(sha)
-            shas = [commit.sha]
+            push_shas = [commit.sha]
             
             # by default, start with the commit's parent
-            shas = commit.original.parents.map(&:oid) unless args.member? :including_self
+            push_shas = commit.original.parents.map(&:oid) unless options[:including_self]
+            hide_shas = Array(options.fetch(:hide, []))
             
             walker = Rugged::Walker.new(connection)
-            shas.each { |sha| walker.push(sha) }
+            push_shas.each { |sha| walker.push(sha) }
+            hide_shas.each { |sha| walker.hide(sha) }
             walker
           end
           
