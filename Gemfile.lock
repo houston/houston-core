@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: git://github.com/concordia-publishing-house/houston-feedback.git
-  revision: 30ef57e1897fbd6b8c390f42dff75524f1eb889e
+  revision: ca856818ca1999c1a92bc8ac76801d1e4d2b1290
   branch: master
   specs:
     houston-feedback (0.0.1)
@@ -60,7 +60,7 @@ GIT
 
 GIT
   remote: git://github.com/concordia-publishing-house/idioms.git
-  revision: 8ba366abd72e1779effd74ed50dafded301a5067
+  revision: aeb5aa56cd9eef27409e9621d4704c9a50475711
   branch: master
   specs:
     idioms (0.0.1)
