@@ -41,7 +41,8 @@ class Release < ActiveRecord::Base
     end
     
     def most_recent_commit
-      (release = first) ? release.commit1 : Houston::NULL_GIT_COMMIT
+      release = where(arel_table[:commit1].not_eq("")).first
+      release ? release.commit1 : Houston::NULL_GIT_COMMIT
     end
     
     def before(time)
