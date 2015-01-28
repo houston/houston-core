@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: git://github.com/concordia-publishing-house/houston-feedback.git
-  revision: 985a074716fd99e8cb92c875b4a42cf5422af38e
+  revision: 2e16ce936ab2a9fbaa3ad45942cb08e5c4b0afa3
   branch: master
   specs:
     houston-feedback (0.0.1)
@@ -48,6 +48,14 @@ GIT
   branch: master
   specs:
     houston-reports (0.0.1)
+      rails
+
+GIT
+  remote: git://github.com/concordia-publishing-house/houston-support_form.git
+  revision: d83f6fd9aaf9fe122acd20654905c4102808fec8
+  branch: master
+  specs:
+    houston-support_form (0.0.1)
       rails
 
 GIT
@@ -441,6 +449,7 @@ DEPENDENCIES
   houston-reports!
   houston-roadmap!
   houston-scheduler!
+  houston-support_form!
   hpricot
   idioms!
   intercom
