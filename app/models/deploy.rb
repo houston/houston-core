@@ -17,6 +17,7 @@ class Deploy < ActiveRecord::Base
     def to_environment(environment_name)
       where(environment_name: environment_name)
     end
+    alias :to :to_environment
     
     def before(time)
       where(arel_table[:created_at].lt(time))
@@ -28,7 +29,7 @@ class Deploy < ActiveRecord::Base
     @release ||= Release.new(
       project: project,
       environment_name: environment_name,
-      commit0: project.releases.to_environment(environment_name).most_recent_commit,
+      commit0: project.releases.to(environment_name).most_recent_commit,
       commit1: sha,
       deploy: self)
   end
@@ -40,7 +41,7 @@ class Deploy < ActiveRecord::Base
   
   def previous_deploy
     @previous_deploy ||= project.deploys
-      .to_environment(environment_name)
+      .to(environment_name)
       .before(created_at || Time.now)
       .first
   end

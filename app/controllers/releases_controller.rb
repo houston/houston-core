@@ -111,7 +111,7 @@ private
     @environment = params[:environment]
     @environment = Houston.config.environments.first unless Houston.config.environments.member?(@environment)
     @releases = @project.releases
-      .to_environment(@environment)
+      .to(@environment)
       .includes(:project)
       .includes(:deploy)
   end

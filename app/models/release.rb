@@ -16,7 +16,7 @@ class Release < ActiveRecord::Base
   has_many :tasks, through: :commits
   
   default_scope { order("created_at DESC") }
-  
+   
   delegate :maintainers, :to => :project
   
   validates_presence_of :user_id
@@ -29,6 +29,7 @@ class Release < ActiveRecord::Base
     def to_environment(environment_name)
       where(environment_name: environment_name)
     end
+    alias :to :to_environment
     
     def for_projects(*projects)
       ids = projects.flatten.map { |project| project.is_a?(Project) ? project.id : project }
