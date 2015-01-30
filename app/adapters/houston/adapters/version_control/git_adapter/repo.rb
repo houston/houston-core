@@ -41,6 +41,8 @@ module Houston
             Hash[connection.branches
               .each(:local)
               .map { |branch| [branch.name, branch.target.oid] }]
+          ensure
+            connection.close
           end
           
           def branches_at(sha)
@@ -48,6 +50,8 @@ module Houston
               .each(:local)
               .select { |branch| branch.target.oid.start_with?(sha) }
               .map(&:name)
+          ensure
+            connection.close
           end
           
           def commits_between(sha1, sha2)
@@ -60,6 +64,8 @@ module Houston
               native_commit(sha1) # ensure that sha1 exists in the repo
               ancestors(sha2, including_self: true, hide: sha1).reverse
             end
+          ensure
+            connection.close
           end
           
           def location
@@ -78,11 +84,15 @@ module Houston
             raise CommitNotFound, "\"#{sha}\" is not a valid commit"
           rescue Rugged::ObjectError
             raise CommitNotFound, "\"#{sha}\" is too short"
+          ensure
+            connection.close
           end
           
           def read_file(file_path, options={})
             blob = find_file(file_path, options={})
             blob && blob.content
+          ensure
+            connection.close
           end
           
           def refresh!(async: false)
@@ -108,6 +118,8 @@ module Houston
             tree
           rescue Rugged::OdbError, Rugged::ReferenceError
             raise FileNotFound, "\"#{file_path}\" is not in this repo"
+          ensure
+            connection.close
           end
           
           def to_s

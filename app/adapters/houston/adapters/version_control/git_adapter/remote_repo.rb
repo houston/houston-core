@@ -78,6 +78,8 @@ module Houston
                 end
               end
             end
+          ensure
+            connection.close
           end
           
         end

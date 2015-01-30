@@ -102,6 +102,7 @@ STR
   test "RemoteRepo should try pulling changes when a commit is not found" do
     connection = OpenStruct.new(path: test_path)
     stub(connection).lookup { |*args| raise CommitNotFound }
+    stub(connection).close
     repo = GitAdapter::RemoteRepo.new(connection, :location)
     mock(repo).pull!(async: false)
     
