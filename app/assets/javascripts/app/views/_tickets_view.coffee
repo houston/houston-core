@@ -9,9 +9,21 @@ class @TicketsView extends Backbone.View
       @$el.on 'click', 'th', (e)=>
         @toggleSort $(e.target).closest('th')
     
+    mouseDownPosition = {}
+    @$el.on 'mousedown', '[rel="ticket"]', (e)->
+      mouseDownPosition = {x: e.screenX, y: e.screenY}
+    
     @$el.on 'click', '[rel="ticket"]', (e)=>
       e.preventDefault()
       e.stopImmediatePropagation()
+      
+      # If a person is trying to highlight the text
+      # of this ticket, don't treat that as a click
+      dx = e.screenX - mouseDownPosition.x
+      dy = e.screenY - mouseDownPosition.y
+      d = Math.sqrt(Math.pow(dx, 2), Math.pow(dy, 2))
+      return if d > 12
+      
       number = +$(e.target).closest('[rel="ticket"]').attr('data-number')
       App.showTicket number, @project, @showTicketModal(number)
     
