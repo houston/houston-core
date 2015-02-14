@@ -100,7 +100,9 @@ module TicketSynchronizer
   
   def create_from_remote(remote_ticket)
     attributes = remote_ticket.attributes
-    attributes[:milestone_id] = project.milestones.id_for_remote_id(attributes[:milestone_id])
+    if project.ticket_tracker.features.include?(:syncing_milestones)
+      attributes[:milestone_id] = project.milestones.id_for_remote_id(attributes[:milestone_id])
+    end
     create(attributes)
   end
   
