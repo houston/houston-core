@@ -35,7 +35,7 @@ GIT
 
 GIT
   remote: git://github.com/concordia-publishing-house/houston-itsm.git
-  revision: 5fc52bc446506c86dfa2cdc466694fb53ab4b98d
+  revision: a1837cad342d82d71c80c9ab9f1ebd8b0f52d8cf
   branch: master
   specs:
     houston-itsm (0.0.1)
