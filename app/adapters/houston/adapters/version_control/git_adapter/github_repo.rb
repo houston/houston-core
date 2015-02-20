@@ -26,6 +26,31 @@ module Houston
             "https://api.github.com/repos/#{path}/statuses/#{full_sha}"
           end
           
+          def repo_name
+            location.path[0...-4]
+          end
+          
+          
+          
+          # GitHub API
+          
+          def pull_requests(options={})
+            Houston.github.pull_requests(repo_name, options)
+          end
+          
+          def issues(options={})
+            Houston.github.issues(repo_name, options)
+          end
+          
+          def add_label_to(label, issue_number)
+            issue_number = issue_number.number if issue_number.respond_to? :number
+            Houston.github.add_labels_to_an_issue repo_name, issue_number, [label]
+          end
+          
+          def remove_label_from(label, issue_number)
+            issue_number = issue_number.number if issue_number.respond_to? :number
+            Houston.github.remove_label repo_name, issue_number, label
+          end
           
         end
       end

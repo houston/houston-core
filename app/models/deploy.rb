@@ -46,6 +46,10 @@ class Deploy < ActiveRecord::Base
       .first
   end
   
+  def environment
+    environment_name
+  end
+  
   
   
 private

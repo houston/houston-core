@@ -190,6 +190,10 @@ class Project < ActiveRecord::Base
     repo.read_file(path, options)
   end
   
+  def on_github?
+    repo.is_a? Houston::Adapters::VersionControl::GitAdapter::GithubRepo
+  end
+  
   # ------------------------------------------------------------------------- #
   
   

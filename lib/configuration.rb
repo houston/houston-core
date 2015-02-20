@@ -601,6 +601,10 @@ module_function
     @jobs ||= Jobs.new
   end
   
+  def github
+    @github ||= Octokit::Client.new(access_token: config.github[:access_token], auto_paginate: true)
+  end
+  
 end
 
 
