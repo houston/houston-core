@@ -3,6 +3,7 @@
 --
 
 SET statement_timeout = 0;
+SET lock_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
@@ -653,7 +654,8 @@ CREATE TABLE deploys (
     environment_name character varying(255) DEFAULT 'Production'::character varying NOT NULL,
     deployer character varying(255),
     commit_id integer,
-    duration integer
+    duration integer,
+    branch character varying(255)
 );
 
 
@@ -2738,4 +2740,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150116153233');
 INSERT INTO schema_migrations (version) VALUES ('20150119154013');
 
 INSERT INTO schema_migrations (version) VALUES ('20150119155145');
+
+INSERT INTO schema_migrations (version) VALUES ('20150220215154');
 

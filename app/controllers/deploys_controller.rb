@@ -16,6 +16,7 @@ class DeploysController < ApplicationController
     end
     
     sha = params[:commit] || params[:head_long] || params[:head]
+    branch = params[:branch]
     deployer = params[:deployer] || params[:user]
     milliseconds = params[:duration]
     
@@ -23,6 +24,7 @@ class DeploysController < ApplicationController
       project: @project,
       environment_name: @environment,
       sha: sha,
+      branch: branch,
       deployer: deployer,
       duration: milliseconds
     })
