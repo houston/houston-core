@@ -73,6 +73,11 @@ module Houston
       @smtp ||= {}
     end
     
+    def s3(&block)
+      @s3 = HashDsl.hash_from_block(block) if block_given?
+      @s3 ||= {}
+    end
+    
     def intercom(&block)
       @intercom = HashDsl.hash_from_block(block) if block_given?
       @intercom ||= {}

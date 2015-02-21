@@ -10,8 +10,10 @@ class @EditTicketView extends Backbone.View
     $textarea = @$description.find('textarea')
 
     $(window).resize =>
-      $textarea.css height: @$description.parent().height() - 61
-    $textarea.css height: @$description.parent().height() - 61
+      $textarea.css height: @$description.parent().height() - (61 + 31)
+    $textarea.css height: @$description.parent().height() - (61 + 31)
+
+    $('.uploader').supportImages()
 
     @$el.find('.ticket-state').pseudoHover().click (e)=>
       action = if $(e.target).hasClass('open') then 'close' else 'reopen'

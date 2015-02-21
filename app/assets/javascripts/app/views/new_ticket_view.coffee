@@ -60,6 +60,8 @@ class window.NewTicketView extends Backbone.View
     $('#ticket_description').focus =>
       @$el.attr('data-mode', 'description')
     
+    $('.uploader').supportImages()
+    
     view = @
     
     y = /\] *([^:]*)/

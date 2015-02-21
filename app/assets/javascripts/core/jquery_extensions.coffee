@@ -80,6 +80,71 @@ $.fn.extend
         # (Doesn't work in Google Chrome)
         
         $(@).val($(@).val())
+  
+  insertAtCursor: (text)->
+    textarea = @[0]
+    
+    # IE support
+    if document.selection
+      textarea.focus()
+      sel = document.selection.createRange()
+      sel.text = text
+    
+    # MOZILLA and others
+    else if textarea.selectionStart || textarea.selectionStart == '0'
+      startPos = textarea.selectionStart
+      endPos = textarea.selectionEnd
+      textarea.value = textarea.value.substring(0, startPos) + text + textarea.value.substring(endPos, textarea.value.length)
+      textarea.selectionStart = startPos + text.length
+      textarea.selectionEnd = startPos + text.length
+    
+    else
+      textarea.value += text
+  
+  supportImages: ->
+    $el = @
+    
+    $el.append '''
+      <div class="drag-and-drop">
+        Attach images by dragging &amp; dropping them or <a class="dz-selector">selecting them</a>.
+      </div>
+      <div class="upload-progress"></div>
+      <div class="upload-error"></div>
+    '''
+    
+    bucket = App.meta('s3-bucket')
+    $el.dropzone
+      maxFilesize: 13 # MB
+      clickable: '.dz-selector'
+      acceptedFiles: 'image/jpeg,image/png,image/gif'
+      url: "http://#{bucket}.s3.amazonaws.com"
+      uploadprogress: (file, progress)->
+        $el.find('.upload-progress').html "Uploading #{file.name} (#{progress.toFixed(0)}% complete)"
+      
+      complete: ->
+        if @getUploadingFiles().length is 0 and @getQueuedFiles().length is 0
+          $el.removeClass('uploading')
+      
+      error: (file, errorMessage)->
+        $el.addClass('error')
+        $el.find('.upload-error').html """
+          <span class="message">#{errorMessage}</span>
+          <a class="dz-selector">Try again</a>"
+        """
+      
+      sending: (file, xhr, formData)=>
+        $el.removeClass('error').addClass('uploading')
+        $el.find('.upload-progress').html "Uploading #{file.name}..."
+        $.ajax
+          url: '/uploads/policies',
+          data: {name: file.name, size: file.size, type: file.type},
+          type: 'POST',
+          async: false, # because we need this response before dropzone can continue
+          success: (params)=>
+            src = "https://s3.amazonaws.com/#{bucket}/#{params.key}"
+            @.find('textarea').insertAtCursor "![#{file.name}](#{src})"
+            $.each params, (key, value)->
+              formData.append(key, value)
 
 
 

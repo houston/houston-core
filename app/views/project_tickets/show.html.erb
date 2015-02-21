@@ -42,7 +42,9 @@
     <div class="ticket-description editable primary-frame" id="ticket_description">
       <div class="show"><%= mdown @ticket.description %></div>
       <div class="edit">
-        <textarea name="description"></textarea>
+        <div class="uploader">
+          <textarea name="description"></textarea>
+        </div>
         <p class="buttons">
           <button type="reset" class="btn btn-link">Cancel</button>
           <button type="submit" class="btn btn-default">Save</button>
