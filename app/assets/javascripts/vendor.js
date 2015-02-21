@@ -30,3 +30,4 @@
 //= require d3.v3.js
 //= require neat
 //= require alertify
+//= require dropzone

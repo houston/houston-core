@@ -152,6 +152,12 @@ Rails.application.routes.draw do
   
   
   
+  # Uploads
+  
+  post "uploads/policies", to: "uploads#policies"
+  
+  
+  
   # API
   
   get "commits", to: "commits#index"
