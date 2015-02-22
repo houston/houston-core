@@ -24,16 +24,6 @@ GIT
       faraday (~> 0.8.8)
 
 GIT
-  remote: git://github.com/concordia-publishing-house/houston-feedback.git
-  revision: ece1805d32868425dd76ac1fff33163cfcb99d5f
-  branch: master
-  specs:
-    houston-feedback (0.0.1)
-      activerecord-import
-      pg_search
-      rails
-
-GIT
   remote: git://github.com/concordia-publishing-house/houston-itsm.git
   revision: a1837cad342d82d71c80c9ab9f1ebd8b0f52d8cf
   branch: master
@@ -94,6 +84,16 @@ GIT
   branch: master
   specs:
     houston-alerts (0.0.1)
+      rails
+
+GIT
+  remote: git://github.com/houstonmc/houston-feedback.git
+  revision: ece1805d32868425dd76ac1fff33163cfcb99d5f
+  branch: master
+  specs:
+    houston-feedback (0.0.1)
+      activerecord-import
+      pg_search
       rails
 
 GIT
@@ -308,7 +308,7 @@ GEM
       rubyzip (~> 1.1.0)
     orm_adapter (0.5.0)
     pg (0.17.1)
-    pg_search (0.7.8)
+    pg_search (0.7.9)
       activerecord (>= 3.1)
       activesupport (>= 3.1)
       arel
