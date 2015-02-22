@@ -2,10 +2,12 @@
            project: @project,
            subtitle: "#{pluralize(@tickets.count, "ideas")} for"} %>
 
-<input type="text" id="tickets_filter" placeholder="Filter Ideas" style="margin: 0" />
+<div class="callout callout-slim callout-banner">
+  <input type="text" id="tickets_filter" placeholder="Filter Ideas" style="margin: 0" />
 
-<%= link_to "Open Ideas", project_open_ideas_path(@project), class: "btn btn-default btn-toggle" %>
-<%= link_to "New Idea", new_ticket_path(@project), :class => "btn btn-default" if can?(:create, @project.tickets.build) %>
-<%= link_to "Download for Excel", {format: :xls}, :class => "btn btn-default" %>
+  <%= link_to "Open Ideas", project_open_ideas_path(@project), class: "btn btn-default btn-toggle" %>
+  <%= link_to "New Idea", new_ticket_path(@project), :class => "btn btn-default" if can?(:create, @project.tickets.build) %>
+  <%= link_to "Download for Excel", {format: :xls}, :class => "btn btn-default" %>
+</div>
 
 <%= render "tickets" %>

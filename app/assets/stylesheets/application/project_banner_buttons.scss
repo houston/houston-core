@@ -1,7 +1,16 @@
 .project-banner {
-  padding-bottom: 0;
-  min-height: 58px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 40px;
+//  border-bottom: 1px solid rgb(210, 210, 210);
   
+  &.affix {
+    position: fixed;
+    top: -4px;
+    z-index: 1028; // right below the navbar
+  }
+
   .project-banner-btn {
     color: #333;
     padding: 6px;
@@ -32,7 +41,6 @@
       text-decoration: none;
       background: rgba(0, 0, 0, 0.1);
       border-radius: 6px;
-      color: white;
     }
     
     span { 

@@ -10,7 +10,7 @@ $ ->
     $el.tooltip
       placement: placement
   
-  $('.project-banner').affix(offset: {top: 66})
+  $('.project-banner').affix(offset: {top: 70})
   
   $('body').on 'click', '[rel="ticket"]', (e)->
     $link = $(@)

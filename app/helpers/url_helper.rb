@@ -26,6 +26,13 @@ module UrlHelper
   
   
   
+  def feature_path(project, feature)
+    feature = Houston.config.get_project_feature feature
+    feature.project_path project
+  end
+  
+  
+  
   def releases_path(project, *args)
     options = args.extract_options!
     environment_name = args.first

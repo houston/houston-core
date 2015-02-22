@@ -6,6 +6,9 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   
+  before_filter :set_current_project
+  after_filter :save_current_project
+  
   
   
   rescue_from CanCan::AccessDenied do |exception|
@@ -88,6 +91,8 @@ class ApplicationController < ActionController::Base
   
   def api_authenticate!
     return if current_user
+    return sign_in :user, User.developers.first if Rails.env.development?
+    
     allow_params_authentication!
     authenticate_or_request_with_http_basic do |username, password|
       params["user"] ||= {}
@@ -108,6 +113,22 @@ class ApplicationController < ActionController::Base
     return @followed_projects if defined?(@followed_projects)
     return @followed_projects = [] unless current_user
     @followed_projects = current_user.roles.to_projects.unretired.to_a
+  end
+  
+  helper_method :current_project
+  def current_project
+    @current_project ||= @project || (@default_project_slug ? Project[@default_project_slug] : current_user.current_project)
+  end
+  
+  def set_current_project
+    @default_project_slug = params[:project]
+  end
+  
+  def save_current_project
+    return unless current_user && current_project
+    
+    current_user.current_project_id = current_project.id
+    current_user.save if current_user.current_project_id_changed?
   end
   
   

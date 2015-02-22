@@ -12,6 +12,7 @@ module Houston
       @modules = []
       @gems = []
       @navigation_renderers = {}
+      @available_project_features = {}
       @authentication_strategy = :database
       @authentication_strategy_configuration = {}
       @ticket_tracker_configuration = {}
@@ -104,6 +105,32 @@ module Houston
     def get_navigation_renderer(name)
       @navigation_renderers.fetch(name)
     end
+    
+    
+    
+    def project_features(*args)
+      @project_features = args if args.any?
+      return @available_project_features.keys unless @project_features
+      @project_features & @available_project_features.keys
+    end
+    
+    def get_project_feature(slug)
+      @available_project_features[slug]
+    end
+    
+    def add_project_feature(slug, &block)
+      dsl = ProjectFeatureDsl.new
+      dsl.instance_eval(&block)
+      feature = dsl.feature
+      feature.slug = slug
+      raise ArgumentError, "Project Feature must supply name, but #{slug.inspect} doesn't" unless feature.name
+      raise ArgumentError, "Project Feature must supply icon, but #{slug.inspect} doesn't" unless feature.icon
+      raise ArgumentError, "Project Feature must supply path lambda, but #{slug.inspect} doesn't" unless feature.path_block
+      
+      @available_project_features[slug] = feature
+    end
+    
+    
     
     def project_colors(*args)
       @project_colors = args.first.each_with_object({}) { |(key, hex), hash| hash[key] = ColorValue.new(hex) } if args.any?
@@ -438,6 +465,46 @@ module Houston
       else
         super
       end
+    end
+    
+  end
+  
+  
+  
+  class ProjectFeature < Struct.new(:name, :slug, :icon, :path_block, :ability_block)
+    
+    def project_path(project)
+      path_block.call project
+    end
+    
+    def permitted?(ability, project)
+      return true if ability_block.nil?
+      ability_block.call ability, project
+    end
+    
+  end
+  
+  class ProjectFeatureDsl
+    attr_reader :feature
+    
+    def initialize
+      @feature = ProjectFeature.new
+    end
+    
+    def name(value)
+      feature.name = value
+    end
+    
+    def icon(value)
+      feature.icon = value
+    end
+    
+    def path(&block)
+      feature.path_block = block
+    end
+    
+    def ability(&block)
+      feature.ability_block = block
     end
     
   end

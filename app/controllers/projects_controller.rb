@@ -1,5 +1,5 @@
 class ProjectsController < ApplicationController
-  before_filter :convert_maintainers_attributes_to_maintainer_ids
+  before_filter :convert_maintainers_attributes_to_maintainer_ids, only: [:create, :update]
   load_resource :find_by => :slug # will use find_by_permalink!(params[:id])
   authorize_resource
   
@@ -38,7 +38,7 @@ class ProjectsController < ApplicationController
   
   
   def create
-    @project = Project.new(params[:project])
+    @project = Project.new(project_attributes)
     
     if @project.save
       redirect_to projects_path, notice: 'Project was successfully created.'
@@ -52,7 +52,7 @@ class ProjectsController < ApplicationController
   def update
     @project = Project.find_by_slug!(params[:id])
     
-    if @project.update_attributes(params[:project])
+    if @project.update_attributes(project_attributes)
       redirect_to projects_path, notice: 'Project was successfully updated.'
     else
       flash.now[:error] = @project.errors[:base].join("\n")
@@ -77,6 +77,13 @@ class ProjectsController < ApplicationController
   
   
 private
+  
+  
+  def project_attributes
+    attrs = params[:project]
+    attrs[:selected_features] ||= []
+    attrs
+  end
   
   
   def convert_maintainers_attributes_to_maintainer_ids

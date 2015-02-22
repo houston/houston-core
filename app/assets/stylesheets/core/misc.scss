@@ -33,7 +33,8 @@ button.close {
 }
 
 .callout.callout-banner {
-  margin-top: -25px;
+  margin-top: -28px; // right up next to the h1
+  border-top: 1px solid rgb(210, 210, 210);
 }
 
 .callout.callout-banner.callout-slim {
@@ -79,30 +80,7 @@ button.close {
 
 label input[type="checkbox"] { vertical-align: baseline; }
 
-.nav > .divider { 
-  width: 1px;
-  background: #181818;
-  border-right: 1px solid #3f3f3f;
-  height: 40px;
-  margin: 0 0.7em 0 0.75em
-}
-
 .form-actions .btn-delete { float: right; }
-
-.navbar .nav > li > a.settings-link {
-  padding: 8px 4px 0;
-}
-
-.nav {
-  .avatar {
-    width: 34px;
-    height: 34px;
-    margin: -6px 0 -6px -6px;
-    opacity: 0.9;
-  }
-  
-  a:hover .avatar, .dropdown.open .avatar { opacity: 1; }
-}
 
 .committer-avatar img {
   border: 2px solid #555;
@@ -174,17 +152,13 @@ h1 .subtitle {
 }
 
 h1 {
-  background: #73746F;
-  color: white;
+  background: #efefef;
   font-weight: 500;
-  padding: .66em .66em .66em 2em;
-  margin: -24px 0 1em;
+  padding: .66em .66em .66em 28px;
+  margin: 0 0 1em;
   font-weight: 200;
   font-size: 2em;
   
-  -moz-box-shadow: 0 0 7px 1px rgba(0, 0, 0, 0.25);
-  -webkit-box-shadow: 0 0 7px 1px rgba(0, 0, 0, 0.25);
-  box-shadow: 0 0 7px 1px rgba(0, 0, 0, 0.25);
   
   a.btn { color: white ;}
   
@@ -194,35 +168,19 @@ h1 {
     font-weight: 100;
     font-size: .75em;
     text-transform: uppercase;
-    color: white;
+    color: inherit;
     
     &.colon { font-family: arial; }
     &.postfix { text-transform: lowercase; }
   }
   
   .light { font-weight: 100; }
-  
-  &.project-banner {
-    position: absolute;
-    left: 0;
-    right: 0;
-    
-    &.affix {
-      position: fixed;
-      top: -6px;
-      z-index: 1029; // right below the navbar
-    }
-  }
 }
 
 @media only screen and (max-width: 600px)  {
   h1 {
     padding-left: .66em;
   }
-}
-
-#body {
-  padding-top: 77px;
 }
 
 .alert.small-alert {

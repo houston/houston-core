@@ -68,6 +68,14 @@ class Project < ActiveRecord::Base
     find_by_slug(slug)
   end
   
+  def features
+    selected_features & Houston.config.project_features
+  end
+  
+  def selected_features
+    Array(super).map(&:to_sym)
+  end
+  
   
   
   

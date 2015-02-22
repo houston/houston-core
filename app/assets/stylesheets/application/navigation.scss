@@ -1,5 +1,10 @@
+$navbar-height: 36px;
+$avatar-size: $navbar-height - 6px;
+$project-navbar-height: 30px;
+
 .navbar .dropdown-menu .bubble { margin: 0 0.25em 0 0; }
-.navbar .nav-icon {
+
+.nav-icon {
   display: inline-block;
   height: 18px;
   
@@ -15,10 +20,20 @@
   svg * { fill: white; }
 }
 
+.navbar .brand {
+  padding: 6px 20px 10px;
+}
+
 // Don't let the navbar wrap onto multiple lines
 .navbar .nav {
-  height: 41px;
+  height: $navbar-height;
   float: none;
+  margin: 0 66px 0 0;
+}
+
+.navbar-inverse .navbar-inner {
+  border-bottom: none;
+  box-shadow: none;
 }
 
 .navbar .nav li.dropdown > .dropdown-toggle .caret {
@@ -28,11 +43,129 @@
 
 .navbar .nav .dropdown-toggle .caret { margin: 9px -4px 0 0; }
 
-@media (max-width: 1024px) {
-  .navbar .nav > li > a { padding: 11px 15px 6px; }
-  .navbar .nav-label { display: none; }
+.navbar .nav > li > a,
+.navbar-inverse .nav > li.current {
+  padding: 6px 15px 10px;
+  height: 20px;
 }
 
-@media (min-width: 1024px) {
-  .navbar .nav-icon { display: none; }
+// same as .dropdown.open
+.navbar-inverse .nav > li.current {
+  color: #ffffff;
+  background-color: #111111;
+}
+
+.navbar-inner {
+  min-height: $navbar-height;
+  height: $navbar-height;
+}
+
+.navbar .divider-vertical {
+  height: $navbar-height;
+}
+
+
+.navbar .nav .current-project {
+  margin-right: 5px;
+  white-space: nowrap;
+}
+
+.navbar .nav .current-project > a {
+  color: white;
+  text-shadow: none;
+  height: 20px;
+  
+  &::after {
+    font-family: 'FontAwesome';
+    content: '\f0dc';
+    display: inline-block;
+    margin-left: 0.5ems;
+    font-size: 0.88em;
+  }
+}
+
+.project-navbar {
+  position: fixed;
+  top: $navbar-height;
+  width: 100%;
+  z-index: 1029;
+  padding: 3px 3em 0;
+  height: $project-navbar-height;
+  overflow: hidden;
+  
+  .nav-icon svg * { fill: white; }
+  
+  .project-no-features {
+    color: white;
+    line-height: $project-navbar-height;
+  }
+}
+
+.project-navbar .nav > li { float: left; }
+.project-navbar .nav > li > a, 
+.project-navbar .nav > li.current {
+  padding: 5px 15px;
+}
+.project-navbar .nav > li > a {
+  color: white;
+  
+  &:hover, &:focus {
+    text-decoration: none;
+    background-color: rgba(255,255,255,0.25);
+  }
+}
+
+.project-navbar .nav > li.current {
+  background: white;
+  color: black;
+  
+  .nav-icon svg * { fill: black; }
+}
+
+
+.navbar .nav > li.current-user > a {
+  padding: 3px 15px;
+}
+
+.navbar .nav > li > a.settings-link {
+  padding: 8px 4px 0;
+}
+
+.nav {
+  .avatar {
+    width: $avatar-size;
+    height: $avatar-size;
+    opacity: 0.9;
+  }
+  
+  a:hover .avatar, .dropdown.open .avatar { opacity: 1; }
+}
+
+
+
+
+$threshhold: 820px;
+
+@media (max-width: $threshhold) {
+  .nav .nav-label { display: none; }
+}
+
+@media (max-width: 500px) {
+  .project-navbar { padding-left: 0; padding-right: 0; }
+}
+
+@media (min-width: $threshhold) {
+  .nav .nav-icon { display: none; }
+}
+
+.project-banner {
+  top: $navbar-height + $project-navbar-height;
+}
+
+body {
+  padding-top: $navbar-height + $project-navbar-height
+}
+
+#body {
+  padding-top: 105px;
 }

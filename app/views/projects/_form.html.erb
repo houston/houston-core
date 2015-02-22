@@ -79,7 +79,21 @@
         <%= f.text_field :gemnasium_slug, :class => 'text_field' %>
       </div>
     </div>
-
+    
+    <hr />
+    
+    <div class="control-group">
+      <%= f.label :roles, "Features", :class => 'control-label' %>
+      <div class="controls" style="padding-top: 5px; padding-bottom: 5px;">
+        <% Houston.config.project_features.each do |feature| %>
+          <label for="selected_features_<%= feature %>">
+            <%= check_box_tag "project[selected_features][]", feature, @project.selected_features.member?(feature), id: "selected_features_#{feature}" %>
+            <%= Houston.config.get_project_feature(feature)[:name] %>
+          </label>
+        <% end %>
+      </div>
+    </div>
+    
     <hr />
     
     <div class="control-group">

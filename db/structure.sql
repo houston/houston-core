@@ -959,7 +959,8 @@ CREATE TABLE projects (
     ticket_tracker_sync_started_at timestamp without time zone,
     view_options hstore DEFAULT ''::hstore NOT NULL,
     gemnasium_slug character varying(255),
-    feature_states hstore DEFAULT ''::hstore NOT NULL
+    feature_states hstore DEFAULT ''::hstore NOT NULL,
+    selected_features text[]
 );
 
 
@@ -1474,7 +1475,8 @@ CREATE TABLE users (
     view_options hstore DEFAULT ''::hstore NOT NULL,
     email_addresses text[],
     invitation_created_at timestamp without time zone,
-    environments_subscribed_to text[] DEFAULT '{}'::text[] NOT NULL
+    environments_subscribed_to text[] DEFAULT '{}'::text[] NOT NULL,
+    current_project_id integer
 );
 
 
@@ -2742,4 +2744,8 @@ INSERT INTO schema_migrations (version) VALUES ('20150119154013');
 INSERT INTO schema_migrations (version) VALUES ('20150119155145');
 
 INSERT INTO schema_migrations (version) VALUES ('20150220215154');
+
+INSERT INTO schema_migrations (version) VALUES ('20150222205616');
+
+INSERT INTO schema_migrations (version) VALUES ('20150222214124');
 

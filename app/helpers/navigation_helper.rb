@@ -8,6 +8,20 @@ module NavigationHelper
     nil
   end
   
+  def current_feature
+    return nil unless current_project
+    @current_feature ||= current_project.features.find do |feature|
+      current_page? feature_path(current_project, feature)
+    end
+  end
+  
+  def render_nav_for_feature(feature)
+    feature = Houston.config.get_project_feature feature
+    return unless feature.permitted?(current_ability, current_project)
+    
+    render_nav_link feature.name, feature.project_path(current_project), icon: feature.icon
+  end
+  
   def render_nav_menu(name, items: [], icon: "fa-circle-thin")
     items.flatten!
     
@@ -26,12 +40,17 @@ module NavigationHelper
   end
   
   def render_nav_link(name, href, icon: "fa-circle-thin")
-    "<li><a href=\"#{href}\" title=\"#{h name}\">#{_render_nav(name, icon: icon)}</a></li>".html_safe
+    if current_page? href
+      "<li class=\"current\">#{_render_nav(name, icon: icon)}</li>".html_safe
+    else
+      "<li><a href=\"#{href}\" title=\"#{h name}\">#{_render_nav(name, icon: icon)}</a></li>".html_safe
+    end
   end
   
 private
   
-  def _render_nav(name, icon: "fa-circle-thin")
+  def _render_nav(name, icon: nil)
+    icon ||= "fa-circle-thin"
     <<-HTML
     <div class="nav-icon">#{_nav_icon(icon)}</div>
     <span class="nav-label">#{h name}</span>
@@ -39,7 +58,10 @@ private
   end
   
   def _nav_icon(icon)
-    ($icons ||= {})[icon] ||= File.read(Rails.root.join("public", "images", "#{icon}.svg"))
+    ($icons ||= {})[icon] ||= begin
+      path = Rails.root.join("public", "images", "#{icon}.svg")
+      File.read(path) if File.exists?(path)
+    end || File.read(Rails.root.join("public", "images", "fa-bomb.svg"))
   end
   
 end

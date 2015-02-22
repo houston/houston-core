@@ -1,5 +1,4 @@
 body {
-  padding-top: 60px;
   padding-bottom: 60px;
   font-family: "Helvetica Neue", roboto, Helvetica, Arial, sans-serif
 }
@@ -31,4 +30,19 @@ li { line-height: 1.5em; }
     color: white;
     font-weight: 200;
   }
+}
+
+.dropdown-menu > li.current {
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: normal;
+  line-height: 20px;
+  white-space: nowrap;
+  
+//  background: #EDF9FF;
+//  color: rgba(27, 71, 94, 1);
+  background: #ededed;
+  color: #9d9d9d;
+  b.bubble { background: #ccc !important;}
 }

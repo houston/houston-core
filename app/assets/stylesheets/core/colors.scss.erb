@@ -42,11 +42,28 @@
   <% end %>
 }
 
-.project-banner {
+#email_body h1.project-banner,
+.current-project,
+.project-navbar {
   <% Houston.config.project_colors.each do |name, value| %>
     &.<%= name %> { background-color: $<%= name %>; }
   <% end %>
 }
+
+<% Houston.config.project_colors.each do |name, value| %>
+  .project-navbar.<%= name %> .nav > li.current,
+  .project-banner.<%= name %> {
+    background-color: lighten($<%= name %>, 32%);
+    background-color: hsl(hue($<%= name %>), saturation($<%= name %>), 93);
+  }
+  .navbar-inverse .nav li.current-project.dropdown.open > .dropdown-toggle,
+  .navbar-inverse .nav li.current-project.dropdown.active > .dropdown-toggle,
+  .navbar-inverse .nav li.current-project.dropdown.open.active > .dropdown-toggle {
+    background-color: darken($<%= name %>, 40%);
+  }
+<% end %>
+
+
 
 .modal-header { background-color: #73746F; }
 
