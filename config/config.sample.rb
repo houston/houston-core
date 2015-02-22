@@ -25,10 +25,11 @@ Houston.config do
     domain "10.10.10.10"
   end
 
-  # (Optional) Houston can be used with Intercom
-  # intercom do
-  #   app_id: INTERCOM_HOUSTON_APP_ID
-  #   app_api_key: INTERCOM_HOUSTON_APP_API_KEY
+  # (Optional) Supply an S3 bucket to support file uploads
+  # s3 do
+  #   access_key ACCESS_KEY
+  #   secret SECRET
+  #   bucket "houston-#{ENV["RAILS_ENV"] || "development"}"
   # end
 
   # (Optional) These are the categories you can organize your projects by
@@ -84,14 +85,16 @@ Houston.config do
   # For examples, see config/initializers/add_navigation_renderers.rb
   #
   # These are the menu items that will be shown in Houston
-  navigation :alerts,
-             :feedback,
-             :bugs,
-             :ideas,
-             :roadmap,
-             :sprint,
-             :testing,
-             :releases
+  navigation       :alerts,
+                   :roadmap,
+                   :sprint
+  project_features :feedback,
+                   :ideas,
+                   :bugs,
+                   :scheduler,
+                   :roadmap,
+                   :testing,
+                   :releases
 
 
 
@@ -153,6 +156,7 @@ Houston.config do
     end
   end
 
+  use :feedback, github: "houstonmc/houston-feedback", branch: "master"
 
   # use :kanban, github: "houstonmc/houston-kanban", branch: "master" do
   #   queues do
@@ -188,12 +192,15 @@ Houston.config do
   #   end
   # end
 
+
   # use :scheduler, github: "houstonmc/houston-scheduler", branch: "master" do
   #   planning_poker :off
   #   estimate_effort :off
   #   estimate_value :off
   #   mixer :off
   # end
+
+
 
 
 
@@ -273,13 +280,25 @@ Houston.config do
       # Everyone can see project quotas
       can :read, Houston::Scheduler::ProjectQuota
 
-      # Developers see the other kinds of changes: Test Fixes and Refactors
-      # as well as commit info
-      can :read, [Commit, ReleaseChange] if user.developer?
-      can :manage, Sprint if user.developer?
-      
-      # Developers can break tickets into tasks
-      can :manage, Task if user.developer?
+      # Everyone can read and tag and create feedback
+      can :read, Houston::Feedback::Comment
+      can :tag, Houston::Feedback::Comment
+      can :create, Houston::Feedback::Comment
+
+      # Everyone can update their own feedback
+      can [:update, :destroy], Houston::Feedback::Comment, user_id: user.id
+
+      # Developers can
+      #  - see other kinds of Release Changes (like Refactors)
+      #  - update Sprints
+      #  - change Milestones' tickets
+      #  - break tickets into tasks
+      if user.developer?
+        can :read, [Commit, ReleaseChange]
+        can :manage, Sprint
+        can :update_tickets, Milestone
+        can :manage, Task
+      end
 
       # Testers and Developers can see and comment on all testing notes
       can [:create, :read], TestingNote if user.tester? or user.developer?

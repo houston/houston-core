@@ -47,12 +47,12 @@ namespace :config do
     port 25
     domain "10.10.10.10"
     TEXT
-    config.remove! /^             :feedback,[^\n]+\n/ # from navigation
-    config.replace_block! :intercom, <<-TEXT, comment_out: true
-    app_id: INTERCOM_HOUSTON_APP_ID
-    app_api_key: INTERCOM_HOUSTON_APP_API_KEY
+    config.replace_block! :s3, <<-TEXT, comment_out: true
+    access_key ACCESS_KEY
+    secret SECRET
+    bucket "houston-\#{ENV["RAILS_ENV"] || "development"}"
     TEXT
-    config.remove! /^             :feedback,[^\n]+\n/ # from navigation
+    config.remove_block! :intercom
     
     
     
@@ -132,7 +132,7 @@ namespace :config do
     TEXT
     config.remove! /^  use :itsm,[^\n]+\n/
     config.remove! /^  use :reports,[^\n]+\n/
-    config.remove! /^  use :feedback,[^\n]+\n/
+    config.remove! /^  use :support_form,[^\n]+\n/
     config.remove! /^  gem "star",[^\n]+\n/
     
     
