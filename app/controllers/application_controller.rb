@@ -124,7 +124,7 @@ class ApplicationController < ActionController::Base
   end
   
   def set_current_project
-    @default_project_slug = params[:project]
+    @default_project_slug = params[:project] if params[:project].is_a?(String)
   end
   
   def save_current_project
