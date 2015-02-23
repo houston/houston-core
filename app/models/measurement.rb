@@ -41,6 +41,7 @@ class Measurement < ActiveRecord::Base
     def taken_after(date)
       where(arel_table[:taken_on].gteq(date))
     end
+    alias :taken_since :taken_after
     
     def taken_between(date0, date1)
       taken_after(date0).taken_before(date1)
@@ -65,7 +66,7 @@ class Measurement < ActiveRecord::Base
     def named(*name_patterns)
       name_patterns =  name_patterns.flatten.map { |pattern| pattern
         .gsub(/\{([\w,]+)\}/) { "(#{$~.captures[0].gsub(/,/, "|")})" }
-        .gsub(/\.\*$/, "%") }
+        .gsub(/\*$/, "%") }
       where(["name SIMILAR TO ?", "(#{name_patterns.join("|")})"])
     end
     
