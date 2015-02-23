@@ -46,6 +46,10 @@ class ApplicationController < ActionController::Base
     end
   end
   
+  rescue_from ActiveRecord::RecordNotFound do
+    render file: "public/404", layout: false
+  end
+  
   
   
   def require_login
