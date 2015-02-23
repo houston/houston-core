@@ -16,6 +16,7 @@
           <td class="user-avatar"></td>
           <th class="user-name sort-desc">Name</th>
           <th class="user-email">Email</th>
+          <th class="user-nickname">Nickname</th>
           <th class="user-role">Role</th>
           <th class="user-tickets-filed"><small>Tickets<br />Filed</small></th>
           <th class="user-tickets-invalid"><small>Dupicate<br />or Invalid</small></th>
@@ -36,6 +37,7 @@
               <% end %>
             </td>
             <td class="user-email"><%= mail_to user.email %></td>
+            <td class="user-email"><%= user.nickname %></td>
             <td class="user-role"><%= user.role %><%= ", Admin" if user.administrator? %></td>
             <td class="user-tickets-filed"><%= stats[:tickets] %></td>
             <td class="user-tickets-invalid">
