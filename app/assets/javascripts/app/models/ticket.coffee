@@ -8,6 +8,12 @@ class window.Ticket extends Backbone.Model
     effort = @tasks().reduce ((sum, task)-> sum + +task.get('effort')), 0
     if effort == 0 then null else effort
   
+  estimatedEffortCompleted: ->
+    effort = @tasks()
+      .select (task)-> task.get('completedAt')
+      .reduce ((sum, task)-> sum + +task.get('effort')), 0
+    if effort == 0 then null else effort
+  
   severity: ->
     seriousness = @get('seriousness')
     likelihood = @get('likelihood')
