@@ -52,7 +52,6 @@ namespace :config do
     secret SECRET
     bucket "houston-\#{ENV["RAILS_ENV"] || "development"}"
     TEXT
-    config.remove_block! :intercom
     
     
     

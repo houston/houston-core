@@ -42,8 +42,6 @@ gem "xlsx", github: "concordia-publishing-house/xlsx", branch: "master"
 
 # Tooling
 gem "airbrake"
-gem "intercom"
-gem "intercom-rails"
 gem "skylight"
 
 

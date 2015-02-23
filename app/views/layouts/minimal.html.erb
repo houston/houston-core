@@ -41,7 +41,6 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <%= javascript_include_tag :vendor %>
     <%= javascript_include_tag :application %>
-    <%= intercom_script_tag if Houston.config.use_intercom? %>
     <%= yield :javascripts %>
   </body>
 </html>

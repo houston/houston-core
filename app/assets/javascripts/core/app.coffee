@@ -166,7 +166,4 @@ window.App =
           $form.find('.alert').remove()
           Errors.fromResponse(response).renderToAlert().prependTo $form
 
-  trackEvent: (eventName)->
-    Intercom('trackEvent', eventName) if Intercom
-
 @Houston = @App

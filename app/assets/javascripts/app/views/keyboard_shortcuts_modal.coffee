@@ -38,6 +38,5 @@ class @KeyboardShortcutsModal
     ]
   
   show: ->
-    Houston.trackEvent 'showed-keyboard-shortcuts'
     $modal = $(@template(shortcuts: @shortcuts)).modal()
     $modal.on 'hidden', -> $modal.remove()
