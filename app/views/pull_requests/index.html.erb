@@ -24,6 +24,11 @@
           <span class="pull-request-number"><%= pull_request.number %></span>
           <%= image_tag pull_request.avatar_url(size: 64), width: 32, height: 32, class: "pull-request-author" %>
           <span class="pull-request-title"><%= emojify pull_request.title %></span>
+          <span class="pull-request-labels">
+            <% pull_request.labels.each do |label| %>
+              <span class="label" style="background: #<%= label.color %>;"><%= label.name %></span>
+            <% end %>
+          </span>
           <span class="pull-request-age"><%= time_ago_in_words pull_request.created_at %> old</span>
         <% end %>
       </li>

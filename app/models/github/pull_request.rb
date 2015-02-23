@@ -8,10 +8,11 @@ module Github
       @user = pull_request.user
       @created_at = pull_request.created_at
       @repo = pull_request.repository.name
+      @labels = pull_request.labels
       @url = "https://github.com/#{pull_request.repository.full_name}/pull/#{number}"
     end
     
-    attr_reader :raw_pull_request, :title, :number, :url, :user, :created_at, :repo
+    attr_reader :raw_pull_request, :title, :number, :url, :user, :created_at, :repo, :labels
     
     def avatar_url(options={})
       url = user.avatar_url.dup
@@ -24,7 +25,7 @@ module Github
     end
     
     def back_burner?
-      title =~ /\((bb|wip)\)/
+      title =~ /\((bb|wip)\)/ || labels.map(&:name).member?("wip")
     end
     
   end
