@@ -91,7 +91,6 @@ class ApplicationController < ActionController::Base
   
   def api_authenticate!
     return if current_user
-    return sign_in :user, User.developers.first if Rails.env.development?
     
     allow_params_authentication!
     authenticate_or_request_with_http_basic do |username, password|
@@ -117,7 +116,7 @@ class ApplicationController < ActionController::Base
   
   helper_method :current_project
   def current_project
-    @current_project ||= @project || (@default_project_slug ? Project[@default_project_slug] : current_user.current_project)
+    @current_project ||= @project || (@default_project_slug ? Project[@default_project_slug] : (current_user && current_user.current_project))
   end
   
   def set_current_project

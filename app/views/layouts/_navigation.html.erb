@@ -18,38 +18,40 @@
       </ul>
       <ul class="nav">
         
-        <li class="dropdown current-project <%= current_project && current_project.color %>">
-          <a href="#" title="Feedback" class="dropdown-toggle" data-toggle="dropdown">
-            <%= current_project ? current_project.name : "Select Project" %>
-          </a>
-          <ul class="dropdown-menu">
-            <% followed_projects.each do |project| %>
-              <% if project == current_project %>
-                <li class="current">
-                  <b class="bubble <%= project.color %>"></b> <%= project.name %></a>
-                </li>
-              <% else %>
-                <li>
-                  <% path = if !current_feature
-                              # we're not on a project page,
-                              # just refresh the page and set the project
-                              "?project=#{project.slug}" 
-                            elsif !project.features.include?(current_feature)
-                              # we're using a feature that this project
-                              # doesn't support. Navigate to the root URL
-                              # and set the project
-                              main_app.root_path(project: project.slug)
-                            else
-                              feature_path(project, current_feature)
-                            end %>
-                  <%= link_to path do %>
+        <% if current_user -%>
+          <li class="dropdown current-project <%= current_project && current_project.color %>">
+            <a href="#" title="Feedback" class="dropdown-toggle" data-toggle="dropdown">
+              <%= current_project ? current_project.name : "Select Project" %>
+            </a>
+            <ul class="dropdown-menu">
+              <% followed_projects.each do |project| %>
+                <% if project == current_project %>
+                  <li class="current">
                     <b class="bubble <%= project.color %>"></b> <%= project.name %></a>
-                  <% end %>
-                </li>
+                  </li>
+                <% else %>
+                  <li>
+                    <% path = if !current_feature
+                                # we're not on a project page,
+                                # just refresh the page and set the project
+                                "?project=#{project.slug}" 
+                              elsif !project.features.include?(current_feature)
+                                # we're using a feature that this project
+                                # doesn't support. Navigate to the root URL
+                                # and set the project
+                                main_app.root_path(project: project.slug)
+                              else
+                                feature_path(project, current_feature)
+                              end %>
+                    <%= link_to path do %>
+                      <b class="bubble <%= project.color %>"></b> <%= project.name %></a>
+                    <% end %>
+                  </li>
+                <% end %>
               <% end %>
-            <% end %>
-          </ul>
-        </li>
+            </ul>
+          </li>
+        <% end %>
         
         
         
