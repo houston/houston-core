@@ -31,6 +31,11 @@ module UrlHelper
     feature.project_path project
   end
   
+  def link_to_project_feature(project, feature)
+    feature = Houston.config.get_project_feature feature
+    link_to feature.name, feature.project_path(project)
+  end
+  
   
   
   def releases_path(project, *args)
