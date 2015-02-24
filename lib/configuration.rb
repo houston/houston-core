@@ -377,6 +377,11 @@ module Houston
         ERROR
     end
     
+    def method_missing(name, *args, &block)
+      puts "\e[33mMissing Configuration option: #{name}\e[0m"
+      nil
+    end
+    
   end
   
   
