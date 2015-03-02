@@ -27,7 +27,11 @@
       <span class="ticket-opened date" title="<%= @ticket.created_at.strftime("%b %e %Y, %l:%M %p") %>"><%= time_ago_in_words @ticket.created_at %> ago</span>
     </div>
     
-    <% unless @project.ticket_tracker_name == "Houston" %>
+    <% if @project.ticket_tracker_name == "Houston" %>
+      <div class="ticket-tracker-link">
+        <%= link_to "permalink", @ticket.ticket_tracker_ticket_url %>
+      </div>
+    <% else %>
       <div class="ticket-tracker-link">
         <%= link_to "Open in #{@project.ticket_tracker_name}", @ticket.ticket_tracker_ticket_url %>
       </div>

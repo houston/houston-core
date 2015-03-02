@@ -21,7 +21,11 @@
       <span class="ticket-opened date" title="{{formatTime openedAt}}">{{formatTimeAgo openedAt}}</span>
     </div>
 
-    {{#ifEq ticketSystem "Houston"}}{{else}}
+    {{#ifEq ticketSystem "Houston"}}
+    <div class="ticket-tracker-link">
+      <a href="{{ticketUrl}}">permalink</a>
+    </div>
+    {{else}}
     <div class="ticket-tracker-link">
       <a href="{{ticketUrl}}" target="_blank">Open in {{ticketSystem}}</a>
     </div>
