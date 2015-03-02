@@ -1477,7 +1477,8 @@ CREATE TABLE users (
     invitation_created_at timestamp without time zone,
     environments_subscribed_to text[] DEFAULT '{}'::text[] NOT NULL,
     current_project_id integer,
-    nickname character varying(255)
+    nickname character varying(255),
+    username character varying(255)
 );
 
 
@@ -2751,4 +2752,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150222205616');
 INSERT INTO schema_migrations (version) VALUES ('20150222214124');
 
 INSERT INTO schema_migrations (version) VALUES ('20150223013721');
+
+INSERT INTO schema_migrations (version) VALUES ('20150302153319');
 

@@ -124,11 +124,16 @@ class User < ActiveRecord::Base
   def self.find_for_ldap_authentication(attributes, entry)
     email = entry.mail.first.downcase
     user = where(email: email).first
+    if user && user.username.nil?
+      user.update_column :username, entry[Houston::TMI::FIELD_USED_FOR_LDAP_LOGIN][0].to_s
+    end
+    user
   end
   
   def self.create_from_ldap_entry(attributes, entry)
     create!(
       email: entry.mail.first.downcase,
+      username: entry[Houston::TMI::FIELD_USED_FOR_LDAP_LOGIN][0].to_s,
       password: attributes[:password],
       first_name: entry.givenname.first,
       last_name: entry.sn.first )
