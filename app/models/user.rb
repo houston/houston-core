@@ -111,6 +111,10 @@ class User < ActiveRecord::Base
     roles.to_projects.member?(project)
   end
   
+  def followed_projects
+    roles.to_projects.unretired
+  end
+  
   def view_options
     super || {}
   end

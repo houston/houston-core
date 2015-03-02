@@ -17,7 +17,9 @@ class ViewMailer < ActionMailer::Base
   class_attribute :stylesheets
   self.stylesheets = %w{
     core/colors.scss.erb
+    core/avatars.scss
     application/emoji.scss
+    application/markdown.scss
     application/scores.scss
     application/test_run.scss
     application/releases.scss

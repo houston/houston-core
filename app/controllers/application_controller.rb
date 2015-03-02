@@ -115,7 +115,7 @@ class ApplicationController < ActionController::Base
   def followed_projects
     return @followed_projects if defined?(@followed_projects)
     return @followed_projects = [] unless current_user
-    @followed_projects = current_user.roles.to_projects.unretired.to_a
+    @followed_projects = current_user.followed_projects.to_a
   end
   
   helper_method :current_project
