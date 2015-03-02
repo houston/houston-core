@@ -32,3 +32,10 @@ Houston.config.add_project_feature :releases do
   path { |project| Houston::Application.routes.url_helpers.releases_path(project) }
   ability { |ability, project| ability.can?(:read, project.releases.build) }
 end
+
+Houston.config.add_project_feature :settings do
+  name "Settings"
+  icon "fa-gear"
+  path { |project| Houston::Application.routes.url_helpers.edit_project_path(project) }
+  ability { |ability, project| ability.can?(:update, project) }
+end

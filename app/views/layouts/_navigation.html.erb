@@ -83,9 +83,6 @@
       <% current_project.features.each do |feature| %>
         <%= render_nav_for_feature(feature) %>
       <% end %>
-      <% if can?(:update, current_project) %>
-        <%= render_nav_link "Settings", main_app.edit_project_path(current_project), icon: "fa-gear" %>
-      <% end %>
     </ul>
   <% else %>
     <div class="project-no-features">

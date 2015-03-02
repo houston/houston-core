@@ -69,7 +69,7 @@ class Project < ActiveRecord::Base
   end
   
   def features
-    selected_features & Houston.config.project_features
+    (selected_features & Houston.config.project_features) + [:settings]
   end
   
   def selected_features
