@@ -77,6 +77,10 @@ class User < ActiveRecord::Base
     with_email_address(email_address).first
   end
   
+  def self.with_view_option(option, value)
+    where(["view_options->? = ?", option, value])
+  end
+  
   
   
   def email=(value)

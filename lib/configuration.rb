@@ -12,6 +12,7 @@ module Houston
       @modules = []
       @gems = []
       @navigation_renderers = {}
+      @user_options = {}
       @available_project_features = {}
       @authentication_strategy = :database
       @authentication_strategy_configuration = {}
@@ -95,6 +96,21 @@ module Houston
     
     def get_navigation_renderer(name)
       @navigation_renderers.fetch(name)
+    end
+    
+    
+    
+    def add_user_option(slug, &block)
+      dsl = FormBuilderDsl.new
+      dsl.instance_eval(&block)
+      form = dsl.form
+      form.slug = slug
+      
+      @user_options[slug] = form
+    end
+    
+    def user_options
+      @user_options.values
     end
     
     
@@ -501,6 +517,33 @@ module Houston
     
     def ability(&block)
       feature.ability_block = block
+    end
+    
+  end
+  
+  
+  
+  class Form < Struct.new(:slug, :name, :render_block)
+    
+    def render(view, f)
+      view.instance_exec(f, &render_block).html_safe
+    end
+    
+  end
+  
+  class FormBuilderDsl
+    attr_reader :form
+    
+    def initialize
+      @form = Form.new
+    end
+    
+    def name(value)
+      form.name = value
+    end
+    
+    def html(&block)
+      form.render_block = block
     end
     
   end

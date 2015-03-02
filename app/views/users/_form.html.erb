@@ -74,6 +74,23 @@
     </div>
     
     
+    
+    <%= f.fields_for :view_options, nil do |f| %>
+      <% f.object = OpenStruct.new(@user.view_options) # WTF %>
+      <% Houston.config.user_options.each do |form| %>
+        <hr />
+        
+        <div class="control-group">
+          <label class="control-label"><%= form.name %></label>
+          <div class="controls">
+            <%= form.render(self, f) %>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+    
+    
+    
     <% if @user.credentials.any? %>
       <hr />
       
