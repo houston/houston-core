@@ -1,6 +1,6 @@
 <% content_for :title do %>
-<h1 class="user-banner">
-  <%= avatar_for(user, size: 256) %>
+<h1 class="project-banner">
+  <%= avatar_for(user, size: 132) %>
   <%= user.name %>
   <small>
     <%= link_to("Show", user_path(user)) unless current_page?(user_path(user)) %>
