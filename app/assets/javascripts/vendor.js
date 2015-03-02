@@ -21,12 +21,8 @@
 //= require freight_train
 //= require lail/delayed_action
 //= require sugar
-//= require underscore
-//= require backbone
-//= require handlebars
 //= require Markdown.Converter
 //= require md5
-//= require d3.v3.js
 //= require neat
 //= require alertify
 //= require dropzone
