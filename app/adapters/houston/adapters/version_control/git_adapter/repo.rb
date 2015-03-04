@@ -57,13 +57,9 @@ module Houston
           def commits_between(sha1, sha2)
             sha1 = sha1.sha if sha1.respond_to?(:sha)
             sha2 = sha2.sha if sha2.respond_to?(:sha)
+            sha1 = nil if sha1 == Houston::NULL_GIT_COMMIT
             
-            if sha1.nil? or sha1 == Houston::NULL_GIT_COMMIT
-              ancestors(sha2, including_self: true).reverse
-            else
-              find_commit(sha1) # ensure that sha1 exists in the repo
-              ancestors(sha2, including_self: true, hide: sha1).reverse
-            end
+            ancestors(sha2, including_self: true, hide: sha1).reverse
           ensure
             connection.close
           end
@@ -178,6 +174,7 @@ module Houston
             # by default, start with the commit's parent
             push_shas = commit.parents.map(&:oid) unless options[:including_self]
             hide_shas = Array(options.fetch(:hide, []))
+              .map { |sha| find_commit(sha).oid } # ensure that each of these exists in the repo
             
             walker = Rugged::Walker.new(connection)
             push_shas.each { |sha| walker.push(sha) }
