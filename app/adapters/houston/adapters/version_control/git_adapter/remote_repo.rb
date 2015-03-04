@@ -18,10 +18,6 @@ module Houston
           
           attr_reader :location
           
-          def native_commit(sha)
-            pull_and_retry { super(sha) }
-          end
-          
           def refresh!(async: false)
             return clone!(async: async) unless exists?
             pull!(async: async)
@@ -41,6 +37,14 @@ module Houston
           
           def pull!(async: false)
             async ? Houston.async { _pull!(true) } : _pull!(false)
+          end
+          
+          
+          
+        protected
+          
+          def find_commit(sha)
+            pull_and_retry { super(sha) }
           end
           
           

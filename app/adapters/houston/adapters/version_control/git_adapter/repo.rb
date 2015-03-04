@@ -61,7 +61,7 @@ module Houston
             if sha1.nil? or sha1 == Houston::NULL_GIT_COMMIT
               ancestors(sha2, including_self: true).reverse
             else
-              native_commit(sha1) # ensure that sha1 exists in the repo
+              find_commit(sha1) # ensure that sha1 exists in the repo
               ancestors(sha2, including_self: true, hide: sha1).reverse
             end
           ensure
@@ -73,17 +73,7 @@ module Houston
           end
           
           def native_commit(sha)
-            return NullCommit.new if sha == Houston::NULL_GIT_COMMIT
-            normalize_sha!(sha)
-            object = connection.lookup(sha)
-            object = object.target if object.is_a? Rugged::Tag::Annotation
-            to_commit object
-          rescue Rugged::OdbError
-            raise CommitNotFound, "\"#{sha}\" is not a commit"
-          rescue Rugged::InvalidError
-            raise CommitNotFound, "\"#{sha}\" is not a valid commit"
-          rescue Rugged::ObjectError
-            raise CommitNotFound, "\"#{sha}\" is too short"
+            to_commit find_commit(sha)
           ensure
             connection.close
           end
@@ -108,7 +98,7 @@ module Houston
           
           def find_file(file_path, options={})
             commit = options[:commit] || connection.head.target.oid
-            head = native_commit(commit).original
+            head = find_commit(commit)
             tree = head.tree
             file_path.split("/").each do |segment|
               object = tree[segment]
@@ -124,6 +114,26 @@ module Houston
           
           def to_s
             location
+          end
+          
+          
+          
+        protected
+          
+          attr_reader :connection
+          
+          def find_commit(sha)
+            return NullCommit.new if sha == Houston::NULL_GIT_COMMIT
+            normalize_sha!(sha)
+            object = connection.lookup(sha)
+            object = object.target if object.is_a? Rugged::Tag::Annotation
+            object
+          rescue Rugged::OdbError
+            raise CommitNotFound, "\"#{sha}\" is not a commit"
+          rescue Rugged::InvalidError
+            raise CommitNotFound, "\"#{sha}\" is not a valid commit"
+          rescue Rugged::ObjectError
+            raise CommitNotFound, "\"#{sha}\" is too short"
           end
           
           
@@ -147,8 +157,6 @@ module Houston
             connection.path.chomp("/")
           end
           
-          attr_reader :connection
-          
           def to_commit(rugged_commit)
             Houston::Adapters::VersionControl::Commit.new({
               original: rugged_commit,
@@ -164,11 +172,11 @@ module Houston
           end
           
           def ancestor_walker(sha, options={})
-            commit = native_commit(sha)
-            push_shas = [commit.sha]
+            commit = find_commit(sha)
+            push_shas = [commit.oid]
             
             # by default, start with the commit's parent
-            push_shas = commit.original.parents.map(&:oid) unless options[:including_self]
+            push_shas = commit.parents.map(&:oid) unless options[:including_self]
             hide_shas = Array(options.fetch(:hide, []))
             
             walker = Rugged::Walker.new(connection)
