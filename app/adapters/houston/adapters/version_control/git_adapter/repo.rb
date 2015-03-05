@@ -24,6 +24,8 @@ module Houston
           
           def ancestors(sha, options={})
             ancestor_walker(sha, options).map(&method(:to_commit))
+          ensure
+            close
           end
           
           def ancestors_until(sha, options={})
@@ -35,6 +37,8 @@ module Houston
             end
             
             raise CommitNotFound, "No matching ancestor of \"#{sha}\" was found"
+          ensure
+            close
           end
           
           def branches
@@ -42,7 +46,7 @@ module Houston
               .each(:local)
               .map { |branch| [branch.name, branch.target.oid] }]
           ensure
-            connection.close
+            close
           end
           
           def branches_at(sha)
@@ -51,7 +55,7 @@ module Houston
               .select { |branch| branch.target.oid.start_with?(sha) }
               .map(&:name)
           ensure
-            connection.close
+            close
           end
           
           def commits_between(sha1, sha2)
@@ -60,8 +64,6 @@ module Houston
             sha1 = nil if sha1 == Houston::NULL_GIT_COMMIT
             
             ancestors(sha2, including_self: true, hide: sha1).reverse
-          ensure
-            connection.close
           end
           
           def location
@@ -71,14 +73,14 @@ module Houston
           def native_commit(sha)
             to_commit find_commit(sha)
           ensure
-            connection.close
+            close
           end
           
           def read_file(file_path, options={})
             blob = find_file(file_path, options={})
             blob && blob.content
           ensure
-            connection.close
+            close
           end
           
           def refresh!(async: false)
@@ -105,11 +107,28 @@ module Houston
           rescue Rugged::OdbError, Rugged::ReferenceError
             raise FileNotFound, "\"#{file_path}\" is not in this repo"
           ensure
-            connection.close
+            close
           end
           
           def to_s
             location
+          end
+          
+          def close
+            # Before `ancestors` had `ensure close` in it, I tried the following:
+            #
+            #     members = Project["members"]
+            #
+            #  a) 5.times { members.repo.ancestors("8db64ad", including_self: true, hide: "50f0046") }
+            #  b) 5.times { members.repo.ancestors("8db64ad", including_self: true, hide: "50f0046");
+            #               members.repo.send(:connection).close }
+            #  c) 5.times { members.repo.ancestors("8db64ad", including_self: true, hide: "50f0046");
+            #               GC.start;
+            #               members.repo.send(:connection).close }
+            #
+            # The first two raised exceptions but the last one didn't.
+            GC.start
+            connection.close
           end
           
           

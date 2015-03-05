@@ -83,7 +83,7 @@ module Houston
               end
             end
           ensure
-            connection.close
+            close
           end
           
         end
