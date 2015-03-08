@@ -24,11 +24,11 @@ GIT
       faraday (~> 0.8.8)
 
 GIT
-  remote: git://github.com/concordia-publishing-house/houston-itsm.git
-  revision: 002a1553211bec0d505713f9c456778234b8357a
+  remote: git://github.com/concordia-publishing-house/houston-dashboards.git
+  revision: 3e6e7df9e03781723db75bb46c90ba04b08b106f
   branch: master
   specs:
-    houston-itsm (0.0.1)
+    houston-dashboards (0.0.1)
       rails
       ruby-ntlm
       savon (~> 2.0)
@@ -43,7 +43,7 @@ GIT
 
 GIT
   remote: git://github.com/concordia-publishing-house/houston-support_form.git
-  revision: fcf1d8bdcf0bc1b25da6bad5cd5f13ed4d894f81
+  revision: 0541ac7db497819bd918f67d1c7d7ca1afe78998
   branch: master
   specs:
     houston-support_form (0.0.1)
@@ -57,6 +57,16 @@ GIT
     idioms (0.0.1)
       activesupport (>= 3.2.0)
       faraday-raise-errors (>= 0.2.0)
+
+GIT
+  remote: git://github.com/concordia-publishing-house/itsm.git
+  revision: bcc686e89cd13d02f8cca81e4af04a986def4d37
+  branch: master
+  specs:
+    itsm (0.0.1)
+      nokogiri
+      ruby-ntlm
+      savon (~> 2.0)
 
 GIT
   remote: git://github.com/concordia-publishing-house/star.git
@@ -295,7 +305,7 @@ GEM
       rack-contrib (~> 1.1)
       railties (>= 3.0.0, < 5.0.0)
     method_source (0.8.2)
-    mime-types (1.25.1)
+    mime-types (2.4.3)
     mini_portile (0.6.2)
     minitest (5.5.1)
     minitest-reporters (1.0.7)
@@ -375,7 +385,7 @@ GEM
       sass (~> 3.2.2)
       sprockets (~> 2.8, < 2.12)
       sprockets-rails (~> 2.0)
-    savon (2.9.0)
+    savon (2.10.0)
       akami (~> 1.2)
       builder (>= 2.1.2)
       gyoku (~> 1.2)
@@ -383,7 +393,7 @@ GEM
       nokogiri (>= 1.4.0)
       nori (~> 2.4)
       uuid (~> 2.3.7)
-      wasabi (= 3.3.0)
+      wasabi (~> 3.4)
     sawyer (0.5.5)
       addressable (~> 2.3.5)
       faraday (~> 0.8, < 0.10)
@@ -437,10 +447,9 @@ GEM
       macaddr (~> 1.0)
     warden (1.2.3)
       rack (>= 1.0)
-    wasabi (3.3.0)
+    wasabi (3.4.0)
       httpi (~> 2.0)
-      mime-types (< 2.0.0)
-      nokogiri (>= 1.4.0)
+      nokogiri (>= 1.4.2)
     webmock (1.20.4)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
@@ -481,8 +490,8 @@ DEPENDENCIES
   googlecharts
   handlebars_assets
   houston-alerts!
+  houston-dashboards!
   houston-feedback!
-  houston-itsm!
   houston-reports!
   houston-roadmap!
   houston-scheduler!
@@ -490,6 +499,7 @@ DEPENDENCIES
   houston-support_form!
   hpricot
   idioms!
+  itsm!
   jquery-rails (= 2.2.1)
   letter_opener
   meta_request
