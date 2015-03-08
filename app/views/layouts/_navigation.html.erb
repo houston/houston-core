@@ -6,7 +6,7 @@
       <ul class="nav pull-right">
         <% if current_user -%>
           <li class="current-user dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= avatar_for(current_user, size: 68) %> <b class="caret"></b></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= avatar_for(current_user, size: 30) %> <b class="caret"></b></a>
             <ul class="dropdown-menu">
               <li><%= link_to "Settings", main_app.edit_user_path(current_user) %></li>
               <li><%= link_to "Sign out", main_app.destroy_user_session_path %></li>
