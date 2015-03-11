@@ -90,16 +90,6 @@ GIT
       open_xml_package (~> 0.1.0)
 
 GIT
-  remote: git://github.com/hosutonmc/houston-slack.git
-  revision: 1e7b23767c9f1a19aeb8af269c89ffadbe6f115f
-  branch: master
-  specs:
-    houston-slack (0.0.1)
-      multi_json
-      rails
-      websocket-driver
-
-GIT
   remote: git://github.com/houstonmc/houston-alerts.git
   revision: 314535d5ec6618df892d616ede0486e73bdd27c3
   branch: master
@@ -132,6 +122,16 @@ GIT
   specs:
     houston-scheduler (0.0.1)
       rails
+
+GIT
+  remote: git://github.com/houstonmc/houston-slack.git
+  revision: c29a9f80f2939ce84f5a76f63faca1804aaa0a71
+  branch: master
+  specs:
+    houston-slack (0.0.1)
+      multi_json
+      rails
+      websocket-driver
 
 GIT
   remote: git://github.com/houstonmc/oauth-plugin.git
