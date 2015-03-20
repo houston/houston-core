@@ -109,7 +109,7 @@ GIT
 
 GIT
   remote: git://github.com/houstonmc/houston-roadmap.git
-  revision: 8635dd91e644e26e871629b5d050609cdbfbd037
+  revision: 4c35b7ca219fae9850d1cdc10f929e89d45ec8db
   branch: master
   specs:
     houston-roadmap (0.0.1)
