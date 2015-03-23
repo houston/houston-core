@@ -106,7 +106,7 @@ module Houston
             end
             tree
           rescue Rugged::OdbError, Rugged::ReferenceError
-            raise FileNotFound, "\"#{file_path}\" is not in this repo"
+            raise FileNotFound, "\"#{file_path}\" is not in the repo #{to_s}"
           ensure
             close
           end
