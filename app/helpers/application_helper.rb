@@ -94,7 +94,10 @@ module ApplicationHelper
     "95" => "ansi-bright-magenta",
     "96" => "ansi-bright-cyan",
     "97" => "ansi-bright-white" }.freeze
+  
   def ansi_to_html(ansi)
+    return "" if ansi.nil?
+    
     html = "<div class=\"ansi\">"
     string = StringScanner.new(ansi.gsub("<", "&lt;"))
     spans = 0
