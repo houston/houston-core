@@ -49,8 +49,12 @@ module Houston
             verbose:            deploy_config.verbose,
             serverside_version: EY::ENGINEYARD_SERVERSIDE_VERSION)
           
-          out = EY::CLI::UI::Tee.new(ui.out, deployment.output)
-          err = EY::CLI::UI::Tee.new(ui.err, deployment.output)
+          # Triplicate:
+          #  1. standard output gets a copy
+          #  2. the Deploy model gets a copy
+          #  3. EngineYard gets a copy
+          out = EY::CLI::UI::Tee.new(ui.out, deploy.output_stream, deployment.output)
+          err = EY::CLI::UI::Tee.new(ui.err, deploy.output_stream, deployment.output)
           
           deployment.start
           
@@ -76,8 +80,7 @@ module Houston
             
           ensure
             deployment.finished
-            deployment.output.rewind
-            deploy.update_attributes!(output: deployment.output.read, completed_at: Time.now)
+            deploy.update_attributes!(completed_at: Time.now)
           end
           
           deployment.successful?

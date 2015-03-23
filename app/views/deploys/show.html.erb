@@ -16,4 +16,24 @@
   Duration: <b><%= @deploy.duration %></b> seconds
 </p>
 
-<%= ansi_to_html @deploy.output %>
+<div id="output">
+  <%= ansi_to_html @deploy.output %>
+</div>
+
+<% unless @deploy.completed_at %>
+<% content_for :javascripts do %>
+<script type="text/javascript">
+  $(function() {
+    var interval = 900;
+    var timer = window.setInterval(function() {
+      $.getJSON(<%=raw project_deploy_path(project_id: @project.slug, id: @deploy.id).to_json %>, function(result) {
+        if(result.completed) {
+          window.clearInterval(timer);
+        }
+        $('#output').html(result.output);
+      });
+    }, interval);
+  });
+</script>
+<% end %>
+<% end %>

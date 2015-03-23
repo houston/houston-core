@@ -59,6 +59,10 @@ class Deploy < ActiveRecord::Base
     environment_name
   end
   
+  def output_stream
+    @output_stream ||= OutputStream.new(self)
+  end
+  
   
   
 private

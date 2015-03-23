@@ -1,4 +1,5 @@
 class DeploysController < ApplicationController
+  include AnsiHelper
   skip_before_filter :verify_authenticity_token
   
   
@@ -36,6 +37,10 @@ class DeploysController < ApplicationController
   def show
     @project = Project.find_by_slug! params[:project_id]
     @deploy = @project.deploys.find params[:id]
+    
+    if request.format.json?
+      render json: { completed: @deploy.completed?, output: ansi_to_html(@deploy.output) }
+    end
   end
   
   
