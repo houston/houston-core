@@ -16,4 +16,4 @@
   Duration: <b><%= @deploy.duration %></b> seconds
 </p>
 
-<pre><%= @deploy.output %></pre>
+<%= ansi_to_html @deploy.output %>

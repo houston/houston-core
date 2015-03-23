@@ -1,0 +1,42 @@
+.ansi {
+  font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
+  margin: 0 -20px;
+  padding: 20px 20px;
+
+  font-size: 13px;
+  line-height: 20px;
+  word-break: break-all;
+  word-wrap: break-word;
+  white-space: pre;
+  white-space: pre-wrap;
+  background-color: rgb(36, 33, 30);
+  color: rgb(136, 136, 134);
+  
+  &, * {
+    &::selection { /* WebKit/Blink Browsers */
+      background: #474441; // rgb(55, 50, 48);
+    }
+    &::-moz-selection { /* Gecko Browsers */
+      background: #474441; // rgb(55, 50, 48);
+    }
+  }
+  
+  .ansi-bold { font-weight: bold; }
+  .ansi-underline { text-decoration: underline; }
+  .ansi-black { color: rgb(0, 35, 44); }
+  .ansi-red { color: rgb(152, 56, 32); }
+  .ansi-green { color: rgb(79, 143, 50); }
+  .ansi-yellow { color: rgb(157, 146, 50); }
+  .ansi-blue { color: rgb(57, 110, 147); }
+  .ansi-magenta { color: rgb(98, 62, 90); }
+  .ansi-cyan { color: rgb(68, 127, 125); }
+  .ansi-white { color: rgb(177, 173, 173); }
+  .ansi-bold .ansi-black, .ansi-black .ansi-bold, .ansi-bright-black { color: rgb(66, 66, 66); }
+  .ansi-bold .ansi-red, .ansi-red .ansi-bold, .ansi-bright-red { color: rgb(199, 80, 43); }
+  .ansi-bold .ansi-green, .ansi-green .ansi-bold, .ansi-bright-green { color: rgb(148, 167, 77); }
+  .ansi-bold .ansi-yellow, .ansi-yellow .ansi-bold, .ansi-bright-yellow { color: rgb(203, 185, 77); }
+  .ansi-bold .ansi-blue, .ansi-blue .ansi-bold, .ansi-bright-blue { color: rgb(88, 141, 167); }
+  .ansi-bold .ansi-magenta, .ansi-magenta .ansi-bold, .ansi-bright-magenta { color: rgb(135, 69, 122); }
+  .ansi-bold .ansi-cyan, .ansi-cyan .ansi-bold, .ansi-bright-cyan { color: rgb(141, 190, 192); }
+  .ansi-bold .ansi-white, .ansi-white .ansi-bold, .ansi-bright-white { color: rgb(239, 236, 233); }
+}
