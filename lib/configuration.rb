@@ -80,6 +80,11 @@ module Houston
       @s3 ||= {}
     end
     
+    def engineyard(&block)
+      @engineyard = HashDsl.hash_from_block(block) if block_given?
+      @engineyard ||= {}
+    end
+    
     def project_categories(*args)
       @project_categories = args if args.any?
       @project_categories ||= []

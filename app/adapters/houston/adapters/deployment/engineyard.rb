@@ -14,7 +14,7 @@ module Houston
           
           @config = Houston::Adapters::Deployment::Engineyard::Config.new(project.read_file("config/ey.yml"))
           @ui = EY::CLI::UI.new
-          @api = EY::CLI::API.new(config.endpoint, ui)
+          @api = EY::CLI::API.new(config.endpoint, ui, Houston.config.engineyard[:api_token])
           @repo = nil
         end
         
