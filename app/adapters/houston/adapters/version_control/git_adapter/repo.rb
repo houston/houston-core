@@ -71,6 +71,7 @@ module Houston
           end
           
           def native_commit(sha)
+            return NullCommit.new if sha == Houston::NULL_GIT_COMMIT
             to_commit find_commit(sha)
           ensure
             close
@@ -138,7 +139,6 @@ module Houston
           attr_reader :connection
           
           def find_commit(sha)
-            return NullCommit.new if sha == Houston::NULL_GIT_COMMIT
             normalize_sha!(sha)
             object = connection.lookup(sha)
             object = object.target if object.is_a? Rugged::Tag::Annotation
