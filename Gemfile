@@ -15,6 +15,7 @@ gem "default_value_for"
 gem "devise", "~> 3.0.0"
 gem "devise_invitable"
 gem "devise_ldap_authenticatable", git: "https://github.com/houstonmc/devise_ldap_authenticatable.git"
+gem "engineyard" # for deploying to EngineYard
 gem "faraday"
 gem "faraday-http-cache"
 gem "faraday-raise-errors", github: "boblail/faraday-raise-errors", branch: "master"
@@ -35,6 +36,7 @@ gem "rugged" # for speaking to Git
 gem "simplecov"
 gem "strongbox" # for encrypting user credentials
 gem "sucker_punch" # for Airbrake
+gem "thread_safe"
 gem "unfuddle", github: "boblail/unfuddle", branch: "master"
 gem "vestal_versions", github: "houstonmc/vestal_versions", branch: "master"
 gem "whenever", "0.9.2" # a DSL for writing CRON jobs

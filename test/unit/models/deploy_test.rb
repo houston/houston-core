@@ -70,7 +70,7 @@ class DeployTest < ActiveSupport::TestCase
       
       # This is a red herring: an older commit
       stub(project).find_commit_by_sha("888f5c5").returns(nil)
-      create(:deploy, project: project, sha: "888f5c5", created_at: 1.week.ago)
+      create(:deploy, project: project, sha: "888f5c5", completed_at: 1.week.ago)
       
       # This is a red herring: a more-recent commit to the wrong environment
       stub(project).find_commit_by_sha("30301ad").returns(nil)

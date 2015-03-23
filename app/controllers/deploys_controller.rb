@@ -20,16 +20,22 @@ class DeploysController < ApplicationController
     deployer = params[:deployer] || params[:user]
     milliseconds = params[:duration]
     
-    Deploy.create!({
+    Deploy.create!(
       project: @project,
       environment_name: @environment,
       sha: sha,
       branch: branch,
       deployer: deployer,
-      duration: milliseconds
-    })
+      duration: milliseconds,
+      completed_at: Time.now)
     
     head 200
+  end
+  
+  
+  def show
+    @project = Project.find_by_slug! params[:project_id]
+    @deploy = @project.deploys.find params[:id]
   end
   
   

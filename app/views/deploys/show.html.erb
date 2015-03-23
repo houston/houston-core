@@ -1,0 +1,19 @@
+<%= render partial: "projects/header", locals: {project: @project, subtitle: "Deploy to"} %>
+
+<p>
+  Branch: <b><%= @deploy.branch %></b>
+</p>
+
+<p>
+  Deployer: <b><%= @deploy.deployer %></b>
+</p>
+
+<p>
+  Completed: <b><%= @deploy.completed_at %></b>
+</p>
+
+<p>
+  Duration: <b><%= @deploy.duration %></b> seconds
+</p>
+
+<pre><%= @deploy.output %></pre>

@@ -8,7 +8,7 @@ class Environment
   attr_reader :project, :environment_name
   
   def last_deploy
-    @last_deploy ||= project.deploys.where(environment_name: environment_name).order("created_at DESC").first
+    @last_deploy ||= project.deploys.completed.to(environment_name).first
   end
   
   def head

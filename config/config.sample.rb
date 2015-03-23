@@ -426,7 +426,7 @@ Houston.config do
   #   * antecedent:*:closed     When a Ticket has been closed, for each antecedent
   #   * boot                    When the Rails application is booted
   #   * scheduler:shutdown      When the scheduler thread (for Background Jobs) dies
-  #   * deploy:create           When a deploy has been recorded
+  #   * deploy:completed           When a deploy has been recorded
   #   * hooks:*                 When a Web Hook as been triggered
   #   * release:create          When a new Release has been created
   #   * test_run:start          When the CI server has begun a build
@@ -466,7 +466,7 @@ Houston.config do
   #   based on the alert's project or content.
   # end
 
-  on "deploy:create" do |deploy|
+  on "deploy:completed" do |deploy|
     if deploy.project.error_tracker_name == "Errbit"
       errbit, repo = deploy.project.error_tracker, deploy.project.repo
       deploy.commits.each do |commit|
@@ -494,7 +494,7 @@ Houston.config do
   #   play "build-fixed" if test_run.fixed?
   # end
 
-  # on "deploy:create" do |deploy|
+  # on "deploy:completed" do |deploy|
   #   if deploy.project.category == "Tools"
   #     play "release-tool"
   #   else

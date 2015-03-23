@@ -64,6 +64,8 @@ Rails.application.routes.draw do
     post "follow", to: "project_roles#create", :as => :follow
     delete "unfollow", to: "project_roles#destroy", :as => :unfollow
     
+    get "deploys/:id", to: "deploys#show", :as => :deploy
+    
     post "deploy", to: "deploys#create"
     post "deploy/:environment", to: "deploys#create"
   end

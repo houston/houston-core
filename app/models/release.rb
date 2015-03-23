@@ -110,7 +110,7 @@ class Release < ActiveRecord::Base
   
   
   def released_at
-    deploy ? deploy.created_at : created_at
+    deploy ? deploy.completed_at : created_at
   end
   
   def release_date

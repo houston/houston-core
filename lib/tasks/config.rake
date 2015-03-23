@@ -201,7 +201,7 @@ namespace :config do
     
     
     # EVENTS
-    config.remove_block! 'on "deploy:create"'
+    config.remove_block! 'on "deploy:completed"'
     config.remove_block! 'on "hooks:mailgun_complaint"'
     config.remove_block! 'on "testing_note:create"'
     config.remove_block! 'on "test_run:complete"'

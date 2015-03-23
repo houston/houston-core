@@ -655,7 +655,9 @@ CREATE TABLE deploys (
     deployer character varying(255),
     commit_id integer,
     duration integer,
-    branch character varying(255)
+    branch character varying(255),
+    completed_at timestamp without time zone,
+    output text
 );
 
 
@@ -2754,4 +2756,8 @@ INSERT INTO schema_migrations (version) VALUES ('20150222214124');
 INSERT INTO schema_migrations (version) VALUES ('20150223013721');
 
 INSERT INTO schema_migrations (version) VALUES ('20150302153319');
+
+INSERT INTO schema_migrations (version) VALUES ('20150323004452');
+
+INSERT INTO schema_migrations (version) VALUES ('20150323011050');
 

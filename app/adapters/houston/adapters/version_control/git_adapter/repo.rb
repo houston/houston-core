@@ -1,3 +1,5 @@
+require "houston/adapters/version_control/git_adapter/diff_changes"
+
 module Houston
   module Adapters
     module VersionControl
@@ -109,6 +111,12 @@ module Houston
             raise FileNotFound, "\"#{file_path}\" is not in the repo #{to_s}"
           ensure
             close
+          end
+          
+          def changes(old_sha, new_sha)
+            find_commit old_sha
+            find_commit new_sha
+            DiffChanges.new `git --git-dir=#{git_dir} diff --name-status #{old_sha} #{new_sha}`
           end
           
           def to_s
