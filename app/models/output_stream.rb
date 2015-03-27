@@ -9,7 +9,13 @@ class OutputStream
   
   def <<(value)
     @lines.push(value)
-    @deploy.update_column :output, to_s
+    begin
+      @deploy.update_column :output, to_s
+    rescue PG::ConnectionBad
+      # Be lazy about writing this to the database
+      # Better yet, !todo, debounce this
+      Rails.logger.warn "#{$!.class}: #{$!.message}"
+    end
     self
   end
   
