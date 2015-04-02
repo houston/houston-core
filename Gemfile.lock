@@ -60,7 +60,7 @@ GIT
 
 GIT
   remote: git://github.com/concordia-publishing-house/itsm.git
-  revision: bcc686e89cd13d02f8cca81e4af04a986def4d37
+  revision: 76035f2e544914489b0509c36d6aec3b1b29eec9
   branch: master
   specs:
     itsm (0.0.1)
