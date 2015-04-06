@@ -9,8 +9,8 @@ module Houston
       end
       Airbrake.notify(exception, other_data)
     end
-  rescue
-    Rails.logger.error "\e[31;1mAn error occurred reporting the exception: \e[0;31m#{$!.class}: #{$!.message}\e[0m"
+  rescue Exception => e
+    Rails.logger.error "\e[31;1mAn error occurred reporting the exception: \e[0;31m#{e.class}: #{e.message}\n   #{e.backtrace.join("\n  ")}\e[0m"
   end
   
   def self._normalize_faraday_env(env)
