@@ -386,7 +386,7 @@ GEM
       thor (>= 0.18.1, < 2.0)
     raindrops (0.13.0)
     rake (10.4.2)
-    redcarpet (3.2.0)
+    redcarpet (3.2.3)
     ref (1.0.5)
     rest-client (1.7.3)
       mime-types (>= 1.16, < 3.0)
