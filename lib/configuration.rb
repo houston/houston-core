@@ -1,5 +1,6 @@
 root = File.expand_path(File.join(File.dirname(__FILE__), ".."))
 require File.join(root, "lib/core_ext/hash")
+require File.join(root, "lib/core_ext/kernel")
 
 $:.unshift File.expand_path(File.join(root, "app/adapters"))
 require "houston/adapters"
@@ -672,16 +673,6 @@ module Houston
       Houston.report_exception($!, parameters: {job_name: name}) # <-- no job id!
     ensure
       ActiveRecord::Base.clear_active_connections!
-    end
-    
-    def exceptions_wrapping(error_class)
-      m = Module.new
-      (class << m; self; end).instance_eval do
-        define_method(:===) do |err|
-          err.respond_to?(:original_exception) && error_class === err.original_exception
-        end
-      end
-      m
     end
     
   end

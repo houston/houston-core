@@ -11,7 +11,7 @@ class OutputStream
     @lines.push(value)
     begin
       @deploy.update_column :output, to_s
-    rescue PG::ConnectionBad
+    rescue exceptions_wrapping(PG::ConnectionBad)
       # Be lazy about writing this to the database
       # Better yet, !todo, debounce this
       Rails.logger.warn "#{$!.class}: #{$!.message}"
