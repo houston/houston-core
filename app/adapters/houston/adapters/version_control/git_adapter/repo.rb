@@ -66,6 +66,10 @@ module Houston
             sha1 = nil if sha1 == Houston::NULL_GIT_COMMIT
             
             ancestors(sha2, including_self: true, hide: sha1).reverse
+            
+          rescue
+            $!.additional_information[:commit_range] = "#{sha1}...#{sha2}"
+            raise
           end
           
           def location

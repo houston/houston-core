@@ -3,10 +3,12 @@ module Houston
   def self.report_exception(exception, other_data={})
     raise if Rails.env.test? || Rails.env.development?
     if defined?(Airbrake)
+      other_data[:parameters] ||= {}
       case exception
       when Faraday::HTTP::Error
-       (other_data[:parameters] ||= {}).merge!(_normalize_faraday_env(exception.env))
+        other_data[:parameters].merge!(_normalize_faraday_env(exception.env))
       end
+      other_data[:parameters].merge!(exception.additional_information)
       Airbrake.notify(exception, other_data)
     end
   rescue Exception => e

@@ -1,6 +1,7 @@
 root = File.expand_path(File.join(File.dirname(__FILE__), ".."))
 require File.join(root, "lib/core_ext/hash")
 require File.join(root, "lib/core_ext/kernel")
+require File.join(root, "lib/core_ext/exception")
 
 $:.unshift File.expand_path(File.join(root, "app/adapters"))
 require "houston/adapters"
