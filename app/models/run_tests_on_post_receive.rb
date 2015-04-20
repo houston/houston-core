@@ -133,7 +133,7 @@ class RunTestsOnPostReceive
   def email_test_run_results(test_run)
     ProjectNotification.test_results(test_run).deliver!
   rescue Exception # rescues StandardError by default; but we want to rescue and report all errors
-    Houston.report_exception $!, parameters: {test_run_id: test_run.id}
+    Houston.report_exception $!, parameters: {test_run_id: test_run.id, method: "email_test_run_results"}
   end
   
   
@@ -147,7 +147,7 @@ class RunTestsOnPostReceive
     Rails.logger.warn "\e[31m[push:publish:github] #{$!.class}: #{$!.message}\e[0m"
   rescue Exception # rescues StandardError by default; but we want to rescue and report all errors
     test_run.project.feature_broken! :publish_status_to_github
-    Houston.report_exception $!, parameters: {test_run_id: test_run.id}
+    Houston.report_exception $!, parameters: {test_run_id: test_run.id, method: "publish_status_to_github"}
   end
   
   
@@ -161,7 +161,7 @@ class RunTestsOnPostReceive
     Rails.logger.warn "\e[31m[push:publish:codeclimate] #{$!.class}: #{$!.message}\e[0m"
   rescue Exception # rescues StandardError by default; but we want to rescue and report all errors
     test_run.project.feature_broken! :publish_coverage_to_code_climate
-    Houston.report_exception $!, parameters: {test_run_id: test_run.id}
+    Houston.report_exception $!, parameters: {test_run_id: test_run.id, method: "publish_coverage_to_code_climate"}
   end
   
   
