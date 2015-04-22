@@ -42,21 +42,32 @@ Houston interfaces with your version-control, ticket-tracking, continuous integr
 #### Requirements
 
   * Ruby 2.0+
-  * Postgres
+  * Postgres 9.2+
+
 
 #### Getting Houston Running
 
-Clone Houston:
+ 1. Clone Houston:
 
     git clone git@github.com:houstonmc/houston.git
+
+ 2. Modify config/database.yml to connect to your database (See [the Rails Guide](http://guides.rubyonrails.org/configuring.html#configuring-a-database) for examples)
+
+ 3. Set up your database
+
     cd houston
     script/bootstrap
     bundle exec rake db:seed
+
+ 4. Start Houston
+
     bundle exec rails server
+
 
 #### Configuring Houston
 
 You can control Houston's feature, permissions, events, colors, and more in `config/config.rb`.
+
 
 #### Writing your own modules
 
