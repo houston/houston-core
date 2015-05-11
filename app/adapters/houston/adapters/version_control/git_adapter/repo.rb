@@ -25,22 +25,18 @@ module Houston
           end
           
           def ancestors(sha, options={})
-            ancestor_walker(sha, options).map(&method(:to_commit))
-          ensure
-            close
+            ancestor_walker(sha, options, &method(:to_commit))
           end
           
           def ancestors_until(sha, options={})
             commits = []
-            ancestor_walker(sha, options).each do |commit|
+            ancestor_walker(sha, options) do |commit|
               commit = to_commit(commit)
               commits << commit
               return commits if yield commit
             end
             
             raise CommitNotFound, "No matching ancestor of \"#{sha}\" was found"
-          ensure
-            close
           end
           
           def branches
@@ -48,7 +44,7 @@ module Houston
               .each(:local)
               .map { |branch| [branch.name, branch.target.oid] }]
           ensure
-            close
+            release
           end
           
           def branches_at(sha)
@@ -57,7 +53,7 @@ module Houston
               .select { |branch| branch.target.oid.start_with?(sha) }
               .map(&:name)
           ensure
-            close
+            release
           end
           
           def commits_between(sha1, sha2)
@@ -80,14 +76,14 @@ module Houston
             return NullCommit.new if sha == Houston::NULL_GIT_COMMIT
             to_commit find_commit(sha)
           ensure
-            close
+            release
           end
           
           def read_file(file_path, options={})
             blob = find_file(file_path, options={})
             blob && blob.content
           ensure
-            close
+            release
           end
           
           def refresh!(async: false)
@@ -114,7 +110,7 @@ module Houston
           rescue Rugged::OdbError, Rugged::ReferenceError
             raise FileNotFound, "\"#{file_path}\" is not in the repo #{to_s}"
           ensure
-            close
+            release
           end
           
           def changes(old_sha, new_sha)
@@ -127,6 +123,8 @@ module Houston
             location
           end
           
+          # !todo: Does this need to be a public method?
+        protected
           def close
             # Before `ancestors` had `ensure close` in it, I tried the following:
             #
@@ -140,9 +138,16 @@ module Houston
             #               members.repo.send(:connection).close }
             #
             # The first two raised exceptions but the last one didn't.
+            
+            # We have to call the GC.start (I think) to clean up
+            # the objects hanging on to file descriptors.
             GC.start
+            
+            # We have to call connection.close to actually release
+            # those file descriptors.
             connection.close
           end
+          alias :release :close
           
           
           
@@ -207,10 +212,20 @@ module Houston
             hide_shas = Array(options.fetch(:hide, []))
               .map { |sha| find_commit(sha).oid } # ensure that each of these exists in the repo
             
+            # start by releasing any files we've got open
+            release
+            
             walker = Rugged::Walker.new(connection)
             push_shas.each { |sha| walker.push(sha) }
             hide_shas.each { |sha| walker.hide(sha) }
-            walker
+            
+            walker.map_with_index do |commit, i|
+              release if i % 300 == 0
+              yield commit
+            end
+            
+          ensure
+            release
           end
           
         end
