@@ -133,22 +133,10 @@ class Ticket < ActiveRecord::Base
     end
     
     def resolve_all!
+      return unless Rails.env.production?
       all.parallel.each do |ticket|
-        begin
-          retries = 0
-          begin
-            ticket.resolve! if Rails.env.production?
-          rescue Unfuddle::ConnectionError
-            raise unless $!.message =~ /connection reset by peer/i
-            raise unless (retries += 1) <= 3
-            
-            # The firewall has throttled Houston's requests to Unfuddle;
-            # slow down and try again.
-            sleep 2 ** retries
-            retry
-          end
-        rescue Exception # rescues StandardError by default; but we want to rescue and report all errors
-          Houston.report_exception $!
+        Houston.try 3, exceptions_matching(/connection reset by peer/i) do
+          ticket.resolve!
         end
       end
     end

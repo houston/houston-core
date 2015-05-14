@@ -10,4 +10,14 @@ module Kernel
     m
   end
 
+  def exceptions_matching(matcher)
+    m = Module.new
+    (class << m; self; end).instance_eval do
+      define_method(:===) do |err|
+        err.message =~ matcher
+      end
+    end
+    m
+  end
+
 end
