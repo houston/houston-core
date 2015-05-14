@@ -67,7 +67,10 @@ module Houston
               options = {credentials: GitAdapter.credentials}
               
               # Fetch
-              connection.remotes["origin"].fetch(nil, options)
+              Houston.try({max_tries: 3, base: 0}, Rugged::OSError) do
+                connection.remotes["origin"].fetch(nil, options)
+                release
+              end
               
               # Prune
               local_refs = connection.refs.map(&:name).grep(/^refs\//)
