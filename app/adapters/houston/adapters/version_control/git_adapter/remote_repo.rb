@@ -85,6 +85,10 @@ module Houston
                 end
               end
             end
+          rescue
+            $!.additional_information[:repo] = to_s
+            $!.additional_information[:path] = connection.path
+            raise
           ensure
             close
           end
