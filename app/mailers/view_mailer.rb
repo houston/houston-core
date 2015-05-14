@@ -61,7 +61,18 @@ protected
       super(options) do |format|
         format.html do
           html = render_to_string(template: template, layout: "email")
-          Premailer.new(html, with_html_string: true).to_inline_css
+          begin
+            html = Premailer.new(html, with_html_string: true).to_inline_css
+          rescue SystemStackError
+            # If the email is large enough, Hpricot will simply choke on it
+            # and raise a SystemStackError. In that eventuality, let's just
+            # deliver an unstyled message.
+            #
+            # Note: Premailer 2.0 will drop Hpricot, but that's not going to
+            # out for a while...
+          end
+          
+          html
         end
       end
     end
