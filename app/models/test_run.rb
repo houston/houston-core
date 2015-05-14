@@ -15,7 +15,8 @@ class TestRun < ActiveRecord::Base
   
   class << self
     def find_by_sha(sha)
-      where(["sha LIKE ?", "#{sha}%"]).first
+      return nil if sha.blank?
+      where(["sha LIKE ?", "#{sha}%"]).limit(1).first
     end
     
     def excluding(*test_runs_or_ids)
