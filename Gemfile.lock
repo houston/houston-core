@@ -286,7 +286,7 @@ GEM
     faraday-http-cache (0.4.2)
       faraday (~> 0.8)
     ffi (1.9.6)
-    gemnasium (3.2.0)
+    gemnasium (3.2.1)
     gemoji (2.1.0)
     googlecharts (1.6.8)
     gyoku (1.2.2)
