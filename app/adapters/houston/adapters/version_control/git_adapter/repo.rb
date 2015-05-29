@@ -220,7 +220,7 @@ module Houston
             hide_shas.each { |sha| walker.hide(sha) }
             
             walker.map_with_index do |commit, i|
-              release if i % 300 == 0
+              release if i % 200 == 0
               yield commit
             end
             
