@@ -109,7 +109,7 @@ GIT
 
 GIT
   remote: git://github.com/houstonmc/houston-roadmap.git
-  revision: 640958d6375b7cff3ec5c3081aa70baee5c44113
+  revision: df5f185bb16b120715c988a17a792d3ce4b79029
   branch: master
   specs:
     houston-roadmap (0.0.1)
@@ -125,7 +125,7 @@ GIT
 
 GIT
   remote: git://github.com/houstonmc/houston-slack.git
-  revision: c2904b714fa0bdb69c42a453278d027b8b2b850e
+  revision: 0f666ad5c7d96fb320e90d1c68082877260fc14f
   branch: master
   specs:
     houston-slack (0.0.1)
