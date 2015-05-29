@@ -23,7 +23,7 @@ class Task < ActiveRecord::Base
   
   class << self
     def open
-      uncommitted.unreleased
+      where completed_at: nil
     end
     
     def numbered(*numbers)
