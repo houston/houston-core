@@ -64,6 +64,7 @@ module Houston
             ancestors(sha2, including_self: true, hide: sha1).reverse
             
           rescue
+            $!.additional_information[:repo] = to_s
             $!.additional_information[:commit_range] = "#{sha1}...#{sha2}"
             raise
           end
