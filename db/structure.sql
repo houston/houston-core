@@ -1054,7 +1054,10 @@ CREATE TABLE releases_tickets (
 CREATE TABLE roadmap_commits (
     id integer NOT NULL,
     user_id integer NOT NULL,
-    message character varying(255) NOT NULL
+    message character varying(255) NOT NULL,
+    project_id integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -2760,4 +2763,8 @@ INSERT INTO schema_migrations (version) VALUES ('20150302153319');
 INSERT INTO schema_migrations (version) VALUES ('20150323004452');
 
 INSERT INTO schema_migrations (version) VALUES ('20150323011050');
+
+INSERT INTO schema_migrations (version) VALUES ('20150524203903');
+
+INSERT INTO schema_migrations (version) VALUES ('20150603203744');
 
