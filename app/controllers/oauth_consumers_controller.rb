@@ -57,7 +57,7 @@ protected
   # Override this to deny the user or redirect to a login screen depending on your framework and app
   # if different. eg. for devise:
   def deny_access!
-    raise Acl9::AccessDenied
+    raise CanCan::AccessDenied
   end
 
 end
