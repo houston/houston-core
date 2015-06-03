@@ -4,6 +4,11 @@ class OauthConsumersController < ApplicationController
 
   before_filter :authenticate_user!, only: :index
 
+  rescue_from OAuth2::Error do |exception|
+    @exception = exception
+    render template: "oauth_consumers/error"
+  end
+
   def index
     @consumer_tokens = ConsumerToken.where(user_id: current_user.id)
     @services = OAUTH_CREDENTIALS.keys - @consumer_tokens.map { |c| c.class.service_name }
