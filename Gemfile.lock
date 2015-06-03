@@ -136,7 +136,7 @@ GIT
 
 GIT
   remote: git://github.com/houstonmc/oauth-plugin.git
-  revision: 5ef4279257e9a4637ccd8c391cc9d6cd8fbfc4dc
+  revision: fb90306916934d902e5459b86b887f6e88766a8c
   branch: master
   specs:
     oauth-plugin (0.5.1)
