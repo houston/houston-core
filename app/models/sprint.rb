@@ -15,6 +15,11 @@ class Sprint < ActiveRecord::Base
     find_by_end_date end_date_for(date)
   end
   
+  def self.find_by_date!(date)
+    date = date.to_date if date.respond_to?(:to_date)
+    find_or_create_by(end_date: end_date_for(date))
+  end
+  
   def self.end_date_for(date)
     days_until_friday = 5 - date.wday
     days_until_friday += 7 if days_until_friday < 0
@@ -39,6 +44,10 @@ class Sprint < ActiveRecord::Base
   
   def ends_at
     end_date.end_of_day
+  end
+  
+  def to_range
+    starts_at..ends_at
   end
   
   def completed?

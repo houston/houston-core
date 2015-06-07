@@ -143,6 +143,11 @@ class Task < ActiveRecord::Base
     completed? && !committed? && !released?
   end
   
+  def completed_during?(sprint)
+    return false unless completed?
+    completed_at < sprint.ends_at
+  end
+  
   
   
   def reopen!

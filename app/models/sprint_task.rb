@@ -3,6 +3,7 @@ class SprintTask < ActiveRecord::Base
   
   belongs_to :sprint
   belongs_to :task
+  belongs_to :checked_out_by, class_name: "User"
   
   def self.checked_out
     where arel_table[:checked_out_by_id].not_eq(nil)

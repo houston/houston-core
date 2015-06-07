@@ -9,6 +9,11 @@
   <% Houston.config.project_colors.each do |name, value| %>
     &.<%= name %> { background-color: $<%= name %>; }
   <% end %>
+
+  &.unknown {
+    background: rgba(0, 0, 0, 0.07);
+    min-width: 4em;
+  }
 }
 
 .dashboard .label {
