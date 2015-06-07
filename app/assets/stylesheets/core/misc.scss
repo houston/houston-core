@@ -142,45 +142,11 @@ small { font-size: 0.88em; }
   display: inline-block;
 }
 
-h1 .dropdown .caret {
-  margin-top: 16px;
-}
-
-h1 .subtitle {
-  font-weight: normal;
-  color: #444;
-}
-
 h1 {
-  background: #efefef;
-  font-weight: 500;
-  padding: .66em .66em .66em 28px;
-  margin: 0 0 1em;
-  font-weight: 200;
-  font-size: 2em;
-  
-  
-  a.btn { color: white ;}
-  
-  .buttons { float: right; }
-  
-  small {
-    font-weight: 100;
-    font-size: .75em;
-    text-transform: uppercase;
-    color: inherit;
-    
-    &.colon { font-family: arial; }
-    &.postfix { text-transform: lowercase; }
-  }
-  
-  .light { font-weight: 100; }
-}
-
-@media only screen and (max-width: 600px)  {
-  h1 {
-    padding-left: .66em;
-  }
+  margin: 1em 0;
+  font-size: 4em;
+  font-weight: 100;
+  color: black;
 }
 
 .alert.small-alert {

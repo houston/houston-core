@@ -162,6 +162,47 @@ $threshhold: 820px;
   top: $navbar-height + $project-navbar-height;
 }
 
+.project-banner .dropdown .caret {
+  margin-top: 16px;
+}
+
+.project-banner .subtitle {
+  font-weight: normal;
+  color: #444;
+}
+
+.project-banner {
+  background: #efefef;
+  font-weight: 500;
+  padding: .66em .66em .66em 28px;
+  margin: 0 0 1em;
+  font-weight: 200;
+  font-size: 2em;
+  
+  
+  a.btn { color: white ;}
+  
+  .buttons { float: right; }
+  
+  small {
+    font-weight: 100;
+    font-size: .75em;
+    text-transform: uppercase;
+    color: inherit;
+    
+    &.colon { font-family: arial; }
+    &.postfix { text-transform: lowercase; }
+  }
+  
+  .light { font-weight: 100; }
+}
+
+@media only screen and (max-width: 600px)  {
+  .project-banner {
+    padding-left: .66em;
+  }
+}
+
 body {
   padding-top: $navbar-height + $project-navbar-height
 }
