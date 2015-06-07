@@ -25,8 +25,8 @@ class @ShowSprintView extends Backbone.View
     # The time range of the Sprint
     today = new Date()
     monday = @sprintStart
-    sunday = 1.day().before(monday)
-    days = (i.days().after(sunday) for i in [0..5])
+    saturday = 2.days().before(monday)
+    days = (i.days().after(saturday) for i in [0..6])
     
     # Sum progress by day;
     # Find the total amount of effort to accomplish
@@ -58,7 +58,7 @@ class @ShowSprintView extends Backbone.View
     toChartData = (progressByDay)->
       remainingEffort = totalEffort
       data = [
-        day: sunday
+        day: saturday
         effort: Math.ceil(remainingEffort)
       ]
       for day in days
