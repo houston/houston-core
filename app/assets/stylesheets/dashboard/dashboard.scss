@@ -5,9 +5,13 @@ $vivid: #3F8BC0;
 $link: #3878A5;
 
 $background-green: #005e2d;
-$subtle-green: #437043;     // rgba(255, 255, 210, 0.12)
-$foreground-green: #7fa374; // rgba(255, 255, 210, 0.435)
-$vivid-green: #b7cc63;
+
+// lighter tints of the background
+$subtle-green: #287343;
+$foreground-green: #559965;
+$subtle-vivid-green: #2d8041;
+
+// a yellow green
 $vivid-green: #7ab84a;
 
 .dashboard {
@@ -47,8 +51,8 @@ $vivid-green: #7ab84a;
       .circle-completed, .line.line-completed { stroke: $vivid-green; }
       .effort-remaining.effort-completed { fill: $vivid-green; }
       
-      .circle-committed, .line.line-committed { stroke: $foreground-green; }
-      .effort-remaining.effort-committed { fill: $foreground-green; }
+      .circle-committed, .line.line-committed { stroke: $subtle-vivid-green; }
+      .effort-remaining.effort-committed { fill: $subtle-vivid-green; }
     }
   }
 
