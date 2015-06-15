@@ -80,7 +80,9 @@ module Houston
             
           ensure
             deployment.finished
-            deploy.update_attributes!(completed_at: Time.now)
+            Houston.try({max_tries: 5, ignore: true}, exceptions_wrapping(PG::ConnectionBad)) do
+              deploy.update_attributes!(completed_at: Time.now)
+            end
           end
           
           deployment.successful?
