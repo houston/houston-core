@@ -174,6 +174,7 @@ module Houston
         private
           
           def normalize_sha!(sha)
+            return unless sha
             return if sha == Houston::NULL_GIT_COMMIT
             sha.strip!
             sha.slice!(40)
