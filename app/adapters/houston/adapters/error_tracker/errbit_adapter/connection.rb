@@ -113,7 +113,6 @@ module Houston
           end
           
           def to_notice(attributes)
-            attributes = attributes["notice"]
             ::Houston::Adapters::ErrorTracker::ErrbitAdapter::Notice.new(
               created_at: attributes["created_at"].try(:to_time),
               app_id: attributes["app_id"])
