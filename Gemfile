@@ -77,7 +77,6 @@ gem "handlebars_assets"
 
 # Source for unprecompiled assets
 gem "backbone-rails", "~> 1.0.0"
-gem "jquery-rails", "2.2.1"
 gem "sugar-rails"
 gem "neat-rails", github: "boblail/neat-rails", branch: "master"
 
