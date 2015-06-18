@@ -168,3 +168,9 @@ $.extend
     data = data || {}
     data._method = 'delete'
     jQuery.post(url, data, callback, type)
+
+
+
+$(document).ajaxSend (e, jqxhr, settings)->
+  return if settings.type is 'GET'
+  jqxhr.setRequestHeader 'X-CSRF-Token', App.meta('csrf-token')

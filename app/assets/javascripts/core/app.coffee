@@ -1,7 +1,7 @@
 window.App = 
   
   meta: (name)->
-    $("meta[name=\"#{name}\"]").attr('value')
+    $("meta[name=\"#{name}\"]").attr('content')
   
   serverDateFormat: d3.time.format('%Y-%m-%d')
   
