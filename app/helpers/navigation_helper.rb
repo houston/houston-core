@@ -9,7 +9,7 @@ module NavigationHelper
   end
   
   def current_feature
-    return nil unless current_project
+    return nil unless current_project && current_project.persisted?
     @current_feature ||= current_project.features.find do |feature|
       current_page? feature_path(current_project, feature)
     end

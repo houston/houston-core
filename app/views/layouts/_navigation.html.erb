@@ -76,7 +76,7 @@
   </div>
 </div>
 
-<% if current_project %>
+<% if current_project && current_project.persisted? %>
 <div class="project-navbar <%= current_project.color %>">
   <% if current_project.features.any? %>
     <ul class="nav">
