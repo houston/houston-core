@@ -35,7 +35,7 @@ GIT
 
 GIT
   remote: git://github.com/concordia-publishing-house/houston-reports.git
-  revision: f654ebbef6e1ccb4ce999805527d2f80e16b94ac
+  revision: 4f71a11a90b9857f81dd7db8a649919af5309d3e
   branch: master
   specs:
     houston-reports (0.0.1)
@@ -91,7 +91,7 @@ GIT
 
 GIT
   remote: git://github.com/houstonmc/houston-alerts.git
-  revision: 6023f99d2d0158b1a3939490de41f1adceaa902f
+  revision: c2132fa452cbc9d553603e5600ab95fbb535b433
   branch: master
   specs:
     houston-alerts (0.0.1)
@@ -109,7 +109,7 @@ GIT
 
 GIT
   remote: git://github.com/houstonmc/houston-roadmap.git
-  revision: b4937ce5446581cdc5e8d3542ddef632127f9cb7
+  revision: 01d17ca595f979b8e3547d532bf3d05d847fb939
   branch: master
   specs:
     houston-roadmap (0.0.1)

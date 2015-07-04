@@ -1,7 +1,7 @@
 class Houston.StackedAreaGraph
   
   constructor: ->
-    @_margin = {top: 0, right: 80, bottom: 40, left: 50}
+    @_margin = {top: 10, right: 10, bottom: 25, left: 50}
     @_width = 960
     @_height = 260
     @_data = []
@@ -19,6 +19,8 @@ class Houston.StackedAreaGraph
   colors: (@_colors)-> @
   addLine: (line)-> @_lines.push(line); @
   axes: (@_axes)-> @
+  domain: (@_domain)-> @
+      
   
   render: ->
     graphWidth = @_width - @_margin.left - @_margin.right
@@ -26,8 +28,8 @@ class Houston.StackedAreaGraph
     
     formatDate = d3.time.format('%A')
     
-    x = d3.time.scale().range([0, graphWidth])
-    y = d3.scale.linear().range([graphHeight, 0])
+    @x = x = d3.time.scale().range([0, graphWidth])
+    @y = y = d3.scale.linear().range([graphHeight, 0])
     
     xAxis = d3.svg.axis()
       .scale(x)
@@ -60,7 +62,7 @@ class Houston.StackedAreaGraph
         y: d[i + 1]
     
     x.domain d3.extent(data[0].values, (d)-> d.date)
-    y.domain [0, d3.max(data[@_labels.length - 1].values, (d)-> d.y + d.y0)]
+    y.domain @_domain or [0, d3.max(data[@_labels.length - 1].values, (d)-> d.y + d.y0)]
     
     $(@_selector).empty()
     svg = d3.select(@_selector).append('svg')
