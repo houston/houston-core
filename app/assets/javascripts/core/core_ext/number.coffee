@@ -1,7 +1,7 @@
 class window.Duration
   constructor: (@n, @units)->
-  after:  (date)-> Duration.transformDateBy(date, +@n, @units)
-  before: (date)-> Duration.transformDateBy(date, -@n, @units)
+  after:  (date)-> date && Duration.transformDateBy(date, +@n, @units)
+  before: (date)-> date && Duration.transformDateBy(date, -@n, @units)
   ago: -> @before(new Date())
   fromNow: -> @after(new Date())
   valueOf: ->
