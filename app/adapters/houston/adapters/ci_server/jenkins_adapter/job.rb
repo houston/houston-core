@@ -23,8 +23,7 @@ module Houston
           end
           
           def build_path(commit)
-            callback_url = Houston::Adapters::CIServer.post_build_callback_url(project)
-            "#{job_path}/buildWithParameters?COMMIT_SHA=#{commit}&CALLBACK_URL=#{callback_url}"
+            "#{job_path}/buildWithParameters?COMMIT_SHA=#{commit}"
           end
           
           def last_build_url
