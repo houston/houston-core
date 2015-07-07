@@ -50,6 +50,11 @@ class ApplicationController < ActionController::Base
     render file: "public/404", layout: false
   end
   
+  # Malformed request
+  rescue_from ActionController::UnknownFormat do
+    head 400
+  end unless Rails.env.development?
+  
   
   
   def require_login
