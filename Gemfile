@@ -30,6 +30,7 @@ gem "oj"
 gem "pg_search"
 gem "premailer" #, "1.7.3" # for inlining CSS in HTML emails
 gem "progressbar" # for long migrations
+gem "rack-utf8_sanitizer", require: "rack/utf8_sanitizer"
 gem "redcarpet"
 gem "rufus-scheduler"
 gem "rugged" # for speaking to Git
