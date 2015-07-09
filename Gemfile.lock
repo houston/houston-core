@@ -60,7 +60,7 @@ GIT
 
 GIT
   remote: git://github.com/concordia-publishing-house/itsm.git
-  revision: 76035f2e544914489b0509c36d6aec3b1b29eec9
+  revision: 99585b10dc141cbacc6c547cd7b76efd631fb0eb
   branch: master
   specs:
     itsm (0.0.1)
@@ -91,7 +91,7 @@ GIT
 
 GIT
   remote: git://github.com/houstonmc/houston-alerts.git
-  revision: c2132fa452cbc9d553603e5600ab95fbb535b433
+  revision: 2325cc325839bd2e98a9e87c4d2dd258430a015d
   branch: master
   specs:
     houston-alerts (0.0.1)
