@@ -672,7 +672,7 @@ module Houston
       Rails.logger.error "\e[31m[#{tag}] #{$!.class}: #{$!.message} [ignored]\e[0m"
     rescue Exception # rescues StandardError by default; but we want to rescue and report all errors
       Rails.logger.error "\e[31m[#{tag}] \e[1m#{$!.message}\e[0m"
-      Houston.report_exception($!, parameters: {job_name: name}) # <-- no job id!
+      Houston.report_exception($!, parameters: {job_name: tag}) # <-- no job id!
     ensure
       ActiveRecord::Base.clear_active_connections!
     end
