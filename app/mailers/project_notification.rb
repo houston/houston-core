@@ -113,7 +113,7 @@ class ProjectNotification < ViewMailer
     mail({
       to: @reporter,
       subject: "Sample Ticket follow-up",
-      template: "project_notification/follow_up"
+      template: "follow_up"
     })
   end
   
