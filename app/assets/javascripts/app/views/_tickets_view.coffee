@@ -14,6 +14,8 @@ class @TicketsView extends Backbone.View
       mouseDownPosition = {x: e.screenX, y: e.screenY}
     
     @$el.on 'click', '[rel="ticket"]', (e)=>
+      return if $(e.target).closest('a').length > 0
+      
       e.preventDefault()
       e.stopImmediatePropagation()
       

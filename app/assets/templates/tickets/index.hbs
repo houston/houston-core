@@ -6,7 +6,10 @@
     <td class="ticket-type ticket-type-{{type}}"></td>
     <td class="ticket-reporter">{{{avatar reporter/email 24 reporter/name}}}</td>
     <td class="ticket-summary">{{summary}}</td>
-    <td class="ticket-effort">{{effort}}</td>
+    <td class="ticket-milestone">{{#milestone}}
+      <!-- TMI: knowledge of roadmap module -->
+      <a href="/roadmap/milestones/{{id}}">{{name}}</a>
+    {{/milestone}}</td>
     <td class="ticket-antecedents">{{{summarizeAntecedents antecedents}}}</td>
     <td class="ticket-opened date">{{{formatDateWithYear openedAt}}}</td>
     <td class="ticket-closed date">{{{formatDateWithYear closedAt}}}</td>

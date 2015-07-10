@@ -11,7 +11,8 @@ class TicketReport
       :antecedents,
       :opened_at,
       :closed_at,
-      :effort)
+      :milestone_id,
+      :milestone_name)
     
     def antecedents
       (super || []).map { |s| TicketAntecedent.from_s(self, s) }
@@ -29,7 +30,9 @@ class TicketReport
         reporter: {
           email: reporter_email,
           name: reporter_name },
-        effort: effort,
+        milestone: milestone_id && {
+          id: milestone_id,
+          name: milestone_name },
         antecedents: antecedents.map { |antecedent| { id: antecedent.id, kind: antecedent.kind } },
         openedAt: opened_at,
         closedAt: closed_at }
@@ -39,8 +42,7 @@ class TicketReport
   def initialize(tickets)
     @tickets = tickets
       .joins("LEFT OUTER JOIN users ON tickets.reporter_id=users.id")
-      .joins("LEFT OUTER JOIN tasks ON tasks.ticket_id=tickets.id")
-      .group("tickets.id", "tickets.number", :type, :summary, "users.email", "users.first_name", "users.last_name", :antecedents, "tickets.created_at", :closed_at)
+      .joins("LEFT OUTER JOIN milestones ON tickets.milestone_id=milestones.id")
       .order(Ticket.arel_table[:created_at].desc)
   end
   
@@ -56,7 +58,8 @@ class TicketReport
         :antecedents,
         :created_at,
         :closed_at,
-        "SUM(tasks.effort)"
+        "milestones.id",
+        "milestones.name"
       ).map { |args| ViewTicket.new(*args) }
   end
   

@@ -13,6 +13,8 @@ $ ->
   $('.project-banner').affix(offset: {top: 70})
   
   $('body').on 'click', '[rel="ticket"]', (e)->
+    return if $(e.target).closest('a').length > 0
+    
     $link = $(@)
     number = +$link.attr('data-number')
     project = $link.attr('data-project')
