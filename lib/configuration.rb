@@ -596,7 +596,7 @@ module Houston
     def fire(event, *args)
       invoker = async ? method(:invoke_callback_async) : method(:invoke_callback)
       observers_of(event).each do |block|
-        invoker.call(block, *args)
+        invoker.call(event, block, *args)
       end
       nil
     end
@@ -607,19 +607,20 @@ module Houston
     
   private
     
-    def invoke_callback_async(block, *args)
+    def invoke_callback_async(event, block, *args)
       Thread.new do
         begin
-          invoke_callback(block, *args)
+          invoke_callback(event, block, *args)
         ensure
           ActiveRecord::Base.clear_active_connections!
         end
       end
     end
     
-    def invoke_callback(block, *args)
+    def invoke_callback(event, block, *args)
       block.call(*args)
     rescue Exception # rescues StandardError by default; but we want to rescue and report all errors
+      $!.additional_information[:event] = event
       Houston.report_exception($!)
     end
     
