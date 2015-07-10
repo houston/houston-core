@@ -66,10 +66,10 @@ module Houston
           end
           
           def credentials
-            @credentials ||= Rugged::Credentials::SshKey.new(
-              username: "git",
-              privatekey: File.expand_path("~/.ssh/id_rsa"),
-              publickey: File.expand_path("~/.ssh/id_rsa.pub"))
+            Rugged::Credentials::SshKey.new(
+              username: SSH_USERNAME,
+              privatekey: SSH_PRIVATEKEY,
+              publickey: SSH_PUBLICKEY)
           end
           
           
@@ -83,6 +83,10 @@ module Houston
                 bare: true
             end
           end
+          
+          SSH_USERNAME = "git".freeze
+          SSH_PRIVATEKEY = File.expand_path("~/.ssh/id_rsa").freeze
+          SSH_PUBLICKEY = File.expand_path("~/.ssh/id_rsa.pub").freeze
           
         end
       end
