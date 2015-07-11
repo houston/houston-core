@@ -21,7 +21,7 @@ module Houston
           []
         end
         
-        def resolve!(problem_id)
+        def resolve!(problem_id, params={})
         end
         
         # ------------------------------------------------------------------------- #

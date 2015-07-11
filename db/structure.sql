@@ -502,7 +502,9 @@ CREATE TABLE alerts (
     destroyed_at timestamp without time zone,
     checked_out_remotely boolean DEFAULT false,
     can_change_project boolean DEFAULT false,
-    number integer
+    number integer,
+    environment_name character varying(255),
+    text character varying(255)
 );
 
 
@@ -2770,4 +2772,8 @@ INSERT INTO schema_migrations (version) VALUES ('20150524203903');
 INSERT INTO schema_migrations (version) VALUES ('20150603203744');
 
 INSERT INTO schema_migrations (version) VALUES ('20150708235654');
+
+INSERT INTO schema_migrations (version) VALUES ('20150711220519');
+
+INSERT INTO schema_migrations (version) VALUES ('20150711220542');
 

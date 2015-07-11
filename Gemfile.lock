@@ -25,7 +25,7 @@ GIT
 
 GIT
   remote: git://github.com/concordia-publishing-house/houston-dashboards.git
-  revision: bd728596fff2eda980e2ef720fbada52495806d2
+  revision: 7c09bc7e60c79dde2c99928d90aa3c30154c61aa
   branch: master
   specs:
     houston-dashboards (0.0.1)
@@ -60,7 +60,7 @@ GIT
 
 GIT
   remote: git://github.com/concordia-publishing-house/itsm.git
-  revision: 99585b10dc141cbacc6c547cd7b76efd631fb0eb
+  revision: a9fcd9efc01705ee636970d34cc15f4c011a490a
   branch: master
   specs:
     itsm (0.0.1)
@@ -91,7 +91,7 @@ GIT
 
 GIT
   remote: git://github.com/houstonmc/houston-alerts.git
-  revision: 2325cc325839bd2e98a9e87c4d2dd258430a015d
+  revision: c9bae3f17b5aa9c67a9aa37199eed62fe9b70b55
   branch: master
   specs:
     houston-alerts (0.0.1)
