@@ -38,14 +38,19 @@ module Houston
             Houston.github.pull_requests(repo_name, options)
           end
           
+          def create_pull_request(base: nil, head: nil, title: nil, body: nil, options: {})
+            Houston.github.create_pull_request(repo_name, base, head, title, body, options)
+          end
+          
           def issues(options={})
             Houston.github.issues(repo_name, options)
           end
           
-          def add_label_to(label, issue_number)
+          def add_labels_to(labels, issue_number)
             issue_number = issue_number.number if issue_number.respond_to? :number
-            Houston.github.add_labels_to_an_issue repo_name, issue_number, [label]
+            Houston.github.add_labels_to_an_issue repo_name, issue_number, Array(labels)
           end
+          alias :add_label_to :add_labels_to
           
           def remove_label_from(label, issue_number)
             issue_number = issue_number.number if issue_number.respond_to? :number
