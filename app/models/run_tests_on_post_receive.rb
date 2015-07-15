@@ -26,7 +26,7 @@ class RunTestsOnPostReceive
     end
     
     #   4. Houston notifies GitHub that the test run has started:
-    #      POST /repos/houstonmc/houston/statuses/:sha
+    #      POST /repos/houston/houston/statuses/:sha
     Houston.observer.on "test_run:start" do |test_run|
       Rails.logger.info "\e[34m[test_run:start] publishing status on GitHub\e[0m"
       publish_status_to_github(test_run)
@@ -52,7 +52,7 @@ class RunTestsOnPostReceive
     end
     
     #   9. Houston publishes results to GitHub:
-    #      POST /repos/houstonmc/houston/statuses/:sha
+    #      POST /repos/houston/houston/statuses/:sha
     Houston.observer.on "test_run:complete" do |test_run|
       Rails.logger.info "\e[34m[test_run:complete] publishing status on GitHub\e[0m"
       publish_status_to_github(test_run)

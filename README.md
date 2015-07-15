@@ -1,4 +1,4 @@
-# Houston [![Code Climate](https://codeclimate.com/github/houstonmc/houston.png)](https://codeclimate.com/github/houstonmc/houston)
+# Houston [![Code Climate](https://codeclimate.com/github/houston/houston.png)](https://codeclimate.com/github/houston/houston)
 
 ### Mission Control for your projects and teams.
 
@@ -7,23 +7,23 @@ Houston interfaces with your version-control, ticket-tracking, continuous integr
 <table>
   <tr>
     <td align="center" vertical-align="top">
-      <a href="http://houstonmc.github.com/houston/images/screenshots/burndown-chart.png" target="_blank" title="Ticket Workflow">
-        <img src="http://houstonmc.github.com/houston/images/screenshots/burndown-chart.png" width="180" alt="Ticket Workflow" />
+      <a href="http://houston.github.com/houston/images/screenshots/burndown-chart.png" target="_blank" title="Ticket Workflow">
+        <img src="http://houston.github.com/houston/images/screenshots/burndown-chart.png" width="180" alt="Ticket Workflow" />
       </a>
     </td>
     <td align="center" vertical-align="top">
-      <a href="http://houstonmc.github.com/houston/images/screenshots/testing-conversation-2.png" target="_blank" title="Testing Workflow">
-        <img src="http://houstonmc.github.com/houston/images/screenshots/testing-conversation-2.png" width="180" alt="Testing Workflow" />
+      <a href="http://houston.github.com/houston/images/screenshots/testing-conversation-2.png" target="_blank" title="Testing Workflow">
+        <img src="http://houston.github.com/houston/images/screenshots/testing-conversation-2.png" width="180" alt="Testing Workflow" />
       </a>
     </td>
     <td align="center" vertical-align="top">
-      <a href="http://houstonmc.github.com/houston/images/screenshots/new-release-2.png" target="_blank" title="Automatic Release Notes">
-        <img src="http://houstonmc.github.com/houston/images/screenshots/new-release-2.png" width="180" alt="Automatic Release Notes" />
+      <a href="http://houston.github.com/houston/images/screenshots/new-release-2.png" target="_blank" title="Automatic Release Notes">
+        <img src="http://houston.github.com/houston/images/screenshots/new-release-2.png" width="180" alt="Automatic Release Notes" />
       </a>
     </td>
     <td align="center" vertical-align="top">
-      <a href="http://houstonmc.github.com/houston/images/screenshots/timeline.png" target="_blank" title="Reports">
-        <img src="http://houstonmc.github.com/houston/images/screenshots/timeline.png" width="180" alt="Reports" />
+      <a href="http://houston.github.com/houston/images/screenshots/timeline.png" target="_blank" title="Reports">
+        <img src="http://houston.github.com/houston/images/screenshots/timeline.png" width="180" alt="Reports" />
       </a>
     </td>
   </tr>
@@ -49,7 +49,7 @@ Houston interfaces with your version-control, ticket-tracking, continuous integr
 
  1. Clone Houston:
 
-    git clone git@github.com:houstonmc/houston.git
+    git clone git@github.com:houston/houston.git
 
  2. Modify config/database.yml to connect to your database (See [the Rails Guide](http://guides.rubyonrails.org/configuring.html#configuring-a-database) for examples)
 
@@ -130,4 +130,4 @@ Houston uses adapters to support multiple systems. There are three right now:
 
 ### Configuration
 
-The specific details of Houston's operation are described in config/config.rb ([example](https://github.com/houstonmc/houston/blob/master/config/config.sample.rb)).
+The specific details of Houston's operation are described in config/config.rb ([example](https://github.com/houston/houston/blob/master/config/config.sample.rb)).

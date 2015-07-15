@@ -6,7 +6,7 @@ class GitAdapterTest < ActiveSupport::TestCase
   
   
   setup do
-    @repo = GitAdapter.connect "git://github.com/houstonmc/fixture.git", test_path
+    @repo = GitAdapter.connect "git://github.com/houston/fixture.git", test_path
   end
   
   
@@ -119,13 +119,13 @@ STR
     end
     
     should "work with a remote repo using the Git transport" do
-      remote_path = "git@github.com:houstonmc/fixture.git"
+      remote_path = "git@github.com:houston/fixture.git"
       GitAdapter.clone! remote_path, temporary_path
       assert File.exists?(fetch_head)
     end
     
     should "work with a remote repo using the SSH transport" do
-      remote_path = "git://github.com/houstonmc/fixture.git"
+      remote_path = "git://github.com/houston/fixture.git"
       GitAdapter.clone! remote_path, temporary_path
       assert File.exists?(fetch_head)
     end

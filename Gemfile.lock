@@ -90,7 +90,7 @@ GIT
       open_xml_package (~> 0.1.0)
 
 GIT
-  remote: git://github.com/houstonmc/houston-alerts.git
+  remote: git://github.com/houston/houston-alerts.git
   revision: 192c448f29e15954724652a85dc3f4c6e14b5b21
   branch: master
   specs:
@@ -98,7 +98,7 @@ GIT
       rails
 
 GIT
-  remote: git://github.com/houstonmc/houston-feedback.git
+  remote: git://github.com/houston/houston-feedback.git
   revision: c229dae86eb7db97f1ba2bdb1d73b2dd67ab6ae7
   branch: master
   specs:
@@ -108,7 +108,7 @@ GIT
       rails
 
 GIT
-  remote: git://github.com/houstonmc/houston-roadmap.git
+  remote: git://github.com/houston/houston-roadmap.git
   revision: 36ac78676d628f7bf43700e5803893e4fb3436b7
   branch: master
   specs:
@@ -116,7 +116,7 @@ GIT
       rails
 
 GIT
-  remote: git://github.com/houstonmc/houston-scheduler.git
+  remote: git://github.com/houston/houston-scheduler.git
   revision: fbeddd2e72e7d74a03e978f4e20ca570b491c5fb
   branch: master
   specs:
@@ -124,7 +124,7 @@ GIT
       rails
 
 GIT
-  remote: git://github.com/houstonmc/houston-slack.git
+  remote: git://github.com/houston/houston-slack.git
   revision: d7b28b324d583c6f282c3daa9e6cd8e687e325eb
   branch: master
   specs:
@@ -135,7 +135,7 @@ GIT
       websocket-driver
 
 GIT
-  remote: git://github.com/houstonmc/oauth-plugin.git
+  remote: git://github.com/houston/oauth-plugin.git
   revision: fb90306916934d902e5459b86b887f6e88766a8c
   branch: master
   specs:
@@ -146,7 +146,7 @@ GIT
       rack
 
 GIT
-  remote: git://github.com/houstonmc/simplecov-json.git
+  remote: git://github.com/houston/simplecov-json.git
   revision: ad09e37eebbbb177fbc5e65bdd3db80cc997c6a6
   specs:
     simplecov-json (0.1.1)
@@ -154,7 +154,7 @@ GIT
       simplecov
 
 GIT
-  remote: git://github.com/houstonmc/vestal_versions.git
+  remote: git://github.com/houston/vestal_versions.git
   revision: a3bec7ce5e4238b146dfa66ab918b3d78051a164
   branch: master
   specs:
@@ -163,7 +163,7 @@ GIT
       activesupport (>= 3, < 5)
 
 GIT
-  remote: https://github.com/houstonmc/devise_ldap_authenticatable.git
+  remote: https://github.com/houston/devise_ldap_authenticatable.git
   revision: 3f30eca2363198af9dadd438bfb0a6dd0fbb72ca
   specs:
     devise_ldap_authenticatable (0.7.0)

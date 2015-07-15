@@ -95,7 +95,7 @@ namespace :config do
     end
     TEXT
     config.insert_after! /^  use :itsm.*/, <<-TEXT
-  # use :kanban, github: "houstonmc/houston-kanban", branch: "master" do
+  # use :kanban, github: "houston/houston-kanban", branch: "master" do
   #   queues do
   #     unprioritized do
   #       name "To Prioritize"

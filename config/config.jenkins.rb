@@ -278,9 +278,9 @@ Houston.config do
   #
   #   bundle config local.houston-<MODULE> ~/Projects/houston-<MODULE>
   #
-  use :scheduler, :github => "houstonmc/houston-scheduler", :branch => "master"
-  use :roadmap, :github => "houstonmc/houston-roadmap", :branch => "master"
-  use :alerts, :github => "houstonmc/houston-alerts", :branch => "master"
+  use :scheduler, :github => "houston/houston-scheduler", :branch => "master"
+  use :roadmap, :github => "houston/houston-roadmap", :branch => "master"
+  use :alerts, :github => "houston/houston-alerts", :branch => "master"
   
   
   

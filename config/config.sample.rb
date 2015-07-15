@@ -121,9 +121,9 @@ Houston.config do
   #   bundle config local.houston-<MODULE> ~/Projects/houston-<MODULE>
   #
 
-  use :roadmap, github: "houstonmc/houston-roadmap", branch: "master"
+  use :roadmap, github: "houston/houston-roadmap", branch: "master"
 
-  use :alerts, github: "houstonmc/houston-alerts", branch: "master" do
+  use :alerts, github: "houston/houston-alerts", branch: "master" do
     workers { User.developers }
 
     sync :all, "ue", every: "75s", first_in: "15s" do
@@ -156,9 +156,9 @@ Houston.config do
     end
   end
 
-  use :feedback, github: "houstonmc/houston-feedback", branch: "master"
+  use :feedback, github: "houston/houston-feedback", branch: "master"
 
-  # use :kanban, github: "houstonmc/houston-kanban", branch: "master" do
+  # use :kanban, github: "houston/houston-kanban", branch: "master" do
   #   queues do
   #     unprioritized do
   #       name "To Prioritize"
@@ -193,7 +193,7 @@ Houston.config do
   # end
 
 
-  # use :scheduler, github: "houstonmc/houston-scheduler", branch: "master" do
+  # use :scheduler, github: "houston/houston-scheduler", branch: "master" do
   #   planning_poker :off
   #   estimate_effort :off
   #   estimate_value :off

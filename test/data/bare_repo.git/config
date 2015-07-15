@@ -6,4 +6,4 @@
 [remote "origin"]
 	fetch = +refs/*:refs/*
 	mirror = true
-	url = git@github.com:houstonmc/fixture.git
+	url = git@github.com:houston/fixture.git

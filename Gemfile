@@ -14,7 +14,7 @@ gem "codeclimate-test-reporter", "0.4.1" # locked because Houston implements its
 gem "default_value_for"
 gem "devise", "~> 3.0.0"
 gem "devise_invitable"
-gem "devise_ldap_authenticatable", git: "https://github.com/houstonmc/devise_ldap_authenticatable.git"
+gem "devise_ldap_authenticatable", git: "https://github.com/houston/devise_ldap_authenticatable.git"
 gem "engineyard" # for deploying to EngineYard
 gem "faraday"
 gem "faraday-http-cache"
@@ -24,7 +24,7 @@ gem "gemnasium"
 gem "googlecharts"
 gem "hpricot"
 gem "nokogiri"
-gem "oauth-plugin", github: "houstonmc/oauth-plugin", branch: "master"
+gem "oauth-plugin", github: "houston/oauth-plugin", branch: "master"
 gem "octokit" # for adapting to GitHub Issues
 gem "oj"
 gem "pg_search"
@@ -39,7 +39,7 @@ gem "strongbox" # for encrypting user credentials
 gem "sucker_punch" # for Airbrake
 gem "thread_safe"
 gem "unfuddle", github: "boblail/unfuddle", branch: "master"
-gem "vestal_versions", github: "houstonmc/vestal_versions", branch: "master"
+gem "vestal_versions", github: "houston/vestal_versions", branch: "master"
 gem "whenever", "0.9.2" # a DSL for writing CRON jobs
 gem "xlsx", github: "concordia-publishing-house/xlsx", branch: "master"
 
@@ -108,6 +108,6 @@ group :test do
   gem "factory_girl_rails"
   
   # For Jenkins
-  gem "simplecov-json", require: false, git: "git://github.com/houstonmc/simplecov-json.git"
+  gem "simplecov-json", require: false, git: "git://github.com/houston/simplecov-json.git"
   gem "minitest-reporters", require: false
 end
