@@ -81,7 +81,7 @@ class DeployTest < ActiveSupport::TestCase
       setup do
         @commit = Commit.new(sha: "edd44727c05c93b34737cb48873929fb5af69885")
         stub(project).find_commit_by_sha(commit.sha).returns(commit)
-        @deploy = create(:deploy, project: project, sha: commit.sha)
+        @deploy = with_exclusive_observation { create(:deploy, project: project, sha: commit.sha) }
       end
       
       should "be able to list the commits that were deployed" do
