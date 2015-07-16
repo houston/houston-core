@@ -67,7 +67,7 @@ module Houston
               options = {credentials: GitAdapter.credentials}
               
               # Fetch
-              Houston.try({max_tries: 3, base: 0}, Rugged::OSError) do
+              Houston.try({max_tries: 3, base: 0}, Rugged::OSError, Rugged::SshError) do
                 connection.remotes["origin"].fetch(nil, options)
                 release
               end

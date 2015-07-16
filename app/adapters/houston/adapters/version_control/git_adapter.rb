@@ -13,7 +13,7 @@ module Houston
             location = Addressable::URI.parse(location.to_s)
             connect_to_repo!(location, project.version_control_temp_path)
             {}
-          rescue Rugged::RepositoryError, Rugged::OSError
+          rescue Rugged::RepositoryError, Rugged::OSError, Rugged::SshError
             Rails.logger.error "#{$!.class.name}: #{$!.message}\n  #{$!.backtrace.take(7).join("\n  ")}"
             { git_location: ["might not be right. Houston can't seem to connect to it."] }
           end
@@ -31,7 +31,7 @@ module Houston
             return self::Repo.new(connection) unless location.absolute?
             return self::GithubRepo.new(connection, location) if /github/ === location
             return self::RemoteRepo.new(connection, location)
-          rescue Rugged::RepositoryError, Rugged::OSError
+          rescue Rugged::RepositoryError, Rugged::OSError, Rugged::SshError
             Houston::Adapters::VersionControl::NullRepo
           end
           
