@@ -123,6 +123,7 @@ module Houston
           def get(path, params={})
             params = params.merge(auth_token: config[:auth_token])
             response = Houston.benchmark("[errbit] GET #{path}") { @connection.get(path, params) }
+            response.must_be! 200
             MultiJson.load(response.body)
           end
           
