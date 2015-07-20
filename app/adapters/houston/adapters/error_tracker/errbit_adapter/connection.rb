@@ -12,7 +12,7 @@ module Houston
             protocol = "https" if config[:port] == 443
             @errbit_url = "#{protocol}://#{config[:host]}"
             @errbit_url << ":#{config[:port]}" unless [80, 443].member?(config[:port])
-            @connection = Faraday.new(url: errbit_url + "/api/v1")
+            @connection = Faraday.new(url: errbit_url + "/api/v1", ssl: {verify: false})
             @connection.use Faraday::RaiseErrors
           end
           
