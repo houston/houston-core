@@ -8,7 +8,13 @@ module Houston
             @project = project
             
             config = Houston.config.ci_server_configuration(:jenkins)
-            @connection = Faraday.new(url: config[:host], ssl: {verify: false})
+            
+            protocol = "http"
+            protocol = "https" if config[:port] == 443
+            jenkins_url = "#{protocol}://#{config[:host]}"
+            jenkins_url << ":#{config[:port]}" unless [80, 443].member?(config[:port])
+            
+            @connection = Faraday.new(url: jenkins_url)
             @connection.basic_auth config[:username], config[:password] if config[:username] && config[:password]
           end
           
