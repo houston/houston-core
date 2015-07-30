@@ -413,14 +413,15 @@ module Houston
     
     def initialize(module_name, gemconfig={}, &moduleconfig)
       @name = module_name.to_s
-      gem_name = "houston-#{name}"
+      @gemname = gemconfig.fetch(:gem, "houston-#{name}")
       @bundle = gemconfig.fetch(:bundle, true)
-      @gemspec = [gem_name, gemconfig.pick(:group, :groups, :git, :path, :name, :branch, :github,
-        :ref, :tag, :require, :submodules, :platform, :platforms, :type, :source)]
+      @gemconfig = gemconfig.pick(:group, :groups, :git, :path, :name, :branch, :github,
+        :ref, :tag, :require, :submodules, :platform, :platforms, :type, :source)
+      @gemconfig.merge!(branch: "master") if @gemconfig.key?(:github) && !@gemconfig.key?(:branch)
       @config = moduleconfig
     end
     
-    attr_reader :name, :gemspec, :config
+    attr_reader :name, :gemname, :config
     
     def engine
       namespace::Engine
@@ -432,6 +433,10 @@ module Houston
     
     def path
       "/#{name}"
+    end
+    
+    def gemspec
+      [gemname, @gemconfig]
     end
     
     def namespace
