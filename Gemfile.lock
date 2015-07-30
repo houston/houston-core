@@ -43,7 +43,7 @@ GIT
 
 GIT
   remote: git://github.com/concordia-publishing-house/houston-support_form.git
-  revision: f83bb3a6e5d7148dd7ae1215c5993006f65de4ea
+  revision: 7cb1c4a8aa07e66f77e5eeca063ae03a3b2511cb
   branch: master
   specs:
     houston-support_form (0.0.1)
@@ -109,7 +109,7 @@ GIT
 
 GIT
   remote: git://github.com/houston/houston-roadmap.git
-  revision: 36ac78676d628f7bf43700e5803893e4fb3436b7
+  revision: 4632ecccd00bee966dadf2745d525e4299a40ab8
   branch: master
   specs:
     houston-roadmap (0.0.1)
@@ -125,7 +125,7 @@ GIT
 
 GIT
   remote: git://github.com/houston/houston-slack.git
-  revision: 5d0b870d15e68c51fcd5b644ce542141e56b6ede
+  revision: d93135555ccf0f982e93841f0741b3190cf3c0a2
   branch: master
   specs:
     houston-slack (0.0.1)
@@ -571,3 +571,6 @@ DEPENDENCIES
   webmock
   whenever (= 0.9.2)
   xlsx!
+
+BUNDLED WITH
+   1.10.6

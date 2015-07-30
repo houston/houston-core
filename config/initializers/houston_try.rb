@@ -15,6 +15,7 @@ module Houston
         return if ignore
         raise
       end
+      Rails.logger.warn "\e[31m[try] \e[1m#{$!.class}\e[0;31m: #{$!.message}\e[0m"
       sleep base ** tries
       retry
     end

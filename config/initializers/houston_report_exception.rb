@@ -2,6 +2,9 @@ module Houston
   
   def self.report_exception(exception, other_data={})
     raise if Rails.env.test? || Rails.env.development?
+
+    Rails.logger.error "#{exception.class}: #{exception.message}\n#{exception.backtrace}"
+
     if defined?(Airbrake)
       other_data[:parameters] ||= {}
       case exception
