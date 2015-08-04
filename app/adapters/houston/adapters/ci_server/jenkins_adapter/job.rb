@@ -46,10 +46,12 @@ module Houston
           
           def build!(commit)
             url = build_path(commit)
-            Rails.logger.info "[jenkins] POST #{url}"
-            response = connection.post(url)
-            build_error!(url) unless [200, 201, 302].member?(response.status)
-            response
+            Houston.try({max_tries: 5}, Faraday::Error::ConnectionFailed) do
+              Rails.logger.info "[jenkins] POST #{url}"
+              response = connection.post(url)
+              build_error!(url) unless [200, 201, 302].member?(response.status)
+              response
+            end
           end
           
           def fetch_results!(build_url)
