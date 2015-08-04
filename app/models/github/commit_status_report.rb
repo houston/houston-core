@@ -30,10 +30,12 @@ module Github
     def publish!
       return no_access_token unless access_token
       
-      Rails.logger.info "[github/commit_status_report:publish!] POST #{state} to #{github_status_url}"
-      response = Faraday.post(github_status_url, payload)
-      bad_response(response) unless response.success?
-      response
+      Houston.try({max_tries: 5}, Faraday::Error::ConnectionFailed) do
+        Rails.logger.info "[github/commit_status_report:publish!] POST #{state} to #{github_status_url}"
+        response = Faraday.post(github_status_url, payload)
+        bad_response(response) unless response.success?
+        response
+      end
     end
     
     def github_status_url
