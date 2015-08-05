@@ -1,6 +1,8 @@
 require "test_helper"
+require "support/houston/adapters/ci_server/mock_adapter"
 
 class TestRunTest < ActiveSupport::TestCase
+  attr_reader :project, :tr, :commit
   
   
   test "#retry! triggers a new build" do
@@ -32,7 +34,7 @@ class TestRunTest < ActiveSupport::TestCase
       slug: "test",
       version_control_name: "Git",
       extended_attributes: { "git_location" => path })
-    test_run = TestRun.new(sha: "b62c3f3", project: project)
+    test_run = TestRun.create!(sha: "b62c3f3", project: project)
     
     commit = test_run.commit
     assert_instance_of Commit, commit
@@ -54,6 +56,52 @@ class TestRunTest < ActiveSupport::TestCase
     assert_instance_of SourceFileCoverage, files[0]
     assert_equal "lib/test2.rb", files[1].filename
   end
+  
+  
+  
+  context "a new test run" do
+    setup do
+      @project = create(:project, version_control_name: "Mock")
+      @tr = TestRun.new(project: project)
+    end
+    
+    context "for a valid commit" do
+      setup do
+        @commit = Commit.new(sha: "edd44727c05c93b34737cb48873929fb5af69885")
+        tr.sha = "#{commit.sha[0...8]}\n"
+        mock(project).find_commit_by_sha(anything).returns(commit)
+      end
+      
+      should "associate itself with the specified commit" do
+        tr.save!
+        assert_equal commit, tr.commit
+      end
+      
+      should "normalize the sha as well" do
+        tr.save!
+        assert_equal commit.sha, tr.sha
+      end
+    end
+    
+    context "for an invalid commit" do
+      setup do
+        mock(project).find_commit_by_sha(anything) do
+          raise Houston::Adapters::VersionControl::InvalidShaError
+        end
+        tr.sha = "whatever\n"
+      end
+      
+      should "save with the given sha" do
+        assert tr.valid?, "Expected the test run to be valid"
+      end
+      
+      should "not be associated with a commit" do
+        tr.save!
+        refute tr.commit, "Expected the test run not to be associated with a commit"
+      end
+    end
+  end
+  
   
   
 end

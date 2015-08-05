@@ -8,6 +8,7 @@ class DeployTest < ActiveSupport::TestCase
   end
   
   
+  
   context "a new deploy" do
     setup do
       @deploy = Deploy.new(project: project, environment_name: "Production")

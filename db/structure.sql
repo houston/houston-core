@@ -1264,7 +1264,8 @@ CREATE TABLE test_runs (
     coverage text,
     covered_percent numeric(6,5) DEFAULT 0 NOT NULL,
     covered_strength numeric(6,5) DEFAULT 0 NOT NULL,
-    regression_count integer DEFAULT 0 NOT NULL
+    regression_count integer DEFAULT 0 NOT NULL,
+    commit_id integer
 );
 
 
@@ -2776,4 +2777,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150708235654');
 INSERT INTO schema_migrations (version) VALUES ('20150711220519');
 
 INSERT INTO schema_migrations (version) VALUES ('20150711220542');
+
+INSERT INTO schema_migrations (version) VALUES ('20150805180939');
 

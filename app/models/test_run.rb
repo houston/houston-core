@@ -1,4 +1,5 @@
 class TestRun < ActiveRecord::Base
+  include BelongsToCommit
   
   belongs_to :project
   
@@ -90,10 +91,6 @@ class TestRun < ActiveRecord::Base
   end
   
   
-  
-  def commit
-    @commit ||= project.find_commit_by_sha(sha)
-  end
   
   def coverage_detail
     @coverage_detail ||= (Array(coverage).map do |file|
