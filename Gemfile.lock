@@ -403,7 +403,7 @@ GEM
     rubyzip (1.1.6)
     rufus-scheduler (3.0.9)
       tzinfo
-    rugged (0.23.0b4)
+    rugged (0.23.0)
     safe_yaml (1.0.4)
     sass (3.2.19)
     sass-rails (4.0.4)
@@ -550,7 +550,7 @@ DEPENDENCIES
   redcarpet
   rr
   rufus-scheduler
-  rugged (= 0.23.0b4)
+  rugged (~> 0.23.0)
   sass-rails (~> 4.0.0)
   shoulda-context
   simplecov

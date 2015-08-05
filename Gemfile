@@ -33,7 +33,7 @@ gem "progressbar" # for long migrations
 gem "rack-utf8_sanitizer", require: "rack/utf8_sanitizer"
 gem "redcarpet"
 gem "rufus-scheduler"
-gem "rugged", "0.23.0b4"# for speaking to Git
+gem "rugged", "~> 0.23.0" # for speaking to Git
 gem "simplecov"
 gem "strongbox" # for encrypting user credentials
 gem "sucker_punch" # for Airbrake
