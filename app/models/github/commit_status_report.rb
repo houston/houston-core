@@ -48,7 +48,11 @@ module Github
     end
     
     def payload
-      MultiJson.dump(state: state, target_url: test_run.results_url)
+      MultiJson.dump(
+        state: state,
+        context: "jenkins",
+        description: nil, # TODO: Implement a nice description
+        target_url: test_run.results_url)
     end
     
     
