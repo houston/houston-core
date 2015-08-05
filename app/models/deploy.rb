@@ -1,12 +1,10 @@
 class Deploy < ActiveRecord::Base
+  include BelongsToCommit
   
   belongs_to :project
   has_one :release
-  belongs_to :commit
   
-  before_validation :identify_commit, on: :create
   validates :project_id, :environment_name, presence: true
-  validates :sha, presence: {message: "must refer to a commit"}
   
   default_scope { order("completed_at DESC") }
   
@@ -66,16 +64,6 @@ class Deploy < ActiveRecord::Base
   
   
 private
-  
-  def identify_commit
-    return unless project && sha
-    self.commit = project.find_commit_by_sha(sha)
-    self.sha = commit.sha if commit
-  rescue Houston::Adapters::VersionControl::InvalidShaError
-    Rails.logger.warn "\e[31m[deploy] Unable to identify commit\e[0m"
-    Rails.logger.warn "#{$!.class}: #{$!.message}\n#{$!.backtrace}"
-    nil
-  end
   
   def find_commits
     return [] unless sha
