@@ -131,7 +131,9 @@ class RunTestsOnPostReceive
   
   
   def email_test_run_results(test_run)
-    ProjectNotification.test_results(test_run).deliver!
+    Houston.try({max_tries: 5}, ActionView::MissingTemplate) do
+      ProjectNotification.test_results(test_run).deliver!
+    end
   rescue Exception # rescues StandardError by default; but we want to rescue and report all errors
     Houston.report_exception $!, parameters: {test_run_id: test_run.id, method: "email_test_run_results"}
   end
