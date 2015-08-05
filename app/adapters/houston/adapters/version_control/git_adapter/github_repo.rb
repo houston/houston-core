@@ -21,7 +21,8 @@ module Houston
           end
           
           def commit_status_url(sha)
-            full_sha = native_commit(sha).sha # GitHub requires the full 40-character sha
+            # GitHub requires the full 40-character sha
+            full_sha = native_commit(sha).sha if sha.length < 40
             path = Addressable::URI.parse(project_url).path[1..-1]
             "https://api.github.com/repos/#{path}/statuses/#{full_sha}"
           end
