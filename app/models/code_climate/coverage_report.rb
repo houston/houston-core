@@ -142,7 +142,8 @@ module CodeClimate
     end
     
     def committed_at
-      project.repo.native_commit(test_run.sha).committed_at
+      # NB: CodeClimate actually uses committed_at
+      test_run.commit.authored_at
     end
     
     

@@ -12,9 +12,11 @@ class CodeClimateCoverageReportTest < ActiveSupport::TestCase
       ci_server_name: "Jenkins",
       version_control_name: "Git",
       extended_attributes: { "git_location" => Rails.root.join("test/data/bare_repo.git").to_s })
+    @commit = Commit.new(project: @project, sha: @sha)
     @test_run = TestRun.new(
       project: project,
       sha: sha,
+      commit: @commit,
       branch: "master",
       results_url: "https://ci.example.com/job/test/319/",
       coverage: [
@@ -89,7 +91,7 @@ class CodeClimateCoverageReportTest < ActiveSupport::TestCase
         #
         # committed_at is an integer timestamp
         # https://github.com/codeclimate/ruby-test-reporter/blob/v0.2.0/lib/code_climate/test_reporter/git.rb#L30
-        expected_commit_info = { head: sha, committed_at: 1388889307, branch: "master" }
+        expected_commit_info = { head: sha, committed_at: 0, branch: "master" }
         assert_equal expected_commit_info, report.commit_info
       end
     end
