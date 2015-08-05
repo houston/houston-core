@@ -143,7 +143,11 @@ module CodeClimate
     
     def committed_at
       # NB: CodeClimate actually uses committed_at
-      test_run.commit.authored_at
+      return test_run.commit.authored_at if test_run.commit
+
+      project.repo.native_commit(test_run.sha).committed_at
+    rescue Houston::Adapters::VersionControl::CommitNotFound
+      nil
     end
     
     
