@@ -2,7 +2,7 @@ class TestRunsController < ApplicationController
   before_filter :find_test_run
   
   def show
-    render template: "project_notification/test_run", layout: "email"
+    render template: "project_notification/test_run"
   end
   
   def confirm_retry

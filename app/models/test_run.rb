@@ -95,6 +95,12 @@ class TestRun < ActiveRecord::Base
   
   
   
+  def url
+    "https://#{Houston.config.host}/projects/#{project.slug}/test_runs/#{sha}"
+  end
+  
+  
+  
   def coverage_detail
     @coverage_detail ||= (Array(coverage).map do |file|
       file = file.with_indifferent_access

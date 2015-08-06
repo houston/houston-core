@@ -45,20 +45,14 @@ class RunTestsOnPostReceive
       fetch_test_run_results(project, params)
     end
     
-    #   8. Houston emails results of the TestRun.
-    Houston.observer.on "test_run:complete" do |test_run|
-      Rails.logger.info "\e[34m[test_run:complete] emailing TestRun results\e[0m"
-      email_test_run_results(test_run)
-    end
-    
-    #   9. Houston publishes results to GitHub:
+    #   8. Houston publishes results to GitHub:
     #      POST /repos/houston/houston/statuses/:sha
     Houston.observer.on "test_run:complete" do |test_run|
       Rails.logger.info "\e[34m[test_run:complete] publishing status on GitHub\e[0m"
       publish_status_to_github(test_run)
     end
     
-    #  10. Houston publishes results to Code Climate.
+    #   9. Houston publishes results to Code Climate.
     Houston.observer.on "test_run:complete" do |test_run|
       Rails.logger.info "\e[34m[test_run:complete] publishing status on CodeClimate\e[0m"
       publish_coverage_to_code_climate(test_run)
@@ -127,15 +121,6 @@ class RunTestsOnPostReceive
     
   rescue Exception # rescues StandardError by default; but we want to rescue and report all errors
     Houston.report_exception $!, parameters: params.merge(project_id: project.id)
-  end
-  
-  
-  def email_test_run_results(test_run)
-    Houston.try({max_tries: 5}, ActionView::MissingTemplate) do
-      ProjectNotification.test_results(test_run).deliver!
-    end
-  rescue Exception # rescues StandardError by default; but we want to rescue and report all errors
-    Houston.report_exception $!, parameters: {test_run_id: test_run.id, method: "email_test_run_results"}
   end
   
   
