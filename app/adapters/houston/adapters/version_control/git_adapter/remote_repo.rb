@@ -39,6 +39,10 @@ module Houston
             async ? Houston.async { _pull!(true) } : _pull!(false)
           end
           
+          def origin
+            @origin ||= connection.remotes["origin"]
+          end
+          
           
           
         protected
