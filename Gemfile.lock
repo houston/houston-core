@@ -125,7 +125,7 @@ GIT
 
 GIT
   remote: git://github.com/houston/houston-slack.git
-  revision: d93135555ccf0f982e93841f0741b3190cf3c0a2
+  revision: 274b4a34954dfe586bd9045e54a891685be4d68e
   branch: master
   specs:
     houston-slack (0.0.1)
@@ -483,7 +483,7 @@ GEM
     webmock (1.20.4)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
-    websocket-driver (0.6.1)
+    websocket-driver (0.6.2)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
     whenever (0.9.2)
