@@ -145,8 +145,9 @@ class Release < ActiveRecord::Base
   
   
   def build_changes_from_commits
-    self.release_changes = commits.reject(&:skip?)
+    self.release_changes = commits
       .map { |commit| ReleaseChange.from_commit(self, commit) }
+      .reject { |change| change.tag.nil? }
   end
   
   def load_commits!
