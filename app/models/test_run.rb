@@ -2,12 +2,15 @@ class TestRun < ActiveRecord::Base
   include BelongsToCommit
   
   belongs_to :project
+  belongs_to :user
   
   validates_presence_of :project_id, :sha
   validates :results_url, :presence => true, :if => :completed?
   validates :result, inclusion: {in: %w{aborted pass fail error}, allow_nil: true, message: "\"%{value}\" is unknown. It must be pass, fail, error, or aborted"}
   
   default_scope { order("completed_at DESC") }
+  
+  before_save :identify_user
   
   serialize :tests
   serialize :coverage
@@ -169,6 +172,13 @@ class TestRun < ActiveRecord::Base
   
   def real_fail_count
     fail_count + regression_count
+  end
+  
+  
+  
+  def identify_user
+    email = Mail::Address.new(agent_email)
+    self.user = User.find_by_email_address(email.address)
   end
   
 end

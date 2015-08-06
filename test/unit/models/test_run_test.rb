@@ -81,6 +81,19 @@ class TestRunTest < ActiveSupport::TestCase
         tr.save!
         assert_equal commit.sha, tr.sha
       end
+      
+      
+      context "and a recognizable email address" do
+        setup do
+          @user = User.first
+          tr.agent_email = "Test <#{@user.email}>"
+        end
+      
+        should "associate itself with the specified user" do
+          tr.save!
+          assert_equal @user, tr.user, "Expected the test run to be associated with the user"
+        end
+      end
     end
     
     context "for an invalid commit" do
