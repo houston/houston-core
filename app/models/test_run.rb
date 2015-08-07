@@ -93,6 +93,24 @@ class TestRun < ActiveRecord::Base
     project.test_runs.find_by_sha(last_tested_ancestor.sha).failed_or_errored?
   end
   
+  def short_description(with_duration: false)
+    passes = "#{pass_count} #{pass_count == 1 ? "test" : "tests"} passed"
+    fails = "#{fail_count} #{fail_count == 1 ? "test" : "tests"} failed"
+    duration = " in #{(self.duration / 1000.0).round(1)} seconds" if self.duration && with_duration
+
+    if !completed?
+      "#{project.ci_server_name} is running the tests"
+    elsif passed?
+      "#{passes}#{duration}"
+    elsif failed?
+      "#{passes} and #{fails}#{duration}"
+    elsif aborted?
+      "The test run was canceled"
+    else
+      "#{project.ci_server_name} was not able to run the tests"
+    end
+  end
+  
   
   
   def url

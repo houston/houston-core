@@ -51,7 +51,7 @@ module Github
       MultiJson.dump(
         state: state,
         context: "jenkins",
-        description: nil, # TODO: Implement a nice description
+        description: test_run.short_description,
         target_url: test_run.results_url)
     end
     
