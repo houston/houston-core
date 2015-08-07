@@ -1,12 +1,12 @@
 module Houston
 
   def self.daemonize(name)
-    unless Houston.server?
+    unless Houston.server? or ENV["HOUSTON_DAEMONS"].to_s.split(",").member?(name)
       puts "\e[94m[daemon:#{name}] Skipping daemon since we're not running as a server\e[0m" if Rails.env.development?
       Rails.logger.info "\e[94m[daemon:#{name}] Skipping daemon since we're not running as a server\e[0m"
       return
     end
-    
+
     puts "\e[94m[daemon:#{name}] Connecting\e[0m" if Rails.env.development?
     Rails.logger.info "\e[94m[daemon:#{name}] Connecting\e[0m"
     Thread.new do
