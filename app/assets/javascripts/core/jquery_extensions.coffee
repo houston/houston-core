@@ -117,7 +117,7 @@ $.fn.extend
       maxFilesize: 13 # MB
       clickable: '.dz-selector'
       acceptedFiles: 'image/jpeg,image/png,image/gif'
-      url: "http://#{bucket}.s3.amazonaws.com"
+      url: "//#{bucket}.s3.amazonaws.com"
       uploadprogress: (file, progress)->
         $el.find('.upload-progress').html "Uploading #{file.name} (#{progress.toFixed(0)}% complete)"
       
