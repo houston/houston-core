@@ -2231,6 +2231,13 @@ CREATE INDEX index_test_runs_on_commit ON test_runs USING btree (sha);
 
 
 --
+-- Name: index_test_runs_on_commit_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_test_runs_on_commit_id ON test_runs USING btree (commit_id);
+
+
+--
 -- Name: index_test_runs_on_project_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2782,4 +2789,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150711220542');
 INSERT INTO schema_migrations (version) VALUES ('20150805180939');
 
 INSERT INTO schema_migrations (version) VALUES ('20150805233946');
+
+INSERT INTO schema_migrations (version) VALUES ('20150808162928');
 
