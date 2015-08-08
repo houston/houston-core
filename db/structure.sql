@@ -116,6 +116,17 @@ CREATE TYPE hstore (
 
 
 --
+-- Name: test_result_status; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE test_result_status AS ENUM (
+    'fail',
+    'skip',
+    'pass'
+);
+
+
+--
 -- Name: akeys(hstore); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -1241,6 +1252,70 @@ ALTER SEQUENCE tasks_id_seq OWNED BY tasks.id;
 
 
 --
+-- Name: test_errors; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE test_errors (
+    id integer NOT NULL,
+    sha character varying(255),
+    output text
+);
+
+
+--
+-- Name: test_errors_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE test_errors_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: test_errors_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE test_errors_id_seq OWNED BY test_errors.id;
+
+
+--
+-- Name: test_results; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE test_results (
+    id integer NOT NULL,
+    test_run_id integer NOT NULL,
+    test_id integer NOT NULL,
+    status test_result_status NOT NULL,
+    regression boolean,
+    duration double precision,
+    error_id integer
+);
+
+
+--
+-- Name: test_results_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE test_results_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: test_results_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE test_results_id_seq OWNED BY test_results.id;
+
+
+--
 -- Name: test_runs; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1742,6 +1817,20 @@ ALTER TABLE ONLY tasks ALTER COLUMN id SET DEFAULT nextval('tasks_id_seq'::regcl
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY test_errors ALTER COLUMN id SET DEFAULT nextval('test_errors_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY test_results ALTER COLUMN id SET DEFAULT nextval('test_results_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY test_runs ALTER COLUMN id SET DEFAULT nextval('test_runs_id_seq'::regclass);
 
 
@@ -1943,6 +2032,30 @@ ALTER TABLE ONLY sprints
 
 ALTER TABLE ONLY tasks
     ADD CONSTRAINT tasks_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: test_errors_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY test_errors
+    ADD CONSTRAINT test_errors_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: test_results_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY test_results
+    ADD CONSTRAINT test_results_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: test_results_unique_constraint; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY test_results
+    ADD CONSTRAINT test_results_unique_constraint UNIQUE (test_run_id, test_id);
 
 
 --
@@ -2282,6 +2395,27 @@ CREATE UNIQUE INDEX index_sprints_tasks_on_sprint_id_and_task_id ON sprints_task
 --
 
 CREATE UNIQUE INDEX index_tasks_on_ticket_id_and_number ON tasks USING btree (ticket_id, number);
+
+
+--
+-- Name: index_test_errors_on_sha; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_test_errors_on_sha ON test_errors USING btree (sha);
+
+
+--
+-- Name: index_test_results_on_test_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_test_results_on_test_id ON test_results USING btree (test_id);
+
+
+--
+-- Name: index_test_results_on_test_run_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_test_results_on_test_run_id ON test_results USING btree (test_run_id);
 
 
 --
@@ -2859,6 +2993,10 @@ INSERT INTO schema_migrations (version) VALUES ('20150805180939');
 INSERT INTO schema_migrations (version) VALUES ('20150805233946');
 
 INSERT INTO schema_migrations (version) VALUES ('20150806032230');
+
+INSERT INTO schema_migrations (version) VALUES ('20150808161729');
+
+INSERT INTO schema_migrations (version) VALUES ('20150808161805');
 
 INSERT INTO schema_migrations (version) VALUES ('20150808162928');
 

@@ -3,10 +3,12 @@ class TestRun < ActiveRecord::Base
   
   belongs_to :project
   belongs_to :user
+  has_many :test_results
   
   validates_presence_of :project_id, :sha
   validates :results_url, :presence => true, :if => :completed?
   validates :result, inclusion: {in: %w{aborted pass fail error}, allow_nil: true, message: "\"%{value}\" is unknown. It must be pass, fail, error, or aborted"}
+  validates_associated :test_results
   
   default_scope { order("completed_at DESC") }
   
@@ -194,6 +196,26 @@ class TestRun < ActiveRecord::Base
   
   
   
+  def tests=(value)
+    remove_instance_variable :@tests
+    write_attribute :tests, value
+    create_tests_and_results(value)
+  end
+  
+  def tests
+    @tests ||= test_results.includes(:error).joins(:test).select("test_results.*", "tests.suite", "tests.name").map do |test_result|
+      message, backtrace = test_result.error.output.split("\n\n") if test_result.error
+      { suite: test_result[:suite],
+        name: test_result[:name],
+        status: test_result.status,
+        duration: test_result.duration,
+        error_message: message,
+        error_backtrace: backtrace.to_s.split("\n") } 
+    end
+  end
+  
+  
+  
   def real_fail_count
     fail_count + regression_count
   end
@@ -203,6 +225,62 @@ class TestRun < ActiveRecord::Base
   def identify_user
     email = Mail::Address.new(agent_email)
     self.user = User.find_by_email_address(email.address)
+  end
+  
+  def create_tests_and_results(tests)
+    tests = Array(tests)
+    return if tests.empty?
+    
+    tests_map = Hash.new do |hash, (suite, name)|
+      begin
+        test = Test.create!(suite: suite, name: name, project_id: project_id)
+      rescue ActiveRecord::RecordNotUnique
+        test = Tests.find_by(suite: suite, name: name, project_id: project_id)
+      end
+      hash[[suite, name]] = test.id
+    end
+    
+    Test.where(project_id: project_id).pluck(:suite, :name, :id).each do |suite, name, id|
+      tests_map[[suite, name]] = id
+    end
+    
+    errors_map = Hash[TestError.pluck(:sha, :id)]
+    
+    test_results = Houston.benchmark("Processing #{tests.count} test results") do
+      tests.map do |test_attributes|
+        suite = test_attributes.fetch :suite
+        name = test_attributes.fetch :name
+
+        status = test_attributes.fetch :status
+        status = :fail if status == :error or status == :regression
+
+        error_message = test_attributes[:error_message]
+        error_backtrace = (test_attributes[:error_backtrace] || []).join("\n")
+        output = [error_message, error_backtrace].reject(&:blank?).join("\n\n")
+        if output.blank?
+          error_id = nil
+        else
+          sha = Digest::SHA1.hexdigest(output)
+          error_id = errors_map[sha]
+          unless error_id
+           error = TestError.create!(output: output)
+           error_id = errors_map[error.sha] = error.id
+          end
+        end
+
+        { test_run_id: id,
+          test_id: tests_map[[suite, name]],
+          error_id: output.blank? ? nil : output,
+          status: status,
+          error_id: error_id,
+          duration: test_attributes.fetch(:duration, nil) }
+      end.uniq { |attributes| attributes[:test_id] }
+    end
+
+    TestResult.where(test_run_id: id).delete_all
+    Houston.benchmark("Inserting #{test_results.count} test results") do
+      TestResult.insert_many(test_results)
+    end
   end
   
 end

@@ -233,7 +233,7 @@ module Houston
             "ABORTED" => "aborted" }.freeze
           STATUS_MAP = {
             "FAILED" => :fail,
-            "REGRESSION" => :regression,
+            "REGRESSION" => :fail,
             "SKIPPED" => :skip,
             "PASSED" => :pass,
             "FIXED"  => :pass }.freeze
