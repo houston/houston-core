@@ -1,5 +1,6 @@
 require "test_helper"
 
+# TODO: These tests depend on knowledge of my config.rb
 class ReleaseChangeTest < ActiveSupport::TestCase
   
   test "should have a tag when created for a slug that has been associated with a tag" do
@@ -10,10 +11,10 @@ class ReleaseChangeTest < ActiveSupport::TestCase
   end
   
   test "should have a tag when created for a slug that has been aliased to a tag" do
-    commit = Commit.new(message: "[ciskip] did lots of work")
+    commit = Commit.new(message: "[bugfix] did lots of work")
     change = ReleaseChange.from_commit(nil, commit)
     assert_not_nil change.tag
-    assert_equal "CI Fix", change.tag.name
+    assert_equal "Bugfix", change.tag.name
   end
   
   test "should have NullTag when created for a slug that has not been defined" do
