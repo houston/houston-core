@@ -116,7 +116,7 @@
         <ul class="tests">
           <% tests.each do |test| %>
             <li class="test <%= test_status(test) %>">
-              <span class="test-status <%= test_status(test) %>"><%= test_status(test) %></span><span class="test-name"><%= test[:name] %></span>&nbsp;
+              <span class="test-status <%= test_status(test) %>"><%= test_status(test) %></span><span class="test-name"><%= test[:name].to_s.gsub(/^(test :|: )/, "") %></span>&nbsp;
               <% if test[:duration] %>
                 <span class="test-duration">( <%= test[:duration].round(1) %>ms )</span>
               <% end %>

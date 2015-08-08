@@ -130,12 +130,12 @@ h2.test-result-banner {
 .test-result-top-matter { margin-bottom: 18px; }
 
 .test-result-stats {
-  position: absolute;
-  left: 0;
-  top: 105px;
-  width: 565px;
   color: #ccc;
-  
+  display: inline-block;
+  vertical-align: top;
+  position: relative;
+  top: 40px;  
+
   p { display: block; margin: 0 0 1.33em; }
 }
 

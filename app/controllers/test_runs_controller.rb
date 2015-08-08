@@ -2,6 +2,7 @@ class TestRunsController < ApplicationController
   before_filter :find_test_run
   
   def show
+    @title = "Test Results for #{@test_run.sha[0...8]}"
     render template: "project_notification/test_run"
   end
   
