@@ -1327,6 +1327,37 @@ ALTER SEQUENCE testing_notes_id_seq OWNED BY testing_notes.id;
 
 
 --
+-- Name: tests; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE tests (
+    id integer NOT NULL,
+    project_id integer NOT NULL,
+    suite character varying(255) NOT NULL,
+    name text NOT NULL
+);
+
+
+--
+-- Name: tests_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE tests_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: tests_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE tests_id_seq OWNED BY tests.id;
+
+
+--
 -- Name: ticket_queues; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1725,6 +1756,13 @@ ALTER TABLE ONLY testing_notes ALTER COLUMN id SET DEFAULT nextval('testing_note
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY tests ALTER COLUMN id SET DEFAULT nextval('tests_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY ticket_queues ALTER COLUMN id SET DEFAULT nextval('ticket_queues_id_seq'::regclass);
 
 
@@ -1921,6 +1959,22 @@ ALTER TABLE ONLY test_runs
 
 ALTER TABLE ONLY testing_notes
     ADD CONSTRAINT testing_notes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tests_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY tests
+    ADD CONSTRAINT tests_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tests_unique_constraint; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY tests
+    ADD CONSTRAINT tests_unique_constraint UNIQUE (project_id, suite, name);
 
 
 --
@@ -2270,6 +2324,13 @@ CREATE INDEX index_testing_notes_on_ticket_id ON testing_notes USING btree (tick
 --
 
 CREATE INDEX index_testing_notes_on_user_id ON testing_notes USING btree (user_id);
+
+
+--
+-- Name: index_tests_on_project_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_tests_on_project_id ON tests USING btree (project_id);
 
 
 --
@@ -2796,6 +2857,8 @@ INSERT INTO schema_migrations (version) VALUES ('20150711220542');
 INSERT INTO schema_migrations (version) VALUES ('20150805180939');
 
 INSERT INTO schema_migrations (version) VALUES ('20150805233946');
+
+INSERT INTO schema_migrations (version) VALUES ('20150806032230');
 
 INSERT INTO schema_migrations (version) VALUES ('20150808162928');
 

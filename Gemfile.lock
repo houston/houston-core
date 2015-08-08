@@ -51,7 +51,7 @@ GIT
 
 GIT
   remote: git://github.com/concordia-publishing-house/idioms.git
-  revision: 5d0e6157c3a0e40eb6c686832e127c49eb5aa52e
+  revision: 57168b02ee71addf2f5850d19dffd8a6b8e6709c
   branch: master
   specs:
     idioms (0.0.1)
@@ -325,7 +325,7 @@ GEM
     method_source (0.8.2)
     mime-types (2.6.1)
     mini_portile (0.6.2)
-    minitest (5.7.0)
+    minitest (5.8.0)
     minitest-reporters (1.0.7)
       ansi
       builder

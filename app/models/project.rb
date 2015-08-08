@@ -10,6 +10,7 @@ class Project < ActiveRecord::Base
   has_many :uncompleted_milestones, -> { uncompleted }, class_name: "Milestone"
   has_many :testing_notes, :dependent => :destroy
   has_many :test_runs, :dependent => :destroy
+  has_many :tests, :dependent => :destroy
   has_many :deploys
   has_many :roles, :dependent => :destroy, validate: false
   has_many :value_statements, :dependent => :destroy
