@@ -2000,6 +2000,13 @@ CREATE INDEX index_commits_on_project_id ON commits USING btree (project_id);
 
 
 --
+-- Name: index_commits_on_sha; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_commits_on_sha ON commits USING btree (sha);
+
+
+--
 -- Name: index_commits_on_unreachable; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2791,4 +2798,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150805180939');
 INSERT INTO schema_migrations (version) VALUES ('20150805233946');
 
 INSERT INTO schema_migrations (version) VALUES ('20150808162928');
+
+INSERT INTO schema_migrations (version) VALUES ('20150808192103');
 
