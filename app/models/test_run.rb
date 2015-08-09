@@ -197,7 +197,7 @@ class TestRun < ActiveRecord::Base
   
   
   def tests=(value)
-    remove_instance_variable :@tests
+    @tests = nil
     write_attribute :tests, value
     create_tests_and_results(value)
   end
