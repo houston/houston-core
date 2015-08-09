@@ -7,23 +7,23 @@ class TestRunTest < ActiveSupport::TestCase
   
   test "#retry! should trigger a new build" do
     project = Project.new(name: "Test", slug: "test", ci_server_name: "Mock")
-    test_run = TestRun.new(sha: "whatever", result: "pass", project: project)
+    tr = TestRun.new(sha: "whatever", result: "pass", project: project)
     
-    mock(project.ci_server).build!(test_run.sha)
-    test_run.retry!
+    mock(project.ci_server).build!(tr.sha)
+    tr.retry!
   end
   
   
   test "#completed! should fetch test results (even if this test run is a retry)" do
     project = Project.new(name: "Test", slug: "test", ci_server_name: "Mock")
-    test_run = TestRun.new(sha: "whatever", result: "pass", project: project)
+    tr = TestRun.new(sha: "whatever", result: "pass", project: project)
     results_url = "whatever"
     
-    stub(test_run).save! { } # skip the database
-    stub(test_run).fire_complete! { } # skip the callbacks
+    stub(tr).save! { } # skip the database
+    stub(tr).fire_complete! { } # skip the callbacks
     
     mock(project.ci_server).fetch_results!(results_url).returns({})
-    test_run.completed!(results_url)
+    tr.completed!(results_url)
   end
   
   
@@ -51,9 +51,9 @@ class TestRunTest < ActiveSupport::TestCase
     end
 
     should "create tests for the project" do
-      test_run = TestRun.create!(sha: "b62c3f3", project: project)
+      tr = TestRun.create!(sha: "b62c3f3", project: project)
       assert_difference "Test.count", +2 do
-        test_run.tests = @test_results
+        tr.update_attribute :tests, @test_results
       end
     end
 
@@ -65,16 +65,16 @@ class TestRunTest < ActiveSupport::TestCase
         suite: "ChangeTest",
         name: "should have a tag when created for a slug that has been associated with a tag")
 
-      test_run = TestRun.create!(sha: "b62c3f3", project: project)
+      tr = TestRun.create!(sha: "b62c3f3", project: project)
       assert_no_difference "Test.count" do
-        test_run.tests = @test_results
+        tr.update_attribute :tests, @test_results
       end
     end
 
     should "create test results" do
-      test_run = TestRun.create!(sha: "b62c3f3", project: project)
+      tr = TestRun.create!(sha: "b62c3f3", project: project)
       assert_difference "TestResult.count", +2 do
-        test_run.tests = @test_results
+        tr.update_attribute :tests, @test_results
       end
     end
 
@@ -84,17 +84,17 @@ class TestRunTest < ActiveSupport::TestCase
           age: 13,
           duration: 1.9763,
           error_message: "undefined method `git_dir' for #<Houston::Adapters::VersionControl::NullRepoClass:0xa176470> (NoMethodError)",
-          error_backtrace: example_backtrace,
+          error_backtrace: File.read("test/data/backtrace.txt").split(/\n/),
           name: "#git dir should return path when the repo is bare",
           status: "fail",
           suite: "GitAdapterTest" }]
       end
 
       should "create error records for the result" do
-        test_run = TestRun.create!(sha: "b62c3f3", project: project)
+        tr = TestRun.create!(sha: "b62c3f3", project: project)
 
         assert_difference "TestError.count", +1 do
-          test_run.tests = @test_results
+          tr.update_attribute :tests, @test_results
         end
       end
 
@@ -103,10 +103,10 @@ class TestRunTest < ActiveSupport::TestCase
           @test_results[0][:error_message],
           @test_results[0][:error_backtrace].join("\n") ].join("\n\n")
         TestError.create!(output: output)
-        test_run = TestRun.create!(sha: "b62c3f3", project: project)
+        tr = TestRun.create!(sha: "b62c3f3", project: project)
 
         assert_no_difference "TestError.count" do
-          test_run.tests = @test_results
+          tr.update_attribute :tests, @test_results
         end
       end
     end
@@ -116,14 +116,14 @@ class TestRunTest < ActiveSupport::TestCase
   
   test "#coverage_detail returns SourceFileCoverage objects for each tested file" do
     project = Project.new(name: "Test", slug: "test", code_climate_repo_token: "repo_token")
-    test_run = TestRun.new(project: project, sha: "bd3e9e2", result: "pass", completed_at: Time.now, coverage: [
+    tr = TestRun.new(project: project, sha: "bd3e9e2", result: "pass", completed_at: Time.now, coverage: [
       { filename: "lib/test1.rb", coverage: [1,nil,nil,1,1,nil,1] },
       { filename: "lib/test2.rb", coverage: [1,nil,1,0,0,0,0,1,nil,1] }
     ])
     
     stub(project).read_file { |*args| "line 1\nline 2\n" }
     
-    files = test_run.coverage_detail
+    files = tr.coverage_detail
     assert_equal 2, files.length
     assert_instance_of SourceFileCoverage, files[0]
     assert_equal "lib/test2.rb", files[1].filename
@@ -189,36 +189,79 @@ class TestRunTest < ActiveSupport::TestCase
   
   
   
-private
-  
-  def example_backtrace
-    [ "/var/lib/jenkins/home/jobs/houston/workspace/test/unit/git_adapter_test.rb:8:in `block in <class:GitAdapterTest>'",
-      "/var/lib/jenkins/.rvm/gems/ruby-1.9.3-p327/gems/minitest-3.2.0/lib/minitest/unit.rb:1058:in `run'",
-      "/var/lib/jenkins/.rvm/rubies/ruby-1.9.3-p327/lib/ruby/1.9.1/test/unit/testcase.rb:17:in `run'",
-      "/var/lib/jenkins/.rvm/gems/ruby-1.9.3-p327/gems/activesupport-3.2.9/lib/active_support/testing/setup_and_teardown.rb:36:in `block in run'",
-      "/var/lib/jenkins/.rvm/gems/ruby-1.9.3-p327/gems/activesupport-3.2.9/lib/active_support/callbacks.rb:425:in `_run__300096475__setup__29189092__callbacks'",
-      "/var/lib/jenkins/.rvm/gems/ruby-1.9.3-p327/gems/activesupport-3.2.9/lib/active_support/callbacks.rb:405:in `__run_callback'",
-      "/var/lib/jenkins/.rvm/gems/ruby-1.9.3-p327/gems/activesupport-3.2.9/lib/active_support/callbacks.rb:385:in `_run_setup_callbacks'",
-      "/var/lib/jenkins/.rvm/gems/ruby-1.9.3-p327/gems/activesupport-3.2.9/lib/active_support/callbacks.rb:81:in `run_callbacks'",
-      "/var/lib/jenkins/.rvm/gems/ruby-1.9.3-p327/gems/activesupport-3.2.9/lib/active_support/testing/setup_and_teardown.rb:35:in `run'",
-      "/var/lib/jenkins/.rvm/gems/ruby-1.9.3-p327/gems/ci_reporter-1.8.3/lib/ci/reporter/minitest.rb:175:in `run_test'",
-      "/var/lib/jenkins/.rvm/gems/ruby-1.9.3-p327/gems/ci_reporter-1.8.3/lib/ci/reporter/minitest.rb:102:in `_run_test'",
-      "/var/lib/jenkins/.rvm/gems/ruby-1.9.3-p327/gems/ci_reporter-1.8.3/lib/ci/reporter/minitest.rb:93:in `block in _run_suite'",
-      "/var/lib/jenkins/.rvm/gems/ruby-1.9.3-p327/gems/ci_reporter-1.8.3/lib/ci/reporter/minitest.rb:92:in `each'",
-      "/var/lib/jenkins/.rvm/gems/ruby-1.9.3-p327/gems/ci_reporter-1.8.3/lib/ci/reporter/minitest.rb:92:in `_run_suite'",
-      "/var/lib/jenkins/.rvm/gems/ruby-1.9.3-p327/gems/ci_reporter-1.8.3/lib/ci/reporter/minitest.rb:83:in `block in _run_suites'",
-      "/var/lib/jenkins/.rvm/gems/ruby-1.9.3-p327/gems/ci_reporter-1.8.3/lib/ci/reporter/minitest.rb:83:in `map'",
-      "/var/lib/jenkins/.rvm/gems/ruby-1.9.3-p327/gems/ci_reporter-1.8.3/lib/ci/reporter/minitest.rb:83:in `_run_suites'",
-      "/var/lib/jenkins/.rvm/gems/ruby-1.9.3-p327/gems/ci_reporter-1.8.3/lib/ci/reporter/minitest.rb:75:in `_run_anything'",
-      "/var/lib/jenkins/.rvm/gems/ruby-1.9.3-p327/gems/minitest-3.2.0/lib/minitest/unit.rb:964:in `run_tests'",
-      "/var/lib/jenkins/.rvm/gems/ruby-1.9.3-p327/gems/minitest-3.2.0/lib/minitest/unit.rb:951:in `block in _run'",
-      "/var/lib/jenkins/.rvm/gems/ruby-1.9.3-p327/gems/minitest-3.2.0/lib/minitest/unit.rb:950:in `each'",
-      "/var/lib/jenkins/.rvm/gems/ruby-1.9.3-p327/gems/minitest-3.2.0/lib/minitest/unit.rb:950:in `_run'",
-      "/var/lib/jenkins/.rvm/gems/ruby-1.9.3-p327/gems/minitest-3.2.0/lib/minitest/unit.rb:939:in `run'",
-      "/var/lib/jenkins/.rvm/rubies/ruby-1.9.3-p327/lib/ruby/1.9.1/test/unit.rb:21:in `run'",
-      "/var/lib/jenkins/.rvm/rubies/ruby-1.9.3-p327/lib/ruby/1.9.1/test/unit.rb:326:in `block (2 levels) in autorun'",
-      "/var/lib/jenkins/.rvm/rubies/ruby-1.9.3-p327/lib/ruby/1.9.1/test/unit.rb:27:in `run_once'",
-      "/var/lib/jenkins/.rvm/rubies/ruby-1.9.3-p327/lib/ruby/1.9.1/test/unit.rb:325:in `block in autorun'" ]
+  context "Given a commit history," do
+    setup do
+      @project = Project.create!(name: "Test", slug: "test", version_control_name: "Mock")
+      @commit_a = create(:commit, project: project, sha: "a")
+      @commit_b = create(:commit, project: project, sha: "b", parent_sha: "a")
+      @commit_c = create(:commit, project: project, sha: "c", parent_sha: "b")
+      @tr = TestRun.new(project: project, sha: "c", commit: @commit_c)
+      stub(tr).fetch_results! { }
+      stub(tr).save! { }
+      stub(tr).has_results? { true }
+    end
+    
+    context "when a test run is completed" do
+      context "for a commit whose parent doesn't have a test run, it" do
+        should "create a test run for its parent if the test run is failing" do
+          stub(tr).fetch_results! { tr.update_attribute :result, "fail" }
+          mock(tr.commit.parent).create_test_run!
+          tr.completed!("http://results")
+        end
+        
+        should "not create a test run for its parent if the test run is passing" do
+          stub(tr).fetch_results! { tr.update_attribute :result, "pass" }
+          mock(tr.commit.parent).create_test_run!.never
+          tr.completed!("http://results")
+        end
+      end
+      
+      context "for a commit whose parent has a pending test run, it" do
+        should "do nothing (and wait for the test run to complete)" do
+          mock(TestRunComparer).compare!.with_any_args.never
+          tr.completed!("http://results")
+        end
+      end
+      
+      context "for a commit whose parent has a completed test run, it" do
+        setup do
+          @parent_test_run = TestRun.create!(
+            project: project,
+            sha: "b",
+            results_url: "http://results",
+            completed_at: Time.now)
+        end
+        
+        should "compare its results with its parent's" do
+          mock(TestRunComparer).compare!(@parent_test_run, tr)
+          stub(tr.commit.parent.test_run).compare_to_previous_commit!
+          tr.completed!("http://results")
+        end
+        
+        should "then analyze the parent's parent!" do
+          stub(TestRunComparer).compare!
+          mock(tr.commit.parent.test_run).compare_to_previous_commit!
+          tr.completed!("http://results")
+        end
+      end
+      
+      context "when a test run has already been compared" do
+        setup do
+          @parent_test_run = TestRun.create!(
+            project: project,
+            sha: "b",
+            results_url: "http://results",
+            completed_at: Time.now)
+          tr.update_attribute :compared, true
+        end
+        
+        should "not compare its results with its parent's" do
+          mock(TestRunComparer).compare!.with_any_args.never
+          tr.completed!("http://results")
+        end
+      end
+    end
   end
+  
   
 end

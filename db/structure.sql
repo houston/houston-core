@@ -1291,9 +1291,10 @@ CREATE TABLE test_results (
     test_run_id integer NOT NULL,
     test_id integer NOT NULL,
     status test_result_status NOT NULL,
-    regression boolean,
     duration double precision,
-    error_id integer
+    error_id integer,
+    different boolean,
+    new_test boolean
 );
 
 
@@ -1342,7 +1343,8 @@ CREATE TABLE test_runs (
     covered_strength numeric(6,5) DEFAULT 0 NOT NULL,
     regression_count integer DEFAULT 0 NOT NULL,
     commit_id integer,
-    user_id integer
+    user_id integer,
+    compared boolean DEFAULT false NOT NULL
 );
 
 
@@ -3004,4 +3006,8 @@ INSERT INTO schema_migrations (version) VALUES ('20150808162928');
 INSERT INTO schema_migrations (version) VALUES ('20150808192103');
 
 INSERT INTO schema_migrations (version) VALUES ('20150808193354');
+
+INSERT INTO schema_migrations (version) VALUES ('20150809132417');
+
+INSERT INTO schema_migrations (version) VALUES ('20150809201942');
 

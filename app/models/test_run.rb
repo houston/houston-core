@@ -3,7 +3,12 @@ class TestRun < ActiveRecord::Base
   
   belongs_to :project
   belongs_to :user
-  has_many :test_results
+  has_many :test_results do
+    def [](suite, name=nil)
+      return super(suite) unless name
+      joins(:test).where("tests.suite" => suite, "tests.name" => name).first
+    end
+  end
   
   validates_presence_of :project_id, :sha
   validates :results_url, :presence => true, :if => :completed?
@@ -12,6 +17,7 @@ class TestRun < ActiveRecord::Base
   
   default_scope { order("completed_at DESC") }
   
+  after_save :save_tests_and_results, if: :tests_changed?
   before_save :identify_user
   
   serialize :tests
@@ -75,6 +81,10 @@ class TestRun < ActiveRecord::Base
   
   def aborted?
     result.to_s == "aborted"
+  end
+  
+  def completed_without_running_tests?
+    %w{aborted error}.member?(result.to_s)
   end
   
   def broken?
@@ -180,7 +190,11 @@ class TestRun < ActiveRecord::Base
     self.results_url = results_url
     save!
     fetch_results!
-    fire_complete! if has_results?
+    
+    if has_results?
+      compare_results!
+      fire_complete!
+    end
   end
   
   def fetch_results!
@@ -199,7 +213,6 @@ class TestRun < ActiveRecord::Base
   def tests=(value)
     @tests = nil
     write_attribute :tests, value
-    create_tests_and_results(value)
   end
   
   def tests
@@ -225,6 +238,10 @@ class TestRun < ActiveRecord::Base
   def identify_user
     email = Mail::Address.new(agent_email)
     self.user = User.find_by_email_address(email.address)
+  end
+  
+  def save_tests_and_results
+    create_tests_and_results read_attribute(:tests)
   end
   
   def create_tests_and_results(tests)
@@ -280,6 +297,41 @@ class TestRun < ActiveRecord::Base
     TestResult.where(test_run_id: id).delete_all
     Houston.benchmark("Inserting #{test_results.count} test results") do
       TestResult.insert_many(test_results)
+    end
+  end
+  
+  
+  
+  def compare_results!
+    return if compared?
+    return unless commit
+    return unless parent = commit.parent
+
+    if parent.test_run
+      if parent.test_run.completed?
+        # Compare this Test Run with its parent
+        # to see what changed in this one.
+        TestRunComparer.compare!(parent.test_run, self)
+        parent.test_run.compare_to_previous_commit!
+      else
+        # Wait for parent.test_run to complete
+        # it'll run `compare_results!` then.
+        # For now, do nothing.
+      end
+    else
+      if passed?
+        # Stop looking for answers. This Test Run
+        # is the new baseline: when the whole suite
+        # was building on Jenkins. (We don't need to
+        # recurse all the way back to the project's
+        # first commit!)
+      else
+        # This Test Run is failing and we don't
+        # know whether the bug was introduced in this
+        # commit or one of its ancestors. Have the
+        # CI Server start with the first ancestor.
+        parent.create_test_run!
+      end
     end
   end
   
