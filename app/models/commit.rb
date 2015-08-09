@@ -1,6 +1,8 @@
 class Commit < ActiveRecord::Base
   
   belongs_to :project
+  belongs_to :parent, foreign_key: :parent_sha, primary_key: :sha, class_name: "Commit"
+  has_many :children, foreign_key: :parent_sha, primary_key: :sha, class_name: "Commit"
   has_and_belongs_to_many :committers, class_name: "User"
   has_and_belongs_to_many :releases
   has_and_belongs_to_many :tickets
@@ -70,6 +72,7 @@ class Commit < ActiveRecord::Base
   
   def self.attributes_from_native_commit(native)
     { :sha => native.sha,
+      :parent_sha => native.parent_sha,
       :message => native.message.to_s.strip,
       :authored_at => native.authored_at,
       :committer => native.author_name,

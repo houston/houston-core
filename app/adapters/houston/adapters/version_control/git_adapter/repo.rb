@@ -195,6 +195,7 @@ module Houston
             Houston::Adapters::VersionControl::Commit.new({
               original: rugged_commit,
               sha: rugged_commit.oid,
+              parent_sha: rugged_commit.parent_oids[0],
               message: rugged_commit.message,
               authored_at: rugged_commit.author[:time],
               author_name: rugged_commit.author[:name],

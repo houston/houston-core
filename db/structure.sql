@@ -554,7 +554,8 @@ CREATE TABLE commits (
     committer_email character varying(255),
     project_id integer NOT NULL,
     authored_at timestamp without time zone NOT NULL,
-    unreachable boolean DEFAULT false NOT NULL
+    unreachable boolean DEFAULT false NOT NULL,
+    parent_sha character varying(255)
 );
 
 
@@ -3001,4 +3002,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150808161805');
 INSERT INTO schema_migrations (version) VALUES ('20150808162928');
 
 INSERT INTO schema_migrations (version) VALUES ('20150808192103');
+
+INSERT INTO schema_migrations (version) VALUES ('20150808193354');
 

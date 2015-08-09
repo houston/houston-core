@@ -5,6 +5,7 @@ module Houston
         
         def initialize(attributes={})
           @sha = attributes[:sha]
+          @parent_sha = attributes[:parent_sha]
           @message = attributes[:message]
           @authored_at = attributes[:authored_at]
           @author_name = attributes[:author_name]
@@ -14,7 +15,8 @@ module Houston
           @committer_email = attributes[:committer_email]
         end
         
-        attr_reader :sha, :message, :authored_at, :author_name, :author_email,
+        attr_reader :sha, :parent_sha, :message,
+          :authored_at, :author_name, :author_email,
           :committed_at, :committer_name, :committer_email
         
         def to_s
