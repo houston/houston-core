@@ -234,13 +234,13 @@ class TestRunTest < ActiveSupport::TestCase
         
         should "compare its results with its parent's" do
           mock(TestRunComparer).compare!(@parent_test_run, tr)
-          stub(tr.commit.parent.test_run).compare_to_previous_commit!
+          stub(tr.commit.parent.test_run).compare_results!
           tr.completed!("http://results")
         end
         
         should "then analyze the parent's parent!" do
           stub(TestRunComparer).compare!
-          mock(tr.commit.parent.test_run).compare_to_previous_commit!
+          mock(tr.commit.parent.test_run).compare_results!
           tr.completed!("http://results")
         end
       end

@@ -312,7 +312,7 @@ class TestRun < ActiveRecord::Base
         # Compare this Test Run with its parent
         # to see what changed in this one.
         TestRunComparer.compare!(parent.test_run, self)
-        parent.test_run.compare_to_previous_commit!
+        parent.test_run.compare_results!
       else
         # Wait for parent.test_run to complete
         # it'll run `compare_results!` then.
