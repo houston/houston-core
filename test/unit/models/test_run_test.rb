@@ -195,7 +195,7 @@ class TestRunTest < ActiveSupport::TestCase
       @commit_a = create(:commit, project: project, sha: "a")
       @commit_b = create(:commit, project: project, sha: "b", parent_sha: "a")
       @commit_c = create(:commit, project: project, sha: "c", parent_sha: "b")
-      @tr = TestRun.new(project: project, sha: "c", commit: @commit_c)
+      @tr = TestRun.new(project: project, sha: "b", commit: @commit_b)
       stub(tr).fetch_results! { }
       stub(tr).save! { }
       stub(tr).has_results? { true }
@@ -223,11 +223,13 @@ class TestRunTest < ActiveSupport::TestCase
         end
       end
       
+      
+      
       context "for a commit whose parent has a completed test run, it" do
         setup do
           @parent_test_run = TestRun.create!(
             project: project,
-            sha: "b",
+            sha: "a",
             results_url: "http://results",
             completed_at: Time.now)
         end
@@ -245,11 +247,13 @@ class TestRunTest < ActiveSupport::TestCase
         end
       end
       
+      
+      
       context "when a test run has already been compared" do
         setup do
           @parent_test_run = TestRun.create!(
             project: project,
-            sha: "b",
+            sha: "a",
             results_url: "http://results",
             completed_at: Time.now)
           tr.update_attribute :compared, true
@@ -257,6 +261,24 @@ class TestRunTest < ActiveSupport::TestCase
         
         should "not compare its results with its parent's" do
           mock(TestRunComparer).compare!.with_any_args.never
+          tr.completed!("http://results")
+        end
+      end
+      
+      
+      
+      context "for a commit whose children have test runs" do
+        setup do
+          @child_test_run = TestRun.create!(
+            project: project,
+            sha: "c",
+            results_url: "http://results",
+            completed_at: Time.now)
+        end
+        
+        should "tell its children to compare their results" do
+          stub(TestRunComparer).compare!
+          mock(tr.commit.children[0].test_run).compare_results!
           tr.completed!("http://results")
         end
       end

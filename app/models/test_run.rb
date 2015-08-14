@@ -303,8 +303,13 @@ class TestRun < ActiveRecord::Base
   
   
   def compare_results!
-    return if compared?
     return unless commit
+    compare_to_parent!
+    compare_to_children!
+  end
+  
+  def compare_to_parent!
+    return if compared?
     return unless parent = commit.parent
 
     if parent.test_run
@@ -332,6 +337,12 @@ class TestRun < ActiveRecord::Base
         # CI Server start with the first ancestor.
         parent.create_test_run!
       end
+    end
+  end
+  
+  def compare_to_children!
+    commit.children.each do |commit|
+      commit.test_run.compare_results! if commit.test_run
     end
   end
   
