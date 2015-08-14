@@ -12,7 +12,7 @@ class ReleasesController < ApplicationController
     @release = @releases.find(params[:id])
     authorize! :show, @release
     
-    @title = "Release #{@release.release_date.strftime("%-m/%d")} • #{@project.name}"
+    @title = "Release #{@release.release_date.strftime("%b %-d")} • #{@project.name}"
   end
   
   def new
