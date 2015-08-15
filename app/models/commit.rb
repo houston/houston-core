@@ -14,6 +14,7 @@ class Commit < ActiveRecord::Base
   after_create :associate_committers_with_self
   after_create :associate_tickets_with_self
   after_create :associate_tasks_with_self
+  after_create { Houston.observer.fire "commit:create", self }
   
   validates :project, presence: true
   validates :sha, presence: true, :uniqueness => {scope: :project_id}
@@ -28,6 +29,7 @@ class Commit < ActiveRecord::Base
     def find_by_sha(sha)
       with_sha_like(sha).first if sha
     end
+    alias :[] :find_by_sha
     
     def with_sha_like(sha)
       where(["sha LIKE ?", "#{sha.strip}%"])

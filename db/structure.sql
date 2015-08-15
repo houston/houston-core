@@ -520,6 +520,16 @@ CREATE TABLE alerts (
 
 
 --
+-- Name: alerts_commits; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE alerts_commits (
+    alert_id integer,
+    commit_id integer
+);
+
+
+--
 -- Name: alerts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -2142,6 +2152,13 @@ ALTER TABLE ONLY versions
 
 
 --
+-- Name: index_alerts_commits_on_alert_id_and_commit_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_alerts_commits_on_alert_id_and_commit_id ON alerts_commits USING btree (alert_id, commit_id);
+
+
+--
 -- Name: index_alerts_on_closed_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -3010,4 +3027,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150808193354');
 INSERT INTO schema_migrations (version) VALUES ('20150809132417');
 
 INSERT INTO schema_migrations (version) VALUES ('20150809201942');
+
+INSERT INTO schema_migrations (version) VALUES ('20150815005551');
 
