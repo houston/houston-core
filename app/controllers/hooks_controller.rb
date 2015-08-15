@@ -10,11 +10,11 @@ class HooksController < ApplicationController
       head 200
 
     when "pull_request"
-      GithubPullRequestEvent.process!(params)
+      Github::PullRequestEvent.process!(params)
       head 200
 
     when "push"
-      GithubPostReceiveEvent.process!(params)
+      Github::PostReceiveEvent.process!(params)
       head 200
 
     else

@@ -20,13 +20,13 @@ class HooksControllerTest < ActionController::TestCase
       request.headers["X-Github-Event"] = "pull_request"
     end
 
-    should "process it with GithubPullRequestEvent" do
-      mock.instance_of(GithubPullRequestEvent).process!
+    should "process it with Github::PullRequestEvent" do
+      mock.instance_of(Github::PullRequestEvent).process!
       post :github
     end
 
     should "respond with success" do
-      stub.instance_of(GithubPullRequestEvent).process!
+      stub.instance_of(Github::PullRequestEvent).process!
       post :github
       assert_response :success
     end
@@ -38,13 +38,13 @@ class HooksControllerTest < ActionController::TestCase
       request.headers["X-Github-Event"] = "push"
     end
 
-    should "process it with GithubPostReceiveEvent" do
-      mock.instance_of(GithubPostReceiveEvent).process!
+    should "process it with Github::PostReceiveEvent" do
+      mock.instance_of(Github::PostReceiveEvent).process!
       post :github
     end
 
     should "respond with success" do
-      stub.instance_of(GithubPostReceiveEvent).process!
+      stub.instance_of(Github::PostReceiveEvent).process!
       post :github
       assert_response :success
     end
