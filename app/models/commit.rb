@@ -29,7 +29,6 @@ class Commit < ActiveRecord::Base
     def find_by_sha(sha)
       with_sha_like(sha).first if sha
     end
-    alias :[] :find_by_sha
     
     def with_sha_like(sha)
       where(["sha LIKE ?", "#{sha.strip}%"])
