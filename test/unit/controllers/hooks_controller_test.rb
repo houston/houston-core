@@ -48,6 +48,13 @@ class HooksControllerTest < ActionController::TestCase
       post :github
       assert_response :success
     end
+
+    should "trigger a `hooks:post_receive` event for the project" do
+      project = create(:project, slug: "public-repo")
+      expected_payload = hash_including(github_push_event_payload.slice("before", "after"))
+      mock(Houston.observer).fire("hooks:post_receive", project, expected_payload)
+      post :github, github_push_event_payload
+    end
   end
 
 
@@ -62,5 +69,13 @@ class HooksControllerTest < ActionController::TestCase
     end
   end
 
+
+private
+
+  def github_push_event_payload
+    @github_push_event_payload ||= MultiJson.load(
+      File.read(
+        Rails.root.join("test/data/github_push_event_payload.json")))
+  end
 
 end

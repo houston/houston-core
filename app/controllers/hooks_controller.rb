@@ -4,17 +4,18 @@ class HooksController < ApplicationController
   # https://developer.github.com/webhooks/#events
   def github
     event = request.headers["X-GitHub-Event"]
+    payload = params.except(:action, :controller)
     case event
     when "ping"
       Rails.logger.info "\e[32m[github] ping received\e[0m"
       head 200
 
     when "pull_request"
-      Github::PullRequestEvent.process!(params)
+      Github::PullRequestEvent.process!(payload)
       head 200
 
     when "push"
-      Github::PostReceiveEvent.process!(params)
+      Github::PostReceiveEvent.process!(payload)
       head 200
 
     else
