@@ -525,10 +525,6 @@ Houston.config do
     Houston::Alerts::Mailer.deliver_to!(User.pluck(:email))
   end
 
-  at "3:00pm", "report:pull-requests", every: :weekday do
-    PullRequestsMailer.deliver_to!(User.developers.pluck(:email))
-  end
-
   at "11:50pm", "take:measurements", every: :thursday do
     take_measurements! Time.now
   end

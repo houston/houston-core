@@ -230,9 +230,6 @@ namespace :config do
     config.replace_block! 'at "6:40am", "report:alerts", every: :weekday', <<-TEXT
     Houston::Alerts::Mailer.deliver_to!(User.pluck(:email))
     TEXT
-    config.replace_block! 'at "3:00pm", "report:pull-requests", every: :weekday', <<-TEXT
-    PullRequestsMailer.deliver_to!(User.developers.pluck(:email))
-    TEXT
     
     
     

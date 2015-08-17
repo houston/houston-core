@@ -61,7 +61,6 @@ $ ->
     $('#omnibar').on 'keyup', (e)-> $modal.modal('hide') if e.keyCode is 27
   
   Mousetrap.bind 'g p', -> window.location = '/projects'
-  Mousetrap.bind 'g q', -> window.location = '/pull_requests'
   Mousetrap.bind 'g i', -> window.location = '/itsm/issues'
   Mousetrap.bind 'g t r', -> window.location = '/testing_report'
   Mousetrap.bind 'g n t', -> window.location = '/tickets/new'

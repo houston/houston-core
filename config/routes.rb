@@ -243,8 +243,6 @@ Rails.application.routes.draw do
   # Other
   
   # Experiments
-  get "pull_requests", to: "pull_requests#index", as: :pull_requests if Houston.config.supports_pull_requests?
-  
   get "reports", to: "reports#index"
   %w{queue-age cycle-time time-to-first-test time-to-release}.each do |report|
     get "reports/#{report}", to: "reports##{report.underscore}"
