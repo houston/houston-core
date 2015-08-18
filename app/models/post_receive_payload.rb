@@ -11,7 +11,7 @@ class PostReceivePayload
   end
   
   def parse_params(params)
-    (params = MultiJson.parse(params["payload"])) if params.key?("payload")
+    (params = MultiJson.load(params["payload"])) if params.key?("payload")
     parse_github_style_params(params) if params
   end
   
