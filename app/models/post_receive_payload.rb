@@ -11,8 +11,8 @@ class PostReceivePayload
   end
   
   def parse_params(params)
-    json_payload = params.key?("payload") && JSON.parse(params["payload"]) rescue nil
-    parse_github_style_params(json_payload) if json_payload
+    (params = MultiJson.parse(params["payload"])) if params.key?("payload")
+    parse_github_style_params(params) if params
   end
   
   def parse_github_style_params(params)
