@@ -6,6 +6,7 @@ class Commit < ActiveRecord::Base
   has_one :test_run
   has_and_belongs_to_many :committers, class_name: "User"
   has_and_belongs_to_many :releases
+  has_and_belongs_to_many :pull_requests, class_name: "Github::PullRequest"
   has_and_belongs_to_many :tickets
   has_and_belongs_to_many :tasks
   

@@ -33,12 +33,6 @@ module Houston
           
           
           
-          def commits_in(pull_request)
-            commits_between(pull_request.base.sha, pull_request.head.sha)
-          end
-          
-          
-          
           # GitHub API
           
           def pull_requests(options={})

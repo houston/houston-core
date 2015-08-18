@@ -589,6 +589,16 @@ ALTER SEQUENCE commits_id_seq OWNED BY commits.id;
 
 
 --
+-- Name: commits_pull_requests; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE commits_pull_requests (
+    commit_id integer,
+    pull_request_id integer
+);
+
+
+--
 -- Name: commits_releases; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1008,6 +1018,45 @@ CREATE SEQUENCE projects_id_seq
 --
 
 ALTER SEQUENCE projects_id_seq OWNED BY projects.id;
+
+
+--
+-- Name: pull_requests; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE pull_requests (
+    id integer NOT NULL,
+    project_id integer NOT NULL,
+    user_id integer,
+    title character varying(255) NOT NULL,
+    number integer NOT NULL,
+    repo character varying(255) NOT NULL,
+    username character varying(255) NOT NULL,
+    url character varying(255) NOT NULL,
+    base_ref character varying(255) NOT NULL,
+    base_sha character varying(255) NOT NULL,
+    head_ref character varying(255) NOT NULL,
+    head_sha character varying(255) NOT NULL
+);
+
+
+--
+-- Name: pull_requests_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE pull_requests_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: pull_requests_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE pull_requests_id_seq OWNED BY pull_requests.id;
 
 
 --
@@ -1788,6 +1837,13 @@ ALTER TABLE ONLY projects ALTER COLUMN id SET DEFAULT nextval('projects_id_seq':
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY pull_requests ALTER COLUMN id SET DEFAULT nextval('pull_requests_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY releases ALTER COLUMN id SET DEFAULT nextval('releases_id_seq'::regclass);
 
 
@@ -2000,6 +2056,14 @@ ALTER TABLE ONLY projects
 
 
 --
+-- Name: pull_requests_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY pull_requests
+    ADD CONSTRAINT pull_requests_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: releases_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2201,6 +2265,13 @@ CREATE INDEX index_commits_on_unreachable ON commits USING btree (unreachable);
 
 
 --
+-- Name: index_commits_pull_requests_on_commit_id_and_pull_request_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_commits_pull_requests_on_commit_id_and_pull_request_id ON commits_pull_requests USING btree (commit_id, pull_request_id);
+
+
+--
 -- Name: index_commits_releases_on_commit_id_and_release_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2345,6 +2416,13 @@ CREATE UNIQUE INDEX index_project_quotas_on_project_id_and_week ON project_quota
 --
 
 CREATE INDEX index_project_quotas_on_week ON project_quotas USING btree (week);
+
+
+--
+-- Name: index_pull_requests_on_project_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_pull_requests_on_project_id ON pull_requests USING btree (project_id);
 
 
 --
@@ -3029,4 +3107,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150809132417');
 INSERT INTO schema_migrations (version) VALUES ('20150809201942');
 
 INSERT INTO schema_migrations (version) VALUES ('20150815005551');
+
+INSERT INTO schema_migrations (version) VALUES ('20150817232311');
 
