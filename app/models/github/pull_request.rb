@@ -31,7 +31,7 @@ module Github
 
           # Delete unexpected pulls
           existing_pulls.each do |existing_pr|
-            unless expected_pulls.member? { |expected_pr|
+            unless expected_pulls.detect { |expected_pr|
               expected_pr.base.repo.name == existing_pr.repo &&
               expected_pr.number == existing_pr.number }
               existing_pr.destroy
