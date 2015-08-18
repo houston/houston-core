@@ -515,7 +515,9 @@ CREATE TABLE alerts (
     can_change_project boolean DEFAULT false,
     number integer,
     environment_name character varying(255),
-    text character varying(255)
+    text character varying(255),
+    requires_verification boolean DEFAULT false NOT NULL,
+    verified boolean DEFAULT false NOT NULL
 );
 
 
@@ -3109,4 +3111,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150809201942');
 INSERT INTO schema_migrations (version) VALUES ('20150815005551');
 
 INSERT INTO schema_migrations (version) VALUES ('20150817232311');
+
+INSERT INTO schema_migrations (version) VALUES ('20150818005716');
 
