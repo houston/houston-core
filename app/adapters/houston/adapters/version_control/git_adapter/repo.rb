@@ -98,6 +98,15 @@ module Houston
           
           
           
+          def branch(branch)
+            ref("refs/remotes/origin/#{branch}") || ref("refs/heads/#{branch}")
+          end
+          
+          def ref(ref)
+            ref = connection.ref(ref)
+            ref.target.oid if ref
+          end
+          
           def find_file(file_path, options={})
             commit = options[:commit] || connection.head.target.oid
             head = find_commit(commit)
