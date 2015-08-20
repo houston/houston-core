@@ -95,7 +95,9 @@ class RunTestsOnPostReceive
     notify_of_invalid_configuration(test_run) do
       test_run.start!
     end
-    
+  
+  rescue ActiveRecord::RecordNotUnique
+    Rails.logger.warn "[hooks:post_receive] a test run exists for #{test_run.short_commit}; doing nothing"
   rescue Exception # rescues StandardError by default; but we want to rescue and report all errors
     Houston.report_exception $!, parameters: params.merge(project_id: project.id)
   end
