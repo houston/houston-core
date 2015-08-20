@@ -60,7 +60,7 @@ module Github
       end
 
       def upsert!(github_pr)
-        Github::PullRequest.find_or_instantiate_by(
+        Github::PullRequest.find_or_initialize_by(
           repo: github_pr["base"]["repo"]["name"],
           number: github_pr["number"])
           .merge_attributes(github_pr)
