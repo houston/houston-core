@@ -53,14 +53,16 @@ module Github
       end
 
       def close!(github_pr)
-        pr = find_by(repo: github_pr.base.repo.name, number: github_pr.number)
+        pr = find_by(
+          repo: github_pr["base"]["repo"]["name"],
+          number: github_pr["number"])
         pr.destroy if pr
       end
 
       def upsert!(github_pr)
         Github::PullRequest.find_or_instantiate_by(
-          repo: github_pr.base.repo.name,
-          number: github_pr.number)
+          repo: github_pr["base"]["repo"]["name"],
+          number: github_pr["number"])
           .merge_attributes(github_pr)
           .tap(&:save!)
       end
