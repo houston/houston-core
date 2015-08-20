@@ -1,3 +1,5 @@
+require "thread_safe"
+
 module Houston
   class Observer
 
@@ -11,6 +13,14 @@ module Houston
     def on(event, &block)
       observers_of(event).push(block)
       nil
+    end
+
+    def once(event, &block)
+      wrapped_block = Proc.new do |*args|
+        block.call(*args)
+        observers_of(event).delete wrapped_block
+      end
+      on(event, &wrapped_block)
     end
 
     def observed?(event)
@@ -49,7 +59,7 @@ module Houston
     end
 
     def observers_of(event)
-      observers[event] ||= []
+      observers[event] ||= ThreadSafe::Array.new
     end
 
     attr_reader :observers
