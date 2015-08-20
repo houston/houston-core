@@ -18,13 +18,16 @@ module Github
         Houston.benchmark "Fetching pull requests" do
           Houston.github.org_issues(Houston.config.github[:organization], filter: "all", state: "open")
             .select { |issue| !issue.pull_request.nil? }
-            .map { |issue| Houston.github.pull_request(issue.repository.full_name, issue.number) }
+            .map { |issue| Houston.github.pull_request(issue.repository.full_name, issue.number)
+              .to_h
+              .merge(labels: issue.labels.map(&:name))
+              .with_indifferent_access }
         end
       end
 
       def sync!
         expected_pulls = fetch!
-        expected_pulls.select! { |pr| pr.base.repo.name == pr.head.repo.name }
+        expected_pulls.select! { |pr| pr["base"]["repo"]["name"] == pr["head"]["repo"]["name"] }
         # select only ones where head and base are the same repo
         Houston.benchmark "Syncing pull requests" do
           existing_pulls = all.to_a
@@ -32,8 +35,8 @@ module Github
           # Delete unexpected pulls
           existing_pulls.each do |existing_pr|
             unless expected_pulls.detect { |expected_pr|
-              expected_pr.base.repo.name == existing_pr.repo &&
-              expected_pr.number == existing_pr.number }
+              expected_pr["base"]["repo"]["name"] == existing_pr.repo &&
+              expected_pr["number"] == existing_pr.number }
               existing_pr.destroy
             end
           end
@@ -41,8 +44,8 @@ module Github
           # Create or Update existing pulls
           expected_pulls.map do |expected_pr|
             existing_pr = existing_pulls.detect { |existing_pr| 
-              expected_pr.base.repo.name == existing_pr.repo &&
-              expected_pr.number == existing_pr.number }
+              expected_pr["base"]["repo"]["name"] == existing_pr.repo &&
+              expected_pr["number"] == existing_pr.number }
 
             existing_pr ||= Github::PullRequest.new
             existing_pr.merge_attributes(expected_pr)
@@ -70,6 +73,24 @@ module Github
 
 
 
+    def labels
+      super.split(/\n/)
+    end
+
+    def labels=(value)
+      super Array(value).uniq.join("\n")
+    end
+
+    def add_label!(label)
+      self.labels = labels + [label]
+    end
+
+    def remove_label!(label)
+      self.labels = labels - [label]
+    end
+
+
+
     def merge_attributes(pr)
       self.title = pr["title"]
       self.number = pr["number"]
@@ -80,6 +101,7 @@ module Github
       self.base_ref = pr["base"]["ref"]
       self.head_sha = pr["head"]["sha"]
       self.head_ref = pr["head"]["ref"]
+      self.labels = pr["labels"] if pr.key?("labels")
     end
 
   private
