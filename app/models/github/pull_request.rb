@@ -86,11 +86,11 @@ module Github
     end
 
     def add_label!(label)
-      self.labels = labels + [label]
+      update_attribute :labels, labels + [label]
     end
 
     def remove_label!(label)
-      self.labels = labels - [label]
+      update_attribute :labels, labels - [label]
     end
 
 
@@ -106,6 +106,7 @@ module Github
       self.head_sha = pr["head"]["sha"]
       self.head_ref = pr["head"]["ref"]
       self.labels = pr["labels"] if pr.key?("labels")
+      self
     end
 
   private
