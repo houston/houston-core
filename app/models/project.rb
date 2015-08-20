@@ -14,6 +14,7 @@ class Project < ActiveRecord::Base
   has_many :deploys
   has_many :roles, :dependent => :destroy, validate: false
   has_many :value_statements, :dependent => :destroy
+  has_many :pull_requests, class_name: "Github::PullRequest"
   
   Houston.config.project_roles.each do |role|
     collection_name = role.downcase.gsub(' ', '_').pluralize
