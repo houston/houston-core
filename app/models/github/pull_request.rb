@@ -38,6 +38,7 @@ module Github
             end
           end
 
+          # Create or Update existing pulls
           expected_pulls.map do |expected_pr|
             existing_pr = existing_pulls.detect { |existing_pr| 
               expected_pr.base.repo.name == existing_pr.repo &&
@@ -49,6 +50,19 @@ module Github
             existing_pr
           end
         end
+      end
+
+      def close!(github_pr)
+        pr = find_by(repo: github_pr.base.repo.name, number: github_pr.number)
+        pr.destroy if pr
+      end
+
+      def upsert!(github_pr)
+        Github::PullRequest.find_or_instantiate_by(
+          repo: github_pr.base.repo.name,
+          number: github_pr.number)
+          .merge_attributes(github_pr)
+          .tap(&:save!)
       end
     end
 
