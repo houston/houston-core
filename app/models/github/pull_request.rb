@@ -71,15 +71,15 @@ module Github
 
 
     def merge_attributes(pr)
-      self.title = pr.title
-      self.number = pr.number
-      self.repo = pr.base.repo.name
-      self.username = pr.user.login
-      self.url = pr.html_url
-      self.base_sha = pr.base.sha
-      self.base_ref = pr.base.ref
-      self.head_sha = pr.head.sha
-      self.head_ref = pr.head.ref
+      self.title = pr["title"]
+      self.number = pr["number"]
+      self.repo = pr["base"]["repo"]["name"],
+      self.username = pr["user"]["login"]
+      self.url = pr["html_url"]
+      self.base_sha = pr["base"]["sha"]
+      self.base_ref = pr["base"]["ref"]
+      self.head_sha = pr["head"]["sha"]
+      self.head_ref = pr["head"]["ref"]
     end
 
   private
