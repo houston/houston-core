@@ -2,6 +2,8 @@ module Github
   class PullRequest < ActiveRecord::Base
     self.table_name = "pull_requests"
 
+    attr_readonly :project_id, :user_id, :repo, :number, :username, :base_ref, :base_sha, :url
+
     belongs_to :project
     belongs_to :user
     has_and_belongs_to_many :commits
@@ -71,7 +73,7 @@ module Github
           repo: github_pr["base"]["repo"]["name"],
           number: github_pr["number"])
           .merge_attributes(github_pr)
-          .tap(&:save!)
+          .tap(&:save)
       end
     end
 
@@ -96,16 +98,20 @@ module Github
 
 
     def merge_attributes(pr)
+      if new_record?
+        self.repo = pr["base"]["repo"]["name"]
+        self.number = pr["number"] 
+        self.username = pr["user"]["login"]
+        self.url = pr["html_url"]
+        self.base_sha = pr["base"]["sha"]
+        self.base_ref = pr["base"]["ref"]
+      end
+
       self.title = pr["title"]
-      self.number = pr["number"]
-      self.repo = pr["base"]["repo"]["name"],
-      self.username = pr["user"]["login"]
-      self.url = pr["html_url"]
-      self.base_sha = pr["base"]["sha"]
-      self.base_ref = pr["base"]["ref"]
       self.head_sha = pr["head"]["sha"]
       self.head_ref = pr["head"]["ref"]
       self.labels = pr["labels"] if pr.key?("labels")
+
       self
     end
 

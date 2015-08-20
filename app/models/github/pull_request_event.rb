@@ -1,6 +1,6 @@
 module Github
   class PullRequestEvent
-    attr_reader :action, :pull_request
+    attr_reader :action, :pull_request, :payload
 
     def self.process!(payload)
       self.new(payload).process!
@@ -10,6 +10,7 @@ module Github
     def initialize(payload)
       @action = payload.fetch "action"
       @pull_request = payload.fetch "pull_request"
+      @payload = payload
     end
 
     def process!
@@ -29,6 +30,11 @@ module Github
       # Ensure that we have a record of this open pull request
       # action: labeled, unlabeled, opened, reopened, or synchronized
       pr = PullRequest.upsert! pull_request
+
+      # The Pull Request may be invalid if it isn't for a
+      # project that exists in Houston.
+      return unless pr && pr.persisted?
+
       case action
       when "labeled" then pr.add_label! payload["label"]["name"]
       when "unlabeled" then pr.remove_label! payload["label"]["name"]
