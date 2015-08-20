@@ -125,7 +125,7 @@ GIT
 
 GIT
   remote: git://github.com/houston/houston-slack.git
-  revision: 5e40a2622734c00d0a9063fd565b47ebcdf3821a
+  revision: da246bb0d554034c928918afb85625fa135229b9
   branch: master
   specs:
     houston-slack (0.0.1)
