@@ -351,4 +351,11 @@ class TestRun < ActiveRecord::Base
     end
   end
   
+private
+  
+  # This is defined in Rails 4.2 but absent in previous versions
+  def validate!
+    raise ActiveRecord::RecordInvalid.new(self) unless valid?
+  end
+  
 end
