@@ -32,6 +32,7 @@ module Houston
             return self::GithubRepo.new(connection, location) if /github/ === location
             return self::RemoteRepo.new(connection, location)
           rescue Rugged::RepositoryError, Rugged::OSError, Rugged::SshError
+            Rails.logger.warn "\e[33m[git_adapter] #{$!.class}: #{$!.message}\e[0m"
             Houston::Adapters::VersionControl::NullRepo
           end
           
