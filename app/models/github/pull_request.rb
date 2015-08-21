@@ -55,7 +55,7 @@ module Github
 
             existing_pr ||= Github::PullRequest.new
             existing_pr.merge_attributes(expected_pr)
-            existing_pr.save
+            existing_pr.save if existing_pr.valid?
             existing_pr
           end
         end
@@ -73,7 +73,7 @@ module Github
           repo: github_pr["base"]["repo"]["name"],
           number: github_pr["number"])
           .merge_attributes(github_pr)
-          .tap(&:save)
+          .tap { |pr| pr.save if pr.valid? }
       end
     end
 
