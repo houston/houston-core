@@ -164,6 +164,11 @@ class TestRun < ActiveRecord::Base
   end
   
   def start!
+    # Let's _not_ trigger the build if this Test Run is not going
+    # to be saved. Let's also run BelongsToCommit#identify_commit
+    # outside of the transaction that save! wraps it in — so that
+    # we can recover from race conditions when creating commits.
+    validate!
     trigger_build!
     save!
   end

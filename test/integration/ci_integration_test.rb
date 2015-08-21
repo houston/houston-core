@@ -11,6 +11,7 @@ class CIIntegrationTest < ActionDispatch::IntegrationTest
       @project = create(:project, ci_server_name: "Mock")
 
       stub.instance_of(PostReceivePayload).commit { "63cd1ef" }
+      stub.instance_of(TestRun).validate! {}
 
       assert_difference "TestRun.count", +1 do
         post "/projects/#{@project.slug}/hooks/post_receive"
@@ -36,6 +37,7 @@ class CIIntegrationTest < ActionDispatch::IntegrationTest
       end
 
       stub.instance_of(PostReceivePayload).commit { "63cd1ef" }
+      stub.instance_of(TestRun).validate! {}
 
       assert_no_difference "TestRun.count" do
         post "/projects/#{@project.slug}/hooks/post_receive"
