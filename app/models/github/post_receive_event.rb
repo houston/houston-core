@@ -1,14 +1,7 @@
+require "github/event"
+
 module Github
-  class PostReceiveEvent
-    attr_reader :payload
-
-    def self.process!(payload)
-       self.new(payload).process!
-    end
-
-    def initialize(payload)
-      @payload = payload
-    end
+  class PostReceiveEvent < Event
 
     # https://developer.github.com/v3/activity/events/types/#pushevent
     def process!

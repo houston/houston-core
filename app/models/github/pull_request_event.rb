@@ -1,16 +1,14 @@
-module Github
-  class PullRequestEvent
-    attr_reader :action, :pull_request, :payload
+require "github/event"
 
-    def self.process!(payload)
-      self.new(payload).process!
-    end
+module Github
+  class PullRequestEvent < Event
+    attr_reader :action, :pull_request
 
     # https://developer.github.com/v3/activity/events/types/#pullrequestevent
     def initialize(payload)
+      super
       @action = payload.fetch "action"
       @pull_request = payload.fetch "pull_request"
-      @payload = payload
     end
 
     def process!
