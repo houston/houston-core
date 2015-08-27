@@ -99,7 +99,7 @@ class RunTestsOnPostReceive
   rescue ActiveRecord::RecordNotUnique
     Rails.logger.warn "[hooks:post_receive] a test run exists for #{test_run.short_commit}; doing nothing"
   rescue Exception # rescues StandardError by default; but we want to rescue and report all errors
-    Houston.report_exception $!, parameters: params.merge(project_id: project.id)
+    Houston.report_exception $!, parameters: params.merge(project: project.slug)
   end
   
   
@@ -122,7 +122,7 @@ class RunTestsOnPostReceive
     test_run.completed!(results_url)
     
   rescue Exception # rescues StandardError by default; but we want to rescue and report all errors
-    Houston.report_exception $!, parameters: params.merge(project_id: project.id)
+    Houston.report_exception $!, parameters: params.merge(project: project.slug)
   end
   
   
@@ -136,7 +136,10 @@ class RunTestsOnPostReceive
     Rails.logger.warn "\e[31m[push:publish:github] #{$!.class}: #{$!.message}\e[0m"
   rescue Exception # rescues StandardError by default; but we want to rescue and report all errors
     test_run.project.feature_broken! :publish_status_to_github
-    Houston.report_exception $!, parameters: {test_run_id: test_run.id, method: "publish_status_to_github"}
+    Houston.report_exception $!, parameters: {
+      test_run_id: test_run.id,
+      project: test_run.project.slug,
+      method: "publish_status_to_github" }
   end
   
   
@@ -149,8 +152,15 @@ class RunTestsOnPostReceive
     test_run.project.feature_broken! :publish_coverage_to_code_climate
     Rails.logger.warn "\e[31m[push:publish:codeclimate] #{$!.class}: #{$!.message}\e[0m"
   rescue Exception # rescues StandardError by default; but we want to rescue and report all errors
+
+    # Note: Code Climate will respond with 401 if we try to publish
+    #       results for a repo it doesn't know about
+
     test_run.project.feature_broken! :publish_coverage_to_code_climate
-    Houston.report_exception $!, parameters: {test_run_id: test_run.id, method: "publish_coverage_to_code_climate"}
+    Houston.report_exception $!, parameters: {
+      test_run_id: test_run.id,
+      project: test_run.project.slug,
+      method: "publish_coverage_to_code_climate" }
   end
   
   
