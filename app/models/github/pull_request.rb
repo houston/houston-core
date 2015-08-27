@@ -10,7 +10,7 @@ module Github
 
     before_validation :associate_project_with_self, if: :repo_changed?
     before_save :associate_user_with_self, if: :username_changed?
-    before_save :associate_commits_with_self, if: :head_sha_changed?
+    after_commit :associate_commits_with_self, if: :head_sha_changed?
 
     after_destroy { Houston.observer.fire "github:pull:closed", self }
     after_create { Houston.observer.fire "github:pull:opened", self }
