@@ -1,7 +1,7 @@
 module ProjectHelper
   
-  def with_most_recent_release(project, environment_name)
-    release = @releases[[project.id, environment_name]]
+  def with_most_recent_release(project)
+    release = @releases[project.id]
     if release
       release.project = project.model # so that _Release_ doesn't load project again
       yield release

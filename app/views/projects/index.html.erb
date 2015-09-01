@@ -21,9 +21,7 @@
           <th class="project-platform">Platform</th>
           <th class="project-category">Category</th>
           <th class="project-last-build">Last Build</th>
-          <% Houston.config.environments.each do |environment_name| %>
-          <th class="project-last-release"><%= environment_name %></th>
-          <% end %>
+          <th class="project-last-release">Last Release</th>
           <td class="project-following"></td>
           <td class="table-margin"></td>
         </tr>
@@ -103,13 +101,11 @@
                 <%= link_to_commit(OpenStruct.new(project: project, sha: test_run.sha)) %>
               <% end %>
             </td>
-            <% Houston.config.environments.each do |environment_name| %>
             <td class="project-last-release">
-              <% with_most_recent_release(project, environment_name) do |release| %>
+              <% with_most_recent_release(project) do |release| %>
                 <%= link_to format_release_age(release), release_path(release) %>
               <% end %>
             </td>
-            <% end %>
             <td class="project-following">
               <% if current_user %>
                 <% roles_for_project = current_user.roles.find_all { |role| role.project_id == project.id }.map(&:name) %>
