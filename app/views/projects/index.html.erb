@@ -17,11 +17,10 @@
           <th class="project-title sort-desc">Title</th>
           <th class="project-maintainers">Maintainers</th>
           <th class="project-owners">Owners</th>
-          <th class="project-features">Features</th>
           <th class="project-platform">Platform</th>
-          <th class="project-category">Category</th>
           <th class="project-last-build">Last Build</th>
           <th class="project-last-release">Last Release</th>
+          <th class="project-features">Features</th>
           <td class="project-following"></td>
           <td class="table-margin"></td>
         </tr>
@@ -80,18 +79,12 @@
             <td class="project-owners project-participants">
               <% project.owners.each do |owner| %><%= link_to avatar_for(owner), user_path(owner), :class => "project-owner project-participant", :rel => "tooltip", :title => owner.name, "data-placement" => "right" %><span class="hidden-text"><%= owner.first_name %></span><!-- so sort works --><% end %>
             </td>
-            <td class="project-features">
-              <%= project.features.map { |feature| link_to_project_feature(project, feature) }.join(", ").html_safe %>
-            </td>
             <td class="project-platform">
               <% platform = project.platform %>
               <% unless platform.blank? %>
                 <% dependency = ProjectDependency.new(project, KeyDependency.new(slug: platform)) %>
                 <%= format_maintenance_light(dependency, with_name: true) %>
               <% end %>
-            </td>
-            <td class="project-category">
-              <%= project.category %>
             </td>
             <td class="project-last-build">
               <% with_most_recent_test_run(project) do |test_run| %>
@@ -105,6 +98,9 @@
               <% with_most_recent_release(project) do |release| %>
                 <%= link_to format_release_age(release), release_path(release) %>
               <% end %>
+            </td>
+            <td class="project-features">
+              <%= project.features.map { |feature| link_to_project_feature(project, feature) }.join(", ").html_safe %>
             </td>
             <td class="project-following">
               <% if current_user %>

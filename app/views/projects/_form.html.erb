@@ -14,15 +14,6 @@
       </div>
     </div>
     
-    <% if Houston.config.project_categories.any? %>
-      <div class="control-group">
-        <%= f.label :category, :class => 'control-label' %>
-        <div class="controls">
-          <%= f.select :category, [nil] + Houston.config.project_categories, :class => 'select_field' %>
-        </div>
-      </div>
-    <% end %>
-    
     <div class="control-group">
       <%= f.label :color, :class => 'control-label' %>
       <div class="controls">
