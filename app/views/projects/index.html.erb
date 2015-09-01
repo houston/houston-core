@@ -41,9 +41,13 @@
               <% end %>
             </td>
             <td class="project-title">
-              <b class="bubble <%= project.color %>" rel="tooltip" title="<%= project.color.titleize %>" data-tooltip-placement="right"></b>
+              <% if project.color %>
+                <b class="bubble <%= project.color %>" rel="tooltip" title="<%= project.color.titleize %>" data-tooltip-placement="right"></b>
+              <% else %>
+                <b class="bubble"></b>
+              <% end %>
               <%= link_to_if can?(:update, project), project.name, edit_project_path(project) %>
-              
+
               <p class="project-links">
                 <% if ticket_tracker_url = project.ticket_tracker_project_url %>
                   <%= link_to ticket_tracker_url, :target => "_blank" do %>
