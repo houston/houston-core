@@ -3,11 +3,13 @@ class Deploy < ActiveRecord::Base
   
   belongs_to :project
   has_one :release
+  belongs_to :user
   
   validates :project_id, :environment_name, presence: true
   
   default_scope { order("completed_at DESC") }
   
+  before_save :identify_deployer, if: :deployer
   after_save :notify_if_completed
   
   
@@ -77,6 +79,10 @@ private
     return [] unless sha
     return [] unless previous_deploy
     project.commits.between(previous_deploy.sha, sha)
+  end
+  
+  def identify_deployer
+    self.user = User.find_by_email_address(deployer)
   end
   
   def notify_if_completed
