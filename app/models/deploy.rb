@@ -61,6 +61,10 @@ class Deploy < ActiveRecord::Base
     environment_name
   end
   
+  def environment_name=(value)
+    super value.downcase
+  end
+  
   def output_stream
     @output_stream ||= OutputStream.new(self)
   end

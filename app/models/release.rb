@@ -103,6 +103,10 @@ class Release < ActiveRecord::Base
     (commit_before.present? || commit0 == Houston::NULL_GIT_COMMIT) && commit_after.present?
   end
   
+  def environment_name=(value)
+    super value.downcase
+  end
+  
   
   
   attr_reader :commit_not_found_error_message

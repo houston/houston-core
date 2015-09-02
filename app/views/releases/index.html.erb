@@ -4,7 +4,7 @@
   <% @project.environments.each do |environment| %>
     <% if can?(:read, @project.releases.build(environment_name: environment)) %>
       <%= content_tag :li, :class => (@environment == environment ? "active" : nil) do %>
-        <% link_to environment, releases_path(@project, environment: environment) %>
+        <% link_to environment.titleize, releases_path(@project, environment: environment) %>
       <% end %>
     <% end %>
   <% end %>
