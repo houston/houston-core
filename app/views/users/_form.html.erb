@@ -54,25 +54,6 @@
       </div>
     <% end %>
     
-    <hr />
-    
-    <div class="control-group">
-      <label class="control-label">Notifications</label>
-      <div class="controls">
-      
-        <p class="notifications-instructions">
-          for projects I follow, notify me:
-        </p>
-        
-        <% Houston.config.environments.each do |environment| %>
-          <label class="checkbox" for="send_release_notes_<%= environment.underscore %>">
-            <input type="hidden" name="send_release_notes[<%= environment %>]" value="0" />
-            <input type="checkbox" id="send_release_notes_<%= environment.underscore %>" name="send_release_notes[<%= environment %>]" value="1" <%= "checked=\"checked\"" if @user.environments_subscribed_to.member?(environment) %>/> of every release to <b><%= environment %></b>
-          </label>
-        <% end %>
-      </div>
-    </div>
-    
     
     
     <%= f.fields_for :view_options, nil do |f| %>

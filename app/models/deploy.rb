@@ -24,6 +24,10 @@ class Deploy < ActiveRecord::Base
     def before(time)
       where arel_table[:completed_at].lt(time)
     end
+    
+    def environments
+      reorder(nil).pluck "DISTINCT environment_name"
+    end
   end
   
   

@@ -70,23 +70,37 @@
         <%= f.text_field :gemnasium_slug, :class => 'text_field' %>
       </div>
     </div>
-    
+
     <hr />
-    
+
     <div class="control-group">
-      <%= f.label :roles, "Features", :class => 'control-label' %>
+      <label class="control-label">Features</label>
       <div class="controls" style="padding-top: 5px; padding-bottom: 5px;">
-        <% Houston.config.project_features.each do |feature| %>
-          <label for="selected_features_<%= feature %>">
-            <%= check_box_tag "project[selected_features][]", feature, @project.selected_features.member?(feature), id: "selected_features_#{feature}" %>
-            <%= Houston.config.get_project_feature(feature)[:name] %>
+        <% Houston.config.project_features.each do |feature_slug| %>
+          <% feature = Houston.config.get_project_feature(feature_slug) %>
+          <label for="selected_features_<%= feature_slug %>">
+            <%= check_box_tag "project[selected_features][]", feature_slug, @project.selected_features.member?(feature_slug), id: "selected_features_#{feature_slug}", class: "project-feature" %>
+            <%= feature.name %>
           </label>
+
+          <% if feature.fields.any? %>
+            <div class="project-feature-fields" data-feature="<%= feature_slug %>">
+              <%= f.fields_for :extended_attributes, nil do |f| %>
+                <% f.object = OpenStruct.new(@project.extended_attributes) # WTF %>
+                <% feature.fields.each do |form| %>
+                  <div class="project-feature-field">
+                    <%= form.render(self, f) %>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+          <% end %>
         <% end %>
       </div>
     </div>
-    
+
     <hr />
-    
+
     <div class="control-group">
       <%= f.label :roles, "Teammates", :class => 'control-label' %>
       <div class="controls changes-nested-editor">
@@ -96,19 +110,18 @@
         <% end -%>
       </div>
     </div>
-    
+
     <div class="control-group">
       <%= f.label :min_passing_verdicts, "Min. Passing Verdicts", :class => 'control-label' %>
       <div class="controls">
         <%= f.text_field :min_passing_verdicts, :class => 'text_field' %>
       </div>
     </div>
-    
+
     <div class="form-actions">
       <%= f.submit nil, :class => 'btn btn-primary' %>
       <%= link_to 'Cancel', projects_path, :class => 'btn' %>
       <%= link_to 'Retire', retire_project_path(@project), :method => 'put', :class => 'btn btn-danger' if @project.persisted? && can?(:destroy, @project) %>
-      <%# link_to 'Delete', project_path(@project), :method => 'delete', :confirm => 'Are you sure?', :class => 'btn btn-danger btn-delete' if @project.persisted? && can?(:destroy, @project) %>
     </div>
   </fieldset>
 <% end %>
@@ -127,23 +140,33 @@
         prevSlug = slug;
       }
     });
-    
+
     function showProjectAdapterParameters($div) {
       var selectedAdapter = $div.find(':radio:checked').val();
       $div.find('.project-adapter-fields').hide();
       $div.find('.project-adapter-fields[data-adapter="' + selectedAdapter + '"]').show();
-      console.log('selected ' + selectedAdapter);
     }
-    
+
+    function showProjectFeatureParameters() {
+      $('.project-feature').each(function() {
+        var $checkbox = $(this);
+        $('.project-feature-fields[data-feature="' + $checkbox.val() + '"]')
+          .toggle($checkbox.prop('checked'));
+      });
+    }
+
     if(window.location.hash) {
       $(window.location.hash).addClass('highlight');
     }
-    
+
     $('.project-adapter').each(function() {
       var $div = $(this);
       $div.delegate(':radio', 'click', function() { showProjectAdapterParameters($div); });
       showProjectAdapterParameters($div);
     });
+
+    $('.project-feature').click(showProjectFeatureParameters);
+    showProjectFeatureParameters();
   });
 </script>
 <% end %>

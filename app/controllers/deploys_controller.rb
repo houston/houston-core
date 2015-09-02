@@ -10,11 +10,7 @@ class DeploysController < ApplicationController
       return
     end
     
-    @environment = params.fetch(:environment, "").titleize
-    unless Houston.config.environments.member?(@environment)
-      render text: "Houston is not configured to recognize an environment with the name '#{@environment}'", status: 404
-      return
-    end
+    @environment = params.fetch(:environment, "").downcase
     
     sha = params[:commit] || params[:head_long] || params[:head]
     branch = params[:branch]

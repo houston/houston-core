@@ -496,42 +496,53 @@ module Houston
   
   
   
-  class ProjectFeature < Struct.new(:name, :slug, :icon, :path_block, :ability_block)
-    
+  class ProjectFeature
+    attr_accessor :name, :slug, :icon, :path_block, :ability_block, :fields
+
+    def initialize
+      self.fields = []
+    end
+
     def project_path(project)
       path_block.call project
     end
-    
+
     def permitted?(ability, project)
       return true if ability_block.nil?
       ability_block.call ability, project
     end
-    
   end
   
   class ProjectFeatureDsl
     attr_reader :feature
-    
+
     def initialize
       @feature = ProjectFeature.new
     end
-    
+
     def name(value)
       feature.name = value
     end
-    
+
     def icon(value)
       feature.icon = value
     end
-    
+
     def path(&block)
       feature.path_block = block
     end
-    
+
     def ability(&block)
       feature.ability_block = block
     end
-    
+
+    def field(slug, &block)
+      dsl = FormBuilderDsl.new
+      dsl.instance_eval(&block)
+      form = dsl.form
+      form.slug = slug
+      feature.fields.push form
+    end
   end
   
   

@@ -57,10 +57,6 @@ class User < ActiveRecord::Base
     Role.participants.to_users
   end
   
-  def self.notified_of_releases_to(environment_name)
-    where "users.environments_subscribed_to && ARRAY[#{connection.quote(environment_name)}]"
-  end
-  
   def self.with_primary_email(email)
     email = email.downcase if email
     where(email: email)

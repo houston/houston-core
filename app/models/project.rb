@@ -46,6 +46,10 @@ class Project < ActiveRecord::Base
     Houston.config.project_colors[color]
   end
   
+  def environments
+    @environments ||= deploys.environments.map(&:downcase).uniq
+  end
+  
   def environment(environment_name)
     Environment.new(self, environment_name)
   end

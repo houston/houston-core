@@ -104,8 +104,7 @@ private
   
   def get_project_and_environment
     @project = Project.find_by_slug!(params[:project_id])
-    @environment = params[:environment]
-    @environment = Houston.config.environments.first unless Houston.config.environments.member?(@environment)
+    @environment = params[:environment] || @project.environments.first
     @releases = @project.releases
       .to(@environment)
       .includes(:project)

@@ -31,6 +31,29 @@ Houston.config.add_project_feature :releases do
   icon "fa-paper-plane"
   path { |project| Houston::Application.routes.url_helpers.releases_path(project) }
   ability { |ability, project| ability.can?(:read, project.releases.build) }
+
+  field "releases.environments" do
+    name "Environments"
+    html do |f|
+      return "" if @project.environments.none?
+
+      html = <<-HTML
+      <p class="instructions">
+        Generate release notes for these environments:
+      </p>
+      HTML
+      @project.environments.each do |environment|
+        id = :"releases.ignore.#{environment}"
+        value = f.object.public_send(id) || "0"
+        html << f.label(id, class: "checkbox") do
+          f.check_box(id, {checked: value == "0"}, "0", "1") +
+          " #{environment.titleize}"
+        end
+      end
+      html
+    end
+  end
+
 end
 
 Houston.config.add_project_feature :settings do
