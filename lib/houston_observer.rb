@@ -47,6 +47,7 @@ module Houston
           invoke_callback(event, block, *args)
         ensure
           ActiveRecord::Base.clear_active_connections!
+          Rails.logger.flush # http://stackoverflow.com/a/3516003/731300
         end
       end
     end

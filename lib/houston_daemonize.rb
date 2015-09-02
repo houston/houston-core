@@ -26,6 +26,9 @@ module Houston
       # This should never happen
       puts "\e[31m[daemon:#{name}] Disconnected\e[0m" if Rails.env.development?
       Rails.logger.error "\e[31m[daemon:#{name}] Disconnected\e[0m"
+
+      # http://stackoverflow.com/a/3516003/731300
+      Rails.logger.flush
       Houston.observer.fire "daemon:#{name}:stop"
     end
   end
