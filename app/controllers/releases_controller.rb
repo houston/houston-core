@@ -19,6 +19,7 @@ class ReleasesController < ApplicationController
     @title = "New Release (#{@environment}) • #{@project.name}"
     
     @deploy = Deploy.find_by_id(params[:deploy_id])
+    @releases = @releases.before(@deploy.completed_at) if @deploy
     @commit0 = params.fetch :commit0, @releases.most_recent_commit
     @commit1 = params.fetch :commit1, @deploy.try(:commit)
     @release = @releases.new(commit0: @commit0, commit1: @commit1, deploy: @deploy)
@@ -105,6 +106,11 @@ private
   def get_project_and_environment
     @project = Project.find_by_slug!(params[:project_id])
     @environment = params[:environment] || @project.environments.first
+    @deploys = @project.deploys
+      .completed
+      .to(@environment)
+      .includes(:commit)
+      .includes(:release)
     @releases = @project.releases
       .to(@environment)
       .includes(:project)

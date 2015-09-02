@@ -7,12 +7,12 @@ module CommitHelper
     message
   end
   
-  def link_to_commit(commit)
+  def link_to_commit(commit, options={})
     project = commit.project
     short_sha = commit.sha[0...8]
     return "<span class=\"commit-sha\">#{short_sha}</span>".html_safe unless github_url?(project)
     
-    link_to short_sha, github_commit_url(project, commit.sha), target: "_blank", class: "commit-sha"
+    link_to short_sha, github_commit_url(project, commit.sha), options.reverse_merge(target: "_blank", class: "commit-sha")
   end
   
   def link_to_release_commit_range(release)

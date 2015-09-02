@@ -71,6 +71,10 @@ class Deploy < ActiveRecord::Base
     @output_stream ||= OutputStream.new(self)
   end
   
+  def date
+    completed_at.to_date
+  end
+  
   
   
 private
