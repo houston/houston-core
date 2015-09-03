@@ -61,7 +61,6 @@ class UsersController < ApplicationController
     @user.administrator = @administrator
     
     attributes = params[:user]
-    attributes[:environments_subscribed_to] = params[:send_release_notes].select { |_, value| value == "1" }.keys
     attributes[:alias_emails] = attributes.fetch(:alias_emails, "").split.map(&:strip)
     attributes[:view_options] = @user.view_options.merge(attributes[:view_options] || {})
     
