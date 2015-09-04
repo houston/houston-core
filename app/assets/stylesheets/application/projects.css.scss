@@ -1,54 +1,18 @@
-@media (min-width:1400px) {
-  th.project-last-release {
-    &::before { content: 'Last Release: '; }
-  }
-}
-
 @media (max-width:1200px) {
-  .project-platform,
-  .project-database,
-  .project-category { display: none; }
+  .project-features { display: none; }
 }
 
-@media (max-width:900px) {
-  .project-last-release { display: none; }
+@media (max-width:1050px) {
+  .project-dependency { display: none; }
+}
+
+@media (max-width:850px) {
+  .project-last-commit { display: none; }
 }
 
 h2.uncategorized {
   font-style: italic;
   font-weight: normal;
-}
-
-.environment-name,
-.environment-slug,
-.environment-initial-commit {
-  width: 16em;
-  
-  small {
-    display: block;
-    font-size: 0.75em;
-    line-height: 1em;
-  }
-  
-  input { width: 15em; }
-}
-
-th.project-releases, 
-.project-releases li { text-align: right; padding-right: 1.5em; }
-.project-environments,
-.project-releases,
-.project-last-release,
-.project-new-release {
-  ol {
-    padding: 0;
-    margin: 0;
-    
-    li { 
-      list-style-type: none;
-      display: block;
-      line-height: 24px;
-    }
-  }
 }
 
 .project-links {
@@ -64,33 +28,38 @@ th.project-releases,
   }
 }
 
-.project-database {
+.project-last-build,
+.project-last-commit,
+.project-last-release,
+.project-dependency {
+  vertical-align: top !important;
+}
+
+.project-last-commit .commit-summary,
+.project-last-build .test-run-summary {
+  font-size: 12px;
+  line-height: normal;
+
+  padding: 0 6px;
+  border-left: 3px solid #ccc;
+  margin: 3px 1px;
+}
+
+.friendly-duration {
   white-space: nowrap;
-  text-indent: 24px;
-  background-position: center left;
-  background-repeat: no-repeat;
-  
-  &.database-postgres { background-image: url(/images/postgresql.png); }
-  &.database-mysql { background-image: url(/images/mysql.png); }
-  &.database-mongodb { background-image: url(/images/mongodb.png); }
-  &.database-sqlite { background-image: url(/images/sqlite.png); }
 }
 
 .project-last-build {
-  text-align: center !important;
-  
-  .test-result-banner {
-    border-radius: 3px;
+  .test-run-summary {
+    margin-left: 18px;
   }
-  
-  .commit-sha {
-    font-size: 0.75em;
+
+  .test-count {
+    white-space: nowrap;
     display: block;
-  }
-  
-  .test-result-banner.pending {
-    background: rgba(0, 0, 0, 0.02);
-    border: 2px dotted #bbb;
+    font-weight: 400;
+
+    .count { font-weight: bold; }
   }
 }
 
@@ -134,8 +103,6 @@ td.project-feature-error {
     color: #555;
   }
 }
-
-.project-platform { white-space: nowrap; }
 
 .project-following form { margin-bottom: 0; }
 

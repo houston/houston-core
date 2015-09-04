@@ -17,8 +17,13 @@
           <th class="project-title sort-desc">Title</th>
           <th class="project-maintainers">Maintainers</th>
           <th class="project-owners">Owners</th>
-          <th class="project-platform">Platform</th>
+<% if current_user.developer? %>
+          <th class="project-last-commit">Last Commit</th>
+        <% KeyDependency.all.each do |dependency| %>
+          <th class="project-dependency"><%= dependency.name %></th>
+        <% end %>
           <th class="project-last-build">Last Build</th>
+<% end %>
           <th class="project-last-release">Last Release</th>
           <th class="project-features">Features</th>
           <td class="project-following"></td>
@@ -29,6 +34,7 @@
         <% @projects.each do |project| %>
           <tr id="project_<%= project.id %>">
             <td class="table-margin"></td>
+
             <td class="project-feature-error">
               <% broken_features = project.broken_features(%w{
                   publish_status_to_github
@@ -37,6 +43,7 @@
                 <i class="fa fa-bolt" rel="tooltip" data-tooltip-placement="top" title="<%= broken_features.map(&:titleize).to_sentence %> <%= broken_features.one? ? "is" : "are" %> not working"></i>
               <% end %>
             </td>
+
             <td class="project-title">
               <% if project.color %>
                 <b class="bubble <%= project.color %>" rel="tooltip" title="<%= project.color.titleize %>" data-tooltip-placement="right"></b>
@@ -73,35 +80,79 @@
                 <% end %>
               </p>
             </td>
+
             <td class="project-maintainers project-participants">
               <% project.maintainers.each do |maintainer| %><%= link_to avatar_for(maintainer), user_path(maintainer), :class => "project-maintainer project-participant", :rel => "tooltip", :title => maintainer.name, "data-placement" => "right" %><span class="hidden-text"><%= maintainer.first_name %></span><!-- so sort works --><% end %>
             </td>
+
             <td class="project-owners project-participants">
               <% project.owners.each do |owner| %><%= link_to avatar_for(owner), user_path(owner), :class => "project-owner project-participant", :rel => "tooltip", :title => owner.name, "data-placement" => "right" %><span class="hidden-text"><%= owner.first_name %></span><!-- so sort works --><% end %>
             </td>
-            <td class="project-platform">
-              <% platform = project.platform %>
-              <% unless platform.blank? %>
-                <% dependency = ProjectDependency.new(project, KeyDependency.new(slug: platform)) %>
-                <%= format_maintenance_light(dependency, with_name: true) %>
+
+
+
+<% if current_user.developer? %>
+
+            <td class="project-last-commit">
+              <% with_most_recent_commit(project) do |commit| %>
+                <%= link_to_commit(commit) { format_time_ago commit.authored_at } %>
+                <div class="commit-summary">
+                  <%= commit.summary %>
+                </div>
               <% end %>
             </td>
+
+          <% KeyDependency.all.each do |dependency| %>
+          <% version = ProjectDependency.new(project, dependency).version %>
+            <td class="project-dependency">
+              <%= version %>
+            </td>
+          <% end %>
+
             <td class="project-last-build">
               <% with_most_recent_test_run(project) do |test_run| %>
-                <h5 class="test-result-banner <%= test_run.result || "pending" %>" rel="tooltip" title="<%= test_run_summary(test_run) %>">
-                  <%= link_to test_run.result, test_run_url(slug: project.slug, commit: test_run.sha), target: "_blank" %>
-                </h5>
-                <%= link_to_commit(OpenStruct.new(project: project, sha: test_run.sha)) %>
+                <div style="white-space: nowrap;">
+                  <% case test_run.result
+                     when "error" %><i class="stoplight yellow"></i><%
+                     when "pass" %><i class="stoplight green"></i><%
+                     when "fail" %><i class="stoplight red"></i><%
+                     end %>
+                  <%= link_to format_time_ago(test_run.created_at),
+                              test_run_url(slug: project.slug, commit: test_run.sha) %>
+                </div>
+                <div class="test-run-summary test-run-<%= test_run.result || "pending" %>">
+                  <% case test_run.result
+                     when nil %>Pending<%
+                     when "aborted" %>Aborted<%
+                     when "error" %>Broken<%
+                     else %>
+                    <% if test_run.pass_count > 0 %>
+                      <span class="test-count test-count-pass"><span class="count"><%= test_run.pass_count %></span> passed</span>
+                    <% end %>
+                    <% if test_run.fail_count > 0 %>
+                      <span class="test-count test-count-fail"><span class="count"><%= test_run.fail_count %></span> failed</span>
+                    <% end %>
+                    <% if test_run.skip_count > 0 %>
+                      <span class="test-count test-count-skip"><span class="count"><%= test_run.skip_count %></span> skipped</span>
+                    <% end %>
+                  <% end %>
+                </div>
               <% end %>
             </td>
+
+<% end %>
+
+
             <td class="project-last-release">
               <% with_most_recent_release(project) do |release| %>
                 <%= link_to format_release_age(release), release_path(release) %>
               <% end %>
             </td>
+
             <td class="project-features">
               <%= project.features.map { |feature| link_to_project_feature(project, feature) }.join(", ").html_safe %>
             </td>
+
             <td class="project-following">
               <% if current_user %>
                 <% roles_for_project = current_user.roles.find_all { |role| role.project_id == project.id }.map(&:name) %>
@@ -114,6 +165,7 @@
                 <% end %>
               <% end %>
             </td>
+
             <td class="table-margin"></td>
           </tr>
         <% end %>
