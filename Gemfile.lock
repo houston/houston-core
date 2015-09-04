@@ -43,7 +43,7 @@ GIT
 
 GIT
   remote: git://github.com/concordia-publishing-house/houston-support_form.git
-  revision: 7cb1c4a8aa07e66f77e5eeca063ae03a3b2511cb
+  revision: a18bdcfb70dc33926b3c0e41eb2f950dabfae123
   branch: master
   specs:
     houston-support_form (0.0.1)
