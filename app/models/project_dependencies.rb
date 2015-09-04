@@ -41,7 +41,9 @@ class ProjectDependencies < SimpleDelegator
   end
   
   def lockfile
-    @lockfile = read_file("Gemfile.lock")
+    return "" if repo.nil?
+
+    @lockfile = read_file("Gemfile.lock", commit: repo.branch("master")) unless defined?(@lockfile)
     @lockfile
   rescue Houston::Adapters::VersionControl::FileNotFound
     @lockfile = ""
