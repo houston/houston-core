@@ -6,7 +6,7 @@ class TestRunsControllerTest < ActionController::TestCase
   setup do
     @project = create(:project, ci_server_name: "Mock")
     @test_run = @project.test_runs.create!(sha: "whatever")
-    @environment = "Production"
+    @environment = "production"
   end
   
   

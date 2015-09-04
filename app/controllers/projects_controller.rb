@@ -12,7 +12,7 @@ class ProjectsController < ApplicationController
       .unretired
       .map { |project| ProjectDependencies.new(project) }
     @test_runs = TestRun.most_recent.index_by(&:project_id)
-    @releases = Release.where(environment_name: "Production").most_recent.index_by(&:project_id)
+    @releases = Release.where(environment_name: "production").most_recent.index_by(&:project_id)
   end
   
   

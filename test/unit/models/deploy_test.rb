@@ -11,7 +11,7 @@ class DeployTest < ActiveSupport::TestCase
   
   context "a new deploy" do
     setup do
-      @deploy = Deploy.new(project: project, environment_name: "Production")
+      @deploy = Deploy.new(project: project, environment_name: "production")
     end
     
     context "for a valid commit" do
