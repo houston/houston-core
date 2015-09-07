@@ -103,14 +103,6 @@ GIT
       rack
 
 GIT
-  remote: git://github.com/houston/simplecov-json.git
-  revision: ad09e37eebbbb177fbc5e65bdd3db80cc997c6a6
-  specs:
-    simplecov-json (0.1.1)
-      json
-      simplecov
-
-GIT
   remote: git://github.com/houston/vestal_versions.git
   revision: a3bec7ce5e4238b146dfa66ab918b3d78051a164
   branch: master
@@ -403,6 +395,9 @@ GEM
       multi_json (~> 1.0)
       simplecov-html (~> 0.8.0)
     simplecov-html (0.8.0)
+    simplecov-json (0.2)
+      json
+      simplecov
     skylight (0.6.1)
       activesupport (>= 3.0.0)
     slop (3.6.0)
@@ -533,7 +528,7 @@ DEPENDENCIES
   sass-rails (~> 4.0.0)
   shoulda-context
   simplecov
-  simplecov-json!
+  simplecov-json
   skylight
   spring
   star!

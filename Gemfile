@@ -109,7 +109,7 @@ group :test do
   gem "factory_girl_rails"
   
   # For Jenkins
-  gem "simplecov-json", require: false, git: "git://github.com/houston/simplecov-json.git"
+  gem "simplecov-json", require: false
   gem "minitest-reporters", require: false
   gem "minitest-reporters-turn_reporter", require: false
 end
