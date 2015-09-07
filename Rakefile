@@ -3,7 +3,6 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-require "idioms/rake"
 
 Houston::Application.load_tasks
 

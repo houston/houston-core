@@ -16,8 +16,8 @@ if ENV["CI"] == "true"
   MiniTest::Reporters.use! [MiniTest::Reporters::DefaultReporter.new,
                             MiniTest::Reporters::JUnitReporter.new]
 else
-  require "idioms/minitest/reporter"
-  MiniTest::Reporters.use! Idioms::Minitest::Reporter.new
+  require "minitest/reporters/turn_reporter"
+  MiniTest::Reporters.use! Minitest::Reporters::TurnReporter.new
 end
 
 

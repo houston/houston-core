@@ -6,6 +6,8 @@ gem "rails", "~> 4.1.0"
 gem "pg"
 
 gem "activerecord-import"
+gem "activerecord-insert_many"
+gem "activerecord-pluck_in_batches"
 gem "addressable", require: "addressable/uri"
 gem "bundler" # used to parse Gemfiles
 gem "cancan"
@@ -97,8 +99,6 @@ group :development, :test do
   gem "pry" # for debugging
 end
 
-gem "idioms", github: "concordia-publishing-house/idioms", branch: "master"
-
 group :test do
   gem "minitest"
   gem "capybara"
@@ -111,4 +111,5 @@ group :test do
   # For Jenkins
   gem "simplecov-json", require: false, git: "git://github.com/houston/simplecov-json.git"
   gem "minitest-reporters", require: false
+  gem "minitest-reporters-turn_reporter", require: false
 end
