@@ -39,7 +39,7 @@ gem "simplecov"
 gem "strongbox" # for encrypting user credentials
 gem "sucker_punch" # for Airbrake
 gem "thread_safe"
-gem "unfuddle", github: "boblail/unfuddle", branch: "master"
+gem "boblail-unfuddle", require: "unfuddle"
 gem "vestal_versions", github: "houston/vestal_versions", branch: "master"
 gem "whenever", "0.9.2" # a DSL for writing CRON jobs
 gem "xlsx", github: "concordia-publishing-house/xlsx", branch: "master"
