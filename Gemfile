@@ -23,6 +23,7 @@ gem "gemoji"
 gem "gemnasium"
 gem "googlecharts"
 gem "hpricot"
+gem "nested_editor_for"
 gem "nokogiri"
 gem "oauth-plugin", github: "houston/oauth-plugin", branch: "master"
 gem "octokit" # for adapting to GitHub Issues

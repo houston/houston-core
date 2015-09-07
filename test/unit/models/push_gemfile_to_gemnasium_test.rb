@@ -42,7 +42,6 @@ class PushGemfileToGemnasiumTest < ActiveSupport::TestCase
     should "return the same information as Gemnasium::DependencyFiles.get_sha1s_hash" do
       return skip "This test cannot be run when there are uncommitted changes to Gemfile.lock" if uncommitted_changes_to_gemfile?
       
-      stub(Gemnasium.config).ignored_paths.returns [/lib\/freight_train/]
       hash_created_by_gemnasium = Gemnasium::DependencyFiles.get_sha1s_hash(project_path)
       hash_created_by_houston = PushGemfileToGemnasium.new(project).dependency_files_hashes
       assert_equal hash_created_by_gemnasium, hash_created_by_houston,
@@ -69,7 +68,6 @@ class PushGemfileToGemnasiumTest < ActiveSupport::TestCase
   context "Publishing Gemfiles to Gemnasium" do
     setup do
       modified_files = %w{Gemfile.lock}
-      stub(Gemnasium.config).ignored_paths.returns [/lib\/freight_train/]
       
       # How Gemnasium works:
       

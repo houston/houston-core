@@ -129,6 +129,8 @@
 <% content_for :javascripts do %>
 <script type="text/javascript">
   $(function() {
+    NestedEditorFor.init();
+
     var $name = $('#project_name'),
         $slug = $('#project_slug'),
         prevSlug = $name.val().dasherize();

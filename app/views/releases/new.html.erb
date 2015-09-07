@@ -48,6 +48,7 @@
 <% content_for :javascripts do %>
 <script type="text/javascript">
   $(function() {
+    NestedEditorFor.init();
     App.NewReleaseForm.init({
       tickets: <%= raw @tickets.to_json %>,
     });
@@ -60,7 +61,7 @@
         url: url,
         container: '#new_release_form',
         success: function() {
-          FT.updateNestedEditors();
+          NestedEditorFor.updateAll();
           App.NewReleaseForm.init();
         }
       });

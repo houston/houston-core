@@ -334,6 +334,7 @@ GEM
     multi_json (1.11.2)
     multi_xml (0.5.5)
     multipart-post (1.2.0)
+    nested_editor_for (0.1.0)
     net-ldap (0.11)
     net-ssh (2.9.2)
     netrc (0.10.3)
@@ -536,6 +537,7 @@ DEPENDENCIES
   minitest
   minitest-reporters
   neat-rails!
+  nested_editor_for
   nokogiri
   oauth-plugin!
   octokit

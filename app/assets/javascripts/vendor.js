@@ -17,7 +17,7 @@
 //= require jquery.autosize.js
 //= require jquery.timeago.js
 //= require mousetrap
-//= require freight_train
+//= require nested_editor_for
 //= require sugar
 //= require Markdown.Converter
 //= require md5

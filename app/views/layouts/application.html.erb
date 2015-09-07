@@ -52,7 +52,6 @@
     <%# javascript_include_tag "https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.0.1/min/dropzone.min.js" %>
     <%= javascript_include_tag :vendor %>
     <%= javascript_include_tag :application %>
-    <%= ft_init :adapter => :jquery %>
     <script type="text/javascript">
       $(function(){
         window.testers = new Testers(<%= raw TesterPresenter.new(User.testers.unretired).to_json %>);

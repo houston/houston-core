@@ -1,3 +1,0 @@
-[submodule "lib/freight_train"]
-	path = lib/freight_train
-	url = git://github.com/boblail/freight_train.git

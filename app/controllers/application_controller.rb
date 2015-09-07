@@ -1,5 +1,4 @@
 class ApplicationController < ActionController::Base
-  include FreightTrain
   include UrlHelper
   
   # Prevent CSRF attacks by raising an exception.

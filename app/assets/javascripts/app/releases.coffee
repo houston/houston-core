@@ -7,12 +7,12 @@ window.App.NewReleaseForm =
       if e.keyCode == 13
         e.preventDefault()
         e.stopImmediatePropagation()
-        FT.addNestedRow(FT.getNestedRowFromEvent(e));
+        NestedEditorFor.addRow(NestedEditorFor.getFromEvent(e));
     $nestedEditor.delegate '.change-description input', 'keyup', (e)->
       if e.keyCode == 8 and $(this).val() == ''
         e.preventDefault()
         e.stopImmediatePropagation()
-        FT.deleteNestedRow(FT.getNestedRowFromEvent(e));      
+        NestedEditorFor.deleteRow(NestedEditorFor.getFromEvent(e));      
       if e.keyCode == 38
         $(this).closest('.nested-row').prev().find('input').select()
       if e.keyCode == 40
