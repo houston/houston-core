@@ -56,15 +56,6 @@ GIT
       ruby-ntlm
 
 GIT
-  remote: git://github.com/concordia-publishing-house/xlsx.git
-  revision: c786b323d8f496b6f382f46a277af9d58d66968b
-  branch: master
-  specs:
-    xlsx (0.1.0)
-      nokogiri
-      open_xml_package (~> 0.1.0)
-
-GIT
   remote: git://github.com/houston/houston-alerts.git
   revision: 10e9be0bc27a994e195ff23426c3b05393f50456
   branch: master
@@ -336,6 +327,9 @@ GEM
     open_xml_package (0.1.0)
       nokogiri
       rubyzip (~> 1.1.0)
+    openxml-xlsx (0.1.1)
+      nokogiri
+      open_xml_package (= 0.1.0)
     orm_adapter (0.5.0)
     pg (0.18.2)
     pg_search (0.7.9)
@@ -383,7 +377,7 @@ GEM
     rr (1.1.2)
     ruby-ntlm (0.0.1)
     ruby-progressbar (1.7.0)
-    rubyzip (1.1.6)
+    rubyzip (1.1.7)
     rufus-scheduler (3.0.9)
       tzinfo
     rugged (0.23.0)
@@ -525,6 +519,7 @@ DEPENDENCIES
   oauth-plugin!
   octokit
   oj
+  openxml-xlsx
   pg
   pg_search
   premailer
@@ -554,7 +549,6 @@ DEPENDENCIES
   vestal_versions!
   webmock
   whenever (= 0.9.2)
-  xlsx!
 
 BUNDLED WITH
    1.10.6
