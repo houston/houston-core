@@ -59,7 +59,7 @@ class StaticChart
     end
     
     def markers
-      marker_colors.reverse.map_with_index { |color, i| "B,#{color},#{i},0,0" }
+      marker_colors.reverse.each_with_index.map { |color, i| "B,#{color},#{i},0,0" }
     end
     
     def chls

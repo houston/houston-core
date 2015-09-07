@@ -205,7 +205,7 @@ private
   end
   
   def self.to_number(letter)
-    letter.bytes.reverse.map_with_index { |byte, i| (byte - 96) * (26 ** i) }.sum
+    letter.bytes.reverse.each_with_index.map { |byte, i| (byte - 96) * (26 ** i) }.sum
   end
   
 end

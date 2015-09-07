@@ -8,7 +8,7 @@ GIT
 
 GIT
   remote: git://github.com/boblail/neat-rails.git
-  revision: d2bf2cf83d3fd0fdac676e789f4381e369a82d87
+  revision: 743a713b7ad776e6c2494ab6e84b7ef35e627938
   branch: master
   specs:
     neat-rails (0.0.2)
@@ -117,7 +117,7 @@ GIT
 
 GIT
   remote: git://github.com/houston/houston-scheduler.git
-  revision: fbeddd2e72e7d74a03e978f4e20ca570b491c5fb
+  revision: b1e3d04d36463bac39286029ed0ca0aaf7a2322f
   branch: master
   specs:
     houston-scheduler (0.0.1)

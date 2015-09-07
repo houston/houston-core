@@ -18,7 +18,6 @@
 //= require jquery.timeago.js
 //= require mousetrap
 //= require freight_train
-//= require lail/delayed_action
 //= require sugar
 //= require Markdown.Converter
 //= require md5

@@ -231,7 +231,7 @@ module Houston
             push_shas.each { |sha| walker.push(sha) }
             hide_shas.each { |sha| walker.hide(sha) }
             
-            walker.map_with_index do |commit, i|
+            walker.each_with_index.map do |commit, i|
               release if i % 200 == 0
               yield commit
             end
