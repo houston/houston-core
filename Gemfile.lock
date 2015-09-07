@@ -1,12 +1,4 @@
 GIT
-  remote: git://github.com/boblail/faraday-raise-errors.git
-  revision: 312dd28f2bab72fe9a798cff23d1a77877c3ee5a
-  branch: master
-  specs:
-    faraday-raise-errors (0.2.0)
-      faraday
-
-GIT
   remote: git://github.com/boblail/unfuddle.git
   revision: 602faab57be1196dabea6fbf74bda2a01edf18f5
   branch: master
@@ -278,6 +270,8 @@ GEM
       multipart-post (~> 1.2.0)
     faraday-http-cache (0.4.2)
       faraday (~> 0.8)
+    faraday-raise-errors (0.2.0)
+      faraday
     ffi (1.9.6)
     gemnasium (3.2.1)
     gemoji (2.1.0)
@@ -510,7 +504,7 @@ DEPENDENCIES
   factory_girl_rails
   faraday
   faraday-http-cache
-  faraday-raise-errors!
+  faraday-raise-errors
   gemnasium
   gemoji
   googlecharts

@@ -18,7 +18,7 @@ gem "devise_ldap_authenticatable", git: "https://github.com/houston/devise_ldap_
 gem "engineyard" # for deploying to EngineYard
 gem "faraday"
 gem "faraday-http-cache"
-gem "faraday-raise-errors", github: "boblail/faraday-raise-errors", branch: "master"
+gem "faraday-raise-errors"
 gem "gemoji"
 gem "gemnasium"
 gem "googlecharts"
