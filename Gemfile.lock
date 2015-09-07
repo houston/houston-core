@@ -7,13 +7,6 @@ GIT
       faraday
 
 GIT
-  remote: git://github.com/boblail/neat-rails.git
-  revision: 743a713b7ad776e6c2494ab6e84b7ef35e627938
-  branch: master
-  specs:
-    neat-rails (0.0.2)
-
-GIT
   remote: git://github.com/boblail/unfuddle.git
   revision: 602faab57be1196dabea6fbf74bda2a01edf18f5
   branch: master
@@ -334,6 +327,7 @@ GEM
     multi_json (1.11.2)
     multi_xml (0.5.5)
     multipart-post (1.2.0)
+    neat-rails (0.1.0)
     nested_editor_for (0.1.0)
     net-ldap (0.11)
     net-ssh (2.9.2)
@@ -536,7 +530,7 @@ DEPENDENCIES
   meta_request
   minitest
   minitest-reporters
-  neat-rails!
+  neat-rails
   nested_editor_for
   nokogiri
   oauth-plugin!

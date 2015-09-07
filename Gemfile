@@ -80,7 +80,7 @@ gem "handlebars_assets"
 # Source for unprecompiled assets
 gem "backbone-rails", "~> 1.0.0"
 gem "sugar-rails"
-gem "neat-rails", github: "boblail/neat-rails", branch: "master"
+gem "neat-rails"
 
 group :development do
   gem "unicorn-rails"
