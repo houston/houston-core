@@ -92,17 +92,6 @@ GIT
       websocket-driver
 
 GIT
-  remote: git://github.com/houston/oauth-plugin.git
-  revision: fb90306916934d902e5459b86b887f6e88766a8c
-  branch: master
-  specs:
-    oauth-plugin (0.5.1)
-      multi_json
-      oauth (~> 0.4.4)
-      oauth2 (>= 0.5.0)
-      rack
-
-GIT
   remote: git://github.com/houston/vestal_versions.git
   revision: a3bec7ce5e4238b146dfa66ab918b3d78051a164
   branch: master
@@ -258,6 +247,11 @@ GEM
     highline (1.6.21)
     hike (1.2.3)
     hitimes (1.2.2)
+    houston-oauth-plugin (0.5.1)
+      multi_json
+      oauth (~> 0.4.4)
+      oauth2 (>= 0.5.0)
+      rack
     hpricot (0.8.6)
     htmlentities (4.3.3)
     http-cookie (1.0.2)
@@ -266,7 +260,7 @@ GEM
       rack
     i18n (0.7.0)
     json (1.8.3)
-    jwt (1.5.0)
+    jwt (1.5.1)
     kgio (2.9.3)
     launchy (2.4.3)
       addressable (~> 2.3)
@@ -495,6 +489,7 @@ DEPENDENCIES
   houston-alerts!
   houston-dashboards!
   houston-feedback!
+  houston-oauth-plugin
   houston-reports!
   houston-roadmap!
   houston-scheduler!
@@ -510,7 +505,6 @@ DEPENDENCIES
   neat-rails
   nested_editor_for
   nokogiri
-  oauth-plugin!
   octokit
   oj
   openxml-xlsx

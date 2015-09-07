@@ -27,7 +27,7 @@ gem "googlecharts"
 gem "hpricot"
 gem "nested_editor_for"
 gem "nokogiri"
-gem "oauth-plugin", github: "houston/oauth-plugin", branch: "master"
+gem "houston-oauth-plugin", require: "oauth-plugin"
 gem "octokit" # for adapting to GitHub Issues
 gem "oj"
 gem "pg_search"
