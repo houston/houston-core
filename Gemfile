@@ -42,7 +42,7 @@ gem "strongbox" # for encrypting user credentials
 gem "sucker_punch" # for Airbrake
 gem "thread_safe"
 gem "boblail-unfuddle", require: "unfuddle"
-gem "vestal_versions", github: "houston/vestal_versions", branch: "master"
+gem "houston-vestal_versions", require: "vestal_versions"
 gem "whenever", "0.9.2" # a DSL for writing CRON jobs
 gem "openxml-xlsx", require: "xlsx"
 
