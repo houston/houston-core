@@ -16,6 +16,7 @@ module Houston
         yield
 
       rescue Exception
+        puts "\e[91m#{$!.class}: #{$!.message}\e[0m" if Rails.env.development?
         Houston.report_exception $!
         unless (Time.now - connected_at) < 60
           Houston.observer.fire "daemon:#{name}:restart"
