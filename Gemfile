@@ -16,7 +16,7 @@ gem "codeclimate-test-reporter", "0.4.1" # locked because Houston implements its
 gem "default_value_for"
 gem "devise", "~> 3.0.0"
 gem "devise_invitable"
-gem "devise_ldap_authenticatable", git: "https://github.com/houston/devise_ldap_authenticatable.git"
+gem "houston-devise_ldap_authenticatable", require: "devise_ldap_authenticatable"
 gem "engineyard" # for deploying to EngineYard
 gem "faraday"
 gem "faraday-http-cache"

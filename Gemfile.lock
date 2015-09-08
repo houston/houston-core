@@ -91,14 +91,6 @@ GIT
       rails
       websocket-driver
 
-GIT
-  remote: https://github.com/houston/devise_ldap_authenticatable.git
-  revision: 3f30eca2363198af9dadd438bfb0a6dd0fbb72ca
-  specs:
-    devise_ldap_authenticatable (0.7.0)
-      devise (~> 3.0.0)
-      net-ldap (~> 0.2)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -238,6 +230,9 @@ GEM
     highline (1.6.21)
     hike (1.2.3)
     hitimes (1.2.2)
+    houston-devise_ldap_authenticatable (0.7.0)
+      devise (~> 3.0.0)
+      net-ldap (~> 0.2)
     houston-oauth-plugin (0.5.1)
       multi_json
       oauth (~> 0.4.4)
@@ -470,7 +465,6 @@ DEPENDENCIES
   default_value_for
   devise (~> 3.0.0)
   devise_invitable
-  devise_ldap_authenticatable!
   engineyard
   factory_girl_rails
   faraday
@@ -482,6 +476,7 @@ DEPENDENCIES
   handlebars_assets
   houston-alerts!
   houston-dashboards!
+  houston-devise_ldap_authenticatable
   houston-feedback!
   houston-oauth-plugin
   houston-reports!
