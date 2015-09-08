@@ -3,17 +3,17 @@ class Project < ActiveRecord::Base
   include Retirement
   include FeatureState
   
-  has_many :releases, :dependent => :destroy
-  has_many :commits, :dependent => :destroy, extend: CommitSynchronizer
-  has_many :tickets, :dependent => :destroy, extend: TicketSynchronizer
-  has_many :milestones, :dependent => :destroy, extend: MilestoneSynchronizer
+  has_many :releases, dependent: :destroy
+  has_many :commits, dependent: :destroy, extend: CommitSynchronizer
+  has_many :tickets, dependent: :destroy, extend: TicketSynchronizer
+  has_many :milestones, dependent: :destroy, extend: MilestoneSynchronizer
   has_many :uncompleted_milestones, -> { uncompleted }, class_name: "Milestone"
-  has_many :testing_notes, :dependent => :destroy
-  has_many :test_runs, :dependent => :destroy
-  has_many :tests, :dependent => :destroy
+  has_many :testing_notes, dependent: :destroy
+  has_many :test_runs, dependent: :destroy
+  has_many :tests, dependent: :destroy
   has_many :deploys
-  has_many :roles, :dependent => :destroy, validate: false
-  has_many :value_statements, :dependent => :destroy
+  has_many :roles, -> { joins(:user).merge(User.unretired) }, dependent: :destroy, validate: false
+  has_many :value_statements, dependent: :destroy
   has_many :pull_requests, class_name: "Github::PullRequest"
   
   Houston.config.project_roles.each do |role|
