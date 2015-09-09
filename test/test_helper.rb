@@ -1,3 +1,5 @@
+ENV["RAILS_ENV"] ||= "test"
+
 if ENV["COVERAGE"] == "on"
   require "simplecov"
   require "simplecov-json"
@@ -5,8 +7,10 @@ if ENV["COVERAGE"] == "on"
   SimpleCov.start "rails"
 end
 
-ENV["RAILS_ENV"] ||= "test"
-require File.expand_path("../../config/environment", __FILE__)
+require File.expand_path("../../config/application", __FILE__)
+require_relative "support/config"
+Rails.application.initialize!
+
 require "rails/test_help"
 require "support/houston/adapters/version_control/mock_adapter"
 require "capybara/rails"
@@ -23,24 +27,6 @@ end
 
 
 Houston.observer.async = false
-
-
-
-class CollectingSender
-  attr_reader :collected
-  
-  def initialize
-    @collected = []
-  end
-  
-  def send_to_airbrake(data)
-    @collected << data
-  end
-end
-
-Airbrake.sender = CollectingSender.new
-Airbrake.configuration.development_environments = []
-Airbrake.configuration.async = false
 
 
 

@@ -17,6 +17,7 @@ module Houston
       @navigation_renderers = {}
       @user_options = {}
       @available_project_features = {}
+      @ticket_types = {}
       @authentication_strategy = :database
       @authentication_strategy_configuration = {}
       @ticket_tracker_configuration = {}
@@ -42,7 +43,10 @@ module Houston
     end
     
     def mailer_sender(*args)
-      @mailer_sender = args.first if args.any?
+      if args.any?
+        @mailer_sender = args.first
+        (Rails.application.config.action_mailer.default_options ||= {}).merge!(from: @mailer_sender)
+      end
       @mailer_sender ||= nil
     end
     
@@ -74,8 +78,8 @@ module Houston
     end
     
     def smtp(&block)
-      @smtp = HashDsl.hash_from_block(block) if block_given?
-      @smtp ||= {}
+      Rails.application.config.action_mailer.smtp_settings = HashDsl.hash_from_block(block) if block_given?
+      Rails.application.config.action_mailer.smtp_settings
     end
     
     def s3(&block)
@@ -411,39 +415,29 @@ module Houston
   
   
   class Module
-    
-    def initialize(module_name, gemconfig={}, &moduleconfig)
+    attr_reader :name
+
+    def initialize(module_name, options={}, &moduleconfig)
       @name = module_name.to_s
-      @gemname = gemconfig.fetch(:gem, "houston-#{name}")
-      @bundle = gemconfig.fetch(:bundle, true)
-      @gemconfig = gemconfig.pick(:group, :groups, :git, :path, :name, :branch, :github,
-        :ref, :tag, :require, :submodules, :platform, :platforms, :type, :source)
-      @gemconfig.merge!(branch: "master") if @gemconfig.key?(:github) && !@gemconfig.key?(:branch)
-      @config = moduleconfig
+
+      if namespace.respond_to?(:config) && block_given?
+        namespace.config(&moduleconfig)
+      elsif block_given? && !namespace.respond_to?(:config)
+        raise "#{name} does not accept configuration"
+      end
     end
-    
-    attr_reader :name, :gemname, :config
-    
+
     def engine
       namespace::Engine
     end
-    
-    def bundle?
-      @bundle
-    end
-    
+
     def path
       "/#{name}"
     end
-    
-    def gemspec
-      [gemname, @gemconfig]
-    end
-    
+
     def namespace
       @namespace ||= "houston/#{name}".camelize.constantize
     end
-    
   end
   
   
@@ -657,11 +651,12 @@ module_function
   
   def config(&block)
     if block_given?
-      @configuration = Configuration.new
+      @configuration ||= Configuration.new
       @configuration.instance_eval(&block)
       @configuration.validate!
     end
-    @configuration || (raise NotConfigured)
+    raise NotConfigured unless defined? @configuration
+    @configuration
   end
   
   def observer
@@ -725,11 +720,5 @@ class NullTag
   def position
     999
   end
-  
+
 end
-
-
-
-
-# Load configuration file
-require (ENV["HOUSTON_CONFIG"] || File.join(root, "config/config.rb"))

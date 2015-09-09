@@ -29,8 +29,9 @@ class CIIntegrationTest < ActionDispatch::IntegrationTest
     end
 
     should "alert maintainers when a build cannot be triggered" do
+      skip "TMI: This is dependent on configured roles!"
       @project = create(:project, ci_server_name: "Mock")
-      @project.add_teammate users(:boblail), "Maintainer"
+      @project.add_teammate users(:boblail)
 
       any_instance_of(Houston::Adapters::CIServer::MockAdapter::Job) do |job|
         stub(job).build! { |commit| raise Houston::Adapters::CIServer::Error }
@@ -69,7 +70,7 @@ class CIIntegrationTest < ActionDispatch::IntegrationTest
       commit = "whatever"
       results_url = "http://example.com/results"
       @project = create(:project, ci_server_name: "Mock")
-      @project.add_teammate users(:boblail), "Maintainer"
+      @project.add_teammate users(:boblail)
       @test_run = TestRun.create!(project: @project, sha: commit)
 
       any_instance_of(Houston::Adapters::CIServer::MockAdapter::Job) do |job|
@@ -98,48 +99,57 @@ class CIIntegrationTest < ActionDispatch::IntegrationTest
 
 
 
-    should "publish test status to GitHub when pending" do
-      # don't pull changes for this repo
-      git = stub(Houston::Adapters::VersionControl::GitAdapter)
-      git.sync! { |*args| }
-      git.get_local_path_to_repo { |_,_| Rails.root.join("test/data/bare_repo.git").to_s }
-
-      @project = Project.create!(
-        name: "Test",
-        slug: "fixture",
-        version_control_name: "Git",
-        extended_attributes: { "git_location" => "git@github.com:houston/fixture.git" })
-      test_run = TestRun.new(project: @project, sha: "bd3e9e2")
-
-      expected_url = "https://api.github.com/repos/houston/fixture/statuses/bd3e9e2e4ddf89a640a4f880cbf55bb46cc7e88a?access_token=#{Houston.config.github[:access_token]}"
-      mock(Faraday).post(expected_url, /"state":"pending"/) do
-        stub(Object.new).success? { true }
+    context "When GitHub integration is configured" do
+      setup do
+        Houston.config do
+          github do
+            access_token "GITHUB_ACCESS_TOKEN"
+          end
+        end
       end
 
-      Houston.observer.fire "test_run:start", test_run
-    end
+      should "publish test status to GitHub when pending" do
+        # don't pull changes for this repo
+        git = stub(Houston::Adapters::VersionControl::GitAdapter)
+        git.sync! { |*args| }
+        git.get_local_path_to_repo { |_,_| Rails.root.join("test/data/bare_repo.git").to_s }
 
-    should "publish test results to GitHub" do
-      # don't pull changes for this repo
-      git = stub(Houston::Adapters::VersionControl::GitAdapter)
-      git.sync! { |*args| }
-      git.get_local_path_to_repo { |_,_| Rails.root.join("test/data/bare_repo.git").to_s }
+        @project = Project.create!(
+          name: "Test",
+          slug: "fixture",
+          version_control_name: "Git",
+          extended_attributes: { "git_location" => "git@github.com:houston/fixture.git" })
+        test_run = TestRun.new(project: @project, sha: "bd3e9e2")
 
-      @project = Project.create!(
-        name: "Test",
-        slug: "fixture",
-        version_control_name: "Git",
-        extended_attributes: { "git_location" => "git@github.com:houston/fixture.git" })
-      test_run = TestRun.new(project: @project, sha: "bd3e9e2", result: :pass, completed_at: Time.now)
+        expected_url = "https://api.github.com/repos/houston/fixture/statuses/bd3e9e2e4ddf89a640a4f880cbf55bb46cc7e88a?access_token=#{Houston.config.github[:access_token]}"
+        mock(Faraday).post(expected_url, /"state":"pending"/) do
+          stub(Object.new).success? { true }
+        end
 
-      expected_url = "https://api.github.com/repos/houston/fixture/statuses/bd3e9e2e4ddf89a640a4f880cbf55bb46cc7e88a?access_token=#{Houston.config.github[:access_token]}"
-      mock(Faraday).post(expected_url, /"state":"success"/) do
-        stub(Object.new).success? { true }
+        Houston.observer.fire "test_run:start", test_run
       end
 
-      Houston.observer.fire "test_run:complete", test_run
-    end
+      should "publish test results to GitHub" do
+        # don't pull changes for this repo
+        git = stub(Houston::Adapters::VersionControl::GitAdapter)
+        git.sync! { |*args| }
+        git.get_local_path_to_repo { |_,_| Rails.root.join("test/data/bare_repo.git").to_s }
 
+        @project = Project.create!(
+          name: "Test",
+          slug: "fixture",
+          version_control_name: "Git",
+          extended_attributes: { "git_location" => "git@github.com:houston/fixture.git" })
+        test_run = TestRun.new(project: @project, sha: "bd3e9e2", result: :pass, completed_at: Time.now)
+
+        expected_url = "https://api.github.com/repos/houston/fixture/statuses/bd3e9e2e4ddf89a640a4f880cbf55bb46cc7e88a?access_token=#{Houston.config.github[:access_token]}"
+        mock(Faraday).post(expected_url, /"state":"success"/) do
+          stub(Object.new).success? { true }
+        end
+
+        Houston.observer.fire "test_run:complete", test_run
+      end
+    end
 
 
     should "publish test results to CodeClimate" do

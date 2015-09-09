@@ -41,6 +41,7 @@ class Ability
         # Developers can manage projects and releases
         can :manage, Project
         can :manage, Release
+        can :manage, Sprint
         
       end
     end

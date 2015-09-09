@@ -1,8 +1,14 @@
 require "test_helper"
 
-# TODO: These tests depend on knowledge of my config.rb
 class ReleaseChangeTest < ActiveSupport::TestCase
-  
+
+  setup do
+    Houston.config do
+      change_tags( {name: "New Feature", as: "feature", color: "8DB500"},
+                   {name: "Bugfix", as: "fix", color: "C64537", aliases: %w{bugfix}} )
+    end
+  end
+
   test "should have a tag when created for a slug that has been associated with a tag" do
     commit = Commit.new(message: "[feature] did lots of work")
     change = ReleaseChange.from_commit(nil, commit)

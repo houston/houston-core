@@ -70,10 +70,6 @@ module Houston
     # like if you have constraints or database-specific column types
     config.active_record.schema_format = :sql
     
-    # SMTP settings
-    config.action_mailer.smtp_settings = Houston.config.smtp
-    config.action_mailer.default_options = {from: Houston.config.mailer_from}
-    
     # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
     config.assets.precompile += %w( print.css )
     

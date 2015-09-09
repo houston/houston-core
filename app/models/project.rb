@@ -97,7 +97,7 @@ class Project < ActiveRecord::Base
     roles.to_users
   end
   
-  def add_teammate(user_or_id, role)
+  def add_teammate(user_or_id, role="Follower")
     attributes = {project: self, name: role}
     attributes[user_or_id.is_a?(User) ? :user : :user_id] = user_or_id
     roles.create!(attributes)

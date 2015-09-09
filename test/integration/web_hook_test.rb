@@ -27,19 +27,4 @@ class WebHookTest < ActionDispatch::IntegrationTest
   end
   
   
-  # !nb: this tests code that exists in config.rb (!!)
-  if Houston.observer.observed?("hooks:exception_report")
-    context "when being notified of an exception" do
-      should "not report any exceptions" do
-        begin
-          mock(Houston.observer).fire(anything, anything, anything) { raise "hell" }
-          post "/projects/#{project.slug}/hooks/exception_report"
-        rescue
-        end
-        assert Airbrake.sender.collected.empty?, "Houston sent an exception report to Airbrake from a hook receiving an exception report. This could get ugly."
-      end
-    end
-  end
-  
-  
 end
