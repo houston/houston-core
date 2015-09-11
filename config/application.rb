@@ -54,6 +54,8 @@ Bundler.require(*Rails.groups)
 require "coffee_script"
 require "uglifier"
 
+# Apply patches
+require "patches/sprockets_output_path_for_assets"
 
 module Houston
   class Application < Rails::Application
