@@ -85,5 +85,3 @@ module Houston
     config.middleware.insert 0, Rack::UTF8Sanitizer
   end
 end
-
-Houston.observer.fire "boot"
