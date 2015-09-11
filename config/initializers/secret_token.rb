@@ -9,8 +9,4 @@
 
 # Make sure your secret_key_base is kept private
 # if you're sharing your code publicly.
-if Rails.env.production?
-  Houston::Application.config.secret_key_base = ENV["SECRET_KEY_BASE"]
-else
-  Houston::Application.config.secret_key_base = '3dc8f02c16cfe71fb33e6687638011a5bd436c8eae2824f4aca0eb3ddd68b4f7bcac1d05b79d2350f1012495429a7adb11cbb4f37004c393696d85108a3e700a'
-end
+Houston::Application.config.secret_key_base = ENV["HOUSTON_SECRET_KEY_BASE"]
