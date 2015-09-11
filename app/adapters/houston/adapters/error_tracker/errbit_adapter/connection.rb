@@ -12,9 +12,6 @@ module Houston
             protocol = "https" if config[:port] == 443
             @errbit_url = "#{protocol}://#{config[:host]}"
             @errbit_url << ":#{config[:port]}" unless [80, 443].member?(config[:port])
-            
-            @connection = Faraday.new(url: "#{errbit_url}/api/v1")
-            @connection.use Faraday::RaiseErrors
           end
           
           attr_reader :config, :errbit_url
@@ -123,21 +120,27 @@ module Houston
           
           def get(path, params={})
             params = params.merge(auth_token: config[:auth_token])
-            response = Houston.benchmark("[errbit] GET #{path}") { @connection.get(path, params) }
+            response = Houston.benchmark("[errbit] GET #{path}") { connection.get(path, params) }
             response.must_be! 200
             MultiJson.load(response.body)
           end
           
           def post(path, params={})
             params = params.merge(auth_token: config[:auth_token])
-            Houston.benchmark("[errbit] POST #{path}") { @connection.post(path, params) }
+            Houston.benchmark("[errbit] POST #{path}") { connection.post(path, params) }
           end
           
           def put(path, params={})
             params = params.merge(auth_token: config[:auth_token])
-            Houston.benchmark("[errbit] PUT #{path}") { @connection.put(path, params) }
+            Houston.benchmark("[errbit] PUT #{path}") { connection.put(path, params) }
           end
           
+          def connection
+            @connection ||= Faraday.new(url: "#{errbit_url}/api/v1").tap do |connection|
+              connection.use Faraday::RaiseErrors
+            end
+          end
+
         end
       end
     end
