@@ -650,12 +650,11 @@ module Houston
 module_function
   
   def config(&block)
+    @configuration ||= Configuration.new
     if block_given?
-      @configuration ||= Configuration.new
       @configuration.instance_eval(&block)
       @configuration.validate!
     end
-    raise NotConfigured unless defined? @configuration
     @configuration
   end
   
