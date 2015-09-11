@@ -65,7 +65,7 @@ module Houston
     end
     
     def keypair
-      Rails.root.join('config', 'keypair.pem')
+      (Houston.root || Rails.root).join("config", "keypair.pem")
     end
     
     def parallelization(*args)
@@ -648,7 +648,6 @@ module Houston
   
   
 module_function
-  
   def config(&block)
     @configuration ||= Configuration.new
     if block_given?
@@ -657,7 +656,17 @@ module_function
     end
     @configuration
   end
-  
+
+
+  def self.root
+    @root
+  end
+
+  def self.root=(value)
+    @root = value
+  end
+
+
   def observer
     @observer ||= Observer.new
   end
