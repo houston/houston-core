@@ -1,4 +1,5 @@
 Rails.application.config.assets.precompile += %w{
+  print.css
   vendor.js
   vendor.css
   dashboard.js

@@ -69,10 +69,7 @@ module Houston
     # This is necessary if your schema can't be completely dumped by the schema dumper,
     # like if you have constraints or database-specific column types
     config.active_record.schema_format = :sql
-    
-    # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
-    config.assets.precompile += %w( print.css )
-    
+
     # While implementing strong parameters!
     config.action_controller.permit_all_parameters = true
     
