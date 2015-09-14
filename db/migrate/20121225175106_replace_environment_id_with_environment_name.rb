@@ -8,7 +8,7 @@ class ReplaceEnvironmentIdWithEnvironmentName < ActiveRecord::Migration
     add_index :deploys, :environment_name
     add_index :deploys, [:project_id, :environment_name]
     
-    Deploy.tap(&:reset_column_information).all.each do |deploy|
+    Deploy.tap(&:reset_column_information).reorder(nil).each do |deploy|
       if deploy.respond_to?(:environment_id) && (environment = Environment.find_by_id(deploy.environment_id))
         deploy.update_column(:environment_name, environment.name)
       end

@@ -24,96 +24,20 @@ COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
 --
--- Name: pg_stat_statements; Type: EXTENSION; Schema: -; Owner: -
+-- Name: hstore; Type: EXTENSION; Schema: -; Owner: -
 --
 
-CREATE EXTENSION IF NOT EXISTS pg_stat_statements WITH SCHEMA public;
+CREATE EXTENSION IF NOT EXISTS hstore WITH SCHEMA public;
 
 
 --
--- Name: EXTENSION pg_stat_statements; Type: COMMENT; Schema: -; Owner: -
+-- Name: EXTENSION hstore; Type: COMMENT; Schema: -; Owner: -
 --
 
-COMMENT ON EXTENSION pg_stat_statements IS 'track execution statistics of all SQL statements executed';
+COMMENT ON EXTENSION hstore IS 'data type for storing sets of (key, value) pairs';
 
 
 SET search_path = public, pg_catalog;
-
---
--- Name: ghstore; Type: SHELL TYPE; Schema: public; Owner: -
---
-
-CREATE TYPE ghstore;
-
-
---
--- Name: ghstore_in(cstring); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION ghstore_in(cstring) RETURNS ghstore
-    LANGUAGE c STRICT
-    AS '$libdir/hstore', 'ghstore_in';
-
-
---
--- Name: ghstore_out(ghstore); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION ghstore_out(ghstore) RETURNS cstring
-    LANGUAGE c STRICT
-    AS '$libdir/hstore', 'ghstore_out';
-
-
---
--- Name: ghstore; Type: TYPE; Schema: public; Owner: -
---
-
-CREATE TYPE ghstore (
-    INTERNALLENGTH = variable,
-    INPUT = ghstore_in,
-    OUTPUT = ghstore_out,
-    ALIGNMENT = int4,
-    STORAGE = plain
-);
-
-
---
--- Name: hstore; Type: SHELL TYPE; Schema: public; Owner: -
---
-
-CREATE TYPE hstore;
-
-
---
--- Name: hstore_in(cstring); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION hstore_in(cstring) RETURNS hstore
-    LANGUAGE c STRICT
-    AS '$libdir/hstore', 'hstore_in';
-
-
---
--- Name: hstore_out(hstore); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION hstore_out(hstore) RETURNS cstring
-    LANGUAGE c STRICT
-    AS '$libdir/hstore', 'hstore_out';
-
-
---
--- Name: hstore; Type: TYPE; Schema: public; Owner: -
---
-
-CREATE TYPE hstore (
-    INTERNALLENGTH = variable,
-    INPUT = hstore_in,
-    OUTPUT = hstore_out,
-    ALIGNMENT = int4,
-    STORAGE = extended
-);
-
 
 --
 -- Name: test_result_status; Type: TYPE; Schema: public; Owner: -
@@ -126,429 +50,9 @@ CREATE TYPE test_result_status AS ENUM (
 );
 
 
---
--- Name: akeys(hstore); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION akeys(hstore) RETURNS text[]
-    LANGUAGE c IMMUTABLE STRICT
-    AS '$libdir/hstore', 'akeys';
-
-
---
--- Name: avals(hstore); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION avals(hstore) RETURNS text[]
-    LANGUAGE c IMMUTABLE STRICT
-    AS '$libdir/hstore', 'avals';
-
-
---
--- Name: defined(hstore, text); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION defined(hstore, text) RETURNS boolean
-    LANGUAGE c IMMUTABLE STRICT
-    AS '$libdir/hstore', 'defined';
-
-
---
--- Name: delete(hstore, text); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION delete(hstore, text) RETURNS hstore
-    LANGUAGE c IMMUTABLE STRICT
-    AS '$libdir/hstore', 'delete';
-
-
---
--- Name: each(hstore); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION each(hs hstore, OUT key text, OUT value text) RETURNS SETOF record
-    LANGUAGE c IMMUTABLE STRICT
-    AS '$libdir/hstore', 'each';
-
-
---
--- Name: exist(hstore, text); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION exist(hstore, text) RETURNS boolean
-    LANGUAGE c IMMUTABLE STRICT
-    AS '$libdir/hstore', 'exists';
-
-
---
--- Name: fetchval(hstore, text); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION fetchval(hstore, text) RETURNS text
-    LANGUAGE c IMMUTABLE STRICT
-    AS '$libdir/hstore', 'fetchval';
-
-
---
--- Name: ghstore_compress(internal); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION ghstore_compress(internal) RETURNS internal
-    LANGUAGE c IMMUTABLE STRICT
-    AS '$libdir/hstore', 'ghstore_compress';
-
-
---
--- Name: ghstore_consistent(internal, internal, integer, oid, internal); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION ghstore_consistent(internal, internal, integer, oid, internal) RETURNS boolean
-    LANGUAGE c IMMUTABLE STRICT
-    AS '$libdir/hstore', 'ghstore_consistent';
-
-
---
--- Name: ghstore_decompress(internal); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION ghstore_decompress(internal) RETURNS internal
-    LANGUAGE c IMMUTABLE STRICT
-    AS '$libdir/hstore', 'ghstore_decompress';
-
-
---
--- Name: ghstore_penalty(internal, internal, internal); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION ghstore_penalty(internal, internal, internal) RETURNS internal
-    LANGUAGE c IMMUTABLE STRICT
-    AS '$libdir/hstore', 'ghstore_penalty';
-
-
---
--- Name: ghstore_picksplit(internal, internal); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION ghstore_picksplit(internal, internal) RETURNS internal
-    LANGUAGE c IMMUTABLE STRICT
-    AS '$libdir/hstore', 'ghstore_picksplit';
-
-
---
--- Name: ghstore_same(internal, internal, internal); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION ghstore_same(internal, internal, internal) RETURNS internal
-    LANGUAGE c IMMUTABLE STRICT
-    AS '$libdir/hstore', 'ghstore_same';
-
-
---
--- Name: ghstore_union(internal, internal); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION ghstore_union(internal, internal) RETURNS internal
-    LANGUAGE c IMMUTABLE STRICT
-    AS '$libdir/hstore', 'ghstore_union';
-
-
---
--- Name: gin_consistent_hstore(internal, smallint, internal, integer, internal, internal); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION gin_consistent_hstore(internal, smallint, internal, integer, internal, internal) RETURNS boolean
-    LANGUAGE c IMMUTABLE STRICT
-    AS '$libdir/hstore', 'gin_consistent_hstore';
-
-
---
--- Name: gin_extract_hstore(internal, internal); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION gin_extract_hstore(internal, internal) RETURNS internal
-    LANGUAGE c IMMUTABLE STRICT
-    AS '$libdir/hstore', 'gin_extract_hstore';
-
-
---
--- Name: gin_extract_hstore_query(internal, internal, smallint, internal, internal); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION gin_extract_hstore_query(internal, internal, smallint, internal, internal) RETURNS internal
-    LANGUAGE c IMMUTABLE STRICT
-    AS '$libdir/hstore', 'gin_extract_hstore_query';
-
-
---
--- Name: hs_concat(hstore, hstore); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION hs_concat(hstore, hstore) RETURNS hstore
-    LANGUAGE c IMMUTABLE STRICT
-    AS '$libdir/hstore', 'hs_concat';
-
-
---
--- Name: hs_contained(hstore, hstore); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION hs_contained(hstore, hstore) RETURNS boolean
-    LANGUAGE c IMMUTABLE STRICT
-    AS '$libdir/hstore', 'hs_contained';
-
-
---
--- Name: hs_contains(hstore, hstore); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION hs_contains(hstore, hstore) RETURNS boolean
-    LANGUAGE c IMMUTABLE STRICT
-    AS '$libdir/hstore', 'hs_contains';
-
-
---
--- Name: isdefined(hstore, text); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION isdefined(hstore, text) RETURNS boolean
-    LANGUAGE c IMMUTABLE STRICT
-    AS '$libdir/hstore', 'defined';
-
-
---
--- Name: isexists(hstore, text); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION isexists(hstore, text) RETURNS boolean
-    LANGUAGE c IMMUTABLE STRICT
-    AS '$libdir/hstore', 'exists';
-
-
---
--- Name: skeys(hstore); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION skeys(hstore) RETURNS SETOF text
-    LANGUAGE c IMMUTABLE STRICT
-    AS '$libdir/hstore', 'skeys';
-
-
---
--- Name: svals(hstore); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION svals(hstore) RETURNS SETOF text
-    LANGUAGE c IMMUTABLE STRICT
-    AS '$libdir/hstore', 'svals';
-
-
---
--- Name: tconvert(text, text); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION tconvert(text, text) RETURNS hstore
-    LANGUAGE c IMMUTABLE
-    AS '$libdir/hstore', 'tconvert';
-
-
---
--- Name: ->; Type: OPERATOR; Schema: public; Owner: -
---
-
-CREATE OPERATOR -> (
-    PROCEDURE = fetchval,
-    LEFTARG = hstore,
-    RIGHTARG = text
-);
-
-
---
--- Name: <@; Type: OPERATOR; Schema: public; Owner: -
---
-
-CREATE OPERATOR <@ (
-    PROCEDURE = hs_contained,
-    LEFTARG = hstore,
-    RIGHTARG = hstore,
-    COMMUTATOR = @>,
-    RESTRICT = contsel,
-    JOIN = contjoinsel
-);
-
-
---
--- Name: =>; Type: OPERATOR; Schema: public; Owner: -
---
-
-CREATE OPERATOR => (
-    PROCEDURE = tconvert,
-    LEFTARG = text,
-    RIGHTARG = text
-);
-
-
---
--- Name: ?; Type: OPERATOR; Schema: public; Owner: -
---
-
-CREATE OPERATOR ? (
-    PROCEDURE = exist,
-    LEFTARG = hstore,
-    RIGHTARG = text,
-    RESTRICT = contsel,
-    JOIN = contjoinsel
-);
-
-
---
--- Name: @; Type: OPERATOR; Schema: public; Owner: -
---
-
-CREATE OPERATOR @ (
-    PROCEDURE = hs_contains,
-    LEFTARG = hstore,
-    RIGHTARG = hstore,
-    COMMUTATOR = ~,
-    RESTRICT = contsel,
-    JOIN = contjoinsel
-);
-
-
---
--- Name: @>; Type: OPERATOR; Schema: public; Owner: -
---
-
-CREATE OPERATOR @> (
-    PROCEDURE = hs_contains,
-    LEFTARG = hstore,
-    RIGHTARG = hstore,
-    COMMUTATOR = <@,
-    RESTRICT = contsel,
-    JOIN = contjoinsel
-);
-
-
---
--- Name: ||; Type: OPERATOR; Schema: public; Owner: -
---
-
-CREATE OPERATOR || (
-    PROCEDURE = hs_concat,
-    LEFTARG = hstore,
-    RIGHTARG = hstore
-);
-
-
---
--- Name: ~; Type: OPERATOR; Schema: public; Owner: -
---
-
-CREATE OPERATOR ~ (
-    PROCEDURE = hs_contained,
-    LEFTARG = hstore,
-    RIGHTARG = hstore,
-    COMMUTATOR = @,
-    RESTRICT = contsel,
-    JOIN = contjoinsel
-);
-
-
---
--- Name: gin_hstore_ops; Type: OPERATOR CLASS; Schema: public; Owner: -
---
-
-CREATE OPERATOR CLASS gin_hstore_ops
-    DEFAULT FOR TYPE hstore USING gin AS
-    STORAGE text ,
-    OPERATOR 7 @>(hstore,hstore) ,
-    OPERATOR 9 ?(hstore,text) ,
-    FUNCTION 1 (hstore, hstore) bttextcmp(text,text) ,
-    FUNCTION 2 (hstore, hstore) gin_extract_hstore(internal,internal) ,
-    FUNCTION 3 (hstore, hstore) gin_extract_hstore_query(internal,internal,smallint,internal,internal) ,
-    FUNCTION 4 (hstore, hstore) gin_consistent_hstore(internal,smallint,internal,integer,internal,internal);
-
-
---
--- Name: gist_hstore_ops; Type: OPERATOR CLASS; Schema: public; Owner: -
---
-
-CREATE OPERATOR CLASS gist_hstore_ops
-    DEFAULT FOR TYPE hstore USING gist AS
-    STORAGE ghstore ,
-    OPERATOR 7 @>(hstore,hstore) ,
-    OPERATOR 9 ?(hstore,text) ,
-    OPERATOR 13 @(hstore,hstore) ,
-    FUNCTION 1 (hstore, hstore) ghstore_consistent(internal,internal,integer,oid,internal) ,
-    FUNCTION 2 (hstore, hstore) ghstore_union(internal,internal) ,
-    FUNCTION 3 (hstore, hstore) ghstore_compress(internal) ,
-    FUNCTION 4 (hstore, hstore) ghstore_decompress(internal) ,
-    FUNCTION 5 (hstore, hstore) ghstore_penalty(internal,internal,internal) ,
-    FUNCTION 6 (hstore, hstore) ghstore_picksplit(internal,internal) ,
-    FUNCTION 7 (hstore, hstore) ghstore_same(internal,internal,internal);
-
-
 SET default_tablespace = '';
 
 SET default_with_oids = false;
-
---
--- Name: alerts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE alerts (
-    id integer NOT NULL,
-    type character varying(255) NOT NULL,
-    key character varying(255) NOT NULL,
-    summary character varying(255) NOT NULL,
-    url character varying(255) NOT NULL,
-    project_id integer,
-    checked_out_by_id integer,
-    opened_at timestamp without time zone NOT NULL,
-    closed_at timestamp without time zone,
-    checked_out_by_email character varying(255),
-    project_slug character varying(255),
-    priority character varying(255) DEFAULT 'high'::character varying NOT NULL,
-    deadline timestamp without time zone NOT NULL,
-    hours hstore DEFAULT ''::hstore,
-    destroyed_at timestamp without time zone,
-    checked_out_remotely boolean DEFAULT false,
-    can_change_project boolean DEFAULT false,
-    number integer,
-    environment_name character varying(255),
-    text character varying(255),
-    requires_verification boolean DEFAULT false NOT NULL,
-    verified boolean DEFAULT false NOT NULL
-);
-
-
---
--- Name: alerts_commits; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE alerts_commits (
-    alert_id integer,
-    commit_id integer
-);
-
-
---
--- Name: alerts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE alerts_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: alerts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE alerts_id_seq OWNED BY alerts.id;
-
 
 --
 -- Name: commits; Type: TABLE; Schema: public; Owner: -; Tablespace: 
@@ -561,8 +65,8 @@ CREATE TABLE commits (
     message text,
     committer character varying(255),
     date date,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
     committer_email character varying(255),
     project_id integer NOT NULL,
     authored_at timestamp without time zone NOT NULL,
@@ -653,8 +157,8 @@ CREATE TABLE consumer_tokens (
     secret character varying(255),
     expires_at integer,
     expires_in character varying(255),
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
 );
 
 
@@ -686,8 +190,8 @@ CREATE TABLE deploys (
     project_id integer,
     environment_id integer,
     sha character varying(255) NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
     environment_name character varying(255) DEFAULT 'Production'::character varying NOT NULL,
     deployer character varying(255),
     commit_id integer,
@@ -716,78 +220,6 @@ CREATE SEQUENCE deploys_id_seq
 --
 
 ALTER SEQUENCE deploys_id_seq OWNED BY deploys.id;
-
-
---
--- Name: feedback_comments; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE feedback_comments (
-    id integer NOT NULL,
-    project_id integer NOT NULL,
-    user_id integer,
-    text text NOT NULL,
-    plain_text text NOT NULL,
-    customer character varying(255) DEFAULT ''::character varying NOT NULL,
-    tags text DEFAULT ''::text NOT NULL,
-    import character varying(255),
-    search_vector tsvector,
-    ticket_id integer,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
-);
-
-
---
--- Name: feedback_comments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE feedback_comments_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: feedback_comments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE feedback_comments_id_seq OWNED BY feedback_comments.id;
-
-
---
--- Name: feedback_comments_user_flags; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE feedback_comments_user_flags (
-    id integer NOT NULL,
-    user_id integer NOT NULL,
-    comment_id integer NOT NULL,
-    read boolean DEFAULT false,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
-);
-
-
---
--- Name: feedback_comments_user_flags_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE feedback_comments_user_flags_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: feedback_comments_user_flags_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE feedback_comments_user_flags_id_seq OWNED BY feedback_comments_user_flags.id;
 
 
 --
@@ -859,45 +291,6 @@ ALTER SEQUENCE measurements_id_seq OWNED BY measurements.id;
 
 
 --
--- Name: milestone_versions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE milestone_versions (
-    id integer NOT NULL,
-    versioned_id integer,
-    versioned_type character varying(255),
-    roadmap_commit_id integer,
-    modifications text,
-    number integer,
-    reverted_from integer,
-    tag character varying(255),
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    user_id integer,
-    user_type character varying(255)
-);
-
-
---
--- Name: milestone_versions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE milestone_versions_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: milestone_versions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE milestone_versions_id_seq OWNED BY milestone_versions.id;
-
-
---
 -- Name: milestones; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -909,17 +302,10 @@ CREATE TABLE milestones (
     tickets_count integer DEFAULT 0,
     completed_at timestamp without time zone,
     extended_attributes hstore DEFAULT ''::hstore NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
     destroyed_at timestamp without time zone,
-    start_date date,
-    band integer DEFAULT 1 NOT NULL,
-    end_date date,
-    locked boolean DEFAULT false NOT NULL,
-    closed_tickets_count integer DEFAULT 0 NOT NULL,
-    lanes integer DEFAULT 1 NOT NULL,
-    goal text,
-    feedback_query character varying(255)
+    start_date date
 );
 
 
@@ -951,8 +337,8 @@ CREATE TABLE project_quotas (
     project_id integer NOT NULL,
     week date NOT NULL,
     value integer NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
 );
 
 
@@ -983,8 +369,8 @@ CREATE TABLE projects (
     id integer NOT NULL,
     name character varying(255),
     slug character varying(255),
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
     color character varying(255),
     retired_at timestamp without time zone,
     category character varying(255),
@@ -1073,8 +459,8 @@ CREATE TABLE releases (
     name character varying(255),
     commit0 character varying(255),
     commit1 character varying(255),
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
     user_id integer NOT NULL,
     message text DEFAULT ''::text NOT NULL,
     deploy_id integer,
@@ -1126,39 +512,6 @@ CREATE TABLE releases_tickets (
 
 
 --
--- Name: roadmap_commits; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE roadmap_commits (
-    id integer NOT NULL,
-    user_id integer NOT NULL,
-    message character varying(255) NOT NULL,
-    project_id integer NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: roadmap_commits_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE roadmap_commits_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: roadmap_commits_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE roadmap_commits_id_seq OWNED BY roadmap_commits.id;
-
-
---
 -- Name: roles; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1167,8 +520,8 @@ CREATE TABLE roles (
     user_id integer,
     project_id integer,
     name character varying(255) NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
 );
 
 
@@ -1237,8 +590,8 @@ ALTER SEQUENCE settings_id_seq OWNED BY settings.id;
 CREATE TABLE sprints (
     id integer NOT NULL,
     end_date date,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
     locked boolean DEFAULT false NOT NULL
 );
 
@@ -1354,9 +707,9 @@ CREATE TABLE test_results (
     test_run_id integer NOT NULL,
     test_id integer NOT NULL,
     status test_result_status NOT NULL,
+    different boolean,
     duration double precision,
     error_id integer,
-    different boolean,
     new_test boolean
 );
 
@@ -1395,8 +748,8 @@ CREATE TABLE test_runs (
     fail_count integer DEFAULT 0 NOT NULL,
     pass_count integer DEFAULT 0 NOT NULL,
     skip_count integer DEFAULT 0 NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
     tests text,
     total_count integer DEFAULT 0 NOT NULL,
     agent_email character varying(255),
@@ -1440,8 +793,8 @@ CREATE TABLE testing_notes (
     ticket_id integer,
     verdict character varying(255) NOT NULL,
     comment text DEFAULT ''::character varying NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
     expires_at timestamp without time zone,
     remote_id integer,
     project_id integer NOT NULL
@@ -1507,8 +860,8 @@ CREATE TABLE ticket_queues (
     ticket_id integer,
     queue character varying(255),
     destroyed_at timestamp without time zone,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
 );
 
 
@@ -1541,15 +894,15 @@ CREATE TABLE tickets (
     number integer NOT NULL,
     summary character varying(255),
     description text,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
     remote_id integer,
     deployment character varying(255),
     last_release_at timestamp without time zone,
     expires_at timestamp without time zone,
     extended_attributes hstore DEFAULT ''::hstore NOT NULL,
     antecedents text[],
-    tags character varying[],
+    tags character varying(255)[],
     type character varying(255),
     closed_at timestamp without time zone,
     reporter_email character varying(255),
@@ -1598,8 +951,8 @@ CREATE TABLE user_credentials (
     password bytea,
     password_key bytea,
     password_iv bytea,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
 );
 
 
@@ -1638,8 +991,8 @@ CREATE TABLE users (
     last_sign_in_at timestamp without time zone,
     current_sign_in_ip character varying(255),
     last_sign_in_ip character varying(255),
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
     invitation_token character varying(60),
     invitation_sent_at timestamp without time zone,
     invitation_accepted_at timestamp without time zone,
@@ -1757,13 +1110,6 @@ ALTER SEQUENCE versions_id_seq OWNED BY versions.id;
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY alerts ALTER COLUMN id SET DEFAULT nextval('alerts_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
 ALTER TABLE ONLY commits ALTER COLUMN id SET DEFAULT nextval('commits_id_seq'::regclass);
 
 
@@ -1785,20 +1131,6 @@ ALTER TABLE ONLY deploys ALTER COLUMN id SET DEFAULT nextval('deploys_id_seq'::r
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY feedback_comments ALTER COLUMN id SET DEFAULT nextval('feedback_comments_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY feedback_comments_user_flags ALTER COLUMN id SET DEFAULT nextval('feedback_comments_user_flags_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
 ALTER TABLE ONLY historical_heads ALTER COLUMN id SET DEFAULT nextval('historical_heads_id_seq'::regclass);
 
 
@@ -1807,13 +1139,6 @@ ALTER TABLE ONLY historical_heads ALTER COLUMN id SET DEFAULT nextval('historica
 --
 
 ALTER TABLE ONLY measurements ALTER COLUMN id SET DEFAULT nextval('measurements_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY milestone_versions ALTER COLUMN id SET DEFAULT nextval('milestone_versions_id_seq'::regclass);
 
 
 --
@@ -1849,13 +1174,6 @@ ALTER TABLE ONLY pull_requests ALTER COLUMN id SET DEFAULT nextval('pull_request
 --
 
 ALTER TABLE ONLY releases ALTER COLUMN id SET DEFAULT nextval('releases_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY roadmap_commits ALTER COLUMN id SET DEFAULT nextval('roadmap_commits_id_seq'::regclass);
 
 
 --
@@ -1964,14 +1282,6 @@ ALTER TABLE ONLY versions ALTER COLUMN id SET DEFAULT nextval('versions_id_seq':
 
 
 --
--- Name: alerts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY alerts
-    ADD CONSTRAINT alerts_pkey PRIMARY KEY (id);
-
-
---
 -- Name: commits_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1996,22 +1306,6 @@ ALTER TABLE ONLY deploys
 
 
 --
--- Name: feedback_comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY feedback_comments
-    ADD CONSTRAINT feedback_comments_pkey PRIMARY KEY (id);
-
-
---
--- Name: feedback_comments_user_flags_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY feedback_comments_user_flags
-    ADD CONSTRAINT feedback_comments_user_flags_pkey PRIMARY KEY (id);
-
-
---
 -- Name: historical_heads_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2025,14 +1319,6 @@ ALTER TABLE ONLY historical_heads
 
 ALTER TABLE ONLY measurements
     ADD CONSTRAINT measurements_pkey PRIMARY KEY (id);
-
-
---
--- Name: milestone_versions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY milestone_versions
-    ADD CONSTRAINT milestone_versions_pkey PRIMARY KEY (id);
 
 
 --
@@ -2073,14 +1359,6 @@ ALTER TABLE ONLY pull_requests
 
 ALTER TABLE ONLY releases
     ADD CONSTRAINT releases_pkey PRIMARY KEY (id);
-
-
---
--- Name: roadmap_commits_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY roadmap_commits
-    ADD CONSTRAINT roadmap_commits_pkey PRIMARY KEY (id);
 
 
 --
@@ -2220,34 +1498,6 @@ ALTER TABLE ONLY versions
 
 
 --
--- Name: index_alerts_commits_on_alert_id_and_commit_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE UNIQUE INDEX index_alerts_commits_on_alert_id_and_commit_id ON alerts_commits USING btree (alert_id, commit_id);
-
-
---
--- Name: index_alerts_on_closed_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_alerts_on_closed_at ON alerts USING btree (closed_at);
-
-
---
--- Name: index_alerts_on_opened_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_alerts_on_opened_at ON alerts USING btree (opened_at);
-
-
---
--- Name: index_alerts_on_type_and_key; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE UNIQUE INDEX index_alerts_on_type_and_key ON alerts USING btree (type, key);
-
-
---
 -- Name: index_commits_on_project_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2325,20 +1575,6 @@ CREATE INDEX index_deploys_on_project_id_and_environment_name ON deploys USING b
 
 
 --
--- Name: index_feedback_comments_on_tsvector; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_feedback_comments_on_tsvector ON feedback_comments USING gin (search_vector);
-
-
---
--- Name: index_feedback_comments_user_flags_on_user_id_and_comment_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE UNIQUE INDEX index_feedback_comments_user_flags_on_user_id_and_comment_id ON feedback_comments_user_flags USING btree (user_id, comment_id);
-
-
---
 -- Name: index_measurements_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2364,34 +1600,6 @@ CREATE INDEX index_measurements_on_taken_at ON measurements USING btree (taken_a
 --
 
 CREATE INDEX index_measurements_on_taken_on ON measurements USING btree (taken_on);
-
-
---
--- Name: index_milestone_versions_on_created_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_milestone_versions_on_created_at ON milestone_versions USING btree (created_at);
-
-
---
--- Name: index_milestone_versions_on_number; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_milestone_versions_on_number ON milestone_versions USING btree (number);
-
-
---
--- Name: index_milestone_versions_on_roadmap_commit_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_milestone_versions_on_roadmap_commit_id ON milestone_versions USING btree (roadmap_commit_id);
-
-
---
--- Name: index_milestone_versions_on_versioned_id_and_versioned_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_milestone_versions_on_versioned_id_and_versioned_type ON milestone_versions USING btree (versioned_id, versioned_type);
 
 
 --
@@ -2521,13 +1729,6 @@ CREATE INDEX index_test_results_on_test_run_id ON test_results USING btree (test
 
 
 --
--- Name: index_test_runs_on_commit; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_test_runs_on_commit ON test_runs USING btree (sha);
-
-
---
 -- Name: index_test_runs_on_commit_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2539,6 +1740,13 @@ CREATE UNIQUE INDEX index_test_runs_on_commit_id ON test_runs USING btree (commi
 --
 
 CREATE INDEX index_test_runs_on_project_id ON test_runs USING btree (project_id);
+
+
+--
+-- Name: index_test_runs_on_sha; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_test_runs_on_sha ON test_runs USING btree (sha);
 
 
 --
@@ -2846,8 +2054,6 @@ INSERT INTO schema_migrations (version) VALUES ('20130407220039');
 
 INSERT INTO schema_migrations (version) VALUES ('20130407220937');
 
-INSERT INTO schema_migrations (version) VALUES ('20130407221459');
-
 INSERT INTO schema_migrations (version) VALUES ('20130416020627');
 
 INSERT INTO schema_migrations (version) VALUES ('20130420151334');
@@ -3000,17 +2206,7 @@ INSERT INTO schema_migrations (version) VALUES ('20140724231918');
 
 INSERT INTO schema_migrations (version) VALUES ('20140806233301');
 
-INSERT INTO schema_migrations (version) VALUES ('20140807212311');
-
 INSERT INTO schema_migrations (version) VALUES ('20140810224209');
-
-INSERT INTO schema_migrations (version) VALUES ('20140813010452');
-
-INSERT INTO schema_migrations (version) VALUES ('20140815000804');
-
-INSERT INTO schema_migrations (version) VALUES ('20140815022909');
-
-INSERT INTO schema_migrations (version) VALUES ('20140821000627');
 
 INSERT INTO schema_migrations (version) VALUES ('20140824194031');
 
@@ -3018,53 +2214,27 @@ INSERT INTO schema_migrations (version) VALUES ('20140824194526');
 
 INSERT INTO schema_migrations (version) VALUES ('20140824211249');
 
-INSERT INTO schema_migrations (version) VALUES ('20140831210254');
-
-INSERT INTO schema_migrations (version) VALUES ('20140907005810');
-
 INSERT INTO schema_migrations (version) VALUES ('20140907012329');
 
 INSERT INTO schema_migrations (version) VALUES ('20140907013836');
-
-INSERT INTO schema_migrations (version) VALUES ('20140907212311');
-
-INSERT INTO schema_migrations (version) VALUES ('20140916230539');
 
 INSERT INTO schema_migrations (version) VALUES ('20140921190022');
 
 INSERT INTO schema_migrations (version) VALUES ('20140921201441');
 
-INSERT INTO schema_migrations (version) VALUES ('20140921203932');
-
 INSERT INTO schema_migrations (version) VALUES ('20140925021043');
-
-INSERT INTO schema_migrations (version) VALUES ('20140927154728');
 
 INSERT INTO schema_migrations (version) VALUES ('20140929004347');
 
-INSERT INTO schema_migrations (version) VALUES ('20140929024130');
-
-INSERT INTO schema_migrations (version) VALUES ('20141012023628');
-
 INSERT INTO schema_migrations (version) VALUES ('20141027194819');
-
-INSERT INTO schema_migrations (version) VALUES ('20141125162853');
-
-INSERT INTO schema_migrations (version) VALUES ('20141128155140');
 
 INSERT INTO schema_migrations (version) VALUES ('20141202004123');
 
 INSERT INTO schema_migrations (version) VALUES ('20141226171730');
 
-INSERT INTO schema_migrations (version) VALUES ('20150102192805');
-
-INSERT INTO schema_migrations (version) VALUES ('20150113025408');
-
 INSERT INTO schema_migrations (version) VALUES ('20150116153233');
 
 INSERT INTO schema_migrations (version) VALUES ('20150119154013');
-
-INSERT INTO schema_migrations (version) VALUES ('20150119155145');
 
 INSERT INTO schema_migrations (version) VALUES ('20150220215154');
 
@@ -3079,16 +2249,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150302153319');
 INSERT INTO schema_migrations (version) VALUES ('20150323004452');
 
 INSERT INTO schema_migrations (version) VALUES ('20150323011050');
-
-INSERT INTO schema_migrations (version) VALUES ('20150524203903');
-
-INSERT INTO schema_migrations (version) VALUES ('20150603203744');
-
-INSERT INTO schema_migrations (version) VALUES ('20150708235654');
-
-INSERT INTO schema_migrations (version) VALUES ('20150711220519');
-
-INSERT INTO schema_migrations (version) VALUES ('20150711220542');
 
 INSERT INTO schema_migrations (version) VALUES ('20150805180939');
 
@@ -3110,11 +2270,7 @@ INSERT INTO schema_migrations (version) VALUES ('20150809132417');
 
 INSERT INTO schema_migrations (version) VALUES ('20150809201942');
 
-INSERT INTO schema_migrations (version) VALUES ('20150815005551');
-
 INSERT INTO schema_migrations (version) VALUES ('20150817232311');
-
-INSERT INTO schema_migrations (version) VALUES ('20150818005716');
 
 INSERT INTO schema_migrations (version) VALUES ('20150820023708');
 
