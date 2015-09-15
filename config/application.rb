@@ -6,7 +6,6 @@ require_relative "../lib/houston_server.rb"
 require_relative "../lib/houston_daemonize.rb"
 
 # Require gems listed in gemspec
-require "activerecord-import"
 require "activerecord/insert_many"
 require "activerecord/pluck_in_batches"
 require "addressable/uri"
