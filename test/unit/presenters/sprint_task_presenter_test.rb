@@ -11,7 +11,7 @@ class SprintTaskPresenterTest < ActiveSupport::TestCase
   context "When a task is completed" do
     context "before the end of the Sprint, it" do
       should "present the task as completed" do
-        task = create(:task, completed_at: Time.new(2014, 9, 5, 20, 30))
+        task = create(:task, completed_at: Time.zone.local(2014, 9, 5, 20, 30))
         assert present(task)[:completed]
       end
     end

@@ -69,7 +69,13 @@ module Houston
       @host = args.first if args.any?
       @host ||= nil
     end
-    
+
+    def time_zone(*args)
+      return Rails.application.config.time_zone if args.none?
+      Rails.application.config.time_zone = args.first
+      Time.zone = args.first
+    end
+
     def mailer_sender(*args)
       if args.any?
         @mailer_sender = args.first
