@@ -12,6 +12,7 @@ module Houston
     attr_reader :timers
     
     def initialize
+      @root = Rails.root
       @modules = []
       @gems = []
       @navigation_renderers = {}
@@ -31,7 +32,34 @@ module Houston
     
     
     # Global configuration
-    
+
+    def root(*args)
+      return @root if args.none?
+      @root = args.first
+
+      # Keep structure.sql in instances' db directory
+      ActiveRecord::Tasks::DatabaseTasks.db_dir = root.join("db")
+
+      # Configure Houston
+      Houston::Application.paths["config/database"] = root.join("config/database.yml")
+      Houston::Application.paths["public"] = root.join("public")
+      Houston::Application.paths["log"] = root.join("log/#{Rails.env}.log")
+      Houston::Application.paths["tmp"] = root.join("tmp")
+      Houston::Application.paths["config/environments"] << root.join("config/environments")
+
+      # TODO: finish this
+      Rails.application.assets = Sprockets::Environment.new(root) do |env|
+        env.version = Rails.env
+
+        path = "#{Houston.root}/tmp/cache/assets/#{Rails.env}"
+        env.cache = Sprockets::Cache::FileStore.new(path)
+
+        env.context_class.class_eval do
+          include ::Sprockets::Rails::Helper
+        end
+      end
+    end
+
     def title(*args)
       @title = args.first if args.any?
       @title ||= "Houston"
@@ -65,7 +93,7 @@ module Houston
     end
     
     def keypair
-      (Houston.root || Rails.root).join("config", "keypair.pem")
+      root.join("config", "keypair.pem")
     end
     
     def parallelization(*args)
@@ -659,11 +687,7 @@ module_function
 
 
   def self.root
-    @root
-  end
-
-  def self.root=(value)
-    @root = value
+    config.root
   end
 
 
