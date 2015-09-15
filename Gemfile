@@ -3,10 +3,6 @@ source "https://rubygems.org"
 # Specify your gem's dependencies in houston.gemspec
 gemspec
 
-group :development do
-  gem "letter_opener"
-end
-
 group :development, :test do
   gem "pry"
 end

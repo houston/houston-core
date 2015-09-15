@@ -28,10 +28,7 @@ Rails.application.configure do
   config.assets.debug = false
 
   # Store assets in another path
-  config.assets.prefix = '/dev-assets'
-
-  # Test emails
-  config.action_mailer.delivery_method = :letter_opener
+  config.assets.prefix = "/dev-assets"
 
   # So Devise mailers can make links
   server_options = Rack::Server::Options.new.parse!(ARGV.dup)

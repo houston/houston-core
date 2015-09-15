@@ -190,8 +190,6 @@ GEM
     jwt (1.5.1)
     launchy (2.4.3)
       addressable (~> 2.3)
-    letter_opener (1.2.0)
-      launchy (~> 2.2)
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
     method_source (0.8.2)
@@ -339,7 +337,6 @@ DEPENDENCIES
   capybara
   factory_girl_rails
   houston!
-  letter_opener
   minitest
   minitest-reporters
   minitest-reporters-turn_reporter
