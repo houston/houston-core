@@ -264,7 +264,7 @@ Rails.application.routes.draw do
         if Rails.env.development?
           asset_path = "/dev-assets/#{asset}"
         else
-          manifest_path = Dir.glob(File.join(Rails.root, "public/assets/manifest-*.json")).first
+          manifest_path = Dir.glob(File.join(Houston.root, "public/assets/manifest-*.json")).first
           manifest_data = JSON.load(File.new(manifest_path))
           asset_path = "/assets/#{manifest_data["assets"].fetch(asset)}"
         end
