@@ -57,6 +57,11 @@ require "patches/sprockets_output_path_for_assets"
 
 module Houston
   class Application < Rails::Application
+    # This Rails application gets initialized different ways: many times it is
+    # intialized from within a Houston instance project. This line ensures that
+    # Rails.root always points to _this_ project. (Houston.root may differ.)
+    config.root = File.expand_path("../../", __FILE__)
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
