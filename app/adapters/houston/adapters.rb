@@ -11,7 +11,7 @@ module Houston
       alias :[] :const_get
       
       def define_adapter_namespace(name)
-        namespace = Module.new
+        namespace = ::Module.new
         const_set name, namespace
         
         pathname = name_to_path(name)
