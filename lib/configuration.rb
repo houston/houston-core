@@ -572,32 +572,32 @@ module Houston
       feature.fields.push form
     end
   end
-  
-  
-  
-  class Form < Struct.new(:slug, :name, :render_block)
-    
+
+
+
+  class ProjectFeatureForm
+    attr_accessor :slug, :name, :render_block
+
     def render(view, f)
       view.instance_exec(f, &render_block).html_safe
     end
-    
   end
-  
+
   class FormBuilderDsl
     attr_reader :form
-    
+
     def initialize
-      @form = Form.new
+      @form = ProjectFeatureForm.new
     end
-    
+
     def name(value)
       form.name = value
     end
-    
+
     def html(&block)
       form.render_block = block
     end
-    
+
   end
   
   
