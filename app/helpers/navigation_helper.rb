@@ -59,9 +59,9 @@ private
   
   def _nav_icon(icon)
     ($icons ||= {})[icon] ||= begin
-      path = Rails.root.join("public", "images", "#{icon}.svg")
+      path = Rails.root.join("vendor", "images", "#{icon}.svg")
       File.read(path) if File.exists?(path)
-    end || File.read(Rails.root.join("public", "images", "fa-bomb.svg"))
+    end || File.read(Rails.root.join("vendor", "images", "fa-bomb.svg"))
   end
   
 end
