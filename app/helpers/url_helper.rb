@@ -72,15 +72,4 @@ module UrlHelper
   
   
   
-  def image_url(image)
-    # This method can be called from `emojify` from `mdown` from TicketPresenter
-    # In that context, Rails.application.routes.url_helpers isn't included
-    # And if it is, default_url_options[:host] isn't set. It might be a better
-    # idea eventually to *properly* include UrlHelper
-    return "/images/#{image}" unless respond_to?(:root_url)
-    "#{root_url}/images/#{image}"
-  end
-  
-  
-  
 end
