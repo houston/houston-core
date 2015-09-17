@@ -24,20 +24,23 @@
 
 
 .add-link, .delete-link { 
-  opacity: 0.2;
   display: inline-block;
-  width: 14px;
-  height: 14px;
-  line-height: 14px;
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
   vertical-align: text-top;
-  background-image: url("/images/glyphicons-halflings.png");
-  background-position: 14px 14px;
-  background-repeat: no-repeat;
-  text-indent: 9999em;
   overflow: hidden;
-  
-  &.add-link { background-position: 0 -96px; }
-  &.delete-link { background-position: -24px -96px; }
-  
-  &:hover { opacity: 1; }
+  cursor: pointer;
+
+  &::before {
+    font-family: 'FontAwesome';
+    display: inline-block;
+    font-size: 16px;
+    padding: 1px 2px;
+  }
+
+  &.add-link::before { content: '\f055'; }
+  &.delete-link::before { content: '\f056'; }
+
+  &:not(:hover) { color: #e0e0e0; }
 }
