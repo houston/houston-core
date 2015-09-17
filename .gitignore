@@ -28,6 +28,3 @@ REVISION
 # Ignore test artifacts
 coverage
 test/reports
-
-# Ignore experiments
-public/extras
