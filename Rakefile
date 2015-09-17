@@ -5,6 +5,3 @@ require File.expand_path('../config/application', __FILE__)
 
 
 Houston::Application.load_tasks
-
-# gemoji
-load 'tasks/emoji.rake'
