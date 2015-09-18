@@ -193,7 +193,7 @@ class Project < ActiveRecord::Base
   alias :repo :version_control
   
   def version_control_temp_path
-    Rails.root.join("tmp", "#{slug}.git").to_s # <-- the .git here is misleading; could be any kind of VCS
+    Houston.root.join("tmp", "#{slug}.git").to_s # <-- the .git here is misleading; could be any kind of VCS
   end
   
   def find_commit_by_sha(sha)
