@@ -17,6 +17,7 @@ group :test do
   gem "factory_girl_rails"
   
   # For Jenkins
+  gem "therubyracer"
   gem "simplecov-json", require: false
   gem "minitest-reporters", require: false
   gem "minitest-reporters-turn_reporter", require: false
