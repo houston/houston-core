@@ -71,11 +71,17 @@ class Task < ActiveRecord::Base
     end
     
     def find_by_project_and_shorthand(project_slug, shorthand)
+      with_shorthand(shorthand)
+        .merge(Ticket.joins(:project)
+          .where(Project.arel_table[:slug].eq(project_slug)))
+        .first
+    end
+    
+    def with_shorthand(shorthand)
       _, ticket_number, letter = shorthand.split /(\d+)([a-z]+)/
-      where(ticket_id: Ticket.joins(:project)
-          .where(Project.arel_table[:slug].eq(project_slug))
-          .where(Ticket.arel_table[:number].eq(ticket_number)))
-        .lettered(letter).first
+      joins(:ticket)
+        .where(Ticket.arel_table[:number].eq(ticket_number))
+        .lettered(letter)
     end
     
     def versions
