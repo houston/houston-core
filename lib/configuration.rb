@@ -355,19 +355,11 @@ module Houston
       module_name = module_name.to_s
       modules.detect { |mod| mod.name == module_name }
     end
-    
-    def gem(*gemspec)
-      @gems << gemspec
-    end
-    
-    def gems
-      @gems + modules.select(&:bundle?).map(&:gemspec)
-    end
-    
-    
-    
-    
-    
+
+
+
+
+
     # Configuration for Releases
     
     def change_tags(*args)
