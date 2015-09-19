@@ -423,9 +423,22 @@ module Houston
     def every(interval, name, options={}, &block)
       @timers.push [:every, interval, name, options, block]
     end
-    
-    
-    
+
+
+
+
+
+    def load(glob)
+      __file__ = caller[0].split(":")[0]
+      glob << ".rb" unless glob.end_with? ".rb"
+      Dir.glob("#{File.dirname(__file__)}/#{glob}").each do |file|
+        next if File.directory?(file)
+        require file
+      end
+    end
+
+
+
     # Validation
     
     def validate!
