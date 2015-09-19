@@ -37,6 +37,10 @@ module Houston
             connection.open_problems(*args)
           end
           
+          def changed_problems(*args)
+            connection.changed_problems(*args)
+          end
+          
           def all_problems(*args)
             connection.all_problems(*args)
           end

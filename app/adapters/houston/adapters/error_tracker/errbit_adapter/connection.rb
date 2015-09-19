@@ -30,6 +30,10 @@ module Houston
             fetch_problems params.merge(open: true)
           end
           
+          def changed_problems(params={})
+            get("problems/changed.json", params).map(&method(:to_problem))
+          end
+          
           def all_problems(params={})
             fetch_problems params
           end
@@ -100,6 +104,7 @@ module Houston
               environment: attributes["environment"],
               url: attributes["url"],
               
+              deleted_at: attributes["deleted_at"].try(:to_time),
               comments: attributes["comments"])
           end
           

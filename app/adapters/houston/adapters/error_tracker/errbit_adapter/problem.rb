@@ -87,6 +87,10 @@ module Houston
             attributes[:comments]
           end
           
+          def deleted_at
+            attributes[:deleted_at]
+          end
+          
         end
       end
     end
