@@ -3,5 +3,6 @@
 
 require File.expand_path("../config/application", __FILE__)
 
+require "bundler/gem_tasks"
 
 Houston::Application.load_tasks
