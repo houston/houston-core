@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
   default_value_for :role, Houston.config.default_role
   
   validates :first_name, :last_name, :email, :presence => true, :length => {:minimum => 2}
-  validates :role, presence: true, inclusion: Houston.config.roles
+  validates :role, presence: true, inclusion: {in: Houston.config.roles, message: "%{value} is not one of the configured roles (#{Houston.config.roles.join(", ")})"}
   validate :all_email_addresses_must_be_unique
   
   

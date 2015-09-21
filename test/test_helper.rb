@@ -31,7 +31,7 @@ Houston.observer.async = false
 
 
 class ActiveSupport::TestCase
-  ActiveRecord::Migration.check_pending!
+  ActiveRecord::Migration.check_pending! unless ENV["CI"] == "true"
   include FactoryGirl::Syntax::Methods
 
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.

@@ -2,4 +2,8 @@
 
 export RAILS_ENV=test
 bundle
-bundle exec rake db:test:prepare test COVERAGE=on CI=true
+
+# Split these up into separate processes
+# or we get the error `Application has been already initialized.`
+bundle exec rake db:test:prepare
+bundle exec rake test:all COVERAGE=on CI=true
