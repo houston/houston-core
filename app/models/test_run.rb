@@ -308,6 +308,7 @@ class TestRun < ActiveRecord::Base
   
   
   def compare_results!
+    return if completed_without_running_tests?
     return unless commit
     compare_to_parent!
     compare_to_children!
