@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    houston (0.5.0)
+    houston-core (0.5.0)
       activerecord-insert_many
       activerecord-pluck_in_batches
       addressable
@@ -338,7 +338,7 @@ PLATFORMS
 DEPENDENCIES
   capybara
   factory_girl_rails
-  houston!
+  houston-core!
   minitest
   minitest-reporters
   minitest-reporters-turn_reporter

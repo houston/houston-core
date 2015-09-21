@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "houston/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "houston"
+  spec.name          = "houston-core"
   spec.version       = Houston::VERSION
   spec.authors       = ["Bob Lail"]
   spec.email         = ["bob.lailfamily@gmail.com"]
