@@ -107,6 +107,8 @@ module Houston
               raise Github::Unauthorized unless token
               @client = Octokit::Client.new(access_token: token.token)
               yield
+            rescue Octokit::Unauthorized
+              raise Github::Unauthorized, $!.message
             ensure
               @client = current_client
             end
