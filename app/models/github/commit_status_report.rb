@@ -52,7 +52,7 @@ module Github
         state: state,
         context: "jenkins",
         description: test_run.short_description,
-        target_url: test_run.results_url)
+        target_url: test_run.url)
     end
     
     
