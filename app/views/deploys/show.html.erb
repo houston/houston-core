@@ -13,6 +13,10 @@
 </p>
 
 <p>
+  Release Notes: <b><% if @deploy.release %><%= link_to "link", @deploy.release %><% else %>n/a<% end %></b>
+</p>
+
+<p>
   Completed: <b><%= @deploy.completed_at %></b>
 </p>
 
