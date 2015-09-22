@@ -11,6 +11,9 @@
 /log/*.log
 /tmp
 
+# Ignore built gems
+/pkg
+
 # Ignore misc.
 REVISION
 .sass-cache
