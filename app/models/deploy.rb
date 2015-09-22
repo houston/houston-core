@@ -75,6 +75,10 @@ class Deploy < ActiveRecord::Base
     completed_at.to_date
   end
   
+  def url
+    "https://#{Houston.config.host}/projects/#{project.slug}/deploys/#{id}"
+  end
+  
   
   
 private
