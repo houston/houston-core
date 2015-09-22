@@ -22,6 +22,10 @@ module CommitHelper
     link_to_commit_range(release.project, release.commit0, release.commit1)
   end
   
+  def link_to_commit_range_for_deploy(deploy)
+    link_to_commit_range deploy.project, deploy.previous_deploy.try(:sha), deploy.sha
+  end
+  
   def link_to_commit_range(project, commit0, commit1)
     range = "#{format_sha(commit0)}<span class=\"ellipsis\">...</span>#{format_sha(commit1)}".html_safe
     return range unless github_url?(project)
