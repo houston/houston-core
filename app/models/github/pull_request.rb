@@ -130,7 +130,7 @@ module Github
     end
 
     def associate_commits_with_self
-      self.commits = project.commits.between(base_sha, head_sha) if project
+      self.commits = project.commits.between(base_sha, head_sha)
     end
 
   end
