@@ -66,10 +66,6 @@ class Project < ActiveRecord::Base
     @testers ||= User.testers
   end
   
-  def gemnasium_branch
-    "master"
-  end
-  
   def self.[](slug)
     find_by_slug(slug)
   end
