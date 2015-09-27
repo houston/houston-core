@@ -9,6 +9,7 @@ module Houston
           
           def initialize(connection)
             @connection = connection
+            @branch_location = :local
           end
           
           
@@ -41,17 +42,17 @@ module Houston
           
           def branches
             Hash[connection.branches
-              .each(:local)
-              .map { |branch| [branch.name, branch.target.oid] }]
+              .each(branch_location)
+              .map { |branch| [name_of_branch(branch), branch.target.oid] }]
           ensure
             release
           end
           
           def branches_at(sha)
             connection.branches
-              .each(:local)
+              .each(branch_location)
               .select { |branch| branch.target.oid.start_with?(sha) }
-              .map(&:name)
+              .map { |branch| name_of_branch(branch) }
           ensure
             release
           end
@@ -163,7 +164,7 @@ module Houston
           
         protected
           
-          attr_reader :connection
+          attr_reader :connection, :branch_location
           
           def find_commit(sha)
             normalize_sha!(sha)
@@ -176,6 +177,10 @@ module Houston
             raise CommitNotFound, "\"#{sha}\" is not a valid commit"
           rescue Rugged::ObjectError
             raise CommitNotFound, "\"#{sha}\" is too short"
+          end
+          
+          def name_of_branch(branch)
+            branch.name
           end
           
           
