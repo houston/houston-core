@@ -306,6 +306,8 @@ GEM
       activerecord
     sugar-rails (1.4.1)
       railties (>= 3.0.0)
+    test_after_commit (0.4.1)
+      activerecord (>= 3.2)
     therubyracer (0.12.2)
       libv8 (~> 3.16.14.0)
       ref
@@ -346,6 +348,7 @@ DEPENDENCIES
   rr
   shoulda-context
   simplecov-json
+  test_after_commit
   therubyracer
   timecop
   webmock

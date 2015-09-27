@@ -10,7 +10,7 @@ module Github
 
     before_validation :associate_project_with_self, if: :repo_changed?
     before_save :associate_user_with_self, if: :username_changed?
-    after_commit :associate_commits_with_self, if: :head_sha_changed?
+    after_commit :associate_commits_with_self
 
     after_destroy { Houston.observer.fire "github:pull:closed", self }
     after_create { Houston.observer.fire "github:pull:opened", self }
@@ -49,7 +49,7 @@ module Github
 
           # Create or Update existing pulls
           expected_pulls.map do |expected_pr|
-            existing_pr = existing_pulls.detect { |existing_pr| 
+            existing_pr = existing_pulls.detect { |existing_pr|
               expected_pr["base"]["repo"]["name"] == existing_pr.repo &&
               expected_pr["number"] == existing_pr.number }
 
@@ -69,11 +69,14 @@ module Github
       end
 
       def upsert!(github_pr)
+        upsert(github_pr).tap { |pr| pr.save if pr.valid? }
+      end
+
+      def upsert(github_pr)
         Github::PullRequest.find_or_initialize_by(
           repo: github_pr["base"]["repo"]["name"],
           number: github_pr["number"])
           .merge_attributes(github_pr)
-          .tap { |pr| pr.save if pr.valid? }
       end
     end
 

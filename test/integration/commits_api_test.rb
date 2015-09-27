@@ -7,12 +7,11 @@ class CommitsApiTest < ActionDispatch::IntegrationTest
   setup do
     stub(Houston.config).identify_committers(anything).returns(["bob.lail@cph.org", "robert.lail@cph.org", "bob.lailfamily@gmail.com", "bob@example.com"])
     
-    project = Project.create!({
+    project = Project.create!(
       name: "Test",
       slug: "test",
       version_control_name: "Git",
-      extended_attributes:  { "git_location" => Rails.root.join("test", "data", "bare_repo.git") }
-    })
+      extended_attributes: { "git_location" => Rails.root.join("test", "data", "bare_repo.git") })
     
     project.repo.all_commits.each do |sha|
       native_commit = project.repo.native_commit(sha)
