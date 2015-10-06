@@ -70,7 +70,11 @@ module Github
       end
 
       def upsert!(github_pr)
+        retry_count ||= 0
         upsert(github_pr).tap { |pr| pr.save if pr.valid? }
+      rescue ActiveRecord::RecordNotUnique
+        retry unless (retry_count += 1) > 1
+        raise
       end
 
       def upsert(github_pr)
