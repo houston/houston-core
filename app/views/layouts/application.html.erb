@@ -9,6 +9,7 @@
     <meta name="revision" content="<%= revision %>" />
     <meta name="env" content="<%= Rails.env %>" />
     <meta name="s3-bucket" content="<%= Houston.config.s3[:bucket] %>" />
+    <%= yield :meta %>
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
     <!--[if lt IE 9]>
