@@ -62,6 +62,12 @@ class ApplicationController < ActionController::Base
   
   
   
+  def unfurling?
+    request.env["HTTP_USER_AGENT"] =~ /^Slackbot-LinkExpanding/
+  end
+  
+  
+  
   def after_sign_in_path_for(user)
     path = session["user_redirect_to"] || stored_location_for(user) || root_path
     path = root_path if path =~ /\/users\/(sign_in|password)/
