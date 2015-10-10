@@ -9,20 +9,20 @@ body.noscroll {
   left: 4%;
   right: 4%;
   bottom: 4%;
-  
+
   .modal-header {
     line-height: 1em;
     font-weight: 400;
     color: #D1D1D1;
     padding: 6px 15px;
     text-align: center;
-    
+
     position: absolute;
     left: 0;
     right: 0;
     z-index: 8;
   }
-  
+
   button.close {
     z-index: 9999;
     position: absolute;
@@ -30,7 +30,7 @@ body.noscroll {
     right: 4px;
     padding: 7px;
   }
-  
+
   .modal-body {
     max-height: none;
     max-width: none;
@@ -39,7 +39,7 @@ body.noscroll {
     padding: 36px 0 0 0;
     margin: 0;
   }
-  
+
   .ticket-body {
     position: absolute;
     top: 110px;
@@ -47,23 +47,23 @@ body.noscroll {
     right: 0;
     bottom: 0;
   }
-  
+
   .uploader,
   .buttons { margin-bottom: 0; }
-  
+
   .ticket-header {
     z-index: 5;
     background: white;
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
   }
-  
+
   .ticket-summary .show {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  
+
   .primary-frame {
     box-sizing: border-box;
     padding: 0 0 0 66px;
@@ -75,34 +75,34 @@ body.noscroll {
     bottom: 0;
     left: 0;
     width: 100%;
-    
+
     .show {
       padding: 15px;
       box-sizing: border-box;
       min-height: 100%;
       border-bottom-right-radius: 6px;
     }
-    
+
     textarea {
       padding: 15px;
       border: none;
       border-radius: 0;
       margin: 0;
     }
-    
+
     .buttons {
       padding: 15px;
       background: #e4e4e4;
       border-bottom-right-radius: 6px;
     }
-    
+
     hr { margin: 2em -15px; }
   }
-  
+
   .task-frame {
     display: none;
   }
-  
+
   .ticket-audit-frame {
     position: absolute;
     top: 0;
@@ -117,22 +117,22 @@ body.noscroll {
     background: white;
     z-index: 4;
     padding-right: 0;
-    
+
     &:hover {
       width: 320px;
       padding-right: 16px;
       overflow-y: auto;
       box-shadow: 2px 0 6px rgba(0, 0, 0, 0.15);
     }
-    
+
     .ticket-audit-timeline { width: 320px; }
   }
-  
+
   .ticket-body.show-task-frame {
     .primary-frame {
       width: 60%;
     }
-    
+
     .task-frame {
       box-sizing: border-box;
       display: block;

@@ -3,7 +3,7 @@ require "test_helper"
 
 class CodeClimateCoverageReportTest < ActiveSupport::TestCase
   attr_reader :sha, :report, :project, :test_run
-  
+
   setup do
     @sha = "e0e4580f44317a084dd5142fef6b4144a4394819"
     @project = Project.new(
@@ -26,9 +26,9 @@ class CodeClimateCoverageReportTest < ActiveSupport::TestCase
       ])
     @report = CodeClimate::CoverageReport.new(test_run)
   end
-  
-  
-  
+
+
+
   context "#code_climate_payload" do
     # https://github.com/codeclimate/ruby-test-reporter/blob/v0.2.0/lib/code_climate/test_reporter/formatter.rb#L58-L75
     should "include the right keys" do
@@ -44,15 +44,15 @@ class CodeClimateCoverageReportTest < ActiveSupport::TestCase
         :environment,
         :ci_service
       ]
-      
+
       assert_equal keys, report.code_climate_payload.keys
     end
-    
+
     context "/source_files" do
       should "contain one hash for each source file" do
         assert_equal 3, report.source_files.length
       end
-      
+
       # https://github.com/codeclimate/ruby-test-reporter/blob/v0.2.0/lib/code_climate/test_reporter/formatter.rb#L44-L55
       should "include the right keys" do
         keys = [
@@ -68,7 +68,7 @@ class CodeClimateCoverageReportTest < ActiveSupport::TestCase
         assert_equal keys, source_file.keys
       end
     end
-    
+
     context "/run_at" do
       should "return an integer representing the time the TestRun completed" do
         time = Time.now
@@ -76,14 +76,14 @@ class CodeClimateCoverageReportTest < ActiveSupport::TestCase
         assert_equal time.to_i, report.run_at
       end
     end
-    
+
     context "/line_counts" do
       should "return the sum of all lines, covered lines, and missed lines from all source files" do
         expected_totals = { total: 22, covered: 9, missed: 4 }
         assert_equal expected_totals, report.line_counts
       end
     end
-    
+
     context "/commit_info" do
       should "return the sha, commit time, and branch" do
         # head is the 40-character sha
@@ -95,7 +95,7 @@ class CodeClimateCoverageReportTest < ActiveSupport::TestCase
         assert_equal expected_commit_info, report.commit_info
       end
     end
-    
+
     context "/environment" do
       should "return the right keys" do
         keys = [
@@ -109,7 +109,7 @@ class CodeClimateCoverageReportTest < ActiveSupport::TestCase
         assert_equal keys, report.environment.keys
       end
     end
-    
+
     context "/ci_service" do
       # https://github.com/codeclimate/ruby-test-reporter/blob/v0.2.0/lib/code_climate/test_reporter/ci.rb#L27-L33
       should "give the Jenkins build URL and build number" do
@@ -125,13 +125,13 @@ class CodeClimateCoverageReportTest < ActiveSupport::TestCase
       end
     end
   end
-  
-  
-  
+
+
+
   test "#blob_id_of should return the blob_id of a file for a particular commit" do
     assert_equal "ccf4bdedd71011176c0236e98268d71ed73eb80f", report.blob_id_of("README.md")
   end
-  
-  
-  
+
+
+
 end

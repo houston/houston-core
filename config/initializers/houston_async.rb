@@ -1,5 +1,5 @@
 module Houston
-  
+
   def self.async
     Thread.new do
       begin
@@ -9,5 +9,5 @@ module Houston
       end
     end
   end
-  
+
 end

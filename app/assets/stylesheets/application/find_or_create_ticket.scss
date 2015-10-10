@@ -1,12 +1,12 @@
 .find-or-create-ticket {
   form { margin: 0; }
   .create-ticket { display: none; }
-  
+
   &.no-suggestions.has-content .create-ticket {
     display: block;
     position: absolute;
     padding: 0.5em 1em;
   }
-  
+
   padding-bottom: 1.5em;
 }

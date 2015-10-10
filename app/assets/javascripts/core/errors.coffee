@@ -1,5 +1,5 @@
 class window.Errors
-  
+
   constructor: (response)->
     if response.status == 401
       if response.getResponseHeader('X-Credentials') == 'Missing Credentials'
@@ -13,7 +13,7 @@ class window.Errors
         @errors = {base: [message]}
     else
       @errors = JSON.parse(response.responseText)
-  
+
   renderToAlert: ->
     sentences = []
     for attribute, messages of @errors

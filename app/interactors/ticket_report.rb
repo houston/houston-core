@@ -1,5 +1,5 @@
 class TicketReport
-  
+
   class ViewTicket < Struct.new(
       :id,
       :number,
@@ -13,15 +13,15 @@ class TicketReport
       :closed_at,
       :milestone_id,
       :milestone_name)
-    
+
     def antecedents
       (super || []).map { |s| TicketAntecedent.from_s(self, s) }
     end
-    
+
     def reporter_name
       "#{reporter_first_name} #{reporter_last_name}"
     end
-    
+
     def as_json(options={})
       { id: id,
         number: number,
@@ -38,14 +38,14 @@ class TicketReport
         closedAt: closed_at }
     end
   end
-  
+
   def initialize(tickets)
     @tickets = tickets
       .joins("LEFT OUTER JOIN users ON tickets.reporter_id=users.id")
       .joins("LEFT OUTER JOIN milestones ON tickets.milestone_id=milestones.id")
       .order(Ticket.arel_table[:created_at].desc)
   end
-  
+
   def to_a
     @tickets.pluck(
         :id,
@@ -62,5 +62,5 @@ class TicketReport
         "milestones.name"
       ).map { |args| ViewTicket.new(*args) }
   end
-  
+
 end

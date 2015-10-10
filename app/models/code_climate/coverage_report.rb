@@ -21,25 +21,25 @@
 #
 module CodeClimate
   class CoverageReport
-    
+
     def self.publish!(test_run)
       self.new(test_run).publish!
     end
-    
+
     def initialize(test_run)
       @project = test_run.project
       @test_run = test_run
     end
-    
+
     attr_reader :project, :test_run
-    
+
     def publish!
       code_climate = CodeClimate::TestReporter::Client.new
       code_climate.post_results code_climate_payload
     end
-    
-    
-    
+
+
+
     # https://github.com/codeclimate/ruby-test-reporter/blob/v0.2.0/lib/code_climate/test_reporter/formatter.rb#L58-L75
     # https://github.com/codeclimate/ruby-test-reporter/blob/v0.4.1/lib/code_climate/test_reporter/formatter.rb#L65-L80
     def code_climate_payload
@@ -56,13 +56,13 @@ module CodeClimate
         ci_service:         ci_service
       }
     end
-    
-    
-    
+
+
+
     def repo_token
       project.code_climate_repo_token
     end
-    
+
     # https://github.com/codeclimate/ruby-test-reporter/blob/v0.2.0/lib/code_climate/test_reporter/formatter.rb#L39-L56
     # https://github.com/codeclimate/ruby-test-reporter/blob/v0.4.1/lib/code_climate/test_reporter/formatter.rb#L51-L60
     def source_files
@@ -81,19 +81,19 @@ module CodeClimate
         }
       end
     end
-    
+
     def run_at
       test_run.completed_at.to_i
     end
-    
+
     def covered_percent
       (100 * test_run.covered_percent).round(2)
     end
-    
+
     def covered_strength
       test_run.covered_strength.round(2)
     end
-    
+
     def line_counts
       @line_counts ||= source_files.each_with_object(Hash.new(0)) do |file, totals|
         totals[:total]   += file[:line_counts][:total]
@@ -101,7 +101,7 @@ module CodeClimate
         totals[:missed]  += file[:line_counts][:missed]
       end
     end
-    
+
     # https://github.com/codeclimate/ruby-test-reporter/blob/v0.2.0/lib/code_climate/test_reporter/git.rb
     # https://github.com/codeclimate/ruby-test-reporter/blob/v0.4.1/lib/code_climate/test_reporter/git.rb#L8-L10
     def commit_info
@@ -111,7 +111,7 @@ module CodeClimate
         branch:           test_run.branch,
       }
     end
-    
+
     # https://github.com/codeclimate/ruby-test-reporter/blob/v0.2.0/lib/code_climate/test_reporter/formatter.rb#L67-L73
     # https://github.com/codeclimate/ruby-test-reporter/blob/v0.4.1/lib/code_climate/test_reporter/formatter.rb#L74-L78
     def environment
@@ -123,7 +123,7 @@ module CodeClimate
         gem_version:      CodeClimate::TestReporter::VERSION
       }
     end
-    
+
     # https://github.com/codeclimate/ruby-test-reporter/blob/v0.2.0/lib/code_climate/test_reporter/ci.rb
     # https://github.com/codeclimate/ruby-test-reporter/blob/v0.4.1/lib/code_climate/test_reporter/ci.rb#L28-L32
     def ci_service
@@ -140,7 +140,7 @@ module CodeClimate
         {}
       end
     end
-    
+
     def committed_at
       # NB: CodeClimate actually uses committed_at
       return test_run.commit.authored_at if test_run.commit
@@ -149,19 +149,19 @@ module CodeClimate
     rescue Houston::Adapters::VersionControl::CommitNotFound
       nil
     end
-    
-    
-    
+
+
+
     # https://github.com/codeclimate/ruby-test-reporter/blob/v0.2.0/lib/code_climate/test_reporter/formatter.rb#L85-L88
     def short_filename(filename)
       filename
     end
-    
-    # https://github.com/codeclimate/ruby-test-reporter/blob/v0.2.0/lib/code_climate/test_reporter/formatter.rb#L78-L83   
+
+    # https://github.com/codeclimate/ruby-test-reporter/blob/v0.2.0/lib/code_climate/test_reporter/formatter.rb#L78-L83
     def blob_id_of(filename)
       blob = project.repo.find_file(filename, commit: test_run.sha)
       blob && blob.oid
     end
-    
+
   end
 end

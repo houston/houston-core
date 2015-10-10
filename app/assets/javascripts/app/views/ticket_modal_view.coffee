@@ -11,7 +11,7 @@ class @TicketModalView extends Backbone.View
     @template = HandlebarsTemplates['tickets/modal']
     @renderTicket = HandlebarsTemplates['tickets/show']
     @$el.attr('tabindex', -1) # so that ESC works
-    
+
     if @ticketNumbers
       @count = @ticketNumbers.length
       Mousetrap.bind 'up',  (e)=>
@@ -46,22 +46,22 @@ class @TicketModalView extends Backbone.View
       ticket: @renderTicket(@ticket.toJSON())
       index: @index + 1
       count: @count
-    
+
     $modal = @$el.modal()
     $('body').addClass('noscroll')
     $modal.find('[title]').tooltip
       placement: 'bottom'
-    
+
     @taskView = @renderTaskView? @$el.find('.task-frame')[0], @ticket,
       prev: !!prev
     @$el.find('.ticket-body').toggleClass 'show-task-frame', !!@taskView
     @taskView?.render()
-    
+
     console.log 'edit', @edit, document.getElementById('ticket_view')
     @editView = new EditTicketView(
       el: document.getElementById('ticket_view'),
       ticket: @ticket).render() if @edit
-    
+
     $modal.on 'hidden', (e)->
       if $modal[0] == e.target
         $modal.remove()

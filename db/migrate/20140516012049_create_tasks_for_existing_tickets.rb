@@ -7,7 +7,7 @@ class CreateTasksForExistingTickets < ActiveRecord::Migration
         first_commit_at = ticket.commits.earliest.try :created_at
         effort = ticket.extended_attributes["estimated_effort"]
         effort = effort.blank? ? nil : effort.to_d
-        
+
         task = ticket.tasks.create!({
           description: ticket.summary,
           first_release_at: first_release_at,

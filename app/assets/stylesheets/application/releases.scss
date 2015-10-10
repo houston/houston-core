@@ -12,7 +12,7 @@
 
 .-houston-changelog {
   clear: both;
-  
+
   h4 {
     position: relative;
     margin: 0 0 14px 0;
@@ -23,39 +23,39 @@
     font-size: 16px;
     line-height: 20px;
     text-transform: uppercase;
-    
+
     .weekday {
       font-weight: 200;
       color: #666;
     }
-    
+
     a {
       text-transform: lowercase;
       font-weight: 200;
       float: right;
     }
   }
-  
+
   .-houston-changelog-day {
     margin-bottom: 28px;
   }
-  
+
   .release-header {
     margin-left: 3px;
-    
+
     .commit-range {
       float: right;
       font-size: 0.88em;
     }
   }
-  
+
   .release { padding-left: 1em; }
-  
+
   .commit-sha { float: right; }
-  
+
   .change {
     margin: 0 0 10px 0;
-    
+
     &::after {
       content: '.';
       clear: both;
@@ -65,7 +65,7 @@
       height: 0;
       visibility: hidden;
     }
-    
+
     .change-tag {
       float: left;
       clear: left;
@@ -87,18 +87,18 @@
       background-color: #888;
       color: white;
     }
-    
+
     .change-summary {
       margin-left: 124px;
       word-wrap: break-word;
       font-size: 1.12em;
       line-height: 19px; // height of .change-tag
       padding-top: 3px; // padding on .change-tag
-      
+
       p { margin: 0; }
     }
   }
-  
+
 }
 
 
@@ -107,40 +107,40 @@
 
 .release-detail {
   line-height: 1.5em;
-  
+
   .release-detail-section {
     border-top: 1px solid #f2f2f2;
     padding-top: 1.5em;
     margin-top: 1.5em;
   }
-  
+
   .release-commits ul {
     font-size: 0.88em;
     line-height: 1em;
   }
-  
+
   h5 {
     float: left;
     clear: left;
     width: 100px;
     margin: 0;
     color: #777;
-    
+
     .commit-range { font-size: 0.75em; font-weight: normal; }
   }
-  
+
   p.no-items { margin: 0 0 0 124px; }
-  
+
   ul {
     margin: 0 0 0 124px;
     padding: 0;
-    
+
     &.typeahead { margin: 2px 0 0; }
     &.commits { max-width: 720px; }
-    
+
     li {
       list-style-type: none;
-      
+
       p { margin: 0; }
     }
   }

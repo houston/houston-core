@@ -1,14 +1,14 @@
 class CommitPresenter
   include UrlHelper
-  
+
   def initialize(commits)
     @commits = OneOrMany.new(commits)
   end
-  
+
   def as_json(*args)
     @commits.map(&method(:commit_to_json))
   end
-  
+
   def commit_to_json(commit)
     hash = {
       id: commit.id,
@@ -19,7 +19,7 @@ class CommitPresenter
       committer: {
         name: commit.committer,
         email: commit.committer_email } }
-    
+
     release = commit.releases.earliest
     if release
       # NB: we want to sort these with TesterNotes
@@ -31,7 +31,7 @@ class CommitPresenter
     end
     hash
   end
-  
+
   def verbose
     @commits.map do |commit|
       commit_to_json(commit).merge({
@@ -48,5 +48,5 @@ class CommitPresenter
           name: committer.name } } })
     end
   end
-  
+
 end

@@ -1,16 +1,16 @@
 class RunTestsOnPostReceive
-  
+
   def self.instance
     @instance
   end
-  
+
   def self.begin!
     @instance = self.new.tap(&:begin!)
   end
-  
+
   def begin!
     Rails.logger.info "\e[34;1mSetting up observers for RunTestsOnPostReceive\e[0m"
-    
+
     # Here's how this works:
     #
     #   1. GitHub receives a `git push` and triggers all Web Hooks:
@@ -24,14 +24,14 @@ class RunTestsOnPostReceive
       Rails.logger.info "\e[34m[hooks:post_receive] creating a TestRun\e[0m"
       create_a_test_run(project, params)
     end
-    
+
     #   4. Houston notifies GitHub that the test run has started:
     #      POST /repos/houston/houston/statuses/:sha
     Houston.observer.on "test_run:start" do |test_run|
       Rails.logger.info "\e[34m[test_run:start] publishing status on GitHub\e[0m"
       publish_status_to_github(test_run)
     end
-    
+
     #   5. Jenkins checks out the project, runs the tests, and
     #      tells Houston that it is finished:
     #      POST /projects/houston/hooks/post_build.
@@ -44,89 +44,89 @@ class RunTestsOnPostReceive
       Rails.logger.info "\e[34m[hooks:post_build] fetching TestRun results\e[0m"
       fetch_test_run_results(project, params)
     end
-    
+
     #   8. Houston publishes results to GitHub:
     #      POST /repos/houston/houston/statuses/:sha
     Houston.observer.on "test_run:complete" do |test_run|
       Rails.logger.info "\e[34m[test_run:complete] publishing status on GitHub\e[0m"
       publish_status_to_github(test_run)
     end
-    
+
     #   9. Houston publishes results to Code Climate.
     Houston.observer.on "test_run:complete" do |test_run|
       Rails.logger.info "\e[34m[test_run:complete] publishing status on CodeClimate\e[0m"
       publish_coverage_to_code_climate(test_run)
     end
   end
-  
-  
-  
+
+
+
   def create_a_test_run(project, params)
     unless project.has_ci_server?
       Rails.logger.warn "[hooks:post_receive] the project #{project.name} is not configured to be used with a Continuous Integration server"
       return
     end
-    
+
     payload = PostReceivePayload.new(params)
-    
+
     unless payload.commit
       Rails.logger.error "[hooks:post_receive] no commit found in payload"
       return
     end
-    
+
     if payload.commit == Houston::NULL_GIT_COMMIT
       Rails.logger.error "[hooks:post_receive] branch was deleted; not running tests again"
       return
     end
-    
+
     test_run = project.test_runs.find_by_sha(payload.commit)
-    
+
     if test_run
       Rails.logger.warn "[hooks:post_receive] a test run exists for #{test_run.short_commit}; doing nothing"
       return
     end
-    
+
     test_run = TestRun.new(
       project: project,
       sha: payload.commit,
       agent_email: payload.agent_email,
       branch: payload.branch)
-    
+
     notify_of_invalid_configuration(test_run) do
       test_run.start!
     end
-  
+
   rescue ActiveRecord::RecordNotUnique
     Rails.logger.warn "[hooks:post_receive] a test run exists for #{test_run.short_commit}; doing nothing"
   rescue Exception # rescues StandardError by default; but we want to rescue and report all errors
     Houston.report_exception $!, parameters: params.merge(project: project.slug)
   end
-  
-  
+
+
   def fetch_test_run_results(project, params)
     commit, results_url = params.values_at(:commit, :results_url)
     test_run = project.test_runs.find_by_sha(commit)
-    
+
     unless test_run
       Rails.logger.warn "[hooks:post_build] no test run found for project '#{project.slug}' and commit '#{commit}'"
       return
     end
-    
+
     if results_url.blank?
       message = "#{project.ci_server_name} is not appropriately configured to build #{project.name}."
       additional_info = "#{project.ci_server_name} did not supply 'results_url' when it triggered the post_build hook"
       ProjectNotification.ci_configuration_error(test_run, message, additional_info: additional_info).deliver!
       return
     end
-    
+
     test_run.completed!(results_url)
-    
+
   rescue Exception # rescues StandardError by default; but we want to rescue and report all errors
     Houston.report_exception $!, parameters: params.merge(project: project.slug)
   end
-  
-  
-  
+
+
+
   def publish_status_to_github(test_run)
     return unless test_run.project.repo.respond_to? :commit_status_url
     Github::CommitStatusReport.publish!(test_run)
@@ -141,9 +141,9 @@ class RunTestsOnPostReceive
       project: test_run.project.slug,
       method: "publish_status_to_github" }
   end
-  
-  
-  
+
+
+
   def publish_coverage_to_code_climate(test_run)
     return if test_run.project.code_climate_repo_token.blank?
     CodeClimate::CoverageReport.publish!(test_run)
@@ -162,11 +162,11 @@ class RunTestsOnPostReceive
       project: test_run.project.slug,
       method: "publish_coverage_to_code_climate" }
   end
-  
-  
-  
+
+
+
 private
-  
+
   def notify_of_invalid_configuration(test_run)
     begin
       yield
@@ -176,5 +176,5 @@ private
       ProjectNotification.ci_configuration_error(test_run, message, additional_info: $!.message).deliver!
     end
   end
-  
+
 end

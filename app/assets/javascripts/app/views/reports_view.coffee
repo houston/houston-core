@@ -4,13 +4,13 @@ class @ReportsView extends Backbone.View
     @$el.html '''
       <h3>Queue Size and Ticket Age</h3>
       <div id="queue_age" class="graph"></div>
-      
+
       <h3>Cycle Time (days)</h3>
       <div id="cycle_time" class="graph"></div>
-      
+
       <h3>Time-to-Release (days)</h3>
       <div id="time_to_release" class="graph"></div>
-      
+
       <h3>Time-to-First-Test (hours)</h3>
       <div id="time_to_first_test" class="graph"></div>
     '''
@@ -28,14 +28,14 @@ class @ReportsView extends Backbone.View
         .data(json.data)
         .addLine(json.line)
         .render()
-    
+
     $.getJSON "/reports/cycle-time#{window.location.search}", (data)->
       new Houston.StackedAreaGraph()
         .selector('#cycle_time')
         .labels(['cycle time'])
         .data(data)
         .render()
-    
+
     $.getJSON "/reports/time-to-release#{window.location.search}", (data)->
       new Houston.StackedAreaGraph()
         .selector('#time_to_release')

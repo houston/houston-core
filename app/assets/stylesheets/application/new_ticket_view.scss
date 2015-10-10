@@ -1,66 +1,66 @@
 #new_ticket_view {
-  
+
   &.full-page {
     position: fixed;
     margin-top: 8em;
     width: 80%;
     left: 10%;
   }
-  
+
   &::after {
     position: absolute;
     top: -2em;
   }
-  
+
   &[data-mode="type"]::after {
     content: 'What kind of ticket is this? [bug]? [feature]?';
   }
-  
+
   &[data-mode="label"]::after {
     content: 'What view or feature does it have to do with? Profile? Enter Attendance?';
   }
-  
+
   &[data-mode="summary"]::after {
     content: 'Hit return to finish making your ticket  ⏎';
   }
-  
+
   &[data-mode="description"]::after {
     content: 'Write a description that anyone can follow on their account (⌘+Enter to save)';
   }
-  
+
   #ticket_summary {
     display: block;
     width: 100%;
     padding: 8px 12px;
   }
-  
+
   #ticket_description {
     display: block;
     width: 100%;
   }
-  
+
   #ticket_suggestions {
     display: block;
     margin: 0;
     padding: 0 1em;
-    
+
     li {
       display: block;
       margin: 0;
       padding: 0;
-      
+
       a {
         display: block;
         padding: 2px 0;
       }
     }
   }
-  
+
   .ticket-closed {
     opacity: 0.3;
     text-decoration: line-through;
   }
-  
+
   .new-ticket-full {
     display: none;
   }
@@ -69,16 +69,16 @@
 #new_ticket_modal {
   width: 720px;
   margin-left: -360px;
-  
+
   .modal-body {
     min-height: 480px;
     overflow: hidden;
   }
-  
+
   #new_ticket_view {
     position: relative;
     margin-top: 2em;
-    
+
     #ticket_summary { width: 662px; }
     #ticket_description {
       width: 674px;

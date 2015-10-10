@@ -85,7 +85,7 @@ private
 
   def a_pull_request
     { "id" => "42766810",
-      "html_url" => "https://github.com/concordia-publishing-house/test/pull/1", 
+      "html_url" => "https://github.com/concordia-publishing-house/test/pull/1",
       "number" => "1",
       "state" => "open",
       "locked" => false,

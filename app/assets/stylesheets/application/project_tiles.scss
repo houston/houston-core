@@ -12,11 +12,11 @@
     font-weight: 200;
     color: black;
     background-color: #efefef;
-    
+
     transition-property: background-color;
     transition-duration: 0.5s;
     transition-timing-function: cubic-bezier(0,1,.96,.64);
-    
+
     &:hover {
       color: white;
       text-decoration: none;

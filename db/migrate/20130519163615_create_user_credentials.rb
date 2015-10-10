@@ -7,11 +7,11 @@ class CreateUserCredentials < ActiveRecord::Migration
       t.binary :password
       t.binary :password_key
       t.binary :password_iv
-      
+
       t.timestamps
     end
   end
-  
+
   def down
     drop_table :user_credentials
   end

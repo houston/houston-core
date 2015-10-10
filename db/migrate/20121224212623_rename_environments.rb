@@ -4,9 +4,9 @@ class RenameEnvironments < ActiveRecord::Migration
     "master" => "production",
     "PRI" => "Staging",
     "Production" => "Production" }
-  
+
   class Environment < ActiveRecord::Base; end
-  
+
   def up
     Environment.all.each do |environment|
       environment.slug = RENAMES[environment.slug] ||
@@ -16,7 +16,7 @@ class RenameEnvironments < ActiveRecord::Migration
       environment.save!
     end
   end
-  
+
   def down
     Environment.all.each do |environment|
       environment.slug = RENAMES.key(environment.slug) ||

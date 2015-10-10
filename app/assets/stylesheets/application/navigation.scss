@@ -7,11 +7,11 @@ $project-navbar-height: 30px;
 .nav-icon {
   display: inline-block;
   height: 18px;
-  
+
   svg {
     width: 18px;
     height: 18px;
-    
+
     * { fill: #999; }
   }
 }
@@ -74,7 +74,7 @@ $project-navbar-height: 30px;
   color: white;
   text-shadow: none;
   height: 20px;
-  
+
   &::after {
     font-family: 'FontAwesome';
     content: '\f0dc';
@@ -92,9 +92,9 @@ $project-navbar-height: 30px;
   padding: 3px 3em 0;
   height: $project-navbar-height;
   overflow: hidden;
-  
+
   .nav-icon svg * { fill: white; }
-  
+
   .project-no-features {
     color: white;
     line-height: $project-navbar-height;
@@ -102,13 +102,13 @@ $project-navbar-height: 30px;
 }
 
 .project-navbar .nav > li { float: left; }
-.project-navbar .nav > li > a, 
+.project-navbar .nav > li > a,
 .project-navbar .nav > li.current {
   padding: 5px 15px;
 }
 .project-navbar .nav > li > a {
   color: white;
-  
+
   &:hover, &:focus {
     text-decoration: none;
     background-color: rgba(255,255,255,0.25);
@@ -118,7 +118,7 @@ $project-navbar-height: 30px;
 .project-navbar .nav > li.current {
   background: white;
   color: black;
-  
+
   .nav-icon svg * { fill: black; }
 }
 
@@ -137,7 +137,7 @@ $project-navbar-height: 30px;
     height: $avatar-size;
     opacity: 0.9;
   }
-  
+
   a:hover .avatar, .dropdown.open .avatar { opacity: 1; }
 }
 
@@ -178,22 +178,22 @@ $threshhold: 820px;
   margin: 0 0 1em;
   font-weight: 200;
   font-size: 2em;
-  
-  
+
+
   a.btn { color: white ;}
-  
+
   .buttons { float: right; }
-  
+
   small {
     font-weight: 100;
     font-size: .75em;
     text-transform: uppercase;
     color: inherit;
-    
+
     &.colon { font-family: arial; }
     &.postfix { text-transform: lowercase; }
   }
-  
+
   .light { font-weight: 100; }
 }
 

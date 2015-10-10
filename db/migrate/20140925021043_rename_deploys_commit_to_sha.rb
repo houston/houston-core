@@ -9,7 +9,7 @@ class RenameDeploysCommitToSha < ActiveRecord::Migration
     SQL
     change_column_null :deploys, :sha, false
   end
-  
+
   def down
     change_column_null :deploys, :sha, true
     rename_column :deploys, :sha, :commit

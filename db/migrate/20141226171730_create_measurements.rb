@@ -7,7 +7,7 @@ class CreateMeasurements < ActiveRecord::Migration
       t.string :value, null: false
       t.timestamp :taken_at, null: false
       t.date :taken_on, null: false
-      
+
       t.index [:subject_type, :subject_id]
       t.index :name
       t.index :taken_on

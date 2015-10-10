@@ -9,14 +9,14 @@ $completed-foreground: rgb(42, 133, 19);
       a { color: $completed-foreground; }
       .exception-comments { background: #DFECDC; }
     }
-    
+
     .fa-check-sign {
       font-size: 19px;
       color: #666;
     }
   }
   &.hide-completed .exception.has-ticket { display: none; }
-  
+
   .buttons { text-align: center; }
   .exception-summary { max-width: 30em; }
   .exception-message { word-break: break-all; }
@@ -39,7 +39,7 @@ $completed-foreground: rgb(42, 133, 19);
     text-overflow: ellipsis;
     font-size: 0.9em;
     color: #484848;
-    
+
     p { display: inline; }
   }
   .exception-first, .exception-last {

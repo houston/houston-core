@@ -1,21 +1,21 @@
 require "test_helper"
 
 class SourceFileCoverageTest < ActiveSupport::TestCase
-  
-  
+
+
   # https://github.com/colszowka/simplecov/blob/v0.7.1/test/test_source_file.rb
   test "SourceFileCoverage should pass SimpleCov::SourceFile's specs" do
     project = Project.new(name: "Test", slug: "test", version_control_name: "Mock")
     test_run = TestRun.new(project: project, sha: "bd3e9e2", coverage: [
       { filename: "test.rb", coverage: [nil, 1, 1, 1, nil, nil, 1, 0, nil, nil, nil, nil, nil, nil, nil, nil] }
     ])
-    
+
     mock(project).read_file("test.rb", commit: "bd3e9e2") do
       File.read(Rails.root.join("test", "fixtures", "simplecov_sample.rb"))
     end
-    
+
     @source_file = test_run.coverage_detail.first
-    
+
     assert @source_file.filename, "should have a filename"
     assert_equal @source_file.source, @source_file.src, "should have source equal to src"
     assert_equal @source_file.source_lines, @source_file.lines, "should have source_lines equal to lines"
@@ -28,6 +28,6 @@ class SourceFileCoverageTest < ActiveSupport::TestCase
     assert_equal [12, 13, 14], @source_file.skipped_lines.map(&:line), "should return line numbers 12, 13, 14 for skipped_lines"
     assert_equal 80.0, @source_file.covered_percent, "should have 80% covered_percent"
   end
-  
-  
+
+
 end

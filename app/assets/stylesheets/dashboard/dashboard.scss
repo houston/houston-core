@@ -23,7 +23,7 @@ $vivid-green: #7ab84a;
   right: 0;
   bottom: 0;
   padding: 12px;
-  
+
   &.red {
     background: #5C1608;
     color: rgba(255, 255, 230, 0.435);
@@ -31,26 +31,26 @@ $vivid-green: #7ab84a;
     .refresher-path { fill: rgba(255, 255, 230, 0.2); }
     .label { color: rgba(255, 255, 230, 0.9); }
   }
-  
+
   &.green {
     background: $background-green;
     color: $foreground-green;
     .refresher-track { fill: rgba(255, 255, 100, 0.07); }
     .refresher-path { fill: rgba(255, 255, 210, 0.2); }
     .label { color: rgba(255, 255, 210, 0.9); }
-    
+
     .axis {
       text { fill: $foreground-green; }
       text.legend { fill: $subtle-green; }
       path, line { stroke: $subtle-green; }
     }
-    
+
     .burndown-chart {
       circle { fill: $background-green; }
-      
+
       .circle-completed, .line.line-completed { stroke: $vivid-green; }
       .effort-remaining.effort-completed { fill: $vivid-green; }
-      
+
       .circle-committed, .line.line-committed { stroke: $subtle-vivid-green; }
       .effort-remaining.effort-committed { fill: $subtle-vivid-green; }
     }
@@ -61,7 +61,7 @@ $vivid-green: #7ab84a;
     margin: 0 auto;
     position: relative;
   }
-  
+
   h1 {
     color: inherit;
     font-size: 4em;
@@ -71,10 +71,10 @@ $vivid-green: #7ab84a;
     background: none;
     box-shadow: none;
   }
-  
+
   a, a:visited { color: inherit; }
   a:hover, a:active { color: #ccc; }
-  
+
   .refresher {
     position: absolute;
     top: 0;
@@ -82,26 +82,26 @@ $vivid-green: #7ab84a;
   }
   .refresher-track { fill: rgba(255,255,255,0.1); }
   .refresher-path { fill: rgba(255,255,255,0.2); }
-  
-  
+
+
   .axis {
     text { font-size: 13px; fill: $foreground; }
     text.legend { fill: $subtle; }
     path, line { stroke: $subtle; }
   }
-  
+
   .burndown-chart {
     circle { fill: $background; }
     .effort-remaining { font-weight: 400; }
-    
+
     .circle-completed, .line.line-completed { stroke: $vivid; }
     .effort-remaining.effort-completed { fill: $vivid; }
-    
+
     .circle-committed, .line.line-committed { stroke: $foreground; }
     .effort-remaining.effort-committed { fill: $foreground; }
   }
-  
-  .label { 
+
+  .label {
     text-shadow: none;
     font-weight: 400;
     background: $subtle;

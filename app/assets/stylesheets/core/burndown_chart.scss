@@ -25,14 +25,14 @@ dl.legend {
   display: inline-block;
   line-height: 1em;
   font-size: 11px;
-  
+
   dt {
     display: inline-block;
     width: 1em;
     height: 1em;
     border-radius: 1em;
   }
-  
+
   dd {
     display: inline;
     line-height: 1.25em;
@@ -47,29 +47,29 @@ dl.legend {
 
 .burndown-chart {
   .legend { font-size: 10px; }
-  
+
   .axis text {
     font-size: 10px;
   }
-  
+
   .regression {
     fill: none;
     stroke-dasharray: 5px, 4px;
     stroke-width: 1.5px;
   }
-  
+
   .regression-all {
     stroke: #e0e0e0;
   }
-  
+
   .regression-last-3 {
     stroke: #93C9E5;
   }
-  
+
   .regression-last-2 {
     stroke: #F8E3BE;
   }
-  
+
   .line {
     &.line-completed { stroke: #1f77b4; }
     &.line-committed { stroke: #cccccc; }
@@ -77,16 +77,16 @@ dl.legend {
   circle {
     fill: white;
     stroke-width: 1.5px;
-    
+
     &.circle-completed { stroke: #1f77b4; }
     &.circle-committed { stroke: #cccccc; }
   }
   .effort-remaining {
     font-size: 11px;
     font-weight: bold;
-    
+
     &.effort-completed { fill: #1B4E72; }
     &.effort-committed { fill: #b0b0b0; }
   }
-  
+
 }

@@ -1,5 +1,5 @@
 class @ProblemsView extends Backbone.View
-  
+
   initialize: ->
     @project = @options.project
     @problems = @options.problems
@@ -10,19 +10,19 @@ class @ProblemsView extends Backbone.View
 
   render: ->
     @refresh()
-    
+
     $('#problems').on 'click', 'tr', _.bind(@toggleCheckbox, @)
     $('#problems').on 'click', ':checkbox', _.bind(@styleRow, @)
-    
+
     $('#merge_exceptions').click _.bind(@mergeExceptions, @)
     $('#unmerge_exceptions').click _.bind(@unmergeExceptions, @)
     $('#delete_exceptions').click _.bind(@deleteExceptions, @)
-    
+
     $('#exceptions table').tablesorter
       headers:
         2: {sorter: 'timestamp'}
         3: {sorter: 'timestamp'}
-    
+
     $('#exceptions').on 'click', '.btn-new-ticket', (e)=>
       $button = $(e.target)
       $button.attr('disabled', 'disabled')
@@ -42,11 +42,11 @@ class @ProblemsView extends Backbone.View
           problem.ticketUrl = ticket.url
           problem.ticketNumber = ticket.number
           @refresh()
-  
+
   refresh: ->
     $('#problems').html @template(problems: @problems)
     @updateProblemCount()
-  
+
   updateProblemCount: ->
     $('#problem_count').html $('.exception:not(.has-ticket)').length
 
@@ -93,7 +93,7 @@ class @ProblemsView extends Backbone.View
 
   selectedProblems: ->
     $('#problems_form').serializeObject()['problems[]'] || []
-  
+
   alert: (button, message)->
     $(button)
       .attr('data-content', message)

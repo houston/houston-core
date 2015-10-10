@@ -3,9 +3,9 @@ class LinkProjectsAndMaintainers < ActiveRecord::Migration
     create_table :projects_maintainers, :id => false do |t|
       t.references :project, :user
     end
-    
+
     add_index :projects_maintainers, [:project_id, :user_id], :unique => true
-    
+
     admins = User.where(role: "Administrator")
     Project.unscoped do
       Project.all.each do |project|

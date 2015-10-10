@@ -8,14 +8,14 @@
 .ticket-view {
   max-width: 960px;
   margin: 0 auto;
-  
+
   .ticket-header {
     position: relative;
-    
+
     > h2 {
       margin: 0 0 0 104px;
     }
-    
+
     &::after {
       content: '.';
       clear: both;
@@ -23,7 +23,7 @@
       display: block;
       height: 1em;
     }
-    
+
     .ticket-tracker-link {
       position: absolute;
       right: 1.5em;
@@ -38,20 +38,20 @@
     font-weight: 400;
     font-weight: 200;
     color: #ccc;
-    
+
     position: absolute;
     width: 96px;
     left: 0;
     top: -1px;
   }
-  
+
   .ticket-state-position {
     position: absolute;
     width: 96px;
     text-align: right;
     top: 35px;
   }
-  
+
   .ticket-state {
     color: white;
     padding: 2px 6px;
@@ -69,21 +69,21 @@
       background: #5DB64C; // grass
       &::before { content: '\f10c'; }
       &::after { content: ' Open'; }
-    } 
+    }
     &.closed {
       background: #E24E32; // tomato
       &::before { content: '\f05e'; }
       &::after { content: ' Closed'; }
     }
-    
+
     &.hover {
       cursor: pointer;
-      
+
       &.open {
         background: #999;
         &::before { content: '\f05e'; }
         &::after { content: ' Closed'; }
-      } 
+      }
       &.closed {
         background: #999;
         &::before { content: '\f10c'; }
@@ -91,8 +91,8 @@
       }
     }
   }
-  
-  
+
+
   .ticket-summary {
     display: block;
     font-weight: 200;

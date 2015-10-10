@@ -1,14 +1,14 @@
 .nested.editor ol {
   margin: 0;
   padding: 0;
-  
+
   li {
     list-style: none;
     margin: 0;
-    
+
     &.change { padding: 0; white-space: nowrap; }
-    
-    div { 
+
+    div {
       display: inline-block;
       margin-right: 0.5em;
       margin: 1px 0;
@@ -23,7 +23,7 @@
 }
 
 
-.add-link, .delete-link { 
+.add-link, .delete-link {
   display: inline-block;
   width: 16px;
   height: 16px;

@@ -4,62 +4,62 @@ module Houston
       class GitAdapter
         class RemoteRepo < Repo
           RETRY_COOLDOWN = 4 # seconds
-          
-          
+
+
           def initialize(connection, location)
             super(connection)
             @location = location
             @branch_location = :remote
           end
-          
-          
-          
+
+
+
           # Public API for a VersionControl::Adapter Repo
           # ------------------------------------------------------------------------- #
-          
+
           attr_reader :location
-          
+
           def refresh!(async: false)
             return clone!(async: async) unless exists?
             pull!(async: async)
           end
-          
+
           # ------------------------------------------------------------------------- #
-          
+
           def to_s
             location.to_s
           end
-          
-          
-          
+
+
+
           def clone!(async: false)
             GitAdapter.clone!(location, connection.path, async: false)
           end
-          
+
           def pull!(async: false)
             async ? Houston.async { _pull!(true) } : _pull!(false)
           end
-          
+
           def origin
             @origin ||= connection.remotes["origin"]
           end
-          
-          
-          
+
+
+
         protected
-          
+
           def find_commit(sha)
             pull_and_retry { super(sha) }
           end
-          
+
           def name_of_branch(branch)
             super.gsub /^origin\//, ""
           end
-          
-          
-          
+
+
+
         private
-          
+
           def pull_and_retry
             begin
               yield
@@ -70,11 +70,11 @@ module Houston
               retry
             end
           end
-          
+
           def _pull!(async)
             Houston.benchmark("[git:pull#{":async" if async}] #{connection.path}") do
               options = {credentials: GitAdapter.credentials}
-              
+
               # Fetch
               Houston.try({max_tries: 3, base: 0}, Rugged::OSError, Rugged::SshError) do
                 connection.remotes["origin"].fetch(nil, options.merge({
@@ -90,18 +90,18 @@ module Houston
                 }))
                 release
               end
-              
+
               # Don't prune local branches, just local references to remote branches
               local_refs = connection.refs.map(&:name)
                 .grep(/^refs\/remotes\//)
-              
-              # These are represented as branches (refs/heads/) remotely, but 
+
+              # These are represented as branches (refs/heads/) remotely, but
               # as remote tips (refs/remotes/origin/) locally.
               remote_refs = connection.remotes["origin"].ls(options)
                 .map { |attrs| attrs[:name] }
                 .grep(/^refs\//)
                 .map { |name| name.gsub("refs/heads/", "refs/remotes/origin/") }
-              
+
               # Prune references to branches that were deleted from origin
               prune_refs = local_refs - remote_refs
               prune_refs.each do |ref|
@@ -119,7 +119,7 @@ module Houston
           ensure
             close
           end
-          
+
         end
       end
     end

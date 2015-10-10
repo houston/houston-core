@@ -4,7 +4,7 @@ class DropUnusedFieldsFromMilestones < ActiveRecord::Migration
     remove_column :milestones, :units
     remove_column :milestones, :position
   end
-  
+
   def down
     add_column :milestones, :size, :integer
     add_column :milestones, :units, :string

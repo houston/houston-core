@@ -23,7 +23,7 @@ class AddCommitIdToTestRuns < ActiveRecord::Migration
 
     puts "\e[33;1m#{TestRun.where(commit_id: nil).count}\e[0;33m out of \e[1m#{TestRun.count}\e[0;33m test runs aren't associated with a commit\e[0m"
   end
-  
+
   def down
     remove_column :test_runs, :commit_id
   end

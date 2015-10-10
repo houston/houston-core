@@ -6,7 +6,7 @@ class DeleteAutomaticallyGeneratedMessagesForReleases < ActiveRecord::Migration
       release.update_column :message, new_message unless release.message == new_message
     end
   end
-  
+
   def down
   end
 end

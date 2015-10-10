@@ -1,9 +1,9 @@
 class TesterPresenter
-  
+
   def initialize(testers)
     @testers = testers
   end
-  
+
   def as_json(*args)
     @testers.map do |tester|
       { id: tester.id,
@@ -11,5 +11,5 @@ class TesterPresenter
         email: tester.email }
     end
   end
-  
+
 end

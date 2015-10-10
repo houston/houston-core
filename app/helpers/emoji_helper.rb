@@ -9,5 +9,5 @@ module EmojiHelper
       end
     end.html_safe if content.present?
   end
-  
+
 end

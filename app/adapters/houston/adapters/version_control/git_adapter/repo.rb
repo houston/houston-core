@@ -5,30 +5,30 @@ module Houston
     module VersionControl
       class GitAdapter
         class Repo
-          
-          
+
+
           def initialize(connection)
             @connection = connection
             @branch_location = :local
           end
-          
-          
-          
+
+
+
           # Public API for a VersionControl::Adapter Repo
           # ------------------------------------------------------------------------- #
-          
+
           def all_commit_times
             `git --git-dir=#{git_dir} log --all --pretty='%at'`.split(/\n/).uniq
           end
-          
+
           def all_commits
             `git --git-dir=#{git_dir} log --all --pretty='%H'`.split(/\n/).uniq
           end
-          
+
           def ancestors(sha, options={})
             ancestor_walker(sha, options, &method(:to_commit))
           end
-          
+
           def ancestors_until(sha, options={})
             commits = []
             ancestor_walker(sha, options) do |commit|
@@ -36,10 +36,10 @@ module Houston
               commits << commit
               return commits if yield commit
             end
-            
+
             raise CommitNotFound, "No matching ancestor of \"#{sha}\" was found"
           end
-          
+
           def branches
             Hash[connection.branches
               .each(branch_location)
@@ -47,7 +47,7 @@ module Houston
           ensure
             release
           end
-          
+
           def branches_at(sha)
             connection.branches
               .each(branch_location)
@@ -56,58 +56,58 @@ module Houston
           ensure
             release
           end
-          
+
           def commits_between(sha1, sha2)
             sha1 = sha1.sha if sha1.respond_to?(:sha)
             sha2 = sha2.sha if sha2.respond_to?(:sha)
             sha1 = nil if sha1 == Houston::NULL_GIT_COMMIT
-            
+
             ancestors(sha2, including_self: true, hide: sha1).reverse
-            
+
           rescue
             $!.additional_information[:repo] = to_s
             $!.additional_information[:commit_range] = "#{sha1}...#{sha2}"
             raise
           end
-          
+
           def location
             connection.path
           end
-          
+
           def native_commit(sha)
             return NullCommit.new if sha == Houston::NULL_GIT_COMMIT
             to_commit find_commit(sha)
           ensure
             release
           end
-          
+
           def read_file(file_path, options={})
             blob = find_file(file_path, options={})
             blob && blob.content
           ensure
             release
           end
-          
+
           def refresh!(async: false)
           end
-          
+
           def exists?
             File.exists?(connection.path)
           end
-          
+
           # ------------------------------------------------------------------------- #
-          
-          
-          
+
+
+
           def branch(branch)
             ref("refs/remotes/origin/#{branch}") || ref("refs/heads/#{branch}")
           end
-          
+
           def ref(ref)
             ref = connection.ref(ref)
             ref.target.oid if ref
           end
-          
+
           def find_file(file_path, options={})
             commit = options[:commit] || connection.head.target.oid
             head = find_commit(commit)
@@ -123,17 +123,17 @@ module Houston
           ensure
             release
           end
-          
+
           def changes(old_sha, new_sha)
             find_commit old_sha
             find_commit new_sha
             DiffChanges.new `git --git-dir=#{git_dir} diff --name-status #{old_sha} #{new_sha}`
           end
-          
+
           def to_s
             location
           end
-          
+
           # !todo: Does this need to be a public method?
         protected
           def close
@@ -149,23 +149,23 @@ module Houston
             #               members.repo.send(:connection).close }
             #
             # The first two raised exceptions but the last one didn't.
-            
+
             # We have to call the GC.start (I think) to clean up
             # the objects hanging on to file descriptors.
             GC.start
-            
+
             # We have to call connection.close to actually release
             # those file descriptors.
             connection.close
           end
           alias :release :close
-          
-          
-          
+
+
+
         protected
-          
+
           attr_reader :connection, :branch_location
-          
+
           def find_commit(sha)
             normalize_sha!(sha)
             object = connection.lookup(sha)
@@ -178,15 +178,15 @@ module Houston
           rescue Rugged::ObjectError
             raise CommitNotFound, "\"#{sha}\" is too short"
           end
-          
+
           def name_of_branch(branch)
             branch.name
           end
-          
-          
-          
+
+
+
         private
-          
+
           def normalize_sha!(sha)
             return unless sha
             return if sha == Houston::NULL_GIT_COMMIT
@@ -194,17 +194,17 @@ module Houston
             sha.slice!(40)
             validate_sha!(sha)
           end
-          
+
           def validate_sha!(sha)
             unless sha =~ /^[0-9a-f]+$/i
               raise InvalidShaError, "\"#{sha}\" is not a valid SHA"
             end
           end
-          
+
           def git_dir
             connection.path.chomp("/")
           end
-          
+
           def to_commit(rugged_commit)
             Houston::Adapters::VersionControl::Commit.new({
               original: rugged_commit,
@@ -219,32 +219,32 @@ module Houston
               committer_email: rugged_commit.committer[:email]
             })
           end
-          
+
           def ancestor_walker(sha, options={})
             commit = find_commit(sha)
             push_shas = [commit.oid]
-            
+
             # by default, start with the commit's parent
             push_shas = commit.parents.map(&:oid) unless options[:including_self]
             hide_shas = Array(options.fetch(:hide, []))
               .map { |sha| find_commit(sha).oid } # ensure that each of these exists in the repo
-            
+
             # start by releasing any files we've got open
             release
-            
+
             walker = Rugged::Walker.new(connection)
             push_shas.each { |sha| walker.push(sha) }
             hide_shas.each { |sha| walker.hide(sha) }
-            
+
             walker.each_with_index.map do |commit, i|
               release if i % 200 == 0
               yield commit
             end
-            
+
           ensure
             release
           end
-          
+
         end
       end
     end

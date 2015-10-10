@@ -1,5 +1,5 @@
 module Houston
-  
+
   def self.report_exception(exception, other_data={})
     raise if Rails.env.test? || Rails.env.development?
 
@@ -17,11 +17,11 @@ module Houston
   rescue Exception => e
     Rails.logger.error "\e[31;1mAn error occurred reporting the exception: \e[0;31m#{e.class}: #{e.message}\n   #{e.backtrace.join("\n  ")}\e[0m"
   end
-  
+
   def self._normalize_faraday_env(env)
     env.except(:response).tap do |env|
       env[:url] = env[:url].to_s
     end
   end
-  
+
 end

@@ -72,12 +72,12 @@ Handlebars.registerHelper 'testerAvatar', (email, size, title)->
   tester = window.testers.findByEmail(email)
   gravatarUrl = "//www.gravatar.com/avatar/#{MD5(email.toLowerCase().trim())}?r=g&d=retro&s=#{size * 2}"
   "<img src=\"#{gravatarUrl}\" width=\"#{size}\" height=\"#{size}\" rel=\"tooltip\" title=\"#{tester.get('name')}\" />"
-  
+
 Handlebars.registerHelper 'userAvatar', (size)->
   user = window.user
   gravatarUrl = "//www.gravatar.com/avatar/#{MD5(user.get('email').toLowerCase().trim())}?r=g&d=retro&s=#{size * 2}"
   "<img src=\"#{gravatarUrl}\" width=\"#{size}\" height=\"#{size}\" rel=\"tooltip\" title=\"#{user.get('name')}\" />"
-  
+
 Handlebars.registerHelper 'avatar', (email, size, title)->
   return "<img class=\"avatar avatar-empty\" width=\"#{size}\" height=\"#{size}\" />" unless email
   gravatarUrl = "//www.gravatar.com/avatar/#{MD5(email.toLowerCase().trim())}?r=g&d=retro&s=#{size * 2}"
@@ -85,7 +85,7 @@ Handlebars.registerHelper 'avatar', (email, size, title)->
     "<img src=\"#{gravatarUrl}\" class=\"avatar\" width=\"#{size}\" height=\"#{size}\" rel=\"tooltip\" title=\"#{title}\" />"
   else
     "<img src=\"#{gravatarUrl}\" class=\"avatar\" width=\"#{size}\" height=\"#{size}\" />"
-  
+
 Handlebars.registerHelper 'ifEq', (v1, v2, block)->
   if v1 == v2
     block.fn(@)
@@ -107,11 +107,11 @@ Handlebars.registerHelper 'timelineDateRange', (lastDate, date)->
   return Handlebars.helpers.timelineDate(date) unless lastDate
   days = (lastDate - date) / Duration.DAY
   return Handlebars.helpers.timelineDateAfterGap(date) if days >= 3
-  
+
   _.inject [0...days],
     ((html, i)-> html + Handlebars.helpers.timelineDate((i + 1).days().before(lastDate)))
   , ''
-  
+
 Handlebars.registerHelper 'timelineDate', (date)->
   format = d3.time.format """
   <div class="timeline-date">
@@ -122,7 +122,7 @@ Handlebars.registerHelper 'timelineDate', (date)->
   </div>
   """
   format Date.create(date)
-  
+
 Handlebars.registerHelper 'timelineTime', (time)->
   format = d3.time.format('<span class="timeline-event-time">%-I:%M%p</span>')
   format Date.create(time)

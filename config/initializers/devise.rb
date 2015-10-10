@@ -1,7 +1,7 @@
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
-  
+
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class with default "from" parameter.
@@ -100,18 +100,18 @@ Devise.setup do |config|
   # this period, the invited resource won't be able to accept the invitation.
   # When invite_for is 0 (the default), the invitation won't expire.
   # config.invite_for = 2.weeks
-  
+
   # Number of invitations users can send.
   # If invitation_limit is nil, users can send unlimited invitations.
   # If invitation_limit is 0, users can't send invitations.
   # If invitation_limit n > 0, users can send n invitations.
   # Default: nil
   # config.invitation_limit = 5
-  
+
   # The key to be used to check existing users when sending an invitation
   # config.invite_key = :email
-  
-  # Flag that force a record to be valid before being actually invited 
+
+  # Flag that force a record to be valid before being actually invited
   # Default: false
   # config.validate_on_invite = true
 
@@ -256,8 +256,8 @@ Devise.setup do |config|
   #   manager.intercept_401 = false
   #   manager.default_strategies(:scope => :user).unshift :some_external_strategy
   # end
-  
-  # ==> LDAP Configuration 
+
+  # ==> LDAP Configuration
   if Houston.config.authentication_strategy == :ldap
     config.ldap_logger = true
     config.ldap_create_user = true
@@ -269,7 +269,7 @@ Devise.setup do |config|
     config.ldap_ad_group_check = false
     config.ldap_auth_username_builder = Houston.config.authentication_strategy_configuration[:username_builder]
   end
-  
+
 
   # ==> Mountable engine configurations
   # When using Devise inside an engine, let's call it `MyEngine`, and this engine

@@ -2,18 +2,18 @@ require "test_helper"
 
 class ReleaseTest < ActiveSupport::TestCase
   attr_reader :release, :project
-  
+
   setup do
     @project = Project.new(name: "Test", slug: "test", version_control_name: "Mock")
   end
-  
-  
+
+
   context "a new release" do
     setup do
       @release = Release.new(user_id: 1)
       stub(release).native_commits { nil }
     end
-    
+
     should "trigger `released!` on each ticket" do
       a_ticket = Object.new
       stub(release).tickets { [a_ticket] }
@@ -21,14 +21,14 @@ class ReleaseTest < ActiveSupport::TestCase
       mock(a_ticket).released!(release)
       release.save!
     end
-    
+
     should "trigger `released!` on each antecedent" do
       an_antecedent = TicketAntecedent.new(nil, "Test", 4)
       stub(release).antecedents { [an_antecedent] }
       mock(an_antecedent).released!(release)
       release.save!
     end
-    
+
     should "trigger `released!` on each task" do
       a_task = Object.new
       stub(release).tasks { [a_task] }
@@ -36,9 +36,9 @@ class ReleaseTest < ActiveSupport::TestCase
       mock(a_task).released!(release)
       release.save!
     end
-    
-    
-    
+
+
+
     context "when assigning commit0" do
       should "identify the before-commit" do
         commit = Commit.new(sha: "b62c3f32f72423b81a0282a1a4b97cad2cf129d4")
@@ -47,7 +47,7 @@ class ReleaseTest < ActiveSupport::TestCase
         assert_equal commit, release.commit_before
       end
     end
-    
+
     context "when assigning commit1" do
       should "identify the after-commit" do
         commit = Commit.new(sha: "b62c3f32f72423b81a0282a1a4b97cad2cf129d4")
@@ -57,6 +57,6 @@ class ReleaseTest < ActiveSupport::TestCase
       end
     end
   end
-  
-  
+
+
 end

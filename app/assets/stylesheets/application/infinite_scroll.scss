@@ -1,7 +1,7 @@
 .infinite-scroll {
   padding-bottom: 6em;
   position: relative;
-  
+
   .spinner { display: none; }
   &.loading .spinner {
     position: absolute;

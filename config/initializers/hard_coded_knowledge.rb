@@ -1,10 +1,10 @@
 # Eventually we should get rid of this, of course.
-# But, for now, this file documents a few things 
+# But, for now, this file documents a few things
 # we've scattered throughout the code base and need
 # to abstract.
 module Houston
   module TMI
-    
+
     FIELD_USED_FOR_LDAP_LOGIN = "samaccountname"
     INSTRUCTIONS_FOR_LOGIN = "You can log in with your CPH domain account"
     TICKET_LABELS_FOR_MEMBERS = [
@@ -136,6 +136,6 @@ module Houston
       'New Feature',
       'CKEditor',
     ].freeze
-    
+
   end
 end

@@ -1,5 +1,5 @@
 module TimelineHelper
-  
+
   def render_timeline_gap_for(date_range)
     days = date_range.end - date_range.begin
     if days < 3
@@ -11,20 +11,20 @@ module TimelineHelper
       HTML
     end
   end
-  
+
   def icon_for_resolution(resolution)
     case resolution
     when nil, "", "fixed" then "fa fa-ok"
     else "fa fa-minus"
     end
   end
-  
+
   def format_timeline_time(event)
     event.time.strftime("%-I:%M %p")
       .gsub(/ AM/, "a")
       .gsub(/ PM/, "p")
   end
-  
+
   def render_timeline_date(date)
     <<-HTML.html_safe
     <div class="timeline-date">
@@ -35,5 +35,5 @@ module TimelineHelper
     </div>
     HTML
   end
-  
+
 end

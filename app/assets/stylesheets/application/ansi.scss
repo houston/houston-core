@@ -11,12 +11,12 @@
   white-space: pre-wrap;
   background-color: #33302c;
   color: #989897;
-  
+
   &, * {
     &::selection { background: #474441; } // WebKit/Blink Browsers
     &::-moz-selection { background: #474441; } // Gecko Browsers
   }
-  
+
   .ansi-bold { font-weight: bold; }
   .ansi-underline { text-decoration: underline; }
   .ansi-black { color: rgb(0, 35, 44); }

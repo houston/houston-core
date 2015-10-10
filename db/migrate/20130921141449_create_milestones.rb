@@ -7,12 +7,12 @@ class CreateMilestones < ActiveRecord::Migration
       t.integer :tickets_count, default: 0
       t.timestamp :completed_at
       t.hstore :extended_attributes
-      
+
       t.timestamps
     end
-    
+
     add_index :milestones, :project_id
-    
+
     add_column :tickets, :milestone_id, :integer
     add_index :tickets, :milestone_id
   end

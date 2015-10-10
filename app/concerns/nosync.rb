@@ -1,5 +1,5 @@
 module Nosync
-  
+
   def nosync
     value = nosync?
     begin
@@ -9,13 +9,13 @@ module Nosync
       self.nosync = value
     end
   end
-  
+
   def nosync=(value)
     @nosync = value
   end
-  
+
   def nosync?
     !!@nosync
   end
-  
+
 end

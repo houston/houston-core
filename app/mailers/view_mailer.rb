@@ -1,6 +1,6 @@
 class ViewMailer < ActionMailer::Base
   include AbstractController::Callbacks
-  
+
   helper AvatarHelper
   helper BacktraceHelper
   helper CommitHelper
@@ -13,7 +13,7 @@ class ViewMailer < ActionMailer::Base
   helper TestRunHelper
   helper TicketHelper
   helper UrlHelper
-  
+
   class_attribute :stylesheets
   self.stylesheets = %w{
     core/colors.scss.erb
@@ -26,34 +26,34 @@ class ViewMailer < ActionMailer::Base
     application/pull_requests.scss
     application/follow_up.scss
   }
-  
+
   helper_method :can?, :cannot?, :current_ability, :stylesheets
   delegate :can?, :cannot?, to: :current_ability
   delegate :stylesheets, to: "self.class"
-  
+
   # c.f. https://github.com/ryanb/cancan/blob/1.6.7/lib/cancan/controller_additions.rb#L348-L350
   def current_ability
     @current_ability ||= ::Ability.new(User.new) # Treat email recipients as Guests, not Customers
   end
-  
-  
+
+
   before_filter { @for_email = true }
-  
-  
+
+
 protected
-  
-  
+
+
   def mail(options={})
     options[:from] = format_email_addresses(options[:from]) if options.key?(:from)
     options[:to] = format_email_addresses(options[:to]).uniq if options.key?(:to)
     options[:cc] = format_email_addresses(options[:cc]).uniq if options.key?(:cc)
     options[:bcc] = format_email_addresses(options[:bcc]).uniq if options.key?(:bcc)
-    
+
     # Don't CC anyone whose already being mailed
     options[:cc] -= options[:to] if options[:to] && options[:cc]
-    
+
     return if Array(options[:to]).none? and Array(options[:cc]).none?
-    
+
     if block_given?
       super
     else
@@ -71,19 +71,19 @@ protected
             # Note: Premailer 2.0 will drop Hpricot, but that's not going to
             # out for a while...
           end
-          
+
           html
         end
       end
     end
   end
-  
-  
+
+
   def format_email_addresses(recipients)
     Array.wrap(recipients).map &method(:format_email_address)
   end
-  
-  
+
+
   def format_email_address(recipient)
     if recipient.respond_to?(:name) && recipient.respond_to?(:email)
       Mail::Address.new.tap do |email|
@@ -94,6 +94,6 @@ protected
       recipient
     end
   end
-  
-  
+
+
 end

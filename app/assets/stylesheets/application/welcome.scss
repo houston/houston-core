@@ -3,7 +3,7 @@
   margin: 0 auto;
 //  overflow-x: hidden;
 //  position: relative;
-  
+
   &.loading {
     &::before {
       content: '.';
@@ -32,7 +32,7 @@
       z-index: 2;
     }
   }
-  
+
   h1 {
     img.avatar {
       float: right;
@@ -40,7 +40,7 @@
       top: -0.5em;
     }
   }
-  
+
   .timeline {
     max-width: 860px;
     padding-right: 60px;

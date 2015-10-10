@@ -1,20 +1,20 @@
 $.fn.extend
-  
+
   pseudoHover: ->
     $(@).addClass('unhovered').hover(
       -> $(@).addClass('hover').removeClass('unhovered'),
       -> $(@).removeClass('hover').addClass('unhovered'))
-  
+
   appendView: (view)->
     el = @append(view.el)
     view.render()
     el
-  
+
   prependView: (view)->
     el = @prepend(view.el)
     view.render()
     el
-  
+
   serializeObject: ->
     o = {}
     a = @serializeArray()
@@ -26,19 +26,19 @@ $.fn.extend
       else
         o[@name] = @value || ''
     o
-  
+
   highlight: ->
     $(@).effect('highlight', {}, 1500)
-  
+
   reset: ->
     $(@).each -> @reset()
-  
+
   disable: ->
     $(@).find('input[type="submit"], input[type="reset"], button').attr('disabled', 'disabled').end()
-  
+
   enable: ->
     $(@).find('input[type="submit"], input[type="reset"], button').removeAttr('disabled').end()
-  
+
   getCursorPosition: ->
     input = @get(0)
     return unless input
@@ -50,7 +50,7 @@ $.fn.extend
       selLen = document.selection.createRange().text.length
       sel.moveStart 'character', -input.value.length
       sel.text.length - selLen
-  
+
   appendAsAlert: ->
     $alerts = $('#body .alert')
     $newAlert = $(@)
@@ -61,35 +61,35 @@ $.fn.extend
           $newAlert.prependTo($('#body')).alert()
     else
       $newAlert.prependTo($('#body')).alert()
-  
+
   putCursorAtEnd: ->
     @each ->
       $(@).focus()
-      
+
       # If this function exists...
       if @setSelectionRange
         # ... then use it (Doesn't work in IE)
-        
+
         # Double the length because Opera is inconsistent about whether a carriage return is one character or two. Sigh.
         len = $(@).val().length * 2
-        
+
         @setSelectionRange(len, len)
       else
-        
+
         # ... otherwise replace the contents with itself
         # (Doesn't work in Google Chrome)
-        
+
         $(@).val($(@).val())
-  
+
   insertAtCursor: (text)->
     textarea = @[0]
-    
+
     # IE support
     if document.selection
       textarea.focus()
       sel = document.selection.createRange()
       sel.text = text
-    
+
     # MOZILLA and others
     else if textarea.selectionStart || textarea.selectionStart == '0'
       startPos = textarea.selectionStart
@@ -97,13 +97,13 @@ $.fn.extend
       textarea.value = textarea.value.substring(0, startPos) + text + textarea.value.substring(endPos, textarea.value.length)
       textarea.selectionStart = startPos + text.length
       textarea.selectionEnd = startPos + text.length
-    
+
     else
       textarea.value += text
-  
+
   supportImages: ->
     $el = @
-    
+
     $el.append '''
       <div class="drag-and-drop">
         Attach images by dragging &amp; dropping them or <a class="dz-selector">selecting them</a>.
@@ -111,7 +111,7 @@ $.fn.extend
       <div class="upload-progress"></div>
       <div class="upload-error"></div>
     '''
-    
+
     bucket = App.meta('s3-bucket')
     $el.dropzone
       maxFilesize: 13 # MB
@@ -120,18 +120,18 @@ $.fn.extend
       url: "//#{bucket}.s3.amazonaws.com"
       uploadprogress: (file, progress)->
         $el.find('.upload-progress').html "Uploading #{file.name} (#{progress.toFixed(0)}% complete)"
-      
+
       complete: ->
         if @getUploadingFiles().length is 0 and @getQueuedFiles().length is 0
           $el.removeClass('uploading')
-      
+
       error: (file, errorMessage)->
         $el.addClass('error')
         $el.find('.upload-error').html """
           <span class="message">#{errorMessage}</span>
           <a class="dz-selector">Try again</a>"
         """
-      
+
       sending: (file, xhr, formData)=>
         $el.removeClass('error').addClass('uploading')
         $el.find('.upload-progress').html "Uploading #{file.name}..."
@@ -155,11 +155,11 @@ $.extend
     if jQuery.isFunction(data)
       callback = data
       data = {}
-    
+
     data = data || {}
     data['_method'] = 'put'
     jQuery.post(url, data, callback, type)
-  
+
   destroy: (url, data, callback, type)->
     if jQuery.isFunction(data)
       callback = data

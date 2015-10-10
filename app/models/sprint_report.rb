@@ -1,16 +1,16 @@
 class SprintReport
   attr_reader :user, :start_date, :end_date
-  
+
   def initialize(user, start_date, end_date)
     @user = user
     @start_date = start_date
     @end_date = end_date
   end
-  
+
   def to_json
     to_a.to_json
   end
-  
+
   def to_a
     User.connection.select_rows(<<-SQL)
       SELECT
@@ -18,7 +18,7 @@ class SprintReport
         SUM(completed.effort),
         SUM(checked_out.effort)
       FROM sprints
-      
+
       LEFT OUTER JOIN (
         SELECT
           sprints_tasks.sprint_id,
@@ -31,7 +31,7 @@ class SprintReport
         GROUP BY sprints_tasks.sprint_id
       ) AS completed
         ON completed.sprint_id=sprints.id
-      
+
       LEFT OUTER JOIN (
         SELECT
           sprints_tasks.sprint_id,
@@ -42,7 +42,7 @@ class SprintReport
         GROUP BY sprints_tasks.sprint_id
       ) AS checked_out
         ON checked_out.sprint_id=sprints.id
-      
+
       WHERE sprints.end_date BETWEEN '#{start_date.strftime "%Y-%m-%d"}' AND '#{end_date.strftime "%Y-%m-%d"}'
       GROUP BY sprints.end_date
       ORDER BY sprints.end_date ASC
@@ -52,5 +52,5 @@ class SprintReport
           completed.to_f,
           checked_out.to_f - completed.to_f ] }
   end
-  
+
 end

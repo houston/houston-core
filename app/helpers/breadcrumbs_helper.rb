@@ -1,5 +1,5 @@
 module BreadcrumbsHelper
-  
+
   def breadcrumbs(breadcrumbs={})
     html_safe <<-HTML
       <h3 class="breadcrumbs">
@@ -9,7 +9,7 @@ module BreadcrumbsHelper
       </h3>
     HTML
   end
-  
+
   def render_breadcrumbs(breadcrumbs)
     html = ""
     breadcrumbs.each_with_index do |(name, value), index|
@@ -18,7 +18,7 @@ module BreadcrumbsHelper
     end
     html
   end
-  
+
   def render_breadcrumb(active, name, value=nil)
     if value.nil?
       render_selected_breadcrumb(active, name)
@@ -32,29 +32,29 @@ module BreadcrumbsHelper
       render_simple_breadcrumb(active, name, value)
     end
   end
-  
+
   def render_dropdown_breadcrumb(active, model, options)
     <<-HTML
     <li class="dropdown #{"active" if active}">
       <a class="dropdown-toggle" data-toggle="dropdown" href="#">#{model.name} <b class="caret"></b></a>
       <ul class="dropdown-menu">
-        
+
         #{options.map(&method(:render_breadcrumb_option)).join}
       </ul>
     </li>
     HTML
   end
-  
+
   def render_breadcrumb_option(model, active=false)
     "<li class=\"#{"active" if active}\"><a href=\"#{url_for(model)}\">#{model.name}</a></li>"
   end
-  
+
   def render_simple_breadcrumb(active, name, url)
     "<li class=\"#{"active" if active}\"><a href=\"#{url}\">#{name}</a></li>"
   end
-  
+
   def render_selected_breadcrumb(active, name)
     "<li class=\"#{"active" if active}\"><a>#{name}</a></li>"
   end
-  
+
 end

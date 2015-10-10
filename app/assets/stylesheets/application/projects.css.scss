@@ -58,10 +58,10 @@ td.project-participants .hidden-text { display: inline-block; }
   margin: 1px;
 }
 
-.inline-label { 
+.inline-label {
   display: inline;
   display: inline-block;
-  
+
   input[type="image"], input[type="checkbox"], input[type="radio"] { margin: 0; }
 }
 
@@ -83,7 +83,7 @@ td.project-title { white-space: nowrap; }
 
 td.project-feature-error {
   padding-right: 0;
-  
+
   .icon {
     font-size: 1.25em;
     color: #d5b120;

@@ -5,29 +5,29 @@ class DeleteDuplicateCommits < ActiveRecord::Migration
       commits_by_sha[sha].push(id)
     end
     commits_by_sha.keep_if { |sha, ids| ids.length > 1 }
-    
+
     puts "\e[33;1m#{Commit.count}\e[0;33m commits total; \e[1m#{commits_by_sha.values.flatten.count}\e[0;33m share \e[1m#{commits_by_sha.keys.count}\e[0;33m shas\e[0m"
-    
+
     ids_to_delete = []
     commits_by_sha.each do |sha, ids|
       release_ids = select_values("SELECT release_id FROM commits_releases WHERE commit_id IN (#{ids.join(", ")})").uniq
       ticket_ids = select_values("SELECT ticket_id FROM commits_tickets WHERE commit_id IN (#{ids.join(", ")})").uniq
       committer_ids = select_values("SELECT user_id FROM commits_users WHERE commit_id IN (#{ids.join(", ")})").uniq
-      
+
       id_to_keep = ids.shift
       ids_to_delete.concat ids
-      
+
       commit = Commit.find(id_to_keep)
       commit.release_ids = Release.where(id: release_ids).pluck(:id)
       commit.ticket_ids = Ticket.where(id: ticket_ids).pluck(:id)
       commit.committer_ids = User.where(id: committer_ids).pluck(:id)
     end
-    
+
     execute "DELETE FROM commits WHERE commits.id IN (#{ids_to_delete.join(", ")})" if ids_to_delete.any?
-    
+
     puts "\e[33;1m#{Commit.count}\e[0;33m commits left\e[0m"
   end
-  
+
   def down
   end
 end

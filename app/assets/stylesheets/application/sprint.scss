@@ -34,27 +34,27 @@ h2.light {
 }
 
 #sprint_view {
-  
+
   #lock_sprint_button, #show_completed_tasks {
     margin-bottom: 12px;
   }
-  
+
   &.hide-completed .task-completed { display: none; }
   .task-completed {
     background: $completed-background;
     color: $completed-foreground;
     a { color: $completed-foreground; }
   }
-  
+
   tr.task td { vertical-align: top; }
-  
+
   .task-effort { text-align: right; }
   .task-status {
     white-space: nowrap;
     .fa, .octicon { width: 16px; text-align: center; }
   }
   .task-worker { white-space: nowrap; }
-  
+
   #average_effort {
     font-weight: 800;
   }
@@ -66,7 +66,7 @@ h2.light {
   cursor: pointer;
   font-family: 'FontAwesome';
   font-size: 1.5em;
-  
+
   &:hover { text-decoration: none; }
 }
 

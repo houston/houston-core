@@ -3,8 +3,8 @@ require 'openssl'
 require 'digest/sha1'
 
 class UploadsController < ApplicationController
-  
-  
+
+
   # Using dropzone to upload straight to S3
   # https://github.com/enyo/dropzone/issues/33
   #
@@ -24,7 +24,7 @@ class UploadsController < ApplicationController
     unique_file_name = params.values_at(:name, :size, :type).join(".")
     filename = Digest::SHA1.hexdigest(unique_file_name) + ext
     object_name = "uploads/#{current_user.id}/#{filename}"
-    
+
     policy_document = MultiJson.dump({
       "expiration" => 1.day.from_now.utc.iso8601,
       "conditions" => [
@@ -34,15 +34,15 @@ class UploadsController < ApplicationController
         {"success_action_status" => "201"},
         ["content-length-range", 0, 3 * 1048576] # 3 MB
       ]})
-    
+
     policy = Base64.encode64(policy_document).gsub("\n","")
-    
+
     signature = Base64.encode64(
         OpenSSL::HMAC.digest(
-            OpenSSL::Digest::Digest.new("sha1"), 
+            OpenSSL::Digest::Digest.new("sha1"),
             Houston.config.s3[:secret], policy)
         ).gsub("\n","")
-    
+
     render json: {
       "AWSAccessKeyId" => Houston.config.s3[:access_key],
       key: object_name,
@@ -51,6 +51,6 @@ class UploadsController < ApplicationController
       success_action_status: 201,
       acl: "public-read" }
   end
-  
-  
+
+
 end

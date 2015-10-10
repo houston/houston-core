@@ -77,7 +77,7 @@ Rails.application.configure do
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
-  
+
   # So we can send emails
   config.action_mailer.default_url_options = { host: Houston.config.host }
 

@@ -18,20 +18,20 @@
   -moz-transition: border linear .2s, box-shadow linear .2s;
   -o-transition: border linear .2s, box-shadow linear .2s;
   transition: border linear .2s, box-shadow linear .2s;
-  
+
   &.dz-drag-hover, &.uploading {
     border-color: rgb(74, 199, 18);
     -webkit-box-shadow: inset 0 1px 1px rgba(74, 199, 18, 0.075);
     -moz-box-shadow: inset 0 1px 1px rgba(74, 199, 18, 0.075);
     box-shadow: inset 0 1px 1px rgba(74, 199, 18, 0.075);
-    
+
     .drag-and-drop, .upload-progress {
       background: #F4FCF2;
       color: #85BB6D;
       border-color: #C5DDBB;
     }
   }
-  
+
   &.dz-drag-hover::after {
     position: fixed;
     font-family: 'FontAwesome';
@@ -44,7 +44,7 @@
     color: rgba(74, 199, 18, 0.1);
     z-index: 1001; // right over the drag helpers
   }
-  
+
   textarea {
     box-sizing: border-box;
     -webkit-border-radius: 0;
@@ -53,7 +53,7 @@
     border: none;
     background: transparent;
     margin: 0;
-    
+
     &:focus {
       outline: 0;
       outline: thin dotted \9;
@@ -62,9 +62,9 @@
       box-shadow: none;
     }
   }
-  
+
   .dz-selector { cursor: pointer; }
-  
+
   .drag-and-drop, .upload-progress, .upload-error {
     padding: 4px 6px;
     background: #f4f4f4;
@@ -74,28 +74,28 @@
     -moz-border-radius: 0 0 4px 4px;
     border-radius: 0 0 4px 4px;
     font-size: 0.9em;
-    
+
     -webkit-transition: border linear .2s, color linear .2s, background linear .2s;
     -moz-transition: border linear .2s, color linear .2s, background linear .2s;
     -o-transition: border linear .2s, color linear .2s, background linear .2s;
     transition: border linear .2s, color linear .2s, background linear .2s;
   }
-  
+
   .upload-progress { display: none; }
   .upload-error { display: none; }
-  
+
   .upload-error .message { color: rgb(160, 64, 64); }
-  
+
   &.uploading {
     .drag-and-drop { display: none; }
     .upload-progress { display: block; }
   }
-  
+
   &.error {
     .drag-and-drop { display: none; }
     .upload-progress { display: none; }
     .upload-error { display: block; }
   }
-  
+
   .dz-preview { display: none; }
 }

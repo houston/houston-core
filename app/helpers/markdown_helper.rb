@@ -1,6 +1,6 @@
 module MarkdownHelper
   include EmojiHelper
-  
+
   def markdown
     @markdown ||= Redcarpet::Markdown.new(Redcarpet::Render::HTML,
       autolink: true,             # parse and identify links
@@ -8,10 +8,10 @@ module MarkdownHelper
       space_after_headers: false, # don't require there to be a space between # and a header
       no_intra_emphasis: true)    # don't italicize bar in foo_bar_baz
   end
-  
+
   def mdown(text)
     return "" if text.blank?
     emojify markdown.render(text).html_safe
   end
-  
+
 end

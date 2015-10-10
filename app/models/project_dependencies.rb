@@ -1,9 +1,9 @@
 class ProjectDependencies < SimpleDelegator
-  
+
   def model
     __getobj__
   end
-  
+
   def platform
     @platform ||= begin
       if dependency_version("rails") then "rails"
@@ -11,12 +11,12 @@ class ProjectDependencies < SimpleDelegator
       end
     end
   end
-  
+
   def database
     @database = guess_database unless defined?(@database)
     @database
   end
-  
+
   def guess_database
     return nil unless can_determine_dependencies?
     return "Postgres" if dependency_version("pg")
@@ -25,21 +25,21 @@ class ProjectDependencies < SimpleDelegator
     return "MongoDB" if dependency_version("mongoid")
     "None"
   end
-  
+
   def dependency_version(dependency)
     spec = locked_gems.specs.find { |spec| spec.name == dependency } if locked_gems
     spec.version if spec
   end
-  
+
   def can_determine_dependencies?
     !!locked_gems
   end
-  
+
   def locked_gems
     @locked_gems = lockfile && Bundler::LockfileParser.new(lockfile) unless defined?(@locked_gems)
     @locked_gems
   end
-  
+
   def lockfile
     return "" if repo.nil?
 
@@ -48,5 +48,5 @@ class ProjectDependencies < SimpleDelegator
   rescue Houston::Adapters::VersionControl::FileNotFound
     @lockfile = ""
   end
-  
+
 end

@@ -1,5 +1,5 @@
 class @EditSprintView extends @ShowSprintView
-  
+
   events:
     'click .check-out-button': 'toggleCheckOut'
     'click #show_completed_tasks': 'toggleShowCompleted'
@@ -7,7 +7,7 @@ class @EditSprintView extends @ShowSprintView
     'click .remove-task-button': 'removeTask'
     'click .complete-task-button': 'toggleTaskCompleted'
     'submit #add_task_form': 'submitAddTaskForm'
-  
+
   initialize: ->
     super
     @sprintStart = @options.sprintStart
@@ -28,33 +28,33 @@ class @EditSprintView extends @ShowSprintView
       .width(80)
       .height(40)
       .margin(top: 0, left: 0, right: 0, bottom: 0)
-    
-  
+
+
   render: ->
     return @ unless @tasks
     for task in @tasks
       task.open = !task.completed
       task.locked = @locked
       task.historical = @historical
-    
+
     html = @template
       locked: @locked
       historical: @historical
       tasks: @tasks
       sprintId: @sprintId
     @$el.html html
-    
+
     if @locked
       @showAsLocked()
     else
       @$el.addClass 'edit-mode'
       $('#add_task').focus()
-    
+
     $('#average_effort').text d3.mean(@sprintHistory, (bar)-> bar[1]).toFixed(1)
-    
+
     @renderBurndownChart(@tasks)
     @updateTotalEffort()
-    
+
     unless @historical
       typeaheadTemplate = @typeaheadTemplate
       view = @
@@ -64,9 +64,9 @@ class @EditSprintView extends @ShowSprintView
           ~item.description.toLowerCase().indexOf(@query.toLowerCase()) ||
           ~item.projectTitle.toLowerCase().indexOf(@query.toLowerCase()) ||
           ~item.shorthand.toString().toLowerCase().indexOf(@query.toLowerCase())
-        
+
         sorter: (items)-> items # apply no sorting (return them in order of priority)
-        
+
         highlighter: (task)->
           query = @query.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&')
           regex = new RegExp("(#{query})", 'ig')
@@ -77,42 +77,42 @@ class @EditSprintView extends @ShowSprintView
             shorthand: task.shorthand.toString().replace regex, ($1, match)-> "<strong>#{match}</strong>"
             projectTitle: task.projectTitle.replace regex, ($1, match)-> "<strong>#{match}</strong>"
             projectColor: task.projectColor
-      
+
       $add_task.data('typeahead').render = (tasks)->
         items = $(tasks).map (i, item)=>
           i = $(@options.item).attr('data-value', item.id)
           i.find('a').html(@highlighter(item))
           i[0]
-        
+
         items.first().addClass('active')
         @$menu.html(items)
         @
-      
+
       addTask = _.bind(@addTask, @)
       $add_task.data('typeahead').select = ->
         id = @$menu.find('.active').attr('data-value')
         @$element.val('')
         @hide()
         addTask(id)
-    
-    
-    
+
+
+
     $('.table-sortable').tablesorter()
     @
-  
-  
-  
+
+
+
   submitAddTaskForm: (e)->
     e.preventDefault()
-  
+
   addTask: (id)->
     task = _.detect @openTasks, (task)-> +task.id == +id
     if task && +task.effort <= 0
       @promptForEffort(task).done(=> @addTask(id))
       return
-    
+
     $('#add_task_form').addClass('loading')
-    
+
     $.post("/sprints/#{@sprintId}/tasks/#{id}")
       .error (response)=>
         $('#add_task_form').removeClass('loading')
@@ -128,7 +128,7 @@ class @EditSprintView extends @ShowSprintView
           @renderBurndownChart(@tasks)
         $(".task[data-task-id=#{task.id}]").highlight()
         $('#add_task_form').removeClass('loading')
-  
+
   removeTask: (e)->
     $button = $(e.target)
     $task = $button.closest('.task')
@@ -142,7 +142,7 @@ class @EditSprintView extends @ShowSprintView
         @tasks = _.reject(@tasks, (task)-> task.id == id)
         $task.remove()
         @renderBurndownChart(@tasks)
-  
+
   toggleTaskCompleted: (e)->
     $button = $(e.target)
     $task = $button.closest('.task')
@@ -158,7 +158,7 @@ class @EditSprintView extends @ShowSprintView
           @rerenderTasks()
           @renderBurndownChart(@tasks)
     else
-      $.put "/tasks/#{id}/complete" 
+      $.put "/tasks/#{id}/complete"
         .error => console.log 'error', arguments
         .success (attrs)=>
           task.completedAt = attrs.completedAt
@@ -166,7 +166,7 @@ class @EditSprintView extends @ShowSprintView
           task.open = false
           @rerenderTasks()
           @renderBurndownChart(@tasks)
-  
+
   rerenderTasks: ->
     template = HandlebarsTemplates['sprints/task']
     $tasks = @$el.find('#tasks').empty()
@@ -175,7 +175,7 @@ class @EditSprintView extends @ShowSprintView
       task.locked = @locked
       task.historical = @historical
       $tasks.append template(task)
-  
+
   promptForEffort: (task)->
     promise = $.Deferred()
     html = """
@@ -221,20 +221,20 @@ class @EditSprintView extends @ShowSprintView
         console.log('error', arguments)
         $('#task_effort').focus()
     promise
-  
-  
-  
+
+
+
   toggleCheckOut: (e)->
     $button = $(e.target)
     $task = $button.closest('tr')
     id = +$task.attr('data-task-id')
     task = _.find @tasks, (task)-> task.id == id
-    
+
     if $button.hasClass('active')
       @checkIn($button, $task, id, task)
     else
       @checkOut($button, $task, id, task)
-  
+
   checkIn: ($button, $task, id, task)->
     $.destroy("/sprints/#{@sprintId}/tasks/#{id}/lock")
       .success =>
@@ -247,7 +247,7 @@ class @EditSprintView extends @ShowSprintView
       .error (response)=>
         errors = Errors.fromResponse(response)
         errors.renderToAlert()
-  
+
   checkOut: ($button, $task, id, task)->
     $.post("/sprints/#{@sprintId}/tasks/#{id}/lock")
       .success =>
@@ -310,13 +310,13 @@ class @EditSprintView extends @ShowSprintView
     """).modal()
     $modal.on 'hidden', -> $modal.remove()
     $('#confirm_lock_sprint').click _.bind(@lockSprint, @)
-  
+
   lockSprint: ->
     $.put("/sprints/#{@sprintId}/lock")
       .success =>
         @locked = true
         @showAsLocked()
-  
+
   showAsLocked: ->
     @$el.removeClass 'edit-mode'
     $('#lock_sprint_button')

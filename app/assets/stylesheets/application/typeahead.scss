@@ -1,7 +1,7 @@
 ul.typeahead {
   li { overflow: hidden; }
-  
-  .task-typeahead-sequence { 
+
+  .task-typeahead-sequence {
     float: left;
     display: block;
     position: relative;
@@ -15,14 +15,14 @@ ul.typeahead {
     vertical-align: middle;
     color: #ccc;
   }
-  
+
   .task-typeahead-project {
     display: block;
     font-size: 10px;
     line-height: 1em;
     b { font-size: 9px; }
   }
-  
+
   .task-typeahead-number {
     font-weight: 200;
   }

@@ -108,7 +108,7 @@ module Github
     def merge_attributes(pr)
       if new_record?
         self.repo = pr["base"]["repo"]["name"]
-        self.number = pr["number"] 
+        self.number = pr["number"]
         self.username = pr["user"]["login"]
         self.url = pr["html_url"]
         self.base_sha = pr["base"]["sha"]

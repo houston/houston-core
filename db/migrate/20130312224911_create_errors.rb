@@ -5,7 +5,7 @@ class CreateErrors < ActiveRecord::Migration
       t.string :category
       t.string :message
       t.text :backtrace
-      
+
       t.timestamps
     end
   end

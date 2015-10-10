@@ -4,7 +4,7 @@ class CreateDeploys < ActiveRecord::Migration
       t.references :project
       t.references :environment
       t.string :commit
-      
+
       t.timestamps
     end
   end

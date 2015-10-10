@@ -2,9 +2,9 @@ module Houston
   module Adapters
     module TicketTracker
       class UnfuddleAdapter
-        
+
         class << self
-          
+
           def errors_with_parameters(project, project_id)
             return {unfuddle_project_id: ["cannot be blank"]} if project_id.blank?
             return {unfuddle_project_id: ["must be a number"]} unless project_id.to_s =~ /\d+/
@@ -18,25 +18,25 @@ module Houston
             end
             {}
           end
-          
+
           def build(project, project_id)
             return Houston::Adapters::TicketTracker::NullConnection if project_id.blank?
-            
+
             self::Connection.new new_connection(project_id)
           end
-          
+
           def parameters
             [:unfuddle_project_id]
           end
-          
+
         private
-          
+
           def new_connection(project_id)
             ::Unfuddle.instance.project(project_id)
           end
-          
+
         end
-        
+
       end
     end
   end

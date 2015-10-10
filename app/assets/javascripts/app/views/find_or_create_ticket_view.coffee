@@ -1,6 +1,6 @@
 class @FindOrCreateTicketView extends Backbone.View
   className: 'find-or-create-ticket'
-  
+
   initialize: ->
     @template = HandlebarsTemplates['tickets/find_or_create']
     @typeaheadTemplate = HandlebarsTemplates['tickets/typeahead']
@@ -8,10 +8,10 @@ class @FindOrCreateTicketView extends Backbone.View
     @addTicket = @options.addTicket
     @createTicket = @options.createTicket
     @ticketTracker = @options.ticketTracker
-  
+
   render: ->
     @$el.html @template()
-    
+
     typeaheadTemplate = @typeaheadTemplate
     view = @
     $add_ticket = @$el.find('#find_or_create_ticket').attr('autocomplete', 'off').typeahead

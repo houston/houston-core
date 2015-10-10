@@ -17,7 +17,7 @@ th.vertical {
   max-width: 28px;
   padding: 4px 0;
   white-space: normal;
-  
+
   > span {
     display: block;
     writing-mode: tb-rl;
@@ -30,7 +30,7 @@ th.vertical {
     width: 3em;
     text-overflow: ellipsis;
     white-space: nowrap;
-    
+
     position: relative;
     left: -7px;
     top: -15px;
@@ -48,21 +48,21 @@ tr.selected > td { background-color: #ffe; }
     border-top: 1px solid #ddd;
     border-bottom: none;
   }
-  
+
   tbody > tr {
     cursor: pointer;
-    
+
     &.expanded {
       td {
         color: #eee !important;
         border-top: 2px solid #222 !important;
         background-color: #505050 !important;
-        
+
         a:hover { color: rgb(2, 160, 240); }
         .label-inverse { background-color: black; }
       }
     }
-    
+
     &.expansion {
       td {
         border-top: none;

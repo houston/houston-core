@@ -1,15 +1,15 @@
 module Houston
-  
+
   def self.server?
     !!server
   end
-  
+
   def self.server
     @server ||= discover_server
   end
-  
+
 private
-  
+
   def self.discover_server
     if defined?(::PhusionPassenger)
       :passenger
@@ -19,11 +19,11 @@ private
       $WEB_SERVER
     end
   end
-  
+
   def self.in_object_space?(klass)
     ObjectSpace.each_object(klass).any?
   end
-  
+
 end
 
 if Houston.server?

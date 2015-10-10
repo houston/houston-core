@@ -1,14 +1,14 @@
-window.App = 
-  
+window.App =
+
   meta: (name)->
     $("meta[name=\"#{name}\"]").attr('content')
-  
+
   serverDateFormat: d3.time.format('%Y-%m-%d')
-  
+
   parseDate: (date)->
     return date unless _.isString(date)
     @serverDateFormat.parse date.slice(0, 10)
-  
+
   checkRevision: (jqXHR)->
     @clientRevision ||= App.meta('revision')
     serverRevision = jqXHR.getResponseHeader('X-Revision')
@@ -18,12 +18,12 @@ window.App =
         window.location.reload()
     else
       window.console.log("[App.checkRevision] serverRevision is blank")
-  
+
   relativeRoot: ->
     relativeRoot = App.meta('relative_url_root')
     relativeRoot = relativeRoot.substring(0, relativeRoot.length - 1) if /\/$/.test(relativeRoot)
     relativeRoot
-  
+
   mdown: (markdown)->
     return '' unless markdown
     converter = new Markdown.Converter()
@@ -36,15 +36,15 @@ window.App =
         "<img alt=\"#{$1}\" height=\"20\" width=\"20\" src=\"#{App.relativeRoot()}/images/emoji/#{$1}.png\" class=\"emoji\" />"
       else
         match
-  
+
   formatTicketSummary: (message)->
     message = Handlebars.Utils.escapeExpression(message)
     [feature, sentence] = message.split(':', 2)
     if sentence then "<b>#{feature}:</b>#{sentence}" else message
-  
+
   formatPercent: (number)->
     (number * 100).toFixed(0) + '%'
-  
+
   showErrorMessage: (title, responseText)->
     html = """
     <div class="modal hide">
@@ -62,30 +62,30 @@ window.App =
     """
     $modal = $(html).modal()
     $modal.on 'hidden', -> $(@).remove()
-  
+
   uploadComplete: (id, args...)->
     $(id).trigger('upload:complete', args)
-  
+
   toggleFullScreen: ->
     $body = $('body')
-    
+
     $body.keypress (e)->
       if e.which is 102 # f
         $body.toggleClass('full-screen')
         window.location.hash = $body.attr('class')
         kanbanObj.setKanbanHeight() if window.kanbanObj # TMI: extract to event
-    
+
     $body.keydown (e)->
       if e.keyCode is 27
         $body.removeClass('full-screen')
         window.location.hash = ''
         kanbanObj.setKanbanHeight() if window.kanbanObj # TMI: extract to event
-    
+
     options = window.location.hash.substring(1).split(' ')
     if _.include(options, 'full-screen')
       $body.toggleClass('full-screen')
       kanbanObj.setKanbanHeight() if window.kanbanObj # TMI: extract to events
-  
+
   showNewTicket: (options)->
     options ?= {}
     $banner = $('.project-banner')
@@ -93,10 +93,10 @@ window.App =
     color = $banner.attr('data-project-color')
     if slug and $('#new_ticket_modal').length is 0
       new NewTicketModal(_.extend(options, slug: slug, color: color)).show()
-  
+
   oauth: (url)->
     window.location = url
-  
+
   truncateDate: (date)->
     return date unless date.setHours
     date.setHours(0)
@@ -104,15 +104,15 @@ window.App =
     date.setSeconds(0)
     date.setMilliseconds(0)
     date
-  
+
   truncatedDate: (date)->
     date = new Date(date.getTime())
     App.truncateDate(date)
-  
+
   showTicket: (number, project, options)->
     project = project || $('.project-banner').attr('data-project-slug')
     return false unless number and project
-    
+
     options ||= {}
     options.project = project
     $context = options.$context || $('#tickets')
@@ -120,7 +120,7 @@ window.App =
     options.ticketNumbers = numbers if numbers.length > 0
     options.edit = window.user.canEditTickets() if window.user
     new TicketModalView(options).show(number)
-  
+
   promptForCredentialsTo: (service)->
     html = """
     <div class="modal hide fade">

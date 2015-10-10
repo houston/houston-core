@@ -85,23 +85,23 @@ class TasksExcelPresenter
       package.to_stream.string
     end
   end
-  
+
 private
-  
+
   def commit_time(commits)
     return nil if commits.none?
     commits.sum { |_, message, _| Commit.parse_message(message)[:hours_worked] }
   end
-  
+
   def committers(commits)
     commits.flat_map { |_, _, committer| committer.split(" and ") }.uniq
   end
-  
+
   def commits_by_task_id
     @commits_by_task_id ||= Commit.joins(:tasks).merge(tasks)
       .pluck("tasks.id", :message, :committer)
       .group_by { |id, _, _| id }
   end
-  
-  
+
+
 end

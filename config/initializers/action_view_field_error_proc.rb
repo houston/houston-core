@@ -10,12 +10,12 @@ Nokogiri::XML::Node.send(:include, ClassMutator)
 
 ActionView::Base.field_error_proc = Proc.new do |html_tag, instance|
   html = %(<div class="field_with_errors">#{html_tag}</div>).html_safe
-  
+
   form_fields = %w{textarea input select}
   elements = Nokogiri::HTML::DocumentFragment.parse(html_tag).css "label, " + form_fields.join(", ")
-  
+
   elements.each do |e|
-    if e.node_name.eql? "label" 
+    if e.node_name.eql? "label"
       html = e.add_css_class("error").to_s.html_safe
     elsif form_fields.include? e.node_name
       html = e.add_css_class("error").to_s.html_safe

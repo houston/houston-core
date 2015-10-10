@@ -69,4 +69,4 @@ class CreateTestResults < ActiveRecord::Migration
   end
 end
 
-# 8216 test_runs in 
+# 8216 test_runs in

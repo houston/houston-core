@@ -13,21 +13,21 @@
   .change-tag select { width: 100%; }
   .change-tag .help-inline { display: none; }
   .change-description input { width: 100%; box-sizing: border-box; height: 30px; }
-  
+
   .release-detail-section > .controls { max-width: 920px; }
-  
+
   textarea#release_message {
     width: 46em;
     height: 80px;
   }
-  
+
   #new_ticket_field { width: 100%; box-sizing: border-box; height: 30px; }
-  
+
   .controls > ul { margin-left: 0; }
   .controls > p.no-items { margin-left: 0; }
   .controls > p.expander {
     a { color: #777; }
-    
+
     &.optional::after {
       content: ' (optional)';
       color: #bbb;
@@ -37,25 +37,25 @@
     color: #777;
     font-style: italic;
   }
-  
+
   .control-label {
     font-weight: bold;
     color: #777;
   }
-  
+
   .release-antecedents ul, .release-commits ul {
     max-width: 680px;
     margin: 5px 0;
   }
-  
+
   .release-tickets {
     table { width: 88.67403314917128%; margin: 5px 0; }
     td { vertical-align: top; }
-    
+
     .release-ticket-check {
       width: 1em;
       padding-right: 0.5em;
-      
+
       input { margin: 0; }
     }
     .release-ticket-number {

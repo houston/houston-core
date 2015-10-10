@@ -1,5 +1,5 @@
 window.App.NewReleaseForm =
-  
+
   init: (options)->
     $nestedEditor = $('.changes-nested-editor')
     $nestedEditor.find('.add-link, .delete-link').attr('tabindex', '-1')
@@ -12,19 +12,19 @@ window.App.NewReleaseForm =
       if e.keyCode == 8 and $(this).val() == ''
         e.preventDefault()
         e.stopImmediatePropagation()
-        NestedEditorFor.deleteRow(NestedEditorFor.getFromEvent(e));      
+        NestedEditorFor.deleteRow(NestedEditorFor.getFromEvent(e));
       if e.keyCode == 38
         $(this).closest('.nested-row').prev().find('input').select()
       if e.keyCode == 40
         $(this).closest('.nested-row').next().find('input').select()
-    
+
     ticketSummaries = []
     ticketBySummary = {}
     for ticket in options.tickets
       summary = "[##{ticket.number}] #{ticket.summary}"
       ticketSummaries.push summary
       ticketBySummary[summary] = ticket
-    
+
     addTicket = (ticket)->
       return if $("#ticket_#{ticket.id}").length > 0
       html = """
@@ -41,11 +41,11 @@ window.App.NewReleaseForm =
       </tr>
       """
       $('#new_ticket_li').before(html)
-    
+
     $('#release_tickets').delegate '.delete-link', 'click', (e)->
       e.preventDefault()
       $(@).closest('tr').remove()
-    
+
     $('#new_ticket_field')
       .typeahead
         source: ticketSummaries

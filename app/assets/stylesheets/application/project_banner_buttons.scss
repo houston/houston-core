@@ -4,7 +4,7 @@
   right: 0;
   height: 40px;
 //  border-bottom: 1px solid rgb(210, 210, 210);
-  
+
   &.affix {
     position: fixed;
     top: -4px;
@@ -42,8 +42,8 @@
       background: rgba(0, 0, 0, 0.1);
       border-radius: 6px;
     }
-    
-    span { 
+
+    span {
       display: inline-block;
       font-size: 11px;
       line-height: 11px;
@@ -52,7 +52,7 @@
 }
 
 #sync_tickets_button {
-  
+
   &.working {
     i {
       -moz-animation: fa-spin 2s infinite linear;
@@ -61,8 +61,8 @@
       animation: fa-spin 2s infinite linear;
     }
   }
-  
-  .ticket-tracker-last-sync { 
+
+  .ticket-tracker-last-sync {
     display: inline-block;
     .time-date { display: block; font-size:  9px; line-height: 1em; font-weight: 400; }
     .time-time { display: block; font-size: 14px; line-height: 1em; font-weight: 200; }

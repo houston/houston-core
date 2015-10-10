@@ -9,10 +9,10 @@ class window.TestingNote extends Backbone.Model
 class window.TestingNotes extends Backbone.Collection
   model: TestingNote
   url: -> "#{App.relativeRoot()}/tickets/#{@ticket.get('id')}/testing_notes"
-  
+
   initialize: (models, options)->
     super(models, options)
     @ticket = options.ticket
-  
+
   since: (date)->
     @filter (note)-> note.get('createdAt') > date

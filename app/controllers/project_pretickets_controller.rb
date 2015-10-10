@@ -1,8 +1,8 @@
 class ProjectPreticketsController < ApplicationController
   before_filter :find_project
   before_filter :api_authenticate!
-  
-  
+
+
   def show
     @problems = @project.error_tracker.open_problems(comments: true).sort_by(&:last_notice_at).reverse
     antecedents = @problems.map(&:err_ids).flatten.map { |id| "'Errbit:#{id}'" }
@@ -16,12 +16,12 @@ class ProjectPreticketsController < ApplicationController
       end
     end
   end
-  
-  
+
+
 private
-  
+
   def find_project
     @project = Project.find_by_slug!(params[:slug])
   end
-  
+
 end

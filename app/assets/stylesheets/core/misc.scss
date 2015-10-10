@@ -47,7 +47,7 @@ button.close {
   padding-bottom: 60px;
 }
 
-.hidden { 
+.hidden {
   display: none !important;
 }
 
@@ -61,7 +61,7 @@ button.close {
 
 .icon { font-family: 'FontAwesome'; }
 
-.hidden-text { 
+.hidden-text {
   display: block;
   height: 0;
   width: 0;
@@ -71,7 +71,7 @@ button.close {
 .changes-nested-editor ol {
   margin: 3px 0;
   padding: 0;
-  
+
   li {
     list-style-type: none;
     padding: 2px 0;
@@ -88,7 +88,7 @@ label input[type="checkbox"] { vertical-align: baseline; }
 
 .remember-me {
   line-height: 1em;
-  
+
   label {
     display: inline;
     vertical-align: middle;
@@ -120,7 +120,7 @@ li.column {
   background: white;
   padding: 18px 24px;
   box-shadow: 0 0 5px #777;
-  
+
   form { margin-bottom: 0; }
 }
 
@@ -133,12 +133,12 @@ form {
 small { font-size: 0.88em; }
 
 // Render .nav pills in one line
-.nav-pills > li { 
-  float: none; 
+.nav-pills > li {
+  float: none;
   display: inline-block;
 }
 
-.inline { 
+.inline {
   display: inline-block;
 }
 

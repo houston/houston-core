@@ -7,13 +7,13 @@ class PreventHstoreFieldsFromBeingNull < ActiveRecord::Migration
     [:tickets,    :extended_attributes],
     [:users,      :view_options]
   ]
-  
+
   def up
     FIELDS.each do |(table, column)|
       change_column table, column, :hstore, null: false, default: ''
     end
   end
-  
+
   def down
     FIELDS.each do |(table, column)|
       change_column table, column, :hstore, null: true, default: nil

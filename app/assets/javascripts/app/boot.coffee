@@ -1,20 +1,20 @@
 $ ->
-  
+
   $('a[rel=popover]').popover()
   $('.tooltip').tooltip()
   $('a[rel=tooltip]').tooltip()
-  
+
   $('[rel="tooltip"]').each ->
     $el = $(@)
     placement = $el.attr('data-tooltip-placement') || 'bottom'
     $el.tooltip
       placement: placement
-  
+
   $('.project-banner').affix(offset: {top: 70})
-  
+
   $('body').on 'click', '[rel="ticket"]', (e)->
     return if $(e.target).closest('a').length > 0
-    
+
     $link = $(@)
     number = +$link.attr('data-number')
     project = $link.attr('data-project')

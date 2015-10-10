@@ -1,5 +1,5 @@
 module AnsiHelper
-  
+
   ANSI_COLOR = {
      "1" => "ansi-bold",
      "4" => "ansi-underline",
@@ -19,10 +19,10 @@ module AnsiHelper
     "95" => "ansi-bright-magenta",
     "96" => "ansi-bright-cyan",
     "97" => "ansi-bright-white" }.freeze
-  
+
   def ansi_to_html(ansi)
     return "" if ansi.nil?
-    
+
     html = "<div class=\"ansi\">"
     string = StringScanner.new(ansi.gsub("<", "&lt;"))
     spans = 0
@@ -42,5 +42,5 @@ module AnsiHelper
     html << "</div>"
     html.html_safe
   end
-  
+
 end

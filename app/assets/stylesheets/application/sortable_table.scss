@@ -1,10 +1,10 @@
-.table-sortable { 
+.table-sortable {
   border-collapse: separate;
-  
+
   th {
     border-bottom: 4px solid transparent;
     cursor: pointer;
-    
+
     &::after {
       content: ' \f0dc';
       font-family: FontAwesome;
@@ -12,13 +12,13 @@
       vertical-align: baseline;
       color: rgba(0, 0, 0, 0.1);
     }
-    
+
     &:hover {
       border-bottom: 4px solid rgba(128, 212, 255, 0.25);
-      
+
       &::after { color: rgba(0, 0, 0, 0.5); }
     }
-    
+
     &.sort-asc, &.sort-desc { border-bottom: 4px solid rgba(128, 212, 255, 0.5); }
     &.sort-asc::after { content: ' \f0de'; color: #333; }
     &.sort-desc::after { content: ' \f0dd'; color: #333; }

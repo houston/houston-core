@@ -1,64 +1,64 @@
 class window.Ticket extends Backbone.Model
   urlRoot: '/tickets'
-  
+
   tasks: -> @_tasks ?= new Tasks(@get('tasks'))
-  
+
   estimatedEffort: ->
     return @get('effort') unless _.isUndefined(@attributes.effort)
     effort = @tasks().reduce ((sum, task)-> sum + +task.get('effort')), 0
     if effort == 0 then null else effort
-  
+
   estimatedEffortCompleted: ->
     effort = @tasks()
       .select (task)-> task.get('completedAt')
       .reduce ((sum, task)-> sum + +task.get('effort')), 0
     if effort == 0 then null else effort
-  
+
   severity: ->
     seriousness = @get('seriousness')
     likelihood = @get('likelihood')
     clumsiness = @get('clumsiness')
     return false unless seriousness && likelihood && clumsiness
     (0.6 * seriousness + 0.3 * likelihood + 0.1 * clumsiness).toFixed(1)
-  
+
   testingNotes: ->
     @testingNotesCollection ||= new TestingNotes(@get('testingNotes'), ticket: @)
-  
+
   releases: ->
     @releasesCollection ||= new Releases(@get('releases'), ticket: @)
-  
+
   commits: ->
     @commitsCollection ||= new Commits(@get('commits'), ticket: @)
-  
+
   activityStream: ->
     @testingNotes().models.concat(@commits().models).sortBy (item)-> item.get('createdAt')
-  
-  
+
+
   parse: (ticket)->
     ticket.openedAt = new Date(ticket.openedAt) if ticket.openedAt
     ticket.closedAt = new Date(ticket.closedAt) if ticket.closedAt
     ticket.effort = +ticket.effort if ticket.effort
     ticket
-  
-  
+
+
   testerVerdicts: ->
     verdictsByTester = @verdictsByTester(@testingNotesSinceLastRelease())
     window.testers.map (tester)->
       testerId: tester.id
       email: tester.get('email')
       verdict: verdictsByTester[tester.get('id')] ? 'pending'
-  
+
   verdict: ->
     verdicts = _.values(@verdictsByTester(@testingNotesSinceLastRelease()))
     return 'Failing' if _.include verdicts, 'failing'
     return 'Pending' if window.testers.length == 0
-    
+
     minPassingVerdicts = @get('minPassingVerdicts') ? window.testers.length
     passingVerdicts = _.filter(verdicts, (verdict)=> verdict == 'passing').length
     return 'Passing' if passingVerdicts >= minPassingVerdicts
-    
+
     'Pending'
-  
+
   verdictsByTester: (notes)->
     verdictsByTester = {}
     notes.each (note)->
@@ -73,16 +73,16 @@ class window.Ticket extends Backbone.Model
       else if verdict == 'none'
         verdictsByTester[testerId] ?= 'comment'
     verdictsByTester
-    
+
   testingNotesSinceLastRelease: ->
     date = @get('lastReleaseAt')
     if date then @testingNotes().since(date) else @testingNotes()
-  
-  
+
+
   close: ->
     url = "/projects/#{@get 'projectSlug'}/tickets/by_number/#{@get 'number'}/close"
     $.post(url).success (attributes)=> @set attributes
-  
+
   reopen: ->
     url = "/projects/#{@get 'projectSlug'}/tickets/by_number/#{@get 'number'}/reopen"
     $.post(url).success (attributes)=> @set attributes
@@ -92,15 +92,15 @@ class window.Ticket extends Backbone.Model
 
 class window.Tickets extends Backbone.Collection
   model: Ticket
-  
+
   search: (summary)->
     words = @getWords(summary)
     # console.log(summary, '->', words)
-    
+
     return [] if words.length == 0
-    
+
     regexes = (new RegExp("\\b#{RegExp.escape(word)}", 'i') for word in words)
-    
+
     results = []
     for ticket in @models
       wordsMatched = _.select(regexes, (rx)-> rx.test(ticket.get('summary'))).length

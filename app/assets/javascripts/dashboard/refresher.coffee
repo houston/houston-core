@@ -1,6 +1,6 @@
 class @Refresher
   τ = 2 * Math.PI # http://tauday.com/tau-manifesto
-  
+
   constructor: ->
     @_rate = 1000 # 1 second
     @_interval = 5 * 60 * 1000 # 5 minutes
@@ -9,12 +9,12 @@ class @Refresher
     @innerRadius = @width / 3
     @outerRadius = @width / 2
     @_container = 'body'
-  
+
   rate: (@_rate)-> @
   container: (@_container)-> @
   interval: (@_interval)-> @
   callback: (@_callback)-> @
-  
+
   render: ->
     # An arc function with all values bound except the endAngle. So, to compute an
     # SVG path string for a given angle, we pass an object with an endAngle
@@ -104,7 +104,7 @@ class @Refresher
         # Calculate the current arc angle based on the transition time, t. Since
         # the t for the transition and the t for the interpolate both range from
         # 0 to 1, we can pass t directly to the interpolator.
-    
+
         # Note that the interpolated angle is written into the element's bound
         # data object! This is important: it means that if the transition were
         # interrupted, the data bound to the element would still be consistent

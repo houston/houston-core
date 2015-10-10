@@ -1,14 +1,14 @@
 require "test_helper"
 
 class JenkinsAdapterTest < ActiveSupport::TestCase
-  
-  
+
+
   test "#fetch_results! should correctly parse Jenkins build data" do
     build_url = "http://jenkins.com/job/houston/18"
     result_url = "#{build_url}/api/json?tree=result"
     test_report_url = "#{build_url}/testReport/api/json"
     coverage_report_url = "#{build_url}/artifact/coverage/coverage.json"
-    
+
     expected_results = {
       result:       "fail",
       duration:     884.9784,
@@ -48,34 +48,34 @@ class JenkinsAdapterTest < ActiveSupport::TestCase
       covered_percent: 0.4877472689695896,
       covered_strength: 0.007832890463537053
     }
-    
+
     project = Project.new
     jenkins = Houston::Adapters::CIServer::JenkinsAdapter::Job.new(project)
-    
+
     mock(jenkins.connection).get(result_url) do |url|
       OpenStruct.new(status: 200, body: result_response)
     end
-    
+
     mock(jenkins.connection).get(test_report_url) do |url|
       OpenStruct.new(status: 200, body: test_report_response)
     end
-    
+
     mock(jenkins.connection).get(coverage_report_url) do |url|
       OpenStruct.new(status: 200, body: coverage_report_response)
     end
-    
+
     actual_results = jenkins.fetch_results!(build_url)
     assert_deep_equal expected_results, actual_results
   end
-  
-  
+
+
 private
-  
-  
+
+
   def result_response
     '{"result":"FAILURE"}'
   end
-  
+
   def test_report_response
     <<-JSON
     {
@@ -151,7 +151,7 @@ private
     }
     JSON
   end
-  
+
   def coverage_report_response
     <<-JSON
     {
@@ -179,6 +179,6 @@ private
     }
     JSON
   end
-  
-  
+
+
 end

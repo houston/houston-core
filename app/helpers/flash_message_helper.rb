@@ -1,12 +1,12 @@
 module FlashMessageHelper
-  
-  
+
+
   def flash_messages(*args)
     options = args.extract_options!
     args.inject("") {|html, key| html << flash_message(key, options.dup)}.html_safe
   end
-  
-  
+
+
   def flash_message(key, options={})
     message = flash[key].to_s
     klass = "alert-#{key}"
@@ -17,6 +17,6 @@ module FlashMessageHelper
     message = '<button type="button" class="close" data-dismiss="alert">&times;</button>'.html_safe + h(message)
     content_tag :div, message, options
   end
-  
-  
+
+
 end

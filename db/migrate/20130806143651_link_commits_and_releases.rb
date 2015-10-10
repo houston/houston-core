@@ -3,9 +3,9 @@ class LinkCommitsAndReleases < ActiveRecord::Migration
     create_table :commits_releases, :id => false do |t|
       t.references :commit, :release
     end
-    
+
     add_index :commits_releases, [:commit_id, :release_id], :unique => true
-    
+
     Commit.find_each do |commit|
       release = Release.find_by_id(commit.release_id) if commit.release_id
       commit.releases << release if release

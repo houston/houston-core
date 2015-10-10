@@ -10,7 +10,7 @@ class @AllTicketsView extends @TicketsView
 
   render: ->
     @$el.find('tbody').remove()
-    
+
     @offset = 0
     html = @template
       tickets: (ticket.toJSON() for ticket in @tickets.slice(0, 50))
@@ -26,4 +26,3 @@ class @AllTicketsView extends @TicketsView
       @lastSearch = search
       @tickets = if search then new Tickets(@allTickets.search(search)) else @allTickets
       @render()
-

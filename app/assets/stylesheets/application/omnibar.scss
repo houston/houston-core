@@ -12,18 +12,18 @@ input[type="text"].omnibar {
 
 .omnibar-item {
   width: 528px;
-  
+
   .bubble {
     width: 0.75em;
     height: 0.75em;
     border-radius: 0.75em;
   }
-  
+
   .commit-sha, .ticket-number {
     font-size: 0.75em;
     opacity: 0.5;
   }
-  
+
   .commit-message, .ticket-summary {
     line-height: 1em;
     display: block;
@@ -33,12 +33,12 @@ input[type="text"].omnibar {
     text-indent: 3px;
     margin-left: 32px;
   }
-  
+
   .project-title {
     font-size: 0.75em;
     opacity: 0.5;
   }
-  
+
   .project-link-title {
     line-height: 1em;
     display: block;
@@ -47,7 +47,7 @@ input[type="text"].omnibar {
     overflow: hidden;
     text-indent: 3px;
   }
-  
+
   img {
     float: left;
     margin: 2px 6px 2px 0;

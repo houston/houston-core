@@ -1,19 +1,19 @@
 class window.TestingNoteView extends Backbone.View
   tagName: 'li'
   className: 'testing-note'
-  
+
   events:
     'click .edit-note': 'edit'
     'click .destroy-note': 'destroy'
     'click .btn-cancel': 'cancel'
     'click :radio': 'changeVerdict'
-  
+
   initialize: ->
     @isInEditMode = false
     @renderTestingNote = HandlebarsTemplates['testing_notes/show']
     @renderEditTestingNote = HandlebarsTemplates['testing_notes/edit']
     $(@el).delegate 'form', 'submit', _.bind(@commit, @)
-  
+
   render: ->
     $el = $(@el)
     $el.attr('id', "testing_note_#{@model.get('id')}")
@@ -22,10 +22,10 @@ class window.TestingNoteView extends Backbone.View
     $el.attr('class', "testing-note #{@model.get('verdict')}")
     $el.addClass('by-tester') if @model.get('byTester')
     @
-  
+
   isEditable: ->
     @model.get('userId') == window.userId or window.user.get('admin')
-  
+
   edit: (e)->
     if e
       e.preventDefault()
@@ -35,7 +35,7 @@ class window.TestingNoteView extends Backbone.View
       @render()
       @trigger('edit:begin', @)
     @
-  
+
   commit: (e)->
     if e
       e.preventDefault()
@@ -52,18 +52,18 @@ class window.TestingNoteView extends Backbone.View
           @trigger('edit:commit', @, @model)
         error: (model, response)=>
           $form.enable().find('.btn-primary').html('Save')
-          
+
           @model.set(previousAttributes, {silent: true})
           errors = Errors.fromResponse(response)
           if errors.missingCredentials or errors.invalidCredentials
             App.promptForCredentialsTo('Unfuddle')
           errors.renderToAlert()
     @
-  
+
   changeVerdict: (e)->
     verdict = @$el.find(':radio[name="verdict"]:checked').val() || 'none'
     @$el.attr('class', "testing-note by-tester #{verdict}")
-  
+
   cancel: (e)->
     if e
       e.preventDefault()
@@ -74,7 +74,7 @@ class window.TestingNoteView extends Backbone.View
       @render()
       @trigger('edit:cancel', @)
     @
-  
+
   destroy: (e)->
     if e
       e.preventDefault()
