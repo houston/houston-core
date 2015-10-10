@@ -3,6 +3,7 @@ module Github
     self.table_name = "pull_requests"
 
     attr_readonly :project_id, :user_id, :repo, :number, :username, :base_ref, :base_sha, :url
+    attr_accessor :actor
 
     belongs_to :project
     belongs_to :user
@@ -62,16 +63,24 @@ module Github
         end
       end
 
-      def close!(github_pr)
+      def close!(github_pr, options={})
         pr = find_by(
           repo: github_pr["base"]["repo"]["name"],
           number: github_pr["number"])
-        pr.destroy if pr
+        return unless pr
+
+        pr.actor = options[:as]
+        pr.destroy
       end
 
-      def upsert!(github_pr)
+      def upsert!(github_pr, options={})
         retry_count ||= 0
-        upsert(github_pr).tap { |pr| pr.save if pr.valid? }
+        upsert(github_pr).tap do |pr|
+          if pr.valid?
+            pr.actor = options[:as]
+            pr.save
+          end
+        end
       rescue ActiveRecord::RecordNotUnique
         retry unless (retry_count += 1) > 1
         raise
@@ -95,11 +104,13 @@ module Github
       super Array(value).uniq.join("\n")
     end
 
-    def add_label!(label)
+    def add_label!(label, options={})
+      self.actor = options[:as]
       update_attribute :labels, labels + [label]
     end
 
-    def remove_label!(label)
+    def remove_label!(label, options={})
+      self.actor = options[:as]
       update_attribute :labels, labels - [label]
     end
 
