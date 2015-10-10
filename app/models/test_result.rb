@@ -7,4 +7,11 @@ class TestResult < ActiveRecord::Base
   validates :test_id, :test_run_id, presence: true
   validates :status, inclusion: {in: %w{fail skip pass}}
 
+  def self.insert_many(attributes)
+    return if attributes.none?
+    columns = attributes.first.keys
+    values = attributes.map(&:values)
+    import columns, values
+  end
+
 end

@@ -23,7 +23,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "rails", "~> 4.1.13"
   spec.add_dependency "pg", "~> 0.18.2"
   # --------------------------------
-  spec.add_dependency "activerecord-insert_many"
+  spec.add_dependency "activerecord-import"
   spec.add_dependency "activerecord-pluck_in_batches"
   spec.add_dependency "addressable"
   spec.add_dependency "backbone-rails", "~> 1.0.0"
