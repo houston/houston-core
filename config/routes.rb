@@ -148,7 +148,6 @@ Rails.application.routes.draw do
 
 
 
-
   # Settings
 
   get "settings", to: "settings#show"
@@ -192,12 +191,6 @@ Rails.application.routes.draw do
 
 
 
-  # Modules
-
-  Houston.config.modules.each do |mod|
-    mount mod.engine => mod.path
-  end
-
   # Sprints (pull out into a module)
 
   get "sprints/current", :to => "sprints#current", :as => :current_sprint
@@ -212,7 +205,6 @@ Rails.application.routes.draw do
     post "sprints/:id/tasks/:task_id/lock", :to => "sprint_task_locks#create"
     delete "sprints/:id/tasks/:task_id/lock", :to => "sprint_task_locks#destroy"
   end
-
 
 
 
@@ -274,6 +266,14 @@ Rails.application.routes.draw do
         [404, {}, []]
       end
     end)
+  end
+
+
+
+  # Modules
+
+  Houston.config.modules.each do |mod|
+    mount mod.engine => "/"
   end
 
 end
