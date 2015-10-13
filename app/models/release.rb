@@ -174,7 +174,7 @@ class Release < ActiveRecord::Base
 
 
   def ignore?
-    project.extended_attributes["releases.ignore.#{environment_name.downcase}"] == "1"
+    !show_release_notes_for?(environment_name)
   end
 
   def notification_recipients

@@ -50,6 +50,14 @@ class Project < ActiveRecord::Base
     @environments ||= deploys.environments.map(&:downcase).uniq
   end
 
+  def environments_with_release_notes
+    environments.select(&method(:show_release_notes_for?))
+  end
+
+  def show_release_notes_for?(environment_name)
+    extended_attributes["releases.ignore.#{environment_name.downcase}"] != "1"
+  end
+
   def environment(environment_name)
     Environment.new(self, environment_name)
   end

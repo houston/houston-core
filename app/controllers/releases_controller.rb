@@ -105,7 +105,7 @@ private
 
   def get_project_and_environment
     @project = Project.find_by_slug!(params[:project_id])
-    @environment = params[:environment] || @project.environments.first
+    @environment = params[:environment] || @project.environments_with_release_notes.first
     @deploys = @project.deploys
       .completed
       .to(@environment)

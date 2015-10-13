@@ -1,7 +1,7 @@
 <%= render partial: "projects/header", locals: {project: @project, subtitle: "Releases of"} %>
 
 <ul class="nav nav-pills inline">
-  <% @project.environments.each do |environment| %>
+  <% @project.environments_with_release_notes.each do |environment| %>
     <% if can?(:read, @project.releases.build(environment_name: environment)) %>
       <%= content_tag :li, :class => (@environment == environment ? "active" : nil) do %>
         <% link_to environment.titleize, releases_path(@project, environment: environment) %>
