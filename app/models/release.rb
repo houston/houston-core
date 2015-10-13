@@ -174,7 +174,7 @@ class Release < ActiveRecord::Base
 
 
   def ignore?
-    !show_release_notes_for?(environment_name)
+    !project.show_release_notes_for?(environment_name)
   end
 
   def notification_recipients
