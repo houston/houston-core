@@ -62,7 +62,10 @@
     
     <% if @release.commits.any? %>
     <div class="release-detail-section release-commits">
-      <label class="control-label">Commits</label>
+      <label class="control-label">
+        Commits
+        <span class="commit-range"><%= link_to_release_commit_range(@release) %></span>
+      </label>
       <div class="controls changes-nested-editor">
         <p class="expander" data-expand="commits_block">
           <%= pluralize @release.commits.length, "commits" %> hidden •
@@ -71,7 +74,10 @@
         <div id="commits_block" class="collapsed">
           <ul class="commits">
             <% @release.commits.each do |commit| %>
-              <li><%= format_commit(commit) %></li>
+              <%= content_tag :li, :id => "commit_#{commit.id}" do %>
+                <%= link_to_commit(commit) if github_url?(@project) && !for_email? && can?(:read, commit) %>
+                <%= format_commit(commit) %>
+              <% end %>
             <% end %>
           </ul>
         </div>
