@@ -23,7 +23,7 @@
       <div class="controls changes-nested-editor row-fluid">
         <p class="instructions">Describe, in users&rsquo; terms, what this release changes</p>
         <%= f.nested_editor_for :release_changes do |f| -%>
-          <div class="change-tag span3"><%= f.collection_select :tag_slug, [NullTag.instance] + Houston.config.change_tags, :slug, :name %></div>
+          <div class="change-tag span3"><%= f.collection_select :tag_slug, Houston.config.change_tags, :slug, :name %></div>
           <div class="change-description span8"><%= f.text_field :description, maxlength: 255 %></div>
         <% end -%>
       </div>
