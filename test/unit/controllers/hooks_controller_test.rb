@@ -35,6 +35,24 @@ class HooksControllerTest < ActionController::TestCase
       mock(Github::PullRequest).upsert!(a_pull_request, as: "baxterthehacker")
       post :github, hook: github_pull_request_event_payload
     end
+
+    should "add a label to GitHub::PullRequest when the action is \"labeled\"" do
+      pr = Object.new
+      stub(Github::PullRequest).upsert! { pr }
+      stub(pr).persisted? { true }
+      mock(pr).add_label!("new-label", as: "baxterthehacker")
+      post :github, hook: github_pull_request_event_payload(action: "labeled",
+        label: {name: "new-label"})
+    end
+
+    should "remove a label to GitHub::PullRequest when the action is \"unlabeled\"" do
+      pr = Object.new
+      stub(Github::PullRequest).upsert! { pr }
+      stub(pr).persisted? { true }
+      mock(pr).remove_label!("removed-label", as: "baxterthehacker")
+      post :github, hook: github_pull_request_event_payload(action: "unlabeled",
+        label: {name: "removed-label"})
+    end
   end
 
 
