@@ -105,13 +105,17 @@ module Github
     end
 
     def add_label!(label, options={})
-      self.actor = options[:as]
-      update_attribute :labels, labels + [label]
+      transaction do
+        pr = self.class.lock.find id
+        pr.update_attributes! labels: pr.labels + [label], actor: options[:as]
+      end
     end
 
     def remove_label!(label, options={})
-      self.actor = options[:as]
-      update_attribute :labels, labels - [label]
+      transaction do
+        pr = self.class.lock.find id
+        pr.update_attributes! labels: pr.labels - [label], actor: options[:as]
+      end
     end
 
 
