@@ -1,14 +1,14 @@
 development:
   adapter: postgresql
   encoding: utf8
-  database: houston_development
+  database: houston_core_development
   host: localhost
   prepared_statements: false
 
 test:
   adapter: postgresql
   encoding: utf8
-  database: houston_test
+  database: houston_core_test
   host: localhost
   prepared_statements: false
 
@@ -16,6 +16,6 @@ test:
 production:
   adapter: postgresql
   encoding: utf8
-  database: houston_development
+  database: houston_core_development
   host: localhost
   prepared_statements: false
