@@ -4,7 +4,7 @@ This is the Houston application. Deploy it by forking [houston/houston](https://
 
 ### What is Houston?
 
-###### Mission Control for your projects and team
+##### Mission Control for your projects and team
 
 Houston interfaces with your version-control, ticket-tracking, continuous integration, and other systems to stitch together a picture of your projects and teams.
 
