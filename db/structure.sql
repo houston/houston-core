@@ -197,9 +197,9 @@ CREATE TABLE deploys (
     commit_id integer,
     duration integer,
     branch character varying(255),
-    completed_at timestamp without time zone,
     output text,
-    user_id integer
+    user_id integer,
+    completed_at timestamp without time zone
 );
 
 
@@ -265,9 +265,7 @@ CREATE TABLE measurements (
     name character varying(255) NOT NULL,
     value character varying(255) NOT NULL,
     taken_at timestamp without time zone NOT NULL,
-    taken_on date NOT NULL,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    taken_on date NOT NULL
 );
 
 
@@ -758,9 +756,9 @@ CREATE TABLE test_runs (
     covered_percent numeric(6,5) DEFAULT 0 NOT NULL,
     covered_strength numeric(6,5) DEFAULT 0 NOT NULL,
     regression_count integer DEFAULT 0 NOT NULL,
-    commit_id integer,
     user_id integer,
-    compared boolean DEFAULT false NOT NULL
+    compared boolean DEFAULT false NOT NULL,
+    commit_id integer
 );
 
 
@@ -1010,10 +1008,10 @@ CREATE TABLE users (
     view_options hstore DEFAULT ''::hstore NOT NULL,
     email_addresses text[],
     invitation_created_at timestamp without time zone,
-    environments_subscribed_to text[] DEFAULT '{}'::text[] NOT NULL,
     current_project_id integer,
     nickname character varying(255),
-    username character varying(255)
+    username character varying(255),
+    environments_subscribed_to text[] DEFAULT '{}'::text[] NOT NULL
 );
 
 
@@ -1733,13 +1731,6 @@ CREATE INDEX index_test_results_on_test_id ON test_results USING btree (test_id)
 --
 
 CREATE INDEX index_test_results_on_test_run_id ON test_results USING btree (test_run_id);
-
-
---
--- Name: index_test_runs_on_commit_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE UNIQUE INDEX index_test_runs_on_commit_id ON test_runs USING btree (commit_id);
 
 
 --
