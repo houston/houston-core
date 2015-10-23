@@ -28,19 +28,27 @@ To use Houston, you must have
 ##### Hello World
 
  1. Install houston-core
-
+    
+    ```
     gem install houston-core
+    ```
 
  2. Generate an instance of Houston
 
+    ```
     houston new my-houston
     cd my-houston
+    ```
 
  3. Modify `config/database.yml` to connect to your database (See [the Rails Guide](http://guides.rubyonrails.org/configuring.html#configuring-a-database) for examples)
  4. Set up your database
 
+    ```
     bin/setup
+    ```
 
  5. Start Houston
 
+    ```
     bundle exec rails server
+    ```
