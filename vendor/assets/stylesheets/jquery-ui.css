@@ -8,21 +8,21 @@
  * You're free to add application-wide styles to this file and they'll appear at the top of the
  * compiled file, but it's generally better to create a new file per style scope.
  *
- *= require ./jquery-ui/jquery.ui.core.css
- *= require ./jquery-ui/jquery.ui.theme.css
+ *= require ./jquery-ui-1.10.1/jquery.ui.core.css
+ *= require ./jquery-ui-1.10.1/jquery.ui.theme.css
  *
- *= require ./jquery-ui/jquery.ui.resizable.css
- *  require ./jquery-ui/jquery.ui.selectable.css
+ *= require ./jquery-ui-1.10.1/jquery.ui.resizable.css
+ *  require ./jquery-ui-1.10.1/jquery.ui.selectable.css
  *
- *  require ./jquery-ui/jquery.ui.accordian.css
- *  require ./jquery-ui/jquery.ui.autocomplete.css
- *  require ./jquery-ui/jquery.ui.button.css
- *  require ./jquery-ui/jquery.ui.datepicker.css
- *  require ./jquery-ui/jquery.ui.dialog.css
- *  require ./jquery-ui/jquery.ui.menu.css
- *  require ./jquery-ui/jquery.ui.progressbar.css
- *= require ./jquery-ui/jquery.ui.slider.css
- *  require ./jquery-ui/jquery.ui.spinner.css
- *  require ./jquery-ui/jquery.ui.tabs.css
- *  require ./jquery-ui/jquery.ui.tooltip.css
+ *  require ./jquery-ui-1.10.1/jquery.ui.accordian.css
+ *  require ./jquery-ui-1.10.1/jquery.ui.autocomplete.css
+ *  require ./jquery-ui-1.10.1/jquery.ui.button.css
+ *  require ./jquery-ui-1.10.1/jquery.ui.datepicker.css
+ *  require ./jquery-ui-1.10.1/jquery.ui.dialog.css
+ *  require ./jquery-ui-1.10.1/jquery.ui.menu.css
+ *  require ./jquery-ui-1.10.1/jquery.ui.progressbar.css
+ *= require ./jquery-ui-1.10.1/jquery.ui.slider.css
+ *  require ./jquery-ui-1.10.1/jquery.ui.spinner.css
+ *  require ./jquery-ui-1.10.1/jquery.ui.tabs.css
+ *  require ./jquery-ui-1.10.1/jquery.ui.tooltip.css
 */
