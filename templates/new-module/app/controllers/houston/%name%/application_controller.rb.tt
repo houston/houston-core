@@ -1,0 +1,4 @@
+module Houston::<%= camelized %>
+  class ApplicationController < ActionController::Base
+  end
+end

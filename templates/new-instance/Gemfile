@@ -1,0 +1,48 @@
+source "https://rubygems.org"
+
+# Use releases of the Houston gem
+gem "houston-core", "~> 0.5.1"
+
+# Or run on Houston Edge
+# gem "houston-core", github: "houston/houston-core", branch: "master"
+
+
+
+# Extend Houston through modules
+# ----------------------------------------------------------------------------
+
+# Merge to-do lists from Exception Reports, Gemnasium, support tickets, etc
+gem "houston-alerts", github: "houston/houston-alerts", branch: "master"
+
+# Use Houston with Slack!
+gem "houston-slack", github: "houston/houston-slack", branch: "master"
+
+# Import, search, and tag customer feedback
+# gem "houston-feedback", github: "houston/houston-feedback", branch: "master"
+
+# Construct roadmaps with Houston
+# gem "houston-roadmap", github: "houston/houston-roadmap", branch: "master"
+
+# Manage your backlog in houston
+# gem "houston-scheduler", github: "houston/houston-scheduler", branch: "master"
+
+
+
+# Other gems
+# ----------------------------------------------------------------------------
+
+# See https://github.com/sstephenson/execjs#readme for more supported runtimes
+gem "therubyracer", platforms: :ruby
+
+# Preview emails in the browser instead of sending them.
+# (see config/environments/development.rb)
+gem "letter_opener", group: :development
+
+# Report exceptions in Houston to Airbrake
+# gem "airbrake"
+
+# Deploy using Capistrano
+# gem "capistrano"
+
+# An IRB alternative and runtime developer console
+gem "pry", group: [:development, :test]

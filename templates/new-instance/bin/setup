@@ -1,0 +1,22 @@
+#!/bin/bash
+# Everything in this bootstrap script
+# is idempotent. It is OK to run again
+# on an existing project if you are
+# uncertain whether it is set up.
+
+git submodule update --init
+bundle
+
+# See if the databases already exist
+bundle exec rails runner "ActiveRecord::Base.connection" 2> /dev/null
+if [ $? -ne 0 ] ; then
+  echo -e "\n\033[34;1mCreating and seeding your database\033[0m"
+  bundle exec rake db:setup
+  bundle exec rake db:seed
+fi
+
+# Always run migrations because schema
+# changes required by modules will be
+# declared in those.
+echo -e "\n\033[34;1mRunning migrations\033[0m"
+bundle exec rake db:migrate

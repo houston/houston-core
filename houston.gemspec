@@ -12,9 +12,9 @@ Gem::Specification.new do |spec|
   spec.summary       = %q{Mission Control for your projects and teams}
   spec.homepage      = "https://github.com/houston/houston"
 
-  spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
-  spec.bindir        = "exe"
-  spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
+  spec.files         = `git ls-files -z`.split("\x0")
+  spec.executables   = ["houston"]
+  spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
 
@@ -50,6 +50,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "redcarpet", "~> 3.3.2"
   spec.add_dependency "strongbox", "~> 0.7.2" # for encrypting user credentials
   spec.add_dependency "sugar-rails"
+  spec.add_dependency "thor"
   spec.add_dependency "thread_safe", "~> 0.3.5"
   spec.add_dependency "houston-vestal_versions"
 

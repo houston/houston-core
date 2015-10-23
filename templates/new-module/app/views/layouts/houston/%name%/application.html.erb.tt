@@ -1,0 +1,10 @@
+<%% content_for :stylesheets do %>
+  <%%= stylesheet_link_tag    "houston/<%= name %>/application", :media => "all" %>
+<%% end %>
+
+<%% content_for :javascripts do %>
+  <%%= javascript_include_tag "houston/<%= name %>/application" %>
+<%% end %>
+
+<%%# Houston's default layout %>
+<%%= render template: "layouts/application" %>

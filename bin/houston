@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+
+require "houston/cli"
+Houston::CLI.start(ARGV)

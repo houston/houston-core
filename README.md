@@ -1,9 +1,5 @@
 # Houston Core [![Code Climate](https://codeclimate.com/github/houston/houston-core.png)](https://codeclimate.com/github/houston/houston-core)
 
-This is the Houston application. Deploy it by forking [houston/houston](https://github.com/houston/houston) and configuring for your team!
-
-### What is Houston?
-
 ##### Mission Control for your projects and team
 
 Houston interfaces with your version-control, ticket-tracking, continuous integration, and other systems to stitch together a picture of your projects and teams.
@@ -22,4 +18,29 @@ Houston is also extensible through **modules**.
 
 ## Getting Started with Houston
 
-Fork [houston/houston](https://github.com/houston/houston) and follow the instructions to get it set up for your team!
+##### System Requirements
+
+To use Houston, you must have
+
+ - [Ruby 2.0+](https://www.ruby-lang.org/en/downloads)
+ - [Postgres 9.3+](http://www.postgresql.org/download)
+
+##### Hello World
+
+ 1. Install houston-core
+
+    gem install houston-core
+
+ 2. Generate an instance of Houston
+
+    houston new my-houston
+    cd my-houston
+
+ 3. Modify `config/database.yml` to connect to your database (See [the Rails Guide](http://guides.rubyonrails.org/configuring.html#configuring-a-database) for examples)
+ 4. Set up your database
+
+    bin/setup
+
+ 5. Start Houston
+
+    bundle exec rails server

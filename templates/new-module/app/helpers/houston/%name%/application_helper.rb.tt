@@ -1,0 +1,4 @@
+module Houston::<%= camelized %>
+  module ApplicationHelper
+  end
+end

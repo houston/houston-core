@@ -1,0 +1,545 @@
+[SKYLIGHT] [0.8.0] authentication token required; disabling Skylight agent
+[94m[daemon:slack] Skipping daemon since we're not running as a server[0m
+[94m[daemon:scheduler] Skipping daemon since we're not running as a server[0m
+[34;1mSetting up observers for RunTestsOnPostReceive[0m
+  [1m[36mActiveRecord::SchemaMigration Load (1.2ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+-----------------------------------
+TestTest: test_the_test_suite_works
+-----------------------------------
+  [1m[36m (0.3ms)[0m  [1mROLLBACK[0m
+[SKYLIGHT] [0.8.0] authentication token required; disabling Skylight agent
+[94m[daemon:slack] Skipping daemon since we're not running as a server[0m
+[94m[daemon:scheduler] Skipping daemon since we're not running as a server[0m
+[34;1mSetting up observers for RunTestsOnPostReceive[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.7ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+-----------------------------------
+TestTest: test_the_test_suite_works
+-----------------------------------
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+------------------------------------------------------------------------------------------------------------------
+ExceptionReportingTest: test_: when an exception occurs during a normal web hook, it should report the exception. 
+------------------------------------------------------------------------------------------------------------------
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+---------------------------------------------------------------------------------------------------------------------------------
+ExceptionReportingTest: test_: when an exception occurs during the exception_report webhook, it should not report the exception. 
+---------------------------------------------------------------------------------------------------------------------------------
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+[SKYLIGHT] [0.8.0] authentication token required; disabling Skylight agent
+[94m[daemon:slack] Skipping daemon since we're not running as a server[0m
+[94m[daemon:scheduler] Skipping daemon since we're not running as a server[0m
+[34;1mSetting up observers for RunTestsOnPostReceive[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.6ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+------------------------------------------------------------------------------------------------------------------
+ExceptionReportingTest: test_: when an exception occurs during a normal web hook, it should report the exception. 
+------------------------------------------------------------------------------------------------------------------
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+---------------------------------------------------------------------------------------------------------------------------------
+ExceptionReportingTest: test_: when an exception occurs during the exception_report webhook, it should not report the exception. 
+---------------------------------------------------------------------------------------------------------------------------------
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+-----------------------------------
+TestTest: test_the_test_suite_works
+-----------------------------------
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+[SKYLIGHT] [0.8.0] authentication token required; disabling Skylight agent
+[94m[daemon:slack] Skipping daemon since we're not running as a server[0m
+[94m[daemon:scheduler] Skipping daemon since we're not running as a server[0m
+[34;1mSetting up observers for RunTestsOnPostReceive[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.7ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+-----------------------------------
+TestTest: test_the_test_suite_works
+-----------------------------------
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+------------------------------------------------------------------------------------------------------------------
+ExceptionReportingTest: test_: when an exception occurs during a normal web hook, it should report the exception. 
+------------------------------------------------------------------------------------------------------------------
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+---------------------------------------------------------------------------------------------------------------------------------
+ExceptionReportingTest: test_: when an exception occurs during the exception_report webhook, it should not report the exception. 
+---------------------------------------------------------------------------------------------------------------------------------
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+[SKYLIGHT] [0.8.0] authentication token required; disabling Skylight agent
+[94m[daemon:slack] Skipping daemon since we're not running as a server[0m
+[94m[daemon:scheduler] Skipping daemon since we're not running as a server[0m
+[34;1mSetting up observers for RunTestsOnPostReceive[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.7ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+------------------------------------------------------------------------------------------------------------------
+ExceptionReportingTest: test_: when an exception occurs during a normal web hook, it should report the exception. 
+------------------------------------------------------------------------------------------------------------------
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+---------------------------------------------------------------------------------------------------------------------------------
+ExceptionReportingTest: test_: when an exception occurs during the exception_report webhook, it should not report the exception. 
+---------------------------------------------------------------------------------------------------------------------------------
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+-----------------------------------
+TestTest: test_the_test_suite_works
+-----------------------------------
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+[SKYLIGHT] [0.8.0] authentication token required; disabling Skylight agent
+[94m[daemon:slack] Skipping daemon since we're not running as a server[0m
+[94m[daemon:scheduler] Skipping daemon since we're not running as a server[0m
+[34;1mSetting up observers for RunTestsOnPostReceive[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.7ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+-----------------------------------
+TestTest: test_the_test_suite_works
+-----------------------------------
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+------------------------------------------------------------------------------------------------------------------
+ExceptionReportingTest: test_: when an exception occurs during a normal web hook, it should report the exception. 
+------------------------------------------------------------------------------------------------------------------
+  [1m[36m (0.7ms)[0m  [1mSELECT COUNT(*) FROM "projects"[0m
+  [1m[35m (0.5ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (1.3ms)[0m  [1mINSERT INTO "projects" ("created_at", "name", "updated_at") VALUES ('2015-09-27 20:44:53.463292', 'Test', '2015-09-27 20:44:53.463292') RETURNING "id"[0m  [["created_at", Sun, 27 Sep 2015 15:44:53 CDT -05:00], ["name", "Test"], ["updated_at", Sun, 27 Sep 2015 15:44:53 CDT -05:00]]
+  [1m[35m (0.3ms)[0m  RELEASE SAVEPOINT active_record_1
+  [1m[36m (0.4ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+---------------------------------------------------------------------------------------------------------------------------------
+ExceptionReportingTest: test_: when an exception occurs during the exception_report webhook, it should not report the exception. 
+---------------------------------------------------------------------------------------------------------------------------------
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+[SKYLIGHT] [0.8.0] authentication token required; disabling Skylight agent
+[94m[daemon:slack] Skipping daemon since we're not running as a server[0m
+[94m[daemon:scheduler] Skipping daemon since we're not running as a server[0m
+[34;1mSetting up observers for RunTestsOnPostReceive[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.8ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+-----------------------------------
+TestTest: test_the_test_suite_works
+-----------------------------------
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+------------------------------------------------------------------------------------------------------------------
+ExceptionReportingTest: test_: when an exception occurs during a normal web hook, it should report the exception. 
+------------------------------------------------------------------------------------------------------------------
+  [1m[36m (0.4ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (1.3ms)[0m  INSERT INTO "projects" ("created_at", "name", "slug", "updated_at") VALUES ('2015-09-27 20:45:19.283780', 'Test', 'test', '2015-09-27 20:45:19.283780') RETURNING "id"  [["created_at", Sun, 27 Sep 2015 15:45:19 CDT -05:00], ["name", "Test"], ["slug", "test"], ["updated_at", Sun, 27 Sep 2015 15:45:19 CDT -05:00]]
+  [1m[36m (0.3ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+Started POST "/projects/test/hooks/something" for 127.0.0.1 at 2015-09-27 15:45:20 -0500
+Processing by ProjectHooksController#trigger as HTML
+  Parameters: {"project_id"=>"test", "hook"=>"something"}
+  [1m[35mProject Load (1.8ms)[0m  SELECT  "projects".* FROM "projects"  WHERE "projects"."slug" = 'test'  ORDER BY "projects"."name" ASC LIMIT 1
+Completed 200 OK in 31ms (ActiveRecord: 1.8ms)
+Started POST "/projects/test/hooks/something" for 127.0.0.1 at 2015-09-27 15:45:22 -0500
+Processing by ProjectHooksController#trigger as HTML
+  Parameters: {"project_id"=>"test", "hook"=>"something"}
+  [1m[36mProject Load (0.7ms)[0m  [1mSELECT  "projects".* FROM "projects"  WHERE "projects"."slug" = 'test'  ORDER BY "projects"."name" ASC LIMIT 1[0m
+Completed 500 Internal Server Error in 2ms (ActiveRecord: 0.7ms)
+  [1m[35m (0.5ms)[0m  ROLLBACK
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+---------------------------------------------------------------------------------------------------------------------------------
+ExceptionReportingTest: test_: when an exception occurs during the exception_report webhook, it should not report the exception. 
+---------------------------------------------------------------------------------------------------------------------------------
+  [1m[35m (0.3ms)[0m  SAVEPOINT active_record_1
+  [1m[36mSQL (0.7ms)[0m  [1mINSERT INTO "projects" ("created_at", "name", "slug", "updated_at") VALUES ('2015-09-27 20:45:22.679968', 'Test', 'test', '2015-09-27 20:45:22.679968') RETURNING "id"[0m  [["created_at", Sun, 27 Sep 2015 15:45:22 CDT -05:00], ["name", "Test"], ["slug", "test"], ["updated_at", Sun, 27 Sep 2015 15:45:22 CDT -05:00]]
+  [1m[35m (0.3ms)[0m  RELEASE SAVEPOINT active_record_1
+Started POST "/projects/test/hooks/exception_report" for 127.0.0.1 at 2015-09-27 15:45:22 -0500
+Processing by ProjectHooksController#trigger as HTML
+  Parameters: {"project_id"=>"test", "hook"=>"exception_report"}
+  [1m[36mProject Load (0.7ms)[0m  [1mSELECT  "projects".* FROM "projects"  WHERE "projects"."slug" = 'test'  ORDER BY "projects"."name" ASC LIMIT 1[0m
+Completed 404 Not Found in 12ms (Views: 9.4ms | ActiveRecord: 0.7ms)
+  [1m[35m (0.3ms)[0m  ROLLBACK
+[SKYLIGHT] [0.8.0] authentication token required; disabling Skylight agent
+[94m[daemon:slack] Skipping daemon since we're not running as a server[0m
+[94m[daemon:scheduler] Skipping daemon since we're not running as a server[0m
+[34;1mSetting up observers for RunTestsOnPostReceive[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.8ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+------------------------------------------------------------------------------------------------------------------
+ExceptionReportingTest: test_: when an exception occurs during a normal web hook, it should report the exception. 
+------------------------------------------------------------------------------------------------------------------
+  [1m[36m (0.3ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (1.1ms)[0m  INSERT INTO "projects" ("created_at", "name", "slug", "updated_at") VALUES ('2015-09-27 20:45:38.276679', 'Test', 'test', '2015-09-27 20:45:38.276679') RETURNING "id"  [["created_at", Sun, 27 Sep 2015 15:45:38 CDT -05:00], ["name", "Test"], ["slug", "test"], ["updated_at", Sun, 27 Sep 2015 15:45:38 CDT -05:00]]
+  [1m[36m (0.2ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+Started POST "/projects/test/hooks/something" for 127.0.0.1 at 2015-09-27 15:45:38 -0500
+Processing by ProjectHooksController#trigger as HTML
+  Parameters: {"project_id"=>"test", "hook"=>"something"}
+  [1m[35mProject Load (1.6ms)[0m  SELECT  "projects".* FROM "projects"  WHERE "projects"."slug" = 'test'  ORDER BY "projects"."name" ASC LIMIT 1
+Completed 500 Internal Server Error in 11ms (ActiveRecord: 1.6ms)
+  [1m[36m (0.3ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+---------------------------------------------------------------------------------------------------------------------------------
+ExceptionReportingTest: test_: when an exception occurs during the exception_report webhook, it should not report the exception. 
+---------------------------------------------------------------------------------------------------------------------------------
+  [1m[36m (0.2ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO "projects" ("created_at", "name", "slug", "updated_at") VALUES ('2015-09-27 20:45:38.386074', 'Test', 'test', '2015-09-27 20:45:38.386074') RETURNING "id"  [["created_at", Sun, 27 Sep 2015 15:45:38 CDT -05:00], ["name", "Test"], ["slug", "test"], ["updated_at", Sun, 27 Sep 2015 15:45:38 CDT -05:00]]
+  [1m[36m (0.2ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+Started POST "/projects/test/hooks/exception_report" for 127.0.0.1 at 2015-09-27 15:45:38 -0500
+Processing by ProjectHooksController#trigger as HTML
+  Parameters: {"project_id"=>"test", "hook"=>"exception_report"}
+  [1m[35mProject Load (0.6ms)[0m  SELECT  "projects".* FROM "projects"  WHERE "projects"."slug" = 'test'  ORDER BY "projects"."name" ASC LIMIT 1
+Completed 404 Not Found in 8ms (Views: 6.1ms | ActiveRecord: 0.6ms)
+  [1m[36m (0.3ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+-----------------------------------
+TestTest: test_the_test_suite_works
+-----------------------------------
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+[SKYLIGHT] [0.8.0] authentication token required; disabling Skylight agent
+[94m[daemon:slack] Skipping daemon since we're not running as a server[0m
+[94m[daemon:scheduler] Skipping daemon since we're not running as a server[0m
+[34;1mSetting up observers for RunTestsOnPostReceive[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.8ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.5ms)[0m  BEGIN
+------------------------------------------------------------------------------------------------------------------
+ExceptionReportingTest: test_: when an exception occurs during a normal web hook, it should report the exception. 
+------------------------------------------------------------------------------------------------------------------
+  [1m[36m (0.4ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (1.3ms)[0m  INSERT INTO "projects" ("created_at", "name", "slug", "updated_at") VALUES ('2015-09-27 20:46:12.764270', 'Test', 'test', '2015-09-27 20:46:12.764270') RETURNING "id"  [["created_at", Sun, 27 Sep 2015 15:46:12 CDT -05:00], ["name", "Test"], ["slug", "test"], ["updated_at", Sun, 27 Sep 2015 15:46:12 CDT -05:00]]
+  [1m[36m (0.3ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+Started POST "/projects/test/hooks/something" for 127.0.0.1 at 2015-09-27 15:46:12 -0500
+Processing by ProjectHooksController#trigger as HTML
+  Parameters: {"project_id"=>"test", "hook"=>"something"}
+  [1m[35mProject Load (1.7ms)[0m  SELECT  "projects".* FROM "projects"  WHERE "projects"."slug" = 'test'  ORDER BY "projects"."name" ASC LIMIT 1
+Completed 500 Internal Server Error in 11ms (ActiveRecord: 1.7ms)
+  [1m[36m (0.4ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+---------------------------------------------------------------------------------------------------------------------------------
+ExceptionReportingTest: test_: when an exception occurs during the exception_report webhook, it should not report the exception. 
+---------------------------------------------------------------------------------------------------------------------------------
+  [1m[36m (0.2ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.6ms)[0m  INSERT INTO "projects" ("created_at", "name", "slug", "updated_at") VALUES ('2015-09-27 20:46:12.888358', 'Test', 'test', '2015-09-27 20:46:12.888358') RETURNING "id"  [["created_at", Sun, 27 Sep 2015 15:46:12 CDT -05:00], ["name", "Test"], ["slug", "test"], ["updated_at", Sun, 27 Sep 2015 15:46:12 CDT -05:00]]
+  [1m[36m (0.2ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+Started POST "/projects/test/hooks/exception_report" for 127.0.0.1 at 2015-09-27 15:46:40 -0500
+Processing by ProjectHooksController#trigger as HTML
+  Parameters: {"project_id"=>"test", "hook"=>"exception_report"}
+  [1m[35mProject Load (0.7ms)[0m  SELECT  "projects".* FROM "projects"  WHERE "projects"."slug" = 'test'  ORDER BY "projects"."name" ASC LIMIT 1
+Completed 404 Not Found in 9ms (Views: 6.4ms | ActiveRecord: 0.7ms)
+  [1m[36m (0.5ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+-----------------------------------
+TestTest: test_the_test_suite_works
+-----------------------------------
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+[SKYLIGHT] [0.8.0] authentication token required; disabling Skylight agent
+[94m[daemon:slack] Skipping daemon since we're not running as a server[0m
+[94m[daemon:scheduler] Skipping daemon since we're not running as a server[0m
+[34;1mSetting up observers for RunTestsOnPostReceive[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.8ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+-----------------------------------
+TestTest: test_the_test_suite_works
+-----------------------------------
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+------------------------------------------------------------------------------------------------------------------
+ExceptionReportingTest: test_: when an exception occurs during a normal web hook, it should report the exception. 
+------------------------------------------------------------------------------------------------------------------
+  [1m[36m (0.3ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (1.0ms)[0m  INSERT INTO "projects" ("created_at", "name", "slug", "updated_at") VALUES ('2015-09-27 20:46:47.286703', 'Test', 'test', '2015-09-27 20:46:47.286703') RETURNING "id"  [["created_at", Sun, 27 Sep 2015 15:46:47 CDT -05:00], ["name", "Test"], ["slug", "test"], ["updated_at", Sun, 27 Sep 2015 15:46:47 CDT -05:00]]
+  [1m[36m (0.2ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+Started POST "/projects/test/hooks/something" for 127.0.0.1 at 2015-09-27 15:46:47 -0500
+Processing by ProjectHooksController#trigger as HTML
+  Parameters: {"project_id"=>"test", "hook"=>"something"}
+  [1m[35mProject Load (1.7ms)[0m  SELECT  "projects".* FROM "projects"  WHERE "projects"."slug" = 'test'  ORDER BY "projects"."name" ASC LIMIT 1
+Completed 500 Internal Server Error in 12ms (ActiveRecord: 1.7ms)
+  [1m[36m (0.5ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+---------------------------------------------------------------------------------------------------------------------------------
+ExceptionReportingTest: test_: when an exception occurs during the exception_report webhook, it should not report the exception. 
+---------------------------------------------------------------------------------------------------------------------------------
+  [1m[36m (0.2ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO "projects" ("created_at", "name", "slug", "updated_at") VALUES ('2015-09-27 20:47:17.912757', 'Test', 'test', '2015-09-27 20:47:17.912757') RETURNING "id"  [["created_at", Sun, 27 Sep 2015 15:47:17 CDT -05:00], ["name", "Test"], ["slug", "test"], ["updated_at", Sun, 27 Sep 2015 15:47:17 CDT -05:00]]
+  [1m[36m (0.2ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+Started POST "/projects/test/hooks/exception_report" for 127.0.0.1 at 2015-09-27 15:47:17 -0500
+Processing by ProjectHooksController#trigger as HTML
+  Parameters: {"project_id"=>"test", "hook"=>"exception_report"}
+  [1m[35mProject Load (0.6ms)[0m  SELECT  "projects".* FROM "projects"  WHERE "projects"."slug" = 'test'  ORDER BY "projects"."name" ASC LIMIT 1
+Completed 404 Not Found in 12ms (Views: 8.9ms | ActiveRecord: 0.6ms)
+  [1m[36m (0.3ms)[0m  [1mROLLBACK[0m
+[SKYLIGHT] [0.8.0] authentication token required; disabling Skylight agent
+[94m[daemon:slack] Skipping daemon since we're not running as a server[0m
+[94m[daemon:scheduler] Skipping daemon since we're not running as a server[0m
+[34;1mSetting up observers for RunTestsOnPostReceive[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.8ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+------------------------------------------------------------------------------------------------------------------
+ExceptionReportingTest: test_: when an exception occurs during a normal web hook, it should report the exception. 
+------------------------------------------------------------------------------------------------------------------
+  [1m[36m (0.3ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.9ms)[0m  INSERT INTO "projects" ("created_at", "name", "slug", "updated_at") VALUES ('2015-09-27 20:47:41.223575', 'Test', 'test', '2015-09-27 20:47:41.223575') RETURNING "id"  [["created_at", Sun, 27 Sep 2015 15:47:41 CDT -05:00], ["name", "Test"], ["slug", "test"], ["updated_at", Sun, 27 Sep 2015 15:47:41 CDT -05:00]]
+  [1m[36m (0.2ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+Started POST "/projects/test/hooks/something" for 127.0.0.1 at 2015-09-27 15:47:41 -0500
+Processing by ProjectHooksController#trigger as HTML
+  Parameters: {"project_id"=>"test", "hook"=>"something"}
+  [1m[35mProject Load (1.6ms)[0m  SELECT  "projects".* FROM "projects"  WHERE "projects"."slug" = 'test'  ORDER BY "projects"."name" ASC LIMIT 1
+Completed 500 Internal Server Error in 11ms (ActiveRecord: 1.6ms)
+  [1m[36m (0.5ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+---------------------------------------------------------------------------------------------------------------------------------
+ExceptionReportingTest: test_: when an exception occurs during the exception_report webhook, it should not report the exception. 
+---------------------------------------------------------------------------------------------------------------------------------
+  [1m[36m (0.2ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO "projects" ("created_at", "name", "slug", "updated_at") VALUES ('2015-09-27 20:47:46.610794', 'Test', 'test', '2015-09-27 20:47:46.610794') RETURNING "id"  [["created_at", Sun, 27 Sep 2015 15:47:46 CDT -05:00], ["name", "Test"], ["slug", "test"], ["updated_at", Sun, 27 Sep 2015 15:47:46 CDT -05:00]]
+  [1m[36m (0.2ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+Started POST "/projects/test/hooks/exception_report" for 127.0.0.1 at 2015-09-27 15:47:46 -0500
+Processing by ProjectHooksController#trigger as HTML
+  Parameters: {"project_id"=>"test", "hook"=>"exception_report"}
+  [1m[35mProject Load (0.7ms)[0m  SELECT  "projects".* FROM "projects"  WHERE "projects"."slug" = 'test'  ORDER BY "projects"."name" ASC LIMIT 1
+Completed 500 Internal Server Error in 2ms (ActiveRecord: 0.7ms)
+  [1m[36m (0.5ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+-----------------------------------
+TestTest: test_the_test_suite_works
+-----------------------------------
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+[SKYLIGHT] [0.8.0] authentication token required; disabling Skylight agent
+[94m[daemon:slack] Skipping daemon since we're not running as a server[0m
+[94m[daemon:scheduler] Skipping daemon since we're not running as a server[0m
+[34;1mSetting up observers for RunTestsOnPostReceive[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.9ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+------------------------------------------------------------------------------------------------------------------
+ExceptionReportingTest: test_: when an exception occurs during a normal web hook, it should report the exception. 
+------------------------------------------------------------------------------------------------------------------
+  [1m[36m (0.3ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (1.1ms)[0m  INSERT INTO "projects" ("created_at", "name", "slug", "updated_at") VALUES ('2015-09-27 20:48:07.393802', 'Test', 'test', '2015-09-27 20:48:07.393802') RETURNING "id"  [["created_at", Sun, 27 Sep 2015 15:48:07 CDT -05:00], ["name", "Test"], ["slug", "test"], ["updated_at", Sun, 27 Sep 2015 15:48:07 CDT -05:00]]
+  [1m[36m (0.2ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+Started POST "/projects/test/hooks/something" for 127.0.0.1 at 2015-09-27 15:48:07 -0500
+Processing by ProjectHooksController#trigger as HTML
+  Parameters: {"project_id"=>"test", "hook"=>"something"}
+  [1m[35mProject Load (2.3ms)[0m  SELECT  "projects".* FROM "projects"  WHERE "projects"."slug" = 'test'  ORDER BY "projects"."name" ASC LIMIT 1
+Completed 500 Internal Server Error in 14ms (ActiveRecord: 2.3ms)
+  [1m[36m (0.5ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+---------------------------------------------------------------------------------------------------------------------------------
+ExceptionReportingTest: test_: when an exception occurs during the exception_report webhook, it should not report the exception. 
+---------------------------------------------------------------------------------------------------------------------------------
+  [1m[36m (0.2ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO "projects" ("created_at", "name", "slug", "updated_at") VALUES ('2015-09-27 20:48:07.509862', 'Test', 'test', '2015-09-27 20:48:07.509862') RETURNING "id"  [["created_at", Sun, 27 Sep 2015 15:48:07 CDT -05:00], ["name", "Test"], ["slug", "test"], ["updated_at", Sun, 27 Sep 2015 15:48:07 CDT -05:00]]
+  [1m[36m (0.2ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+Started POST "/projects/test/hooks/exception_report" for 127.0.0.1 at 2015-09-27 15:48:07 -0500
+Processing by ProjectHooksController#trigger as HTML
+  Parameters: {"project_id"=>"test", "hook"=>"exception_report"}
+  [1m[35mProject Load (0.6ms)[0m  SELECT  "projects".* FROM "projects"  WHERE "projects"."slug" = 'test'  ORDER BY "projects"."name" ASC LIMIT 1
+Completed 500 Internal Server Error in 2ms (ActiveRecord: 0.6ms)
+  [1m[36m (0.4ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+-----------------------------------
+TestTest: test_the_test_suite_works
+-----------------------------------
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+[SKYLIGHT] [0.8.0] authentication token required; disabling Skylight agent
+[94m[daemon:slack] Skipping daemon since we're not running as a server[0m
+[94m[daemon:scheduler] Skipping daemon since we're not running as a server[0m
+[34;1mSetting up observers for RunTestsOnPostReceive[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.9ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+-----------------------------------
+TestTest: test_the_test_suite_works
+-----------------------------------
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+------------------------------------------------------------------------------------------------------------------
+ExceptionReportingTest: test_: when an exception occurs during a normal web hook, it should report the exception. 
+------------------------------------------------------------------------------------------------------------------
+  [1m[36m (0.3ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (1.2ms)[0m  INSERT INTO "projects" ("created_at", "name", "slug", "updated_at") VALUES ('2015-09-27 20:49:55.611372', 'Test', 'test', '2015-09-27 20:49:55.611372') RETURNING "id"  [["created_at", Sun, 27 Sep 2015 15:49:55 CDT -05:00], ["name", "Test"], ["slug", "test"], ["updated_at", Sun, 27 Sep 2015 15:49:55 CDT -05:00]]
+  [1m[36m (0.3ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+Started POST "/projects/test/hooks/something" for 127.0.0.1 at 2015-09-27 15:49:55 -0500
+Processing by ProjectHooksController#trigger as HTML
+  Parameters: {"project_id"=>"test", "hook"=>"something"}
+  [1m[35mProject Load (1.6ms)[0m  SELECT  "projects".* FROM "projects"  WHERE "projects"."slug" = 'test'  ORDER BY "projects"."name" ASC LIMIT 1
+Completed 500 Internal Server Error in 12ms (ActiveRecord: 1.6ms)
+  [1m[36m (0.5ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+---------------------------------------------------------------------------------------------------------------------------------
+ExceptionReportingTest: test_: when an exception occurs during the exception_report webhook, it should not report the exception. 
+---------------------------------------------------------------------------------------------------------------------------------
+  [1m[36m (0.2ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.6ms)[0m  INSERT INTO "projects" ("created_at", "name", "slug", "updated_at") VALUES ('2015-09-27 20:49:55.720611', 'Test', 'test', '2015-09-27 20:49:55.720611') RETURNING "id"  [["created_at", Sun, 27 Sep 2015 15:49:55 CDT -05:00], ["name", "Test"], ["slug", "test"], ["updated_at", Sun, 27 Sep 2015 15:49:55 CDT -05:00]]
+  [1m[36m (0.2ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+Started POST "/projects/test/hooks/exception_report" for 127.0.0.1 at 2015-09-27 15:49:55 -0500
+Processing by ProjectHooksController#trigger as HTML
+  Parameters: {"project_id"=>"test", "hook"=>"exception_report"}
+  [1m[35mProject Load (0.7ms)[0m  SELECT  "projects".* FROM "projects"  WHERE "projects"."slug" = 'test'  ORDER BY "projects"."name" ASC LIMIT 1
+Completed 500 Internal Server Error in 2ms (ActiveRecord: 0.7ms)
+  [1m[36m (0.3ms)[0m  [1mROLLBACK[0m
+[SKYLIGHT] [0.8.0] authentication token required; disabling Skylight agent
+[94m[daemon:slack] Skipping daemon since we're not running as a server[0m
+[94m[daemon:scheduler] Skipping daemon since we're not running as a server[0m
+[34;1mSetting up observers for RunTestsOnPostReceive[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.7ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+------------------------------------------------------------------------------------------------------------------
+ExceptionReportingTest: test_: when an exception occurs during a normal web hook, it should report the exception. 
+------------------------------------------------------------------------------------------------------------------
+  [1m[36m (0.3ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.9ms)[0m  INSERT INTO "projects" ("created_at", "name", "slug", "updated_at") VALUES ('2015-09-27 20:50:05.207262', 'Test', 'test', '2015-09-27 20:50:05.207262') RETURNING "id"  [["created_at", Sun, 27 Sep 2015 15:50:05 CDT -05:00], ["name", "Test"], ["slug", "test"], ["updated_at", Sun, 27 Sep 2015 15:50:05 CDT -05:00]]
+  [1m[36m (0.2ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+Started POST "/projects/test/hooks/something" for 127.0.0.1 at 2015-09-27 15:50:05 -0500
+Processing by ProjectHooksController#trigger as HTML
+  Parameters: {"project_id"=>"test", "hook"=>"something"}
+  [1m[35mProject Load (1.7ms)[0m  SELECT  "projects".* FROM "projects"  WHERE "projects"."slug" = 'test'  ORDER BY "projects"."name" ASC LIMIT 1
+Completed 500 Internal Server Error in 11ms (ActiveRecord: 1.7ms)
+  [1m[36m (0.3ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+---------------------------------------------------------------------------------------------------------------------------------
+ExceptionReportingTest: test_: when an exception occurs during the exception_report webhook, it should not report the exception. 
+---------------------------------------------------------------------------------------------------------------------------------
+  [1m[36m (0.2ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO "projects" ("created_at", "name", "slug", "updated_at") VALUES ('2015-09-27 20:50:05.315322', 'Test', 'test', '2015-09-27 20:50:05.315322') RETURNING "id"  [["created_at", Sun, 27 Sep 2015 15:50:05 CDT -05:00], ["name", "Test"], ["slug", "test"], ["updated_at", Sun, 27 Sep 2015 15:50:05 CDT -05:00]]
+  [1m[36m (0.2ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+Started POST "/projects/test/hooks/exception_report" for 127.0.0.1 at 2015-09-27 15:50:05 -0500
+Processing by ProjectHooksController#trigger as HTML
+  Parameters: {"project_id"=>"test", "hook"=>"exception_report"}
+  [1m[35mProject Load (0.7ms)[0m  SELECT  "projects".* FROM "projects"  WHERE "projects"."slug" = 'test'  ORDER BY "projects"."name" ASC LIMIT 1
+Completed 500 Internal Server Error in 2ms (ActiveRecord: 0.7ms)
+  [1m[36m (0.3ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+-----------------------------------
+TestTest: test_the_test_suite_works
+-----------------------------------
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+[SKYLIGHT] [0.8.0] authentication token required; disabling Skylight agent
+[94m[daemon:slack] Skipping daemon since we're not running as a server[0m
+[94m[daemon:scheduler] Skipping daemon since we're not running as a server[0m
+[34;1mSetting up observers for RunTestsOnPostReceive[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.8ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+-----------------------------------
+TestTest: test_the_test_suite_works
+-----------------------------------
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+------------------------------------------------------------------------------------------------------------------
+ExceptionReportingTest: test_: when an exception occurs during a normal web hook, it should report the exception. 
+------------------------------------------------------------------------------------------------------------------
+  [1m[36m (0.3ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (1.1ms)[0m  INSERT INTO "projects" ("created_at", "name", "slug", "updated_at") VALUES ('2015-09-27 21:10:57.902666', 'Test', 'test', '2015-09-27 21:10:57.902666') RETURNING "id"  [["created_at", Sun, 27 Sep 2015 16:10:57 CDT -05:00], ["name", "Test"], ["slug", "test"], ["updated_at", Sun, 27 Sep 2015 16:10:57 CDT -05:00]]
+  [1m[36m (0.2ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+Started POST "/projects/test/hooks/something" for 127.0.0.1 at 2015-09-27 16:10:57 -0500
+Processing by ProjectHooksController#trigger as HTML
+  Parameters: {"project_id"=>"test", "hook"=>"something"}
+  [1m[35mProject Load (1.7ms)[0m  SELECT  "projects".* FROM "projects"  WHERE "projects"."slug" = 'test'  ORDER BY "projects"."name" ASC LIMIT 1
+Completed 500 Internal Server Error in 15ms (ActiveRecord: 1.7ms)
+  [1m[36m (0.3ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+---------------------------------------------------------------------------------------------------------------------------------
+ExceptionReportingTest: test_: when an exception occurs during the exception_report webhook, it should not report the exception. 
+---------------------------------------------------------------------------------------------------------------------------------
+  [1m[36m (0.2ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.8ms)[0m  INSERT INTO "projects" ("created_at", "name", "slug", "updated_at") VALUES ('2015-09-27 21:10:58.030162', 'Test', 'test', '2015-09-27 21:10:58.030162') RETURNING "id"  [["created_at", Sun, 27 Sep 2015 16:10:58 CDT -05:00], ["name", "Test"], ["slug", "test"], ["updated_at", Sun, 27 Sep 2015 16:10:58 CDT -05:00]]
+  [1m[36m (0.3ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+Started POST "/projects/test/hooks/exception_report" for 127.0.0.1 at 2015-09-27 16:10:58 -0500
+Processing by ProjectHooksController#trigger as HTML
+  Parameters: {"project_id"=>"test", "hook"=>"exception_report"}
+  [1m[35mProject Load (0.7ms)[0m  SELECT  "projects".* FROM "projects"  WHERE "projects"."slug" = 'test'  ORDER BY "projects"."name" ASC LIMIT 1
+Completed 500 Internal Server Error in 3ms (ActiveRecord: 0.7ms)
+  [1m[36m (0.3ms)[0m  [1mROLLBACK[0m
+[SKYLIGHT] [0.8.0] authentication token required; disabling Skylight agent
+[94m[daemon:slack] Skipping daemon since we're not running as a server[0m
+[94m[daemon:scheduler] Skipping daemon since we're not running as a server[0m
+[34;1mSetting up observers for RunTestsOnPostReceive[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.7ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+-----------------------------------
+TestTest: test_the_test_suite_works
+-----------------------------------
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+------------------------------------------------------------------------------------------------------------------
+ExceptionReportingTest: test_: when an exception occurs during a normal web hook, it should report the exception. 
+------------------------------------------------------------------------------------------------------------------
+  [1m[36m (0.3ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (1.0ms)[0m  INSERT INTO "projects" ("created_at", "name", "slug", "updated_at") VALUES ('2015-09-27 21:12:01.973175', 'Test', 'test', '2015-09-27 21:12:01.973175') RETURNING "id"  [["created_at", Sun, 27 Sep 2015 16:12:01 CDT -05:00], ["name", "Test"], ["slug", "test"], ["updated_at", Sun, 27 Sep 2015 16:12:01 CDT -05:00]]
+  [1m[36m (0.2ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+Started POST "/projects/test/hooks/something" for 127.0.0.1 at 2015-09-27 16:12:01 -0500
+Processing by ProjectHooksController#trigger as HTML
+  Parameters: {"project_id"=>"test", "hook"=>"something"}
+  [1m[35mProject Load (2.3ms)[0m  SELECT  "projects".* FROM "projects"  WHERE "projects"."slug" = 'test'  ORDER BY "projects"."name" ASC LIMIT 1
+Completed 500 Internal Server Error in 11ms (ActiveRecord: 2.3ms)
+  [1m[36m (0.3ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+---------------------------------------------------------------------------------------------------------------------------------
+ExceptionReportingTest: test_: when an exception occurs during the exception_report webhook, it should not report the exception. 
+---------------------------------------------------------------------------------------------------------------------------------
+  [1m[36m (0.2ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.7ms)[0m  INSERT INTO "projects" ("created_at", "name", "slug", "updated_at") VALUES ('2015-09-27 21:12:02.094847', 'Test', 'test', '2015-09-27 21:12:02.094847') RETURNING "id"  [["created_at", Sun, 27 Sep 2015 16:12:02 CDT -05:00], ["name", "Test"], ["slug", "test"], ["updated_at", Sun, 27 Sep 2015 16:12:02 CDT -05:00]]
+  [1m[36m (0.2ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+Started POST "/projects/test/hooks/exception_report" for 127.0.0.1 at 2015-09-27 16:12:02 -0500
+Processing by ProjectHooksController#trigger as HTML
+  Parameters: {"project_id"=>"test", "hook"=>"exception_report"}
+  [1m[35mProject Load (0.7ms)[0m  SELECT  "projects".* FROM "projects"  WHERE "projects"."slug" = 'test'  ORDER BY "projects"."name" ASC LIMIT 1
+Completed 500 Internal Server Error in 2ms (ActiveRecord: 0.7ms)
+  [1m[36m (0.3ms)[0m  [1mROLLBACK[0m
+[SKYLIGHT] [0.8.0] authentication token required; disabling Skylight agent
+[94m[daemon:slack] Skipping daemon since we're not running as a server[0m
+[94m[daemon:scheduler] Skipping daemon since we're not running as a server[0m
+[34;1mSetting up observers for RunTestsOnPostReceive[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.6ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+------------------------------------------------------------------------------------------------------------------
+ExceptionReportingTest: test_: when an exception occurs during a normal web hook, it should report the exception. 
+------------------------------------------------------------------------------------------------------------------
+  [1m[36m (0.4ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (1.2ms)[0m  INSERT INTO "projects" ("created_at", "name", "slug", "updated_at") VALUES ('2015-09-27 21:13:01.551493', 'Test', 'test', '2015-09-27 21:13:01.551493') RETURNING "id"  [["created_at", Sun, 27 Sep 2015 16:13:01 CDT -05:00], ["name", "Test"], ["slug", "test"], ["updated_at", Sun, 27 Sep 2015 16:13:01 CDT -05:00]]
+  [1m[36m (0.3ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+Started POST "/projects/test/hooks/something" for 127.0.0.1 at 2015-09-27 16:13:01 -0500
+Processing by ProjectHooksController#trigger as HTML
+  Parameters: {"project_id"=>"test", "hook"=>"something"}
+  [1m[35mProject Load (1.8ms)[0m  SELECT  "projects".* FROM "projects"  WHERE "projects"."slug" = 'test'  ORDER BY "projects"."name" ASC LIMIT 1
+Completed 500 Internal Server Error in 13ms (ActiveRecord: 1.8ms)
+  [1m[36m (0.4ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+---------------------------------------------------------------------------------------------------------------------------------
+ExceptionReportingTest: test_: when an exception occurs during the exception_report webhook, it should not report the exception. 
+---------------------------------------------------------------------------------------------------------------------------------
+  [1m[36m (0.2ms)[0m  [1mSAVEPOINT active_record_1[0m
+  [1m[35mSQL (0.5ms)[0m  INSERT INTO "projects" ("created_at", "name", "slug", "updated_at") VALUES ('2015-09-27 21:13:01.672871', 'Test', 'test', '2015-09-27 21:13:01.672871') RETURNING "id"  [["created_at", Sun, 27 Sep 2015 16:13:01 CDT -05:00], ["name", "Test"], ["slug", "test"], ["updated_at", Sun, 27 Sep 2015 16:13:01 CDT -05:00]]
+  [1m[36m (0.2ms)[0m  [1mRELEASE SAVEPOINT active_record_1[0m
+Started POST "/projects/test/hooks/exception_report" for 127.0.0.1 at 2015-09-27 16:13:01 -0500
+Processing by ProjectHooksController#trigger as HTML
+  Parameters: {"project_id"=>"test", "hook"=>"exception_report"}
+  [1m[35mProject Load (0.6ms)[0m  SELECT  "projects".* FROM "projects"  WHERE "projects"."slug" = 'test'  ORDER BY "projects"."name" ASC LIMIT 1
+Completed 500 Internal Server Error in 2ms (ActiveRecord: 0.6ms)
+  [1m[36m (0.3ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+-----------------------------------
+TestTest: test_the_test_suite_works
+-----------------------------------
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+[94m[daemon:slack] Skipping daemon since we're not running as a server[0m
+[94m[daemon:scheduler] Skipping daemon since we're not running as a server[0m
+[34;1mSetting up observers for RunTestsOnPostReceive[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.7ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.4ms)[0m  BEGIN
+-----------------------------------
+TestTest: test_the_test_suite_works
+-----------------------------------
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+[94m[daemon:slack] Skipping daemon since we're not running as a server[0m
+[94m[daemon:scheduler] Skipping daemon since we're not running as a server[0m
+[34;1mSetting up observers for RunTestsOnPostReceive[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.7ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.3ms)[0m  BEGIN
+-----------------------------------
+TestTest: test_the_test_suite_works
+-----------------------------------
+  [1m[36m (0.3ms)[0m  [1mROLLBACK[0m
+[94m[daemon:slack] Skipping daemon since we're not running as a server[0m
+[94m[daemon:scheduler] Skipping daemon since we're not running as a server[0m
+[34;1mSetting up observers for RunTestsOnPostReceive[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.8ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+-----------------------------------
+TestTest: test_the_test_suite_works
+-----------------------------------
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+[94m[daemon:slack] Skipping daemon since we're not running as a server[0m
+[94m[daemon:scheduler] Skipping daemon since we're not running as a server[0m
+[34;1mSetting up observers for RunTestsOnPostReceive[0m
