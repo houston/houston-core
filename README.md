@@ -12,7 +12,7 @@ It makes it easy to set up **triggers** and **notifications** like:
 
 And it provides a foundation for custom views like **dashboards** and **reports**.
 
-Houston is also extensible through **modules**.
+Houston is also extensible through **[Modules](https://github.com/houston/houston-core/wiki/Modules)**.
 
 
 
