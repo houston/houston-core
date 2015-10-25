@@ -21,7 +21,8 @@ Gem::Specification.new do |spec|
 
   # For Houston as a Web Application
   spec.add_dependency "rails", "~> 4.1.13"
-  spec.add_dependency "pg", "~> 0.18.2"
+  spec.add_dependency "sprockets", "~> 2.8" # update this when updating Rails
+  spec.add_dependency "pg", "~> 0.18.3"
   # --------------------------------
   spec.add_dependency "activerecord-import"
   spec.add_dependency "activerecord-pluck_in_batches"
@@ -60,7 +61,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "coffee-rails", "~> 4.0.0"
 
   # Houston's background jobs daemon
-  spec.add_dependency "rufus-scheduler", "~> 3.1.4"
+  spec.add_dependency "rufus-scheduler", "~> 3.1.7"
   spec.add_dependency "whenever", "0.9.2" # Houston uses just the DSL for writing cron jobs
 
   # Used to create image charts for embedding in email
