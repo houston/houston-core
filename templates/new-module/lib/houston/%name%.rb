@@ -5,9 +5,11 @@ module Houston
   module <%= camelized %>
     extend self
 
-    attr_reader :config
+    def config(&block)
+      @configuration ||= <%= camelized %>::Configuration.new
+      @configuration.instance_eval(&block) if block_given?
+      @configuration
+    end
 
   end
-
-  <%= camelized %>.instance_variable_set :@config, <%= camelized %>::Configuration.new
 end
