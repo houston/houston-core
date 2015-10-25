@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    houston-core (0.5.2)
+    houston-core (0.5.3)
       activerecord-import
       activerecord-pluck_in_batches
       addressable
