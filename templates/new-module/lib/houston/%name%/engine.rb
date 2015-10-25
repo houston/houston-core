@@ -1,3 +1,5 @@
+require "houston/<%= name %>/railtie"
+
 module Houston
   module <%= camelized %>
     class Engine < ::Rails::Engine
