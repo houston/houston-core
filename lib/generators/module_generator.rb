@@ -73,6 +73,14 @@ module Generators
       ModuleBuilder
     end
 
+    def git_author
+      `git config user.name`.chomp
+    end
+
+    def git_email
+      `git config user.email`.chomp
+    end
+
     def full?
       true
     end
@@ -83,6 +91,19 @@ module Generators
 
     def engine?
       true
+    end
+
+    def update_gemfile
+      super
+      git_init
+    end
+
+  protected
+
+    def git_init
+      say_status :run, "git init"
+      output = `git init .`
+      print output unless options[:quiet]
     end
 
   end
