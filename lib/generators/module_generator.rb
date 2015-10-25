@@ -1,6 +1,7 @@
 require "rails"
 require "rails/generators"
 require "rails/generators/rails/plugin/plugin_generator"
+require "houston/version"
 
 module Generators
   class ModuleBuilder < Rails::PluginBuilder
