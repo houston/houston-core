@@ -12,7 +12,9 @@ module Generators
 
     def config
       template "config/initializers/add_navigation_renderer.rb"
+      template "config/database.yml"
       template "config/routes.rb"
+      empty_directory_with_keep_file "db"
     end
 
     def lib
@@ -41,13 +43,13 @@ module Generators
       template "README.md"
     end
 
-    def generate_test_dummy(force = false)
-      opts = (options || {}).slice(*PASSTHROUGH_OPTIONS)
-      opts[:force] = force
-      opts[:skip_bundle] = true
-
-      invoke Rails::Generators::AppGenerator,
-        [ File.expand_path(dummy_path, destination_root) ], opts
+    def test
+      template "test/test_helper.rb"
+      template "test/dummy/houston.rb"
+      template "test/fixtures/projects.yml"
+      template "test/fixtures/users.yml"
+      template "test/unit/fixtures_test.rb"
+      template "test/acceptance/houston_dummy_test.rb"
     end
 
   end
@@ -92,6 +94,10 @@ module Generators
 
     def engine?
       true
+    end
+
+    def with_dummy_app?
+      false
     end
 
     def update_gemfile

@@ -10,11 +10,15 @@ gemspec
 # Git. Remember to move these dependencies to your gemspec before releasing
 # your gem to rubygems.org.
 
-<% if options.dev? || options.edge? -%>
-# Your gem is dependent on dev or edge Rails. Once you can lock this
-# dependency down to a specific version, move it to your gemspec.
-<%= rails_gemfile_entry -%>
+group :development, :test do
+  gem "pry"
+end
 
-<% end -%>
-# To use debugger
-# gem 'debugger'
+group :test do
+  gem "minitest"
+  gem "capybara"
+  gem "shoulda-context"
+
+  gem "minitest-reporters", require: false
+  gem "minitest-reporters-turn_reporter", require: false
+end

@@ -1,0 +1,13 @@
+development:
+  adapter: postgresql
+  encoding: utf8
+  database: houston_<%= name %>_development
+  host: localhost
+  prepared_statements: false
+
+test:
+  adapter: postgresql
+  encoding: utf8
+  database: houston_<%= name %>_test
+  host: localhost
+  prepared_statements: false

@@ -20,5 +20,7 @@ Gem::Specification.new do |spec|
   spec.test_files = Dir["test/**/*"]
 <% end -%>
 
-  <%= '# ' if options.dev? || options.edge? -%>s.add_dependency "rails"
+  spec.add_development_dependency "bundler", "~> <%= Bundler::VERSION %>"
+  spec.add_development_dependency "rake", "~> 10.0"
+  spec.add_development_dependency "houston-core", ">= <%= Houston::VERSION %>"
 end
