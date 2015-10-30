@@ -41,7 +41,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "neat-rails"
   spec.add_dependency "nokogiri", "~> 1.6.6.2"
   spec.add_dependency "houston-oauth-plugin"
-  spec.add_dependency "oj", "~> 2.12.14"
+  spec.add_dependency "oj", "~> 2.13"
   spec.add_dependency "openxml-xlsx"
   spec.add_dependency "pg_search", "~> 1.0.5"
   spec.add_dependency "premailer", "~> 1.8.6"
@@ -82,7 +82,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "simplecov", "~> 0.9.1"
 
   # Implements Houston's VersionControl::GitAdapter
-  spec.add_dependency "rugged", "~> 0.23.2" # for speaking to Git
+  spec.add_dependency "rugged", "~> 0.23.3" # for speaking to Git
 
   # For integration with GitHub
   spec.add_dependency "octokit", "~> 4.1.0"
