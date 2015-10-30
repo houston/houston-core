@@ -124,12 +124,16 @@
   $(function() {
     NestedEditorFor.init();
 
+    function dasherize(string) {
+      return inflect.dasherize(inflect.underscore(string));
+    }
+
     var $name = $('#project_name'),
         $slug = $('#project_slug'),
-        prevSlug = $name.val().dasherize();
+        prevSlug = dasherize($name.val());
     $name.keyup(function() {
       var name = $name.val(),
-          slug = name.dasherize();
+          slug = dasherize(name);
       if($slug.val() == prevSlug) {
         $slug.val(slug);
         prevSlug = slug;

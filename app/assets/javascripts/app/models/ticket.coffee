@@ -31,7 +31,7 @@ class window.Ticket extends Backbone.Model
     @commitsCollection ||= new Commits(@get('commits'), ticket: @)
 
   activityStream: ->
-    @testingNotes().models.concat(@commits().models).sortBy (item)-> item.get('createdAt')
+    _.sortBy @testingNotes().models.concat(@commits().models), (item)-> item.get('createdAt')
 
 
   parse: (ticket)->

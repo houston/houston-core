@@ -1,3 +1,7 @@
+toDate = (timestamp)->
+  return timestamp if _.isDate(timestamp)
+  new Date(timestamp)
+
 Handlebars.registerHelper 'formatDuration', (seconds)->
   if seconds < Duration.HOUR
     minutes = Math.floor(seconds / Duration.MINUTE)
@@ -14,25 +18,25 @@ Handlebars.registerHelper 'formatDuration', (seconds)->
 
 Handlebars.registerHelper 'formatDate', (timestamp)->
   format = d3.time.format('%a %b %-d')
-  format Date.create(timestamp)
+  format toDate(timestamp)
 
 Handlebars.registerHelper 'formatDateWithYear', (timestamp)->
   return "" unless timestamp
   format = d3.time.format('%b %-d <span class="year">%Y</span>')
-  format Date.create(timestamp)
+  format toDate(timestamp)
 
 Handlebars.registerHelper 'formatDateWithYear2', (timestamp)->
   return "" unless timestamp
   format = d3.time.format('%b %-d, %Y')
-  format Date.create(timestamp)
+  format toDate(timestamp)
 
 Handlebars.registerHelper 'formatTime', (timestamp)->
   format = d3.time.format('%a %b %-d, %Y %-I:%M%p')
-  format Date.create(timestamp)
+  format toDate(timestamp)
     .replace(/[AP]M/, (str)-> str.toLowerCase()[0])
 
 Handlebars.registerHelper 'formatTimeAgo', (timestamp)->
-  $.timeago Date.create(timestamp)
+  $.timeago toDate(timestamp)
 
 Handlebars.registerHelper 'markdown', (markdown)-> App.mdown(markdown)
 
@@ -121,11 +125,11 @@ Handlebars.registerHelper 'timelineDate', (date)->
     <span class="year">%Y</span>
   </div>
   """
-  format Date.create(date)
+  format toDate(date)
 
 Handlebars.registerHelper 'timelineTime', (time)->
   format = d3.time.format('<span class="timeline-event-time">%-I:%M%p</span>')
-  format Date.create(time)
+  format toDate(time)
     .replace(/[AP]M/, (str)-> str.toLowerCase()[0])
 
 Handlebars.registerHelper 'timelineDateAfterGap', (date)->
@@ -137,7 +141,7 @@ Handlebars.registerHelper 'timeline', (events, options)->
   if events.length > 0
     html = '<div class="timeline">'
     for event in events
-      date = App.truncateDate(Date.create(event.date || event.time))
+      date = App.truncateDate(toDate(event.date || event.time))
       html += Handlebars.helpers.timelineDateRange(lastDate, date)
       html += options.fn(event)
       lastDate = date

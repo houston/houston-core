@@ -43,7 +43,6 @@ PATH
       simplecov (~> 0.9.1)
       sprockets (~> 2.8)
       strongbox (~> 0.7.2)
-      sugar-rails
       thor
       thread_safe (~> 0.3.5)
       uglifier (>= 1.3.0)
@@ -302,8 +301,6 @@ GEM
       sprockets (>= 2.8, < 4.0)
     strongbox (0.7.2)
       activerecord
-    sugar-rails (1.4.1)
-      railties (>= 3.0.0)
     test_after_commit (0.4.1)
       activerecord (>= 3.2)
     therubyracer (0.12.2)
