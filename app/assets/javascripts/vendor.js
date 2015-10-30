@@ -19,7 +19,7 @@
 //= require mousetrap
 //= require nested_editor_for
 //= require sugar
-//= require Markdown.Converter
+//= require showdown
 //= require md5
 //= require neat
 //= require alertify

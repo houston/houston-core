@@ -26,7 +26,10 @@ window.App =
 
   mdown: (markdown)->
     return '' unless markdown
-    converter = new Markdown.Converter()
+    converter = new showdown.Converter
+      literalMidWordUnderscores: true
+      strikethrough: true
+      ghCodeBlocks: true
     html = converter.makeHtml(markdown)
     App.emojify(html)
 
