@@ -43,6 +43,10 @@ class Commit < ActiveRecord::Base
       where(unreachable: false)
     end
 
+    def unreachable
+      where(unreachable: true)
+    end
+
     def latest
       last
     end

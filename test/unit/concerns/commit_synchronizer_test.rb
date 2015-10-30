@@ -43,6 +43,19 @@ class CommitSynchronizerTest < ActiveSupport::TestCase
           "Expected the unreachable commit to have been flagged so"
       end
     end
+
+    context "when there are reachable commits that had been flagged unreachable, it" do
+      setup do
+        @unreachable_commit = project.commits.create!(params(sha: "00000001", unreachable: true))
+        mock(repo).all_commits.returns [@unreachable_commit.sha]
+      end
+
+      should "mark them" do
+        project.commits.sync!
+        refute unreachable_commit.reload.unreachable?,
+          "Expected the reachable commit to have been flagged so"
+      end
+    end
   end
 
 

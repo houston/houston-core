@@ -11,6 +11,9 @@ module CommitSynchronizer
 
       reachable_commits = project.commits.reachable.pluck(:sha)
       flag_unreachable_commits! reachable_commits - expected_commits
+
+      unreachable_commits = project.commits.unreachable.pluck(:sha)
+      flag_reachable_commits! unreachable_commits & expected_commits
     end
   end
 
@@ -98,6 +101,31 @@ private
   rescue exceptions_wrapping(PG::TRDeadlockDetected)
     $!.additional_information["project"] = project.slug
     $!.additional_information["unreachable_commits"] = unreachable_commits.join("\n")
+    $!.additional_information["waiting_queries"] = MultiJson.dump(waiting_queries)
+    Houston.report_exception $!
+  end
+
+  def flag_reachable_commits!(reachable_commits)
+    return if reachable_commits.none?
+
+    # Inserting this to help troubleshoot a scenario where PG::TRDeadlockDetected
+    # is raised from this method. This is a recoverable scenario, so we report
+    # the exception (with additional context) but do not re-raise it.
+    query = <<-SQL
+      SELECT query, state, waiting, pid
+      FROM pg_stat_activity
+      WHERE state <> 'idle' AND waiting='t'
+    SQL
+    waiting_queries = connection.select_all(query).to_hash
+      .reject { |result| result["query"] == query }
+
+    project.commits.where(sha: reachable_commits).update_all(unreachable: false)
+
+    Rails.logger.info "[commits:sync] #{reachable_commits.length} reachable commits for #{project.name}"
+
+  rescue exceptions_wrapping(PG::TRDeadlockDetected)
+    $!.additional_information["project"] = project.slug
+    $!.additional_information["reachable_commits"] = reachable_commits.join("\n")
     $!.additional_information["waiting_queries"] = MultiJson.dump(waiting_queries)
     Houston.report_exception $!
   end
