@@ -19,7 +19,7 @@ PATH
       faraday-raise-errors (~> 0.2.0)
       gemoji (~> 2.1.0)
       googlecharts (~> 1.6.12)
-      handlebars_assets (~> 0.18.0)
+      handlebars_assets (~> 0.21.0)
       houston-devise_ldap_authenticatable
       houston-oauth-plugin
       houston-vestal_versions
@@ -157,11 +157,11 @@ GEM
       faraday
     gemoji (2.1.0)
     googlecharts (1.6.12)
-    handlebars_assets (0.18)
-      execjs (>= 1.2.9)
-      multi_json
-      sprockets (>= 2.0.3)
-      tilt
+    handlebars_assets (0.21.0)
+      execjs (~> 2.0)
+      multi_json (~> 1.0)
+      sprockets (>= 2.0.0, < 4.0)
+      tilt (~> 1.2)
     hashdiff (0.2.2)
     highline (1.6.21)
     hike (1.2.3)
