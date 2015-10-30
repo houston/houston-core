@@ -8,7 +8,9 @@ module CommitSynchronizer
       expected_commits = repo.all_commits
 
       create_missing_commits!   expected_commits - existing_commits
-      flag_unreachable_commits! existing_commits - expected_commits
+
+      reachable_commits = project.commits.reachable.pluck(:sha)
+      flag_unreachable_commits! reachable_commits - expected_commits
     end
   end
 
