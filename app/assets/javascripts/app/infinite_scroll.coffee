@@ -12,7 +12,7 @@ class @InfiniteScroll
     @$window.scroll _.bind(@onScroll, @)
 
   onScroll: ->
-    return if @$el.hasClass('loading')
+    return if @$el.hasClass('loading') or @$el.hasClass('done')
     return unless @$el.is(':visible')
     return unless @$window.scrollTop() >= (@$document.height() - @$window.height() - @offset)
 
@@ -23,9 +23,12 @@ class @InfiniteScroll
     return unless xhr
 
     @$el.addClass('loading')
-    xhr.done (html)=>
+    xhr.done (html, status, e)=>
       @$el.removeClass('loading')
-      @$el.append(html)
+      if e.status is 204
+        @$el.addClass('done')
+      else
+        @$el.append(html)
       @success() if @success
     xhr.fail =>
       @$el.removeClass('loading')
