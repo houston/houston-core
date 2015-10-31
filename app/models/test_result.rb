@@ -11,7 +11,7 @@ class TestResult < ActiveRecord::Base
     return if attributes.none?
     columns = attributes.first.keys
     values = attributes.map(&:values)
-    import columns, values
+    import columns, values, validate: false
   end
 
 end
