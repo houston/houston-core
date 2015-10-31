@@ -199,6 +199,10 @@ class TestRun < ActiveRecord::Base
     completed_at.present?
   end
 
+  def pending?
+    !completed?
+  end
+
   def has_results?
     result.present? and !aborted?
   end
@@ -241,8 +245,9 @@ class TestRun < ActiveRecord::Base
   def tests
     @tests ||= test_results.includes(:error).joins(:test).select("test_results.*", "tests.suite", "tests.name").map do |test_result|
       message, backtrace = test_result.error.output.split("\n\n") if test_result.error
-      { suite: test_result[:suite],
-        name: test_result[:name],
+      { test_id: test_result.test_id,
+        suite: test_result[:suite],
+        name: test_result[:name].to_s.gsub(/^(test :|: )/, ""),
         status: test_result.status,
         duration: test_result.duration,
         error_message: message,

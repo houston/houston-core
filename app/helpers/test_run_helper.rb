@@ -33,4 +33,20 @@ module TestRunHelper
     end
   end
 
+  def commit_test_status(test_run, test_result)
+    status = test_result.status if test_result
+    status = "untested" if test_run.nil?
+    status = "pending" if test_run && test_run.pending?
+    status = "aborted" if test_run && test_run.aborted?
+    status ||= "unknown"
+
+    css = "project-test-status project-test-status-#{status}"
+
+    if test_run
+      link_to status, test_run_url(slug: test_run.project.slug, commit: test_run.sha), class: css
+    else
+      "<span class=\"#{css}\">#{status}</span>".html_safe
+    end
+  end
+
 end

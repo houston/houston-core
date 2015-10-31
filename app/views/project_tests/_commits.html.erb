@@ -1,0 +1,14 @@
+<% @commits.each do |commit| %>
+  <% run = @runs[commit.sha]
+     result = @results[commit.sha] %>
+  <%= @last_date ? render_timeline_gap_for(commit.date...@last_date) : render_timeline_date(commit.date) %>
+  <div class="timeline-event project-test-commit" data-sha="<%= commit.sha %>" data-first="<%= result.present? && result.new_test? %>">
+    <span class="timeline-event-time"><%= format_timeline_time(commit) %></span>
+    <%= commit_test_status run, result %>
+    <span class="project-test-commit-author"><%= gravatar_image commit.author_email, size: 20 %></span>
+  </span>
+    <span class="project-test-commit-message"><%= commit_test_message commit %></span>
+  </div>
+  <% @last_date = commit.date %>
+  <% break if result.present? && result.new_test? %>
+<% end %>

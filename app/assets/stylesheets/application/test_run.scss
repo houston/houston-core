@@ -44,6 +44,7 @@ h2.test-result-banner {
   &.pass  { @include badge-style(#5DB64C); letter-spacing: 0.088em; } // grass
   &.error  { @include badge-style(#DDC522); letter-spacing: 0.088em; } // mustard
   &.aborted  { @include badge-style(#888888); letter-spacing: 0.088em; } // gray
+  &.pending  { @include badge-style(#888888); letter-spacing: 0.088em; } // gray
   &.fail  { @include badge-style(#E24E32); letter-spacing: 0.160em; } // tomato
 
   a {
@@ -75,12 +76,20 @@ h2.test-result-banner {
   .test {
     display: block;
     margin: 0;
-    padding: 0.18em 0 0.18em 5.25em;
-    text-indent: -4em;
 
-    &.fail  { background-color: rgba(226, 78, 50, 0.15); }
-    &.error { background-color: rgb(252, 247, 207); }
-    &.skip  { }
+    & > a {
+      display: block;
+      padding: 0.18em 0 0.18em 5.25em;
+      text-indent: -4em;
+
+      color: inherit;
+      text-decoration: none !important;
+
+      &:hover { background-color: #edf9ff; }
+    }
+
+    &.fail  > a       { background-color: rgba(226, 78, 50, 0.15); }
+    &.fail  > a:hover { background-color: rgba(226, 78, 50, 0.33); }
   }
 
   .test-suite-name {

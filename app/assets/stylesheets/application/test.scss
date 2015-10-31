@@ -1,0 +1,58 @@
+.project-test-history {
+  h3 {
+    font-weight: 200;
+    line-height: 1em;
+    margin: 0.66em 0 0;
+  }
+  h3 b { color: #777; }
+
+  max-width: 860px;
+  padding-right: 60px;
+  margin: 0 auto;
+
+  .project-test-totals {
+    margin: 1em 0 2em;
+    dd, dt { display: inline-block; }
+    dd { font-weight: 600; margin: 0 0.33em 0 0; }
+    dt { font-weight: 400; margin: 0 0.66em 0 0; }
+  }
+}
+
+.timeline .timeline-event.project-test-commit {
+  padding-left: 45px;
+  text-indent: -25px;
+  padding-right: 100px;
+}
+
+.project-test-commit {
+  .project-test-commit-author {
+    display: inline-block;
+    text-indent: 0;
+    padding: 0;
+    margin: 0;
+    vertical-align: top;
+  }
+
+  .project-test-commit-message {
+    position: relative;
+    top: 2px;
+  }
+
+  .project-test-status {
+    position: absolute;
+    display: inline-block;
+    right: 0;
+    padding: 2px 4px;
+    text-indent: 0;
+    text-align: right;
+    text-transform: uppercase;
+    font-weight: 500 !important;
+
+    &.project-test-status-untested { color: #ddd; }
+    &.project-test-status-pending { color: #888; }
+    &.project-test-status-aborted { color: #ddd; }
+    &.project-test-status-unknown { color: #888; }
+    &.project-test-status-pass { color: #5db64c; }
+    &.project-test-status-fail { color: #e24e32; }
+  }
+}
