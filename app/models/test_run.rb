@@ -63,6 +63,24 @@ class TestRun < ActiveRecord::Base
         AND test_runs.completed_at=most_recent_test_runs.completed_at
       SQL
     end
+
+    def rebuild_tests!(options={})
+      test_runs = where("tests is not null")
+                 .where("id NOT IN (SELECT DISTINCT test_run_id FROM test_results)")
+      if options[:progress]
+        require "progressbar"
+        pbar = ProgressBar.new("test runs", test_runs.count)
+      end
+      test_runs.find_each do |test_run|
+        if test_run.read_attribute(:tests).nil?
+          test_run.update_column :tests, nil
+        else
+          test_run.save_tests_and_results
+        end
+        pbar.inc if options[:progress]
+      end
+      pbar.finish if options[:progress]
+    end
   end
 
 
