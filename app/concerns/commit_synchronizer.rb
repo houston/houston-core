@@ -34,7 +34,13 @@ module CommitSynchronizer
   end
 
 
-  def synchronize(native_commits)
+  def synchronize(native_commits=[])
+    if block_given?
+      native_commits = Houston.benchmark("[commits.synchonize] reading commits") do
+        yield repo
+      end
+    end
+
     native_commits = native_commits.reject(&:nil?)
     return [] if native_commits.empty?
 
