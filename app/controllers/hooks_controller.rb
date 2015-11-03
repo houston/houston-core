@@ -28,4 +28,22 @@ class HooksController < ApplicationController
     end
   end
 
+  def trigger
+    event = "hooks:#{params[:hook]}"
+    unless Houston.observer.observed?(event)
+      render text: "A hook with the slug '#{params[:hook]}' is not defined", status: 404
+      return
+    end
+
+    payload = params.except(:action, :controller).merge({
+      sender: {
+        ip: request.remote_ip,
+        agent: request.user_agent
+      }
+    })
+
+    Houston.observer.fire event, payload
+    head 200
+  end
+
 end
