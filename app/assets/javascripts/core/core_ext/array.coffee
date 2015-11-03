@@ -5,5 +5,7 @@ unless Array::each
     Array::each = (block)->
       _.each(@, block)
 
-Array::last = -> @[@length - 1]
 Array::first = -> @[0]
+Array::last = -> @[@length - 1]
+Array::min = -> Math.min(@...)
+Array::max = -> Math.max(@...)
