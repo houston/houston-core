@@ -19,12 +19,18 @@ class WebHookTest < ActionDispatch::IntegrationTest
     assert_response :not_found
   end
 
-  test "should trigger a hook when it is defined" do
+  test "should trigger a project hook when it is defined" do
     assert_triggered "hooks:whatever" do
       post "/projects/#{project.slug}/hooks/whatever"
       assert_response :success
     end
   end
 
+  test "should trigger a generic hook when it is defined" do
+    assert_triggered "hooks:whatever" do
+      post "/hooks/whatever"
+      assert_response :success
+    end
+  end
 
 end

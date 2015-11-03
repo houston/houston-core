@@ -76,7 +76,7 @@ Rails.application.routes.draw do
   # Web Hooks
 
   post "hooks/github", to: "hooks#github"
-
+  post "hooks/:hook", to: "hooks#trigger"
   scope "projects/:project_id" do
     constraints :hook => /[\w\d\-_]+/ do
       get "hooks/:hook", to: "project_hooks#trigger", :as => :web_hook
