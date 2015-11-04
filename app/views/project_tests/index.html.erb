@@ -12,6 +12,13 @@
     <% end %>
   </dl>
 
+  <% if @exception %>
+    <div class="alert alert-block alert-error">
+      <h4>Invalid Commit</h4>
+      <p><%= @exception.message %></p>
+    </div>
+  <% end %>
+
   <div class="timeline infinite-scroll">
     <p class="spinner"><i class="fa fa-spinner fa-spin fa-large"></i> Loading...</p>
     <%= render "commits" %>
