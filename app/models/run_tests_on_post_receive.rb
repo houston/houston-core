@@ -148,6 +148,8 @@ class RunTestsOnPostReceive
     return if test_run.project.code_climate_repo_token.blank?
     CodeClimate::CoverageReport.publish!(test_run)
     test_run.project.feature_working! :publish_coverage_to_code_climate
+  rescue Houston::Adapters::VersionControl::CommitNotFound
+    # Got a bad Test Run, nothing we can do about it.
   rescue Net::OpenTimeout, Net::ReadTimeout
     test_run.project.feature_broken! :publish_coverage_to_code_climate
     Rails.logger.warn "\e[31m[push:publish:codeclimate] #{$!.class}: #{$!.message}\e[0m"
