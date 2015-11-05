@@ -3,6 +3,8 @@
 }
 
 html.mobile {
+  min-height: 100%;
+
   body {
     width: 100%;
     height: 100%;
@@ -21,14 +23,11 @@ html.mobile {
     height: auto;
     position: static;
     padding: 0;
+    overflow: visible;
   }
 
   .project-navbar .nav > li {
     float: none;
-  }
-
-  .general-navbar {
-    background: black;
   }
 
   .nav .nav-label {
@@ -38,6 +37,10 @@ html.mobile {
 
   #body {
     background: white;
+  }
+
+  .navbar .nav {
+    margin: 0;
   }
 
   .slideout-menu {
@@ -60,6 +63,10 @@ html.mobile {
       margin: 0 0 0 6px;
     }
 
+    .nav > li.current-project > a {
+      color: white;
+    }
+
     .nav > li > a,
     .nav > li.current {
       padding: 5px 15px;
@@ -68,6 +75,7 @@ html.mobile {
     }
 
     .nav > li.current {
+      background: #666;
       color: white;
       .nav-icon svg * { fill: white; }
     }
@@ -82,6 +90,7 @@ html.mobile {
   &.slideout-open body,
   &.slideout-open .slideout-panel {
     overflow: hidden;
+    height: 100%;
   }
 
   &.slideout-open .slideout-menu {

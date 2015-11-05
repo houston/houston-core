@@ -2,8 +2,8 @@
   <div class="navbar-inner">
     <div class="container-fluid">
       <%= link_to Houston.config.title, main_app.root_url, class: "brand" %>
-      
-      <ul class="nav pull-right">
+
+      <ul class="nav pull-right nav-inline">
         <% if current_user -%>
           <li class="current-user dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= avatar_for(current_user, size: 30) %> <b class="caret"></b></a>
@@ -15,43 +15,6 @@
         <% else -%>
           <li><%= link_to "Sign in", main_app.new_user_session_path %></li>
         <% end -%>
-      </ul>
-
-      <ul class="nav">
-        <% if current_user -%>
-          <li class="dropdown current-project <%= current_project && current_project.color %>">
-            <a href="#" title="Feedback" class="dropdown-toggle" data-toggle="dropdown">
-              <%= current_project ? current_project.name : "Select Project" %>
-            </a>
-            <ul class="dropdown-menu">
-              <% followed_projects.each do |project| %>
-                <% if project == current_project %>
-                  <li class="current">
-                    <b class="bubble <%= project.color %>"></b> <%= project.name %></a>
-                  </li>
-                <% else %>
-                  <li>
-                    <% path = if !current_feature
-                                # we're not on a project page,
-                                # just refresh the page and set the project
-                                "?project=#{project.slug}" 
-                              elsif !project.features.include?(current_feature)
-                                # we're using a feature that this project
-                                # doesn't support. Navigate to the root URL
-                                # and set the project
-                                main_app.root_path(project: project.slug)
-                              else
-                                feature_path(project, current_feature)
-                              end %>
-                    <%= link_to path do %>
-                      <b class="bubble <%= project.color %>"></b> <%= project.name %></a>
-                    <% end %>
-                  </li>
-                <% end %>
-              <% end %>
-            </ul>
-          </li>
-        <% end %>
       </ul>
 
     </div>
@@ -82,6 +45,42 @@
 
   <% if current_project && current_project.persisted? %>
   <div class="project-navbar <%= current_project.color %>">
+    <ul class="nav nav-inline">
+      <% if current_user -%>
+        <li class="dropdown current-project <%= current_project && current_project.color %>">
+          <a href="#" title="Feedback" class="dropdown-toggle" data-toggle="dropdown">
+            <%= current_project ? current_project.name : "Select Project" %>
+          </a>
+          <ul class="dropdown-menu">
+            <% followed_projects.each do |project| %>
+              <% if project == current_project %>
+                <li class="current">
+                  <b class="bubble <%= project.color %>"></b> <%= project.name %></a>
+                </li>
+              <% else %>
+                <li>
+                  <% path = if !current_feature
+                              # we're not on a project page,
+                              # just refresh the page and set the project
+                              "?project=#{project.slug}" 
+                            elsif !project.features.include?(current_feature)
+                              # we're using a feature that this project
+                              # doesn't support. Navigate to the root URL
+                              # and set the project
+                              main_app.root_path(project: project.slug)
+                            else
+                              feature_path(project, current_feature)
+                            end %>
+                  <%= link_to path do %>
+                    <b class="bubble <%= project.color %>"></b> <%= project.name %></a>
+                  <% end %>
+                </li>
+              <% end %>
+            <% end %>
+          </ul>
+        </li>
+      <% end %>
+    </ul>
     <% if current_project.features.any? %>
       <ul class="nav">
         <% current_project.features.each do |feature| %>
