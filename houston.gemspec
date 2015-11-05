@@ -27,6 +27,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "activerecord-import"
   spec.add_dependency "activerecord-pluck_in_batches"
   spec.add_dependency "addressable"
+  spec.add_dependency "browser"
   spec.add_dependency "cancan", "~> 1.6.10"
   spec.add_dependency "default_value_for", "3.0.0.1"
   spec.add_dependency "devise", "~> 3.0.0"

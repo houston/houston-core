@@ -1,0 +1,101 @@
+<div class="navbar navbar-fixed-top navbar-inverse">
+  <div class="navbar-inner">
+    <div class="container-fluid">
+      <%= link_to Houston.config.title, main_app.root_url, class: "brand" %>
+      
+      <ul class="nav pull-right">
+        <% if current_user -%>
+          <li class="current-user dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= avatar_for(current_user, size: 30) %> <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><%= link_to "Settings", main_app.edit_user_path(current_user) %></li>
+              <li><%= link_to "Sign out", main_app.destroy_user_session_path %></li>
+            </ul>
+          </li>
+        <% else -%>
+          <li><%= link_to "Sign in", main_app.new_user_session_path %></li>
+        <% end -%>
+      </ul>
+
+      <ul class="nav">
+        <% if current_user -%>
+          <li class="dropdown current-project <%= current_project && current_project.color %>">
+            <a href="#" title="Feedback" class="dropdown-toggle" data-toggle="dropdown">
+              <%= current_project ? current_project.name : "Select Project" %>
+            </a>
+            <ul class="dropdown-menu">
+              <% followed_projects.each do |project| %>
+                <% if project == current_project %>
+                  <li class="current">
+                    <b class="bubble <%= project.color %>"></b> <%= project.name %></a>
+                  </li>
+                <% else %>
+                  <li>
+                    <% path = if !current_feature
+                                # we're not on a project page,
+                                # just refresh the page and set the project
+                                "?project=#{project.slug}" 
+                              elsif !project.features.include?(current_feature)
+                                # we're using a feature that this project
+                                # doesn't support. Navigate to the root URL
+                                # and set the project
+                                main_app.root_path(project: project.slug)
+                              else
+                                feature_path(project, current_feature)
+                              end %>
+                    <%= link_to path do %>
+                      <b class="bubble <%= project.color %>"></b> <%= project.name %></a>
+                    <% end %>
+                  </li>
+                <% end %>
+              <% end %>
+            </ul>
+          </li>
+        <% end %>
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+<div id="slideout_menu" class="slideout-menu">
+  <div class="general-navbar">
+    <ul class="nav">
+      <% Houston.config.navigation.each do |navigation| %><%= render_navigation navigation %><% end %>
+
+      <li class="divider-horizontal"></li>
+
+      <% if can?(:read, Project) -%>
+        <%= render_nav_link "Projects", main_app.projects_path, icon: "fa-database" %>
+      <% end -%>
+
+      <% if can?(:read, User) -%>
+        <%= render_nav_link "Team", main_app.users_path, icon: "fa-user" %>
+      <% end -%>
+
+      <% if can?(:read, :job) -%>
+        <%= render_nav_link "Jobs", main_app.jobs_path, icon: "fa-user" %>
+      <% end -%>
+
+    </ul>
+  </div>
+
+  <% if current_project && current_project.persisted? %>
+  <div class="project-navbar <%= current_project.color %>">
+    <% if current_project.features.any? %>
+      <ul class="nav">
+        <% current_project.features.each do |feature| %>
+          <%= render_nav_for_feature(feature) %>
+        <% end %>
+      </ul>
+    <% else %>
+      <div class="project-no-features">
+        No features are enabled for <%= current_project.name %>.
+        <% if can?(:update, current_project) %>
+          You can enable features in <%= link_to "Project Settings", main_app.edit_project_path(current_project) %>.
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+  <% end %>
+</div>

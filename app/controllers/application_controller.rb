@@ -9,6 +9,9 @@ class ApplicationController < ActionController::Base
   after_filter :save_current_project
 
 
+  delegate :mobile?, to: :browser
+  helper_method :mobile?
+
 
   rescue_from CanCan::AccessDenied do |exception|
     if current_user

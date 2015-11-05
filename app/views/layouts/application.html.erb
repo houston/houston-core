@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" <%= "class=tester-bar" if Rails.env.development? %>>
+<html lang="en" class="
+  <%= "tester-bar" if Rails.env.development? %>
+  <%= "mobile" if mobile? %>">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,14 +32,22 @@
     <link href="images/apple-touch-icon-114x114.png" rel="apple-touch-icon" sizes="114x114">
   </head>
   <body>
-    
-    <%= render "layouts/navigation" %>
-    
-    <%= yield :title %>
-    
-    <div class="container-fluid" id="body">
+
+    <% if mobile? %>
+      <%= render "layouts/mobile_navigation" %>
+
+      <div class="container-fluid" id="body">
+        <%= yield :title %>
+    <% else %>
+      <%= render "layouts/navigation" %>
+
+      <%= yield :title %>
+
+      <div class="container-fluid" id="body">
+    <% end %>
+
       <%= yield -%>
-      
+
       <%= render partial: "layouts/tester_bar" if Rails.env.development? -%>
     </div> <!-- /container -->
     

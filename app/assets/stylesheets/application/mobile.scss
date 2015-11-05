@@ -1,3 +1,90 @@
 @media only screen and (max-width: 600px)  {
   #keyboard_shortcuts_button { display: none; }
 }
+
+html.mobile {
+  body {
+    width: 100%;
+    height: 100%;
+    padding-top: 36px;
+  }
+
+  .project-banner {
+    top: 0;
+  }
+
+  .project-banner small {
+    display: block;
+  }
+
+  .project-navbar {
+    height: auto;
+    position: static;
+    padding: 0;
+  }
+
+  .project-navbar .nav > li {
+    float: none;
+  }
+
+  .general-navbar {
+    background: black;
+  }
+
+  .nav .nav-label {
+    display: inline;
+    vertical-align: text-bottom;
+  }
+
+  #body {
+    background: white;
+  }
+
+  .slideout-menu {
+    position: fixed;
+    left: 0;
+    top: 36px;
+    bottom: 0;
+    right: 0;
+    z-index: 0;
+    width: 172px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    display: none;
+    background: #333;
+    padding: 20px 0 0 0;
+
+    .nav {
+      background: #333;
+      padding: 0;
+      margin: 0 0 0 6px;
+    }
+
+    .nav > li > a,
+    .nav > li.current {
+      padding: 5px 15px;
+      color: #999;
+      .nav-icon svg * { fill: #999; }
+    }
+
+    .nav > li.current {
+      color: white;
+      .nav-icon svg * { fill: white; }
+    }
+  }
+
+  .slideout-panel {
+    position: relative;
+    z-index: 1;
+  }
+
+  &.slideout-open,
+  &.slideout-open body,
+  &.slideout-open .slideout-panel {
+    overflow: hidden;
+  }
+
+  &.slideout-open .slideout-menu {
+    display: block;
+  }
+}

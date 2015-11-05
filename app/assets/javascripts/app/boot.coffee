@@ -20,3 +20,12 @@ $ ->
     project = $link.attr('data-project')
     $context = $link.closest('#tickets')
     e.preventDefault() if App.showTicket(number, project, $context: $context)
+
+  isMobile = $('html').hasClass('mobile')
+
+  if isMobile
+    slideout = new Slideout
+      panel: document.getElementById('body')
+      menu: document.getElementById('slideout_menu')
+      padding: 172
+      tolerance: 70

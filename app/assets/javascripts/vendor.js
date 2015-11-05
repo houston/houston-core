@@ -23,3 +23,4 @@
 //= require neat
 //= require alertify
 //= require dropzone
+//= require slideout
