@@ -23,7 +23,7 @@ Houston is also extensible through **[Modules](https://github.com/houston/housto
 To use Houston, you must have
 
  - [Ruby 2.0+](https://www.ruby-lang.org/en/downloads)
- - [Postgres 9.3+](http://www.postgresql.org/download)
+ - [Postgres 9.4+](http://www.postgresql.org/download)
 
 ##### Hello World
 
