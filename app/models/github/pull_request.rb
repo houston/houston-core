@@ -91,16 +91,16 @@ module Github
           number: github_pr["number"])
           .merge_attributes(github_pr)
       end
+
+      def labeled(*labels)
+        where(["labels && ARRAY[?]", labels])
+      end
     end
 
 
-
-    def labels
-      super.split(/\n/)
-    end
 
     def labels=(value)
-      super Array(value).uniq.join("\n")
+      super Array(value).uniq
     end
 
     def add_label!(label, options={})
