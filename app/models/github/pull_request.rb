@@ -17,8 +17,7 @@ module Github
     after_create { Houston.observer.fire "github:pull:opened", self }
     after_update { Houston.observer.fire "github:pull:updated", self, changes }
 
-    validates :project_id, :title, :number, :repo, :url, :base_ref, :base_sha, :head_ref, :head_sha,
-      presence: true
+    validates :project_id, :title, :number, :repo, :url, :base_ref, :base_sha, :head_ref, :head_sha, :username, presence: true
     validates :number, uniqueness: { scope: :project_id }
 
     class << self
