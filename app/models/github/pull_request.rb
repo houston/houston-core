@@ -130,6 +130,7 @@ module Github
       end
 
       self.title = pr["title"]
+      self.body = pr["body"]
       self.head_sha = pr["head"]["sha"]
       self.head_ref = pr["head"]["ref"]
       self.labels = pr["labels"] if pr.key?("labels")

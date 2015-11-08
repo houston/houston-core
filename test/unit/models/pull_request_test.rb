@@ -18,6 +18,7 @@ class PullRequestTest < ActiveSupport::TestCase
         "title" => "Divergent Branch",
         "html_url" => "https://github.com/houston",
         "user" => { "login" => "boblail" },
+        "body" => "This is the description of the pull request",
         "base" => {
           "repo" => { "name" => "test" },
           "sha" => "e0e4580f44317a084dd5142fef6b4144a4394819",
@@ -30,6 +31,22 @@ class PullRequestTest < ActiveSupport::TestCase
     context "When that pull request is created locally, it" do
       setup do
         @pull_request = Github::PullRequest.upsert(@pull_request_payload)
+      end
+
+      should "have 'title'" do
+        assert_equal @pull_request_payload["title"], @pull_request.title
+      end
+
+      should "have 'number'" do
+        assert_equal @pull_request_payload["number"], @pull_request.number
+      end
+
+      should "have 'username'" do
+        assert_equal @pull_request_payload["user"]["login"], @pull_request.username
+      end
+
+      should "have 'body'" do
+        assert_equal @pull_request_payload["body"], @pull_request.body
       end
 
       should "associate itself with all the commits" do

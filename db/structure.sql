@@ -425,7 +425,8 @@ CREATE TABLE pull_requests (
     head_ref character varying(255) NOT NULL,
     head_sha character varying(255) NOT NULL,
     old_labels text DEFAULT ''::text NOT NULL,
-    labels text[] DEFAULT '{}'::text[]
+    labels text[] DEFAULT '{}'::text[],
+    body text
 );
 
 
@@ -2282,4 +2283,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150902010853');
 INSERT INTO schema_migrations (version) VALUES ('20150927014445');
 
 INSERT INTO schema_migrations (version) VALUES ('20151108221505');
+
+INSERT INTO schema_migrations (version) VALUES ('20151108223154');
 
