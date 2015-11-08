@@ -92,7 +92,7 @@ GEM
       activesupport
       builder
       faraday (~> 0.8.8)
-    browser (0.9.1)
+    browser (1.0.1)
     builder (3.2.2)
     cancan (1.6.10)
     capybara (2.5.0)
