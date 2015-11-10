@@ -56,3 +56,29 @@
     &.project-test-status-fail { color: #e24e32; }
   }
 }
+
+.project-tests tbody {
+  .test-suite-name {
+    color: #777;
+    font-weight: 800;
+  }
+
+  .test-name {
+    color: #333;
+    font-weight: 200;
+  }
+
+  .test-passes {
+    font-weight: 600;
+    color: #5db64c;
+
+    &.zero { color: #ddd; }
+  }
+
+  .test-fails {
+    font-weight: 600;
+    color: #e24e32;
+
+    &.zero { color: #ddd; }
+  }
+}

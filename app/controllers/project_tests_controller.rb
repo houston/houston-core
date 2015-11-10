@@ -2,13 +2,42 @@ class ProjectTestsController < ApplicationController
 
   def index
     @project = Project.find_by_slug! params[:slug]
+
+    head = params.fetch :at, @project.repo.branch("master")
+    commits = params.fetch(:limit, 500).to_i
+
+    @commits = Houston.benchmark("[project_tests#index] fetch commits") {
+      @project.repo.ancestors(head, including_self: true, limit: commits) }
+    @runs = @project.test_runs.where(sha: @commits.map(&:sha))
+
+    @tests = @project.tests.order(:suite, :name)
+      .joins(<<-SQL)
+        LEFT JOIN LATERAL (
+          SELECT COUNT(*) FROM test_results
+          WHERE test_results.test_run_id IN (#{@runs.pluck(:id).join(",")})
+          AND test_results.status='pass'
+          AND test_results.test_id=tests.id
+        ) "passes" ON TRUE
+        LEFT JOIN LATERAL (
+          SELECT COUNT(*) FROM test_results
+          WHERE test_results.test_run_id IN (#{@runs.pluck(:id).join(",")})
+          AND test_results.status='fail'
+          AND test_results.test_id=tests.id
+        ) "fails" ON TRUE
+      SQL
+      .where("passes.count + fails.count > 0")
+      .pluck("tests.id", "tests.suite", "tests.name", "passes.count", "fails.count")
+  end
+
+  def show
+    @project = Project.find_by_slug! params[:slug]
     @test = @project.tests.find params[:id]
     @totals = Hash[@test.test_results.group(:status).pluck(:status, "COUNT(*)")]
 
     begin
       head = params.fetch :at, @project.repo.branch("master")
       stop_shas = @test.introduced_in_shas
-      @commits = Houston.benchmark("[project_tests#index] fetch commits") {
+      @commits = Houston.benchmark("[project_tests#show] fetch commits") {
         @project.repo.ancestors(head, including_self: true, limit: 100, hide: stop_shas) }
 
       if @commits.any?

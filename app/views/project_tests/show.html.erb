@@ -1,0 +1,39 @@
+<h1 class="project-banner <%= @project.color %>" style="margin-bottom: 12px;">
+  <small>Test for</small> <%= @project.name %>
+</h1>
+
+<div class="project-test-history">
+  <h3><b><%= @test.suite %></b> <%= @test.name.to_s.gsub(/^(test :|: )/, "") %></h3>
+
+  <dl class="project-test-totals">
+    <dd><%= @totals.values.sum %></dd><dt>test runs</dt>
+    <% @totals.each do |key, count| %>
+      <dd><%= count %></dd><dt><%= key.pluralize %></dt>
+    <% end %>
+  </dl>
+
+  <% if @exception %>
+    <div class="alert alert-block alert-error">
+      <h4>Invalid Commit</h4>
+      <p><%= @exception.message %></p>
+    </div>
+  <% end %>
+
+  <div class="timeline infinite-scroll">
+    <p class="spinner"><i class="fa fa-spinner fa-spin fa-large"></i> Loading...</p>
+    <%= render "commits" %>
+  </div>
+</div>
+
+<% content_for :javascripts do %>
+<script type="text/javascript">
+$(function() {
+  new InfiniteScroll({
+    load: function($ol) {
+      var sha = $ol.find('.project-test-commit:last').attr('data-sha');
+      return $.get(window.location.pathname, {at: sha});
+    }
+  });
+});
+</script>
+<% end %>

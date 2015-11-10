@@ -1,39 +1,40 @@
 <h1 class="project-banner <%= @project.color %>" style="margin-bottom: 12px;">
-  <small>Test for</small> <%= @project.name %>
+  <small>Tests for</small> <%= @project.name %>
 </h1>
 
-<div class="project-test-history">
-  <h3><b><%= @test.suite %></b> <%= @test.name.to_s.gsub(/^(test :|: )/, "") %></h3>
-
-  <dl class="project-test-totals">
-    <dd><%= @totals.values.sum %></dd><dt>test runs</dt>
-    <% @totals.each do |key, count| %>
-      <dd><%= count %></dd><dt><%= key.pluralize %></dt>
-    <% end %>
-  </dl>
-
-  <% if @exception %>
-    <div class="alert alert-block alert-error">
-      <h4>Invalid Commit</h4>
-      <p><%= @exception.message %></p>
-    </div>
-  <% end %>
-
-  <div class="timeline infinite-scroll">
-    <p class="spinner"><i class="fa fa-spinner fa-spin fa-large"></i> Loading...</p>
-    <%= render "commits" %>
-  </div>
+<div class="nomargin">
+  <table id="project_tests" class="table table-sortable table-striped project-tests">
+    <thead>
+      <tr>
+        <td class="table-margin"></td>
+        <th class="test-name sort-asc">Name</th>
+        <th class="test-passes">Passes</th>
+        <th class="test-fails">Fails</th>
+        <td class="table-margin"></td>
+      </tr>
+    </thead>
+    <tbody>
+      <% @tests.each do |(id, suite, name, passes, fails)| %>
+        <tr class="test">
+          <td class="table-margin"></td>
+          <td class="test-name">
+            <%= link_to project_test_url(slug: @project.slug, id: id) do %>
+              <span class="test-suite-name"><%= suite.gsub("__", "::") %></span>
+              <span class="test-name"><%= name.to_s.gsub(/^(test :|: )/, "") %></span>
+            <% end %>
+          </td>
+          <td class="test-passes <%= "zero" if passes.zero? %>"><%= passes %></td>
+          <td class="test-fails <%= "zero" if fails.zero? %>"><%= fails %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 </div>
 
 <% content_for :javascripts do %>
-<script type="text/javascript">
-$(function() {
-  new InfiniteScroll({
-    load: function($ol) {
-      var sha = $ol.find('.project-test-commit:last').attr('data-sha');
-      return $.get(window.location.pathname, {at: sha});
-    }
-  });
-});
-</script>
+  <script type="text/javascript">
+    $(function() {
+      $('#project_tests').tablesorter();
+    });
+  </script>
 <% end %>
