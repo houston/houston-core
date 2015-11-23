@@ -43,7 +43,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "nokogiri", "~> 1.6.6.2"
   spec.add_dependency "houston-oauth-plugin"
   spec.add_dependency "oj", "~> 2.13"
-  spec.add_dependency "openxml-xlsx"
+  spec.add_dependency "openxml-xlsx", ">= 0.2.0"
   spec.add_dependency "pg_search", "~> 1.0.5"
   spec.add_dependency "premailer", "~> 1.8.6"
   spec.add_dependency "progressbar" # for long migrations

@@ -1,5 +1,5 @@
 class TasksExcelPresenter
-  include Xlsx::Elements
+  include OpenXml::Xlsx::Elements
 
   attr_reader :tasks
 
@@ -8,7 +8,7 @@ class TasksExcelPresenter
   end
 
   def to_s
-    package = Xlsx::Package.new
+    package = OpenXml::Xlsx::Package.new
     worksheet = package.workbook.worksheets[0]
 
     tasks = Houston.benchmark "[#{self.class.name.underscore}] Load objects" do

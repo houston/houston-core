@@ -30,7 +30,7 @@ PATH
       nokogiri (~> 1.6.6.2)
       octokit (~> 4.1.0)
       oj (~> 2.13)
-      openxml-xlsx
+      openxml-xlsx (>= 0.2.0)
       pg (~> 0.18.3)
       pg_search (~> 1.0.5)
       premailer (~> 1.8.6)
@@ -219,14 +219,14 @@ GEM
       rack (~> 1.2)
     octokit (4.1.1)
       sawyer (~> 0.6.0, >= 0.5.3)
-    oj (2.13.0)
-    open_xml_package (0.2.0.beta1)
+    oj (2.13.1)
+    openxml-package (0.2.0)
       nokogiri
       ox
       rubyzip (~> 1.1.0)
-    openxml-xlsx (0.1.2)
+    openxml-xlsx (0.2.0)
       nokogiri
-      open_xml_package (= 0.2.0.beta1)
+      openxml-package (>= 0.2.0)
     orm_adapter (0.5.0)
     ox (2.2.2)
     pg (0.18.3)

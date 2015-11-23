@@ -30,6 +30,7 @@ require "nokogiri"
 require "oauth-plugin"
 require "octokit"
 require "oj"
+require "openxml/xlsx"
 require "premailer"
 require "progressbar"
 require "rack/utf8_sanitizer"
@@ -40,7 +41,6 @@ require "strongbox"
 require "thread_safe"
 require "vestal_versions"
 require "whenever"
-require "xlsx"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
