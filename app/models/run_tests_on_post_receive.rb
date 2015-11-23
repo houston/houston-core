@@ -150,6 +150,8 @@ class RunTestsOnPostReceive
     test_run.project.feature_working! :publish_coverage_to_code_climate
   rescue Houston::Adapters::VersionControl::CommitNotFound
     # Got a bad Test Run, nothing we can do about it.
+  rescue CodeClimate::ServerError
+    # Error on Code Climate's end
   rescue Net::OpenTimeout, Net::ReadTimeout
     test_run.project.feature_broken! :publish_coverage_to_code_climate
     Rails.logger.warn "\e[31m[push:publish:codeclimate] #{$!.class}: #{$!.message}\e[0m"

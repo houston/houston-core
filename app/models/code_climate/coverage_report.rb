@@ -20,6 +20,8 @@
 #  * environment/simplecov_root is absent
 #
 module CodeClimate
+  module ServerError; end
+
   class CoverageReport
 
     def self.publish!(test_run)
@@ -36,6 +38,10 @@ module CodeClimate
     def publish!
       code_climate = CodeClimate::TestReporter::Client.new
       code_climate.post_results code_climate_payload
+    rescue RuntimeError
+      # https://github.com/codeclimate/ruby-test-reporter/blob/v0.4.8/lib/code_climate/test_reporter/client.rb#L72
+      $!.extend CodeClimate::ServerError if $!.message =~ /HTTP Error: 5\d\d/
+      raise
     end
 
 
@@ -158,6 +164,7 @@ module CodeClimate
     end
 
     # https://github.com/codeclimate/ruby-test-reporter/blob/v0.2.0/lib/code_climate/test_reporter/formatter.rb#L78-L83
+    # Compare to https://github.com/codeclimate/ruby-test-reporter/blob/v0.4.8/lib/code_climate/test_reporter/calculate_blob.rb
     def blob_id_of(filename)
       blob = project.repo.find_file(filename, commit: test_run.sha)
       blob && blob.oid
