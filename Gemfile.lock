@@ -9,7 +9,7 @@ PATH
       browser
       bundler
       cancan (~> 1.6.10)
-      codeclimate-test-reporter (= 0.4.1)
+      codeclimate-test-reporter (= 0.4.8)
       coffee-rails (~> 4.0.0)
       default_value_for (= 3.0.0.1)
       devise (~> 3.0.0)
@@ -102,7 +102,7 @@ GEM
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
     chronic (0.10.2)
-    codeclimate-test-reporter (0.4.1)
+    codeclimate-test-reporter (0.4.8)
       simplecov (>= 0.7.1, < 1.0.0)
     coderay (1.1.0)
     coffee-rails (4.0.1)
