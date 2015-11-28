@@ -3,7 +3,7 @@ module TimelineHelper
   def render_timeline_gap_for(date_range)
     days = date_range.end - date_range.begin
     if days < 3
-      date_range.inject("") { |html, date| html << render_timeline_date(date) }.html_safe
+      date_range.to_a.reverse.inject("") { |html, date| html << render_timeline_date(date) }.html_safe
     else
       <<-HTML.html_safe
       <div class="timeline-date-gap"></div>
