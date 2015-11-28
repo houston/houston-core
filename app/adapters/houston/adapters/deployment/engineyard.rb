@@ -73,6 +73,10 @@ module Houston
 
             deployment.successful = runner.call(out, err)
 
+            Houston.try({max_tries: 5, ignore: true}, exceptions_wrapping(PG::ConnectionBad)) do
+              deploy.update_attributes!(completed_at: Time.now)
+            end
+
           rescue StandardError => e
             Houston.report_exception(e)
             deployment.err << "Error encountered during deploy.\n#{e.class} #{e}\n"
@@ -80,9 +84,6 @@ module Houston
 
           ensure
             deployment.finished
-            Houston.try({max_tries: 5, ignore: true}, exceptions_wrapping(PG::ConnectionBad)) do
-              deploy.update_attributes!(completed_at: Time.now)
-            end
           end
 
           deployment.successful?
