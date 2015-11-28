@@ -108,8 +108,24 @@
       <%= f.submit nil, :class => 'btn btn-primary' %>
       <%= link_to 'Invite', invite_user_path(@user), :method => 'post', :class => 'btn btn-primary' if @user.persisted? && @user.encrypted_password.blank? && !@user.invited? && can?(:create, User) %>
       <%= link_to 'Cancel', users_path, :class => 'btn' %>
-      <%= link_to 'Delete', user_path(@user), :method => 'delete', :confirm => 'Are you sure?', :class => 'btn btn-danger btn-delete' if @user.persisted? && can?(:destroy, @user) %>
+
+      <% if @user.persisted? && can?(:destroy, @user) %>
+        <button class="btn btn-delete btn-danger" id="retire_user_button">Retire</button>
+      <% end %>
     </div>
     
   </fieldset>
+<% end %>
+
+<% content_for :javascripts do %>
+<script type="text/javascript">
+  $(function() {
+    $('#retire_user_button').click(function(e) {
+      e.preventDefault();
+      $.destroy('<%= user_path(@user) %>')
+        .success(function() { window.location = '/users'; })
+        .error(function() { console.log(arguments); });
+    });
+  });
+</script>
 <% end %>

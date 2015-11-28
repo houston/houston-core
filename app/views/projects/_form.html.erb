@@ -114,7 +114,10 @@
     <div class="form-actions">
       <%= f.submit nil, :class => 'btn btn-primary' %>
       <%= link_to 'Cancel', projects_path, :class => 'btn' %>
-      <%= link_to 'Retire', retire_project_path(@project), :method => 'put', :class => 'btn btn-danger' if @project.persisted? && can?(:destroy, @project) %>
+
+      <% if @project.persisted? && can?(:destroy, @project) %>
+        <button class="btn btn-delete btn-danger" id="retire_project_button">Retire</button>
+      <% end %>
     </div>
   </fieldset>
 <% end %>
@@ -166,6 +169,13 @@
 
     $('.project-feature').click(showProjectFeatureParameters);
     showProjectFeatureParameters();
+
+    $('#retire_project_button').click(function(e) {
+      e.preventDefault();
+      $.put('<%= retire_project_path(@project) %>')
+        .success(function() { window.location = '/projects'; })
+        .error(function() { console.log(arguments); });
+    });
   });
 </script>
 <% end %>
