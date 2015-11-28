@@ -1,55 +1,55 @@
-<%= form_for @user, :html => { :class => 'form-horizontal' } do |f| %>
+<%= form_for @user, :html => { :class => "form-horizontal" } do |f| %>
   <fieldset>
 
     <div class="control-group">
-      <%= f.label :first_name, :class => 'control-label' %>
+      <%= f.label :first_name, :class => "control-label" %>
       <div class="controls">
-        <%= f.text_field :first_name, :class => 'text_field' %>
+        <%= f.text_field :first_name, :class => "text_field" %>
       </div>
     </div>
 
     <div class="control-group">
-      <%= f.label :last_name, :class => 'control-label' %>
+      <%= f.label :last_name, :class => "control-label" %>
       <div class="controls">
-        <%= f.text_field :last_name, :class => 'text_field' %>
+        <%= f.text_field :last_name, :class => "text_field" %>
       </div>
     </div>
 
     <div class="control-group">
-      <%= f.label :nickname, "Nickname", :class => 'control-label' %>
+      <%= f.label :nickname, "Nickname", :class => "control-label" %>
       <div class="controls">
-        <%= f.text_field :nickname, :class => 'text_field' %>
+        <%= f.text_field :nickname, :class => "text_field" %>
       </div>
     </div>
 
     <div class="control-group">
-      <%= f.label :email, "Primary Email Address", :class => 'control-label' %>
+      <%= f.label :email, "Primary Email Address", :class => "control-label" %>
       <div class="controls">
-        <%= f.text_field :email, :class => 'text_field' %>
+        <%= f.text_field :email, :class => "text_field" %>
       </div>
     </div>
     
     <div class="control-group">
-      <%= f.label :alias_emails, "Other Email Addresses", :class => 'control-label' %>
+      <%= f.label :alias_emails, "Other Email Addresses", :class => "control-label" %>
       <div class="controls">
-        <%= f.text_area :alias_emails, :class => 'text_field', rows: 3, value: @user.alias_emails.join("\n") %>
+        <%= f.text_area :alias_emails, :class => "text_field", rows: 3, value: @user.alias_emails.join("\n") %>
       </div>
     </div>
     
     <% if can?(:manage, @user) %>
       <div class="control-group">
-        <%= f.label :role, :class => 'control-label' %>
+        <%= f.label :role, :class => "control-label" %>
         <div class="controls">
-          <%= f.select :role, Houston.config.roles, :class => 'select_field' %>
+          <%= f.select :role, Houston.config.roles, :class => "select_field" %>
         </div>
       </div>
     <% end %>
     
     <% if can?(:manage, @user) %>
       <div class="control-group">
-        <%= f.label :administrator, :class => 'control-label' %>
+        <%= f.label :administrator, :class => "control-label" %>
         <div class="controls">
-          <%= f.check_box :administrator, :class => 'checkbox' %>
+          <%= f.check_box :administrator, :class => "checkbox" %>
         </div>
       </div>
     <% end %>
@@ -105,9 +105,9 @@
     <% end %>
     
     <div class="form-actions">
-      <%= f.submit nil, :class => 'btn btn-primary' %>
-      <%= link_to 'Invite', invite_user_path(@user), :method => 'post', :class => 'btn btn-primary' if @user.persisted? && @user.encrypted_password.blank? && !@user.invited? && can?(:create, User) %>
-      <%= link_to 'Cancel', users_path, :class => 'btn' %>
+      <%= f.submit nil, :class => "btn btn-primary" %>
+      <%= link_to "Invite", invite_user_path(@user), :method => "post", :class => "btn btn-primary" if @user.persisted? && @user.encrypted_password.blank? && !@user.invited? && can?(:create, User) %>
+      <%= link_to "Cancel", users_path, :class => "btn" %>
 
       <% if @user.persisted? && can?(:destroy, @user) %>
         <button class="btn btn-delete btn-danger" id="retire_user_button">Retire</button>

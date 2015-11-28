@@ -1,23 +1,23 @@
-<%= form_for @project, :html => { :class => 'form-horizontal' } do |f| %>
+<%= form_for @project, :html => { :class => "form-horizontal" } do |f| %>
   <fieldset>
     <div class="control-group">
-      <%= f.label :name, :class => 'control-label' %>
+      <%= f.label :name, :class => "control-label" %>
       <div class="controls">
-        <%= f.text_field :name, :class => 'text_field' %>
+        <%= f.text_field :name, :class => "text_field" %>
       </div>
     </div>
 
     <div class="control-group">
-      <%= f.label :slug, :class => 'control-label' %>
+      <%= f.label :slug, :class => "control-label" %>
       <div class="controls">
-        <%= f.text_field :slug, :class => 'text_field' %>
+        <%= f.text_field :slug, :class => "text_field" %>
       </div>
     </div>
     
     <div class="control-group">
-      <%= f.label :color, :class => 'control-label' %>
+      <%= f.label :color, :class => "control-label" %>
       <div class="controls">
-        <%= f.select :color, Houston.config.project_colors.keys.map { |name| [name.titleize, name] }, :class => 'select_field' %>
+        <%= f.select :color, Houston.config.project_colors.keys.map { |name| [name.titleize, name] }, :class => "select_field" %>
         <% if Project.count > 0 %>
           (Unused colors: <%= (Houston.config.project_colors.keys - Project.pluck(:color).uniq).map(&:titleize).join(", ") %>)
         <% end %>
@@ -42,7 +42,7 @@
             <div class="project-adapter-fields" data-adapter="<%= name %>">
               <% adapter.namespace.adapter(name).parameters.each do |parameter| %>
                 <% errors = @project.errors[parameter].flatten %>
-                <%= label_tag "project[extended_attributes][#{parameter}]", parameter.to_s.gsub('_', ' ').gsub(/\b('?[a-z])/) { $1.capitalize } %>
+                <%= label_tag "project[extended_attributes][#{parameter}]", parameter.to_s.gsub("_", " ").gsub(/\b('?[a-z])/) { $1.capitalize } %>
                 <%= text_field_tag "project[extended_attributes][#{parameter}]", @project.extended_attributes[parameter.to_s], :class => "text_field #{"error" if errors.any?}" %>
                 <% if errors.any? %>
                   <span class="help-inline">&nbsp;<%= errors.to_sentence %></span>
@@ -58,9 +58,9 @@
     <hr />
 
     <div class="control-group">
-      <%= f.label :code_climate_repo_token, "Code Climate Repo Token", :class => 'control-label' %>
+      <%= f.label :code_climate_repo_token, "Code Climate Repo Token", :class => "control-label" %>
       <div class="controls">
-        <%= f.text_field :code_climate_repo_token, :class => 'text_field' %>
+        <%= f.text_field :code_climate_repo_token, :class => "text_field" %>
       </div>
     </div>
 
@@ -95,7 +95,7 @@
     <hr />
 
     <div class="control-group">
-      <%= f.label :roles, "Teammates", :class => 'control-label' %>
+      <%= f.label :roles, "Teammates", :class => "control-label" %>
       <div class="controls changes-nested-editor">
         <%= f.nested_editor_for :roles do |f| -%>
           <%= f.select :user_id, [nil] + User.all.map { |user| [user.name, user.id] } %>
@@ -105,15 +105,15 @@
     </div>
 
     <div class="control-group">
-      <%= f.label :min_passing_verdicts, "Min. Passing Verdicts", :class => 'control-label' %>
+      <%= f.label :min_passing_verdicts, "Min. Passing Verdicts", :class => "control-label" %>
       <div class="controls">
-        <%= f.text_field :min_passing_verdicts, :class => 'text_field' %>
+        <%= f.text_field :min_passing_verdicts, :class => "text_field" %>
       </div>
     </div>
 
     <div class="form-actions">
-      <%= f.submit nil, :class => 'btn btn-primary' %>
-      <%= link_to 'Cancel', projects_path, :class => 'btn' %>
+      <%= f.submit nil, :class => "btn btn-primary" %>
+      <%= link_to "Cancel", projects_path, :class => "btn" %>
 
       <% if @project.persisted? && can?(:destroy, @project) %>
         <button class="btn btn-delete btn-danger" id="retire_project_button">Retire</button>
