@@ -170,12 +170,14 @@
     $('.project-feature').click(showProjectFeatureParameters);
     showProjectFeatureParameters();
 
+    <% if @project.persisted? && can?(:destroy, @project) %>
     $('#retire_project_button').click(function(e) {
       e.preventDefault();
       $.put('<%= retire_project_path(@project) %>')
         .success(function() { window.location = '/projects'; })
         .error(function() { console.log(arguments); });
     });
+    <% end %>
   });
 </script>
 <% end %>
