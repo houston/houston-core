@@ -33,7 +33,7 @@ class TicketTest < ActiveSupport::TestCase
 
     context "on a ticket that has been released" do
       setup do
-        project = Project.new(version_control_name: "Mock")
+        project = Project.create!(name: "Test", version_control_name: "Mock")
         @ticket.update_column :first_release_at, 5.days.ago
         @ticket.releases << Release.create!(user_id: 1, project: project)
       end

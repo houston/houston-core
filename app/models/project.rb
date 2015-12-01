@@ -27,6 +27,9 @@ class Project < ActiveRecord::Base
     reject_if: proc { |attrs| attrs[:user_id].blank? or attrs[:name].blank? }
   accepts_nested_attributes_for :value_statements, :allow_destroy => true
 
+  before_validation :generate_default_slug
+  validates_presence_of :name, :slug
+
 
 
   has_adapter :TicketTracker,
@@ -247,5 +250,11 @@ class Project < ActiveRecord::Base
 
 
 
+
+private
+
+  def generate_default_slug
+    self.slug = self.name.to_s.underscore.gsub("/", "-").dasherize unless slug
+  end
 
 end
