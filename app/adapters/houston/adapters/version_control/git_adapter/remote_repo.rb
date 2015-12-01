@@ -6,9 +6,10 @@ module Houston
           RETRY_COOLDOWN = 4 # seconds
 
 
-          def initialize(connection, location)
-            super(connection)
-            @location = location
+
+          def initialize(git_path, location)
+            super location
+            @git_path = git_path.to_s
             @branch_location = :remote
           end
 
@@ -17,8 +18,6 @@ module Houston
           # Public API for a VersionControl::Adapter Repo
           # ------------------------------------------------------------------------- #
 
-          attr_reader :location
-
           def refresh!(async: false)
             return clone!(async: async) unless exists?
             pull!(async: async)
@@ -26,14 +25,14 @@ module Houston
 
           # ------------------------------------------------------------------------- #
 
-          def to_s
-            location.to_s
+
+
+          def git_path
+            @git_path
           end
 
-
-
           def clone!(async: false)
-            GitAdapter.clone!(location, connection.path, async: false)
+            async ? Houston.async { _clone!(true) } : _clone!(false)
           end
 
           def pull!(async: false)
@@ -47,6 +46,11 @@ module Houston
 
 
         protected
+
+          def connect!
+            clone! unless exists?
+            super
+          end
 
           def find_commit(sha)
             pull_and_retry { super(sha) }
@@ -71,8 +75,16 @@ module Houston
             end
           end
 
+          def _clone!(async)
+            Houston.benchmark("[git:clone#{":async" if async}] #{location} => #{git_path}") do
+              Rugged::Repository.clone_at location, git_path,
+                credentials: GitAdapter.credentials,
+                bare: true
+            end
+          end
+
           def _pull!(async)
-            Houston.benchmark("[git:pull#{":async" if async}] #{connection.path}") do
+            Houston.benchmark("[git:pull#{":async" if async}] #{location} => #{git_path}") do
               options = {credentials: GitAdapter.credentials}
 
               # Fetch
@@ -114,7 +126,7 @@ module Houston
             end
           rescue
             $!.additional_information[:repo] = to_s
-            $!.additional_information[:path] = connection.path
+            $!.additional_information[:path] = git_dir
             raise
           ensure
             close

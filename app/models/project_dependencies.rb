@@ -41,7 +41,7 @@ class ProjectDependencies < SimpleDelegator
   end
 
   def lockfile
-    return "" if repo.nil?
+    return "" unless repo.exists?
 
     @lockfile = read_file("Gemfile.lock", commit: repo.branch("master")) unless defined?(@lockfile)
     @lockfile

@@ -5,10 +5,12 @@ module Houston
     module VersionControl
       class GitAdapter
         class Repo
+          attr_reader :location
 
 
-          def initialize(connection)
-            @connection = connection
+
+          def initialize(location)
+            @location = location.to_s
             @branch_location = :local
           end
 
@@ -70,10 +72,6 @@ module Houston
             raise
           end
 
-          def location
-            connection.path
-          end
-
           def native_commit(sha)
             return NullCommit.new if sha == Houston::NULL_GIT_COMMIT
             to_commit find_commit(sha)
@@ -92,7 +90,7 @@ module Houston
           end
 
           def exists?
-            File.exists?(connection.path)
+            File.exists?(git_path)
           end
 
           # ------------------------------------------------------------------------- #
@@ -130,6 +128,10 @@ module Houston
             DiffChanges.new `git --git-dir=#{git_dir} diff --name-status #{old_sha} #{new_sha}`
           end
 
+          def git_path
+            location
+          end
+
           def to_s
             location
           end
@@ -164,7 +166,15 @@ module Houston
 
         protected
 
-          attr_reader :connection, :branch_location
+          attr_reader :branch_location
+
+          def connection
+            @connection ||= connect!
+          end
+
+          def connect!
+            Rugged::Repository.new(git_path)
+          end
 
           def find_commit(sha)
             normalize_sha!(sha)

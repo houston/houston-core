@@ -11,13 +11,13 @@ class ProjectTest < ActiveSupport::TestCase
     should "validate version control parameters when a version control adapter is specified" do
       project = Project.new(version_control_name: "Git", extended_attributes: {"git_location" => "/wrong/path"})
       project.valid?
-      assert_match(/Houston can't seem to connect to it/, project.errors.full_messages.to_sentence)
+      assert project.errors[:git_location].any?
     end
 
     should "not validate version control parameters if no adapter is specified" do
       project = Project.new(version_control_name: "None", extended_attributes: {"git_location" => "/wrong/path"})
       project.valid?
-      assert_no_match(/Houston can't seem to connect to it/, project.errors.full_messages.to_sentence)
+      refute project.errors[:git_location].any?
     end
   end
 

@@ -50,6 +50,10 @@ module Houston
         def refresh!(async: false)
         end
 
+        def exists?
+          false
+        end
+
         # ------------------------------------------------------------------------- #
 
 

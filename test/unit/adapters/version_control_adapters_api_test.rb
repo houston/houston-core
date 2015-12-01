@@ -33,6 +33,7 @@ class VersionControlAdatersApiTest < ActiveSupport::TestCase
       assert_respond_to repo, :native_commit
       assert_respond_to repo, :read_file
       assert_respond_to repo, :refresh!
+      assert_respond_to repo, :exists?
     end
   end
 

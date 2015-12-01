@@ -106,19 +106,24 @@ STR
   end
 
 
+
   test "should return a NullRepo if you give it an invalid path" do
-    path = Rails.root.join("nope")
-    repo = GitAdapter.build(Project.new, path)
-    assert_equal NullRepo, repo
+    repo = GitAdapter.build Project.new, Rails.root.join("nope")
+    assert_equal Houston::Adapters::VersionControl::NullRepo, repo
+  end
+
+  test "should return a NullRepo if you give it an invalid endpoint" do
+    repo = GitAdapter.build Project.new, "git@github.com:houston/nope.git"
+    assert_equal Houston::Adapters::VersionControl::NullRepo, repo
   end
 
 
 
   test "RemoteRepo should try pulling changes when a commit is not found" do
-    connection = OpenStruct.new(path: test_path)
+    repo = new_remote_repo
+    connection = repo.send :connection
     stub(connection).lookup { |*args| raise CommitNotFound }
     stub(connection).close
-    repo = GitAdapter::RemoteRepo.new(connection, :location)
     mock(repo).pull!(async: false)
 
     assert_raises CommitNotFound do
@@ -128,20 +133,20 @@ STR
 
 
 
-  context "GitAdapter.clone!" do
+  context "clone!" do
     setup do
       system "rm -rf #{Shellwords.escape temporary_path}"
     end
 
     should "work with a remote repo using the SSH transport" do
       remote_path = "git@github.com:houston/fixture.git"
-      GitAdapter.clone! remote_path, temporary_path
+      GitAdapter::RemoteRepo.new(temporary_path, remote_path).clone!
       assert File.exists?(fetch_head)
     end
 
     should "work with a remote repo using the Git transport" do
       remote_path = "git://github.com/houston/fixture.git"
-      GitAdapter.clone! remote_path, temporary_path
+      GitAdapter::RemoteRepo.new(temporary_path, remote_path).clone!
       assert File.exists?(fetch_head)
     end
   end

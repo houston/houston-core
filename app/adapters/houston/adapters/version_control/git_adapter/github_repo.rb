@@ -6,7 +6,7 @@ module Houston
 
 
           def project_url
-            location.to_s
+            location
               .gsub(/^git@(?:www\.)?github.com:/, "https://github.com/")
               .gsub(/^git:/, "https:")
               .gsub(/\.git$/, "")

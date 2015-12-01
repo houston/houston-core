@@ -10,12 +10,16 @@ module Houston
           # ------------------------------------------------------------------------- #
 
           def errors_with_parameters(project, location)
-            location = Addressable::URI.parse(location.to_s)
-            connect_to_repo!(location, project.version_control_temp_path)
+            location = location.to_s
+            return ERROR_BLANK if location.blank?
+
+            if local_path? location
+              return ERROR_DOES_NOT_EXIST unless File.exists? location
+            else
+              return ERROR_CANT_CONNECT unless can_fetch? location
+            end
+
             {}
-          rescue Rugged::RepositoryError, Rugged::OSError, Rugged::SshError
-            Rails.logger.error "#{$!.class.name}: #{$!.message}\n  #{$!.backtrace.take(7).join("\n  ")}"
-            { git_location: ["might not be right. Houston can't seem to connect to it."] }
           end
 
           def build(project, location)
@@ -23,17 +27,19 @@ module Houston
           end
 
           def connect(location, temp_path)
-            location = Addressable::URI.parse(location.to_s)
+            location = location.to_s
             return Houston::Adapters::VersionControl::NullRepo if location.blank?
 
-            connection = connect_to_repo! location, temp_path
+            if local_path? location
+              return Houston::Adapters::VersionControl::NullRepo unless File.exists? location
 
-            return self::Repo.new(connection) unless location.absolute?
-            return self::GithubRepo.new(connection, location) if /github/ === location
-            return self::RemoteRepo.new(connection, location)
-          rescue Rugged::RepositoryError, Rugged::OSError, Rugged::SshError
-            Rails.logger.warn "\e[33m[git_adapter] #{$!.class}: #{$!.message}\e[0m"
-            Houston::Adapters::VersionControl::NullRepo
+              return self::Repo.new(location)
+            else
+              return Houston::Adapters::VersionControl::NullRepo unless File.exists?(temp_path) || can_fetch?(location)
+
+              return self::GithubRepo.new(temp_path, location) if /github/ === location
+              return self::RemoteRepo.new(temp_path, location)
+            end
           end
 
           def parameters
@@ -43,28 +49,6 @@ module Houston
           # ------------------------------------------------------------------------- #
 
 
-
-          def connect_to_repo!(repo_uri, temp_path)
-            git_path = get_local_path_to_repo(repo_uri, temp_path.to_s)
-            Rugged::Repository.new(git_path)
-          end
-
-          def get_local_path_to_repo(repo_uri, temp_path)
-            if repo_uri.absolute?
-              clone!(repo_uri, temp_path) unless File.exists?(temp_path)
-              temp_path
-            else
-              repo_uri.to_s
-            end
-          end
-
-          def clone!(origin_uri, local_path, async: false)
-            if async
-              Houston.async { _clone!(origin_uri, local_path, true) }
-            else
-              _clone!(origin_uri, local_path, false)
-            end
-          end
 
           def credentials
             Rugged::Credentials::SshKey.new(
@@ -77,17 +61,27 @@ module Houston
 
         private
 
-          def _clone!(origin_uri, local_path, async)
-            Houston.benchmark("[git:clone#{":async" if async}] #{origin_uri} => #{local_path}") do
-              Rugged::Repository.clone_at origin_uri.to_s, local_path.to_s,
-                credentials: GitAdapter.credentials,
-                bare: true
-            end
-          end
+          ERROR_BLANK = {git_location: ["is blank"]}.freeze
+          ERROR_DOES_NOT_EXIST = {git_location: ["does not exist"]}.freeze
+          ERROR_CANT_CONNECT = {git_location: ["might not be right. Houston can't seem to connect to it."]}.freeze
 
           SSH_USERNAME = "git".freeze
           SSH_PRIVATEKEY = File.expand_path("~/.ssh/id_rsa").freeze
           SSH_PUBLICKEY = File.expand_path("~/.ssh/id_rsa.pub").freeze
+
+          def local_path?(location)
+            !Addressable::URI.parse(location.to_s).absolute?
+          end
+
+          def can_fetch?(url)
+            Houston.benchmark "[git_adapter] can_fetch?(#{url})" do
+              Dir.mktmpdir do |path|
+                repo = Rugged::Repository.init_at path, :bare
+                remote = repo.remotes.create_anonymous(url)
+                remote.check_connection(:fetch, credentials: GitAdapter.credentials)
+              end
+            end
+          end
 
         end
       end
