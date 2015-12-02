@@ -14,6 +14,8 @@ module CommitSynchronizer
 
       unreachable_commits = project.commits.unreachable.pluck(:sha)
       flag_reachable_commits! unreachable_commits & expected_commits
+
+      project.update_column :head_sha, project.repo.branch("master")
     end
   end
 

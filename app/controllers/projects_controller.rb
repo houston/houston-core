@@ -9,6 +9,7 @@ class ProjectsController < ApplicationController
     @projects = Project \
       .includes(:owners)
       .includes(:maintainers)
+      .includes(:head)
       .unretired
       .map { |project| ProjectDependencies.new(project) }
     @test_runs = TestRun.most_recent.index_by(&:project_id)

@@ -15,6 +15,7 @@ class Project < ActiveRecord::Base
   has_many :roles, -> { joins(:user).merge(User.unretired) }, dependent: :destroy, validate: false
   has_many :value_statements, dependent: :destroy
   has_many :pull_requests, class_name: "Github::PullRequest"
+  belongs_to :head, class_name: "Commit", foreign_key: "head_sha", primary_key: "sha"
 
   Houston.config.project_roles.each do |role|
     collection_name = role.downcase.gsub(' ', '_').pluralize

@@ -1,8 +1,7 @@
 module ProjectHelper
 
   def with_most_recent_commit(project)
-    return if project.repo.nil?
-    commit = project.find_commit_by_sha project.repo.branch("master")
+    commit = project.head
     if commit
       commit.project = project.model # so that _Commit_ doesn't load project again
       yield commit

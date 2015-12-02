@@ -3,7 +3,7 @@ class ProjectTestsController < ApplicationController
   def index
     @project = Project.find_by_slug! params[:slug]
 
-    head = params.fetch :at, @project.repo.branch("master")
+    head = params.fetch :at, @project.head_sha
     commits = params.fetch(:limit, 500).to_i
 
     @commits = Houston.benchmark("[project_tests#index] fetch commits") {
@@ -35,7 +35,7 @@ class ProjectTestsController < ApplicationController
     @totals = Hash[@test.test_results.group(:status).pluck(:status, "COUNT(*)")]
 
     begin
-      head = params.fetch :at, @project.repo.branch("master")
+      head = params.fetch :at, @project.head_sha
       stop_shas = @test.introduced_in_shas
       @commits = Houston.benchmark("[project_tests#show] fetch commits") {
         @project.repo.ancestors(head, including_self: true, limit: 100, hide: stop_shas) }

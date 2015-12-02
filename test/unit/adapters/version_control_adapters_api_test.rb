@@ -26,6 +26,7 @@ class VersionControlAdatersApiTest < ActiveSupport::TestCase
       assert_respond_to repo, :all_commits
       assert_respond_to repo, :ancestors
       assert_respond_to repo, :ancestors_until
+      assert_respond_to repo, :branch
       assert_respond_to repo, :branches
       assert_respond_to repo, :branches_at
       assert_respond_to repo, :commits_between

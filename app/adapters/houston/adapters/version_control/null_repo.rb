@@ -31,6 +31,10 @@ module Houston
           []
         end
 
+        def branch(name)
+          nil
+        end
+
         def commits_between(sha1, sha2)
           []
         end

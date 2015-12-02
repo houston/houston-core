@@ -384,7 +384,8 @@ CREATE TABLE projects (
     view_options hstore DEFAULT ''::hstore NOT NULL,
     gemnasium_slug character varying(255),
     feature_states hstore DEFAULT ''::hstore NOT NULL,
-    selected_features text[]
+    selected_features text[],
+    head_sha character varying(255)
 );
 
 
@@ -2290,4 +2291,6 @@ INSERT INTO schema_migrations (version) VALUES ('20151108223154');
 INSERT INTO schema_migrations (version) VALUES ('20151108233510');
 
 INSERT INTO schema_migrations (version) VALUES ('20151201042126');
+
+INSERT INTO schema_migrations (version) VALUES ('20151202005557');
 
