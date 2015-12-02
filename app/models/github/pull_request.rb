@@ -21,15 +21,59 @@ module Github
     validates :number, uniqueness: { scope: :project_id }
 
     class << self
+      # Makes X + Y requests to GitHub
+      # where X is the number of projects in Houston on GitHub
+      # and Y is the number of pull requests for those projects
+      #
+      # We _could_ group repos by their owner and fetch `org_issues`
+      # but that will only work for organizations, not personal
+      # accounts.
+      #
+      # This method can chomp through your rate limit rather quickly.
+      # Also, on my computer it took 19 seconds to fetch 39 pull
+      # requests from 52 repos.
       def fetch!
+        repos = Project.unretired
+          .where("extended_attributes->'git_location' LIKE '%github.com%'")
+          .pluck("extended_attributes->'git_location'")
+          .map { |url| _repo_name_from_url(url) }
+          .compact
+
         Houston.benchmark "Fetching pull requests" do
-          Houston.github.org_issues(Houston.config.github[:organization], filter: "all", state: "open")
+          requests = 0
+          issues = repos.flat_map do |repo|
+            _fetch_issues_for!(repo).tap do |results|
+              requests += 1 + (results.length / 30)
+            end
+          end
+
+          pulls = issues
             .select { |issue| !issue.pull_request.nil? }
-            .map { |issue| Houston.github.pull_request(issue.repository.full_name, issue.number)
-              .to_h
-              .merge(labels: issue.labels.map(&:name))
-              .with_indifferent_access }
+            .map { |issue|
+              requests += 1
+              repo = issue.pull_request.url[/https:\/\/api.github.com\/repos\/(.*)\/pulls\/\d+/, 1]
+              Houston.github.pull_request(repo, issue.number)
+                .to_h
+                .merge(labels: issue.labels.map(&:name))
+                .with_indifferent_access }
+
+          Rails.logger.info "[pulls] #{requests} requests; #{Houston.github.last_response.headers["x-ratelimit-remaining"]} remaining"
+          pulls
         end
+      end
+
+      def _repo_name_from_url(url)
+        url[/\Agit@github\.com:(.*)\.git\Z/, 1] || url[/\Agit:\/\/github.com\/(.*)\.git\Z/, 1]
+      end
+
+      def _fetch_issues_for!(repo)
+        if repo.end_with? "/*"
+          Houston.github.org_issues(repo[0...-2], filter: "all", state: "open")
+        else
+          Houston.github.issues(repo, filter: "all", state: "open")
+        end
+      rescue Octokit::NotFound
+        []
       end
 
       def sync!
@@ -56,7 +100,11 @@ module Github
 
             existing_pr ||= Github::PullRequest.new
             existing_pr.merge_attributes(expected_pr)
-            existing_pr.save if existing_pr.valid?
+            if existing_pr.valid?
+              existing_pr.save
+            else
+              Rails.logger.warn "\e[31m[pulls] Invalid PR: #{existing_pr.errors.full_messages.join("; ")}\e[0m"
+            end
             existing_pr
           end
         end

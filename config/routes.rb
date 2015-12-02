@@ -251,6 +251,8 @@ Rails.application.routes.draw do
 
   get "sprint/reports", to: "reports#sprint"
 
+  get "pulls", to: "github/pulls#index"
+
   # Tester Bar
   match "tester_bar/:action", :controller => "tester_bar", via: [:get, :post] if Rails.env.development?
 
