@@ -128,7 +128,7 @@
     NestedEditorFor.init();
 
     function dasherize(string) {
-      return inflect.dasherize(inflect.underscore(string)).replace(/\./g, '');
+      return inflect.dasherize(inflect.underscore(string)).replace(/\./g, '').replace(/\s+/g, '_');
     }
 
     var $name = $('#project_name'),

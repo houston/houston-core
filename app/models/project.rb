@@ -255,7 +255,7 @@ class Project < ActiveRecord::Base
 private
 
   def generate_default_slug
-    self.slug = self.name.to_s.underscore.gsub("/", "-").dasherize.gsub(".", "") unless slug
+    self.slug = self.name.to_s.underscore.gsub("/", "-").dasherize.gsub(".", "").gsub(/\s+/, "_") unless slug
   end
 
   def set_default_color
