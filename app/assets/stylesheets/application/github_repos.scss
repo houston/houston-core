@@ -1,0 +1,56 @@
+#repos {
+  margin: 0;
+  padding: 0;
+}
+
+.repo {
+  display: block;
+  padding: 0 4px;
+  border-radius: 2px;
+
+  &:hover {
+    background: rgba(128, 212, 255, 0.1);
+  }
+
+  &.selected {
+    background: rgba(128, 212, 255, 0.25);
+  }
+
+  &.disabled {
+    background: #f9f9f9;
+  }
+
+  input[type="checkbox"] {
+    margin: 8px;
+    float: left;
+
+    &[disabled] + label {
+      color: #bbb;
+    }
+  }
+
+  label {
+    padding: 4px 0;
+    margin: 0;
+  }
+
+  .repo-visibility {
+    display: inline-block;
+    margin: 0 4px;
+
+    .fa { width: 14px; }
+    .fa-unlock { opacity: 0.1; }
+  }
+
+  .repo-owner {
+    &::after {
+      display: inline-block;
+      content: '/';
+      margin: 0 0.33em;
+    }
+  }
+
+  .repo-name b {
+    color: #505050;
+  }
+}

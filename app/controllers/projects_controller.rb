@@ -29,6 +29,50 @@ class ProjectsController < ApplicationController
     @project.roles.build(user: current_user) if @project.roles.none?
   end
 
+  def new_from_github
+    authorize! :create, Project
+
+    existing_projects = Project.where("extended_attributes->'git_location' LIKE '%github.com%'")
+    github_repos = Houston.benchmark "Fetching repos" do
+      Houston.github.repos
+    end
+    @repos = github_repos.map do |repo|
+      { name: repo.name,
+        owner: repo.owner.login,
+        full_name: repo.full_name,
+        private: repo[:private],
+        git_location: repo.ssh_url,
+        project: existing_projects.detect { |project|
+          [repo.git_url, repo.ssh_url, repo.clone_url].member?(project.extended_attributes["git_location"]) },
+      }
+    end
+  end
+
+
+  def create_from_github
+    authorize! :create, Project
+
+    repos = params.fetch(:repos, [])
+    projects = Project.transaction do
+      repos.map do |repo|
+        owner, name = repo.split("/")
+        title = name.humanize.gsub(/\b(?<!['’.`])[a-z]/) { $&.capitalize }.gsub("-", "::")
+        Project.create!(
+          name: title,
+          slug: name,
+          version_control_name: "Git",
+          extended_attributes: {"git_location" => "git@github.com:#{repo}.git"})
+      end
+    end
+
+    flash[:notice] = "#{projects.count} projects added"
+    redirect_to projects_path
+
+  rescue ActiveRecord::RecordInvalid
+    flash[:error] = $!.message
+    redirect_to :back
+  end
+
 
   def edit
     @project = Project.find_by_slug!(params[:id])

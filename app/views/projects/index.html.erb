@@ -2,7 +2,8 @@
 <h1 class="project-banner space-below">
   Projects
   <%= link_to "New Project", new_project_path, :class => "btn btn-primary" if can?(:create, Project) %>
-  
+  <%= link_to "Add Projects from GitHub", add_github_projects_path, :class => "btn btn-primary" if can?(:create, Project) %>
+
   <%= render partial: "projects/keyboard_shortcuts" %>
 </h1>
 <% end %>

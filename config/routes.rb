@@ -73,6 +73,9 @@ Rails.application.routes.draw do
     post "deploy/:environment", to: "deploys#create"
   end
 
+  get "projects/new/github", to: "projects#new_from_github", as: :add_github_projects
+  post "projects/new/github", to: "projects#create_from_github"
+
 
 
   # Web Hooks
