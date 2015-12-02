@@ -1,12 +1,15 @@
+$default: rgb(80,80,80);
 <% Houston.config.project_colors.each do |name, value| %>
   $<%= name %>: <%= value.rgb %>;
 <% end %>
+
+<% project_colors = %w{default} + Houston.config.project_colors.keys %>
 
 .label {
   vertical-align: baseline;
   font-weight: 400;
   
-  <% Houston.config.project_colors.each do |name, value| %>
+  <% project_colors.each do |name| %>
     &.<%= name %> { background-color: $<%= name %>; }
   <% end %>
 
@@ -17,7 +20,7 @@
 }
 
 .dashboard .label {
-  <% Houston.config.project_colors.each do |name, value| %>
+  <% project_colors.each do |name| %>
     &.<%= name %> {
       background-color: $<%= name %>;
       color: rgba(255,255,255,0.9);
@@ -36,13 +39,13 @@
   top: 1px;
   margin-left: 0.25em;
   
-  <% Houston.config.project_colors.each do |name, value| %>
+  <% project_colors.each do |name| %>
     &.<%= name %> { background-color: $<%= name %>; }
   <% end %>
 }
 
 .project-tile {
-  <% Houston.config.project_colors.each do |name, value| %>
+  <% project_colors.each do |name| %>
     &.<%= name %>:hover { background-color: $<%= name %>; }
   <% end %>
 }
@@ -50,12 +53,12 @@
 #email_body h1.project-banner,
 .current-project,
 .project-navbar {
-  <% Houston.config.project_colors.each do |name, value| %>
+  <% project_colors.each do |name| %>
     &.<%= name %> { background-color: $<%= name %>; }
   <% end %>
 }
 
-<% Houston.config.project_colors.each do |name, value| %>
+<% project_colors.each do |name| %>
   .project-navbar.<%= name %> .nav > li.current,
   .project-banner.<%= name %> {
     background-color: lighten($<%= name %>, 32%);
@@ -72,7 +75,7 @@
 
 .modal-header { background-color: #73746F; }
 
-<% Houston.config.project_colors.each do |name, value| %>
+<% project_colors.each do |name| %>
   #new_ticket_modal.<%= name %> {
     .modal-header { background-color: $<%= name %>; }
   }
