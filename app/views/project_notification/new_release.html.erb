@@ -29,3 +29,9 @@
     </span>
   </p>
 <% end %>
+
+<% unless @release.new_record? %>
+  <p style="margin-top: 3em;">
+    <%= link_to "permalink", release_url(@release) %>
+  </p> 
+<% end %>
