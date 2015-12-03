@@ -2,7 +2,8 @@
   <%= tag "meta", property: "og:type", content: "website" %>
   <%= tag "meta", property: "og:site_name", content: "#{@project.slug} / #{@release.environment_name}" %>
   <%= tag "meta", property: "og:title", content: format_release_subject(@release) %>
-  <%= tag "meta", property: "og:description", content: format_release_description(@release) %>
+  <meta property="og:description" content="<%= format_release_description(@release) %>">
+  <%# tag "meta", property: "og:description", content: format_release_description(@release) %>
   <%= tag "meta", property: "og:url", content: release_url(@release) %>
 <% end %>
 

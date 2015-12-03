@@ -11,7 +11,8 @@ module ReleaseHelper
   def format_release_description(release)
     ordered_by_tag(release.release_changes)
       .map { |change| "#{change.tag.name.upcase}&nbsp;&nbsp;&nbsp;#{change.description}" }
-      .join("\n").html_safe
+      .join("\n")
+      .html_safe
   end
 
   def ordered_by_tag(changes)
