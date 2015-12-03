@@ -7,7 +7,7 @@
     <% end %>
   </h5>
   <ul class="commits">
-    <% commits.each do |commit| %>
+    <% commits.each do |commit|; commit.project = @project %>
       <%= content_tag :li, :id => "commit_#{commit.id}" do %>
         <%= link_to_commit(commit) if github_url?(@project) && !for_email? && can?(:read, commit) %>
         <%= format_commit(commit) %>
