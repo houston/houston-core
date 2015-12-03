@@ -28,7 +28,7 @@ module Houston
           end
 
           def repo_name
-            location.path[0...-4]
+            Addressable::URI.parse(location).path[1...-4]
           end
 
 

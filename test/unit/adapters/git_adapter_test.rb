@@ -182,6 +182,15 @@ STR
 
 
 
+  context "Given a GitHub repo, it" do
+    should "be able to identify the repo name" do
+      repo = GitAdapter::GithubRepo.new temporary_path, github_repo
+      assert_equal "houston/fixture", repo.repo_name
+    end
+  end
+
+
+
 private
 
   def new_local_repo
@@ -190,6 +199,10 @@ private
 
   def new_remote_repo
     GitAdapter.connect "git://github.com/houston/fixture.git", temporary_path
+  end
+
+  def github_repo
+    "git://github.com/houston/fixture.git"
   end
 
   def test_path
