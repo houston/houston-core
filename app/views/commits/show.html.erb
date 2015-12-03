@@ -16,7 +16,7 @@
         <%= div_for(release) do %>
           <p class="release-header">
             <%= release.released_at.strftime("%l:%M %p") %>&nbsp;&nbsp;
-            <%= link_to "details &rarr;".html_safe, release %>
+            <%= link_to "details &rarr;".html_safe, release_url(release) %>
           
             <% if can?(:read, @project.commits.build) %>
               <span class="commit-range"><%= link_to_release_commit_range(release) %></span>

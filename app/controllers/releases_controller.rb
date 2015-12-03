@@ -1,18 +1,14 @@
 class ReleasesController < ApplicationController
   include UrlHelper
-  before_filter :get_project_and_environment
+  before_filter :get_release_and_project, only: [:show, :edit, :update, :destroy]
+  before_filter :get_project_and_environment, only: [:index, :new, :create]
   before_filter :load_tickets, only: [:new, :edit, :create, :update]
+
+
 
   def index
     @title = "Releases • #{@project.name}"
     @title << " (#{@environment})" if @environment
-  end
-
-  def show
-    @release = @releases.find(params[:id])
-    authorize! :show, @release
-
-    @title = "Release #{@release.release_date.strftime("%b %-d")} • #{@project.name}"
   end
 
   def new
@@ -42,22 +38,6 @@ class ReleasesController < ApplicationController
     end
   end
 
-  def edit
-    @release = @releases.find(params[:id])
-    authorize! :update, @release
-
-    if params[:recreate]
-      if @release.can_read_commits?
-        @release.load_commits!
-        @release.load_tickets!
-        @release.build_changes_from_commits
-      end
-    end
-
-    @release.release_changes = [ReleaseChange.new(@release, "", "")] if @release.release_changes.none?
-    @release.valid?
-  end
-
   def create
     @release = @releases.new(params[:release])
     @release.user = current_user
@@ -81,8 +61,30 @@ class ReleasesController < ApplicationController
     end
   end
 
+
+
+  def show
+    authorize! :show, @release
+
+    @title = "Release #{@release.release_date.strftime("%b %-d")} • #{@project.name}"
+  end
+
+  def edit
+    authorize! :update, @release
+
+    if params[:recreate]
+      if @release.can_read_commits?
+        @release.load_commits!
+        @release.load_tickets!
+        @release.build_changes_from_commits
+      end
+    end
+
+    @release.release_changes = [ReleaseChange.new(@release, "", "")] if @release.release_changes.none?
+    @release.valid?
+  end
+
   def update
-    @release = @releases.find(params[:id])
     authorize! :update, @release
 
     if @release.update_attributes(params[:release])
@@ -93,7 +95,6 @@ class ReleasesController < ApplicationController
   end
 
   def destroy
-    @release = @releases.find(params[:id])
     authorize! :destroy, @release
 
     @release.destroy
@@ -102,6 +103,11 @@ class ReleasesController < ApplicationController
   end
 
 private
+
+  def get_release_and_project
+    @release = Release.find(params[:id])
+    @project = @release.project
+  end
 
   def get_project_and_environment
     @project = Project.find_by_slug!(params[:project_id])

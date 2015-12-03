@@ -48,24 +48,6 @@ module UrlHelper
     end
   end
 
-  def release_path(release, options={})
-    super(release.project.to_param, release.environment_name, release, options)
-  end
-
-  def edit_release_path(release, options={})
-    super(release.project.to_param, release.environment_name, release, options)
-  end
-
-
-
-  def release_url(release, options={})
-    super(release.project.to_param, release.environment_name, release, options)
-  end
-
-  def edit_release_url(release, options={})
-    super(release.project.to_param, release.environment_name, release, options)
-  end
-
   def new_release_url(release, options={})
     super(release.project.to_param, release.environment_name, options.merge(deploy_id: release.deploy_id))
   end
