@@ -84,6 +84,7 @@ private
     commit = find_by_sha(native_commit.sha)
     return commit if commit
 
+    $!.additional_information["project"] = project.slug
     $!.additional_information["native_commit.sha"] = native_commit.sha
     raise
   end
