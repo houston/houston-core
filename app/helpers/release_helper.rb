@@ -5,14 +5,13 @@ module ReleaseHelper
   end
 
   def format_release_subject(release)
-    date = release.date.strftime("%b %e")
-    "Release to #{release.environment_name} (#{date})"
+    release.date.strftime("%b %e, %Y • ") + release.released_at.strftime("%-I:%M%p").downcase
   end
 
   def format_release_description(release)
-    ordered_by_tag(release.release_changes).map do |change|
-      "*#{change.tag.name}*   #{change.description}"
-    end.join("\n")
+    ordered_by_tag(release.release_changes)
+      .map { |change| "#{change.tag.name.upcase}&nbsp;&nbsp;&nbsp;#{change.description}" }
+      .join("\n").html_safe
   end
 
   def ordered_by_tag(changes)
