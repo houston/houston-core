@@ -3,7 +3,7 @@ module ProjectHelper
   def with_most_recent_commit(project)
     commit = project.head
     if commit
-      commit.project = project.model # so that _Commit_ doesn't load project again
+      commit.project = project # so that _Commit_ doesn't load project again
       yield commit
     end
   end
@@ -11,7 +11,7 @@ module ProjectHelper
   def with_most_recent_release(project)
     release = @releases[project.id]
     if release
-      release.project = project.model # so that _Release_ doesn't load project again
+      release.project = project # so that _Release_ doesn't load project again
       yield release
     end
   end
@@ -19,7 +19,7 @@ module ProjectHelper
   def with_most_recent_test_run(project)
     test_run = @test_runs[project.id]
     if test_run
-      test_run.project = project.model # so that _TestRun_ doesn't load project again
+      test_run.project = project # so that _TestRun_ doesn't load project again
       yield test_run
     end
   end

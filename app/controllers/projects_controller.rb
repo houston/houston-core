@@ -11,7 +11,6 @@ class ProjectsController < ApplicationController
       .includes(:maintainers)
       .includes(:head)
       .unretired
-      .map { |project| ProjectDependencies.new(project) }
     @test_runs = TestRun.most_recent.index_by(&:project_id)
     @releases = Release.where(environment_name: "production").most_recent.index_by(&:project_id)
   end

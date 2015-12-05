@@ -76,9 +76,8 @@
             </td>
 
           <% KeyDependency.all.each do |dependency| %>
-          <% version = ProjectDependency.new(project, dependency).version %>
             <td class="project-dependency">
-              <%= version %>
+              <%= project.extended_attributes["key_dependency.#{dependency.slug}"] %>
             </td>
           <% end %>
 
