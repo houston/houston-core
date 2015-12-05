@@ -1633,6 +1633,13 @@ CREATE INDEX index_project_quotas_on_week ON project_quotas USING btree (week);
 
 
 --
+-- Name: index_projects_on_slug; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_projects_on_slug ON projects USING btree (slug);
+
+
+--
 -- Name: index_pull_requests_on_project_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2295,4 +2302,6 @@ INSERT INTO schema_migrations (version) VALUES ('20151201042126');
 INSERT INTO schema_migrations (version) VALUES ('20151202005557');
 
 INSERT INTO schema_migrations (version) VALUES ('20151202011812');
+
+INSERT INTO schema_migrations (version) VALUES ('20151205204922');
 
