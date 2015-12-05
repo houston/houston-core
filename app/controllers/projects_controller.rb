@@ -32,19 +32,19 @@ class ProjectsController < ApplicationController
   def new_from_github
     authorize! :create, Project
 
-    existing_projects = Project.where("extended_attributes->'git_location' LIKE '%github.com%'")
+    existing_projects = Project.unscoped.where("extended_attributes->'git_location' LIKE '%github.com%'")
     github_repos = Houston.benchmark "Fetching repos" do
       Houston.github.repos
     end
     @repos = github_repos.map do |repo|
+      project = existing_projects.detect { |project|
+        [repo.git_url, repo.ssh_url, repo.clone_url].member?(project.extended_attributes["git_location"]) }
       { name: repo.name,
         owner: repo.owner.login,
         full_name: repo.full_name,
         private: repo[:private],
         git_location: repo.ssh_url,
-        project: existing_projects.detect { |project|
-          [repo.git_url, repo.ssh_url, repo.clone_url].member?(project.extended_attributes["git_location"]) },
-      }
+        project: project }
     end
   end
 

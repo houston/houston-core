@@ -9,7 +9,7 @@
 <%= form_tag do %>
   <ul id="repos">
     <% @repos.each do |repo| %>
-      <li class="repo <%= "disabled" if repo[:project] %>">
+      <li class="repo <%= "disabled" if repo[:project] %> <%= "retired" if repo[:project] && repo[:project].retired? %>">
         <% if repo[:project] %>
           <input type="checkbox" checked disabled />
         <% else %>

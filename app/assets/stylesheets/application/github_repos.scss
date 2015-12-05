@@ -20,6 +20,27 @@
     background: #f9f9f9;
   }
 
+  &.retired {
+    .repo-owner { color: #ddd; }
+    .repo-name > .label { opacity: 0.4; }
+    .repo-owner, .repo-name {
+      position: relative;
+
+      &::after {
+        display: block;
+        content: '.';
+        color: transparent;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 50%;
+        width: 100%;
+        margin: 0;
+        border-bottom: 2px solid #555;
+      }
+    }
+  }
+
   input[type="checkbox"] {
     margin: 8px;
     float: left;
