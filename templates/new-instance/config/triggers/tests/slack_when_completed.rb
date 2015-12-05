@@ -5,7 +5,7 @@ Houston.config do
     next if test_run.branch.nil?
     next if test_run.aborted?
 
-    nickname = SLACK_USERNAME_FOR_USER[test_run.user.email] if test_run.user
+    nickname = test_run.user.slack_username if test_run.user
     project_slug = test_run.project.slug
     project_channel = "##{project_slug}"
     branch = "#{project_slug}/#{test_run.branch}"

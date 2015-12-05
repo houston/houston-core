@@ -1,6 +1,6 @@
 def slack_send_message_to(message, channel, options={})
   if channel.is_a?(User)
-    channel = SLACK_USERNAME_FOR_USER[channel.email]
+    channel = channel.slack_username
 
     unless channel
       Rails.logger.info "\e[34m[slack:say] I don't know the Slack username for #{channel.email}\e[0m"

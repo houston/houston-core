@@ -17,10 +17,7 @@ Houston.config do
 
     project_channel = "##{test_run.project.slug}"
     channels = [project_channel] if Houston::Slack.connection.channels.include? project_channel
-    channels ||= test_run.commit.committers
-      .pluck(:email)
-      .map { |email| SLACK_USERNAME_FOR_USER[email] }
-      .reject(&:nil?)
+    channels ||= test_run.commit.committers.map(&:slack_username)
     channels = %w{general} if Array(channel).empty?
 
     channels.each do |channel|
