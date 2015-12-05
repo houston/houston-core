@@ -117,6 +117,47 @@ class User < ActiveRecord::Base
 
 
 
+  # Extract to Houston::GitHub
+  # ------------------------------------------------------------------------- #
+
+  def self.find_by_github_username(username)
+    # If we can already identify the user who has the given username, return them
+    user = ::User.where(["view_options->'github_username' = ?", username]).first
+    return user if user
+
+    # Look up the email address of the GitHub user and see if we can
+    # identify the Houston user by the GitHub user's email address.
+    user = Houston.github.user(username)
+    user = find_by_email_address user.email if user
+
+    # We couldn't find the user by their email address, now
+    # we'll look at their nicknames
+    user = find_by_nickname username unless user
+
+    # We've failed to identify this user
+    unless user
+      Rails.logger.warn "\e[31m[pulls] Unable to identify a user for the GitHub username \e[1m#{username}\e[0m"
+      return nil
+    end
+
+    # If we have identified the user, store their username so that
+    # we can skip the email-lookup step in the future.
+    user.set_github_username! username
+    user
+  end
+
+  def github_username
+    view_options["github_username"]
+  end
+
+  def set_github_username!(username)
+    update_column :view_options, view_options.merge("github_username" => username)
+  end
+
+  # ------------------------------------------------------------------------- #
+
+
+
   # LDAP Overrides
   # ------------------------------------------------------------------------- #
 

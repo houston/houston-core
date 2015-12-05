@@ -193,7 +193,7 @@ module Github
     end
 
     def associate_user_with_self
-      self.user = User.find_by_nickname(username)
+      self.user = User.find_by_github_username(username)
     end
 
     def associate_commits_with_self
