@@ -2,6 +2,11 @@
   border-radius: 100em;
 }
 
+.avatar.avatar-not-our-user {
+  border: 2px dotted #aaa;
+  margin: -2px;
+}
+
 // just like on the timeline page
 h1.project-banner .avatar {
   float: right;

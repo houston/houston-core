@@ -14,7 +14,11 @@
       <li class="pull-request">
         <%= link_to pull.url, target: "_blank" do %>
           <span class="pull-request-number"><%= pull.number %></span>
-          <%= avatar_for pull.user %>
+          <% if pull.user %>
+            <%= avatar_for pull.user %>
+          <% elsif pull.avatar_url %>
+            <%= image_tag pull.avatar_url, size: "24", alt: pull.username, class: "avatar avatar-not-our-user" %>
+          <% end %>
           <span class="pull-request-title"><%= emojify pull.title %></span>
           <span class="pull-request-labels">
             <% pull.labels.each do |label| %>

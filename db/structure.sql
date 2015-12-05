@@ -428,7 +428,8 @@ CREATE TABLE pull_requests (
     old_labels text DEFAULT ''::text NOT NULL,
     labels text[] DEFAULT '{}'::text[],
     body text,
-    props jsonb DEFAULT '{}'::jsonb
+    props jsonb DEFAULT '{}'::jsonb,
+    avatar_url character varying(255)
 );
 
 
@@ -2304,4 +2305,6 @@ INSERT INTO schema_migrations (version) VALUES ('20151202005557');
 INSERT INTO schema_migrations (version) VALUES ('20151202011812');
 
 INSERT INTO schema_migrations (version) VALUES ('20151205204922');
+
+INSERT INTO schema_migrations (version) VALUES ('20151205214647');
 
