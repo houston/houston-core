@@ -30,6 +30,7 @@ class Milestone < ActiveRecord::Base
         arel_table[:tickets_count].gt(0).and(
         arel_table[:closed_tickets_count].eq(arel_table[:tickets_count])))
     end
+    alias :closed :completed
 
     def uncompleted
       where(
