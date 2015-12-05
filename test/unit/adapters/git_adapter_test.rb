@@ -184,7 +184,10 @@ STR
 
   context "Given a GitHub repo, it" do
     should "be able to identify the repo name" do
-      repo = GitAdapter::GithubRepo.new temporary_path, github_repo
+      repo = GitAdapter::GithubRepo.new temporary_path, "git://github.com/houston/fixture.git"
+      assert_equal "houston/fixture", repo.repo_name
+
+      repo = GitAdapter::GithubRepo.new temporary_path, "git@github.com:houston/fixture.git"
       assert_equal "houston/fixture", repo.repo_name
     end
   end
