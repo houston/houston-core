@@ -1,5 +1,6 @@
 class ReleasesController < ApplicationController
   include UrlHelper
+  include ReleaseHelper
   before_filter :get_release_and_project, only: [:show, :edit, :update, :destroy]
   before_filter :get_project_and_environment, only: [:index, :new, :create]
   before_filter :load_tickets, only: [:new, :edit, :create, :update]
@@ -67,6 +68,15 @@ class ReleasesController < ApplicationController
     authorize! :show, @release
 
     @title = "Release #{@release.release_date.strftime("%b %-d")} • #{@project.name}"
+
+    if request.format.oembed?
+      render json: {
+        version: "1.0",
+        type: "link",
+        author_name: "#{@project.slug} / #{@release.environment_name}",
+        title: format_release_subject(@release),
+        html: format_release_description(@release) }
+    end
   end
 
   def edit

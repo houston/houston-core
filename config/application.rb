@@ -82,6 +82,10 @@ module Houston
     # Automatically compress responses that accept gzip encoding
     config.middleware.use Rack::Deflater
 
+    # Support the oEmbed protocol
+    require "rack/oembed"
+    config.middleware.use Rack::Oembed, path: "oembed/1.0"
+
     # Respond with a 400 when requests are malformed
     # http://stackoverflow.com/a/24727310/731300
     config.middleware.insert 0, Rack::UTF8Sanitizer
