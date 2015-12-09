@@ -16,6 +16,7 @@ class SyncAllTicketsJob
   end
 
   def update_tickets_for_project!(project)
+    connection_retry_count ||= 0
     SyncProjectTicketsJob.new(project).run!
 
   rescue Houston::Adapters::TicketTracker::ConnectionError
