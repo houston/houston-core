@@ -187,7 +187,7 @@ module Houston
 
     def project_colors(*args)
       @project_colors = args.first.each_with_object({}) { |(key, hex), hash| hash[key] = ColorValue.new(hex) } if args.any?
-      @project_colors ||= []
+      @project_colors ||= {}
     end
 
     def environments(*args)
@@ -264,7 +264,7 @@ module Houston
       #      :timeoutable,
       #      :omniauthable
 
-      configuration = [:database_authenticatable, :token_authenticatable]
+      configuration = [:database_authenticatable]
       unless Rails.env.test? # <-- !todo: control when custom strategies are employed in the test suite
         configuration << :ldap_authenticatable if authentication_strategy == :ldap
       end

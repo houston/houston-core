@@ -90,7 +90,7 @@ class TaskTest < ActiveSupport::TestCase
     context "is committed, it" do
       should "fire 'task:committed'" do
         assert_triggered "task:committed" do
-          task.committed! Struct.new(:authored_at).new(time)
+          task.mark_committed! Struct.new(:authored_at).new(time)
         end
       end
     end

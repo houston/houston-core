@@ -5,6 +5,11 @@ class PullRequestTest < ActiveSupport::TestCase
   attr_reader :project, :pull_request
 
 
+  def setup
+    stub(User).find_by_github_username { |*args| User.first }
+  end
+
+
   context "Given GitHub API's description of a pull request" do
     setup do
       @project = Project.create!(

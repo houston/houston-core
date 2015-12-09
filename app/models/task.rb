@@ -123,7 +123,7 @@ class Task < ActiveRecord::Base
 
 
 
-  def committed!(commit)
+  def mark_committed!(commit)
     update_column :first_commit_at, commit.authored_at unless committed?
     Houston.observer.fire "task:committed", self
   end

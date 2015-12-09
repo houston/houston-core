@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
 
 
   # For Houston as a Web Application
-  spec.add_dependency "rails", "~> 4.1.13"
+  spec.add_dependency "rails", "~> 4.2.5"
   spec.add_dependency "sprockets", "~> 2.8" # update this when updating Rails
   spec.add_dependency "pg", "~> 0.18.3"
   # --------------------------------
@@ -29,9 +29,9 @@ Gem::Specification.new do |spec|
   spec.add_dependency "addressable"
   spec.add_dependency "browser"
   spec.add_dependency "cancan", "~> 1.6.10"
-  spec.add_dependency "default_value_for", "3.0.0.1"
-  spec.add_dependency "devise", "~> 3.0.0"
-  spec.add_dependency "devise_invitable", "~> 1.2.1"
+  spec.add_dependency "default_value_for", "3.0.1"
+  spec.add_dependency "devise", "~> 3.5.0"
+  spec.add_dependency "devise_invitable", "~> 1.5.3"
   spec.add_dependency "houston-devise_ldap_authenticatable"
   spec.add_dependency "faraday", "~> 0.8.10"
   spec.add_dependency "faraday-http-cache", "~> 1.2.2"
@@ -55,9 +55,9 @@ Gem::Specification.new do |spec|
   spec.add_dependency "houston-vestal_versions"
 
   # The Asset Pipeline
-  spec.add_dependency "sass-rails", "~> 4.0.0"
-  spec.add_dependency "uglifier", ">= 1.3.0"
-  spec.add_dependency "coffee-rails", "~> 4.0.0"
+  spec.add_dependency "sass-rails", "~> 5.0"
+  spec.add_dependency "uglifier", ">= 2.7.2"
+  spec.add_dependency "coffee-rails", "~> 4.1.0"
 
   # Houston's background jobs daemon
   spec.add_dependency "rufus-scheduler", "~> 3.1.7"

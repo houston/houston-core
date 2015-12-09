@@ -60,7 +60,7 @@ class TicketTasksApiTest < ActionDispatch::IntegrationTest
 private
 
   def tasks_path
-    "api/v1/projects/#{project.slug}/tickets/by_number/#{ticket.number}/tasks"
+    "/api/v1/projects/#{project.slug}/tickets/by_number/#{ticket.number}/tasks"
   end
 
   def env

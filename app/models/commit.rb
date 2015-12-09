@@ -206,7 +206,7 @@ class Commit < ActiveRecord::Base
     self.tasks = identify_tasks
 
     tasks.each do |task|
-      task.committed!(self)
+      task.mark_committed!(self)
     end
   end
 

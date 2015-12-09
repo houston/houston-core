@@ -178,9 +178,9 @@ class CommitTest < ActiveSupport::TestCase
         assert_equal [], task.commits
       end
 
-      should "trigger `committed!` on each task" do
+      should "trigger `mark_committed!` on each task" do
         commit = Commit.new params(message: "[skip] Hi [#378b]")
-        mock.instance_of(Task).committed!(commit)
+        mock.instance_of(Task).mark_committed!(commit)
         commit.save!
       end
     end
