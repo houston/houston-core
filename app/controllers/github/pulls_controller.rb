@@ -1,7 +1,7 @@
 class Github::PullsController < ApplicationController
 
   def index
-    @pulls = Github::PullRequest.all
+    @pulls = Github::PullRequest.order(created_at: :desc)
     @title = "Pull Requests (#{@pulls.count})"
   end
 

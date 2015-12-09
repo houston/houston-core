@@ -1,32 +1,73 @@
 <% content_for :title do %>
 <h1 class="project-banner space-below">
+  <span class="light"><%= @pulls.count %></span>
   Pull Requests
 </h1>
 <% end %>
 
-<% @pulls.group_by(&:project).each do |project, pulls|; next if pulls.none? %>
-  <h4 class="github-repo">
-    <span class="github-repo-name"><%= project.slug %></span>
-    <span class="pull-requests-count badge"><%= pulls.count %></span>
-  </h4>
-  <ul class="pull-requests">
-    <% pulls.each do |pull| %>
-      <li class="pull-request">
-        <%= link_to pull.url, target: "_blank" do %>
-          <span class="pull-request-number"><%= pull.number %></span>
-          <% if pull.user %>
-            <%= avatar_for pull.user %>
-          <% elsif pull.avatar_url %>
-            <%= image_tag pull.avatar_url, size: "24", alt: pull.username, class: "avatar avatar-not-our-user" %>
-          <% end %>
-          <span class="pull-request-title"><%= emojify pull.title %></span>
-          <span class="pull-request-labels">
-            <% pull.labels.each do |label| %>
-              <span class="label"><%= label %></span>
+<div class="nomargin">
+  <table id="pull_requests" class="table table-sortable table-striped">
+    <thead>
+      <tr>
+        <td class="table-margin"></td>
+        <td class="pull-request-avatar"></td>
+        <th class="pull-request-project">Project</th>
+        <th class="pull-request-title">Title</th>
+        <th class="pull-request-labels">Labels</th>
+        <th class="pull-request-age sort-asc">Age</th>
+        <td class="table-margin"></td>
+      </tr>
+    </thead>
+    <tbody>
+      <% @pulls.each do |pull| %>
+        <tr class="pull-request">
+          <td class="table-margin"></td>
+          <td class="pull-request-avatar">
+            <% if pull.user %>
+              <%= avatar_for pull.user, size: 32 %>
+            <% elsif pull.avatar_url %>
+              <%= image_tag pull.avatar_url, size: "32", alt: pull.username, class: "avatar avatar-not-our-user" %>
             <% end %>
-          </span>
-        <% end %>
-      </li>
-    <% end %>
-  </ul>
+          </td>
+          <td class="pull-request-project"><%= pull.project.slug %></td>
+          <td class="pull-request-title">
+            <%= link_to emojify(pull.title), pull.url, target: "_blank" %>
+          </td>
+          <td class="pull-request-labels">
+            <% pull.json_labels.each do |label| %>
+              <%= pull_request_label(label) %>
+            <% end %>
+          </td>
+          <td class="pull-request-age" data-timestamp="<%= pull.created_at.iso8601 %>">
+            <%= format_time_ago(pull.created_at) %>
+          </td>
+          <td class="table-margin"></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<% content_for :javascripts do %>
+  <script type="text/javascript">
+    $.tablesorter.addParser({
+      id: 'labels',
+      type: 'text',
+      is: function(s) { return false; }, // return false so this parser is not auto detected
+      format: function(s, table, td) {
+        var $td = $(td),
+            labels = _.map($td.find('.label'), function(el) { return $(el).text() });
+        return labels.sort().join(',');
+      }
+    });
+    
+    $(function() {
+      $('#pull_requests').tablesorter({
+        headers: {
+          4: {sorter: 'labels'},
+          5: {sorter: 'timestamp'}
+        }
+      });
+    });
+  </script>
 <% end %>

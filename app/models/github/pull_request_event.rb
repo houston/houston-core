@@ -35,8 +35,8 @@ module Github
       return unless pr && pr.persisted?
 
       case action
-      when "labeled" then pr.add_label! payload["label"]["name"], as: actor
-      when "unlabeled" then pr.remove_label! payload["label"]["name"], as: actor
+      when "labeled" then pr.add_label! payload["label"], as: actor
+      when "unlabeled" then pr.remove_label! payload["label"], as: actor
       end
     end
 

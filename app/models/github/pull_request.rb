@@ -54,7 +54,7 @@ module Github
               repo = issue.pull_request.url[/https:\/\/api.github.com\/repos\/(.*)\/pulls\/\d+/, 1]
               Houston.github.pull_request(repo, issue.number)
                 .to_h
-                .merge(labels: issue.labels.map(&:name))
+                .merge(labels: issue.labels)
                 .with_indifferent_access }
 
           Rails.logger.info "[pulls] #{requests} requests; #{Houston.github.last_response.headers["x-ratelimit-remaining"]} remaining"
@@ -141,27 +141,37 @@ module Github
       end
 
       def labeled(*labels)
-        where(["labels && ARRAY[?]", labels])
+        where(["exists (select 1 from jsonb_array_elements(pull_requests.json_labels) as \"label\" where \"label\"->>'name' IN (?))", labels])
       end
     end
 
 
 
     def labels=(value)
-      super Array(value).uniq
+      self.json_labels = value.map { |label| label.to_h.stringify_keys.pick("name", "color") }
+    end
+
+    def labels
+      json_labels
     end
 
     def add_label!(label, options={})
+      label = label.to_h.stringify_keys.pick("name", "color")
+
       transaction do
         pr = self.class.lock.find id
-        pr.update_attributes! labels: pr.labels + [label], actor: options[:as]
+        new_labels = pr.json_labels.reject { |l| l["name"] == label["name"] } + [label]
+        pr.update_attributes! json_labels: new_labels, actor: options[:as]
       end
     end
 
     def remove_label!(label, options={})
+      label = label.to_h.stringify_keys.pick("name", "color")
+
       transaction do
         pr = self.class.lock.find id
-        pr.update_attributes! labels: pr.labels - [label], actor: options[:as]
+        new_labels = pr.json_labels.reject { |l| l["name"] == label["name"] }
+        pr.update_attributes! json_labels: new_labels, actor: options[:as]
       end
     end
 
@@ -176,6 +186,7 @@ module Github
       self.base_sha = pr["base"]["sha"] unless base_sha
       self.base_ref = pr["base"]["ref"] unless base_ref
 
+      self.created_at = pr["created_at"]
       self.title = pr["title"]
       self.body = pr["body"]
       self.head_sha = pr["head"]["sha"]
