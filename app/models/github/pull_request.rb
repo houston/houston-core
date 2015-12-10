@@ -32,8 +32,8 @@ module Github
       # This method can chomp through your rate limit rather quickly.
       # Also, on my computer it took 19 seconds to fetch 39 pull
       # requests from 52 repos.
-      def fetch!
-        repos = Project.unretired
+      def fetch!(projects = Project.unretired)
+        repos = projects
           .where("extended_attributes->'git_location' LIKE '%github.com%'")
           .pluck("extended_attributes->'git_location'")
           .map { |url| _repo_name_from_url(url) }
@@ -76,8 +76,8 @@ module Github
         []
       end
 
-      def sync!
-        expected_pulls = fetch!
+      def sync!(projects = Project.unretired)
+        expected_pulls = fetch!(projects)
         expected_pulls.select! { |pr| pr["base"]["repo"]["name"] == pr["head"]["repo"]["name"] }
         # select only ones where head and base are the same repo
         Houston.benchmark "Syncing pull requests" do
