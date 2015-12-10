@@ -655,6 +655,7 @@ module Houston
            Faraday::HTTP::ServerError,
            Rugged::NetworkError,
            Unfuddle::ConnectionError,
+           Octokit::BadGateway,
            exceptions_wrapping(PG::ConnectionBad)
       Rails.logger.error "\e[31m[#{tag}] #{$!.class}: #{$!.message} [ignored]\e[0m"
     rescue Exception # rescues StandardError by default; but we want to rescue and report all errors
