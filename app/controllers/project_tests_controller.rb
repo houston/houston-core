@@ -54,7 +54,7 @@ class ProjectTestsController < ApplicationController
 
         @results = @test.test_results.where(test_run_id: @runs.map(&:id))
           .joins(:test_run)
-          .select("test_runs.sha", :*)
+          .select("test_runs.sha", "test_results.*")
           .index_by { |result| result[:sha] }
         @runs = @runs.index_by(&:sha)
       end
