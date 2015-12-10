@@ -100,9 +100,7 @@ module Github
 
             existing_pr ||= Github::PullRequest.new
             existing_pr.merge_attributes(expected_pr)
-            if existing_pr.valid?
-              existing_pr.save
-            else
+            unless existing_pr.save
               Rails.logger.warn "\e[31m[pulls] Invalid PR: #{existing_pr.errors.full_messages.join("; ")}\e[0m"
             end
             existing_pr
