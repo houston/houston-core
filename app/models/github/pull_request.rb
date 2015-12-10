@@ -205,7 +205,9 @@ module Github
     end
 
     def associate_commits_with_self
-      self.commits = project.commits.between(base_sha, head_sha)
+      Houston.try({max_tries: 2, base: 0}, ActiveRecord::RecordNotUnique) do
+        self.commits = project.commits.between(base_sha, head_sha)
+      end
     end
 
   end
