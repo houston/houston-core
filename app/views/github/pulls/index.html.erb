@@ -38,7 +38,7 @@
               <%= pull_request_label(label) %>
             <% end %>
           </td>
-          <td class="pull-request-age" data-timestamp="<%= pull.created_at.iso8601 %>">
+          <td class="pull-request-age" data-timestamp="<%= pull.created_at.iso8601 if pull.created_at %>">
             <%= format_time_ago(pull.created_at) %>
           </td>
           <td class="table-margin"></td>
