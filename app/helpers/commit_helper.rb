@@ -13,8 +13,8 @@ module CommitHelper
     project = commit.project
     content = block_given? ? yield : "<span class=\"commit-sha\">#{commit.sha[0...7]}</span>".html_safe
 
-    return content unless github_url?(project)
-    link_to content, github_commit_url(project, commit.sha), options.reverse_merge(target: "_blank")
+    return content unless url = github_commit_url(project, commit.sha)
+    link_to content, url, options.reverse_merge(target: "_blank")
   end
 
   def link_to_release_commit_range(release)
