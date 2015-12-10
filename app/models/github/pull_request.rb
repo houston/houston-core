@@ -78,8 +78,6 @@ module Github
 
       def sync!(projects = Project.unretired)
         expected_pulls = fetch!(projects)
-        expected_pulls.select! { |pr| pr["base"]["repo"]["name"] == pr["head"]["repo"]["name"] }
-        # select only ones where head and base are the same repo
         Houston.benchmark "Syncing pull requests" do
           existing_pulls = all.to_a
 
