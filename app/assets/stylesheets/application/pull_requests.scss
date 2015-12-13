@@ -11,7 +11,7 @@ td.pull-request-project {
   white-space: nowrap;
 }
 
-td.pull-request-labels .label {
+.pull-request-labels .label {
   display: inline-block;
   padding: 2px 4px 4px;
   font-size: 11px;
@@ -20,4 +20,18 @@ td.pull-request-labels .label {
   color: #fff;
   border-radius: 2px;
   box-shadow: inset 0 -1px 0 rgba(0,0,0,0.12);
+}
+
+.pull-request-labels-toggle {
+  margin: 0.66em 0 2em;
+
+  input[type="checkbox"] { visibility: hidden; width: 0; height: 0; }
+  label { display: inline-block; }
+
+  input[type="checkbox"]:not(:checked) + label {
+    .label {
+      background: #efefef !important;
+      color: #888 !important;
+    }
+  }
 }
