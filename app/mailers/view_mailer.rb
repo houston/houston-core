@@ -23,7 +23,6 @@ class ViewMailer < ActionMailer::Base
     application/markdown.scss
     application/test_run.scss
     application/releases.scss
-    application/pull_requests.scss
     application/follow_up.scss
   }
 

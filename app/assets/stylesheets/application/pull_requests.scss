@@ -28,6 +28,23 @@ td.pull-request-project {
   input[type="checkbox"] { visibility: hidden; width: 0; height: 0; }
   label { display: inline-block; }
 
+  // Premailer does not like the selector. It will result in an error
+  // NoMethodError: undefined method `<<' for nil:NilClass
+  //   hpricot-0.8.6/lib/hpricot/elements.rb:307→ filter
+  //   hpricot-0.8.6/lib/hpricot/elements.rb:290→ filter
+  //   hpricot-0.8.6/lib/hpricot/traverse.rb:327→ search
+  //   premailer-1.8.6/lib/premailer/adapter/hpricot.rb:46→ block in to_inline_css
+  //   css_parser-1.3.7/lib/css_parser/parser.rb:192→ block (2 levels) in each_selector
+  //   css_parser-1.3.7/lib/css_parser/rule_set.rb:90→ block in each_selector
+  //   css_parser-1.3.7/lib/css_parser/rule_set.rb:90→ each
+  //   css_parser-1.3.7/lib/css_parser/rule_set.rb:90→ each_selector
+  //   css_parser-1.3.7/lib/css_parser/parser.rb:191→ block in each_selector
+  //   css_parser-1.3.7/lib/css_parser/parser.rb:180→ block in each_rule_set
+  //   css_parser-1.3.7/lib/css_parser/parser.rb:178→ each
+  //   css_parser-1.3.7/lib/css_parser/parser.rb:178→ each_rule_set
+  //   css_parser-1.3.7/lib/css_parser/parser.rb:190→ each_selector
+  //   premailer-1.8.6/lib/premailer/adapter/hpricot.rb:21→ to_inline_css
+  //   houston-core-57242effb689/app/mailers/view_mailer.rb:65→ block (2 levels) in mail
   input[type="checkbox"]:not(:checked) + label {
     .label {
       background: #efefef !important;
