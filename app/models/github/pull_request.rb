@@ -139,6 +139,11 @@ module Github
       def labeled(*labels)
         where(["exists (select 1 from jsonb_array_elements(pull_requests.json_labels) as \"label\" where \"label\"->>'name' IN (?))", labels])
       end
+      alias :with_labels :labeled
+
+      def without_labels(*labels)
+        where(["not exists (select 1 from jsonb_array_elements(pull_requests.json_labels) as \"label\" where \"label\"->>'name' IN (?))", labels])
+      end
     end
 
 
