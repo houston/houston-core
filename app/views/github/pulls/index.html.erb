@@ -85,6 +85,7 @@
         $('.pull-request').each(function() {
           var $pull = $(this),
               classes = $pull.attr('class').split(' '); classes.shift();
+              classes = _.filter(classes, function(str) { return str; });
           $pull.toggle(_.all(classes, function(cssClass) {
             return _.contains(visibleClasses, cssClass);
           }));
