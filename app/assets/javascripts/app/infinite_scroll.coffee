@@ -25,7 +25,7 @@ class @InfiniteScroll
     @$el.addClass('loading')
     xhr.done (html, status, e)=>
       @$el.removeClass('loading')
-      if e.status is 204
+      if html is "" or e?.status is 204
         @$el.addClass('done')
       else
         @$el.append(html)
