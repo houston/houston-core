@@ -1,0 +1,47 @@
+<% if @releases.none? %>
+
+  <div class="alert alert-info">
+    No results found.
+  </div>
+
+<% else %>
+
+  <% date = nil %>
+  <div id="<%= @project.slug %>_changelog" class="-houston-changelog release-search-result">
+    <% @releases.each do |release| %>
+      <% release.project = @project %>
+
+      <% if date.nil? || date != release.date %>
+        <% if date %></div><% end %><%# end .-houston-changelog-day %>
+        <div class="-houston-changelog-day">
+          <h4><%= format_release_date(date = release.date) %></h4>
+      <% end %>
+
+      <%= div_for(release) do %>
+        <% release.project = @project %>
+        <p class="release-header">
+          <%= release.released_at.strftime("%l:%M %p") %>&nbsp;&nbsp;
+          <%= link_to "details &rarr;".html_safe, release_url(release) %>
+
+          <% if can?(:read, @project.commits.build) %>
+            <span class="commit-range"><%= link_to_release_commit_range(release) %></span>
+          <% end %>
+        </p>
+
+        <div class="release-changes">
+          <% ordered_by_tag(release.release_changes).each do |change| %>
+            <% if can?(:read, change) %>
+              <div class="change">
+                <%= format_change_tag change.tag %>
+                <div class="change-summary"><%= format_change(change) %></div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
+
+    <% end %>
+    <% if date %></div><% end %><%# end .-houston-changelog-day %>
+  </div>
+
+<% end %>

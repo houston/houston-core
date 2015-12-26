@@ -1,0 +1,65 @@
+<% if @deploys.none? %>
+
+  <div class="alert alert-info">
+    There have been no deploys of <b><%= @project.name %></b> to <b><%= @environment %></b> recorded.
+  </div>
+
+<% else %>
+
+  <% date = nil %>
+  <div id="<%= @project.slug %>_changelog" class="-houston-changelog">
+    <% @deploys.each do |deploy| %>
+      <% deploy.project = @project; release = deploy.release %>
+      <% next if release.nil? && deploy.commit.nil? %>
+
+      <% if date.nil? || date != deploy.date %>
+        <% if date %></div><% end %><%# end .-houston-changelog-day %>
+        <div class="-houston-changelog-day">
+          <h4><%= format_release_date(date = deploy.date) %></h4>
+      <% end %>
+
+      <% unless release %>
+        <div class="release release-deploy">
+          <p class="release-header">
+            <%= deploy.completed_at.strftime("%l:%M %p") %>&nbsp;&nbsp;
+            <% deploy.commit.project = @project %>
+            Deploy to <%= link_to_commit deploy.commit, style: "float: none;" %>
+
+            <span style="float: right;">
+              <%= link_to "New Release", new_release_path(slug: @project.slug, environment: @environment, deploy_id: deploy.id), class: "btn btn-mini btn-default" %>
+            </span>
+        </div>
+      <% else %>
+        <%= div_for(release) do %>
+          <% release.project = @project %>
+          <p class="release-header">
+            <%= release.released_at.strftime("%l:%M %p") %>&nbsp;&nbsp;
+            <%= link_to "details &rarr;".html_safe, release_url(release) %>
+
+            <% if can?(:read, @project.commits.build) %>
+              <span class="commit-range"><%= link_to_release_commit_range(release) %></span>
+            <% end %>
+          </p>
+
+          <% if release.release_changes.any? %>
+            <div class="release-changes">
+              <% ordered_by_tag(release.release_changes).each do |change| %>
+                <% if can?(:read, change) %>
+                  <div class="change">
+                    <%= format_change_tag change.tag %>
+                    <div class="change-summary"><%= format_change(change) %></div>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+          <% else %>
+            <div class="release-no-changes">No changes</div>
+          <% end %>
+        <% end %>
+      <% end %>
+    
+    <% end %>
+    <% if date %></div><% end %><%# end .-houston-changelog-day %>
+  </div>
+
+<% end %>

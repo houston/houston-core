@@ -10,6 +10,11 @@ class ReleasesController < ApplicationController
   def index
     @title = "Releases • #{@project.name}"
     @title << " (#{@environment})" if @environment
+    @q = params[:q]
+    @q = nil if @q.blank?
+    @releases = @project.releases.preload(:deploy).search(@q) if @q
+
+    render partial: (@q ? "releases/results" : "releases/index") if request.xhr?
   end
 
   def new

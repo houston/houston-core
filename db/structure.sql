@@ -474,7 +474,8 @@ CREATE TABLE releases (
     environment_name character varying(255) DEFAULT 'Production'::character varying NOT NULL,
     release_changes text DEFAULT ''::text NOT NULL,
     commit_before_id integer,
-    commit_after_id integer
+    commit_after_id integer,
+    search_vector tsvector
 );
 
 
@@ -1679,6 +1680,13 @@ CREATE INDEX index_releases_on_project_id_and_environment_name ON releases USING
 
 
 --
+-- Name: index_releases_on_search_vector; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_releases_on_search_vector ON releases USING gin (search_vector);
+
+
+--
 -- Name: index_releases_tasks_on_release_id_and_task_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2314,4 +2322,8 @@ INSERT INTO schema_migrations (version) VALUES ('20151205214647');
 INSERT INTO schema_migrations (version) VALUES ('20151209004458');
 
 INSERT INTO schema_migrations (version) VALUES ('20151209030113');
+
+INSERT INTO schema_migrations (version) VALUES ('20151226154901');
+
+INSERT INTO schema_migrations (version) VALUES ('20151226155305');
 

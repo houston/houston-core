@@ -5,6 +5,7 @@ class Release < ActiveRecord::Base
   after_create :release_each_task!
   after_create :release_each_antecedent!
   after_create { Houston.observer.fire "release:create", self }
+  after_save :update_search_vector, :if => :search_vector_should_change?
 
   belongs_to :project
   belongs_to :user
@@ -78,6 +79,30 @@ class Release < ActiveRecord::Base
         AND releases.environment_name=most_recent_releases.environment_name
         AND releases.created_at=most_recent_releases.created_at
       SQL
+    end
+
+    def reindex!
+      update_all "search_vector = to_tsvector('english', release_changes)"
+    end
+
+    def search(query_string)
+      config = PgSearch::Configuration.new({against: "plain_text"}, self)
+      normalizer = PgSearch::Normalizer.new(config)
+      options = { dictionary: "english", tsvector_column: "search_vector" }
+      query = PgSearch::Features::TSearch.new(query_string, options, config.columns, self, normalizer)
+
+      excerpt = ts_headline(:release_changes, query,
+        start_sel: "<em>",
+        stop_sel: "</em>",
+
+        # Hack: show the entire value of `release_changes`
+        min_words: 65534,
+        max_words: 65535,
+        max_fragments: 0)
+
+      columns = (column_names - %w{release_changes search_vector}).map { |column| "releases.\"#{column}\"" }
+      columns.push excerpt.as("release_changes")
+      where(query.conditions).select(*columns)
     end
   end
 
@@ -183,6 +208,15 @@ class Release < ActiveRecord::Base
 
 
 
+  def update_search_vector
+    self.class.where(id: id).reindex!
+  end
+
+  def search_vector_should_change?
+    (changed & %w{release_changes}).any?
+  end
+
+
 private
 
   def identify_commit(sha)
@@ -212,6 +246,14 @@ private
     antecedents.each do |antecedent|
       antecedent.released!(self)
     end
+  end
+
+  # http://www.postgresql.org/docs/9.1/static/textsearch-controls.html#TEXTSEARCH-HEADLINE
+  def self.ts_headline(column, query, options={})
+    column = arel_table[column] if column.is_a?(Symbol)
+    options = options.map { |(key, value)| "#{key.to_s.camelize}=#{value}" }.join(", ")
+    tsquery = Arel.sql(query.send(:tsquery))
+    Arel::Nodes::NamedFunction.new("ts_headline", [column, Arel::Nodes.build_quoted(tsquery), Arel::Nodes.build_quoted(options)])
   end
 
 end
