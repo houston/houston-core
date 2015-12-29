@@ -186,8 +186,9 @@ module Houston
 
 
     def project_colors(*args)
-      @project_colors = args.first.each_with_object({}) { |(key, hex), hash| hash[key] = ColorValue.new(hex) } if args.any?
-      @project_colors ||= {}
+      new_hash = Hash.new(ColorValue.new("#505050"))
+      @project_colors = args.first.each_with_object(new_hash) { |(key, hex), hash| hash[key] = ColorValue.new(hex) } if args.any?
+      @project_colors ||= new_hash
     end
 
     def environments(*args)
@@ -600,6 +601,7 @@ module Houston
 
 
   class ColorValue
+    attr_reader :hex
 
     def initialize(hex)
       @hex = hex
