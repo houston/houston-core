@@ -31,6 +31,21 @@ module Houston
             Addressable::URI.parse(location).path[0...-4].gsub(/^\//, "")
           end
 
+          def create_commit_status(sha, status={})
+            status = OpenStruct.new(status) if status.is_a?(Hash)
+            unless %w{pending success failure error}.member?(status.state)
+              raise ArgumentError, ":state must be either 'pending', 'success', 'failure', or 'error'"
+            end
+
+            target_url = status.url if status.respond_to?(:url)
+            target_url = status.target_url if status.respond_to?(:target_url)
+
+            Houston.github.create_status(repo_name, sha, status.state, {
+              context: status.context,
+              target_url: target_url,
+              description: status.description })
+          end
+
 
 
           # GitHub API
