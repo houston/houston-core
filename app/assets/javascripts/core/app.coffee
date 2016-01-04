@@ -4,10 +4,15 @@ window.App =
     $("meta[name=\"#{name}\"]").attr('content')
 
   serverDateFormat: d3.time.format('%Y-%m-%d')
+  serverTimeFormat: d3.time.format.iso
 
   parseDate: (date)->
     return date unless _.isString(date)
     @serverDateFormat.parse date.slice(0, 10)
+
+  parseTime: (time)->
+    return time unless _.isString(time)
+    @serverTimeFormat.parse time
 
   checkRevision: (jqXHR)->
     @clientRevision ||= App.meta('revision')
