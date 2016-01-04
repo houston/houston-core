@@ -33,7 +33,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "devise", "~> 3.5.0"
   spec.add_dependency "devise_invitable", "~> 1.5.3"
   spec.add_dependency "houston-devise_ldap_authenticatable"
-  spec.add_dependency "faraday", "~> 0.8.10"
+  spec.add_dependency "faraday", "~> 0.9.2"
   spec.add_dependency "faraday-http-cache", "~> 1.2.2"
   spec.add_dependency "faraday-raise-errors", "~> 0.2.0"
   spec.add_dependency "gemoji", "~> 2.1.0"
