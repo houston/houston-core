@@ -19,7 +19,6 @@
 //= require mousetrap
 //= require nested_editor_for
 //= require showdown
-//= require md5
 //= require neat
 //= require alertify
 //= require dropzone

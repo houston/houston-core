@@ -12,6 +12,7 @@
 //
 //= require_tree ./core
 //= require_tree ./dashboard
+//= require md5
 //
 //  for Houston::Roadmap's dashboard
 //
