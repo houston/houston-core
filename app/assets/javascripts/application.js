@@ -11,6 +11,7 @@
 // about supported directives.
 //
 //= require_tree ./core
+//= require md5
 //= require_tree ../templates
 //= require_tree ./app
 
