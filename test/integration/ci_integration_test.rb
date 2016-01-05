@@ -4,6 +4,7 @@ require "support/houston/adapters/ci_server/mock_adapter"
 
 # Tests config/initializers/run_tests_on_post_receive.rb
 class CIIntegrationTest < ActionDispatch::IntegrationTest
+  attr_reader :project
 
 
   context "Houston" do
@@ -14,7 +15,7 @@ class CIIntegrationTest < ActionDispatch::IntegrationTest
       stub.instance_of(TestRun).validate! {}
 
       assert_difference "TestRun.count", +1 do
-        post "/projects/#{@project.slug}/hooks/post_receive"
+        post "/projects/#{project.slug}/hooks/post_receive"
         assert_response :success
       end
     end
@@ -23,7 +24,7 @@ class CIIntegrationTest < ActionDispatch::IntegrationTest
       @project = create(:project, ci_server_name: "None")
 
       assert_no_difference "TestRun.count" do
-        post "/projects/#{@project.slug}/hooks/post_receive"
+        post "/projects/#{project.slug}/hooks/post_receive"
         assert_response :success
       end
     end
@@ -31,7 +32,7 @@ class CIIntegrationTest < ActionDispatch::IntegrationTest
     should "alert maintainers when a build cannot be triggered" do
       skip "TMI: This is dependent on configured roles!"
       @project = create(:project, ci_server_name: "Mock")
-      @project.add_teammate users(:boblail)
+      project.add_teammate users(:boblail)
 
       any_instance_of(Houston::Adapters::CIServer::MockAdapter::Job) do |job|
         stub(job).build! { |commit| raise Houston::Adapters::CIServer::Error }
@@ -41,7 +42,7 @@ class CIIntegrationTest < ActionDispatch::IntegrationTest
       stub.instance_of(TestRun).validate! {}
 
       assert_no_difference "TestRun.count" do
-        post "/projects/#{@project.slug}/hooks/post_receive"
+        post "/projects/#{project.slug}/hooks/post_receive"
         assert_response :success
 
         configuration_error = ActionMailer::Base.deliveries.last
@@ -56,13 +57,13 @@ class CIIntegrationTest < ActionDispatch::IntegrationTest
       commit = "whatever"
       results_url = "http://example.com/results"
       @project = create(:project, ci_server_name: "Mock")
-      @test_run = TestRun.create!(project: @project, sha: commit)
+      @test_run = TestRun.create!(project: project, sha: commit)
 
       any_instance_of(Houston::Adapters::CIServer::MockAdapter::Job) do |job|
         mock(job).fetch_results!(results_url).returns({})
       end
 
-      post "/projects/#{@project.slug}/hooks/post_build", {commit: commit, results_url: results_url}
+      put "/projects/#{project.slug}/test_runs/#{commit}/results", {results_url: results_url}
       assert_response :success
     end
 
@@ -70,14 +71,14 @@ class CIIntegrationTest < ActionDispatch::IntegrationTest
       commit = "whatever"
       results_url = "http://example.com/results"
       @project = create(:project, ci_server_name: "Mock")
-      @project.add_teammate users(:boblail)
-      @test_run = TestRun.create!(project: @project, sha: commit)
+      project.add_teammate users(:boblail)
+      @test_run = TestRun.create!(project: project, sha: commit)
 
       any_instance_of(Houston::Adapters::CIServer::MockAdapter::Job) do |job|
         mock(job).fetch_results!(results_url) { raise Houston::Adapters::CIServer::Error }
       end
 
-      post "/projects/#{@project.slug}/hooks/post_build", {commit: commit, results_url: results_url}
+      put "/projects/#{project.slug}/test_runs/#{commit}/results", {results_url: results_url}
 
       assert_equal "error", @test_run.reload.result
     end
@@ -86,7 +87,7 @@ class CIIntegrationTest < ActionDispatch::IntegrationTest
 
     should "fire test_run:complete when the results of the test run are saved" do
       @project = create(:project, ci_server_name: "Mock")
-      test_run = TestRun.new(project: @project, sha: "whatever")
+      test_run = TestRun.new(project: project, sha: "whatever")
 
       any_instance_of(Houston::Adapters::CIServer::MockAdapter::Job) do |job|
         stub(job).fetch_results! { |results_url| {result: "pass"} }
@@ -119,7 +120,7 @@ class CIIntegrationTest < ActionDispatch::IntegrationTest
           slug: "fixture",
           version_control_name: "Git",
           extended_attributes: { "git_location" => "git@github.com:houston/fixture.git" })
-        test_run = TestRun.new(project: @project, sha: "bd3e9e2")
+        test_run = TestRun.new(project: project, sha: "bd3e9e2")
 
         expected_url = "https://api.github.com/repos/houston/fixture/statuses/bd3e9e2e4ddf89a640a4f880cbf55bb46cc7e88a?access_token=#{Houston.config.github[:access_token]}"
         mock(Faraday).post(expected_url, /"state":"pending"/) do
@@ -140,7 +141,7 @@ class CIIntegrationTest < ActionDispatch::IntegrationTest
           slug: "fixture",
           version_control_name: "Git",
           extended_attributes: { "git_location" => "git@github.com:houston/fixture.git" })
-        test_run = TestRun.new(project: @project, sha: "bd3e9e2", result: :pass, completed_at: Time.now)
+        test_run = TestRun.new(project: project, sha: "bd3e9e2", result: :pass, completed_at: Time.now)
 
         expected_url = "https://api.github.com/repos/houston/fixture/statuses/bd3e9e2e4ddf89a640a4f880cbf55bb46cc7e88a?access_token=#{Houston.config.github[:access_token]}"
         mock(Faraday).post(expected_url, /"state":"success"/) do
@@ -154,7 +155,7 @@ class CIIntegrationTest < ActionDispatch::IntegrationTest
 
     should "publish test results to CodeClimate" do
       @project = create(:project, code_climate_repo_token: "repo_token")
-      test_run = TestRun.new(project: @project, sha: "bd3e9e2", result: "pass", completed_at: Time.now, coverage: [
+      test_run = TestRun.new(project: project, sha: "bd3e9e2", result: "pass", completed_at: Time.now, coverage: [
         { filename: "lib/test1.rb", coverage: [1,nil,nil,1,1,nil,1] },
         { filename: "lib/test2.rb", coverage: [1,nil,1,0,0,0,0,1,nil,1] }
       ])
