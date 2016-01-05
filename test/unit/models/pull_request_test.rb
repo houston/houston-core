@@ -63,9 +63,11 @@ class PullRequestTest < ActiveSupport::TestCase
       end
     end
 
+
+
     context "If there is already a local copy of that pull request," do
       setup do
-        Github::PullRequest.create! { |pull|
+        @pull_request = Github::PullRequest.create! { |pull|
           pull.merge_attributes @pull_request_payload }
       end
 
@@ -78,6 +80,42 @@ class PullRequestTest < ActiveSupport::TestCase
         should "be invalid" do
           refute pull_request.valid?, "Expected the second pull request to be invalid"
           assert_match /has already been taken/, pull_request.errors.full_messages.join(", ")
+        end
+      end
+
+
+
+      context "when the pull request is synchronized," do
+        context "and base_sha changes, it" do
+          setup do
+            pull_request.merge_attributes(
+              "user" => {},
+              "title" => "Divergent Branch",
+              "body" => "This is the description of the pull request",
+              "base" => { "sha" => "a5c551d52bb0bb8a702f70879ac9caeb12a721fc" },
+              "head" => { "sha" => "baa3ef218a40f23fe542f98d8b8e60a2e8e0bff0" })
+          end
+
+          should "associate itself with all the commits again" do
+            mock(pull_request).associate_commits_with_self.once
+            pull_request.save!
+          end
+        end
+
+        context "and head_sha changes, it" do
+          setup do
+            pull_request.merge_attributes(
+              "user" => {},
+              "title" => "Divergent Branch",
+              "body" => "This is the description of the pull request",
+              "base" => { "sha" => "e0e4580f44317a084dd5142fef6b4144a4394819" },
+              "head" => { "sha" => "a5c551d52bb0bb8a702f70879ac9caeb12a721fc" })
+          end
+
+          should "associate itself with all the commits again" do
+            mock(pull_request).associate_commits_with_self.once
+            pull_request.save!
+          end
         end
       end
     end

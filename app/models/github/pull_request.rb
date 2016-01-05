@@ -11,7 +11,7 @@ module Github
 
     before_validation :associate_project_with_self, if: :repo_changed?
     before_save :associate_user_with_self, if: :username_changed?
-    after_commit :associate_commits_with_self, autosave: false
+    after_commit :associate_commits_with_self
 
     after_destroy { Houston.observer.fire "github:pull:closed", self }
     after_create { Houston.observer.fire "github:pull:opened", self }
@@ -184,14 +184,14 @@ module Github
       self.username = pr["user"]["login"] unless username
       self.avatar_url = pr["user"]["avatar_url"] unless avatar_url
       self.url = pr["html_url"] unless url
-      self.base_sha = pr["base"]["sha"] unless base_sha
       self.base_ref = pr["base"]["ref"] unless base_ref
+      self.head_ref = pr["head"]["ref"] unless head_ref
+      self.created_at = pr["created_at"] unless created_at
 
-      self.created_at = pr["created_at"]
       self.title = pr["title"]
       self.body = pr["body"]
+      self.base_sha = pr["base"]["sha"]
       self.head_sha = pr["head"]["sha"]
-      self.head_ref = pr["head"]["ref"]
       self.labels = pr["labels"] if pr.key?("labels")
 
       self
