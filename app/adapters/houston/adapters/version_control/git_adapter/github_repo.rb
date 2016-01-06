@@ -12,6 +12,10 @@ module Houston
               .gsub(/\.git$/, "")
           end
 
+          def pulls_url
+            "#{project_url}/pulls"
+          end
+
           def commit_url(sha)
             "#{project_url}/commit/#{sha}"
           end

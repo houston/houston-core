@@ -37,7 +37,9 @@
               <%= image_tag pull.avatar_url, size: "32", alt: pull.username, class: "avatar avatar-not-our-user" %>
             <% end %>
           </td>
-          <td class="pull-request-project"><%= pull.project.slug %></td>
+          <td class="pull-request-project">
+            <%= link_to pull.project.slug, pull.project.repo.pulls_url, target: "_blank" %>
+          </td>
           <td class="pull-request-title">
             <%= link_to emojify(pull.title), pull.url, target: "_blank" %>
           </td>
