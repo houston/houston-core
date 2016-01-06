@@ -208,9 +208,17 @@ module Github
     end
 
     def associate_commits_with_self
+      return unless commits_changes_before_commit?
+
       Houston.try({max_tries: 2, base: 0}, ActiveRecord::RecordNotUnique) do
         self.commits = project.commits.between(base_sha, head_sha)
       end
+
+      Houston.observer.fire "github:pull:synchronize", self
+    end
+
+    def commits_changes_before_commit?
+      previous_changes.key?(:base_sha) || previous_changes.key?(:head_sha)
     end
 
   end

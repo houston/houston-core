@@ -97,8 +97,16 @@ class PullRequestTest < ActiveSupport::TestCase
           end
 
           should "associate itself with all the commits again" do
-            mock(pull_request).associate_commits_with_self.once
+            mock(pull_request.project.commits).between(
+              "a5c551d52bb0bb8a702f70879ac9caeb12a721fc",
+              "baa3ef218a40f23fe542f98d8b8e60a2e8e0bff0").once.returns([])
             pull_request.save!
+          end
+
+          should "fire 'github:pull:synchronize'" do
+            assert_triggered "github:pull:synchronize" do
+              pull_request.save!
+            end
           end
         end
 
@@ -113,7 +121,31 @@ class PullRequestTest < ActiveSupport::TestCase
           end
 
           should "associate itself with all the commits again" do
-            mock(pull_request).associate_commits_with_self.once
+            mock(pull_request.project.commits).between(
+              "e0e4580f44317a084dd5142fef6b4144a4394819",
+              "a5c551d52bb0bb8a702f70879ac9caeb12a721fc").once.returns([])
+            pull_request.save!
+          end
+
+          should "fire 'github:pull:synchronize'" do
+            assert_triggered "github:pull:synchronize" do
+              pull_request.save!
+            end
+          end
+        end
+
+        context "and neither base_sha nor head_sha changes, it" do
+          setup do
+            pull_request.merge_attributes(
+              "user" => {},
+              "title" => "Divergent Branch",
+              "body" => "This is the description of the pull request",
+              "base" => { "sha" => "e0e4580f44317a084dd5142fef6b4144a4394819" },
+              "head" => { "sha" => "baa3ef218a40f23fe542f98d8b8e60a2e8e0bff0" })
+          end
+
+          should "not associate itself with all the commits again" do
+            mock(pull_request.project.commits).between.never
             pull_request.save!
           end
         end
