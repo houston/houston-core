@@ -36,6 +36,10 @@ class TestRun < ActiveRecord::Base
       where arel_table[:id].not_in(ids)
     end
 
+    def pending
+      where completed_at: nil
+    end
+
     def completed
       where arel_table[:completed_at].not_eq(nil)
     end

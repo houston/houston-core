@@ -8,6 +8,8 @@ module Github
     belongs_to :project
     belongs_to :user
     has_and_belongs_to_many :commits
+    belongs_to :base, class_name: "Commit", foreign_key: "base_sha", primary_key: "sha"
+    belongs_to :head, class_name: "Commit", foreign_key: "head_sha", primary_key: "sha"
 
     before_validation :associate_project_with_self, if: :repo_changed?
     before_save :associate_user_with_self, if: :username_changed?
@@ -152,6 +154,14 @@ module Github
       self.json_labels = value.map { |label| label.to_h.stringify_keys.pick("name", "color") }
     end
 
+    def labeled?(*values)
+      values.all? { |value| labels.any? { |label| label["name"] == value } }
+    end
+
+    def labeled_any?(*values)
+      values.any? { |value| labels.any? { |label| label["name"] == value } }
+    end
+
     def labels
       json_labels
     end
@@ -174,6 +184,18 @@ module Github
         new_labels = pr.json_labels.reject { |l| l["name"] == label["name"] }
         pr.update_attributes! json_labels: new_labels, actor: options[:as]
       end
+    end
+
+
+
+    def to_s
+      "#{repo}##{number}"
+    end
+
+
+
+    def publish_commit_status!(status={})
+      project.repo.create_commit_status(head_sha, status)
     end
 
 
