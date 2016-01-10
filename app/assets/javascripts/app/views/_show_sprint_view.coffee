@@ -3,6 +3,7 @@ class @ShowSprintView extends Backbone.View
   initialize: ->
     @sprintId = @options.sprintId
     @sprintStart = @options.sprintStart
+    @height = @options.height ? 260
     @template = HandlebarsTemplates['sprints/show']
     @tasks = _.sortBy @options.sprintTasks, (task)-> task.projectTitle
     super
@@ -75,6 +76,7 @@ class @ShowSprintView extends Backbone.View
     toComplete = completed.last().effort
 
     new Houston.BurndownChart()
+      .height(@height)
       .days(days)
       .totalEffort(totalEffort)
       .addLine('committed', committed)
