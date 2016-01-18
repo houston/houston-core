@@ -4,29 +4,49 @@ class ProjectTestsController < ApplicationController
     @project = Project.find_by_slug! params[:slug]
 
     head = params.fetch :at, @project.head_sha
-    commits = params.fetch(:limit, 500).to_i
+    commits = params.fetch(:limit, 250).to_i
 
     @commits = Houston.benchmark("[project_tests#index] fetch commits") {
       @project.repo.ancestors(head, including_self: true, limit: commits) }
-    @runs = @project.test_runs.where(sha: @commits.map(&:sha))
+    shas = @commits.map(&:sha)
+    test_run_id_by_sha = Hash[@project.test_runs.where(sha: shas).pluck(:sha, :id)]
+    test_run_ids = test_run_id_by_sha.values
 
-    @tests = @project.tests.order(:suite, :name)
-      .joins(<<-SQL)
-        LEFT JOIN LATERAL (
-          SELECT COUNT(*) FROM test_results
-          WHERE test_results.test_run_id IN (#{@runs.pluck(:id).join(",")})
-          AND test_results.status='pass'
-          AND test_results.test_id=tests.id
-        ) "passes" ON TRUE
-        LEFT JOIN LATERAL (
-          SELECT COUNT(*) FROM test_results
-          WHERE test_results.test_run_id IN (#{@runs.pluck(:id).join(",")})
-          AND test_results.status='fail'
-          AND test_results.test_id=tests.id
-        ) "fails" ON TRUE
-      SQL
-      .where("passes.count + fails.count > 0")
-      .pluck("tests.id", "tests.suite", "tests.name", "passes.count", "fails.count")
+    # We're looking at the history of the tests that exist in the
+    # most recent commit; ignore tests that didn't exist before this
+    test_ids = Houston.benchmark("[project_tests#index] pick tests") do
+      latest_test_run_id = @project.test_runs.where(sha: shas)
+        .joins("LEFT OUTER JOIN test_results ON test_runs.id=test_results.test_run_id")
+        .where.not("test_results.test_run_id" => nil)
+        .limit(1)
+        .pluck(:id)
+        .first
+      TestResult.where(test_run_id: latest_test_run_id).pluck("DISTINCT test_id")
+    end
+
+    # Get all the results that we're going to graph
+    test_results = Houston.benchmark("[project_tests#index] load results") do
+      TestResult.where(test_run_id: test_run_ids, test_id: test_ids).pluck(:test_run_id, :test_id, :status)
+    end
+
+    # Now we need to map results to tests
+    # and make sure that they're in the same order
+    # that the last 200 commits occurred in.
+    @tests = Houston.benchmark("[project_tests#index] map results") do
+      map = Hash.new { |hash, test_id| hash[test_id] = {} }
+      test_results.each { |(test_run_id, test_id, status)| map[test_id][test_run_id] = status }
+
+      @project.tests
+        .where(id: test_ids)
+        .order(:suite, :name)
+        .pluck(:id, :suite, :name).map do |(id, suite, name)|
+          status_by_test_run_id = map[id]
+          { id: id,
+            suite: suite,
+            name: name,
+            results: shas.map { |sha| status_by_test_run_id[test_run_id_by_sha[sha]] } }
+        end
+    end
   end
 
   def show

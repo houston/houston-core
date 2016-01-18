@@ -49,4 +49,28 @@ module TestRunHelper
     end
   end
 
+  def test_results_pass_count(test)
+    test[:results].count { |result| result == "pass" }
+  end
+
+  def test_results_fail_count(test)
+    test[:results].count { |result| result == "fail" }
+  end
+
+  def test_results_count(test)
+    test[:results].count { |result| !result.nil? }
+  end
+
+  def test_results_graph(test)
+    html = "<svg class=\"dot-graph\">"
+    percent = 100 / test[:results].length.to_f
+    left = 0
+    test[:results].reverse_each do |result|
+      html << "<rect x=\"#{left}%\" y=\"0\" rx=\"2\" ry=\"2\" width=\"#{percent}%\" height=\"100%\" class=\"dot-graph-rect #{result}\" data-index=\"0\"></rect>" if result
+      left += percent
+    end
+    html << "</svg>"
+    html.html_safe
+  end
+
 end
