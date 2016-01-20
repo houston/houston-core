@@ -59,6 +59,14 @@ class Deploy < ActiveRecord::Base
     completed_at.present?
   end
 
+  def succeeded?
+    successful?
+  end
+
+  def failed?
+    !successful?
+  end
+
   def environment
     environment_name
   end
