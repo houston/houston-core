@@ -24,6 +24,7 @@ class DeploysController < ApplicationController
       branch: branch,
       deployer: deployer,
       duration: milliseconds,
+      successful: params.fetch(:successful, true),
       completed_at: Time.now)
 
     head 200

@@ -96,6 +96,11 @@ private
   def notify_if_completed
     if just_completed?
       update_column :duration, completed_at - created_at if duration.nil?
+      if successful?
+        Houston.observer.fire "deploy:succeeded", self
+      else
+        Houston.observer.fire "deploy:failed", self
+      end
       Houston.observer.fire "deploy:completed", self
     end
   end
