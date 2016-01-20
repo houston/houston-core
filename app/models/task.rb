@@ -66,8 +66,9 @@ class Task < ActiveRecord::Base
       joins(:sprint).where("sprints.end_date >= current_date")
     end
 
-    def checked_out_by(user)
-      where(checked_out_by_id: user.id)
+    def checked_out_by(user, during: nil)
+      raise ArgumentError, "Please specify :during which Sprint" unless during
+      all.merge(SprintTask.where(sprint_id: during.id))
     end
 
     def find_by_project_and_shorthand(project_slug, shorthand)

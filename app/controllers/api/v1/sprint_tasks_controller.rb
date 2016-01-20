@@ -21,7 +21,7 @@ module Api
       def mine
         render json: sprint.tasks
           .includes(:ticket => :project)
-          .checked_out_by(current_user)
+          .checked_out_by(current_user, during: sprint)
           .map { |task| present_task(task) }
       end
 
