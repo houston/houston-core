@@ -125,7 +125,7 @@ GEM
       addressable
     default_value_for (3.0.1)
       activerecord (>= 3.2.0, < 5.0)
-    devise (3.5.3)
+    devise (3.5.4)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 3.2.6, < 5)
@@ -221,7 +221,7 @@ GEM
     net-ldap (0.12.1)
     net-ssh (2.9.2)
     netrc (0.11.0)
-    nokogiri (1.6.7.1)
+    nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
     oauth (0.4.7)
     oauth2 (1.0.0)
