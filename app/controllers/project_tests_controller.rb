@@ -38,12 +38,17 @@ class ProjectTestsController < ApplicationController
 
       @project.tests
         .where(id: test_ids)
+        .joins(:test_results)
+        .group("tests.id", :suite, :name)
         .order(:suite, :name)
-        .pluck(:id, :suite, :name).map do |(id, suite, name)|
+        .pluck("tests.id", :suite, :name, "AVG(test_results.duration)", "STDDEV(test_results.duration)")
+        .map do |(id, suite, name, avg, stddev)|
           status_by_test_run_id = map[id]
           { id: id,
             suite: suite,
             name: name,
+            duration_avg: avg,
+            duration_stddev: stddev,
             results: shas.map { |sha| status_by_test_run_id[test_run_id_by_sha[sha]] } }
         end
     end

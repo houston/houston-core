@@ -11,6 +11,7 @@
         <th class="test-passes">Passes</th>
         <th class="test-fails">Fails</th>
         <th class="test-graph">Graph</th>
+        <th class="test-duration">Duration</th>
         <td class="table-margin"></td>
       </tr>
     </thead>
@@ -27,6 +28,7 @@
           <td class="test-passes"><%= test_results_pass_count(test)%></td>
           <td class="test-fails"><%= test_results_fail_count(test)%></td>
           <td class="test-graph" data-position="<%= test_results_count(test) %>"><%= test_results_graph(test) %></td>
+          <td class="test-duration"><%= test_results_duration(test)%></td>
           <td class="table-margin"></td>
         </tr>
       <% end %>
@@ -39,7 +41,8 @@
     $(function() {
       $('#project_tests').tablesorter({
         headers: {
-          4: {sorter: 'property'}
+          4: {sorter: 'property'},
+          5: {sorter: 'digit'}
         }
       });
     });

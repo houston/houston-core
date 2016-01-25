@@ -83,16 +83,22 @@
   }
 }
 
+$dot-graph-width: 144px;
+
 .dot-graph {
-  width: 160px;
+  width: $dot-graph-width;
   height: 14px;
   vertical-align: top;
 }
 
 .test-graph {
-  width: 160px;
-  min-width: 160px;
-  max-width: 160px;
+  width: $dot-graph-width;
+  min-width: $dot-graph-width;
+  max-width: $dot-graph-width;
+}
+
+.test-duration {
+  white-space: nowrap;
 }
 
 .dot-graph-rect {
