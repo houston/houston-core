@@ -2,6 +2,7 @@ class ProjectTestsController < ApplicationController
 
   def index
     @project = Project.find_by_slug! params[:slug]
+    @title = "#{@project.name} Tests"
 
     head = params.fetch :at, @project.head_sha
     commits = params.fetch(:limit, 250).to_i
