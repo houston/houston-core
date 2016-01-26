@@ -38,7 +38,7 @@ class ProjectTestsController < ApplicationController
       durations = Hash.new { |hash, test_id| hash[test_id] = [] }
       test_results.each do |(test_run_id, test_id, status, duration)|
         map[test_id][test_run_id] = status
-        durations[test_id] << duration
+        durations[test_id] << duration if duration
       end
 
       @project.tests
