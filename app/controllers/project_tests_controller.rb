@@ -5,7 +5,7 @@ class ProjectTestsController < ApplicationController
     @title = "#{@project.name} Tests"
 
     head = params.fetch :at, @project.head_sha
-    commits = params.fetch(:limit, 250).to_i
+    commits = params.fetch(:limit, 128).to_i
 
     @commits = Houston.benchmark("[project_tests#index] fetch commits") {
       @project.repo.ancestors(head, including_self: true, limit: commits) }
