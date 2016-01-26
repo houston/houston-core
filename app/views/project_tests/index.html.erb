@@ -28,7 +28,12 @@
           <td class="test-passes"><%= test_results_pass_count(test)%></td>
           <td class="test-fails"><%= test_results_fail_count(test)%></td>
           <td class="test-graph" data-position="<%= test_results_count(test) %>"><%= test_results_graph(test) %></td>
-          <td class="test-duration"><%= test_results_duration(test)%></td>
+          <td class="test-duration">
+            <span class="test-duration-average"><%= test[:duration_avg].to_i %>ms</span>
+            <span class="test-duration-range">
+              <%= test[:duration5].to_i %>ms &ndash; <%= test[:duration95].to_i %>ms
+            </span>
+          </td>
           <td class="table-margin"></td>
         </tr>
       <% end %>

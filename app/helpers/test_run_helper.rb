@@ -61,10 +61,6 @@ module TestRunHelper
     test[:results].count { |result| !result.nil? }
   end
 
-  def test_results_duration(test)
-    "#{test[:duration_avg].to_i}ms (±#{test[:duration_stddev].to_i})"
-  end
-
   def test_results_graph(test)
     html = "<svg class=\"dot-graph\">"
     percent = 100 / test[:results].length.to_f

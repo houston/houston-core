@@ -26,7 +26,7 @@ class ProjectTestsController < ApplicationController
 
     # Get all the results that we're going to graph
     test_results = Houston.benchmark("[project_tests#index] load results") do
-      TestResult.where(test_run_id: test_run_ids, test_id: test_ids).pluck(:test_run_id, :test_id, :status)
+      TestResult.where(test_run_id: test_run_ids, test_id: test_ids).pluck(:test_run_id, :test_id, :status, :duration)
     end
 
     # Now we need to map results to tests
@@ -34,21 +34,25 @@ class ProjectTestsController < ApplicationController
     # that the last 200 commits occurred in.
     @tests = Houston.benchmark("[project_tests#index] map results") do
       map = Hash.new { |hash, test_id| hash[test_id] = {} }
-      test_results.each { |(test_run_id, test_id, status)| map[test_id][test_run_id] = status }
+      durations = Hash.new { |hash, test_id| hash[test_id] = [] }
+      test_results.each do |(test_run_id, test_id, status, duration)|
+        map[test_id][test_run_id] = status
+        durations[test_id] << duration
+      end
 
       @project.tests
         .where(id: test_ids)
-        .joins(:test_results)
-        .group("tests.id", :suite, :name)
         .order(:suite, :name)
-        .pluck("tests.id", :suite, :name, "AVG(test_results.duration)", "STDDEV(test_results.duration)")
-        .map do |(id, suite, name, avg, stddev)|
+        .pluck("tests.id", :suite, :name)
+        .map do |(id, suite, name)|
           status_by_test_run_id = map[id]
+          d = durations[id]
           { id: id,
             suite: suite,
             name: name,
-            duration_avg: avg,
-            duration_stddev: stddev,
+            duration_avg: d.mean,
+            duration5: d.percentile(5),
+            duration95: d.percentile(95),
             results: shas.map { |sha| status_by_test_run_id[test_run_id_by_sha[sha]] } }
         end
     end

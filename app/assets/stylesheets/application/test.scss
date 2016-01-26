@@ -97,8 +97,18 @@ $dot-graph-width: 144px;
   max-width: $dot-graph-width;
 }
 
-.test-duration {
-  white-space: nowrap;
+td.test-duration {
+  text-align: right;
+  line-height: normal;
+  padding-bottom: 2px;
+
+  .test-duration-average { display: block; }
+  .test-duration-range {
+    display: block;
+    font-size: 0.75em;
+    white-space: nowrap;
+    color: #aaa;
+  }
 }
 
 .dot-graph-rect {
