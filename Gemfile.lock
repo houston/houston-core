@@ -5,7 +5,6 @@ PATH
       activerecord-import
       activerecord-pluck_in_batches
       addressable
-      array_stats
       boblail-unfuddle
       browser
       bundler
@@ -95,7 +94,6 @@ GEM
     addressable (2.3.8)
     ansi (1.5.0)
     arel (6.0.3)
-    array_stats (0.6.0)
     bcrypt (3.1.10)
     boblail-unfuddle (0.7.1)
       activesupport
