@@ -190,6 +190,8 @@ Rails.application.routes.draw do
 
   namespace "api" do
     namespace "v1" do
+      get "projects", to: "projects#index"
+
       scope "projects/:slug" do
         scope "tickets/by_number/:number" do
           get "tasks", to: "ticket_tasks#index"
