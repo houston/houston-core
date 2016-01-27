@@ -186,7 +186,7 @@ module Houston
 
 
     def project_colors(*args)
-      new_hash = Hash.new(ColorValue.new("#505050"))
+      new_hash = Hash.new(ColorValue.new("505050"))
       @project_colors = args.first.each_with_object(new_hash) { |(key, hex), hash| hash[key] = ColorValue.new(hex) } if args.any?
       @project_colors ||= new_hash
     end
