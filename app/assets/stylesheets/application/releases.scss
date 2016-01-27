@@ -1,12 +1,14 @@
+@import "variables.scss";
+
 .no-items { font-style: italic; }
 
 .commit-range {
-  font-family: consolas, fixed;
+  @include code;
   .ellipsis { letter-spacing: -2px; margin: 0 1px 0 -1px; }
 }
 
 .commit-sha {
-  font-family: consolas, fixed;
+  @include code;
   font-size: 0.88em;
 }
 
