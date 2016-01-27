@@ -114,5 +114,5 @@ td.test-duration {
 .dot-graph-rect {
   &.pass  { fill: #5DB64C; } // grass
   &.fail  { fill: #E24E32; } // tomato
-  &.skip  { color: #239ce7; } // sky
+  &.skip  { fill: #239ce7; } // sky
 }
