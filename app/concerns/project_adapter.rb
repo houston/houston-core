@@ -18,6 +18,7 @@ module ProjectAdapter
       adapter.define_methods!
 
       validate adapter.validation_method
+      before_update adapter.before_update_method
     end
   end
 
@@ -39,6 +40,10 @@ module ProjectAdapter
 
     def validation_method
       :"#{attribute_name}_configuration_is_valid"
+    end
+
+    def before_update_method
+      :"#{attribute_name}_before_update"
     end
 
     def adapter_method
@@ -63,6 +68,11 @@ module ProjectAdapter
           #{adapter_method}.errors_with_parameters(self, *#{params_method}.values).each do |attribute, messages|
             errors.add(attribute, messages) if messages.any?
           end
+        end
+
+        def #{before_update_method}
+          return true unless #{attribute_name}.respond_to?(:before_update)
+          #{attribute_name}.before_update(self)
         end
 
         def #{attribute_name}

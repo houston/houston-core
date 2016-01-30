@@ -27,6 +27,11 @@ module Houston
 
 
 
+          def before_update(project)
+            return true unless project.slug_changed?
+            rename *project.changes[:slug]
+          end
+
           def git_path
             @git_path
           end
@@ -130,6 +135,28 @@ module Houston
             raise
           ensure
             close
+          end
+
+          def rename(from, to)
+            old_git_path = Houston.root.join("tmp", "#{from}.git").to_s
+            new_git_path = Houston.root.join("tmp", "#{to}.git").to_s
+
+            unless File.exists?(old_git_path)
+              Rails.logger.info "\e[34m[remote_repo.rename] #{old_git_path} does not exist\e[0m"
+              @git_path = new_git_path
+              remove_instance_variable :@connection if defined?(@connection)
+              return true
+            end
+
+            if system "mv #{old_git_path} #{new_git_path}"
+              Rails.logger.info "\e[32m[remote_repo.rename] Renamed #{old_git_path} to #{File.basename(new_git_path)}\e[0m"
+              @git_path = new_git_path
+              remove_instance_variable :@connection if defined?(@connection)
+              return true
+            end
+
+            Rails.logger.warn "\e[31m[remote_repo.rename] Failed to rename #{old_git_path} to #{File.basename(new_git_path)}\e[0m"
+            false
           end
 
         end
