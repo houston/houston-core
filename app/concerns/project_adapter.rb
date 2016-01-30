@@ -41,6 +41,14 @@ module ProjectAdapter
       :"#{attribute_name}_configuration_is_valid"
     end
 
+    def adapter_method
+      :"#{attribute_name}_adapter"
+    end
+
+    def params_method
+      :"parameters_for_#{attribute_name}_adapter"
+    end
+
     def define_methods!
       model.module_eval <<-RUBY
         def self.with_#{attribute_name}
@@ -52,24 +60,24 @@ module ProjectAdapter
         end
 
         def #{validation_method}
-          #{attribute_name}_adapter.errors_with_parameters(self, *parameters_for_#{attribute_name}_adapter.values).each do |attribute, messages|
+          #{adapter_method}.errors_with_parameters(self, *#{params_method}.values).each do |attribute, messages|
             errors.add(attribute, messages) if messages.any?
           end
         end
 
         def #{attribute_name}
-          @#{attribute_name} ||= #{attribute_name}_adapter
-              .build(self, *parameters_for_#{attribute_name}_adapter.values)
+          @#{attribute_name} ||= #{adapter_method}
+              .build(self, *#{params_method}.values)
               .extend(FeatureSupport)
         end
 
-        def parameters_for_#{attribute_name}_adapter
-          #{attribute_name}_adapter.parameters.each_with_object({}) do |parameter, hash|
+        def #{params_method}
+          #{adapter_method}.parameters.each_with_object({}) do |parameter, hash|
             hash[parameter] = extended_attributes[parameter.to_s]
           end
         end
 
-        def #{attribute_name}_adapter
+        def #{adapter_method}
           #{namespace}.adapter(#{attribute_name}_name)
         end
       RUBY
