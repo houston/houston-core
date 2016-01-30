@@ -4,6 +4,12 @@ Houston.config.add_navigation_renderer :sprint do
   end
 end
 
+Houston.config.add_navigation_renderer :pulls do
+  if can?(:read, Github::PullRequest)
+    render_nav_link "Pulls", main_app.pulls_path
+  end
+end
+
 
 
 Houston.config.add_project_feature :ideas do
