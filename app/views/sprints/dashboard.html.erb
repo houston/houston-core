@@ -10,9 +10,11 @@
       sprintStart: new Date(<%= @sprint.start_date.year %>, <%= @sprint.start_date.month - 1 %>, <%= @sprint.start_date.day %>),
       sprintTasks: <%= raw SprintTaskPresenter.new(@sprint).to_json %>
     });
-    
+
     view.render();
-    
+
+    $('body').toggleClass('green', view.totalEffort > 0 && (view.toCommit == 0 || view.toComplete == 0));
+
     new Refresher()
       .container('#container')
       .interval(10 * 60 * 1000) // 10 minutes

@@ -33,7 +33,7 @@ class @ShowSprintView extends Backbone.View
     # Find the total amount of effort to accomplish
     committedByDay = {}
     completedByDay = {}
-    totalEffort = 0
+    @totalEffort = 0
     for task in tasks
       effort = +task.effort
       if task.completed
@@ -48,7 +48,7 @@ class @ShowSprintView extends Backbone.View
         effort = 0 if day < monday # this task was released before this sprint started!
 
         committedByDay[day] = (committedByDay[day] || 0) + effort
-      totalEffort += effort
+      @totalEffort += effort
 
     # for debugging
     window.completedByDay = completedByDay
@@ -56,8 +56,8 @@ class @ShowSprintView extends Backbone.View
     # Transform into remaining effort by day:
     # Iterate by day in case there are some days
     # where no progress was made
-    toChartData = (progressByDay)->
-      remainingEffort = totalEffort
+    toChartData = (progressByDay)=>
+      remainingEffort = @totalEffort
       data = [
         day: saturday
         effort: Math.ceil(remainingEffort)
@@ -72,15 +72,13 @@ class @ShowSprintView extends Backbone.View
 
     committed = toChartData(committedByDay)
     completed = toChartData(completedByDay)
-    toCommit = committed.last().effort
-    toComplete = completed.last().effort
+    @toCommit = committed.last().effort
+    @toComplete = completed.last().effort
 
     new Houston.BurndownChart()
       .height(@height)
       .days(days)
-      .totalEffort(totalEffort)
+      .totalEffort(@totalEffort)
       .addLine('committed', committed)
       .addLine('completed', completed)
       .render()
-
-    $('body').toggleClass('green', totalEffort > 0 and (toCommit == 0 or toComplete == 0))
