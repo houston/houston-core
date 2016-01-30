@@ -50,19 +50,46 @@ $default: rgb(80,80,80);
   <% end %>
 }
 
-#email_body h1.project-banner,
-.current-project,
-.project-navbar {
+#email_body h1.project-banner {
   <% project_colors.each do |name| %>
     &.<%= name %> { background-color: $<%= name %>; }
   <% end %>
 }
 
+.project-navbar {
+  <% project_colors.each do |name| %>
+    &.<%= name %> {
+      background-color: lighten($<%= name %>, 20%);
+
+      .nav > li.current-project > a {
+        background-color: $<%= name %>;
+        &:focus { background-color: $<%= name %>; }
+        &::before { border-left-color: $<%= name %>; }
+
+        &:hover {
+          background: saturate(darken($<%= name %>, 10%), 6%);
+          &::before { border-left-color: saturate(darken($<%= name %>, 10%), 6%); }
+        }
+      }
+
+      .divider-vertical {
+        border-left-color: lighten($<%= name %>, 15%);
+        border-right-color: lighten($<%= name %>, 28%);
+      }
+    }
+  <% end %>
+}
+
+
 <% project_colors.each do |name| %>
   .project-navbar.<%= name %> .nav > li.current,
+  .project-navbar.<%= name %> .nav > li > a:hover,
   .project-banner.<%= name %> {
     background-color: lighten($<%= name %>, 32%);
     background-color: hsl(hue($<%= name %>), saturation($<%= name %>), 93);
+  }
+  .slideout-menu .project-navbar.<%= name %> {
+    background-color: $<%= name %>;
   }
   .navbar-inverse .nav li.current-project.dropdown.open > .dropdown-toggle,
   .navbar-inverse .nav li.current-project.dropdown.active > .dropdown-toggle,

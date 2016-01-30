@@ -1,23 +1,20 @@
 <div class="navbar navbar-fixed-top navbar-inverse">
   <div class="navbar-inner">
-    <div class="container-fluid">
-      <%= link_to Houston.config.title, main_app.root_url, class: "brand" %>
+    <%= link_to Houston.config.title, main_app.root_url, class: "brand" %>
 
-      <ul class="nav pull-right nav-inline">
-        <% if current_user -%>
-          <li class="current-user dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= avatar_for(current_user, size: 30) %> <b class="caret"></b></a>
-            <ul class="dropdown-menu">
-              <li><%= link_to "Settings", main_app.edit_user_path(current_user) %></li>
-              <li><%= link_to "Sign out", main_app.destroy_user_session_path %></li>
-            </ul>
-          </li>
-        <% else -%>
-          <li><%= link_to "Sign in", main_app.new_user_session_path %></li>
-        <% end -%>
-      </ul>
-
-    </div>
+    <ul class="nav pull-right nav-inline">
+      <% if current_user -%>
+        <li class="current-user dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= avatar_for(current_user, size: 30) %> <b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li><%= link_to "Settings", main_app.edit_user_path(current_user) %></li>
+            <li><%= link_to "Sign out", main_app.destroy_user_session_path %></li>
+          </ul>
+        </li>
+      <% else -%>
+        <li><%= link_to "Sign in", main_app.new_user_session_path %></li>
+      <% end -%>
+    </ul>
   </div>
 </div>
 

@@ -1,8 +1,18 @@
-$navbar-height: 36px;
+$navbar-height: 34px;
 $avatar-size: $navbar-height - 6px;
-$project-navbar-height: 30px;
+$project-navbar-height: 34px;
 
 .navbar .dropdown-menu .bubble { margin: 0 0.25em 0 0; }
+
+.navbar-inverse .brand, .navbar-inverse .nav > li > a { text-shadow: none; }
+.navbar-inverse .navbar-inner {
+  background: #222 !important;
+}
+
+.navbar-inverse .divider-vertical {
+  border-left-color: #080808;
+  border-right-color: #303030;
+}
 
 .nav-icon {
   display: inline-block;
@@ -21,16 +31,35 @@ $project-navbar-height: 30px;
 }
 
 .navbar .brand {
-  padding: 6px 20px 10px;
+  padding: 6px 12px 10px 20px;
+  margin: 0 8px 0 0;
+  height: $navbar-height - 16px;
+  margin-left: 0;
   position: relative;
   z-index: 1;
+  background: black;
+  color: #ddd;
+
+  &::before {
+    content: '.';
+    color: transparent;
+    display: block;
+    position: absolute;
+    top: 0;
+    right: -10px;
+    width: 0px;
+    height: 0px;
+    border-top: ($navbar-height / 2) solid transparent;
+    border-bottom: ($navbar-height / 2) solid transparent;
+    border-left: 10px solid black;
+  }
 }
 
 // Don't let the navbar wrap onto multiple lines
 .navbar .nav {
   height: $navbar-height;
   float: none;
-  margin: 0 66px 0 0;
+  margin: 0;
 }
 
 .navbar-inverse .navbar-inner {
@@ -48,13 +77,13 @@ $project-navbar-height: 30px;
 .navbar .nav > li > a,
 .navbar-inverse .nav > li.current {
   padding: 6px 15px 10px;
-  height: 20px;
+  height: $navbar-height - 16px;
 }
 
 // same as .dropdown.open
 .navbar-inverse .nav > li.current {
   color: #ffffff;
-  background-color: #111111;
+  background-color: #333;
 }
 
 .navbar-inner {
@@ -68,22 +97,55 @@ $project-navbar-height: 30px;
 
 
 .navbar .nav .current-project {
-  margin-right: 5px;
+  margin-right: 15px;
   white-space: nowrap;
+  position: relative;
+
+  .dropdown-menu { left: 8px; }
 }
 
+$current-project-active-bg: #222;
 .navbar .nav .current-project > a {
   color: white;
   text-shadow: none;
-  height: 20px;
+  height: $project-navbar-height - 12px;
+  padding-left: 20px;
+  font-size: 16px;
+  font-weight: 200;
 
   &::after {
     font-family: 'FontAwesome';
     content: '\f0dc';
     display: inline-block;
-    margin-left: 0.5ems;
-    font-size: 0.88em;
+    margin-left: 0.25em;
+    font-size: 11px;
   }
+
+  &::before {
+    content: '.';
+    color: transparent;
+    display: block;
+    position: absolute;
+    top: 0;
+    right: -10px;
+    width: 0px;
+    height: 0px;
+    border-top: ($project-navbar-height / 2) solid transparent;
+    border-bottom: ($project-navbar-height / 2) solid transparent;
+    border-left-width: 10px;
+    border-left-style: solid;
+  }
+
+  &:hover { color: white; }
+}
+
+.navbar .nav li.current-project.dropdown.open > .dropdown-toggle,
+.navbar .nav li.current-project.dropdown.active > .dropdown-toggle,
+.navbar .nav li.current-project.dropdown.open.active > .dropdown-toggle {
+  background: $current-project-active-bg;
+  color: white;
+
+  &::before { border-left-color: $current-project-active-bg; }
 }
 
 .project-navbar {
@@ -91,11 +153,10 @@ $project-navbar-height: 30px;
   top: $navbar-height;
   width: 100%;
   z-index: 1029;
-  padding: 3px 3em 0;
+  padding: 0;
   height: $project-navbar-height;
-  overflow: hidden;
 
-  .nav-icon svg * { fill: white; }
+  .nav-icon svg * { fill: #333; }
 
   .project-no-features {
     color: white;
@@ -106,15 +167,12 @@ $project-navbar-height: 30px;
 .project-navbar .nav > li { float: left; }
 .project-navbar .nav > li > a,
 .project-navbar .nav > li.current {
-  padding: 5px 15px;
+  padding: 6px 15px;
+  height: $project-navbar-height - 12px;
 }
 .project-navbar .nav > li > a {
-  color: white;
-
-  &:hover, &:focus {
-    text-decoration: none;
-    background-color: rgba(255,255,255,0.25);
-  }
+  color: #333;
+  text-shadow: none;
 }
 
 .project-navbar .nav > li.current {
@@ -125,8 +183,13 @@ $project-navbar-height: 30px;
 }
 
 
+.navbar .nav > li.current-user {
+  z-index: 5;
+}
+
 .navbar .nav > li.current-user > a {
   padding: 3px 15px;
+  height: $navbar-height - 6px;
 }
 
 .navbar .nav > li > a.settings-link {
@@ -146,7 +209,7 @@ $project-navbar-height: 30px;
 
 
 
-$threshhold: 820px;
+$threshhold: 768px;
 
 @media (max-width: $threshhold) {
   .nav .nav-label { display: none; }
