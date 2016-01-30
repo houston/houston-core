@@ -88,6 +88,9 @@ $default: rgb(80,80,80);
     background-color: lighten($<%= name %>, 32%);
     background-color: hsl(hue($<%= name %>), saturation($<%= name %>), 93);
   }
+  .project-banner.<%= name %> {
+    border-bottom: 1px solid hsl(hue($<%= name %>), saturation($<%= name %>) / 3, 88);
+  }
   .slideout-menu .project-navbar.<%= name %> {
     background-color: $<%= name %>;
   }

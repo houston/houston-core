@@ -32,9 +32,8 @@ $project-navbar-height: 34px;
 
 .navbar .brand {
   padding: 6px 12px 10px 20px;
-  margin: 0 8px 0 0;
+  margin: 0 15px 0 0;
   height: $navbar-height - 16px;
-  margin-left: 0;
   position: relative;
   z-index: 1;
   background: black;
@@ -225,6 +224,7 @@ $threshhold: 768px;
 
 .project-banner {
   top: $navbar-height + $project-navbar-height;
+  border-bottom: 1px solid #e0e0e0;
 }
 
 .project-banner .dropdown .caret {
