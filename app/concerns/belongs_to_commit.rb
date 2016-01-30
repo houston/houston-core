@@ -7,6 +7,20 @@ module BelongsToCommit
     validates :sha, presence: {message: "must refer to a commit"}
   end
 
+  module ClassMethods
+    def find_by_sha!(sha)
+      find_by_sha(sha) || raise(ActiveRecord::RecordNotFound)
+    end
+
+    def find_by_sha(sha)
+      with_sha_like(sha).first if sha
+    end
+
+    def with_sha_like(sha)
+      where(["sha LIKE ?", "#{sha.strip}%"])
+    end
+  end
+
 private
 
   def identify_commit
