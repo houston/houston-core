@@ -82,6 +82,10 @@ class Project < ActiveRecord::Base
     find_by_slug(slug)
   end
 
+  def self.with_feature(feature)
+    where ["? = ANY(projects.selected_features)", feature]
+  end
+
   def features
     (selected_features & Houston.config.project_features) + [:settings]
   end
