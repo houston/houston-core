@@ -22,7 +22,7 @@
       <li class="divider-vertical"></li>
 
       <% if can?(:read, Project) -%>
-        <%= render_nav_link "Projects", main_app.projects_path, icon: "fa-database" %>
+        <%= render_nav_link "Projects", main_app.projects_path, icon: "fa-archive" %>
       <% end -%>
 
       <% if can?(:read, User) -%>
@@ -30,7 +30,7 @@
       <% end -%>
 
       <% if can?(:read, :job) -%>
-        <%= render_nav_link "Jobs", main_app.jobs_path, icon: "fa-user" %>
+        <%= render_nav_link "Jobs", main_app.jobs_path, icon: "fa-gear" %>
       <% end -%>
 
     </ul>

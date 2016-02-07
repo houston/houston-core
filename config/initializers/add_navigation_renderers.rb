@@ -6,7 +6,7 @@ end
 
 Houston.config.add_navigation_renderer :pulls do
   if can?(:read, Github::PullRequest)
-    render_nav_link "Pulls", main_app.pulls_path
+    render_nav_link "Pulls", main_app.pulls_path, icon: "octokit-pull-request"
   end
 end
 
