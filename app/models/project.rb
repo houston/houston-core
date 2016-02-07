@@ -94,6 +94,10 @@ class Project < ActiveRecord::Base
     Array(super).map(&:to_sym)
   end
 
+  def feature?(feature_slug)
+    selected_features.member? feature_slug.to_sym
+  end
+
 
 
 

@@ -72,7 +72,7 @@
         <% Houston.config.project_features.each do |feature_slug| %>
           <% feature = Houston.config.get_project_feature(feature_slug) %>
           <label for="selected_features_<%= feature_slug %>">
-            <%= check_box_tag "project[selected_features][]", feature_slug, @project.selected_features.member?(feature_slug), id: "selected_features_#{feature_slug}", class: "project-feature" %>
+            <%= check_box_tag "project[selected_features][]", feature_slug, @project.feature?(feature_slug), id: "selected_features_#{feature_slug}", class: "project-feature" %>
             <%= feature.name %>
           </label>
 
