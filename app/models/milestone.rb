@@ -4,8 +4,6 @@ class Milestone < ActiveRecord::Base
   belongs_to :project
   has_many :tickets, -> { reorder("NULLIF(tickets.extended_attributes->'milestoneSequence', '')::int") }
 
-  versioned only: [:name, :start_date, :end_date, :band, :lanes, :destroyed_at], class_name: "MilestoneVersion", initial_version: true
-
   default_scope { where(destroyed_at: nil).order(:start_date) }
 
   validates :project_id, presence: true
@@ -38,21 +36,6 @@ class Milestone < ActiveRecord::Base
         arel_table[:closed_tickets_count].lt(arel_table[:tickets_count])))
     end
     alias :open :uncompleted
-
-    def visible
-      where(arel_table[:start_date].not_eq(nil)).
-      where(arel_table[:end_date].not_eq(nil))
-    end
-
-    def current
-      during(Date.today..Date.today)
-    end
-
-    def during(range)
-      visible
-        .where(arel_table[:start_date].lteq(range.end))
-        .where(arel_table[:end_date].gteq(range.begin))
-    end
 
     def without(milestones)
       without_remote_ids(milestones.map(&:remote_id))
