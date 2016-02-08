@@ -217,7 +217,7 @@ GEM
     multi_json (1.11.2)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
-    neat-rails (0.1.0)
+    neat-rails (0.2.0)
     nested_editor_for (0.1.0)
     net-ldap (0.12.1)
     net-ssh (2.9.4)
