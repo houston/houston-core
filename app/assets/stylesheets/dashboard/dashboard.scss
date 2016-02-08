@@ -74,6 +74,12 @@ html { height: 100%; }
     box-shadow: none;
   }
 
+  hr {
+    border: none;
+    height: 1px;
+    background: #222;
+  }
+
   a, a:visited { color: inherit; }
   a:hover, a:active { color: #ccc; }
 
