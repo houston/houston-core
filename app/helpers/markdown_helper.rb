@@ -14,4 +14,8 @@ module MarkdownHelper
     emojify markdown.render(text).html_safe
   end
 
+  def slackdown(text)
+    Slackdown.new(text).convert
+  end
+
 end
