@@ -3,7 +3,7 @@ class Slackdown
   attr_reader :markdown
 
   def initialize(markdown)
-    @markdown = markdown
+    @markdown = markdown.to_s
   end
 
   def convert
