@@ -38,7 +38,7 @@
 </div>
 
 <% if current_user -%>
-<div class="navbar project-navbar <%= current_project.color %>">
+<div class="navbar project-navbar <%= current_project && current_project.color %>">
   <ul class="nav">
 
     <li class="dropdown current-project <%= current_project && current_project.color %>">
