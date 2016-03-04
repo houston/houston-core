@@ -21,7 +21,7 @@ Gem::Specification.new do |spec|
 
   # For Houston as a Web Application
   spec.add_dependency "rails", "~> 4.2.5.1"
-  spec.add_dependency "sprockets", "~> 2.8" # update this when updating Rails
+  spec.add_dependency "sprockets", "~> 3.0" # update this when updating Rails
   spec.add_dependency "pg", "~> 0.18.3"
   # --------------------------------
   spec.add_dependency "activerecord-import"
