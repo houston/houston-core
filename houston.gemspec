@@ -59,7 +59,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "coffee-rails", "~> 4.1.0"
 
   # Houston's background jobs daemon
-  spec.add_dependency "rufus-scheduler", "~> 3.1.7"
+  spec.add_dependency "rufus-scheduler", "~> 3.2.0"
   spec.add_dependency "whenever", "0.9.2" # Houston uses just the DSL for writing cron jobs
 
   # Used to create image charts for embedding in email
@@ -82,12 +82,12 @@ Gem::Specification.new do |spec|
   spec.add_dependency "simplecov", "~> 0.9.1"
 
   # Implements Houston's VersionControl::GitAdapter
-  spec.add_dependency "rugged", "~> 0.23.3" # for speaking to Git
+  spec.add_dependency "rugged", "~> 0.24.0" # for speaking to Git
 
   # For integration with GitHub
-  spec.add_dependency "octokit", "~> 4.1.0"
+  spec.add_dependency "octokit", "~> 4.3.0"
 
-  # Implements Houston's TicketTracker::UnfuddleAdapter
+  # Implements Houston's TicketTracker::UnfuddleAdapter (TODO: extract)
   spec.add_dependency "boblail-unfuddle"
 
   # For deploying to EngineYard
