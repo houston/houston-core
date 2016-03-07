@@ -20,7 +20,7 @@ PATH
       faraday-raise-errors (~> 0.2.0)
       gemoji (~> 2.1.0)
       googlecharts (~> 1.6.12)
-      handlebars_assets (~> 0.21.0)
+      handlebars_assets (~> 0.23.0)
       houston-devise_ldap_authenticatable
       houston-oauth-plugin
       houston-vestal_versions

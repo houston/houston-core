@@ -36,7 +36,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "faraday-http-cache", "~> 1.2.2"
   spec.add_dependency "faraday-raise-errors", "~> 0.2.0"
   spec.add_dependency "gemoji", "~> 2.1.0"
-  spec.add_dependency "handlebars_assets", "~> 0.21.0" 
+  spec.add_dependency "handlebars_assets", "~> 0.23.0" 
   spec.add_dependency "hpricot", "~> 0.8.6"
   spec.add_dependency "neat-rails"
   spec.add_dependency "nokogiri"
