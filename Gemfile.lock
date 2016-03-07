@@ -4,7 +4,7 @@ PATH
     houston-core (0.6.3)
       activerecord-import
       activerecord-pluck_in_batches
-      addressable
+      addressable (~> 2.3.8)
       boblail-unfuddle
       browser (~> 1.1.0)
       bundler
