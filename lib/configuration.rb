@@ -46,18 +46,6 @@ module Houston
       Houston::Application.paths["log"] = root.join("log/#{Rails.env}.log")
       Houston::Application.paths["tmp"] = root.join("tmp")
       Houston::Application.paths["config/environments"] << root.join("config/environments")
-
-      # TODO: finish this
-      Rails.application.assets = Sprockets::Environment.new(root) do |env|
-        env.version = Rails.env
-
-        path = "#{Houston.root}/tmp/cache/assets/#{Rails.env}"
-        env.cache = Sprockets::Cache::FileStore.new(path)
-
-        env.context_class.class_eval do
-          include ::Sprockets::Rails::Helper
-        end
-      end
     end
 
     def title(*args)
