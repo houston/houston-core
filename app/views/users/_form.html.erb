@@ -120,12 +120,14 @@
 <% content_for :javascripts do %>
 <script type="text/javascript">
   $(function() {
+    <% if @user.persisted? && can?(:destroy, @user) %>
     $('#retire_user_button').click(function(e) {
       e.preventDefault();
       $.destroy('<%= user_path(@user) %>')
         .success(function() { window.location = '/users'; })
         .error(function() { console.log(arguments); });
     });
+    <% end %>
   });
 </script>
 <% end %>
