@@ -959,7 +959,7 @@ CREATE TABLE users (
     last_sign_in_ip character varying(255),
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    invitation_token character varying(60),
+    invitation_token character varying,
     invitation_sent_at timestamp without time zone,
     invitation_accepted_at timestamp without time zone,
     invitation_limit integer,
@@ -2266,4 +2266,6 @@ INSERT INTO schema_migrations (version) VALUES ('20151226155305');
 INSERT INTO schema_migrations (version) VALUES ('20151228183704');
 
 INSERT INTO schema_migrations (version) VALUES ('20160120145757');
+
+INSERT INTO schema_migrations (version) VALUES ('20160317140151');
 
