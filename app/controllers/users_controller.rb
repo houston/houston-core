@@ -44,7 +44,6 @@ class UsersController < ApplicationController
       User.invite!(params[:user])
     else
       @user.administrator = @administrator
-      @user.skip_password = true
       @user.save!
     end
 
