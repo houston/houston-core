@@ -86,7 +86,7 @@ class User < ActiveRecord::Base
   end
 
   def email_addresses
-    super || []
+    (super || []).reject(&:blank?)
   end
 
   def alias_emails
@@ -94,7 +94,7 @@ class User < ActiveRecord::Base
   end
 
   def alias_emails=(value)
-    self.email_addresses = [email] + Array.wrap(value)
+    self.email_addresses = [email] + Array.wrap(value).reject(&:blank?)
   end
 
 
