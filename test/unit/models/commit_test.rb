@@ -85,12 +85,14 @@ class CommitTest < ActiveSupport::TestCase
     should "ignore spaces when extracting extra attributes from a commit" do
       commits = [
         "I did some work {{attr: value}}",
-        "I set this one twice {{attr:\tv1}} {{attr: v2}}"
+        "I set this one twice {{attr:\tv1}} {{attr: v2}}",
+        "I set this one three times {{attr:v1, v2,v3}}",
       ]
 
       expectations = [
         {"attr" => ["value"]},
-        {"attr" => ["v1", "v2"]}
+        {"attr" => ["v1", "v2"]},
+        {"attr" => ["v1", "v2", "v3"]}
       ]
 
       commits.zip(expectations) do |commit_message, expectation|

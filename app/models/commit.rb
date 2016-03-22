@@ -173,7 +173,7 @@ class Commit < ActiveRecord::Base
 
     clean_message.gsub!(TICKET_PATTERN) { tickets << [$1.to_i, $2]; "" }
     clean_message.gsub!(TIME_PATTERN) { hours = $1.to_f; hours /= 60 if $2.starts_with?("m"); "" }
-    clean_message.gsub!(EXTRA_ATTRIBUTE_PATTERN) { (attributes[$1] ||= []).push($2); "" }
+    clean_message.gsub!(EXTRA_ATTRIBUTE_PATTERN) { (attributes[$1] ||= []).concat($2.split(",").map(&:strip).reject(&:blank?)); "" }
     while clean_message.gsub!(TAG_PATTERN) { tags << $1; "" }; end
 
     {tags: tags, tickets: tickets, hours_worked: hours, attributes: attributes, clean_message: clean_message.strip}
