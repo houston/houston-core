@@ -49,6 +49,7 @@ class Measurement < ActiveRecord::Base
 
     def for(subject)
       return where(subject_type: nil, subject_id: nil) if subject.nil?
+      return where(subject_type: subject.name) if subject.is_a?(Class)
       where(subject_type: subject.class.name, subject_id: subject.id)
     end
 
