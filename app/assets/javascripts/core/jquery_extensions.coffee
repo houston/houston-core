@@ -106,7 +106,7 @@ $.fn.extend
 
     $el.append '''
       <div class="drag-and-drop">
-        Attach images by dragging &amp; dropping them or <a class="dz-selector">selecting them</a>.
+        Attach files or images by dragging &amp; dropping them or <a class="dz-selector">selecting them</a>.
       </div>
       <div class="upload-progress"></div>
       <div class="upload-error"></div>
@@ -116,7 +116,7 @@ $.fn.extend
     $el.dropzone
       maxFilesize: 13 # MB
       clickable: '.dz-selector'
-      acceptedFiles: 'image/jpeg,image/png,image/gif'
+      acceptedFiles: '.pdf,.zip,image/jpeg,image/png,image/gif'
       url: "//#{bucket}.s3.amazonaws.com"
       uploadprogress: (file, progress)->
         $el.find('.upload-progress').html "Uploading #{file.name} (#{progress.toFixed(0)}% complete)"
@@ -142,7 +142,9 @@ $.fn.extend
           async: false, # because we need this response before dropzone can continue
           success: (params)=>
             src = "https://s3.amazonaws.com/#{bucket}/#{params.key}"
-            @.find('textarea').insertAtCursor "![#{file.name}](#{src})"
+            link_markdown = "[#{file.name}](#{src})"
+            link_markdown = "!#{link_markdown}" unless _.contains(["application/pdf", "application/zip"], file.type)
+            @.find('textarea').insertAtCursor link_markdown
             $.each params, (key, value)->
               formData.append(key, value)
 
