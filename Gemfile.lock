@@ -22,7 +22,6 @@ PATH
       googlecharts (~> 1.6.12)
       handlebars_assets (~> 0.23.0)
       houston-devise_ldap_authenticatable
-      houston-oauth-plugin
       houston-vestal_versions
       hpricot (~> 0.8.6)
       neat-rails
@@ -180,11 +179,6 @@ GEM
     houston-devise_ldap_authenticatable (0.7.1)
       devise (>= 3.0.0)
       net-ldap (~> 0.12.1)
-    houston-oauth-plugin (0.5.1)
-      multi_json
-      oauth (~> 0.4.4)
-      oauth2 (>= 0.5.0)
-      rack
     houston-vestal_versions (2.0.0)
       activerecord (>= 3, < 5)
       activesupport (>= 3, < 5)
@@ -194,7 +188,6 @@ GEM
       domain_name (~> 0.5)
     i18n (0.7.0)
     json (1.8.3)
-    jwt (1.5.1)
     launchy (2.4.3)
       addressable (~> 2.3)
     libv8 (3.16.14.13)
@@ -214,7 +207,6 @@ GEM
     minitest-reporters-turn_reporter (0.1.0)
       minitest-reporters
     multi_json (1.11.2)
-    multi_xml (0.5.5)
     multipart-post (2.0.0)
     neat-rails (0.2.0)
     nested_editor_for (0.1.0)
@@ -223,13 +215,6 @@ GEM
     netrc (0.11.0)
     nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
-    oauth (0.4.7)
-    oauth2 (1.1.0)
-      faraday (>= 0.8, < 0.10)
-      jwt (~> 1.0, < 1.5.2)
-      multi_json (~> 1.3)
-      multi_xml (~> 0.5)
-      rack (>= 1.2, < 3)
     octokit (4.3.0)
       sawyer (~> 0.7.0, >= 0.5.3)
     oj (2.14.6)

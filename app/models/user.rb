@@ -4,7 +4,6 @@ class User < ActiveRecord::Base
   has_many :testing_notes
   has_many :roles, :dependent => :destroy
   has_many :credentials, :class_name => "UserCredentials", :dependent => :destroy
-  has_many :consumer_tokens
   has_many :tickets, foreign_key: "reporter_id"
   has_and_belongs_to_many :commits
   belongs_to :current_project, class_name: "Project"
