@@ -27,6 +27,7 @@ require "hpricot"
 require "nested_editor_for"
 require "neat-rails"
 require "nokogiri"
+require "oauth2"
 require "octokit"
 require "oj"
 require "openxml/xlsx"
@@ -49,6 +50,15 @@ require "coffee_script"
 require "uglifier"
 
 module Houston
+  def self.host=(value)
+    @host = value
+  end
+
+  def self.host
+    return @host if defined?(@host)
+    Houston.config.host
+  end
+
   class Application < Rails::Application
     # This Rails application gets initialized different ways: many times it is
     # intialized from within a Houston instance project. This line ensures that

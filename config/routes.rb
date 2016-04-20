@@ -224,6 +224,22 @@ Rails.application.routes.draw do
   put "credentials", to: "user_credentials#upsert"
   delete "credentials/:id", to: "user_credentials#destroy"
 
+  get "authorizations" => "authorizations#index", as: :authorizations
+  get "authorizations/new" => "authorizations#new", as: :new_authorization
+  post "authorizations" => "authorizations#create"
+  get "authorizations/:id/edit" => "authorizations#edit", as: :edit_authorization
+  patch "authorizations/:id" => "authorizations#update", as: :authorization
+
+  get "authorizations/:id/grant" => "authorizations#grant", as: :grant_authorization
+  get "authorizations/:id/granted" => "authorizations#granted", as: :authorization_granted
+  get "oauth2/callback" => "authorizations#oauth2_callback", as: :oauth2_callback
+
+  get "oauth/providers" => "oauth/providers#index", as: :oauth_providers
+  get "oauth/providers/new" => "oauth/providers#new", as: :new_oauth_provider
+  post "oauth/providers" => "oauth/providers#create"
+  get "oauth/providers/:id/edit" => "oauth/providers#edit", as: :edit_oauth_provider
+  patch "oauth/providers/:id" => "oauth/providers#update", as: :oauth_provider
+
 
 
   # Jobs

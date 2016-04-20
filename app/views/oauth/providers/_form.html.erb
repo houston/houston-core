@@ -1,0 +1,54 @@
+<%= form_for @provider, html: {class: "form-horizontal"} do |f| %>
+  <fieldset>
+    <div class="control-group">
+      <%= f.label :name, class: "control-label" %>
+      <div class="controls">
+        <%= f.text_field :name, class: "text_field" %>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <%= f.label :site, class: "control-label" %>
+      <div class="controls">
+        <%= f.text_field :site, class: "text_field" %>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <%= f.label :authorize_path, class: "control-label" %>
+      <div class="controls">
+        <%= f.text_field :authorize_path, class: "text_field" %>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <%= f.label :token_path, class: "control-label" %>
+      <div class="controls">
+        <%= f.text_field :token_path, class: "text_field" %>
+      </div>
+    </div>
+  </fieldset>
+
+<hr />
+
+  <fieldset>
+    <div class="control-group">
+      <%= f.label :client_id, class: "control-label" %>
+      <div class="controls">
+        <%= f.text_field :client_id, class: "text_field" %>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <%= f.label :client_secret, class: "control-label" %>
+      <div class="controls">
+        <%= f.text_field :client_secret, class: "text_field" %>
+      </div>
+    </div>
+  </fieldset>
+
+  <div class="form-actions">
+    <%= f.submit nil, class: "btn btn-primary" %>
+    <%= link_to "Cancel", oauth_providers_path, class: "btn" %>
+  </div>
+<% end %>

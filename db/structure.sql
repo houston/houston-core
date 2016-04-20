@@ -55,6 +55,44 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
+-- Name: authorizations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE authorizations (
+    id integer NOT NULL,
+    name character varying NOT NULL,
+    provider_id integer,
+    scope character varying,
+    access_token character varying,
+    refresh_token character varying,
+    secret character varying,
+    expires_in integer,
+    expires_at timestamp without time zone,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: authorizations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE authorizations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: authorizations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE authorizations_id_seq OWNED BY authorizations.id;
+
+
+--
 -- Name: commits; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -292,6 +330,42 @@ CREATE SEQUENCE milestones_id_seq
 --
 
 ALTER SEQUENCE milestones_id_seq OWNED BY milestones.id;
+
+
+--
+-- Name: oauth_providers; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE oauth_providers (
+    id integer NOT NULL,
+    name character varying NOT NULL,
+    site character varying NOT NULL,
+    authorize_path character varying NOT NULL,
+    token_path character varying NOT NULL,
+    client_id character varying NOT NULL,
+    client_secret character varying NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: oauth_providers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE oauth_providers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: oauth_providers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE oauth_providers_id_seq OWNED BY oauth_providers.id;
 
 
 --
@@ -1075,6 +1149,13 @@ ALTER SEQUENCE versions_id_seq OWNED BY versions.id;
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY authorizations ALTER COLUMN id SET DEFAULT nextval('authorizations_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY commits ALTER COLUMN id SET DEFAULT nextval('commits_id_seq'::regclass);
 
 
@@ -1104,6 +1185,13 @@ ALTER TABLE ONLY measurements ALTER COLUMN id SET DEFAULT nextval('measurements_
 --
 
 ALTER TABLE ONLY milestones ALTER COLUMN id SET DEFAULT nextval('milestones_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY oauth_providers ALTER COLUMN id SET DEFAULT nextval('oauth_providers_id_seq'::regclass);
 
 
 --
@@ -1240,6 +1328,14 @@ ALTER TABLE ONLY versions ALTER COLUMN id SET DEFAULT nextval('versions_id_seq':
 
 
 --
+-- Name: authorizations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY authorizations
+    ADD CONSTRAINT authorizations_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: commits_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1277,6 +1373,14 @@ ALTER TABLE ONLY measurements
 
 ALTER TABLE ONLY milestones
     ADD CONSTRAINT milestones_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: oauth_providers_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY oauth_providers
+    ADD CONSTRAINT oauth_providers_pkey PRIMARY KEY (id);
 
 
 --
@@ -2268,4 +2372,8 @@ INSERT INTO schema_migrations (version) VALUES ('20151228183704');
 INSERT INTO schema_migrations (version) VALUES ('20160120145757');
 
 INSERT INTO schema_migrations (version) VALUES ('20160317140151');
+
+INSERT INTO schema_migrations (version) VALUES ('20160419230411');
+
+INSERT INTO schema_migrations (version) VALUES ('20160420000616');
 

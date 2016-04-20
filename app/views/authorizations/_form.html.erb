@@ -1,0 +1,33 @@
+<%= form_for @authorization, html: {class: "form-horizontal"} do |f| %>
+  <fieldset>
+    <div class="control-group">
+      <%= f.label :name, class: "control-label" %>
+      <div class="controls">
+        <%= f.text_field :name, class: "text_field" %>
+      </div>
+    </div>
+  </fieldset>
+
+<hr />
+
+  <fieldset>
+    <div class="control-group">
+      <%= f.label :provider_id, class: "control-label" %>
+      <div class="controls">
+        <%= f.collection_select :provider_id, Oauth::Provider.all, :id, :name %>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <%= f.label :scope, class: "control-label" %>
+      <div class="controls">
+        <%= f.text_field :scope, class: "text_field" %>
+      </div>
+    </div>
+  </fieldset>
+
+  <div class="form-actions">
+    <%= f.submit nil, class: "btn btn-primary" %>
+    <%= link_to "Cancel", authorizations_path, class: "btn" %>
+  </div>
+<% end %>

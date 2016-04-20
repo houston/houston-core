@@ -1,0 +1,47 @@
+<% content_for :title do %>
+<h1 class="project-banner space-below">
+  Authorizations
+
+  <%= link_to "New Authorization", new_authorization_path, class: "btn btn-primary" if can?(:create, Authorization) %>
+</h1>
+<% end %>
+
+<div class="nomargin">
+  <table id="authorizations" class="table table-sortable table-striped">
+    <thead>
+      <tr>
+        <td class="table-margin"></td>
+        <th class="authorization-name">Name</th>
+        <th class="authorization-name">Provider</th>
+        <th class="authorization-status">Satus</th>
+        <td class="table-margin"></td>
+      </tr>
+    </thead>
+    <tbody>
+      <% @authorizations.each do |authorization| %>
+        <tr class="authorization">
+          <td class="table-margin"></td>
+          <td class="authorization-name"><%= link_to authorization.name, edit_authorization_path(authorization) %></td>
+          <td class="authorization-provider"><%= authorization.provider.name %></td>
+          <td class="authorization-status">
+            <% if authorization.granted? %>
+              Granted
+            <% else %>
+              <%= link_to "Grant", grant_authorization_path(authorization), class: "btn btn-primary" %>
+            <% end %>
+          </td>
+          <td class="table-margin"></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+
+<% content_for :javascripts do %>
+  <script type="text/javascript">
+    $(function() {
+      $('#authorizations').tablesorter();
+    });
+  </script>
+<% end %>

@@ -1,3 +1,6 @@
+port = Rack::Server::Options.new.parse!(ARGV.dup).fetch(:Port, "3000")
+Houston.host = "localhost:#{port}"
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -31,12 +34,7 @@ Rails.application.configure do
   config.assets.prefix = "/dev-assets"
 
   # So Devise mailers can make links
-  server_options = Rack::Server::Options.new.parse!(ARGV.dup)
-  config.action_mailer.default_url_options = {
-    :host => "localhost",
-    :port => server_options.fetch(:Port, "3000")
-  }
-  puts "[config] default host: localhost:#{config.action_mailer.default_url_options[:port]}"
+  config.action_mailer.default_url_options = {host: "localhost", port: port}
 
   # Asset digests allow you to set far-future HTTP expiration dates on all assets,
   # yet still be able to expire them through the digest params.
