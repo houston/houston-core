@@ -2,7 +2,7 @@ require "github/event"
 
 module Github
   class CommentEvent < Event
-    attr_reader :comment, :project, :user
+    attr_reader :action, :comment, :project, :user
 
     class << self
       attr_accessor :type
@@ -16,13 +16,13 @@ module Github
     def initialize(payload)
       super
       @comment = payload.fetch "comment"
+      @action = payload.fetch "action", "created"
       comment["project"] = Project.find_by_slug payload["repository"]["name"]
     end
 
     def process!
-      Rails.logger.info "\e[34m[github] Processing Comment Event (type: #{type})\e[0m"
-      Houston.observer.fire "github:comment", comment
-      Houston.observer.fire "github:comment:#{type}", comment
+      Houston.observer.fire "github:comment:#{action}", comment
+      Houston.observer.fire "github:comment:#{action}:#{type}", comment
     end
 
   end

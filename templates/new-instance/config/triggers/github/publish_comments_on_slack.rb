@@ -1,5 +1,5 @@
 Houston.config do
-  on "github:comment:commit" do |comment|
+  on "github:comment:created:commit" do |comment|
     channel = "##{comment["project"].slug}" if comment["project"]
     channel = "developers" unless Houston::Slack.connection.channels.include? channel
     body, url = comment.values_at "body", "html_url"
@@ -10,7 +10,7 @@ Houston.config do
     slack_send_message_to message, channel, as: :github, attachments: [comment], test: true
   end
 
-  on "github:comment:diff" do |comment|
+  on "github:comment:created:diff" do |comment|
     channel = "##{comment["project"].slug}" if comment["project"]
     channel = "developers" unless Houston::Slack.connection.channels.include? channel
     body, url = comment.values_at "body", "html_url"
@@ -22,7 +22,7 @@ Houston.config do
     slack_send_message_to message, channel, as: :github, attachments: [comment], test: true
   end
 
-  on "github:comment:pull" do |comment|
+  on "github:comment:created:pull" do |comment|
     channel = "##{comment["project"].slug}" if comment["project"]
     channel = "developers" unless Houston::Slack.connection.channels.include? channel
     body, url = comment.values_at "body", "html_url"
