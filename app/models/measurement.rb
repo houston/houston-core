@@ -66,7 +66,7 @@ class Measurement < ActiveRecord::Base
     #  - weekly.hours.*.fix
     def named(*name_patterns)
       name_patterns =  name_patterns.flatten.map { |pattern| pattern
-        .gsub(/\{([\w,]+)\}/) { "(#{$~.captures[0].gsub(/,/, "|")})" }
+        .gsub(/\{([\w\-,]+)\}/) { "(#{$~.captures[0].gsub(/,/, "|")})" }
         .gsub(/\*$/, "%") }
       where(["name SIMILAR TO ?", "(#{name_patterns.join("|")})"])
     end
