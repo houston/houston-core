@@ -262,15 +262,6 @@ Rails.application.routes.draw do
   # Other
 
   # Experiments
-  get "reports", to: "reports#index"
-  %w{queue-age cycle-time time-to-first-test time-to-release}.each do |report|
-    get "reports/#{report}", to: "reports##{report.underscore}"
-  end
-  get "reports/velocity", to: "reports#velocity"
-  get "reports/tasks.xlsx", to: "reports#tasks_excel"
-
-  get "sprint/reports", to: "reports#sprint"
-
   get "pulls", to: "github/pulls#index"
 
   # Tester Bar
