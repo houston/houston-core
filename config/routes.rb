@@ -197,6 +197,8 @@ Rails.application.routes.draw do
       get "sprint/tasks/mine", to: "sprint_tasks#mine"
       post "sprint/tasks/:project_slug/:shorthand", :to => "sprint_tasks#create"
       delete "sprint/tasks/:project_slug/:shorthand", :to => "sprint_tasks#destroy"
+
+      get "measurements", to: "measurements#index"
     end
   end
 
