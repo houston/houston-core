@@ -19,8 +19,6 @@ class ParallelEnumerable
       Thread.new do
         begin
           yield item
-        rescue Exception # rescues StandardError by default; but we want to rescue and report all errors
-          Houston.report_exception $!
         ensure
           ActiveRecord::Base.clear_active_connections!
         end
