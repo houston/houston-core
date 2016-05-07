@@ -616,14 +616,14 @@ module Houston
     def run_async(slug)
       block = find_timer_block!(slug)
       Thread.new do
-        run! "#{slug}/manual", block
+        run! slug, "manual", block
       end
     end
 
     def run_job(job)
       slug = job.tags.first
       block = find_timer_block!(slug)
-      run! "#{slug}/#{job.original}", block
+      run! slug, job.original, block
     end
 
   private
@@ -634,23 +634,11 @@ module Houston
       timer.last
     end
 
-    def run!(tag, block)
-      Rails.logger.info "\e[34m[#{tag}] Running job\e[0m"
-      block.call
-
-    rescue SocketError,
-           Errno::ECONNREFUSED,
-           Errno::ETIMEDOUT,
-           Faraday::Error::ConnectionFailed,
-           Faraday::HTTP::ServerError,
-           Rugged::NetworkError,
-           Unfuddle::ConnectionError,
-           Octokit::BadGateway,
-           exceptions_wrapping(PG::ConnectionBad)
-      Rails.logger.error "\e[31m[#{tag}] #{$!.class}: #{$!.message} [ignored]\e[0m"
-    rescue Exception # rescues StandardError by default; but we want to rescue and report all errors
-      Rails.logger.error "\e[31m[#{tag}] \e[1m#{$!.message}\e[0m"
-      Houston.report_exception($!, parameters: {job_name: tag}) # <-- no job id!
+    def run!(job_name, event, block)
+      Job.record job_name do
+        Rails.logger.info "\e[34m[#{job_name}/#{event}] Running job\e[0m"
+        block.call
+      end
     ensure
       ActiveRecord::Base.clear_active_connections!
     end

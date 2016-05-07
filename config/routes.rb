@@ -246,8 +246,9 @@ Rails.application.routes.draw do
 
   # Jobs
 
-  get "jobs", to: "jobs#show"
-  post "jobs/:slug", to: "jobs#run", :as => :run_job
+  get "jobs", to: "jobs#index", as: :jobs
+  get "jobs/:slug", to: "jobs#show", as: :job
+  post "jobs/:slug", to: "jobs#run", as: :run_job
 
 
 

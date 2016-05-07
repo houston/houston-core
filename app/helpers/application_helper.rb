@@ -45,22 +45,68 @@ module ApplicationHelper
 
 
 
-  def format_time(time)
+  def format_time(time, options={})
     if time.nil?
       date, time = ["", "Never"]
     elsif time.to_date == Date.today
-      date, time = ["Today", time.strftime("%l:%M %p")]
+      date, time = [options[:today] ? "Today" : "", time.strftime("%l:%M %p")]
     elsif time.to_date == Date.today - 1
       date, time = ["Yesterday", time.strftime("%l:%M %p")]
     else
       date, time = [time.strftime("%b %e"), time.strftime("%l:%M %p")]
     end
 
-    <<-HTML.html_safe
+    <<-HTML.strip.html_safe
     <span class="time-date">#{date}</span>
     <span class="time-time">#{time.gsub(" AM", "a").gsub(" PM", "p")}</span>
     HTML
   end
+
+  def format_boolean(boolean)
+    if boolean
+      '<i class="fa fa-check success"></i>'.html_safe
+    else
+      '<i class="fa fa-times failure"></i>'.html_safe
+    end
+  end
+
+  def format_job_state(job)
+    if job.in_progress?
+      '<i class="fa fa-spinner fa-pulse"></i>'.html_safe
+    elsif job.succeeded?
+      '<i class="fa fa-check success"></i>'.html_safe
+    else
+      '<i class="fa fa-times failure"></i>'.html_safe
+    end
+  end
+
+  MINUTE = 60
+  HOUR = MINUTE * 60
+  DAY = HOUR * 24
+
+  def format_duration(seconds)
+    if seconds.nil?
+      return "&mdash;".html_safe
+    elsif seconds < 1
+      "#{(seconds * 1000).floor}ms"
+    elsif seconds < MINUTE
+      "%.2f seconds" % seconds
+    elsif seconds < HOUR
+      format_duration_with_units(seconds / MINUTE, 'minute')
+    elsif seconds < DAY
+      format_duration_with_units(seconds / HOUR, 'hour')
+    else
+      format_duration_with_units(seconds / DAY, 'day')
+    end
+  end
+
+  def format_duration_with_units(quantity, unit)
+    quantity = quantity.floor
+    unit << 's' unless quantity == 1
+    "#{quantity} #{unit}"
+  end
+
+
 
   def format_date_with_year(date)
     return "" if date.nil?

@@ -35,36 +35,4 @@ module TicketHelper
     link_to "##{number}", goldmine_case_number_url(number), target: "_blank"
   end
 
-
-
-  MINUTE = 60
-  HOUR = MINUTE * 60
-  DAY = HOUR * 24
-
-  def format_duration(seconds)
-    if seconds < HOUR
-      format_duration_with_units(seconds / MINUTE, 'minute')
-    elsif seconds < DAY
-      format_duration_with_units(seconds / HOUR, 'hour')
-    else
-      format_duration_with_units(seconds / DAY, 'day')
-    end
-  end
-
-  def format_duration_with_units(quantity, unit)
-    quantity = quantity.floor
-    unit << 's' unless quantity == 1
-    "#{quantity} #{unit}"
-  end
-
-  def class_for_age(seconds)
-    if    seconds < 6.hours;        'infant'
-    elsif seconds < 2.days;         'child'
-    elsif seconds < 7.days;         'adult'
-    elsif seconds < 4.weeks;        'senior'
-    elsif seconds < 26.weeks;       'old'
-    else                            'ancient'
-    end
-  end
-
 end
