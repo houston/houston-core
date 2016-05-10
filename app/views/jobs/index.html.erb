@@ -32,7 +32,10 @@
                 <%= format_time job[:last].started_at, today: false %>
                 <%= format_job_state job[:last] %>
               </td>
-              <td class="scheduler-job-reliability"><%= job[:successful_runs] %> / <%= job[:runs] %></td>
+              <td class="scheduler-job-reliability">
+                <%= number_to_percentage 100.0 * job[:successful_runs].to_f / job[:runs], precision: 1 %>
+                <span class="scheduler-job-success-rate">/<%= job[:runs] %></span>
+              </td>
               <td class="scheduler-job-duration"><%= format_duration job[:avg_duration] %></td>
             <% else %>
               <td class="scheduler-job-last">&mdash;</td>
