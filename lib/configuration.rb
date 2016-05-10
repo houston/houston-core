@@ -639,6 +639,8 @@ module Houston
         Rails.logger.info "\e[34m[#{job_name}/#{event}] Running job\e[0m"
         block.call
       end
+    rescue Exception # rescues StandardError by default; but we want to rescue and report all errors
+      Houston.report_exception($!, parameters: {job_name: job_name})
     ensure
       ActiveRecord::Base.clear_active_connections!
     end

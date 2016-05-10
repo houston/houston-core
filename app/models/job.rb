@@ -9,37 +9,39 @@ class Job < ActiveRecord::Base
 
   def self.record(job_name)
     job = Job.create!(name: job_name, started_at: Time.now)
-    exception = nil
-
-    yield
-
-  rescue SocketError,
-         Errno::ECONNREFUSED,
-         Errno::ETIMEDOUT,
-         Faraday::ConnectionFailed,
-         Faraday::SSLError,
-         Faraday::HTTP::ServerError,
-         Faraday::HTTP::Unauthorized,
-         Faraday::TimeoutError,
-         Rugged::NetworkError,
-         Unfuddle::ConnectionError,
-         Octokit::BadGateway,
-         exceptions_wrapping(PG::ConnectionBad)
-
-    # Note that the job failed, but do not report _these_ exceptions
-    exception = $!
-
-  rescue Exception # rescues StandardError by default; but we want to rescue and report all errors
-
-    # Report all other exceptions
-    exception = $!
-    Houston.report_exception($!, parameters: {job_id: job.id, job_name: job_name})
-
-  ensure
     begin
-      job.finish! exception
+      exception = nil
+
+      yield
+
+    rescue SocketError,
+           Errno::ECONNREFUSED,
+           Errno::ETIMEDOUT,
+           Faraday::ConnectionFailed,
+           Faraday::SSLError,
+           Faraday::HTTP::ServerError,
+           Faraday::HTTP::Unauthorized,
+           Faraday::TimeoutError,
+           Rugged::NetworkError,
+           Unfuddle::ConnectionError,
+           Octokit::BadGateway,
+           exceptions_wrapping(PG::ConnectionBad)
+
+      # Note that the job failed, but do not report _these_ exceptions
+      exception = $!
+
     rescue Exception # rescues StandardError by default; but we want to rescue and report all errors
+
+      # Report all other exceptions
+      exception = $!
       Houston.report_exception($!, parameters: {job_id: job.id, job_name: job_name})
+
+    ensure
+      begin
+        job.finish! exception
+      rescue Exception # rescues StandardError by default; but we want to rescue and report all errors
+        Houston.report_exception($!, parameters: {job_id: job.id, job_name: job_name})
+      end
     end
   end
 
