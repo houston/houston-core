@@ -15,9 +15,15 @@ module Github
     before_save :associate_user_with_self, if: :username_changed?
     after_commit :associate_commits_with_self
 
-    after_destroy { Houston.observer.fire "github:pull:closed", self }
-    after_create { Houston.observer.fire "github:pull:opened", self }
-    after_update { Houston.observer.fire "github:pull:updated", self, changes }
+    after_create do
+      Houston.observer.fire "github:pull:opened", self
+    end
+
+    after_update do
+      Houston.observer.fire "github:pull:updated", self, changes
+      Houston.observer.fire "github:pull:closed", self if closed_at_changed? && closed_at
+      Houston.observer.fire "github:pull:reopened", self if closed_at_changed? && !closed_at
+    end
 
     validates :project_id, :title, :number, :repo, :url, :base_ref, :base_sha, :head_ref, :head_sha, :username, presence: true
     validates :number, uniqueness: { scope: :project_id }
@@ -83,12 +89,14 @@ module Github
         Houston.benchmark "Syncing pull requests" do
           existing_pulls = all.to_a
 
-          # Delete unexpected pulls
+          # Fetch unexpected pulls so that we know
+          # when they were closed and whether they
+          # were merged.
           existing_pulls.each do |existing_pr|
             unless expected_pulls.detect { |expected_pr|
               expected_pr["base"]["repo"]["name"] == existing_pr.repo &&
               expected_pr["number"] == existing_pr.number }
-              existing_pr.destroy
+              expected_pulls << existing_pr.fetch!
             end
           end
 
@@ -106,16 +114,6 @@ module Github
             existing_pr
           end
         end
-      end
-
-      def close!(github_pr, options={})
-        pr = find_by(
-          repo: github_pr["base"]["repo"]["name"],
-          number: github_pr["number"])
-        return unless pr
-
-        pr.actor = options[:as]
-        pr.destroy
       end
 
       def upsert!(github_pr, options={})
@@ -136,6 +134,18 @@ module Github
           repo: github_pr["base"]["repo"]["name"],
           number: github_pr["number"])
           .merge_attributes(github_pr)
+      end
+
+      def open
+        where(closed_at: nil)
+      end
+
+      def closed
+        where.not(closed_at: nil)
+      end
+
+      def merged
+        where.not(merged_at: nil)
       end
 
       def labeled(*labels)
@@ -198,6 +208,14 @@ module Github
       project.repo.create_commit_status(head_sha, status)
     end
 
+    def full_repo
+      url[/https:\/\/github.com\/(.*)\/pull\/\d+/, 1]
+    end
+
+    def fetch!
+      Houston.github.pull_request(full_repo, number).to_h.with_indifferent_access
+    end
+
 
 
     def merge_attributes(pr)
@@ -214,6 +232,8 @@ module Github
       self.body = pr["body"]
       self.base_sha = pr["base"]["sha"]
       self.head_sha = pr["head"]["sha"]
+      self.closed_at = pr["closed_at"]
+      self.merged_at = pr["merged_at"]
       self.labels = pr["labels"] if pr.key?("labels")
 
       self

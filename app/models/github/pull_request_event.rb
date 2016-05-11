@@ -20,14 +20,8 @@ module Github
         return
       end
 
-      # Delete pull requests when they are closed
-      if action == "closed"
-        PullRequest.close! pull_request, as: actor
-        return
-      end
-
       # Ensure that we have a record of this open pull request
-      # action: labeled, unlabeled, opened, reopened, or synchronized
+      # action: labeled, unlabeled, opened, closed, reopened, or synchronized
       pr = PullRequest.upsert! pull_request, as: actor
 
       # The Pull Request may be invalid if it isn't for a

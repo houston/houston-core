@@ -26,12 +26,7 @@ class HooksControllerTest < ActionController::TestCase
       assert_response :success
     end
 
-    should "close a GitHub::PullRequest when the action is \"closed\"" do
-      mock(Github::PullRequest).close!(a_pull_request, as: "baxterthehacker")
-      post :github, hook: github_pull_request_event_payload(action: "closed")
-    end
-
-    should "create or update a GitHub::PullRequest when the action is not \"closed\"" do
+    should "create or update a GitHub::PullRequest" do
       mock(Github::PullRequest).upsert!(a_pull_request, as: "baxterthehacker")
       post :github, hook: github_pull_request_event_payload
     end
