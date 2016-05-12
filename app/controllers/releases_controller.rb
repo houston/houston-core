@@ -75,12 +75,12 @@ class ReleasesController < ApplicationController
     @title = "Release #{@release.release_date.strftime("%b %-d")} • #{@project.name}"
 
     if request.format.oembed?
-      render json: {
+      render json: MultiJson.dump({
         version: "1.0",
         type: "link",
         author_name: "#{@project.slug} / #{@release.environment_name}",
         title: format_release_subject(@release),
-        html: format_release_description(@release) }
+        html: format_release_description(@release) })
     end
   end
 
