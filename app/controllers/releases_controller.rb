@@ -77,8 +77,8 @@ class ReleasesController < ApplicationController
     if request.format.oembed?
       render json: MultiJson.dump({
         version: "1.0",
-        type: "rich",
-        author_name: "#{@project.slug} / #{@release.environment_name}",
+        type: "link",
+        provider_name: "#{@project.slug} / #{@release.environment_name}",
         title: format_release_subject(@release),
         html: format_release_description(@release) })
     end
