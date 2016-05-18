@@ -25,6 +25,7 @@ class Job < ActiveRecord::Base
            Rugged::NetworkError,
            Unfuddle::ConnectionError,
            Octokit::BadGateway,
+           Octokit::InternalServerError,
            exceptions_wrapping(PG::ConnectionBad)
 
       # Note that the job failed, but do not report _these_ exceptions
