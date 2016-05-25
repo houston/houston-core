@@ -42,7 +42,7 @@ module Houston
   private
 
     def invoke_callback_async(event, block, *args)
-      Houston.async! do
+      Houston.async do
         invoke_callback(event, block, *args)
       end
     end
