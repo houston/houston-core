@@ -613,37 +613,30 @@ module Houston
 
   class Jobs
 
-    def run_async(slug)
-      block = find_timer_block!(slug)
-      Thread.new do
-        run! slug, "manual", block
+    def run(job)
+      trigger = "manual"
+      job, trigger = [job.tags.first, job.original] if job.is_a? Rufus::Scheduler::Job
+      block = find_timer_block!(job)
+      Houston.async do
+        run! job, trigger, block
       end
-    end
-
-    def run_job(job)
-      slug = job.tags.first
-      block = find_timer_block!(slug)
-      run! slug, job.original, block
     end
 
   private
 
-    def find_timer_block!(slug)
-      timer = Houston.config.timers.detect { |(_, _, name, _, _)| name == slug }
-      raise ArgumentError, "#{slug} is not a job" unless timer
+    def find_timer_block!(job_name)
+      timer = Houston.config.timers.detect { |(_, _, name, _, _)| name == job_name }
+      raise ArgumentError, "#{job_name} is not a job" unless timer
       timer.last
     end
 
-    def run!(job_name, event, block)
+    def run!(job_name, trigger, block)
       Job.record job_name do
-        Rails.logger.info "\e[34m[#{job_name}/#{event}] Running job\e[0m"
+        Rails.logger.info "\e[34m[#{job_name}/#{trigger}] Running job\e[0m"
         block.call
       end
     rescue Exception # rescues StandardError by default; but we want to rescue and report all errors
       Houston.report_exception($!, parameters: {job_name: job_name})
-    ensure
-      ActiveRecord::Base.clear_active_connections!
-      Rails.logger.flush # http://stackoverflow.com/a/3516003/731300
     end
 
   end

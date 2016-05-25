@@ -4,7 +4,7 @@ Houston.daemonize "scheduler" do
   $scheduler = Rufus::Scheduler.new
 
   Houston.config.timers.each do |(type, param, name, options, block)|
-    wrapped_block = Houston.jobs.method(:run_job)
+    wrapped_block = Houston.jobs.method(:run)
 
     case type
     when :cron
