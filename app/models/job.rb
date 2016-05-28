@@ -12,7 +12,9 @@ class Job < ActiveRecord::Base
     begin
       exception = nil
 
-      yield
+      Houston.reconnect do
+        yield
+      end
 
     rescue SocketError,
            Errno::ECONNREFUSED,
@@ -39,7 +41,9 @@ class Job < ActiveRecord::Base
 
     ensure
       begin
-        job.finish! exception
+        Houston.reconnect do
+          job.finish! exception
+        end
       rescue Exception # rescues StandardError by default; but we want to rescue and report all errors
         Houston.report_exception($!, parameters: {job_id: job.id, job_name: job_name})
       end

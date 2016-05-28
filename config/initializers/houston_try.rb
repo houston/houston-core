@@ -21,4 +21,16 @@ module Houston
     end
   end
 
+  def self.reconnect(options={})
+    max_tries = options.fetch(:max_tries, 2)
+    tries = 1
+    begin
+      yield
+    rescue exceptions_wrapping(PG::ConnectionBad)
+      ActiveRecord::Base.connection.reconnect!
+      retry unless (tries += 1) > 2
+      raise
+    end
+  end
+
 end
