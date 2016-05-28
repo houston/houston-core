@@ -16,9 +16,9 @@
     <![endif]-->
 
     <!-- Le styles -->
-    <%= stylesheet_link_tag :vendor, media: "all" %>
-    <%= stylesheet_link_tag :application, media: "all" %>
-    <%= stylesheet_link_tag :print, media: "print" %>
+    <%= stylesheet_link_tag "houston/vendor", media: "all" %>
+    <%= stylesheet_link_tag "houston/application", media: "all" %>
+    <%= stylesheet_link_tag "houston/print", media: "print" %>
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
     <%= yield :stylesheets %><%# so that Engines can hook in and add styles %>
 
@@ -48,8 +48,8 @@
     <%= javascript_include_tag "https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.2/handlebars.min.js" %>
     <%= javascript_include_tag "https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.1/d3.min.js" %>
     <%# javascript_include_tag "https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.0.1/min/dropzone.min.js" %>
-    <%= javascript_include_tag :vendor %>
-    <%= javascript_include_tag :application %>
+    <%= javascript_include_tag "houston/vendor" %>
+    <%= javascript_include_tag "houston/application" %>
     <%= yield :javascripts %>
   </body>
 </html>

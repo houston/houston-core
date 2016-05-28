@@ -11,9 +11,14 @@
 // about supported directives.
 //
 //= require_tree ./core
+//= require_tree ./dashboard
 //= require md5
-//= require_tree ../templates
-//= require_tree ./app
-
-$.tablesorter.defaults.cssAsc = 'sort-asc';
-$.tablesorter.defaults.cssDesc = 'sort-desc';
+//
+//  for Houston::Roadmap's dashboard
+//
+//= require ./app/views/_tickets_view
+//
+//  for Sprint Dashboard
+//
+//= require_tree ../../templates/sprints
+//= require ./app/views/_show_sprint_view
