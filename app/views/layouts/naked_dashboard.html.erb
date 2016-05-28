@@ -29,7 +29,7 @@
     <div id="container" <% if params[:zoom].to_f > 0 %> style="transform: scale(<%= params[:zoom].to_f %>); transform-origin: 50% 0; -webkit-transform: scale(<%= params[:zoom].to_f %>); -webkit-transform-origin: 50% 0; -moz-transform: scale(<%= params[:zoom].to_f %>); -moz-transform-origin: 50% 0;" <% end %>>
       <%= yield -%>
     </div>
-    
+
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
@@ -41,6 +41,6 @@
     <%= javascript_include_tag "https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.1/d3.min.js" %>
     <%# javascript_include_tag "https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.0.1/min/dropzone.min.js" %>
     <%= javascript_include_tag "houston/dashboard" %>
-    <%= yield :javascripts %>
+    <%= yield :javascripts %><%# so that Engines can hook in and add scripts %>
   </body>
 </html>

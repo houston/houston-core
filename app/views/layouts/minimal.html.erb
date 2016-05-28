@@ -29,15 +29,15 @@
     <link href="images/apple-touch-icon-114x114.png" rel="apple-touch-icon" sizes="114x114">
   </head>
   <body>
-    
+
     <%= render "layouts/navigation" %>
-    
+
     <div class="container">
       <%= yield -%>
-      
+
       <%= render partial: "layouts/tester_bar" if Rails.env.development? -%>
     </div> <!-- /container -->
-    
+
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
@@ -50,6 +50,6 @@
     <%# javascript_include_tag "https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.0.1/min/dropzone.min.js" %>
     <%= javascript_include_tag "houston/vendor" %>
     <%= javascript_include_tag "houston/application" %>
-    <%= yield :javascripts %>
+    <%= yield :javascripts %><%# so that Engines can hook in and add scripts %>
   </body>
 </html>

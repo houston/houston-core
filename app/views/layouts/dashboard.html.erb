@@ -43,6 +43,6 @@
     <%# javascript_include_tag "https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.0.1/min/dropzone.min.js" %>
     <%= javascript_include_tag "houston/vendor" %>
     <%= javascript_include_tag "houston/dashboard" %>
-    <%= yield :javascripts %>
+    <%= yield :javascripts %><%# so that Engines can hook in and add scripts %>
   </body>
 </html>

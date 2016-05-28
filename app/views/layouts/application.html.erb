@@ -90,6 +90,6 @@
         <% end %>
       });
     </script>
-    <%= yield :javascripts %>
+    <%= yield :javascripts %><%# so that Engines can hook in and add scripts %>
   </body>
 </html>
