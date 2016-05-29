@@ -16,14 +16,14 @@ class ViewMailer < ActionMailer::Base
 
   class_attribute :stylesheets
   self.stylesheets = %w{
-    core/colors.scss.erb
-    core/avatars.scss
-    core/scores.scss
-    application/emoji.scss
-    application/markdown.scss
-    application/test_run.scss
-    application/releases.scss
-    application/follow_up.scss
+    houston/core/colors.scss.erb
+    houston/core/avatars.scss
+    houston/core/scores.scss
+    houston/application/emoji.scss
+    houston/application/markdown.scss
+    houston/application/test_run.scss
+    houston/application/releases.scss
+    houston/application/follow_up.scss
   }
 
   helper_method :can?, :cannot?, :current_ability, :stylesheets

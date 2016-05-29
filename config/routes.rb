@@ -299,4 +299,12 @@ Rails.application.routes.draw do
     mount mod.engine => "/"
   end
 
+
+
+  # The Instance
+
+  if defined?(Houston::Engine)
+    mount Houston::Engine => "/"
+  end
+
 end

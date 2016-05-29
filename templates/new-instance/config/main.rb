@@ -3,6 +3,7 @@
 # Load Houston
 require "houston/application"
 
+require_relative "../lib/houston/engine"
 require_relative "../lib/slack_helpers"
 require_relative "../lib/time_helpers"
 
