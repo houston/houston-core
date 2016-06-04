@@ -7,6 +7,10 @@ class Job < ActiveRecord::Base
 
 
 
+  def self.started_before(time)
+    where arel_table[:started_at].lteq time
+  end
+
   def self.record(job_name)
     job = Job.create!(name: job_name, started_at: Time.now)
     begin
