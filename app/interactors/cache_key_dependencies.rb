@@ -4,11 +4,7 @@ class CacheKeyDependencies
   def self.for(*projects)
     projects = projects[0] if projects.length == 1 && projects[0].respond_to?(:each)
     projects.each do |project|
-      begin
-        self.new(project).perform!
-      rescue StandardError => e
-        Houston.report_exception(e)
-      end
+      self.new(project).perform!
     end
   end
 
