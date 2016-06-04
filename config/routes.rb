@@ -247,8 +247,8 @@ Rails.application.routes.draw do
   # Jobs
 
   get "jobs", to: "jobs#index", as: :jobs
-  get "jobs/:slug", to: "jobs#show", as: :job
-  post "jobs/:slug", to: "jobs#run", as: :run_job
+  get "jobs/:slug", to: "jobs#show", as: :job, constraints: { slug: /[^\/]+/ }
+  post "jobs/:slug", to: "jobs#run", as: :run_job, constraints: { slug: /[^\/]+/ }
 
 
 
