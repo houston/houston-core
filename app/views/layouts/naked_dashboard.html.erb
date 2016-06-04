@@ -20,10 +20,9 @@
     <%= yield :stylesheets %><%# so that Engines can hook in and add styles %>
 
     <!-- Le fav and touch icons -->
-    <link rel="icon" type="image/x-icon" href="<%= ENV['RAILS_RELATIVE_URL_ROOT'] %>/favicon.png" />
-    <link href="images/apple-touch-icon.png" rel="apple-touch-icon">
-    <link href="images/apple-touch-icon-72x72.png" rel="apple-touch-icon" sizes="72x72">
-    <link href="images/apple-touch-icon-114x114.png" rel="apple-touch-icon" sizes="114x114">
+    <% unless unfurling? %>
+      <link rel="icon" type="image/x-icon" href="<%= ENV['RAILS_RELATIVE_URL_ROOT'] %>/favicon.png" />
+    <% end %>
   </head>
   <body class="dashboard">
     <div id="container" <% if params[:zoom].to_f > 0 %> style="transform: scale(<%= params[:zoom].to_f %>); transform-origin: 50% 0; -webkit-transform: scale(<%= params[:zoom].to_f %>); -webkit-transform-origin: 50% 0; -moz-transform: scale(<%= params[:zoom].to_f %>); -moz-transform-origin: 50% 0;" <% end %>>

@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
 
 
   delegate :mobile?, to: :browser
-  helper_method :mobile?
+  helper_method :mobile?, :unfurling?
 
 
   rescue_from CanCan::AccessDenied do |exception|
