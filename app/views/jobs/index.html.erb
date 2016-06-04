@@ -13,7 +13,7 @@
         <tr>
           <td class="table-margin"></td>
           <th class="scheduler-job-name">Name</th>
-          <th class="scheduler-job-schedule">Schedule</th>
+          <td class="scheduler-job-schedule">Schedule</td>
           <th class="scheduler-job-last">Last Run</th>
           <th class="scheduler-job-reliability">Reliability</th>
           <th class="scheduler-job-duration">Duration</th>
@@ -28,7 +28,7 @@
             <td class="scheduler-job-name"><%= link_to job[:name], job_path(slug: job[:name]) %></td>
             <td class="scheduler-job-schedule"><%= job[:schedule] %></td>
             <% if job[:last] %>
-              <td class="scheduler-job-last">
+              <td class="scheduler-job-last" data-timestamp="<%= job[:last].started_at.iso8601 %>">
                 <%= format_time job[:last].started_at, today: false %>
                 <%= format_job_state job[:last] %>
               </td>
@@ -36,7 +36,7 @@
                 <%= number_to_percentage 100.0 * job[:successful_runs].to_f / job[:runs], precision: 1 %>
                 <span class="scheduler-job-success-rate">/<%= job[:runs] %></span>
               </td>
-              <td class="scheduler-job-duration"><%= format_duration job[:avg_duration] %></td>
+              <td class="scheduler-job-duration" data-position="<%= job[:avg_duration] %>"><%= format_duration job[:avg_duration] %></td>
             <% else %>
               <td class="scheduler-job-last">&mdash;</td>
               <td class="scheduler-job-reliability">&mdash;</td>
@@ -60,7 +60,13 @@
 <% content_for :javascripts do %>
   <script type="text/javascript">
     $(function() {
-      $('#jobs').tablesorter();
+      $('#jobs').tablesorter({
+        headers: {
+          3: { sorter: 'timestamp' },
+          4: { sorter: 'percent' },
+          5: { sorter: 'property' }
+        }
+      });
     });
   </script>
 <% end %>
