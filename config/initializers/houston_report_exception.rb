@@ -1,7 +1,10 @@
 module Houston
 
   def self.report_exception(exception, other_data={})
-    raise if Rails.env.test? || Rails.env.development?
+    if Rails.env.test? || Rails.env.development?
+      Rails.logger.error "\e[31;1m#{exception.class}: #{exception.message}\n#{exception.backtrace.join("\n  ")}\e[0m"
+      return
+    end
 
     begin
       Rails.logger.error "#{exception.class}: #{exception.message}\n#{exception.backtrace.join("\n  ")}"
