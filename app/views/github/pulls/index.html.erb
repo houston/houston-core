@@ -38,7 +38,11 @@
             <% end %>
           </td>
           <td class="pull-request-project">
-            <%= link_to pull.project.slug, pull.project.repo.pulls_url, class: "label #{pull.project.color}", target: "_blank" %>
+            <% if pull.project.repo.respond_to?(:pulls_url) %>
+              <%= link_to pull.project.slug, pull.project.repo.pulls_url, class: "label #{pull.project.color}", target: "_blank" %>
+            <% else %>
+              <span class="label <%= pull.project.color %>"><%= pull.project.slug %></span>
+            <% end %>
           </td>
           <td class="pull-request-title">
             <%= link_to emojify(pull.title), pull.url, target: "_blank" %>
