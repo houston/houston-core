@@ -13,7 +13,7 @@
         <%= f.text_field :slug, :class => "text_field" %>
       </div>
     </div>
-    
+
     <div class="control-group">
       <%= f.label :color, :class => "control-label" %>
       <div class="controls">
@@ -23,11 +23,11 @@
         <% end %>
       </div>
     </div>
-    
+
     <% Project.adapters.each do |_, adapter| %>
-      
+
       <hr />
-      
+
       <div class="control-group project-adapter" id="<%= adapter.attribute_name %>">
         <label class="control-label"><%= adapter.title %></label>
         <div class="controls">
@@ -52,7 +52,7 @@
           <% end %>
         </div>
       </div>
-      
+
     <% end %>
 
     <hr />
