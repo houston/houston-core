@@ -61,13 +61,7 @@ module Houston
         @hash = hash
       end
 
-      def [](prop_name)
-        @hash[prop_name]
-      end
-
-      def fetch(prop_name, default_value)
-        @hash.fetch(prop_name, default_value)
-      end
+      delegate :[], :fetch, :each_pair, :key?, to: :@hash
 
       def []=(prop_name, value)
         merge!(prop_name => value)
@@ -84,6 +78,17 @@ module Houston
 
       def to_h
         @hash.dup
+      end
+
+      def respond_to_missing?(method_name, *args)
+        return true if key?(method_name.to_s)
+        super
+      end
+
+      def method_missing(method_name, *args, &block)
+        prop_name = method_name.to_s
+        return self[prop_name] if key?(prop_name)
+        super
       end
     end
 

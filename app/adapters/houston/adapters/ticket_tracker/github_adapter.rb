@@ -16,7 +16,7 @@ module Houston
           end
 
           def parameters
-            [:github_repo]
+            %w{github.repo}
           end
 
         end

@@ -15,10 +15,9 @@ class CacheKeyDependencies
   def perform!
     KeyDependency.all.each do |dependency|
       version = ProjectDependency.new(project, dependency).version
-      project.extended_attributes = project.extended_attributes.merge(
-        "key_dependency.#{dependency.slug}" => version)
+      project.props["keyDependency.#{dependency.slug}"] = version
     end
-    project.update_column :extended_attributes, project.extended_attributes
+    project.update_column :props, project.props.to_h
   end
 
 end

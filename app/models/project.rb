@@ -2,6 +2,7 @@ class Project < ActiveRecord::Base
   extend ProjectAdapter
   include Retirement
   include FeatureState
+  include Houston::Props
 
   has_many :releases, dependent: :destroy
   has_many :commits, dependent: :destroy, extend: CommitSynchronizer
@@ -59,7 +60,7 @@ class Project < ActiveRecord::Base
   end
 
   def show_release_notes_for?(environment_name)
-    extended_attributes["releases.ignore.#{environment_name.downcase}"] != "1"
+    props["releases.ignore.#{environment_name.downcase}"] != "1"
   end
 
   def environment(environment_name)
@@ -67,11 +68,19 @@ class Project < ActiveRecord::Base
   end
 
   def extended_attributes
-    super || (self.extended_attributes = {})
+    raise NotImplementedError, "This feature has been deprecated; use props"
+  end
+
+  def extended_attributes=(value)
+    raise NotImplementedError, "This feature has been deprecated; use props"
   end
 
   def view_options
-    super || {}
+    raise NotImplementedError, "This feature has been deprecated; use props"
+  end
+
+  def view_options=(value)
+    raise NotImplementedError, "This feature has been deprecated; use props"
   end
 
   def testers

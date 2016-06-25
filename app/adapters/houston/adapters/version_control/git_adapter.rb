@@ -43,7 +43,7 @@ module Houston
           end
 
           def parameters
-            [:git_location]
+            %w{git.location}
           end
 
           # ------------------------------------------------------------------------- #
@@ -61,9 +61,9 @@ module Houston
 
         private
 
-          ERROR_BLANK = {git_location: ["is blank"]}.freeze
-          ERROR_DOES_NOT_EXIST = {git_location: ["does not exist"]}.freeze
-          ERROR_CANT_CONNECT = {git_location: ["might not be right. Houston can't seem to connect to it."]}.freeze
+          ERROR_BLANK = {"git.location" => ["is blank"]}.freeze
+          ERROR_DOES_NOT_EXIST = {"git.location" => ["does not exist"]}.freeze
+          ERROR_CANT_CONNECT = {"git.location" => ["might not be right. Houston can't seem to connect to it."]}.freeze
 
           SSH_USERNAME = "git".freeze
           SSH_PRIVATEKEY = File.expand_path("~/.ssh/id_rsa").freeze

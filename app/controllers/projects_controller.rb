@@ -31,13 +31,13 @@ class ProjectsController < ApplicationController
   def new_from_github
     authorize! :create, Project
 
-    existing_projects = Project.unscoped.where("extended_attributes->'git_location' LIKE '%github.com%'")
+    existing_projects = Project.unscoped.where("props->>'git.location' LIKE '%github.com%'")
     github_repos = Houston.benchmark "Fetching repos" do
       Houston.github.repos
     end
     @repos = github_repos.map do |repo|
       project = existing_projects.detect { |project|
-        [repo.git_url, repo.ssh_url, repo.clone_url].member?(project.extended_attributes["git_location"]) }
+        [repo.git_url, repo.ssh_url, repo.clone_url].member?(project.props["git.location"]) }
       { name: repo.name,
         owner: repo.owner.login,
         full_name: repo.full_name,
@@ -60,7 +60,7 @@ class ProjectsController < ApplicationController
           name: title,
           slug: name,
           version_control_name: "Git",
-          extended_attributes: {"git_location" => "git@github.com:#{repo}.git"})
+          props: {"git.location" => "git@github.com:#{repo}.git"})
       end
     end
 

@@ -492,7 +492,8 @@ CREATE TABLE projects (
     view_options hstore DEFAULT ''::hstore NOT NULL,
     feature_states hstore DEFAULT ''::hstore NOT NULL,
     selected_features text[],
-    head_sha character varying(255)
+    head_sha character varying(255),
+    props jsonb DEFAULT '{}'::jsonb
 );
 
 
@@ -2504,4 +2505,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160507135846');
 INSERT INTO schema_migrations (version) VALUES ('20160510233329');
 
 INSERT INTO schema_migrations (version) VALUES ('20160625203412');
+
+INSERT INTO schema_migrations (version) VALUES ('20160625221840');
 

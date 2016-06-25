@@ -7,7 +7,7 @@ $errbit_since_changes_since = 1.week.ago
 Houston::Alerts.config.sync :changes, "err", every: "45s" do
   app_project_map = Hash[Project
     .where(error_tracker_name: "Errbit")
-    .pluck("(extended_attributes->'errbit_app_id')::integer", :id)]
+    .pluck("(props->>'errbit.appId')::integer", :id)]
   app_ids = app_project_map.keys
 
   Houston::Adapters::ErrorTracker::ErrbitAdapter.changed_problems(app_id: app_ids, since: $errbit_since_changes_since).map { |problem|

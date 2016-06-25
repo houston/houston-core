@@ -4,14 +4,14 @@ class ProjectOptionsController < ApplicationController
 
 
   def update
-    project.view_options = project.view_options.merge(params[:options])
+    project.props.merge! params[:options]
     project.save!
     head :ok
   end
 
 
   def destroy
-    project.view_options = project.view_options.except(params[:key])
+    project.props.delete! params[:key]
     project.save!
     head :ok
   end

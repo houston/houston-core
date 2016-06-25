@@ -10,15 +10,15 @@ class ProjectTest < ActiveSupport::TestCase
 
   context "Validation:" do
     should "validate version control parameters when a version control adapter is specified" do
-      project = Project.new(version_control_name: "Git", extended_attributes: {"git_location" => "/wrong/path"})
+      project = Project.new(version_control_name: "Git", props:  {"git.location" => "/wrong/path"})
       project.valid?
-      assert project.errors[:git_location].any?
+      assert project.errors["git.location"].any?
     end
 
     should "not validate version control parameters if no adapter is specified" do
-      project = Project.new(version_control_name: "None", extended_attributes: {"git_location" => "/wrong/path"})
+      project = Project.new(version_control_name: "None", props:  {"git.location" => "/wrong/path"})
       project.valid?
-      refute project.errors[:git_location].any?
+      refute project.errors["git.location"].any?
     end
   end
 
@@ -64,7 +64,7 @@ class ProjectTest < ActiveSupport::TestCase
         name: "Test",
         slug: "test-01",
         version_control_name: "Git",
-        extended_attributes:  {"git_location" => "git@github.com:houston/fixture.git"})
+        props:  {"git.location" => "git@github.com:houston/fixture.git"})
     end
 
     teardown do

@@ -8,22 +8,22 @@ class ProjectOptionsControllerTest < ActionController::TestCase
   setup do
     sign_in User.first
     @project = create(:project,
-      view_options: {
-        "speed" => "plaid",
-        "helmet" => "dark" })
+      props: {
+        "view.speed" => "plaid",
+        "view.helmet" => "dark" })
   end
 
 
   context "#update" do
     should "merge supplied options with the project's options" do
       expected_options = {
-        "speed" => "light",
-        "helmet" => "dark",
-        "schwartz" => "up side" }
+        "view.speed" => "light",
+        "view.helmet" => "dark",
+        "view.schwartz" => "up side" }
 
-      put :update, slug: "test", options: {speed: "light", schwartz: "up side"}
+      put :update, slug: "test", options: {"view.speed" => "light", "view.schwartz" => "up side"}
       assert_response :ok
-      assert_equal expected_options, project.reload.view_options
+      assert_equal expected_options, project.reload.props.to_h
     end
   end
 
@@ -31,11 +31,11 @@ class ProjectOptionsControllerTest < ActionController::TestCase
   context "#destroy" do
     should "remove the specified key from the project's options" do
       expected_options = {
-        "speed" => "plaid" }
+        "view.speed" => "plaid" }
 
-      delete :destroy, slug: "test", key: "helmet"
+      delete :destroy, slug: "test", key: "view.helmet"
       assert_response :ok
-      assert_equal expected_options, project.reload.view_options
+      assert_equal expected_options, project.reload.props.to_h
     end
   end
 

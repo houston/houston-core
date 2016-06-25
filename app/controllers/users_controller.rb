@@ -61,7 +61,7 @@ class UsersController < ApplicationController
 
     attributes = params[:user]
     attributes[:alias_emails] = attributes.fetch(:alias_emails, "").split.map(&:strip)
-    attributes[:view_options] = @user.view_options.merge(attributes[:view_options] || {})
+    @user.props.merge! attributes.delete(:props) if attributes.key?(:props)
 
     if @user.update_attributes(attributes)
       redirect_to @user, notice: 'User was successfully updated.'

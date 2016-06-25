@@ -16,7 +16,7 @@ class CreatingAReleaseTest < ActionDispatch::IntegrationTest
       slug: "houston",
       ticket_tracker_name: "Houston",
       version_control_name: "Git",
-      extended_attributes:  {"git_location" => Rails.root.join(".git")})
+      props:  {"git.location" => Rails.root.join(".git").to_s})
     @project.roles.create!(name: "Maintainer", user: user)
     @ticket = @project.tickets.create!(
       number: 116,

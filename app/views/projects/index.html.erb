@@ -77,7 +77,7 @@
 
           <% KeyDependency.all.each do |dependency| %>
             <td class="project-dependency">
-              <%= project.extended_attributes["key_dependency.#{dependency.slug}"] %>
+              <%= project.props["keyDependency.#{dependency.slug}"] %>
             </td>
           <% end %>
 

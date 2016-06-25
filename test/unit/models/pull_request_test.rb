@@ -16,7 +16,7 @@ class PullRequestTest < ActiveSupport::TestCase
         name: "Test",
         slug: "test",
         version_control_name: "Git",
-        extended_attributes: { "git_location" => Rails.root.join("test", "data", "bare_repo.git") })
+        props: {"git.location" => Rails.root.join("test", "data", "bare_repo.git").to_s})
 
       @pull_request_payload = {
         "number" => 1,
@@ -160,7 +160,7 @@ class PullRequestTest < ActiveSupport::TestCase
         name: "Test",
         slug: "test",
         version_control_name: "Git",
-        extended_attributes: { "git_location" => Rails.root.join("test", "data", "bare_repo.git") })
+        props: {"git.location" => Rails.root.join("test", "data", "bare_repo.git").to_s})
 
       @pull_request = Github::PullRequest.create!(
         project: @project,

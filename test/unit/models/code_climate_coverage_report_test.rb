@@ -11,7 +11,7 @@ class CodeClimateCoverageReportTest < ActiveSupport::TestCase
       slug: "test",
       ci_server_name: "Jenkins",
       version_control_name: "Git",
-      extended_attributes: { "git_location" => Rails.root.join("test/data/bare_repo.git").to_s })
+      props: {"git.location" => Rails.root.join("test/data/bare_repo.git").to_s})
     @commit = Commit.new(project: @project, sha: @sha)
     @test_run = TestRun.new(
       project: project,

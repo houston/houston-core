@@ -11,7 +11,7 @@ class CommitsApiTest < ActionDispatch::IntegrationTest
       name: "Test",
       slug: "test",
       version_control_name: "Git",
-      extended_attributes: { "git_location" => Rails.root.join("test", "data", "bare_repo.git") })
+      props: {"git.location" => Rails.root.join("test", "data", "bare_repo.git").to_s})
 
     project.repo.all_commits.each do |sha|
       native_commit = project.repo.native_commit(sha)

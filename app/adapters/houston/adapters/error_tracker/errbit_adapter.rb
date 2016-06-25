@@ -6,7 +6,7 @@ module Houston
         class << self
 
           def errors_with_parameters(project, app_id)
-            return {errbit_app_id: ["cannot be blank"]} if app_id.blank?
+            return {"errbit.appId" => ["cannot be blank"]} if app_id.blank?
 
             # !todo: validate that the app exists
             # begin
@@ -24,7 +24,7 @@ module Houston
           end
 
           def parameters
-            [:errbit_app_id]
+            %w{errbit.appId}
           end
 
 

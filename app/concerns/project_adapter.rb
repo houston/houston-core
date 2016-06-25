@@ -83,7 +83,7 @@ module ProjectAdapter
 
         def #{params_method}
           #{adapter_method}.parameters.each_with_object({}) do |parameter, hash|
-            hash[parameter] = extended_attributes[parameter.to_s]
+            hash[parameter] = props[parameter.to_s]
           end
         end
 

@@ -42,8 +42,8 @@
             <div class="project-adapter-fields" data-adapter="<%= name %>">
               <% adapter.namespace.adapter(name).parameters.each do |parameter| %>
                 <% errors = @project.errors[parameter].flatten %>
-                <%= label_tag "project[extended_attributes][#{parameter}]", parameter.to_s.gsub("_", " ").gsub(/\b('?[a-z])/) { $1.capitalize } %>
-                <%= text_field_tag "project[extended_attributes][#{parameter}]", @project.extended_attributes[parameter.to_s], :class => "text_field #{"error" if errors.any?}" %>
+                <%= label_tag "project[props][#{parameter}]", parameter.to_s.gsub("_", " ").gsub(/\b('?[a-z])/) { $1.capitalize } %>
+                <%= text_field_tag "project[props][#{parameter}]", @project.props[parameter.to_s], :class => "text_field #{"error" if errors.any?}" %>
                 <% if errors.any? %>
                   <span class="help-inline">&nbsp;<%= errors.to_sentence %></span>
                 <% end %>
@@ -78,8 +78,7 @@
 
           <% if feature.fields.any? %>
             <div class="project-feature-fields" data-feature="<%= feature_slug %>">
-              <%= f.fields_for :extended_attributes, nil do |f| %>
-                <% f.object = OpenStruct.new(@project.extended_attributes) # WTF %>
+              <%= f.fields_for :props do |f| %>
                 <% feature.fields.each do |form| %>
                   <div class="project-feature-field">
                     <%= form.render(self, f) %>

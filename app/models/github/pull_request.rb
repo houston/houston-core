@@ -42,8 +42,8 @@ module Github
       # requests from 52 repos.
       def fetch!(projects = Project.unretired)
         repos = projects
-          .where("extended_attributes->'git_location' LIKE '%github.com%'")
-          .pluck("extended_attributes->'git_location'")
+          .where("props->>'git.location' LIKE '%github.com%'")
+          .pluck("props->>'git.location'")
           .map { |url| _repo_name_from_url(url) }
           .compact
 

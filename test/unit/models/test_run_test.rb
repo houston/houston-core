@@ -47,7 +47,7 @@ class TestRunTest < ActiveSupport::TestCase
         name: "Test",
         slug: "test",
         version_control_name: "Git",
-        extended_attributes: { "git_location" => path })
+        props: {"git.location" => path})
     end
 
     should "create tests for the project" do

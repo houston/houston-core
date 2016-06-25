@@ -56,8 +56,7 @@
 
 
 
-    <%= f.fields_for :props, nil do |f| %>
-      <% f.object = OpenStruct.new(@user.props) # WTF %>
+    <%= f.fields_for :props do |f| %>
       <% Houston.config.user_options.each do |form| %>
         <hr />
 

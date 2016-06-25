@@ -22,7 +22,7 @@ class ProjectPresenter
       color: {
         name: project.color,
         hex: project.color_value.hex },
-      props: project.extended_attributes }
+      props: project.props.to_h }
   end
 
 end
