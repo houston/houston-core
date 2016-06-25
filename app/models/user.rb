@@ -115,6 +115,14 @@ class User < ActiveRecord::Base
     raise NotImplementedError, "This feature has been deprecated; use props"
   end
 
+  def unfuddle_id
+    raise NotImplementedError, "This feature has been deprecated; use props[\"unfuddle.id\"]"
+  end
+
+  def unfuddle_id=(value)
+    raise NotImplementedError, "This feature has been deprecated; use props[\"unfuddle.id\"]"
+  end
+
 
 
   # Extract to Houston::GitHub
