@@ -2,11 +2,11 @@ module Houston
   module Props
     extend ActiveSupport::Concern
 
-    VALID_PROP_NAME = /\A[a-z0-9]+(?:\.[a-z0-9]+)+\Z/i.freeze
+    VALID_PROP_NAME = /\A[a-z0-9]+(?:\.[a-z0-9_\-]+)+\Z/i.freeze
 
     def self.valid_prop_name!(prop_name)
       return if prop_name =~ VALID_PROP_NAME
-      raise ArgumentError, "#{prop_name.inspect} can only contain letters, numbers, and must contain at least one period"
+      raise ArgumentError, "#{prop_name.inspect} can only contain word-characters, hyphens, and must contain at least one period"
     end
 
 
