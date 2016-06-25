@@ -1120,7 +1120,8 @@ CREATE TABLE users (
     current_project_id integer,
     nickname character varying(255),
     username character varying(255),
-    environments_subscribed_to text[] DEFAULT '{}'::text[] NOT NULL
+    environments_subscribed_to text[] DEFAULT '{}'::text[] NOT NULL,
+    props jsonb DEFAULT '{}'::jsonb
 );
 
 
@@ -2501,4 +2502,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160507135209');
 INSERT INTO schema_migrations (version) VALUES ('20160507135846');
 
 INSERT INTO schema_migrations (version) VALUES ('20160510233329');
+
+INSERT INTO schema_migrations (version) VALUES ('20160625203412');
 

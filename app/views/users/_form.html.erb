@@ -53,11 +53,11 @@
         </div>
       </div>
     <% end %>
-    <%= f.fields_for :view_options, nil do |f| %>
-      <% f.object = OpenStruct.new(@user.view_options) # WTF %>
 
 
 
+    <%= f.fields_for :props, nil do |f| %>
+      <% f.object = OpenStruct.new(@user.props) # WTF %>
       <% Houston.config.user_options.each do |form| %>
         <hr />
 

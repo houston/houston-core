@@ -7,35 +7,35 @@ class UserOptionsControllerTest < ActionController::TestCase
 
   setup do
     @user = create(:user,
-      view_options: {
-        "speed" => "plaid",
-        "helmet" => "dark" })
+      props: {
+        "view.speed" => "plaid",
+        "view.helmet" => "dark" })
     sign_in @user
   end
 
 
   context "#update" do
-    should "merge supplied options with the project's options" do
+    should "merge supplied options with the user's options" do
       expected_options = {
-        "speed" => "light",
-        "helmet" => "dark",
-        "schwartz" => "up side" }
+        "view.speed" => "light",
+        "view.helmet" => "dark",
+        "view.schwartz" => "up side" }
 
-      put :update, options: {speed: "light", schwartz: "up side"}
+      put :update, options: {"view.speed" => "light", "view.schwartz" => "up side"}
       assert_response :ok
-      assert_equal expected_options, user.reload.view_options
+      assert_equal expected_options, user.reload.props.to_h
     end
   end
 
 
   context "#destroy" do
-    should "remove the specified key from the project's options" do
+    should "remove the specified key from the user's options" do
       expected_options = {
-        "speed" => "plaid" }
+        "view.speed" => "plaid" }
 
-      delete :destroy, key: "helmet"
+      delete :destroy, key: "view.helmet"
       assert_response :ok
-      assert_equal expected_options, user.reload.view_options
+      assert_equal expected_options, user.reload.props.to_h
     end
   end
 

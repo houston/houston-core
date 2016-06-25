@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
   include Retirement
+  include Houston::Props
 
   has_many :testing_notes
   has_many :roles, :dependent => :destroy
@@ -72,10 +73,6 @@ class User < ActiveRecord::Base
     with_email_address(email_address).first
   end
 
-  def self.with_view_option(option, value)
-    where(["view_options->? = ?", option, value])
-  end
-
 
 
   def email=(value)
@@ -111,7 +108,11 @@ class User < ActiveRecord::Base
   end
 
   def view_options
-    super || {}
+    raise NotImplementedError, "This feature has been deprecated; use props"
+  end
+
+  def view_options=(value)
+    raise NotImplementedError, "This feature has been deprecated; use props"
   end
 
 
@@ -120,37 +121,22 @@ class User < ActiveRecord::Base
   # ------------------------------------------------------------------------- #
 
   def self.find_by_github_username(username)
-    # If we can already identify the user who has the given username, return them
-    user = ::User.where(["view_options->'github_username' = ?", username]).first
-    return user if user
+    find_by_prop "github.username", username do |username|
 
-    # Look up the email address of the GitHub user and see if we can
-    # identify the Houston user by the GitHub user's email address.
-    user = Houston.github.user(username)
-    user = find_by_email_address user.email if user
+      # Look up the email address of the GitHub user and see if we can
+      # identify the Houston user by the GitHub user's email address.
+      user = Houston.github.user(username)
+      user = find_by_email_address user.email if user
 
-    # We couldn't find the user by their email address, now
-    # we'll look at their nicknames
-    user = find_by_nickname username unless user
+      # We couldn't find the user by their email address, now
+      # we'll look at their nicknames
+      user = find_by_nickname username unless user
 
-    # We've failed to identify this user
-    unless user
-      Rails.logger.warn "\e[31m[pulls] Unable to identify a user for the GitHub username \e[1m#{username}\e[0m"
-      return nil
     end
-
-    # If we have identified the user, store their username so that
-    # we can skip the email-lookup step in the future.
-    user.set_github_username! username
-    user
   end
 
   def github_username
-    view_options["github_username"]
-  end
-
-  def set_github_username!(username)
-    update_column :view_options, view_options.merge("github_username" => username)
+    props["github.username"]
   end
 
   # ------------------------------------------------------------------------- #
