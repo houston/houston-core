@@ -15,6 +15,7 @@
 /pkg
 
 # Ignore misc.
+/reminders.yml
 REVISION
 .sass-cache
 .rvmrc
