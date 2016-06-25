@@ -28,14 +28,14 @@
         <%= f.text_field :email, :class => "text_field" %>
       </div>
     </div>
-    
+
     <div class="control-group">
       <%= f.label :alias_emails, "Other Email Addresses", :class => "control-label" %>
       <div class="controls">
         <%= f.text_area :alias_emails, :class => "text_field", rows: 3, value: @user.alias_emails.join("\n") %>
       </div>
     </div>
-    
+
     <% if can?(:manage, @user) %>
       <div class="control-group">
         <%= f.label :role, :class => "control-label" %>
@@ -44,7 +44,7 @@
         </div>
       </div>
     <% end %>
-    
+
     <% if can?(:manage, @user) %>
       <div class="control-group">
         <%= f.label :administrator, :class => "control-label" %>
@@ -53,14 +53,14 @@
         </div>
       </div>
     <% end %>
-    
-    
-    
     <%= f.fields_for :view_options, nil do |f| %>
       <% f.object = OpenStruct.new(@user.view_options) # WTF %>
+
+
+
       <% Houston.config.user_options.each do |form| %>
         <hr />
-        
+
         <div class="control-group">
           <label class="control-label"><%= form.name %></label>
           <div class="controls">
@@ -69,18 +69,18 @@
         </div>
       <% end %>
     <% end %>
-    
-    
-    
+
+
+
     <% if @user.credentials.any? %>
       <hr />
-      
+
       <div class="control-group">
         <label class="control-label">Credentials</label>
         <div class="controls">
-          
+
           <p>Houston has remembered your credentials for:</p>
-          
+
           <ul class="user-credentials">
             <%= content_tag_for :li, @user.credentials do |user_credentials| %>
               <span class="user-credentials-service"><%= user_credentials.service %></span>
@@ -92,8 +92,8 @@
         </div>
       </div>
     <% end %>
-    
-    
+
+
     <% if @user.new_record? %>
       <div class="control-group">
         <div class="controls">
@@ -103,7 +103,7 @@
         </div>
       </div>
     <% end %>
-    
+
     <div class="form-actions">
       <%= f.submit nil, :class => "btn btn-primary" %>
       <%= link_to "Invite", invite_user_path(@user), :method => "post", :class => "btn btn-primary" if @user.persisted? && @user.encrypted_password.blank? && !@user.invited? && can?(:create, User) %>
@@ -113,7 +113,7 @@
         <button class="btn btn-delete btn-danger" id="retire_user_button">Retire</button>
       <% end %>
     </div>
-    
+
   </fieldset>
 <% end %>
 
