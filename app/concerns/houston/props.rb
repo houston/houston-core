@@ -11,9 +11,13 @@ module Houston
 
 
     module ClassMethods
-      def find_by_prop(prop_name, value)
+      def with_prop(prop_name, value)
         Houston::Props.valid_prop_name!(prop_name)
-        result = where(["props->>'#{prop_name}' = ?", value]).limit(1).first
+        where(["props->>? = ?", prop_name, value])
+      end
+
+      def find_by_prop(prop_name, value)
+        result = with_prop(prop_name, value).limit(1).first
 
         if !result && block_given?
           result = yield value
