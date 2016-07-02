@@ -22,3 +22,6 @@ group :test do
   gem "minitest-reporters", require: false
   gem "minitest-reporters-turn_reporter", require: false
 end
+
+# Use the development version of houston-core
+# gem "houston-core", github: "houston/houston-core", branch: "master"
