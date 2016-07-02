@@ -1,3 +1,13 @@
+<% content_for :meta do %>
+  <%= link_to_oembed test_run_url(slug: @test_run.project.slug, commit: @test_run.sha) %>
+  <%= tag "meta", property: "og:type", content: "website" %>
+  <%= tag "meta", property: "og:site_name", content: "Houston" %>
+  <%= tag "meta", property: "og:title", content: @test_run.summary %>
+  <%= tag "meta", property: "og:description", content: @test_run.short_description(with_duration: true) %>
+  <%= tag "meta", property: "og:url", content: test_run_url(slug: @test_run.project.slug, commit: @test_run.sha) %>
+<% end %>
+
+
 <h1 class="project-banner <%= @project.color %>" style="margin-bottom: 12px;">
   <small>Test Results for</small> <%= @project.name %>
 </h1>
@@ -13,12 +23,12 @@
         <span class="score-count"><%= (@test_run.duration / 1000.0).round(2) %><span class="unit">s</span></span>
         <span class="score-label">Duration</span>
       </p>
-    
+
       <p class="test-coverage">
         <span class="score-count"><%= (@test_run.covered_percent * 100.0).round(1) %><span class="unit">%</span></span>
         <span class="score-label">Coverage</span>
       </p>
-    
+
       <% if @test_run.real_fail_count.zero? %>
         <p class="test-coverage">
           <span class="score-count"><%= @test_run.total_count %></span>
@@ -40,7 +50,7 @@
       <td class="test-result-graph">
         <% stats = TestRunStatistics.new(@project) %>
         <% runs, width, height = 15, 188, 75 %>
-      
+
         <%= area_graph(
           data: stats.tests(runs),
           colors: ["FFFFFF", "AA0000", "E24E32", "5DB64C"],

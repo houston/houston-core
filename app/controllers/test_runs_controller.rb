@@ -4,7 +4,18 @@ class TestRunsController < ApplicationController
 
   def show
     @title = "Test Results for #{@test_run.sha[0...8]}"
-    render template: "project_notification/test_run"
+
+    if request.format.oembed?
+      render json: MultiJson.dump({
+        version: "1.0",
+        type: "link",
+        provider_name: "Houston",
+        author_name: @project.slug,
+        title: @test_run.summary,
+        html: @test_run.short_description(with_duration: true) })
+    else
+      render template: "project_notification/test_run"
+    end
   end
 
   def confirm_retry

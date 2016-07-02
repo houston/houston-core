@@ -128,6 +128,15 @@ class TestRun < ActiveRecord::Base
     project.test_runs.find_by_sha(last_tested_ancestor.sha).failed_or_errored?
   end
 
+  def summary
+    branch = "#{project.slug}/#{branch}"
+    case result
+    when "pass" then "All tests passed on #{branch}"
+    when "fail" then "#{fail_count} #{fail_count == 1 ? "test" : "tests"} failed on #{branch}"
+    else "The tests are broken on #{branch}"
+    end
+  end
+
   def short_description(with_duration: false)
     passes = "#{pass_count} #{pass_count == 1 ? "test" : "tests"} passed"
     fails = "#{fail_count} #{fail_count == 1 ? "test" : "tests"} failed"
