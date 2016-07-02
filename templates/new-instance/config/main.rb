@@ -135,7 +135,7 @@ Houston.config do
   # Menus are provided by Houston and modules.
   # Additional navigation can be defined by calling
   #
-  #   Houston.config.add_navigation_renderer
+  #   Houston.add_navigation_renderer
   #
   # For examples, see config/initializers/add_navigation_renderers.rb
   #

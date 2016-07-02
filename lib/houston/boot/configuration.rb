@@ -1,8 +1,8 @@
-root = File.expand_path(File.join(File.dirname(__FILE__), ".."))
+root = File.expand_path(File.join(File.dirname(__FILE__), "../../.."))
 require File.join(root, "lib/core_ext/hash")
 require File.join(root, "lib/core_ext/kernel")
 require File.join(root, "lib/core_ext/exception")
-require File.join(root, "lib/houston_observer")
+require File.join(root, "lib/houston/boot/observer")
 
 $:.unshift File.expand_path(File.join(root, "app/adapters"))
 require "houston/adapters"
@@ -15,9 +15,6 @@ module Houston
       @root = Rails.root
       @modules = []
       @gems = []
-      @navigation_renderers = {}
-      @user_options = {}
-      @available_project_features = {}
       @ticket_types = {}
       @authentication_strategy = :database
       @authentication_strategy_configuration = {}
@@ -124,51 +121,10 @@ module Houston
       @navigation ||= []
     end
 
-    def add_navigation_renderer(name, &block)
-      @navigation_renderers[name] = block
-    end
-
-    def get_navigation_renderer(name)
-      @navigation_renderers.fetch(name)
-    end
-
-
-
-    def add_user_option(slug, &block)
-      dsl = FormBuilderDsl.new
-      dsl.instance_eval(&block)
-      form = dsl.form
-      form.slug = slug
-
-      @user_options[slug] = form
-    end
-
-    def user_options
-      @user_options.values
-    end
-
-
-
     def project_features(*args)
       @project_features = args if args.any?
-      return @available_project_features.keys unless @project_features
-      @project_features & @available_project_features.keys
-    end
-
-    def get_project_feature(slug)
-      @available_project_features[slug]
-    end
-
-    def add_project_feature(slug, &block)
-      dsl = ProjectFeatureDsl.new
-      dsl.instance_eval(&block)
-      feature = dsl.feature
-      feature.slug = slug
-      raise ArgumentError, "Project Feature must supply name, but #{slug.inspect} doesn't" unless feature.name
-      raise ArgumentError, "Project Feature must supply icon, but #{slug.inspect} doesn't" unless feature.icon
-      raise ArgumentError, "Project Feature must supply path lambda, but #{slug.inspect} doesn't" unless feature.path_block
-
-      @available_project_features[slug] = feature
+      return Houston.available_project_features unless @project_features
+      @project_features & Houston.available_project_features
     end
 
 
@@ -429,7 +385,7 @@ module Houston
     end
 
     def method_missing(name, *args, &block)
-      puts "\e[33mMissing Configuration option: #{name}\e[0m"
+      puts "\e[31mMissing Configuration option: \e[1m#{name}\e[0;90m\n#{caller[0]}\e[0m\n\n"
       nil
     end
 
@@ -509,82 +465,7 @@ module Houston
 
 
 
-  class ProjectFeature
-    attr_accessor :name, :slug, :icon, :path_block, :ability_block, :fields
 
-    def initialize
-      self.fields = []
-    end
-
-    def project_path(project)
-      path_block.call project
-    end
-
-    def permitted?(ability, project)
-      return true if ability_block.nil?
-      ability_block.call ability, project
-    end
-  end
-
-
-
-  class ProjectFeatureDsl
-    attr_reader :feature
-
-    def initialize
-      @feature = ProjectFeature.new
-    end
-
-    def name(value)
-      feature.name = value
-    end
-
-    def icon(value)
-      feature.icon = value
-    end
-
-    def path(&block)
-      feature.path_block = block
-    end
-
-    def ability(&block)
-      feature.ability_block = block
-    end
-
-    def field(slug, &block)
-      dsl = FormBuilderDsl.new
-      dsl.instance_eval(&block)
-      form = dsl.form
-      form.slug = slug
-      feature.fields.push form
-    end
-  end
-
-
-
-  class ProjectFeatureForm
-    attr_accessor :slug, :name, :render_block
-
-    def render(view, f)
-      view.instance_exec(f, &render_block).html_safe
-    end
-  end
-
-  class FormBuilderDsl
-    attr_reader :form
-
-    def initialize
-      @form = ProjectFeatureForm.new
-    end
-
-    def name(value)
-      form.name = value
-    end
-
-    def html(&block)
-      form.render_block = block
-    end
-  end
 
 
 

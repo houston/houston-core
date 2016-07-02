@@ -1,7 +1,7 @@
 module NavigationHelper
 
   def render_navigation(key)
-    renderer = Houston.config.get_navigation_renderer(key)
+    renderer = Houston.get_navigation_renderer(key)
     instance_eval &renderer
   rescue KeyError
     Rails.logger.error "\e[31;1mThere is no navigation renderer named #{key.inspect}\e[0m"
@@ -16,7 +16,7 @@ module NavigationHelper
   end
 
   def render_nav_for_feature(feature)
-    feature = Houston.config.get_project_feature feature
+    feature = Houston.get_project_feature feature
     return unless feature.permitted?(current_ability, current_project)
 
     render_nav_link feature.name, feature.project_path(current_project), icon: feature.icon
