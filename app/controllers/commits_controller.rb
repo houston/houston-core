@@ -1,5 +1,5 @@
 class CommitsController < ApplicationController
-  before_filter :api_authenticate!
+  before_filter :api_authenticate!, only: [:index, :self]
 
   def index
     commits = Commit.includes(:releases).includes(:committers).includes(:project)
