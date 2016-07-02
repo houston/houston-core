@@ -43,8 +43,8 @@ class TestRunsController < ApplicationController
 private
 
   def find_test_run
-    @project = Project.find_by_slug!(params[:slug])
-    @test_run = @project.test_runs.find_by_sha!(params[:commit])
+    @test_run = TestRun.find_by_sha!(params[:commit])
+    @project = @test_run.project if @test_run
   end
 
 end

@@ -10,7 +10,8 @@ class TestRun < ActiveRecord::Base
     end
   end
 
-  validates_presence_of :project_id, :sha
+  validates :project, presence: true
+  validates :sha, presence: true, uniqueness: true
   validates :results_url, :presence => true, :if => :completed?
   validates :result, inclusion: {in: %w{aborted pass fail error}, allow_nil: true, message: "\"%{value}\" is unknown. It must be pass, fail, error, or aborted"}
   validates_associated :test_results
@@ -148,7 +149,7 @@ class TestRun < ActiveRecord::Base
 
 
   def url
-    "https://#{Houston.config.host}/projects/#{project.slug}/test_runs/#{sha}"
+    "https://#{Houston.config.host}/test_runs/#{sha}"
   end
 
 

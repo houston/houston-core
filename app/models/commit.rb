@@ -18,7 +18,7 @@ class Commit < ActiveRecord::Base
   after_create { Houston.observer.fire "commit:create", self }
 
   validates :project, presence: true
-  validates :sha, presence: true, :uniqueness => {scope: :project_id}
+  validates :sha, presence: true, uniqueness: true
   validates :message, presence: true
   validates :authored_at, presence: true
   validates :committer, presence: true
