@@ -246,6 +246,10 @@ class TestRun < ActiveRecord::Base
     write_attribute :tests, value
   end
 
+  def failing_tests
+    tests.select { |test| test[:status] == "fail" }
+  end
+
   def tests
     @tests ||= test_results.includes(:error).joins(:test).select("test_results.*", "tests.suite", "tests.name").map do |test_result|
       message, backtrace = test_result.error.output.split("\n\n") if test_result.error
