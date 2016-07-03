@@ -7,8 +7,12 @@ class @InfiniteScroll
     @success = options.success
     @error = options.error
 
-    @$window = $(window)
-    @$document = $(document)
+    @$window = @$el.closest('.scrollable')
+    @$document = @$el.closest('.scrollable-document')
+
+    if @$window.length is 0 or @$document.length is 0
+      @$window = $(window)
+      @$document = $(document)
     @$window.scroll _.bind(@onScroll, @)
 
   onScroll: ->
