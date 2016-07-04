@@ -39,9 +39,6 @@ Houston.config.abilities do |user|
     # Everyone can remove themselves from a role
     can :destroy, Role, user_id: user.id
 
-    # Everyone can edit their own testing notes
-    can [:update, :destroy], TestingNote, user_id: user.id
-
     # Developers can
     #  - create tickets
     #  - see other kinds of Release Changes (like Refactors)
@@ -54,21 +51,16 @@ Houston.config.abilities do |user|
     end
 
     # Testers and Developers can
-    #  - see and comment on all testing notes
     #  - create tickets
     #  - see and manage alerts
     if user.tester? or user.developer?
       can :create, Ticket
-      can [:create, :read], TestingNote
       can :manage, Houston::Alerts::Alert
     end
 
     # The following abilities are project-specific and depend on one's role
     roles = user.roles.participants
     if roles.any?
-
-      # Everyone can see and comment on Testing Reports for projects they are involved in
-      can [:create, :read], TestingNote, project_id: roles.pluck(:project_id)
 
       # Maintainers can manage Releases, close Tickets, and update Projects
       roles.maintainers.pluck(:project_id).tap do |project_ids|

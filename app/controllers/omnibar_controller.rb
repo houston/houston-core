@@ -44,18 +44,8 @@ class OmnibarController < ApplicationController
       { type: "project",
         projectTitle: project.name,
         projectColor: project.color,
-        title: "Testing Report",
-        url: "/testing_report/#{project.slug}" },
-      { type: "project",
-        projectTitle: project.name,
-        projectColor: project.color,
         title: "Releases",
-        url: "/projects/#{project.slug}/releases" },
-      { type: "project",
-        projectTitle: project.name,
-        projectColor: project.color,
-        title: "Pretickets",
-        url: "/pretickets/by_project/#{project.slug}" }]
+        url: "/projects/#{project.slug}/releases" }]
     end if filter.member? :project
 
     render json: results

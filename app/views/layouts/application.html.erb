@@ -64,9 +64,7 @@
     <%= javascript_include_tag "houston/vendor" %>
     <%= javascript_include_tag "houston/application" %>
     <script type="text/javascript">
-      $(function(){
-        window.testers = new Testers(<%= raw TesterPresenter.new(User.testers.unretired).to_json %>);
-
+      $(function() {
         <% if flash[:alert] %>
         alertify.log(<%=raw flash[:alert].to_json %>);
         <% end %>

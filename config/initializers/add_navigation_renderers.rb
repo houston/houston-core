@@ -26,12 +26,6 @@ Houston.add_project_feature :bugs do
   ability { |ability, project| ability.can?(:read, project.tickets.build) }
 end
 
-Houston.add_project_feature :testing do
-  name "Testing"
-  icon "fa-comments"
-  path { |project| Houston::Application.routes.url_helpers.project_testing_report_path(project) }
-end
-
 Houston.add_project_feature :releases do
   name "Releases"
   icon "fa-paper-plane"
@@ -69,15 +63,4 @@ Houston.add_project_feature :settings do
   icon "fa-gear"
   path { |project| Houston::Application.routes.url_helpers.edit_project_path(project) }
   ability { |ability, project| ability.can?(:update, project) }
-end
-
-
-
-Houston.add_project_option "testingReport.minPassingVerdicts" do
-  name "Min. Passing Verdicts"
-  html do |f|
-    <<-HTML
-    #{f.text_field :"testingReport.minPassingVerdicts", class: "text_field"}
-    HTML
-  end
 end

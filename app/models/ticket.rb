@@ -10,7 +10,6 @@ class Ticket < ActiveRecord::Base
   belongs_to :project
   belongs_to :reporter, class_name: "User"
   belongs_to :milestone, counter_cache: true
-  has_many :testing_notes
   has_many :tasks, validate: false
   has_and_belongs_to_many :releases
   has_and_belongs_to_many :commits, -> { where(unreachable: false) }
@@ -36,7 +35,7 @@ class Ticket < ActiveRecord::Base
 
   attr_readonly :number, :project_id
 
-  delegate :testers, :maintainers, :min_passing_verdicts, :ticket_tracker, to: :project
+  delegate :testers, :maintainers, :ticket_tracker, to: :project
   delegate :nosync?, to: "self.class"
 
 
@@ -283,24 +282,6 @@ class Ticket < ActiveRecord::Base
       deployment: nil, # <-- !todo: is this necessary?
       first_release_at: nil,
       last_release_at: nil)
-  end
-
-
-
-  def testing_notes_since_last_release
-    last_release_at ? testing_notes.where(["created_at > ?", last_release_at]) : testing_notes
-  end
-
-
-
-  def participants
-    @participants ||= begin              # Participants in a Ticket include:
-      User.unretired.where(id:           #
-        Array(reporter_id) +             #   - its reporter
-        testing_notes.pluck(:user_id) +  #   - anyone who has commented on it
-        releases.pluck(:user_id)) +      #   - anyone who has released it
-        committers                       #   - anyone who has comitted to it
-    end                                  #
   end
 
 

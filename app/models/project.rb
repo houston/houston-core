@@ -9,7 +9,6 @@ class Project < ActiveRecord::Base
   has_many :tickets, dependent: :destroy, extend: TicketSynchronizer
   has_many :milestones, dependent: :destroy, extend: MilestoneSynchronizer
   has_many :uncompleted_milestones, -> { uncompleted }, class_name: "Milestone"
-  has_many :testing_notes, dependent: :destroy
   has_many :test_runs, dependent: :destroy
   has_many :tests, dependent: :destroy
   has_many :deploys
@@ -81,10 +80,6 @@ class Project < ActiveRecord::Base
 
   def view_options=(value)
     raise NotImplementedError, "This feature has been deprecated; use props"
-  end
-
-  def min_passing_verdicts
-    props["testingReport.minPassingVerdicts"]
   end
 
   def testers

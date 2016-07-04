@@ -2,7 +2,6 @@ class User < ActiveRecord::Base
   include Retirement
   include Houston::Props
 
-  has_many :testing_notes
   has_many :roles, :dependent => :destroy
   has_many :credentials, :class_name => "UserCredentials", :dependent => :destroy
   has_many :tickets, foreign_key: "reporter_id"

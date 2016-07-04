@@ -263,9 +263,6 @@ Houston.config do
   #   * release:create          When a new Release has been created
   #   * test_run:start          When the CI server has begun a build
   #   * test_run:complete       When the CI server has completed a build
-  #   * testing_note:create     When a Testing Note has been created
-  #   * testing_note:update     When a Testing Note has been updated
-  #   * testing_note:save       When a Testing Note has been created or updated
   #   * ticket:release          When a Ticket is mentioned in a Release
   #   * task:released           When a commit mentioning a Task is released
   #   * task:committed          When a commit mentioning a Task is pushed
