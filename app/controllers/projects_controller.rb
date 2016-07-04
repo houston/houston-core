@@ -96,6 +96,8 @@ class ProjectsController < ApplicationController
   def update
     @project = Project.find_by_slug!(params[:id])
 
+    @project.props.merge! project_attributes.delete(:props) if project_attributes.key?(:props)
+
     if @project.update_attributes(project_attributes)
       redirect_to projects_path, notice: 'Project was successfully updated.'
     else

@@ -83,6 +83,10 @@ class Project < ActiveRecord::Base
     raise NotImplementedError, "This feature has been deprecated; use props"
   end
 
+  def min_passing_verdicts
+    props["testingReport.minPassingVerdicts"]
+  end
+
   def testers
     @testers ||= User.testers
   end

@@ -70,3 +70,14 @@ Houston.add_project_feature :settings do
   path { |project| Houston::Application.routes.url_helpers.edit_project_path(project) }
   ability { |ability, project| ability.can?(:update, project) }
 end
+
+
+
+Houston.add_project_option "testingReport.minPassingVerdicts" do
+  name "Min. Passing Verdicts"
+  html do |f|
+    <<-HTML
+    #{f.text_field :"testingReport.minPassingVerdicts", class: "text_field"}
+    HTML
+  end
+end

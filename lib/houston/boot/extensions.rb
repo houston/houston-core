@@ -13,20 +13,6 @@ module Houston
 
 
 
-    def add_user_option(slug, &block)
-      dsl = FormBuilderDsl.new
-      dsl.instance_eval(&block)
-      form = dsl.form
-      form.slug = slug
-
-      @user_options[slug] = form
-    end
-
-    def user_options
-      @user_options.values
-    end
-
-
 
     def available_project_features
       @available_project_features.keys
@@ -46,6 +32,36 @@ module Houston
       raise ArgumentError, "Project Feature must supply path lambda, but #{slug.inspect} doesn't" unless feature.path_block
 
       @available_project_features[slug] = feature
+    end
+
+
+
+    def add_user_option(slug, &block)
+      dsl = FormBuilderDsl.new
+      dsl.instance_eval(&block)
+      form = dsl.form
+      form.slug = slug
+
+      @user_options[slug] = form
+    end
+
+    def user_options
+      @user_options.values
+    end
+
+
+
+    def add_project_option(slug, &block)
+      dsl = FormBuilderDsl.new
+      dsl.instance_eval(&block)
+      form = dsl.form
+      form.slug = slug
+
+      @project_options[slug] = form
+    end
+
+    def project_options
+      @project_options.values
     end
 
 
@@ -130,7 +146,8 @@ module Houston
 
 
   @navigation_renderers = {}
-  @user_options = {}
   @available_project_features = {}
+  @user_options = {}
+  @project_options = {}
   extend Houston::Extensions
 end

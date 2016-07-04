@@ -91,6 +91,19 @@
       </div>
     </div>
 
+    <%= f.fields_for :props do |f| %>
+      <% Houston.project_options.each do |form| %>
+        <hr />
+
+        <div class="control-group">
+          <label class="control-label"><%= form.name %></label>
+          <div class="controls">
+            <%= form.render(self, f) %>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+
     <hr />
 
     <div class="control-group">
@@ -100,13 +113,6 @@
           <%= f.select :user_id, [nil] + User.all.map { |user| [user.name, user.id] } %>
           <%= f.select :name, [nil] + Houston.config.project_roles %>
         <% end -%>
-      </div>
-    </div>
-
-    <div class="control-group">
-      <%= f.label :min_passing_verdicts, "Min. Passing Verdicts", :class => "control-label" %>
-      <div class="controls">
-        <%= f.text_field :min_passing_verdicts, :class => "text_field" %>
       </div>
     </div>
 

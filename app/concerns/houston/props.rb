@@ -5,8 +5,12 @@ module Houston
     VALID_PROP_NAME = /\A[a-z0-9]+(?:\.[a-z0-9_\-]+)+\Z/i.freeze
 
     def self.valid_prop_name!(prop_name)
-      return if prop_name =~ VALID_PROP_NAME
+      return if valid_prop_name?(prop_name)
       raise ArgumentError, "#{prop_name.inspect} can only contain word-characters, hyphens, and must contain at least one period"
+    end
+
+    def self.valid_prop_name?(prop_name)
+      prop_name =~ VALID_PROP_NAME
     end
 
 
@@ -85,13 +89,16 @@ module Houston
       end
 
       def respond_to_missing?(method_name, *args)
-        return true if key?(method_name.to_s)
+        prop_name = method_name.to_s.gsub(/_before_type_cast$/, "")
+        return true if key?(prop_name)
+        return true if Houston::Props.valid_prop_name?(prop_name)
         super
       end
 
       def method_missing(method_name, *args, &block)
-        prop_name = method_name.to_s
+        prop_name = method_name.to_s.gsub(/_before_type_cast$/, "")
         return self[prop_name] if key?(prop_name)
+        return nil if Houston::Props.valid_prop_name?(prop_name)
         super
       end
     end
