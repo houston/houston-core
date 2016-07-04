@@ -129,7 +129,7 @@ class TestRun < ActiveRecord::Base
   end
 
   def summary
-    branch = "#{project.slug}/#{branch}"
+    branch = "#{project.slug}/#{self.branch}"
     case result
     when "pass" then "All tests passed on #{branch}"
     when "fail" then "#{fail_count} #{fail_count == 1 ? "test" : "tests"} failed on #{branch}"
