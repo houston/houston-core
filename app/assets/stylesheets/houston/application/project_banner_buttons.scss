@@ -22,6 +22,8 @@
     position: relative;
     top: -4px;
 
+    &:focus { text-decoration: none; }
+
     label {
       display: inline-block;
       font-weight: inherit;
