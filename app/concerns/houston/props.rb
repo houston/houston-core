@@ -17,7 +17,7 @@ module Houston
     module ClassMethods
       def with_prop(prop_name, value)
         Houston::Props.valid_prop_name!(prop_name)
-        where(["props->>? = ?", prop_name, value])
+        where(["props->>? = ?", prop_name, value.to_s])
       end
 
       def find_by_prop(prop_name, value)
