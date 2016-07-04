@@ -15,7 +15,7 @@ class CacheKeyDependencies
   def perform!
     KeyDependency.all.each do |dependency|
       version = ProjectDependency.new(project, dependency).version
-      project.props["keyDependency.#{dependency.slug}"] = version
+      project.props["keyDependency.#{dependency.slug}"] = version.to_s
     end
     project.update_column :props, project.props.to_h
   end
