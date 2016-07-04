@@ -20,7 +20,6 @@ th.vertical {
 
   > span {
     display: block;
-    writing-mode: tb-rl;
     filter: flipv fliph;
     transform: rotate(-90deg);
     -ms-transform: rotate(-90deg); /* IE 9 */
