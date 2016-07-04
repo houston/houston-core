@@ -12,25 +12,25 @@
   <%= gravatar_image @commit.committer_email, size: 96 %>
   <h2><%= @commit.summary %></h2>
   <h4><%= @commit.description %></h4>
-  
+
   <div class="-houston-changelog">
     <% if @commit.releases.any? %>
       <% @commit.releases.each do |release| %>
-        
+
         <div class="-houston-changelog-day">
           <h4><%= format_release_date(date = release.date) %></h4>
         </div>
-        
+
         <%= div_for(release) do %>
           <p class="release-header">
             <%= release.released_at.strftime("%l:%M %p") %>&nbsp;&nbsp;
             <%= link_to "details &rarr;".html_safe, release_url(release) %>
-          
+
             <% if can?(:read, @project.commits.build) %>
               <span class="commit-range"><%= link_to_release_commit_range(release) %></span>
             <% end %>
           </p>
-        
+
           <% if release.release_changes.any? %>
             <div class="release-changes">
               <% ordered_by_tag(release.release_changes).each do |change| %>
@@ -46,12 +46,11 @@
             <div class="release-no-changes">No changes</div>
           <% end %>
         <% end %>
-      
+
       <% end %>
     <% else %>
       <p>This commit has not been released</p>
     <% end %>
   </div>
-  
-</div>
 
+</div>
