@@ -20,9 +20,6 @@ class @KeyboardShortcutsModal
         keys: ['g', 'q']
         name: 'Go to Pull Requests'
       ,
-        keys: ['g', 'i']
-        name: 'Go to ITSMs'
-      ,
         keys: ['g', 't', 'r']
         name: 'Go to Testing Report'
       ,
