@@ -55,7 +55,7 @@ module ProjectAdapter
     end
 
     def define_methods!
-      model.module_eval <<-RUBY
+      model.module_eval <<-RUBY, __FILE__ , __LINE__ + 1
         def self.with_#{attribute_name}
           where arel_table[:#{attribute_name}_name].not_eq("None")
         end
