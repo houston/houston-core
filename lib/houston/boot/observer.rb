@@ -1,6 +1,11 @@
 require "thread_safe"
 
 module Houston
+module_function
+  def observer
+    @observer ||= Observer.new
+  end
+
   class Observer
 
     def initialize

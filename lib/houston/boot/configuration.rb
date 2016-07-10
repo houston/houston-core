@@ -549,11 +549,6 @@ module_function
     config.root
   end
 
-
-  def observer
-    @observer ||= Observer.new
-  end
-
   def jobs
     @jobs ||= Jobs.new
   end
