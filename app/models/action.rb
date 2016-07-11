@@ -1,4 +1,4 @@
-class Job < ActiveRecord::Base
+class Action < ActiveRecord::Base
 
   validates :name, :started_at, presence: true
   belongs_to :error
@@ -11,8 +11,8 @@ class Job < ActiveRecord::Base
     where arel_table[:started_at].lteq time
   end
 
-  def self.record(job_name)
-    job = Job.create!(name: job_name, started_at: Time.now)
+  def self.record(action_name)
+    action = create!(name: action_name, started_at: Time.now)
     begin
       exception = nil
 
@@ -35,22 +35,22 @@ class Job < ActiveRecord::Base
            Net::OpenTimeout,
            exceptions_wrapping(PG::ConnectionBad)
 
-      # Note that the job failed, but do not report _these_ exceptions
+      # Note that the action failed, but do not report _these_ exceptions
       exception = $!
 
     rescue Exception # rescues StandardError by default; but we want to rescue and report all errors
 
       # Report all other exceptions
       exception = $!
-      Houston.report_exception($!, parameters: {job_id: job.id, job_name: job_name})
+      Houston.report_exception($!, parameters: {action_id: action.id, action_name: action_name})
 
     ensure
       begin
         Houston.reconnect do
-          job.finish! exception
+          action.finish! exception
         end
       rescue Exception # rescues StandardError by default; but we want to rescue and report all errors
-        Houston.report_exception($!, parameters: {job_id: job.id, job_name: job_name})
+        Houston.report_exception($!, parameters: {action_id: action.id, action_name: action_name})
       end
     end
   end

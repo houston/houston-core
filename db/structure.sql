@@ -55,6 +55,39 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
+-- Name: actions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE actions (
+    id integer NOT NULL,
+    name character varying NOT NULL,
+    started_at timestamp without time zone NOT NULL,
+    finished_at timestamp without time zone,
+    succeeded boolean,
+    error_id integer
+);
+
+
+--
+-- Name: actions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE actions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: actions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE actions_id_seq OWNED BY actions.id;
+
+
+--
 -- Name: authorizations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -291,39 +324,6 @@ CREATE SEQUENCE errors_id_seq
 --
 
 ALTER SEQUENCE errors_id_seq OWNED BY errors.id;
-
-
---
--- Name: jobs; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE jobs (
-    id integer NOT NULL,
-    name character varying NOT NULL,
-    started_at timestamp without time zone NOT NULL,
-    finished_at timestamp without time zone,
-    succeeded boolean,
-    error_id integer
-);
-
-
---
--- Name: jobs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE jobs_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: jobs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE jobs_id_seq OWNED BY jobs.id;
 
 
 --
@@ -1183,6 +1183,13 @@ ALTER SEQUENCE versions_id_seq OWNED BY versions.id;
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY actions ALTER COLUMN id SET DEFAULT nextval('actions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY authorizations ALTER COLUMN id SET DEFAULT nextval('authorizations_id_seq'::regclass);
 
 
@@ -1212,13 +1219,6 @@ ALTER TABLE ONLY deploys ALTER COLUMN id SET DEFAULT nextval('deploys_id_seq'::r
 --
 
 ALTER TABLE ONLY errors ALTER COLUMN id SET DEFAULT nextval('errors_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY jobs ALTER COLUMN id SET DEFAULT nextval('jobs_id_seq'::regclass);
 
 
 --
@@ -1369,6 +1369,14 @@ ALTER TABLE ONLY versions ALTER COLUMN id SET DEFAULT nextval('versions_id_seq':
 
 
 --
+-- Name: actions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY actions
+    ADD CONSTRAINT actions_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: authorizations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1406,14 +1414,6 @@ ALTER TABLE ONLY deploys
 
 ALTER TABLE ONLY errors
     ADD CONSTRAINT errors_pkey PRIMARY KEY (id);
-
-
---
--- Name: jobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY jobs
-    ADD CONSTRAINT jobs_pkey PRIMARY KEY (id);
 
 
 --
@@ -1601,6 +1601,13 @@ ALTER TABLE ONLY versions
 
 
 --
+-- Name: index_actions_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_actions_on_name ON actions USING btree (name);
+
+
+--
 -- Name: index_commits_on_project_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1682,13 +1689,6 @@ CREATE INDEX index_deploys_on_project_id_and_environment_name ON deploys USING b
 --
 
 CREATE UNIQUE INDEX index_errors_on_sha ON errors USING btree (sha);
-
-
---
--- Name: index_jobs_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_jobs_on_name ON jobs USING btree (name);
 
 
 --
@@ -2430,4 +2430,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160625203412');
 INSERT INTO schema_migrations (version) VALUES ('20160625221840');
 
 INSERT INTO schema_migrations (version) VALUES ('20160625230420');
+
+INSERT INTO schema_migrations (version) VALUES ('20160711170921');
 

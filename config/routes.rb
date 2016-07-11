@@ -234,11 +234,11 @@ Rails.application.routes.draw do
 
 
 
-  # Jobs
+  # Actions
 
-  get "jobs", to: "jobs#index", as: :jobs
-  get "jobs/:slug", to: "jobs#show", as: :job, constraints: { slug: /[^\/]+/ }
-  post "jobs/:slug", to: "jobs#run", as: :run_job, constraints: { slug: /[^\/]+/ }
+  get "actions", to: "actions#index", as: :actions
+  get "actions/:slug", to: "actions#show", as: :action, constraints: { slug: /[^\/]+/ }
+  post "actions/:slug", to: "actions#run", as: :run_action, constraints: { slug: /[^\/]+/ }
 
 
 

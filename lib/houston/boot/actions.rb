@@ -27,7 +27,7 @@ module Houston
     attr_reader :actions
 
     def run!(name, params, trigger, block)
-      Job.record name do
+      Action.record name do
         Rails.logger.info "\e[34m[#{name}/#{trigger}] Running job\e[0m"
         block.call # TODO: put params here
       end

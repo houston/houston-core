@@ -70,7 +70,7 @@ module ApplicationHelper
     end
   end
 
-  def format_job_state(job)
+  def format_action_state(job)
     if job.in_progress?
       '<i class="fa fa-spinner fa-pulse"></i>'.html_safe
     elsif job.succeeded?
