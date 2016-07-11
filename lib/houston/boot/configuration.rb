@@ -11,6 +11,7 @@ require "houston/adapters"
 
 module Houston
   class Configuration
+    attr_reader :observer, :actions, :timer
 
     def initialize
       @root = Rails.root
@@ -24,6 +25,20 @@ module Houston
       @error_tracker_configuration = {}
     end
 
+    def observer
+      return @observer if defined?(@observer)
+      @observer = Houston::Observer.new
+    end
+
+    def actions
+      return @actions if defined?(@actions)
+      @actions = Houston::Actions.new
+    end
+
+    def timer
+      return @timer if defined?(@timer)
+      @timer = Timer.new
+    end
 
 
 
@@ -345,11 +360,12 @@ module Houston
     # Actions and Triggers
 
     def action(name, &block)
-      Houston.actions.define(name, &block)
+      raise ArgumentError, "A block is required to define an action" unless block_given?
+      actions.define(name, &block)
     end
 
     def on(event, &block)
-      Houston.observer.on(event, &block)
+      observer.on(event, &block)
     end
 
     def at(*args, &block)
@@ -370,7 +386,7 @@ module Houston
       # -------------------------------------------------------------- #
 
       action action_name, &block
-      Houston.timer.at(time, action_name)
+      timer.at(time, action_name)
     end
 
     def every(*args, &block)
@@ -387,10 +403,14 @@ module Houston
       # -------------------------------------------------------------- #
 
       action action_name, &block
-      Houston.timer.every(interval, action_name)
+      timer.every(interval, action_name)
     end
 
     private def extract_trigger_and_action!(args)
+      if args.first.is_a?(Hash)
+        return args.shift.to_a[0] if args.first.one?
+        raise ArgumentError, "Unrecognized trigger: #{args.inspect}"
+      end
       return args.shift(2) if args.length >= 2
       raise NotImplementedError, "I haven't been programmed to extract trigger and action_name from #{args.inspect}"
     end
@@ -549,8 +569,19 @@ module_function
     @configuration
   end
 
+  def observer
+    config.observer
+  end
 
-  def self.root
+  def actions
+    config.actions
+  end
+
+  def timer
+    config.timer
+  end
+
+  def root
     config.root
   end
 

@@ -1,19 +1,18 @@
 require "thread_safe"
 
 module Houston
-module_function
-  def actions
-    @actions ||= Actions.new
-  end
-
   class Actions
 
     def initialize
       @actions = ThreadSafe::Hash.new
     end
 
+    def exists?(name)
+      actions.key?(name)
+    end
+
     def define(name, &block)
-      raise ArgumentError, "#{name.inspect} is already defined" if actions.key?(name)
+      raise ArgumentError, "#{name.inspect} is already defined" if exists?(name)
       actions[name] = block
     end
 

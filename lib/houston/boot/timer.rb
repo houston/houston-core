@@ -1,11 +1,6 @@
 require "thread_safe"
 
 module Houston
-module_function
-  def timer
-    @timer ||= Timer.new
-  end
-
   class Timer
 
     def initialize
