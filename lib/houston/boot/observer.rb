@@ -45,6 +45,7 @@ module_function
     end
 
   private
+    attr_reader :observers
 
     def invoke_callback_async(event, block, *args)
       Houston.async do
@@ -62,8 +63,6 @@ module_function
     def observers_of(event)
       observers[event] ||= ThreadSafe::Array.new
     end
-
-    attr_reader :observers
 
   end
 end

@@ -3,13 +3,14 @@ require File.join(root, "lib/core_ext/hash")
 require File.join(root, "lib/core_ext/kernel")
 require File.join(root, "lib/core_ext/exception")
 require File.join(root, "lib/houston/boot/observer")
+require File.join(root, "lib/houston/boot/actions")
+require File.join(root, "lib/houston/boot/timer")
 
 $:.unshift File.expand_path(File.join(root, "app/adapters"))
 require "houston/adapters"
 
 module Houston
   class Configuration
-    attr_reader :timers
 
     def initialize
       @root = Rails.root
@@ -21,7 +22,6 @@ module Houston
       @ticket_tracker_configuration = {}
       @ci_server_configuration = {}
       @error_tracker_configuration = {}
-      @timers = []
     end
 
 
@@ -342,18 +342,57 @@ module Houston
 
 
 
-    # Events
+    # Actions and Triggers
+
+    def action(name, &block)
+      Houston.actions.define(name, &block)
+    end
 
     def on(event, &block)
       Houston.observer.on(event, &block)
     end
 
-    def at(time, name, options={}, &block)
-      @timers.push [:cron, time, name, options, block]
+    def at(*args, &block)
+      time, action_name = extract_trigger_and_action!(args)
+
+      # Passing options to Houston.config.at is deprecated
+      # -------------------------------------------------------------- #
+      if args.first.is_a?(Hash)
+        options = args.first
+        if days_of_the_week = options.delete(:every)
+          puts "DEPRECATED: Instead of passing every: #{days_of_the_week.inspect} to Houston.config.at, use Houston.config.at [#{days_of_the_week.inspect}, #{time}], ..."
+          time = [days_of_the_week, time]
+        end
+        options.keys.each do |key|
+          puts "DEPRECATED: #{key.inspect} is an unknown option for Houston.config.at. In the next version of houston-core, Houston.config.at will no longer accept options"
+        end
+      end
+      # -------------------------------------------------------------- #
+
+      action action_name, &block
+      Houston.timer.at(time, action_name)
     end
 
-    def every(interval, name, options={}, &block)
-      @timers.push [:every, interval, name, options, block]
+    def every(*args, &block)
+      interval, action_name = extract_trigger_and_action!(args)
+
+      # Passing options to Houston.config.every is deprecated
+      # -------------------------------------------------------------- #
+      if args.first.is_a?(Hash)
+        options = args.first
+        options.keys.each do |key|
+          puts "DEPRECATED: #{key.inspect} is an unknown option for Houston.config.at. In the next version of houston-core, Houston.config.at will no longer accept options"
+        end
+      end
+      # -------------------------------------------------------------- #
+
+      action action_name, &block
+      Houston.timer.every(interval, action_name)
+    end
+
+    private def extract_trigger_and_action!(args)
+      return args.shift(2) if args.length >= 2
+      raise NotImplementedError, "I haven't been programmed to extract trigger and action_name from #{args.inspect}"
     end
 
 
@@ -490,40 +529,6 @@ module Houston
 
 
 
-
-
-  class Jobs
-
-    def run(job)
-      trigger = "manual"
-      job, trigger = [job.tags.first, job.original] if job.is_a? Rufus::Scheduler::Job
-      block = find_timer_block!(job)
-      Houston.async do
-        run! job, trigger, block
-      end
-    end
-
-  private
-
-    def find_timer_block!(job_name)
-      timer = Houston.config.timers.detect { |(_, _, name, _, _)| name == job_name }
-      raise ArgumentError, "#{job_name} is not a job" unless timer
-      timer.last
-    end
-
-    def run!(job_name, trigger, block)
-      Job.record job_name do
-        Rails.logger.info "\e[34m[#{job_name}/#{trigger}] Running job\e[0m"
-        block.call
-      end
-    rescue Exception # rescues StandardError by default; but we want to rescue and report all errors
-      Houston.report_exception($!, parameters: {job_name: job_name})
-    end
-
-  end
-
-
-
   class NotConfigured < RuntimeError
     def initialize(message = "Houston has not been configured. Please load config/config.rb before calling Houston.config")
       super
@@ -547,10 +552,6 @@ module_function
 
   def self.root
     config.root
-  end
-
-  def jobs
-    @jobs ||= Jobs.new
   end
 
   def github

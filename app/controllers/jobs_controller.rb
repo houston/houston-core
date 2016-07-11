@@ -35,7 +35,7 @@ class JobsController < ApplicationController
 
   def run
     authorize! :run, :jobs
-    Houston.jobs.run params[:slug]
+    Houston.actions.run params[:slug]
     redirect_to "/jobs", notice: "#{params[:slug]} is running"
   end
 
