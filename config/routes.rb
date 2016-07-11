@@ -242,6 +242,12 @@ Rails.application.routes.draw do
 
 
 
+  # Triggers
+
+  get "triggers", to: "triggers#index", as: :triggers
+
+
+
   # Options
 
   put "projects/:slug/options", to: "project_options#update"

@@ -26,13 +26,17 @@ class ConfigurationTest < ActiveSupport::TestCase
 
   context "#every" do
     should "define an action and a timer that triggers it when you pass two arguments" do
-      config.every("10m", "test-action") { }
-      assert config.actions.exists?("test-action")
+      assert_difference "config.triggers.count", +1 do
+        config.every("10m", "test-action") { }
+        assert config.actions.exists?("test-action")
+      end
     end
 
     should "define an action and a timer that triggers it when you pass a hash" do
-      config.every("10m" => "test-action") { }
-      assert config.actions.exists?("test-action")
+      assert_difference "config.triggers.count", +1 do
+        config.every("10m" => "test-action") { }
+        assert config.actions.exists?("test-action")
+      end
     end
   end
 

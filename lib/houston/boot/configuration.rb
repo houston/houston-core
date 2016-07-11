@@ -2,6 +2,7 @@ root = File.expand_path(File.join(File.dirname(__FILE__), "../../.."))
 require File.join(root, "lib/core_ext/hash")
 require File.join(root, "lib/core_ext/kernel")
 require File.join(root, "lib/core_ext/exception")
+require File.join(root, "lib/houston/boot/triggers")
 require File.join(root, "lib/houston/boot/observer")
 require File.join(root, "lib/houston/boot/actions")
 require File.join(root, "lib/houston/boot/timer")
@@ -25,6 +26,11 @@ module Houston
       @error_tracker_configuration = {}
     end
 
+    def triggers
+      return @triggers if defined?(@triggers)
+      @triggers = Houston::Triggers.new(self)
+    end
+
     def observer
       return @observer if defined?(@observer)
       @observer = Houston::Observer.new
@@ -37,7 +43,7 @@ module Houston
 
     def timer
       return @timer if defined?(@timer)
-      @timer = Timer.new
+      @timer = Houston::Timer.new
     end
 
 
@@ -386,7 +392,7 @@ module Houston
       # -------------------------------------------------------------- #
 
       action action_name, &block
-      timer.at(time, action_name)
+      triggers.at time, action_name
     end
 
     def every(*args, &block)
@@ -403,7 +409,7 @@ module Houston
       # -------------------------------------------------------------- #
 
       action action_name, &block
-      timer.every(interval, action_name)
+      triggers.every interval, action_name
     end
 
     private def extract_trigger_and_action!(args)
@@ -567,6 +573,10 @@ module_function
       @configuration.validate!
     end
     @configuration
+  end
+
+  def triggers
+    config.triggers
   end
 
   def observer

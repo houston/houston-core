@@ -1,0 +1,39 @@
+<% content_for :title do %>
+<h1 class="project-banner space-below">
+  Triggers
+</h1>
+<% end %>
+
+<div class="nomargin">
+  <table id="triggers" class="table table-sortable table-striped">
+    <thead>
+      <tr>
+        <td class="table-margin"></td>
+        <th class="trigger-type">Type</th>
+        <th class="trigger-value">Value</th>
+        <th class="trigger-action">Action</th>
+        <td class="table-margin"></td>
+      </tr>
+    </thead>
+    <tbody>
+      <% @triggers.each do |trigger| %>
+        <tr class="trigger">
+          <td class="table-margin"></td>
+          <td class="trigger-type"><%= trigger.method_name %></td>
+          <td class="trigger-value"><%= trigger.value %></td>
+          <td class="trigger-action"><%= link_to trigger.action, action_path(slug: trigger.action) %></td>
+          <td class="table-margin"></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+
+<% content_for :javascripts do %>
+  <script type="text/javascript">
+    $(function() {
+      $('#triggers').tablesorter();
+    });
+  </script>
+<% end %>
