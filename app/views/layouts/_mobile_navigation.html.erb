@@ -29,14 +29,6 @@
         <%= render_nav_link "Projects", main_app.projects_path, icon: "fa-database" %>
       <% end -%>
 
-      <% if can?(:read, User) -%>
-        <%= render_nav_link "Team", main_app.users_path, icon: "fa-user" %>
-      <% end -%>
-
-      <% if can?(:read, :job) -%>
-        <%= render_nav_link "Jobs", main_app.jobs_path, icon: "fa-user" %>
-      <% end -%>
-
     </ul>
   </div>
 
@@ -59,7 +51,7 @@
                   <% path = if !current_feature
                               # we're not on a project page,
                               # just refresh the page and set the project
-                              "?project=#{project.slug}" 
+                              "?project=#{project.slug}"
                             elsif !project.features.include?(current_feature)
                               # we're using a feature that this project
                               # doesn't support. Navigate to the root URL

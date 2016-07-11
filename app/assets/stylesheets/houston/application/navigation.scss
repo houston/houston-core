@@ -182,8 +182,10 @@ $current-project-active-bg: #222;
 }
 
 
-.navbar .nav > li.current-user {
+.navbar .nav.pull-right {
   z-index: 5;
+
+  .fa-cog { font-size: 20px; }
 }
 
 .navbar .nav > li.current-user > a {
