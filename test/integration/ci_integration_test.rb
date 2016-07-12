@@ -127,7 +127,7 @@ class CIIntegrationTest < ActionDispatch::IntegrationTest
           stub(Object.new).success? { true }
         end
 
-        Houston.observer.fire "test_run:start", test_run
+        Houston.observer.fire "test_run:start", test_run: test_run
       end
 
       should "publish test results to GitHub" do
@@ -148,7 +148,7 @@ class CIIntegrationTest < ActionDispatch::IntegrationTest
           stub(Object.new).success? { true }
         end
 
-        Houston.observer.fire "test_run:complete", test_run
+        Houston.observer.fire "test_run:complete", test_run: test_run
       end
     end
 
@@ -162,7 +162,7 @@ class CIIntegrationTest < ActionDispatch::IntegrationTest
 
       mock(CodeClimate::CoverageReport).publish!(test_run)
 
-      Houston.observer.fire "test_run:complete", test_run
+      Houston.observer.fire "test_run:complete", test_run: test_run
     end
   end
 

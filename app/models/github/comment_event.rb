@@ -21,8 +21,8 @@ module Github
     end
 
     def process!
-      Houston.observer.fire "github:comment:#{action}", comment
-      Houston.observer.fire "github:comment:#{action}:#{type}", comment
+      Houston.observer.fire "github:comment:#{action}", comment: comment
+      Houston.observer.fire "github:comment:#{action}:#{type}", comment: comment
     end
 
   end

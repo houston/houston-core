@@ -65,7 +65,7 @@ class HooksControllerTest < ActionController::TestCase
     should "trigger a `hooks:post_receive` event for the project" do
       project = create(:project, slug: "public-repo")
       expected_payload = hash_including(github_push_event_payload.slice("before", "after"))
-      mock(Houston.observer).fire("hooks:post_receive", project, expected_payload)
+      mock(Houston.observer).fire("hooks:post_receive", project: project, params: expected_payload)
       post :github, hook: github_push_event_payload
     end
   end

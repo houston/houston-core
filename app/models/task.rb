@@ -115,7 +115,7 @@ class Task < ActiveRecord::Base
   def released!(release)
     self.releases << release unless releases.exists?(release.id)
     update_column :first_release_at, release.created_at unless released?
-    Houston.observer.fire "task:released", self
+    Houston.observer.fire "task:released", task: self
   end
 
   def released?
@@ -126,7 +126,7 @@ class Task < ActiveRecord::Base
 
   def mark_committed!(commit)
     update_column :first_commit_at, commit.authored_at unless committed?
-    Houston.observer.fire "task:committed", self
+    Houston.observer.fire "task:committed", task: self
   end
 
   def committed?
@@ -138,7 +138,7 @@ class Task < ActiveRecord::Base
   def completed!
     return if completed?
     touch :completed_at
-    Houston.observer.fire "task:completed", self
+    Houston.observer.fire "task:completed", task: self
   end
   alias :complete! :completed!
 
@@ -160,7 +160,7 @@ class Task < ActiveRecord::Base
   def reopen!
     return unless manually_completed?
     update_column :completed_at, nil
-    Houston.observer.fire "task:reopened", self
+    Houston.observer.fire "task:reopened", task: self
   end
 
   def open?

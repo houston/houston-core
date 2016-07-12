@@ -15,7 +15,7 @@ class Commit < ActiveRecord::Base
   after_create :associate_committers_with_self
   after_create :associate_tickets_with_self
   after_create :associate_tasks_with_self
-  after_create { Houston.observer.fire "commit:create", self }
+  after_create { Houston.observer.fire "commit:create", commit: self }
 
   validates :project, presence: true
   validates :sha, presence: true, uniqueness: true

@@ -223,7 +223,7 @@ class TestRun < ActiveRecord::Base
 
   def trigger_build!
     project.ci_server.build!(sha)
-    Houston.observer.fire "test_run:start", self
+    Houston.observer.fire "test_run:start", test_run: self
   end
 
   def completed!(results_url)
@@ -246,7 +246,7 @@ class TestRun < ActiveRecord::Base
   end
 
   def fire_complete!
-    Houston.observer.fire "test_run:complete", self
+    Houston.observer.fire "test_run:complete", test_run: self
   end
 
 

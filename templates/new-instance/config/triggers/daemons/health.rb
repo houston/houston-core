@@ -15,7 +15,7 @@ Houston.config do
     slack_send_message_to ":rotating_light: The thread running Slack has terminated", "general"
   end
 
-  on "slack:error" do |args|
-    slack_send_message_to "An error occurred\n#{args.inspect}", "general"
+  on "slack:error" do |e|
+    slack_send_message_to "An error occurred\n#{e.message}", "general"
   end
 end

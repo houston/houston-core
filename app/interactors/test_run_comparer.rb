@@ -27,7 +27,7 @@ class TestRunComparer
 
       test_run2.update_attribute :compared, true
 
-      Houston.observer.fire "test_run:compared", test_run2
+      Houston.observer.fire "test_run:compared", test_run: test_run2
     end
   end
 

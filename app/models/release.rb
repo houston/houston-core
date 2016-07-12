@@ -4,7 +4,7 @@ class Release < ActiveRecord::Base
   after_create :release_each_ticket!
   after_create :release_each_task!
   after_create :release_each_antecedent!
-  after_create { Houston.observer.fire "release:create", self }
+  after_create { Houston.observer.fire "release:create", release: self }
   after_save :update_search_vector, :if => :search_vector_should_change?
 
   belongs_to :project

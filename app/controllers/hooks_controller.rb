@@ -42,7 +42,7 @@ class HooksController < ApplicationController
       }
     })
 
-    Houston.observer.fire event, payload
+    Houston.observer.fire event, params: payload
     head 200
   end
 

@@ -1,7 +1,8 @@
 module Houston
 
   # Rescues exceptions and reports them
-  def self.async
+  def self.async(do_async=true)
+    return yield unless do_async
     Thread.new do
       ActiveRecord::Base.connection_pool.with_connection do
         begin
@@ -16,7 +17,8 @@ module Houston
   end
 
   # Allows exceptions to bubble up
-  def self.async!
+  def self.async!(do_async=true)
+    return yield unless do_async
     Thread.new do
       ActiveRecord::Base.connection_pool.with_connection do
         begin

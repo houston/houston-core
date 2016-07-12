@@ -25,15 +25,15 @@ class TicketAntecedent
 
 
   def released!(release=nil)
-    Houston.observer.fire "antecedent:#{kind.downcase.underscore}:released", self
+    Houston.observer.fire "antecedent:#{kind.downcase.underscore}:released", antecedent: self
   end
 
   def resolve!
-    Houston.observer.fire "antecedent:#{kind.downcase.underscore}:resolved", self
+    Houston.observer.fire "antecedent:#{kind.downcase.underscore}:resolved", antecedent: self
   end
 
   def close!
-    Houston.observer.fire "antecedent:#{kind.downcase.underscore}:closed", self
+    Houston.observer.fire "antecedent:#{kind.downcase.underscore}:closed", antecedent: self
   end
 
 end

@@ -105,11 +105,11 @@ private
     if just_completed?
       update_column :duration, completed_at - created_at if duration.nil?
       if successful?
-        Houston.observer.fire "deploy:succeeded", self
+        Houston.observer.fire "deploy:succeeded", deploy: self
       else
-        Houston.observer.fire "deploy:failed", self
+        Houston.observer.fire "deploy:failed", deploy: self
       end
-      Houston.observer.fire "deploy:completed", self
+      Houston.observer.fire "deploy:completed", deploy: self
     end
   end
 

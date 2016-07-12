@@ -1,31 +1,31 @@
 Houston.config do
-  on "test_run:complete" do |test_run|
+  on "test_run:complete" do |e|
     # When branch is nil, the test run was requested by Houston
     # not triggered by a developer pushing changes to GitHub.
-    next if test_run.branch.nil?
-    next if test_run.aborted?
+    next if e.test_run.branch.nil?
+    next if e.test_run.aborted?
 
-    nickname = test_run.user.slack_username if test_run.user
-    project_slug = test_run.project.slug
+    nickname = e.test_run.user.slack_username if e.test_run.user
+    project_slug = e.test_run.project.slug
     project_channel = "##{project_slug}"
-    branch = "#{project_slug}/#{test_run.branch}"
+    branch = "#{project_slug}/#{e.test_run.branch}"
 
-    text = test_run.short_description(with_duration: true)
-    text << "\n#{nickname}" if test_run.result != "pass" && nickname
+    text = e.test_run.short_description(with_duration: true)
+    text << "\n#{nickname}" if e.test_run.result != "pass" && nickname
 
-    attachment = case test_run.result
+    attachment = case e.test_run.result
     when "pass"
       { color: "#5DB64C",
         title: "All tests passed on #{branch}" }
     when "fail"
       { color: "#E24E32",
-        title: "#{test_run.fail_count} #{test_run.fail_count == 1 ? "test" : "tests"} failed on #{branch}" }
+        title: "#{e.test_run.fail_count} #{e.test_run.fail_count == 1 ? "test" : "tests"} failed on #{branch}" }
     else
       { color: "#DFCC3D",
         title: "The tests are broken on #{branch}" }
     end
     attachment.merge!(
-      title_link: test_run.url,
+      title_link: e.test_run.url,
       fallback: attachment[:title],
       text: text)
 

@@ -18,13 +18,13 @@ module Github
     after_commit :associate_commits_with_self
 
     after_create do
-      Houston.observer.fire "github:pull:opened", self
+      Houston.observer.fire "github:pull:opened", pull_request: self
     end
 
     after_update do
-      Houston.observer.fire "github:pull:updated", self, changes
-      Houston.observer.fire "github:pull:closed", self if closed_at_changed? && closed_at
-      Houston.observer.fire "github:pull:reopened", self if closed_at_changed? && !closed_at
+      Houston.observer.fire "github:pull:updated", pull_request: self, changes: changes
+      Houston.observer.fire "github:pull:closed", pull_request: self if closed_at_changed? && closed_at
+      Houston.observer.fire "github:pull:reopened", pull_request: self if closed_at_changed? && !closed_at
     end
 
     validates :project_id, :title, :number, :repo, :url, :base_ref, :base_sha, :head_ref, :head_sha, :username, presence: true
@@ -258,7 +258,7 @@ module Github
         self.commits = project.commits.between(base_sha, head_sha)
       end
 
-      Houston.observer.fire "github:pull:synchronize", self
+      Houston.observer.fire "github:pull:synchronize", pull_request: self
     end
 
     def commits_changes_before_commit?

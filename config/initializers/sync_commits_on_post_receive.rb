@@ -1,3 +1,3 @@
-Houston.observer.on "hooks:post_receive" do |project, params|
-  project.commits.sync!
+Houston.observer.on "hooks:post_receive" do |e|
+  e.project.commits.sync!
 end

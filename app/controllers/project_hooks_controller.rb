@@ -22,7 +22,7 @@ class ProjectHooksController < ApplicationController
       }
     })
 
-    Houston.observer.fire event, project, payload
+    Houston.observer.fire event, project: project, params: payload
     head 200
   end
 

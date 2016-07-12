@@ -6,7 +6,7 @@ module Houston
     def initialize
       @queued_timers = ThreadSafe::Array.new
 
-      Houston.observer.on "daemon:scheduler:start" do
+      Houston.observer.on "daemon:scheduler:start", raise: true do
         schedule_queued_timers!
       end
     end
