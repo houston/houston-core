@@ -11,19 +11,19 @@ module Houston
       end
     end
 
-    def at(time, action_name)
-      return schedule_later :at, time, action_name unless $scheduler
+    def at(time, &block)
+      return schedule_later :at, time, block unless $scheduler
 
       days_of_the_week = :day
       days_of_the_week, time = *time if time.is_a?(Array)
       cronline = Whenever::Output::Cron.new(days_of_the_week, nil, time)
-      $scheduler.cron cronline.time_in_cron_syntax, {tag: action_name}, &method(:run)
+      $scheduler.cron cronline.time_in_cron_syntax, &block
     end
 
-    def every(interval, action_name)
-      return schedule_later :every, interval, action_name unless $scheduler
+    def every(interval, &block)
+      return schedule_later :every, interval, block unless $scheduler
 
-      $scheduler.every interval, {tag: action_name}, &method(:run)
+      $scheduler.every interval, &block
     end
 
   private
@@ -36,13 +36,9 @@ module Houston
 
     def schedule_queued_timers!
       while timer = queued_timers.pop
-        public_send timer.shift, *timer
+        method_name, value, block = timer
+        public_send method_name, value, &block
       end
-    end
-
-    def run(job)
-      action_name, trigger = [job.tags.first, job.original]
-      Houston.actions.run action_name, {}, trigger: trigger
     end
 
   end

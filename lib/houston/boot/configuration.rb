@@ -11,6 +11,14 @@ $:.unshift File.expand_path(File.join(root, "app/adapters"))
 require "houston/adapters"
 
 module Houston
+module_function
+  def deprecation_notice(message, stack_offset=1)
+    message = message.gsub /<b>(.*)<\/b>/, "\e[1m\\1\e[0;34m"
+    puts "\e[34mDEPRECATION: #{message}\e[0;90m\n#{caller[stack_offset]}\e[0m\n\n"
+  end
+
+
+
   class Configuration
     attr_reader :observer, :actions, :timer
 
@@ -366,49 +374,51 @@ module Houston
     # Actions and Triggers
 
     def action(name, &block)
-      raise ArgumentError, "A block is required to define an action" unless block_given?
       actions.define(name, &block)
     end
 
-    def on(event, &block)
-      observer.on(event, &block)
+    def on(*args, &block)
+      event, action_name = extract_trigger_and_action!(args)
+      assert_action! action_name, &block
+
+      triggers.on event, action_name
     end
 
     def at(*args, &block)
       time, action_name = extract_trigger_and_action!(args)
+      assert_action! action_name, &block
 
       # Passing options to Houston.config.at is deprecated
       # -------------------------------------------------------------- #
       if args.first.is_a?(Hash)
         options = args.first
         if days_of_the_week = options.delete(:every)
-          puts "DEPRECATED: Instead of passing every: #{days_of_the_week.inspect} to Houston.config.at, use Houston.config.at [#{days_of_the_week.inspect}, #{time}], ..."
+          Houston.deprecation_notice "Instead of passing every: #{days_of_the_week.inspect} to Houston.config.at, use Houston.config.at [#{days_of_the_week.inspect}, #{time}], ..."
           time = [days_of_the_week, time]
         end
         options.keys.each do |key|
-          puts "DEPRECATED: #{key.inspect} is an unknown option for Houston.config.at. In the next version of houston-core, Houston.config.at will no longer accept options"
+          Houston.deprecation_notice "#{key.inspect} is an unknown option for Houston.config.at. In the next version of houston-core, Houston.config.at will no longer accept options"
         end
       end
       # -------------------------------------------------------------- #
 
-      action action_name, &block
       triggers.at time, action_name
     end
 
     def every(*args, &block)
       interval, action_name = extract_trigger_and_action!(args)
+      assert_action! action_name, &block
 
       # Passing options to Houston.config.every is deprecated
       # -------------------------------------------------------------- #
       if args.first.is_a?(Hash)
         options = args.first
         options.keys.each do |key|
-          puts "DEPRECATED: #{key.inspect} is an unknown option for Houston.config.at. In the next version of houston-core, Houston.config.at will no longer accept options"
+          Houston.deprecation_notice "#{key.inspect} is an unknown option for Houston.config.at. In the next version of houston-core, Houston.config.at will no longer accept options"
         end
       end
       # -------------------------------------------------------------- #
 
-      action action_name, &block
       triggers.every interval, action_name
     end
 
@@ -418,7 +428,20 @@ module Houston
         raise ArgumentError, "Unrecognized trigger: #{args.inspect}"
       end
       return args.shift(2) if args.length >= 2
+      if args.length == 1
+        method_name = caller[0][/in `(.*)'/, 1]
+        Houston.deprecation_notice "<b>Houston.config.#{method_name}(#{args[0].inspect})</b> does not specify an action name\nIn a future version of Houston <b>Houston.config.#{method_name}(#{args[0]} => \"do-something\")</b> will be required", 2
+        return [args[0], "#{args[0]}:#{SecureRandom.hex}"]
+      end
       raise NotImplementedError, "I haven't been programmed to extract trigger and action_name from #{args.inspect}"
+    end
+
+    private def assert_action!(name, &block)
+      if block_given?
+        action name, &block
+      elsif !actions.exists?(name)
+        raise ArgumentError, "An action named #{name.inspect} is not defined"
+      end
     end
 
 

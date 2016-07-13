@@ -11,7 +11,7 @@ class Action < ActiveRecord::Base
     where arel_table[:started_at].lteq time
   end
 
-  def self.record(action_name)
+  def self.record(action_name, params, trigger)
     action = create!(name: action_name, started_at: Time.now)
     begin
       exception = nil

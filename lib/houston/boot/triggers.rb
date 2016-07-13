@@ -17,8 +17,8 @@ module Houston
       push :every, value, action
     end
 
-    def on(value, action)
-      push :on, value, action
+    def on(event, action)
+      push :on, event, action
     end
 
   private
@@ -26,12 +26,20 @@ module Houston
 
     def push(method_name, value, action)
       super Trigger.new(method_name, value, action)
+      block = Proc.new { |params={}| run(method_name, value, action, params) }
       case method_name
-      when :at then config.timer.at(value, action)
-      when :every then config.timer.every(value, action)
+      when :at then config.timer.at(value, &block)
+      when :every then config.timer.every(value, &block)
+      when :on then config.observer.on(value, &block)
+      else raise NotImplementedError, "Unrecognized method name: #{method_name.inspect}"
       end
     end
 
+    def run(method_name, value, action, params)
+      Houston.actions.run action, params, trigger: [method_name, value]
+    end
+
     Trigger = Struct.new(:method_name, :value, :action)
+
   end
 end

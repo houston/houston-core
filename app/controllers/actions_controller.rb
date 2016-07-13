@@ -2,11 +2,8 @@ class ActionsController < ApplicationController
 
   def index
     authorize! :show, :actions
-    actions_by_name = $scheduler.jobs.each_with_object({}) { |action, map|
-      map[action.tags.first] = {
-        name: action.tags.first,
-        schedule: action.original } }
 
+    actions_by_name = Houston.actions.names.each_with_object({}) { |name, map| map[name] = { name: name } }
     actions = Action.where(name: actions_by_name.keys)
 
     most_recent_actions = actions.joins(<<-SQL)
