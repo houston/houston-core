@@ -333,7 +333,6 @@ class TestRun < ActiveRecord::Base
 
         { test_run_id: id,
           test_id: tests_map[[suite, name]],
-          error_id: output.blank? ? nil : output,
           status: status,
           error_id: error_id,
           duration: test_attributes.fetch(:duration, nil) }
