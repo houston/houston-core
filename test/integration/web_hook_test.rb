@@ -20,7 +20,7 @@ class WebHookTest < ActionDispatch::IntegrationTest
   end
 
   test "should trigger a project hook when it is defined" do
-    assert_triggered "hooks:whatever" do
+    assert_triggered "hooks:project:whatever" do
       post "/projects/#{project.slug}/hooks/whatever"
       assert_response :success
     end

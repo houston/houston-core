@@ -4,33 +4,46 @@ module Houston
   class Observer
     attr_accessor :async
 
+    class UnregisteredEventError < ArgumentError; end
+    class MissingParamError < ArgumentError; end
+    class UnregisteredParamError < ArgumentError; end
+
     def initialize
       @async = true
       clear!
     end
 
     def on(event, options={}, &block)
-      observers_of(event).push Callback.new(event, options, block)
+      assert_registered! event
+      observers_of(event).push Callback.new(self, event, options, block)
       nil
     end
 
     def once(event, options={}, &block)
-      wrapped_block = Proc.new do |*args|
-        block.call(*args)
-        observers_of(event).delete wrapped_block
-      end
-      on(event, options, &wrapped_block)
+      assert_registered! event
+      observers_of(event).push CallbackOnce.new(self, event, options, block)
+      nil
+    end
+
+    def off(callback)
+      observers_of(callback.event).delete callback
+      nil
     end
 
     def observed?(event)
+      assert_registered! event
       observers_of(event).any?
     end
 
     def fire(event, params={})
+      assert_registered! event
+
       unless params.is_a?(Hash)
         raise ArgumentError, "params must be a Hash" unless params.respond_to?(:to_h)
         params = params.to_h
       end
+
+      assert_registered_params! event, params
       params = ReadonlyHash.new(params)
 
       observers_of(event).each do |callback|
@@ -50,12 +63,31 @@ module Houston
       observers[event] ||= ThreadSafe::Array.new
     end
 
+    def assert_registered!(event_name)
+      return if Houston.registered_event?(event_name)
+      raise UnregisteredEventError, "#{event_name.inspect} is not a registered event"
+    end
+
+    def assert_registered_params!(event_name, params)
+      event = Houston.get_registered_event(event_name)
+
+      missing_params = event.params - params.keys.map(&:to_s)
+      unregistered_params = params.keys.map(&:to_s) - event.params
+      if missing_params.any?
+        raise MissingParamError, "#{missing_params.first.inspect} is a required param of the event #{event_name.inspect}"
+      end
+      if unregistered_params.any?
+        raise UnregisteredParamError, "#{unregistered_params.first.inspect} is a not a registered param of the event #{event_name.inspect}"
+      end
+    end
+
 
 
     class Callback
-      attr_reader :event
+      attr_reader :observer, :event
 
-      def initialize(event, options, block)
+      def initialize(observer, event, options, block)
+        @observer = observer
         @event = event
         @invoke_async = options.fetch(:async, nil)
         @raise_exceptions = options.fetch(:raise, false)
@@ -87,6 +119,13 @@ module Houston
         end
       end
 
+    end
+
+    class CallbackOnce < Callback
+      def call(params)
+        observer.off self
+        super
+      end
     end
 
   end

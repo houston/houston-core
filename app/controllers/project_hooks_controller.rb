@@ -9,7 +9,7 @@ class ProjectHooksController < ApplicationController
       return
     end
 
-    event = "hooks:#{params[:hook]}"
+    event = "hooks:project:#{params[:hook]}"
     unless Houston.observer.observed?(event)
       render text: "A hook with the slug '#{params[:hook]}' is not defined", status: 404
       return

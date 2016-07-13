@@ -7,7 +7,7 @@ module Github
     def process!
       Rails.logger.info "\e[34m[github] Processing Post-Receive Event\e[0m"
       project = Project.find_by_slug! payload["repository"]["name"]
-      Houston.observer.fire "hooks:post_receive", project: project, payload: payload
+      Houston.observer.fire "hooks:project:post_receive", project: project, params: payload
     end
 
   end

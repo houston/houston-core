@@ -16,12 +16,12 @@ class RunTestsOnPostReceive
     #   1. GitHub receives a `git push` and triggers all Web Hooks:
     #      POST /projects/houston/hooks/post_receive.
     #   2. Houston receives this request and fires the
-    #      'hooks:post_receive' event.
+    #      'hooks:project:post_receive' event.
     #   3. Houston creates a TestRun and tells a CI server to build
     #      then corresponding job:
     #      POST /job/houston/buildWithParameters.
-    Houston.observer.on "hooks:post_receive" do |e|
-      Rails.logger.info "\e[34m[hooks:post_receive] creating a TestRun\e[0m"
+    Houston.observer.on "hooks:project:post_receive" do |e|
+      Rails.logger.info "\e[34m[hooks:project:post_receive] creating a TestRun\e[0m"
       create_a_test_run(e.project, e.params)
     end
 
@@ -63,26 +63,26 @@ class RunTestsOnPostReceive
 
   def create_a_test_run(project, params)
     unless project.has_ci_server?
-      Rails.logger.warn "[hooks:post_receive] the project #{project.name} is not configured to be used with a Continuous Integration server"
+      Rails.logger.warn "[hooks:project:post_receive] the project #{project.name} is not configured to be used with a Continuous Integration server"
       return
     end
 
     payload = PostReceivePayload.new(params)
 
     unless payload.commit
-      Rails.logger.error "[hooks:post_receive] no commit found in payload"
+      Rails.logger.error "[hooks:project:post_receive] no commit found in payload"
       return
     end
 
     if payload.commit == Houston::NULL_GIT_COMMIT
-      Rails.logger.error "[hooks:post_receive] branch was deleted; not running tests again"
+      Rails.logger.error "[hooks:project:post_receive] branch was deleted; not running tests again"
       return
     end
 
     test_run = project.test_runs.find_by_sha(payload.commit)
 
     if test_run
-      Rails.logger.warn "[hooks:post_receive] a test run exists for #{test_run.short_commit}; doing nothing"
+      Rails.logger.warn "[hooks:project:post_receive] a test run exists for #{test_run.short_commit}; doing nothing"
       return
     end
 
@@ -97,7 +97,7 @@ class RunTestsOnPostReceive
     end
 
   rescue ActiveRecord::RecordNotUnique
-    Rails.logger.warn "[hooks:post_receive] a test run exists for #{test_run.short_commit}; doing nothing"
+    Rails.logger.warn "[hooks:project:post_receive] a test run exists for #{test_run.short_commit}; doing nothing"
   rescue Exception # rescues StandardError by default; but we want to rescue and report all errors
     Houston.report_exception $!, parameters: params.merge(project: project.slug)
   end

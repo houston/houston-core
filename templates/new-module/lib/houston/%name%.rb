@@ -12,4 +12,12 @@ module Houston
     end
 
   end
+
+
+  # Register events that will be raised by this module
+  # register_events {{
+  #   "<%= name %>:create" => params("<%= name %>").desc("<%= camelized %> was created"),
+  #   "<%= name %>:update" => params("<%= name %>").desc("<%= camelized %> was updated")
+  # }}
+
 end

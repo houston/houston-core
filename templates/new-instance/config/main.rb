@@ -249,42 +249,18 @@ Houston.config do
   # ---------------------------------------------------------------------------
   #
   # Configure Houston to execute block of code when an event is triggered.
-  #
-  # Here is a list of many of Houston's events:
-  #
-  #   * antecedent:*:released   When a Ticket has been released, for each antecedent
-  #   * antecedent:*:resolved   When a Ticket has been resolved, for each antecedent
-  #   * antecedent:*:closed     When a Ticket has been closed, for each antecedent
-  #   * daemon:*:start          When a background thread (like the Scheduler or Slack) starts
-  #   * daemon:*:restart        When a background thread (like the Scheduler or Slack) is restarted
-  #   * daemon:*:stop           When a background thread (like the Scheduler or Slack) dies
-  #   * deploy:completed        When a deploy has been recorded
-  #   * hooks:*                 When a Web Hook as been triggered
-  #   * release:create          When a new Release has been created
-  #   * test_run:start          When the CI server has begun a build
-  #   * test_run:complete       When the CI server has completed a build
-  #   * ticket:release          When a Ticket is mentioned in a Release
-  #   * task:released           When a commit mentioning a Task is released
-  #   * task:committed          When a commit mentioning a Task is pushed
-  #   * task:completed          When a Task is marked completed
-  #   * task:reopened           When a Task is marked reopened
-  #   * alert:create            When an Alert is created
-  #   * alert:*:create          When an Alert of a particular type is created
-  #   * alert:assign            When an Alert is assigned
-  #   * alert:*:assign          When an Alert of a particular type is assigned
-  #   * alert:deployed          When an Alert is deployed
-  #   * alert:*:deployed        When an Alert of a particular type is deployed
+  # To see a complete list of events run `rake houston:events` at the command line.
 
-  load "triggers/**/*"
+  load "events/**/*"
 
 
 
-  # Background Jobs
+  # Timers
   # ---------------------------------------------------------------------------
   #
   # Houston can be configured to run jobs at a variety of intervals.
 
-  load "jobs/**/*"
+  load "timers/**/*"
 
 
 

@@ -1,14 +1,19 @@
 require "test_helper"
 
+Houston.register_events {{
+  "test" => params("example").desc("For testing the observer"),
+  "test0" => desc("For testing the observer, takes 0 params")
+}}
+
 class ObserverTest < ActiveSupport::TestCase
 
 
   context "Houston.observer.once" do
     should "trigger a callback and then unregister it" do
       calls = 0
-      Houston.observer.once("test") { calls += 1 }
-      Houston.observer.fire "test"
-      Houston.observer.fire "test"
+      Houston.observer.once("test0") { calls += 1 }
+      Houston.observer.fire "test0"
+      Houston.observer.fire "test0"
       assert_equal 1, calls, "Expected the callback to be called only once"
     end
   end
@@ -27,10 +32,28 @@ class ObserverTest < ActiveSupport::TestCase
       end
     end
 
+    should "raise if the event isn't registered" do
+      assert_raises Houston::Observer::UnregisteredEventError do
+        Houston.observer.fire "test2"
+      end
+    end
+
+    should "raise if the event is triggered without a registered param" do
+      assert_raises Houston::Observer::MissingParamError do
+        Houston.observer.fire "test", {}
+      end
+    end
+
+    should "raise if the event is triggered with an unregistered param" do
+      assert_raises Houston::Observer::UnregisteredParamError do
+        Houston.observer.fire "test", {example: 5, counterexample: 1}
+      end
+    end
+
     should "invoke callbacks with {} if called with no arguments" do
       callback_args = :not_called
-      Houston.observer.on("test") { |*args| callback_args = args }
-      Houston.observer.fire "test"
+      Houston.observer.on("test0") { |*args| callback_args = args }
+      Houston.observer.fire "test0"
       assert_equal 1, callback_args.length
       assert_equal [], callback_args[0].methods(false)
     end

@@ -8,7 +8,7 @@ class CIIntegrationTest < ActionDispatch::IntegrationTest
 
 
   context "Houston" do
-    should "trigger a build when the hooks:post_receive event is fired for a project that uses a CI server" do
+    should "trigger a build when the hooks:project:post_receive event is fired for a project that uses a CI server" do
       @project = create(:project, ci_server_name: "Mock")
 
       stub.instance_of(PostReceivePayload).commit { "63cd1ef" }
@@ -20,7 +20,7 @@ class CIIntegrationTest < ActionDispatch::IntegrationTest
       end
     end
 
-    should "do nothing when the hooks:post_receive event is fired for a project that does not use a CI server" do
+    should "do nothing when the hooks:project:post_receive event is fired for a project that does not use a CI server" do
       @project = create(:project, ci_server_name: "None")
 
       assert_no_difference "TestRun.count" do

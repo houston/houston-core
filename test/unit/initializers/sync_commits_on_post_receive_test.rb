@@ -7,7 +7,7 @@ class SyncCommitsOnPostReceiveTest < ActiveSupport::TestCase
     should "sync commits for that project" do
       project = create(:project, version_control_name: "Mock")
       mock(project.commits).sync!
-      Houston.observer.fire "hooks:post_receive", project: project, params: {}
+      Houston.observer.fire "hooks:project:post_receive", project: project, params: {}
     end
   end
 
