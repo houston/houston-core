@@ -36,7 +36,7 @@ module Houston
     end
 
     def run(method_name, value, action, params)
-      Houston.actions.run action, params, trigger: [method_name, value]
+      Houston.actions.run action, params, trigger: "#{method_name}(#{value})"
     end
 
     Trigger = Struct.new(:method_name, :value, :action)

@@ -5,6 +5,8 @@ class Action < ActiveRecord::Base
 
   default_scope -> { order(started_at: :desc) }
 
+  serialize :params, ParamsSerializer.new
+
 
 
   def self.started_before(time)
@@ -12,7 +14,7 @@ class Action < ActiveRecord::Base
   end
 
   def self.record(action_name, params, trigger)
-    action = create!(name: action_name, started_at: Time.now)
+    action = create!(name: action_name, started_at: Time.now, trigger: trigger, params: params)
     begin
       exception = nil
 
@@ -42,7 +44,12 @@ class Action < ActiveRecord::Base
 
       # Report all other exceptions
       exception = $!
-      Houston.report_exception($!, parameters: {action_id: action.id, action_name: action_name})
+      Houston.report_exception($!, parameters: {
+        action_id: action.id,
+        action_name: action_name,
+        trigger: trigger,
+        params: params
+      })
 
     ensure
       begin
@@ -50,7 +57,12 @@ class Action < ActiveRecord::Base
           action.finish! exception
         end
       rescue Exception # rescues StandardError by default; but we want to rescue and report all errors
-        Houston.report_exception($!, parameters: {action_id: action.id, action_name: action_name})
+        Houston.report_exception($!, parameters: {
+          action_id: action.id,
+          action_name: action_name,
+          trigger: trigger,
+          params: params
+        })
       end
     end
   end

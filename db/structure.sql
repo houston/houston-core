@@ -64,7 +64,9 @@ CREATE TABLE actions (
     started_at timestamp without time zone NOT NULL,
     finished_at timestamp without time zone,
     succeeded boolean,
-    error_id integer
+    error_id integer,
+    trigger character varying,
+    params jsonb
 );
 
 
@@ -2432,4 +2434,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160625221840');
 INSERT INTO schema_migrations (version) VALUES ('20160625230420');
 
 INSERT INTO schema_migrations (version) VALUES ('20160711170921');
+
+INSERT INTO schema_migrations (version) VALUES ('20160713204605');
 

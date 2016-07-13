@@ -10,21 +10,25 @@
     <thead>
       <tr>
         <td class="table-margin"></td>
-        <th class="scheduler-action-time">Time</th>
-        <th class="scheduler-action-succeded">Succeeded</th>
-        <th class="scheduler-action-duration">Duration</th>
-        <th class="scheduler-action-exception">Exception</th>
+        <th class="action-time">Time</th>
+        <th class="action-duration">Duration</th>
+        <th class="action-trigger">Trigger</th>
+        <th class="action-params">Params</th>
+        <th class="action-succeded">Succeeded</th>
+        <th class="action-exception">Exception</th>
         <td class="table-margin"></td>
       </tr>
     </thead>
     <tbody>
       <% @actions.each do |action| %>
-        <tr class="scheduler-action">
+        <tr class="action">
           <td class="table-margin"></td>
-          <td class="scheduler-action-time"><%= format_time action.started_at %></td>
-          <td class="scheduler-action-succeded"><%= format_action_state action %></td>
-          <td class="scheduler-action-duration"><%= format_duration action.duration %></td>
-          <td class="scheduler-action-exception"><%= action.error.message if action.error %><td>
+          <td class="action-time"><%= format_time action.started_at %></td>
+          <td class="action-duration"><%= format_duration action.duration %></td>
+          <td class="action-trigger"><%= action.trigger %></td>
+          <td class="action-params"><%= format_action_params action.params %></td>
+          <td class="action-succeded"><%= format_action_state action %></td>
+          <td class="action-exception"><%= action.error.message if action.error %><td>
           <td class="table-margin"></td>
         </tr>
       <% end %>

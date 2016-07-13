@@ -1,5 +1,6 @@
 require "core_ext/duration"
 require "core_ext/array"
 require "parallel_enumerable"
-require "unexpected_response"
+require "params_serializer"
 require "pg_search"
+require "unexpected_response"
