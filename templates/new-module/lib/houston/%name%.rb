@@ -20,4 +20,9 @@ module Houston
   #   "<%= name %>:update" => params("<%= name %>").desc("<%= camelized %> was updated")
   # }}
 
+
+  # Add a link to Houston's global navigation
+  # add_navigation_renderer :<%= name %> do
+  #  render_nav_link "<%= camelized %>", Houston::<%= camelized %>::Engine.routes.url_helpers.<%= name %>_path, icon: "fa-thumbs-up"
+  # end
 end
