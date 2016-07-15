@@ -72,17 +72,6 @@ class ConfigurationTest < ActiveSupport::TestCase
   end
 
 
-  context "Triggers" do
-    should "invoke actions in the context of their params" do
-      config.action("test-action") do
-        assert respond_to?(:example)
-        assert_equal 5, example
-      end
-      config.actions.run "test-action", {example: 5}, {async: false}
-    end
-  end
-
-
 private
 
   def config

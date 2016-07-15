@@ -38,6 +38,14 @@ class ActionsTest < ActiveSupport::TestCase
       run! example: 5
       assert_equal({example: 5}, Action.first.params)
     end
+
+    should "invoke actions in the context of their params" do
+      actions.redefine("test-action") do
+        assert respond_to?(:example)
+        assert_equal 5, example
+      end
+      actions.run "test-action", {example: 5}, {async: false}
+    end
   end
 
 
