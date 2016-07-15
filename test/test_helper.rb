@@ -85,6 +85,20 @@ class ActiveSupport::TestCase
 
 
 
+  def refute_raises(*exp)
+    msg = "#{exp.pop}.\n" if String === exp.last
+    exp << StandardError if exp.empty?
+
+    yield
+
+    pass
+  rescue *exp => e
+    exp = exp.first if exp.size == 1
+    flunk "#{msg}#{mu_pp(exp)} was not supposed to be raised"
+  end
+
+
+
   def assert_deep_equal(expected_value, actual_value)
     differences = differences_between_values(expected_value, actual_value)
     assert differences.none?, differences.join("\n")
