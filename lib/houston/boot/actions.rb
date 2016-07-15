@@ -25,6 +25,11 @@ module Houston
       actions[name] = block
     end
 
+    def undefine(name)
+      raise ArgumentError, "#{name.inspect} is not defined" unless exists?(name)
+      actions.delete name
+    end
+
     def run(name, params={}, options={})
       params = ReadonlyHash.new(params.to_h)
       block = actions.fetch(name)

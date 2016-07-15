@@ -439,6 +439,38 @@ ALTER SEQUENCE oauth_providers_id_seq OWNED BY oauth_providers.id;
 
 
 --
+-- Name: persistent_triggers; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE persistent_triggers (
+    id integer NOT NULL,
+    type character varying NOT NULL,
+    value text NOT NULL,
+    params text DEFAULT '{}'::text NOT NULL,
+    action character varying NOT NULL
+);
+
+
+--
+-- Name: persistent_triggers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE persistent_triggers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: persistent_triggers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE persistent_triggers_id_seq OWNED BY persistent_triggers.id;
+
+
+--
 -- Name: project_quotas; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1248,6 +1280,13 @@ ALTER TABLE ONLY oauth_providers ALTER COLUMN id SET DEFAULT nextval('oauth_prov
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY persistent_triggers ALTER COLUMN id SET DEFAULT nextval('persistent_triggers_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY project_quotas ALTER COLUMN id SET DEFAULT nextval('project_quotas_id_seq'::regclass);
 
 
@@ -1440,6 +1479,14 @@ ALTER TABLE ONLY milestones
 
 ALTER TABLE ONLY oauth_providers
     ADD CONSTRAINT oauth_providers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: persistent_triggers_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY persistent_triggers
+    ADD CONSTRAINT persistent_triggers_pkey PRIMARY KEY (id);
 
 
 --
@@ -2436,4 +2483,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160625230420');
 INSERT INTO schema_migrations (version) VALUES ('20160711170921');
 
 INSERT INTO schema_migrations (version) VALUES ('20160713204605');
+
+INSERT INTO schema_migrations (version) VALUES ('20160715173039');
 
