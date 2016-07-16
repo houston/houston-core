@@ -373,20 +373,24 @@ module_function
 
     # Actions and Triggers
 
-    def action(name, &block)
-      actions.define(name, &block)
+    def action(name, required_params=[], &block)
+      actions.define(name, required_params, &block)
     end
 
     def on(*args, &block)
-      event, action_name = extract_trigger_and_action!(args)
-      assert_action! action_name, &block
+      event_name, action_name = extract_trigger_and_action!(args)
+      event = Houston.get_registered_event(event_name)
+      action = assert_action! action_name, event.params, &block
+      action.assert_required_params! event.params
 
-      triggers.on event, action_name
+      triggers.on event_name, action_name
+      action
     end
 
     def at(*args, &block)
       time, action_name = extract_trigger_and_action!(args)
-      assert_action! action_name, &block
+      action = assert_action! action_name, &block
+      action.assert_required_params! []
 
       # Passing options to Houston.config.at is deprecated
       # -------------------------------------------------------------- #
@@ -403,11 +407,13 @@ module_function
       # -------------------------------------------------------------- #
 
       triggers.at time, action_name
+      action
     end
 
     def every(*args, &block)
       interval, action_name = extract_trigger_and_action!(args)
-      assert_action! action_name, &block
+      action = assert_action! action_name, &block
+      action.assert_required_params! []
 
       # Passing options to Houston.config.every is deprecated
       # -------------------------------------------------------------- #
@@ -420,6 +426,7 @@ module_function
       # -------------------------------------------------------------- #
 
       triggers.every interval, action_name
+      action
     end
 
     private def extract_trigger_and_action!(args)
@@ -436,10 +443,12 @@ module_function
       raise NotImplementedError, "I haven't been programmed to extract trigger and action_name from #{args.inspect}"
     end
 
-    private def assert_action!(name, &block)
+    private def assert_action!(name, required_params=[], &block)
       if block_given?
-        action name, &block
-      elsif !actions.exists?(name)
+        action name, required_params, &block
+      elsif action = actions[name]
+        action
+      else
         raise ArgumentError, "An action named #{name.inspect} is not defined"
       end
     end
