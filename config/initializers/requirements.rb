@@ -1,6 +1,5 @@
 require "core_ext/duration"
 require "core_ext/array"
-require "oj_serializer"
 require "parallel_enumerable"
 require "params_serializer"
 require "pg_search"

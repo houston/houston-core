@@ -1,6 +1,9 @@
+require "houston/boot/serializer"
+
+
 module Houston
   module Extensions
-    attr_reader :events
+    attr_reader :events, :serializers
 
 
 
@@ -85,6 +88,17 @@ module Houston
       hash.each do |name, description|
         register_event(name, description.to_h)
       end
+    end
+
+
+
+    def add_serializer(serializer)
+      [:applies_to?, :pack].each do |method|
+        next if serializer.respond_to?(method)
+        raise ArgumentError, "`serializer` must respond to `#{method}`"
+      end
+
+      @serializers.push serializer
     end
 
 
@@ -221,5 +235,6 @@ module Houston
   @project_options = {}
   @events = []
   @event_matchers = []
+  @serializers = []
   extend Houston::Extensions
 end

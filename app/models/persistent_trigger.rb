@@ -1,8 +1,8 @@
 class PersistentTrigger < ActiveRecord::Base
   self.inheritance_column = nil
 
-  serialize :value, OjSerializer.new
-  serialize :params, ParamsSerializer.new
+  serialize :value, Houston::Serializer.new
+  serialize :params, Houston::ParamsSerializer.new
 
   TYPES = [:at, :on, :every].freeze
   validates :type, inclusion: { in: TYPES, message: "{value} is not valid Trigger type; use #{TYPES.map(&:inspect).to_sentence(two_words_connector: " or ", last_word_connector: ", or ")}" }

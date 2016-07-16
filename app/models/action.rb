@@ -5,7 +5,7 @@ class Action < ActiveRecord::Base
 
   default_scope -> { order(started_at: :desc) }
 
-  serialize :params, ParamsSerializer.new
+  serialize :params, Houston::ParamsSerializer.new
 
 
 

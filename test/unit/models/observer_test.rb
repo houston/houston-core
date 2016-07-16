@@ -50,6 +50,17 @@ class ObserverTest < ActiveSupport::TestCase
       end
     end
 
+    # We require that all params be serializable so that (1) actions can
+    # be recorded with all their state (and retried) and (2) the actions
+    # system can be "outsourced" to a background job system like Sidekiq
+    # if need be.
+    should "raise if the event is triggered with an unserializable param" do
+      unserializable_object = Class.new.new
+      assert_raises Houston::Serializer::UnserializableError do
+        Houston.observer.fire "test", {example: unserializable_object}
+      end
+    end
+
     should "invoke callbacks with {} if called with no arguments" do
       callback_args = :not_called
       Houston.observer.on("test0") { |*args| callback_args = args }

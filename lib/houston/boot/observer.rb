@@ -44,6 +44,7 @@ module Houston
       end
 
       assert_registered_params! event, params
+      assert_serializable! params
       params = ReadonlyHash.new(params)
 
       observers_of(event).each do |callback|
@@ -79,6 +80,10 @@ module Houston
       if unregistered_params.any?
         raise UnregisteredParamError, "#{unregistered_params.first.inspect} is a not a registered param of the event #{event_name.inspect}"
       end
+    end
+
+    def assert_serializable!(params)
+      Houston::Serializer.new.assert_serializable!(params)
     end
 
 
