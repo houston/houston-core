@@ -1,0 +1,39 @@
+<% content_for :title do %>
+<h1 class="project-banner space-below">
+  Errors
+</h1>
+<% end %>
+
+<div class="nomargin">
+  <table id="errors" class="table table-sortable table-striped">
+    <thead>
+      <tr>
+        <td class="table-margin"></td>
+        <th class="action-time">Time</th>
+        <th class="action-name">Action</th>
+        <th class="action-trigger">Trigger</th>
+        <th class="action-params">Params</th>
+        <th class="action-error-message">Message</th>
+        <td class="table-margin"></td>
+      </tr>
+    </thead>
+    <tbody class="infinite-scroll">
+      <%= render "errors/actions" %>
+    </tbody>
+  </table>
+</div>
+
+
+<% content_for :javascripts do %>
+  <script type="text/javascript">
+    $(function() {
+      $('#triggers').tablesorter();
+    });
+    new InfiniteScroll({
+      load: function($tbody) {
+        var timestamp = $tbody.find('.action-error:last').attr('data-timestamp');
+        return $.get(window.location.pathname, {before: timestamp});
+      }
+    });
+  </script>
+<% end %>

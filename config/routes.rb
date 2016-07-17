@@ -248,6 +248,12 @@ Rails.application.routes.draw do
 
 
 
+  # Errors
+
+  get "errors", to: "errors#index", as: :errors
+
+
+
   # Options
 
   put "projects/:slug/options", to: "project_options#update"
