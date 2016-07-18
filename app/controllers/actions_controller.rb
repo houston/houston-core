@@ -30,6 +30,11 @@ class ActionsController < ApplicationController
     @actions = Action.where(name: @action_name).preload(:error)
   end
 
+  def running
+    authorize! :show, :actions
+    @actions = Action.where(finished_at: nil)
+  end
+
   def run
     authorize! :run, :actions
     Houston.actions.run params[:slug]
