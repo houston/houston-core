@@ -4,7 +4,7 @@ module Github
 
     self.table_name = "pull_requests"
 
-    attr_readonly :project_id, :user_id, :repo, :number, :username, :base_ref, :base_sha, :url
+    attr_readonly :project_id, :user_id, :repo, :number, :username, :base_ref, :url
     attr_accessor :actor
 
     belongs_to :project
