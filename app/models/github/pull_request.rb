@@ -22,7 +22,7 @@ module Github
     end
 
     after_update do
-      Houston.observer.fire "github:pull:updated", pull_request: self, changes: changes if changes.any?
+      Houston.observer.fire "github:pull:updated", pull_request: self, changes: changes
       Houston.observer.fire "github:pull:closed", pull_request: self if closed_at_changed? && closed_at
       Houston.observer.fire "github:pull:reopened", pull_request: self if closed_at_changed? && !closed_at
     end
@@ -88,8 +88,10 @@ module Github
 
       def sync!(projects = Project.unretired)
         expected_pulls = fetch!(projects)
+        existing_pulls = Houston.benchmark "Loading pull requests" do
+          open.where(project_id: projects.ids).to_a
+        end
         Houston.benchmark "Syncing pull requests" do
-          existing_pulls = all.to_a
 
           # Fetch unexpected pulls so that we know
           # when they were closed and whether they
@@ -108,10 +110,15 @@ module Github
               expected_pr["base"]["repo"]["name"] == existing_pr.repo &&
               expected_pr["number"] == existing_pr.number }
 
+            # Maybe the pull request was closed?
+            existing_pr ||= where(repo: expected_pr["base"]["repo"]["name"], number: expected_pr["number"]).first
+
             existing_pr ||= Github::PullRequest.new
             existing_pr.merge_attributes(expected_pr)
-            unless existing_pr.save
-              Rails.logger.warn "\e[31m[pulls] Invalid PR: #{existing_pr.errors.full_messages.join("; ")}\e[0m"
+            if existing_pr.changes.any?
+              unless existing_pr.save
+                Rails.logger.warn "\e[31m[pulls] Invalid PR: #{existing_pr.errors.full_messages.join("; ")}\e[0m"
+              end
             end
             existing_pr
           end
