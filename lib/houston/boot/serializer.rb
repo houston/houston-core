@@ -8,7 +8,12 @@ module Houston
     class UnserializableError < ArgumentError; end
 
     def load(string)
-      unpack Oj.load(string, nilnil: true, auto_define: false)
+      begin
+        object = Oj.load(string, nilnil: true, auto_define: false)
+      rescue ArgumentError
+        raise ArgumentError, "#{string.inspect} is the wrong type; it should be a String or NilClass"
+      end
+      unpack object
     end
 
     def dump(object)
