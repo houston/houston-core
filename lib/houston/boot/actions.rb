@@ -2,6 +2,9 @@ require "thread_safe"
 
 module Houston
   class Actions
+    class ExecutionContext < ReadonlyHash
+    end
+
 
     def initialize
       @actions = ThreadSafe::Hash.new
@@ -90,7 +93,7 @@ module Houston
     private
 
       def run!(params, options={})
-        params = ReadonlyHash.new(params)
+        params = ExecutionContext.new(params)
         trigger = options.fetch(:trigger, "manual")
 
         ::Action.record name, params, trigger do
