@@ -1,7 +1,7 @@
 class TriggersController < ApplicationController
 
   def index
-    authorize! :show, :triggers
+    authorize! :read, Action
     @triggers = Houston.triggers
   end
 

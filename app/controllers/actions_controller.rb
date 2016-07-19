@@ -1,7 +1,7 @@
 class ActionsController < ApplicationController
 
   def index
-    authorize! :show, :actions
+    authorize! :read, Action
 
     actions_by_name = Houston.actions.names.each_with_object({}) { |name, map| map[name] = { name: name } }
     actions = Action.where(name: actions_by_name.keys)
@@ -25,18 +25,18 @@ class ActionsController < ApplicationController
   end
 
   def show
-    authorize! :show, :actions
+    authorize! :read, Action
     @action_name = params[:slug]
     @actions = Action.where(name: @action_name).preload(:error)
   end
 
   def running
-    authorize! :show, :actions
+    authorize! :read, Action
     @actions = Action.where(finished_at: nil)
   end
 
   def run
-    authorize! :run, :actions
+    authorize! :run, Action
     Houston.actions.run params[:slug]
     redirect_to "/actions", notice: "#{params[:slug]} is running"
   end
