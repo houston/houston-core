@@ -33,15 +33,15 @@
               <%= format_time action[:last].started_at, today: false %>
               <%= format_action_state action[:last] %>
             </td>
-            <td class="action-reliability">
+            <td class="action-reliability" data-position="<%= action[:successful_runs].to_f / action[:runs] %>">
               <%= number_to_percentage 100.0 * action[:successful_runs].to_f / action[:runs], precision: 1 %>
               <span class="action-success-rate">/<%= action[:runs] %></span>
             </td>
             <td class="action-duration" data-position="<%= action[:avg_duration] %>"><%= format_duration action[:avg_duration] %></td>
           <% else %>
-            <td class="action-last">&mdash;</td>
-            <td class="action-reliability">&mdash;</td>
-            <td class="action-duration">&mdash;</td>
+            <td class="action-last" data-timestamp="0">&mdash;</td>
+            <td class="action-reliability" data-position="0">&mdash;</td>
+            <td class="action-duration" data-position="0">&mdash;</td>
           <% end %>
           <!--<td class="action-run-now">
             <%= button_to "Run now", run_action_path(slug: action[:name]), :class => "btn btn-default" %>
@@ -60,7 +60,7 @@
       $('#actions').tablesorter({
         headers: {
           2: { sorter: 'timestamp' },
-          3: { sorter: 'percent' },
+          3: { sorter: 'property' },
           4: { sorter: 'property' }
         }
       });
