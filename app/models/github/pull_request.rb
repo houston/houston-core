@@ -22,7 +22,7 @@ module Github
     end
 
     after_update do
-      Houston.observer.fire "github:pull:updated", pull_request: self, changes: changes
+      Houston.observer.fire "github:pull:updated", pull_request: self, changes: changes if changes.any?
       Houston.observer.fire "github:pull:closed", pull_request: self if closed_at_changed? && closed_at
       Houston.observer.fire "github:pull:reopened", pull_request: self if closed_at_changed? && !closed_at
     end
