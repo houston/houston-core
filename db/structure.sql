@@ -66,7 +66,7 @@ CREATE TABLE actions (
     succeeded boolean,
     error_id integer,
     trigger character varying,
-    params jsonb
+    params text
 );
 
 
