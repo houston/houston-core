@@ -380,6 +380,12 @@ module_function
     def on(*args, &block)
       event_name, action_name = extract_trigger_and_action!(args)
       event = Houston.get_registered_event(event_name)
+
+      unless event
+        puts "\e[31mUnregistered event: \e[1m#{event_name}\e[0;90m\n#{caller[0]}\e[0m\n\n"
+        return
+      end
+
       action = assert_action! action_name, event.params, &block
       action.assert_required_params! event.params
 
