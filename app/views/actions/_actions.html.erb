@@ -1,0 +1,12 @@
+<% @actions.each do |action| %>
+  <tr class="action" data-timestamp="<%= action.started_at.iso8601 %>">
+    <td class="table-margin"></td>
+    <td class="action-time"><%= format_time action.started_at %></td>
+    <td class="action-duration"><%= format_duration action.duration %></td>
+    <td class="action-trigger"><%= action.trigger %></td>
+    <td class="action-params"><%= format_action_params action.params %></td>
+    <td class="action-succeded"><%= format_action_state action %></td>
+    <td class="action-exception"><%= action.error.message if action.error %><td>
+    <td class="table-margin"></td>
+  </tr>
+<% end %>

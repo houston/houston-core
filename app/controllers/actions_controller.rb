@@ -27,7 +27,9 @@ class ActionsController < ApplicationController
   def show
     authorize! :read, Action
     @action_name = params[:slug]
-    @actions = Action.where(name: @action_name).preload(:error)
+    @actions = Action.where(name: @action_name).preload(:error).limit(50)
+    @actions = @actions.where(Action.arel_table[:started_at].lt(params[:before])) if params[:before]
+    render partial: "actions/actions" if request.xhr?
   end
 
   def running

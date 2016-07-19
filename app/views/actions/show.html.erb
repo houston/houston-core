@@ -19,19 +19,8 @@
         <td class="table-margin"></td>
       </tr>
     </thead>
-    <tbody>
-      <% @actions.each do |action| %>
-        <tr class="action">
-          <td class="table-margin"></td>
-          <td class="action-time"><%= format_time action.started_at %></td>
-          <td class="action-duration"><%= format_duration action.duration %></td>
-          <td class="action-trigger"><%= action.trigger %></td>
-          <td class="action-params"><%= format_action_params action.params %></td>
-          <td class="action-succeded"><%= format_action_state action %></td>
-          <td class="action-exception"><%= action.error.message if action.error %><td>
-          <td class="table-margin"></td>
-        </tr>
-      <% end %>
+    <tbody class="infinite-scroll">
+      <%= render "actions/actions" %>
     </tbody>
   </table>
 </div>
@@ -40,6 +29,12 @@
   <script type="text/javascript">
     $(function() {
       $('#actions').tablesorter();
+    });
+    new InfiniteScroll({
+      load: function($tbody) {
+        var timestamp = $tbody.find('.action:last').attr('data-timestamp');
+        return $.get(window.location.pathname, {before: timestamp});
+      }
     });
   </script>
 <% end %>
