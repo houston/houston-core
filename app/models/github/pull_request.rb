@@ -19,12 +19,14 @@ module Github
 
     after_create do
       Houston.observer.fire "github:pull:opened", pull_request: self
+      true
     end
 
     after_update do
       Houston.observer.fire "github:pull:updated", pull_request: self, changes: changes
       Houston.observer.fire "github:pull:closed", pull_request: self if closed_at_changed? && closed_at
       Houston.observer.fire "github:pull:reopened", pull_request: self if closed_at_changed? && !closed_at
+      true
     end
 
     validates :project_id, :title, :number, :repo, :url, :base_ref, :base_sha, :head_ref, :head_sha, :username, presence: true
