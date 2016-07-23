@@ -13,3 +13,30 @@ td.action-reliability {
   line-height: 20px;
   float: right;
 }
+
+.action-params {
+  pre {
+    border: none;
+    border-radius: 0;
+    background: 0;
+    font-size: 12px;
+    line-height: 16px;
+    max-width: 600px;
+    white-space: pre;
+    overflow-x: scroll;
+    margin: 0;
+  }
+
+  .action-params-short {
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+    margin: -6px -8px;
+
+    &:hover {
+      background: rgba(0, 136, 204, 0.08);
+      color: #0088cc;
+    }
+  }
+  .action-params-full { display: none; }
+}

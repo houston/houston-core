@@ -37,7 +37,11 @@
 <% content_for :javascripts do %>
   <script type="text/javascript">
     $(function() {
-      $('#actions').tablesorter();
+      $('#actions')
+        .tablesorter()
+        .on('click', '.action-params-short', function() {
+          $(this).hide().next().show();
+        });
     });
   </script>
 <% end %>
