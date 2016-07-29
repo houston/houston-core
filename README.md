@@ -1,4 +1,8 @@
-# Houston Core [![Code Climate](https://codeclimate.com/github/houston/houston-core.png)](https://codeclimate.com/github/houston/houston-core)
+# Houston Core
+
+[![Gem Version](https://badge.fury.io/rb/houston-core.svg)](https://rubygems.org/gems/houston-core)
+[![Code Climate](https://codeclimate.com/github/houston/houston-core.svg)](https://codeclimate.com/github/houston/houston-core)
+[![Build Status](https://travis-ci.org/houston/houston-core.svg)](https://travis-ci.org/houston/houston-core)
 
 ##### Mission Control for your projects and team
 
@@ -28,7 +32,7 @@ To use Houston, you must have
 ##### Hello World
 
  1. Install houston-core
-    
+
     ```
     gem install houston-core
     ```
