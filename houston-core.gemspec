@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["bob.lailfamily@gmail.com"]
 
   spec.summary       = %q{Mission Control for your projects and teams}
-  spec.homepage      = "https://github.com/houston/houston"
+  spec.homepage      = "https://github.com/houston/houston-core"
 
   spec.files         = `git ls-files -z`.split("\x0")
   spec.executables   = ["houston"]
