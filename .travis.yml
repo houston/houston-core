@@ -1,0 +1,21 @@
+# .travis.yml
+language: ruby
+rvm:
+  - 2.3.0
+
+# The default version is 9.1 but Houston is jsonb columns
+addons:
+  postgresql: "9.4"
+
+services:
+  - postgresql
+
+# https://github.com/travis-ci/travis-ci/issues/5239
+before_install:
+  - gem update bundler
+  - sudo apt-get install libssh2-1-dev
+
+before_script:
+  - psql -c 'create database houston_core_test;' -U postgres
+script:
+  - script/cibuild
