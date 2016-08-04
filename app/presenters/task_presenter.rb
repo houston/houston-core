@@ -22,13 +22,13 @@ class TaskPresenter
     project = ticket.project
     { id: task.id,
 
-      projectId: project.id,
-      projectSlug: project.slug,
-      projectTitle: project.name,
-      projectColor: project.color,
+      projectId: project && project.id,
+      projectSlug: project && project.slug,
+      projectTitle: project && project.name,
+      projectColor: project && project.color,
 
-      ticketSystem: project.ticket_tracker_name,
-      ticketUrl: ticket.ticket_tracker_ticket_url,
+      ticketSystem: project && project.ticket_tracker_name,
+      ticketUrl: project && ticket.ticket_tracker_ticket_url,
       ticketNumber: ticket.number,
       ticketType: ticket.type.to_s.downcase.dasherize,
       ticketSequence: ticket.extended_attributes["sequence"],  # <-- embeds knowledge of Houston::Scheduler
