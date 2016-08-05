@@ -24,7 +24,7 @@ h2.test-result-banner {
     font-size: 1.5em;
     margin: 0;
 
-    .test-result-committer { font-weight: 800; }
+    .test-result-committer { font-weight: 700; }
     img { width: 1em; height: 1em; }
   }
 }
@@ -126,7 +126,7 @@ h2.test-result-banner {
   text-transform: uppercase;
   border-radius: 2px;
   color: white;
-  font-weight: 800;
+  font-weight: 700;
   text-indent: 0;
 
   &.pass  { color: #5DB64C; } // grass
