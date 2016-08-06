@@ -14,13 +14,13 @@ Rails.application.initialize!
 require "rails/test_help"
 require "support/houston/adapters/version_control/mock_adapter"
 require "capybara/rails"
+require "minitest/reporters/turn_reporter"
 
 if ENV["CI"] == "true"
   require "minitest/reporters"
-  MiniTest::Reporters.use! [MiniTest::Reporters::DefaultReporter.new,
+  MiniTest::Reporters.use! [Minitest::Reporters::TurnReporter.new,
                             MiniTest::Reporters::JUnitReporter.new]
 else
-  require "minitest/reporters/turn_reporter"
   MiniTest::Reporters.use! Minitest::Reporters::TurnReporter.new
 end
 
