@@ -13,7 +13,6 @@ class Project < ActiveRecord::Base
   has_many :tests, dependent: :destroy
   has_many :deploys
   has_many :roles, -> { joins(:user).merge(User.unretired) }, dependent: :destroy, validate: false
-  has_many :value_statements, dependent: :destroy
   has_many :pull_requests, class_name: "Github::PullRequest"
   belongs_to :head, class_name: "Commit", foreign_key: "head_sha", primary_key: "sha"
 
@@ -26,7 +25,6 @@ class Project < ActiveRecord::Base
 
   accepts_nested_attributes_for :roles, :allow_destroy => true, # <-- !todo: authorized access only
     reject_if: proc { |attrs| attrs[:user_id].blank? or attrs[:name].blank? }
-  accepts_nested_attributes_for :value_statements, :allow_destroy => true
 
   before_validation :generate_default_slug, :set_default_color
   validates_presence_of :name, :slug, :color

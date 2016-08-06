@@ -471,39 +471,6 @@ ALTER SEQUENCE persistent_triggers_id_seq OWNED BY persistent_triggers.id;
 
 
 --
--- Name: project_quotas; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE project_quotas (
-    id integer NOT NULL,
-    project_id integer NOT NULL,
-    week date NOT NULL,
-    value integer NOT NULL,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
-);
-
-
---
--- Name: project_quotas_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE project_quotas_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: project_quotas_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE project_quotas_id_seq OWNED BY project_quotas.id;
-
-
---
 -- Name: projects; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1144,37 +1111,6 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 
 
 --
--- Name: value_statements; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE value_statements (
-    id integer NOT NULL,
-    project_id integer NOT NULL,
-    weight double precision NOT NULL,
-    text character varying NOT NULL
-);
-
-
---
--- Name: value_statements_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE value_statements_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: value_statements_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE value_statements_id_seq OWNED BY value_statements.id;
-
-
---
 -- Name: versions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1287,13 +1223,6 @@ ALTER TABLE ONLY persistent_triggers ALTER COLUMN id SET DEFAULT nextval('persis
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY project_quotas ALTER COLUMN id SET DEFAULT nextval('project_quotas_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
 ALTER TABLE ONLY projects ALTER COLUMN id SET DEFAULT nextval('projects_id_seq'::regclass);
 
 
@@ -1399,13 +1328,6 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY value_statements ALTER COLUMN id SET DEFAULT nextval('value_statements_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
 ALTER TABLE ONLY versions ALTER COLUMN id SET DEFAULT nextval('versions_id_seq'::regclass);
 
 
@@ -1487,14 +1409,6 @@ ALTER TABLE ONLY oauth_providers
 
 ALTER TABLE ONLY persistent_triggers
     ADD CONSTRAINT persistent_triggers_pkey PRIMARY KEY (id);
-
-
---
--- Name: project_quotas_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY project_quotas
-    ADD CONSTRAINT project_quotas_pkey PRIMARY KEY (id);
 
 
 --
@@ -1631,14 +1545,6 @@ ALTER TABLE ONLY user_credentials
 
 ALTER TABLE ONLY users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
-
-
---
--- Name: value_statements_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY value_statements
-    ADD CONSTRAINT value_statements_pkey PRIMARY KEY (id);
 
 
 --
@@ -1780,20 +1686,6 @@ CREATE INDEX index_milestones_on_destroyed_at ON milestones USING btree (destroy
 --
 
 CREATE INDEX index_milestones_on_project_id ON milestones USING btree (project_id);
-
-
---
--- Name: index_project_quotas_on_project_id_and_week; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE UNIQUE INDEX index_project_quotas_on_project_id_and_week ON project_quotas USING btree (project_id, week);
-
-
---
--- Name: index_project_quotas_on_week; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_project_quotas_on_week ON project_quotas USING btree (week);
 
 
 --
@@ -2220,8 +2112,6 @@ INSERT INTO schema_migrations (version) VALUES ('20130420174002');
 
 INSERT INTO schema_migrations (version) VALUES ('20130420174126');
 
-INSERT INTO schema_migrations (version) VALUES ('20130427223925');
-
 INSERT INTO schema_migrations (version) VALUES ('20130428005808');
 
 INSERT INTO schema_migrations (version) VALUES ('20130504014802');
@@ -2331,8 +2221,6 @@ INSERT INTO schema_migrations (version) VALUES ('20140428023146');
 INSERT INTO schema_migrations (version) VALUES ('20140429000919');
 
 INSERT INTO schema_migrations (version) VALUES ('20140506032958');
-
-INSERT INTO schema_migrations (version) VALUES ('20140506035755');
 
 INSERT INTO schema_migrations (version) VALUES ('20140515174322');
 
