@@ -50,7 +50,7 @@ class ReleasesController < ApplicationController
     authorize! :create, @release
 
     if @release.save
-      ProjectNotification.release(@release).deliver! if params[:send_release_email]
+      Houston.deliver! ProjectNotification.release(@release) if params[:send_release_email]
       @release.tickets.resolve_all! if params[:resolve_tickets]
 
       redirect_to @release

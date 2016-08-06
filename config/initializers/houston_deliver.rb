@@ -9,7 +9,7 @@ module Houston
                 Net::ReadTimeout,
                 Net::SMTPServerBusy,
                 EOFError) do
-        message.deliver!
+        message.deliver_now!
     end
   end
 
