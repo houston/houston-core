@@ -21,7 +21,7 @@
         <th class="action-reliability">Reliability</th>
         <th class="action-count">Count</th>
         <th class="action-duration">Duration</th>
-        <!--<td class="action-run-now"></td>-->
+        <td class="action-run-now"></td>
         <td class="table-margin"></td>
       </tr>
     </thead>
@@ -47,9 +47,11 @@
             <td class="action-count">0</td>
             <td class="action-duration" data-position="0">&mdash;</td>
           <% end %>
-          <!--<td class="action-run-now">
-            <%= button_to "Run now", run_action_path(slug: action[:name]), :class => "btn btn-default" %>
-          </td>-->
+          <td class="action-run-now">
+            <% if action[:required_params].empty? %>
+              <%= button_to "Run now", run_action_path(slug: action[:name]), :class => "btn btn-default" %>
+            <% end %>
+          </td>
           <td class="table-margin"></td>
         </tr>
       <% end %>
