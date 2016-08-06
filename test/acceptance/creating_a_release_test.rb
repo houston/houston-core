@@ -7,16 +7,16 @@ class CreatingAReleaseTest < ActionDispatch::IntegrationTest
 
 
   setup do
-    @commit0 = "e558039"
-    @commit1 = "07fc2de"
+    @commit0 = "bd3e9e2"
+    @commit1 = "b91a4fe"
 
     @user = User.first
     @project = Project.create!(
-      name: "Houston",
-      slug: "houston",
+      name: "Test",
+      slug: "test",
       ticket_tracker_name: "Houston",
       version_control_name: "Git",
-      props:  {"git.location" => Rails.root.join(".git").to_s})
+      props:  {"git.location" => Rails.root.join("test", "data", "bare_repo.git").to_s})
     @project.roles.create!(name: "Maintainer", user: user)
     @ticket = @project.tickets.create!(
       number: 116,
@@ -35,36 +35,29 @@ class CreatingAReleaseTest < ActionDispatch::IntegrationTest
 
 
   context "Given a valid commit range" do
-    should "show the release form" do
+    setup do
       visit new_release_path
+    end
 
+    should "show the release form" do
       assert page.has_content?("New Release to Production")
     end
 
     should "show all the commits" do
-      visit new_release_path
-
       project.commits.between(commit0, commit1).each do |commit|
         assert page.has_content?(commit.summary), "Expected to find commit #{commit} on the page"
       end
     end
 
     should "show ticket #116, which was mentioned by one of the commits" do
-      visit new_release_path
-
       assert page.has_content?(ticket.summary), "Expected to find ticket #{ticket.number} on the page"
     end
-  end
 
-
-  context "When creating the release" do
-    setup do
-      visit new_release_path
-    end
-
-    should "create the release" do
-      assert_difference "Release.count", +1 do
-        click_button "Create Release"
+    context "clicking 'Create Release'" do
+      should "create the release" do
+        assert_difference "Release.count", +1 do
+          click_button "Create Release"
+        end
       end
     end
   end
@@ -73,7 +66,7 @@ class CreatingAReleaseTest < ActionDispatch::IntegrationTest
 private
 
   def new_release_path
-    "/projects/houston/environments/Production/releases/new?commit0=#{commit0}&commit1=#{commit1}"
+    "/projects/test/environments/Production/releases/new?commit0=#{commit0}&commit1=#{commit1}"
   end
 
 end

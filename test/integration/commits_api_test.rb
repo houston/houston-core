@@ -31,6 +31,7 @@ class CommitsApiTest < ActionDispatch::IntegrationTest
     assert_response :success
 
     expected_commits = [
+      "[fix] Resolved this ticket [#116] (1m)",
       "Added lib files for code coverage tests",
       "When you have eliminated the impossible, what remains,",
       "however improbable, must be true",

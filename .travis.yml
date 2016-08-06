@@ -1,5 +1,10 @@
 # .travis.yml
 language: ruby
+
+# By default, Travis clones the last 50 commits
+# git:
+#   depth: 50
+
 rvm:
 
   # I would use 2.3.0, but Travis loads that binary on-demand
