@@ -3,7 +3,8 @@ class ActionsController < ApplicationController
   def index
     authorize! :read, Action
 
-    actions_by_name = Houston.actions.names.each_with_object({}) { |name, map| map[name] = { name: name } }
+    actions_by_name = Houston.actions.to_a.each_with_object({}) { |action, map|
+      map[action.name] = { name: action.name, required_params: action.required_params } }
     actions = Action.where(name: actions_by_name.keys)
 
     most_recent_actions = actions.joins(<<-SQL)
