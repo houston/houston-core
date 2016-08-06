@@ -40,6 +40,11 @@ module Generators
       # do nothing
     end
 
+    def assets_manifest
+      # do nothing
+      # added in Rails 5; Houston requires ~> 4.2.7
+    end
+
     def readme
       template "README.md"
     end
