@@ -13,7 +13,6 @@ module Generators
     end
 
     def config
-      template "config/initializers/add_navigation_renderer.rb"
       template "config/database.yml"
       template "config/routes.rb"
       empty_directory_with_keep_file "db"
