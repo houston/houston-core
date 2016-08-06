@@ -26,20 +26,6 @@ Rails.application.routes.draw do
 
 
 
-  # Pretickets
-
-  get "pretickets/by_project/:slug", to: "project_pretickets#show", :as => :project_pretickets
-
-
-
-  # Exceptions
-
-  post "projects/:slug/exceptions/merge_several", to: "project_exceptions#merge_several"
-  post "projects/:slug/exceptions/unmerge_several", to: "project_exceptions#unmerge_several"
-  post "projects/:slug/exceptions/delete_several", to: "project_exceptions#delete_several"
-
-
-
   # Projects
 
   resources :projects do
