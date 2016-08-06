@@ -35,7 +35,7 @@ class SprintTest < ActiveSupport::TestCase
   context "Sprint#current" do
     should "return the current sprint" do
       sprint = Sprint.create!(end_date: Date.new(2014, 9, 5))
-      Timecop.freeze Time.new(2014, 9, 5, 23, 0, 0, "-05:00") do
+      Timecop.freeze Time.new(2014, 9, 5, 23, 0, 0) do
         assert_equal sprint.id, Sprint.current.try(:id), "Expected Sprint#current to find the sprint that ends this week"
       end
     end
