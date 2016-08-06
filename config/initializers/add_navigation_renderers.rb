@@ -1,13 +1,15 @@
 Houston.add_navigation_renderer :sprint do
-  if can?(:read, Sprint)
-    render_nav_link "Sprint", main_app.current_sprint_path, icon: "fa-burndown"
-  end
+  name "Sprint"
+  icon "fa-burndown"
+  path { Houston::Application.routes.url_helpers.current_sprint_path }
+  ability { |ability| ability.can?(:read, Sprint) }
 end
 
 Houston.add_navigation_renderer :pulls do
-  if can?(:read, Github::PullRequest)
-    render_nav_link "Pulls", main_app.pulls_path, icon: "octokit-pull-request"
-  end
+  name "Pulls"
+  icon "octokit-pull-request"
+  path { Houston::Application.routes.url_helpers.pulls_path }
+  ability { |ability| ability.can?(:read, Github::PullRequest) }
 end
 
 

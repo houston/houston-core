@@ -7,12 +7,24 @@ module Houston
 
 
 
-    def add_navigation_renderer(name, &block)
-      @navigation_renderers[name] = block
+    def available_navigation_renderers
+      @navigation_renderers.keys
     end
 
     def get_navigation_renderer(name)
       @navigation_renderers.fetch(name)
+    end
+
+    def add_navigation_renderer(slug, &block)
+      dsl = FeatureDsl.new(GlobalFeature.new)
+      dsl.instance_eval(&block)
+      feature = dsl.feature
+      feature.slug = slug
+      raise ArgumentError, "Renderer must supply name, but #{slug.inspect} doesn't" unless feature.name
+      raise ArgumentError, "Renderer must supply icon, but #{slug.inspect} doesn't" unless feature.icon
+      raise ArgumentError, "Renderer must supply path lambda, but #{slug.inspect} doesn't" unless feature.path_block
+
+      @navigation_renderers[slug] = feature
     end
 
 
@@ -23,11 +35,11 @@ module Houston
     end
 
     def get_project_feature(slug)
-      @available_project_features[slug]
+      @available_project_features.fetch(slug)
     end
 
     def add_project_feature(slug, &block)
-      dsl = ProjectFeatureDsl.new
+      dsl = FeatureDsl.new(ProjectFeature.new)
       dsl.instance_eval(&block)
       feature = dsl.feature
       feature.slug = slug
@@ -105,8 +117,21 @@ module Houston
 
   private
 
-    class ProjectFeature
-      attr_accessor :name, :slug, :icon, :path_block, :ability_block, :fields
+    class GlobalFeature
+      attr_accessor :name, :slug, :icon, :path_block, :ability_block
+
+      def path
+        path_block.call
+      end
+
+      def permitted?(ability)
+        return true if ability_block.nil?
+        ability_block.call ability
+      end
+    end
+
+    class ProjectFeature < GlobalFeature
+      attr_accessor :fields
 
       def initialize
         self.fields = []
@@ -115,6 +140,7 @@ module Houston
       def project_path(project)
         path_block.call project
       end
+      alias :path :project_path
 
       def permitted?(ability, project)
         return true if ability_block.nil?
@@ -122,11 +148,11 @@ module Houston
       end
     end
 
-    class ProjectFeatureDsl
+    class FeatureDsl
       attr_reader :feature
 
-      def initialize
-        @feature = ProjectFeature.new
+      def initialize(feature)
+        @feature = feature
       end
 
       def name(value)

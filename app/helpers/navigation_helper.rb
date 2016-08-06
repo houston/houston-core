@@ -2,7 +2,9 @@ module NavigationHelper
 
   def render_navigation(key)
     renderer = Houston.get_navigation_renderer(key)
-    instance_eval &renderer
+    return unless renderer.permitted?(current_ability)
+
+    render_nav_link renderer.name, renderer.path, icon: renderer.icon
   rescue KeyError
     Rails.logger.error "\e[31;1mThere is no navigation renderer named #{key.inspect}\e[0m"
     nil
@@ -20,6 +22,9 @@ module NavigationHelper
     return unless feature.permitted?(current_ability, current_project)
 
     render_nav_link feature.name, feature.project_path(current_project), icon: feature.icon
+  rescue KeyError
+    Rails.logger.error "\e[31;1mThere is no project feature named #{feature.inspect}\e[0m"
+    nil
   end
 
   def render_nav_menu(name, items: [], icon: "fa-circle-thin")

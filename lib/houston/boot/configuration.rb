@@ -147,7 +147,8 @@ module_function
 
     def navigation(*args)
       @navigation = args if args.any?
-      @navigation ||= []
+      return Houston.available_navigation_renderers unless @navigation
+      @navigation & Houston.available_navigation_renderers
     end
 
     def project_features(*args)
