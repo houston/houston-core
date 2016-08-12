@@ -49,16 +49,14 @@ module CommitHelper
 
     message.gsub! Commit::EXTRA_ATTRIBUTE_PATTERN do |match|
       key, value = match.scan(Commit::EXTRA_ATTRIBUTE_PATTERN).first
-      link_to_err(project, value) if key == "err"
+      format_extra_attribute(key, value)
     end
 
     message.html_safe
   end
 
-  def link_to_err(project, err)
-    link_to project.error_tracker_error_url(err), "target" => "_blank" do
-      (image_tag(image_url("bug-fixed-32.png"), "data-tooltip-placement" => "right", rel: "tooltip", title: "View Exception in Errbit", width: 16, height: 16) + err).html_safe
-    end
+  def format_extra_attribute(key, value)
+    "<span class=\"commit-extra-attribute\"><span class=\"commit-extra-attribute-key\">#{key}</span><span class=\"commit-extra-attribute-value\">#{value}</span></span>"
   end
 
   def commit_test_message(commit)

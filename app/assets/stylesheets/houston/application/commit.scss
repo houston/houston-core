@@ -4,3 +4,19 @@
   h2 { font-weight: 100; margin-left: 110px; }
   h4 { font-weight: 400; }
 }
+
+.commit-extra-attribute {
+  color: #666;
+  font-size: 10px;
+  line-height: normal;
+  background: #f4f4f4;
+  display: inline-block;
+  padding: 2px;
+
+  &::before { content: '{{'; }
+  &::after { content: '}}'; }
+}
+
+.commit-extra-attribute-key::after {
+  content: ':';
+}
