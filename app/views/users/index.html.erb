@@ -18,15 +18,11 @@
           <th class="user-email">Email</th>
           <th class="user-nickname">Nickname</th>
           <th class="user-role">Role</th>
-          <th class="user-tickets-filed"><small>Tickets<br />Filed</small></th>
-          <th class="user-tickets-invalid"><small>Dupicate<br />or Invalid</small></th>
-          <th class="user-tickets-fixed"><small>Fixed</small></th>
-          <td class="user-actions"></td>
           <td class="table-margin"></td>
         </tr>
       </thead>
       <tbody>
-        <% @users.each do |user|; stats = @ticket_stats_by_user[user] %>
+        <% @users.each do |user| %>
           <tr id="user_<%= user.id %>">
             <td class="table-margin"></td>
             <td class="user-avatar"><%= avatar_for(user, size: 32) %></td>
@@ -39,14 +35,6 @@
             <td class="user-email"><%= mail_to user.email %></td>
             <td class="user-email"><%= user.nickname %></td>
             <td class="user-role"><%= user.role %><%= ", Admin" if user.administrator? %></td>
-            <td class="user-tickets-filed"><%= stats[:tickets] %></td>
-            <td class="user-tickets-invalid">
-              <%= number_to_percentage stats[:invalid_tickets], precision: 0 if stats[:tickets] > 0 %>
-            </td>
-            <td class="user-tickets-fixed">
-              <%= number_to_percentage stats[:fixed_tickets], precision: 0 if stats[:tickets] > 0 %>
-            </td>
-            <td class="user-actions"></td>
             <td class="table-margin"></td>
           </tr>
         <% end %>

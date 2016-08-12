@@ -6,10 +6,6 @@ class UsersController < ApplicationController
   def index
     @title = "Users"
     @users = User.unretired
-
-    @ticket_stats_by_user = @users.each_with_object({}) do |user, stats|
-      stats[user] = stats_for_user(user)
-    end
   end
 
 
