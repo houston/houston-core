@@ -35,11 +35,6 @@ Rails.application.routes.draw do
 
     post "follow", to: "project_roles#create", :as => :follow
     delete "unfollow", to: "project_roles#destroy", :as => :unfollow
-
-    get "deploys/:id", to: "deploys#show", :as => :deploy
-
-    post "deploy", to: "deploys#create"
-    post "deploy/:environment", to: "deploys#create"
   end
 
   get "projects/new/github", to: "projects#new_from_github", as: :add_github_projects
@@ -57,6 +52,17 @@ Rails.application.routes.draw do
       get "hooks/:hook", to: "project_hooks#trigger", :as => :web_hook
       post "hooks/:hook", to: "project_hooks#trigger"
     end
+  end
+
+
+
+  # Deploys
+
+  scope "projects/:project_id" do
+    get "deploys/:id", to: "deploys#show", :as => :deploy
+
+    post "deploy", to: "deploys#create"
+    post "deploy/:environment", to: "deploys#create"
   end
 
 
