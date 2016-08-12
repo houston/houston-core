@@ -224,7 +224,16 @@ module_function
 
     def authentication_strategy(strategy=nil, &block)
       @authentication_strategy = strategy if strategy
-      @authentication_strategy_configuration = HashDsl.hash_from_block(block) if block_given?
+      if block_given?
+        @authentication_strategy_configuration = HashDsl.hash_from_block(block)
+
+        if authentication_strategy == :ldap
+          %i{host port base field username_builder}.each do |required_field|
+            next if @authentication_strategy_configuration.key?(required_field)
+            raise "#{required_field} is a required field for :ldap authentication"
+          end
+        end
+      end
 
       @authentication_strategy
     end

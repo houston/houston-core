@@ -154,7 +154,7 @@ class User < ActiveRecord::Base
   # ------------------------------------------------------------------------- #
 
   def self.find_ldap_entry(ldap_connection, auth_key_value)
-    filter = Net::LDAP::Filter.eq(Houston::TMI::FIELD_USED_FOR_LDAP_LOGIN, auth_key_value)
+    filter = Net::LDAP::Filter.eq(Houston.config.authentication_strategy_configuration[:field], auth_key_value)
     ldap_connection.ldap.search(filter: filter).first
   end
 
@@ -162,7 +162,7 @@ class User < ActiveRecord::Base
     email = entry.mail.first.downcase
     user = where(email: email).first
     if user && user.username.nil?
-      user.update_column :username, entry[Houston::TMI::FIELD_USED_FOR_LDAP_LOGIN][0].to_s
+      user.update_column :username, entry[Houston.config.authentication_strategy_configuration[:field]][0].to_s
     end
     user
   end
@@ -170,7 +170,7 @@ class User < ActiveRecord::Base
   def self.create_from_ldap_entry(attributes, entry)
     create!(
       email: entry.mail.first.downcase,
-      username: entry[Houston::TMI::FIELD_USED_FOR_LDAP_LOGIN][0].to_s,
+      username: entry[Houston.config.authentication_strategy_configuration[:field]][0].to_s,
       password: attributes[:password],
       first_name: entry.givenname.first,
       last_name: entry.sn.first )

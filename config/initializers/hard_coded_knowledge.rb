@@ -5,7 +5,6 @@
 module Houston
   module TMI
 
-    FIELD_USED_FOR_LDAP_LOGIN = "samaccountname"
     INSTRUCTIONS_FOR_LOGIN = "You can log in with your CPH domain account"
 
   end
