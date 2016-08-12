@@ -1,3 +1,9 @@
+# copied from sugar.js
+escapeRegExp = (str)->
+  str = String(str) unless _.isString(str)
+  str.replace /([\\\/\'*+?|()\[\]{}.^$-])/g, '\\$1'
+
+
 class window.Ticket extends Backbone.Model
   urlRoot: '/tickets'
 
@@ -53,11 +59,10 @@ class window.Tickets extends Backbone.Collection
 
   search: (summary)->
     words = @getWords(summary)
-    # console.log(summary, '->', words)
 
     return [] if words.length == 0
 
-    regexes = (new RegExp("\\b#{RegExp.escape(word)}", 'i') for word in words)
+    regexes = (new RegExp("\\b#{escapeRegExp(word)}", 'i') for word in words)
 
     results = []
     for ticket in @models
