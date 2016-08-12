@@ -1,8 +1,8 @@
 <% content_for :title do %>
 <h1 class="project-banner space-below">
-  Team
-  <%= link_to "New Team Member", new_user_path, :class => "btn btn-primary" if can?(:create, User) %>
-  
+  Users
+  <%= link_to "New User", new_user_path, :class => "btn btn-primary" if can?(:create, User) %>
+
   <%= render partial: "projects/keyboard_shortcuts" %>
 </h1>
 <% end %>
@@ -62,15 +62,15 @@
     $.tablesorter.addParser({
       id: 'name',
       type: 'text',
-      is: function(s) { return false; }, // return false so this parser is not auto detected 
+      is: function(s) { return false; }, // return false so this parser is not auto detected
       format: function(s, table, td) {
         var $td = $(td),
             firstName = $td.find('.first-name').text(),
             lastName = $td.find('.last-name').text();
         return lastName + ' ' + firstName;
       }
-    }); 
-    
+    });
+
     $(function() {
       $('#users').tablesorter({
         headers: { 2: { sorter: 'name' } }

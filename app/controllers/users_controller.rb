@@ -4,7 +4,7 @@ class UsersController < ApplicationController
 
 
   def index
-    @title = "Team"
+    @title = "Users"
     @users = User.unretired
 
     @ticket_stats_by_user = @users.each_with_object({}) do |user, stats|
