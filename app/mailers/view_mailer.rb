@@ -23,7 +23,6 @@ class ViewMailer < ActionMailer::Base
     houston/application/markdown.scss
     houston/application/test_run.scss
     houston/application/releases.scss
-    houston/application/follow_up.scss
   }
 
   helper_method :can?, :cannot?, :current_ability, :stylesheets
