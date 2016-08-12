@@ -58,9 +58,6 @@ class ProjectTicketsController < ApplicationController
       return
     end
 
-    @labels = []
-    @labels = Houston::TMI::TICKET_LABELS_FOR_MEMBERS if @project.slug =~ /^360|members$/
-    @labels = Houston::TMI::TICKET_LABELS_FOR_UNITE if @project.slug == "unite"
     Houston.benchmark "Load tickets" do
       @tickets = @project.tickets
         .pluck(:id, :summary, :number, :closed_at)
@@ -76,8 +73,7 @@ class ProjectTicketsController < ApplicationController
     if request.xhr?
       render json: MultiJson.dump({
         tickets: @tickets,
-        project: { slug: @project.slug, ticketTrackerName: @project.ticket_tracker_name },
-        labels: @labels
+        project: { slug: @project.slug, ticketTrackerName: @project.ticket_tracker_name }
       })
     else
       render

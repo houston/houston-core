@@ -28,7 +28,6 @@ class window.NewTicketView extends Backbone.View
     @$el.html HandlebarsTemplates['new_ticket/form']()
     @project = @options.project
     @tickets = new Tickets(@options.tickets)
-    @LABELS = @options.labels
     @TAGS = @TYPES.map (type)-> "[#{type}]"
     @TAG_MATCHER = "\\[(#{@TYPES.join('|')})\\]"
     @renderSuggestion = HandlebarsTemplates['new_ticket/suggestion']
@@ -68,20 +67,13 @@ class window.NewTicketView extends Backbone.View
         source: (query)->
           pos = @$element.getCursorPosition()
           a = query.indexOf(']')
-          b = query.indexOf(':')
 
           if a is -1 or pos <= a
             @tquery = query.match(z)[1].toLowerCase()
             @mode = 'type'
             return view.TAGS
 
-          else if a > 0 and (b is -1 or pos <= b)
-            @lquery = query.match(y)[1]
-            @lquery = new RegExp "\\b#{@lquery}", "i"
-            @mode = 'label'
-            return view.LABELS
-
-          else if a > 0 and b > 0
+          else if a > 0
             @mode = 'summary'
             return []
 
@@ -93,14 +85,10 @@ class window.NewTicketView extends Backbone.View
           if @mode == 'type'
             view.autocompleteDescriptionFor(item)
             @$element.val().replace(/^[^\]]*(\] ?|$)?/, item + ' ')
-          else if @mode == 'label'
-            @$element.val().replace(/\] ?[^:]*(: ?|$)/, '] ' + item + ': ')
 
         matcher: (item)->
           if @mode == 'type'
             ~item.toLowerCase().indexOf(@tquery)
-          else if @mode == 'label'
-            @lquery.test(item)
           else
             false
 
@@ -113,9 +101,6 @@ class window.NewTicketView extends Backbone.View
     summary = @$summary.val()
     if !///#{@TAG_MATCHER} ///.test(summary)
       @$el.attr('data-mode', 'type')
-      @$suggestions.empty()
-    else if !///#{@TAG_MATCHER} (.*):///.test(summary)
-      @$el.attr('data-mode', 'label')
       @$suggestions.empty()
     else
       @$el.attr('data-mode', 'summary')

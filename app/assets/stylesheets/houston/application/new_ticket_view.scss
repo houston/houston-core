@@ -16,10 +16,6 @@
     content: 'What kind of ticket is this? [bug]? [feature]?';
   }
 
-  &[data-mode="label"]::after {
-    content: 'What view or feature does it have to do with? Profile? Enter Attendance?';
-  }
-
   &[data-mode="summary"]::after {
     content: 'Hit return to finish making your ticket  ⏎';
   }
