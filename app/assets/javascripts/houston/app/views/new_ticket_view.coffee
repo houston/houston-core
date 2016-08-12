@@ -37,11 +37,6 @@ class window.NewTicketView extends Backbone.View
     @$summary.val "[#{@options.type}] " if @options.type
     @lastSearch = ''
 
-    if @options.antecedents
-      description = '### Antecedents\n' + (" - #{antecedent}" for antecedent in @options.antecedents).join("\n")
-      $('#ticket_description').val(description)
-      @showNewTicket(animate: false)
-
     Mousetrap.bindScoped '#ticket_summary, #ticket_description', 'mod+enter', (e)=>
       @$el.find('#create_ticket').click() if @$el.find(':focus').length > 0
 

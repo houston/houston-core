@@ -4,7 +4,7 @@ class Ticket < ActiveRecord::Base
   self.inheritance_column = nil
 
   versioned only: [:summary, :description, :type,
-                   :tags, :antecedents, :prerequisites,
+                   :tags, :prerequisites,
                    :closed_at, :resolution, :milestone_id]
 
   belongs_to :project
@@ -29,8 +29,6 @@ class Ticket < ActiveRecord::Base
   before_save :parse_ticket_description, if: :description_changed?
   before_save :find_reporter, if: :find_reporter?
   after_save :propagate_milestone_change, if: :milestone_id_changed?
-  after_save :resolve_antecedents!, if: :just_resolved?
-  after_save :close_antecedents!, if: :just_closed?
   after_save :updated_milestone_attributes
 
   attr_readonly :number, :project_id
@@ -200,16 +198,6 @@ class Ticket < ActiveRecord::Base
 
 
 
-  def antecedents
-    (super || []).map { |s| TicketAntecedent.from_s(self, s) }
-  end
-
-  def antecedents=(antecedents)
-    super Array(antecedents).map(&:to_s)
-  end
-
-
-
   def tags
     (super || []).map(&TicketTag.method(:from_s))
   end
@@ -307,14 +295,6 @@ private
 
   def just_closed?
     closed_at_changed? && closed_at_was.nil?
-  end
-
-  def resolve_antecedents!
-    antecedents.each(&:resolve!)
-  end
-
-  def close_antecedents!
-    antecedents.each(&:close!)
   end
 
   def remote_ticket

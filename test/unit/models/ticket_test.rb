@@ -66,38 +66,6 @@ class TicketTest < ActiveSupport::TestCase
 
 
 
-  context "#resolve!" do
-    setup do
-      @ticket = create(:ticket, project: project)
-    end
-
-    should "resolve antecedents" do
-      antecedent = TicketAntecedent.new(ticket, "Test", 4)
-      mock(antecedent).resolve!
-      stub(ticket).antecedents { [antecedent] }
-
-      ticket.resolve!
-    end
-  end
-
-
-
-  context "#close!" do
-    setup do
-      @ticket = create(:ticket, project: project)
-    end
-
-    should "close antecedents" do
-      antecedent = TicketAntecedent.new(ticket, "Test", 4)
-      mock(antecedent).close!
-      stub(ticket).antecedents { [antecedent] }
-
-      ticket.close!
-    end
-  end
-
-
-
   context "#reopen!" do
     setup do
       @ticket = Ticket.create!(

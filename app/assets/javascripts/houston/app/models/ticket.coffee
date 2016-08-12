@@ -116,8 +116,5 @@ class window.Tickets extends Backbone.Collection
       when 'summary'      then (ticket)-> ticket.get('summary').toLowerCase().replace(/^\W/, '')
       when 'openedAt'     then (ticket)-> ticket.get('openedAt')
       when 'number'       then (ticket)-> ticket.get('number')
-      when 'antecedents'  then (ticket)->
-        len = ticket.get('antecedents').length
-        if len is 0 then null else len
       when 'closedAt'     then (ticket)-> ticket.get('closedAt')
       else throw "Tickets#sorterFor doesn't know how to sort #{attribute}!"

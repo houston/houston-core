@@ -91,12 +91,6 @@ Handlebars.registerHelper 'ifEq', (v1, v2, block)->
   else
     block.inverse(@)
 
-Handlebars.registerHelper 'summarizeAntecedents', (antecedents)->
-  html = ''
-  for kind, antecedents of _.groupBy(antecedents, (antecedent)-> antecedent.kind)
-    html += "#{kind} <span class=\"badge\">#{antecedents.length}</span>"
-  html
-
 Handlebars.registerPartial 'sprintTask', (task)->
   HandlebarsTemplates['sprints/task'](task)
 

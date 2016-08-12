@@ -38,14 +38,6 @@ class SerializerTest < ActiveSupport::TestCase
       like: /"class":"Project","attributes":{.*},"\^S":"Houston::ActiveRecordSerializer"/)
   end
 
-  should "serialize objects that refer to ActiveRecord objects" do
-    project = Project.create!(name: "Test", slug: "test")
-    commit = Commit.new(project: project, message: "Commit Message")
-    antecedent = TicketAntecedent.new(commit, "Err", 45)
-    assert_serializes(antecedent,
-      like: /"ticket_or_commit":{"class":"Commit".*},"kind":"Err","id":45,"\^S":"Houston::TicketAntecedentSerializer"/)
-  end
-
   should "work even when you set a value" do
     project = Project.create!(name: "Test", slug: "test")
     project.updated_at = 1.week.after(project.updated_at) # ActiveSupport::TimeWithZone

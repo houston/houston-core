@@ -1,5 +1,5 @@
 <div id="<%= @release.project.slug %>_changelog" class="-houston-changelog">
-  
+
   <div class="-houston-changelog-day">
     <h4>
       <% if (defined?(draft) && draft) %>
@@ -11,15 +11,15 @@
       <%= link_to "Edit", edit_release_path(@release) if can?(:update, @release) and !(defined?(draft) && draft) %>
     </h4>
   </div>
-  
+
   <%= div_for @release do %>
-    
+
     <% unless @release.message.blank? %>
     <div class="release-message">
       <%= mdown(@release.message) %>
     </div>
     <% end %>
-    
+
     <% if @release.release_changes.any? %>
       <div class="release-changes">
         <% ordered_by_tag(@release.release_changes).each do |change| %>
@@ -34,15 +34,14 @@
     <% else %>
       <div class="release-no-changes">No changes</div>
     <% end %>
-    
+
     <% unless (defined?(draft) && draft) %>
       <div class="release-detail">
         <%= render partial: "releases/tickets", locals: {tickets: @release.tickets} if can?(:read, Ticket) %>
-        <%= render partial: "releases/antecedents", locals: {antecedents: @release.antecedents} if can?(:read, Ticket) %>
         <%= render partial: "releases/commits", locals: {commits: @release.commits} if can?(:read, Commit) && !for_email? %>
       </div>
     <% end %>
-    
+
   <% end %>
-  
+
 </div>

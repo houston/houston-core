@@ -1,9 +1,5 @@
 Houston.register_events {{
 
-  "antecedent:{type}:released"      => params("antecedent").desc("A ticket or commit with an antecedent of {type} was released"),
-  "antecedent:{type}:resolved"      => params("antecedent").desc("A ticket with an antecedent of {type} was resolved"),
-  "antecedent:{type}:closed"        => params("antecedent").desc("A ticket with an antecedent of {type} was closed"),
-
   "commit:create"                   => params("commit").desc("A new commit was created"),
 
   "daemon:{type}:start"             => desc("Daemon {type} has started"),

@@ -17,22 +17,13 @@ class ReleaseTest < ActiveSupport::TestCase
     should "trigger `released!` on each ticket" do
       a_ticket = Object.new
       stub(release).tickets { [a_ticket] }
-      stub(release).antecedents { [] }
       mock(a_ticket).released!(release)
-      release.save!
-    end
-
-    should "trigger `released!` on each antecedent" do
-      an_antecedent = TicketAntecedent.new(nil, "Test", 4)
-      stub(release).antecedents { [an_antecedent] }
-      mock(an_antecedent).released!(release)
       release.save!
     end
 
     should "trigger `released!` on each task" do
       a_task = Object.new
       stub(release).tasks { [a_task] }
-      stub(release).antecedents { [] }
       mock(a_task).released!(release)
       release.save!
     end

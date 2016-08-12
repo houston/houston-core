@@ -85,39 +85,4 @@
    <ProtectScenarios>False</ProtectScenarios>
   </WorksheetOptions>
  </Worksheet>
- <Worksheet ss:Name="Antecedents">
-  <Table ss:ExpandedColumnCount="3" ss:ExpandedRowCount="<%= 1 + @tickets.sum { |ticket| ticket.antecedents.length } %>" x:FullColumns="1"
-   x:FullRows="1" ss:DefaultColumnWidth="65" ss:DefaultRowHeight="15">
-   <Column ss:AutoFitWidth="0" ss:Width="100"/>
-   <Column ss:AutoFitWidth="0" ss:Width="75"/>
-   <Column ss:AutoFitWidth="0" ss:Width="75"/>
-   <Row ss:StyleID="s65">
-    <Cell><Data ss:Type="String">Ticket Number</Data></Cell>
-    <Cell><Data ss:Type="String">ID</Data></Cell>
-    <Cell><Data ss:Type="String">Kind</Data></Cell>
-   </Row>
-   <% @tickets.each do |ticket| %>
-   <% ticket.antecedents.each do |antecedent| %>
-   <Row>
-    <Cell><Data ss:Type="Number"><%= ticket.number %></Data></Cell>
-    <Cell><Data ss:Type="String"><%= antecedent.id %></Data></Cell>
-    <Cell><Data ss:Type="String"><%= antecedent.kind %></Data></Cell>
-   </Row>
-   <% end %>
-   <% end %>
-  </Table>
-  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
-   <PageLayoutZoom>0</PageLayoutZoom>
-   <Selected/>
-   <Panes>
-    <Pane>
-     <Number>3</Number>
-     <ActiveRow>1</ActiveRow>
-     <ActiveCol>2</ActiveCol>
-    </Pane>
-   </Panes>
-   <ProtectObjects>False</ProtectObjects>
-   <ProtectScenarios>False</ProtectScenarios>
-  </WorksheetOptions>
- </Worksheet>
 </Workbook>

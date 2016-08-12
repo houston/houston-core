@@ -8,15 +8,10 @@ class TicketReport
       :reporter_email,
       :reporter_first_name,
       :reporter_last_name,
-      :antecedents,
       :opened_at,
       :closed_at,
       :milestone_id,
       :milestone_name)
-
-    def antecedents
-      (super || []).map { |s| TicketAntecedent.from_s(self, s) }
-    end
 
     def reporter_name
       "#{reporter_first_name} #{reporter_last_name}"
@@ -33,7 +28,6 @@ class TicketReport
         milestone: milestone_id && {
           id: milestone_id,
           name: milestone_name },
-        antecedents: antecedents.map { |antecedent| { id: antecedent.id, kind: antecedent.kind } },
         openedAt: opened_at,
         closedAt: closed_at }
     end
@@ -55,7 +49,6 @@ class TicketReport
         "users.email",
         "users.first_name",
         "users.last_name",
-        :antecedents,
         :created_at,
         :closed_at,
         "milestones.id",

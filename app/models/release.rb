@@ -3,7 +3,6 @@ class Release < ActiveRecord::Base
   after_create :load_commits!, :if => :can_read_commits?
   after_create :release_each_ticket!
   after_create :release_each_task!
-  after_create :release_each_antecedent!
   after_create { Houston.observer.fire "release:create", release: self }
   after_save :update_search_vector, :if => :search_vector_should_change?
 
@@ -189,15 +188,6 @@ class Release < ActiveRecord::Base
 
 
 
-  def antecedents
-    @antecedents ||= (tickets.map(&:antecedents) + commits.map(&:antecedents))
-      .flatten
-      .uniq
-      .sort
-  end
-
-
-
   def ignore?
     !project.show_release_notes_for?(environment_name)
   end
@@ -239,12 +229,6 @@ private
   def release_each_task!
     tasks.each do |task|
       task.released!(self)
-    end
-  end
-
-  def release_each_antecedent!
-    antecedents.each do |antecedent|
-      antecedent.released!(self)
     end
   end
 
