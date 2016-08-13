@@ -10,7 +10,6 @@ class ProjectNotification < ViewMailer
     mail({
       from:     release.user,
       to:       options.fetch(:to, @release.notification_recipients),
-      cc:       options.fetch(:cc, @project.maintainers),
       subject:  "new release to #{release.environment_name}",
       template: "new_release"
     })
