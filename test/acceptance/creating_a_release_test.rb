@@ -17,7 +17,6 @@ class CreatingAReleaseTest < ActionDispatch::IntegrationTest
       ticket_tracker_name: "Houston",
       version_control_name: "Git",
       props:  {"git.location" => Rails.root.join("test", "data", "bare_repo.git").to_s})
-    @project.roles.create!(name: "Maintainer", user: user)
     @ticket = @project.tickets.create!(
       number: 116,
       type: "Bug",

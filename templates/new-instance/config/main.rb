@@ -179,8 +179,8 @@ Houston.config do
 
   use :alerts do
 
-    # Who can be assign an Alert?
-    workers { User.developers }
+    # Who can be assigned an Alert?
+    workers { User.unretired }
 
     # Set a target-time for the Alert to be closed.
     # This block sets a goal of closing alerts within

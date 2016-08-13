@@ -5,9 +5,6 @@ Houston.config do
   # TODO: The Sprints feature requires there to be a "Developer" role
   roles "Developer", "Tester"
 
-  # TODO: Some tests require the role "Maintainer" to be defined
-  project_roles "Maintainer"
-
   # TODO: without ticket_types configured, tests that cover them should be skipped
   ticket_types({
     "Chore"       => "909090",

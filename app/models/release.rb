@@ -17,8 +17,6 @@ class Release < ActiveRecord::Base
 
   default_scope { order("created_at DESC") }
 
-  delegate :maintainers, :to => :project
-
   validates_presence_of :user_id
   validates_uniqueness_of :deploy_id, :allow_nil => true
   validates_associated :release_changes

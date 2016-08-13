@@ -33,7 +33,7 @@ class Ticket < ActiveRecord::Base
 
   attr_readonly :number, :project_id
 
-  delegate :testers, :maintainers, :ticket_tracker, to: :project
+  delegate :ticket_tracker, to: :project
   delegate :nosync?, to: "self.class"
 
 
