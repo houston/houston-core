@@ -105,7 +105,16 @@ class Project < ActiveRecord::Base
   # Teammates
   # ------------------------------------------------------------------------- #
 
-  delegate *Houston.config.roles.map { |role| role.downcase.gsub(" ", "_").pluralize }, to: :team
+  Houston.config.roles.each do |role|
+    method_name = role.downcase.gsub(" ", "_").pluralize
+
+    class_eval <<-RUBY, __FILE__, __LINE__ + 1
+    def #{method_name}
+      return TeamUser.none if team.nil?
+      team.#{method_name}
+    end
+    RUBY
+  end
 
   def teammates
     return User.none if team.nil?
