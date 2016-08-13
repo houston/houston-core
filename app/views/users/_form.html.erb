@@ -96,7 +96,7 @@
 
     <div class="form-actions">
       <%= f.submit nil, :class => "btn btn-primary" %>
-      <%= link_to "Invite", invite_user_path(@user), :method => "post", :class => "btn btn-primary" if @user.persisted? && @user.encrypted_password.blank? && !@user.invited? && can?(:create, User) %>
+      <%= link_to "Invite", invite_user_path(@user), :method => "post", :class => "btn btn-primary" if @user.persisted? && @user.username.blank? && @user.encrypted_password.blank? && !@user.invitation_sent_at? && can?(:create, User) %>
       <%= link_to "Cancel", users_path, :class => "btn" %>
 
       <% if @user.persisted? && can?(:destroy, @user) %>
