@@ -136,6 +136,7 @@ $current-project-active-bg: #222;
   }
 
   &:hover { color: white; }
+  &:focus { color: white; }
 }
 
 .navbar .nav li.current-project.dropdown.open > .dropdown-toggle,
