@@ -1,0 +1,45 @@
+<%= form_for @team, :html => { :class => "form-horizontal" } do |f| %>
+  <fieldset>
+    <div class="control-group">
+      <%= f.label :name, :class => "control-label" %>
+      <div class="controls">
+        <%= f.text_field :name, :class => "text_field" %>
+      </div>
+    </div>
+
+    <hr />
+
+    <div class="control-group">
+      <%= f.label :roles, "Teammates", :class => "control-label" %>
+      <div class="controls changes-nested-editor">
+        <%= f.nested_editor_for :roles do |f| -%>
+          <%= f.select :user_id, [nil] + User.unretired.pluck("CONCAT(first_name, ' ', last_name)", :id) %>
+          <% Houston.config.roles.each do |role| %>
+            <% role_slug = role.downcase.gsub(" ", "_").pluralize %>
+            <label style="display: inline-block">
+              <input type="checkbox" name="team[roles_attributes][0][roles][]" value="<%= role %>" <%= "checked" if f.object.roles.member?(role) %> />
+              <%= role %>
+            </label>
+          <% end %>
+        <% end -%>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <%= f.submit nil, :class => "btn btn-primary" %>
+      <%= link_to "Cancel", teams_path, :class => "btn" %>
+    </div>
+  </fieldset>
+<% end %>
+
+<% content_for :javascripts do %>
+<script type="text/javascript">
+  $(function() {
+    NestedEditorFor.init();
+
+    $(document.body).on('nested-editor.reset', function(e) {
+      $(e.target).find(':checkbox').prop('checked', false);
+    });
+  });
+</script>
+<% end %>

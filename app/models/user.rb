@@ -2,8 +2,11 @@ class User < ActiveRecord::Base
   include Retirement
   include Houston::Props
 
-  has_many :roles, :dependent => :destroy
-  has_many :credentials, :class_name => "UserCredentials", :dependent => :destroy
+  ROLES = %w{Owner Admin Member}.freeze
+
+  has_many :roles, class_name: "TeamUser", dependent: :destroy
+  has_and_belongs_to_many :teams
+  has_many :credentials, :class_name => "UserCredentials", dependent: :destroy
   has_many :tickets, foreign_key: "reporter_id"
   has_and_belongs_to_many :commits
   belongs_to :current_project, class_name: "Project"
@@ -12,27 +15,14 @@ class User < ActiveRecord::Base
 
   default_scope { order("last_name, first_name") }
 
-  default_value_for :role, Houston.config.default_role
-
   validates :first_name, :last_name, :email, :presence => true, :length => {:minimum => 2}
-  validates :role, presence: true, inclusion: {in: Houston.config.roles, message: "%{value} is not one of the configured roles (#{Houston.config.roles.join(", ")})"}
+  validates :role, presence: true, inclusion: {in: ROLES, message: "%{value} is not one of the configured roles (#{ROLES.join(", ")})"}
   validate :all_email_addresses_must_be_unique
 
 
 
-  Houston.config.project_roles.each do |role|
-    method_name = role.downcase.gsub(' ', '_')
-    collection_name = method_name.pluralize
-
-    class_eval <<-RUBY
-    def self.#{collection_name}
-      Role.#{collection_name}.to_users
-    end
-    RUBY
-  end
-
-  Houston.config.roles.each do |role|
-    method_name = role.downcase.gsub(' ', '_')
+  ROLES.each do |role|
+    method_name = role.downcase.gsub(" ", "_")
     collection_name = method_name.pluralize
 
     class_eval <<-RUBY
@@ -47,14 +37,17 @@ class User < ActiveRecord::Base
   end
 
 
-  def self.administrators
-    where(administrator: true)
+  def developer?
+    puts "DEPRECATED: User#developer? will be removed"
+    legacy_role == "Developer"
+  end
+
+  def tester?
+    puts "DEPRECATED: User#tester? will be removed"
+    legacy_role == "Tester"
   end
 
 
-  def self.participants
-    Role.participants.to_users
-  end
 
   def self.with_primary_email(email)
     email = email.downcase if email
@@ -71,8 +64,6 @@ class User < ActiveRecord::Base
   def self.find_by_email_address(email_address)
     with_email_address(email_address).first
   end
-
-
 
   def email=(value)
     value = value.downcase if value
@@ -99,11 +90,11 @@ class User < ActiveRecord::Base
   end
 
   def follows?(project)
-    roles.to_projects.member?(project)
+    Role.where(user: self).to_projects.member?(project)
   end
 
   def followed_projects
-    roles.to_projects.unretired
+    Role.where(user: self).to_projects.unretired
   end
 
   def view_options

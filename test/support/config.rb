@@ -2,8 +2,9 @@ Houston.config do
   host "houston.test.com"
   mailer_sender "houston@test.com"
 
-  # TODO: The Sprints feature requires there to be a "Developer" role
-  roles "Developer", "Tester"
+  role "Developer" do |team|
+    can :manage, Sprint
+  end
 
   # TODO: without ticket_types configured, tests that cover them should be skipped
   ticket_types({

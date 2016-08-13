@@ -25,9 +25,11 @@
 
       <li class="divider-horizontal"></li>
 
-      <% if can?(:read, Project) -%>
-        <%= render_nav_link "Projects", main_app.projects_path, icon: "fa-database" %>
-      <% end -%>
+      <% if can?(:manage, Team) %>
+        <li><%= link_to "Teams", main_app.teams_path %></li>
+      <% end %>
+
+      <li class="divider-horizontal"></li>
 
     </ul>
   </div>

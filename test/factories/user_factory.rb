@@ -8,6 +8,8 @@ FactoryGirl.define do
   end
 
   factory :developer, :parent => :user do
-    role "Developer"
+    after(:create) do |user|
+      Team.first.add_teammate user, "Developer"
+    end
   end
 end

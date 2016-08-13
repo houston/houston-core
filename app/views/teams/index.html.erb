@@ -1,0 +1,62 @@
+<% content_for :title do %>
+<h1 class="project-banner space-below">
+  Teams
+  <%= link_to "New Team", new_team_path, :class => "btn btn-primary" if can?(:create, Team) %>
+
+  <%= render partial: "projects/keyboard_shortcuts" %>
+</h1>
+<% end %>
+
+<div class="teams">
+<% @teams.each do |team| %>
+  <div class="team-wrapper">
+    <div class="team">
+      <h3 class="team-name">
+        <%= link_to_if can?(:update, team), team.name, edit_team_path(team) %>
+      </h3>
+      <h6>Teammates</h6>
+      <ol class="team-members">
+        <% team.roles.sort_by { |role| Houston.config.roles.find_index { |r| role.roles.member?(r) } || 999 }.each do |role| %>
+          <li class="team-member">
+            <span class="user-avatar"><%= avatar_for(role.user, size: 32) %></span>
+            <span class="user-name">
+              <%= link_to user_path(role.user) do %>
+                <span class="first-name"><%= role.user.first_name %></span>
+                <span class="last-name"><%= role.user.last_name[0] %></span>
+              <% end %>
+            </span>
+            <span class="user-roles">
+              <%= role.roles.any? ? role.roles.join(", ") : "" %>
+            </span>
+          </li>
+        <% end %>
+      </ol>
+      <h6>Projects</h6>
+
+      <% if team.projects.any? %>
+        <ol class="team-projects">
+          <% team.projects.each do |project| %>
+            <li class="team-project">
+              <% if project.color %>
+                <b class="bubble <%= project.color %>" rel="tooltip" title="<%= project.color.titleize %>" data-tooltip-placement="right"></b>
+              <% else %>
+                <b class="bubble"></b>
+              <% end %>
+              <%= link_to project.name, teams_path(project: project.slug) %>
+            </li>
+          <% end %>
+        </ol>
+      <% else %>
+        <div class="team-projects-empty">No projects</div>
+      <% end %>
+
+      <% if can?(:create, team.projects.build) %>
+        <div class="team-projects-add">
+          <%= link_to "New Project", new_project_path(team), :class => "btn btn-mini btn-default" %>
+          <%= link_to "Add Projects from GitHub", add_github_projects_path(team), :class => "btn btn-mini btn-default" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+</div>

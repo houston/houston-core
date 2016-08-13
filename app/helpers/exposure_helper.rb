@@ -5,7 +5,7 @@ module ExposureHelper
   end
 
   def beta
-    yield if current_user && current_user.administrator?
+    yield if current_user && current_user.owner?
   end
 
 end

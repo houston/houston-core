@@ -24,6 +24,11 @@ module_function
 
     def initialize
       @root = Rails.root
+      @roles = {}
+      @roles["Team Owner"] = Proc.new do |team|
+        can :manage, team
+        can :manage, Project, team_id: team.id
+      end
       @modules = []
       @gems = []
       @ticket_types = {}
@@ -170,18 +175,12 @@ module_function
       @environments ||= []
     end
 
-    def roles(*args)
-      @roles = args if args.any?
-      ["Guest"] + (@roles ||= [])
+    def roles
+      @roles.keys
     end
 
-    def default_role
-      "Guest"
-    end
-
-    def project_roles(*args)
-      @project_roles = args if args.any?
-      ["Follower"] + (@project_roles ||= [])
+    def role(role_name, &abilities_block)
+      @roles[role_name] = abilities_block
     end
 
     def ticket_types(*args)
@@ -276,6 +275,13 @@ module_function
 
     def configure_abilities(context, user)
       context.instance_exec(user, &@abilities_block)
+    end
+
+    def configure_team_abilities(context, teammate)
+      teammate.roles.each do |role|
+        abilities_block = @roles.fetch(role)
+        context.instance_exec(teammate.team, &abilities_block)
+      end
     end
 
 

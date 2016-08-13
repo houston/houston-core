@@ -495,7 +495,8 @@ CREATE TABLE projects (
     feature_states hstore DEFAULT ''::hstore NOT NULL,
     selected_features text[],
     head_sha character varying,
-    props jsonb DEFAULT '{}'::jsonb
+    props jsonb DEFAULT '{}'::jsonb,
+    team_id integer
 );
 
 
@@ -780,6 +781,69 @@ CREATE SEQUENCE tasks_id_seq
 --
 
 ALTER SEQUENCE tasks_id_seq OWNED BY tasks.id;
+
+
+--
+-- Name: teams; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE teams (
+    id integer NOT NULL,
+    name character varying,
+    props jsonb DEFAULT '{}'::jsonb
+);
+
+
+--
+-- Name: teams_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE teams_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: teams_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE teams_id_seq OWNED BY teams.id;
+
+
+--
+-- Name: teams_users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE teams_users (
+    id integer NOT NULL,
+    team_id integer,
+    user_id integer,
+    roles character varying[],
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: teams_users_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE teams_users_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: teams_users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE teams_users_id_seq OWNED BY teams_users.id;
 
 
 --
@@ -1073,9 +1137,9 @@ CREATE TABLE users (
     invitation_limit integer,
     invited_by_id integer,
     invited_by_type character varying,
-    role character varying DEFAULT 'Guest'::character varying,
+    legacy_role character varying DEFAULT 'Guest'::character varying,
     authentication_token character varying,
-    administrator boolean DEFAULT false,
+    legacy_administrator boolean DEFAULT false,
     unfuddle_id integer,
     first_name character varying,
     last_name character varying,
@@ -1087,7 +1151,8 @@ CREATE TABLE users (
     current_project_id integer,
     nickname character varying,
     username character varying,
-    props jsonb DEFAULT '{}'::jsonb
+    props jsonb DEFAULT '{}'::jsonb,
+    role character varying DEFAULT 'Member'::character varying
 );
 
 
@@ -1266,6 +1331,20 @@ ALTER TABLE ONLY sprints ALTER COLUMN id SET DEFAULT nextval('sprints_id_seq'::r
 --
 
 ALTER TABLE ONLY tasks ALTER COLUMN id SET DEFAULT nextval('tasks_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY teams ALTER COLUMN id SET DEFAULT nextval('teams_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY teams_users ALTER COLUMN id SET DEFAULT nextval('teams_users_id_seq'::regclass);
 
 
 --
@@ -1465,6 +1544,22 @@ ALTER TABLE ONLY sprints
 
 ALTER TABLE ONLY tasks
     ADD CONSTRAINT tasks_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: teams_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY teams
+    ADD CONSTRAINT teams_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: teams_users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY teams_users
+    ADD CONSTRAINT teams_users_pkey PRIMARY KEY (id);
 
 
 --
@@ -1791,6 +1886,13 @@ CREATE UNIQUE INDEX index_sprints_tasks_on_sprint_id_and_task_id ON sprints_task
 --
 
 CREATE UNIQUE INDEX index_tasks_on_ticket_id_and_number ON tasks USING btree (ticket_id, number);
+
+
+--
+-- Name: index_teams_users_on_team_id_and_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_teams_users_on_team_id_and_user_id ON teams_users USING btree (team_id, user_id);
 
 
 --
@@ -2373,4 +2475,8 @@ INSERT INTO schema_migrations (version) VALUES ('20160711170921');
 INSERT INTO schema_migrations (version) VALUES ('20160713204605');
 
 INSERT INTO schema_migrations (version) VALUES ('20160715173039');
+
+INSERT INTO schema_migrations (version) VALUES ('20160812233255');
+
+INSERT INTO schema_migrations (version) VALUES ('20160813001242');
 

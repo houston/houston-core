@@ -4,6 +4,7 @@ class Project < ActiveRecord::Base
   include FeatureState
   include Houston::Props
 
+  belongs_to :team
   has_many :releases, dependent: :destroy
   has_many :commits, dependent: :destroy, extend: CommitSynchronizer
   has_many :tickets, dependent: :destroy, extend: TicketSynchronizer
@@ -12,19 +13,8 @@ class Project < ActiveRecord::Base
   has_many :test_runs, dependent: :destroy
   has_many :tests, dependent: :destroy
   has_many :deploys
-  has_many :roles, -> { joins(:user).merge(User.unretired) }, dependent: :destroy, validate: false
   has_many :pull_requests, class_name: "Github::PullRequest"
   belongs_to :head, class_name: "Commit", foreign_key: "head_sha", primary_key: "sha"
-
-  Houston.config.project_roles.each do |role|
-    collection_name = role.downcase.gsub(' ', '_').pluralize
-    class_eval <<-RUBY
-      has_many :#{collection_name}, -> { where(Role.arel_table[:name].eq("#{role}")) }, class_name: "User", through: :roles, source: :user
-    RUBY
-  end
-
-  accepts_nested_attributes_for :roles, :allow_destroy => true, # <-- !todo: authorized access only
-    reject_if: proc { |attrs| attrs[:user_id].blank? or attrs[:name].blank? }
 
   before_validation :generate_default_slug, :set_default_color
   validates_presence_of :name, :slug, :color
@@ -48,6 +38,8 @@ class Project < ActiveRecord::Base
     Houston.config.project_colors[color]
   end
 
+
+
   def environments
     @environments ||= deploys.environments.map(&:downcase).uniq
   end
@@ -63,6 +55,8 @@ class Project < ActiveRecord::Base
   def environment(environment_name)
     Environment.new(self, environment_name)
   end
+
+
 
   def extended_attributes
     raise NotImplementedError, "This feature has been deprecated; use props"
@@ -80,13 +74,13 @@ class Project < ActiveRecord::Base
     raise NotImplementedError, "This feature has been deprecated; use props"
   end
 
-  def testers
-    @testers ||= User.testers
-  end
+
 
   def self.[](slug)
     find_by_slug(slug)
   end
+
+
 
   def self.with_feature(feature)
     where ["? = ANY(projects.selected_features)", feature]
@@ -111,24 +105,17 @@ class Project < ActiveRecord::Base
   # Teammates
   # ------------------------------------------------------------------------- #
 
+  delegate *Houston.config.roles.map { |role| role.downcase.gsub(" ", "_").pluralize }, to: :team
+
   def teammates
-    roles.participants.to_users
+    return User.none if team.nil?
+    team.users
   end
 
   def followers # <-- redefine followers to be everyone who participates in or follows the project
-    roles.to_users
+    puts "DEPRECATED: Project#followers is deprecated; use Project#teammates instead"
+    teammates
   end
-
-  def add_teammate(user_or_id, role="Follower")
-    attributes = {project: self, name: role}
-    attributes[user_or_id.is_a?(User) ? :user : :user_id] = user_or_id
-    roles.create!(attributes)
-  end
-
-  def is_teammate?(user_or_id)
-    roles.for_user(user_or_id).any?
-  end
-  alias :teammate? :is_teammate?
 
   # ------------------------------------------------------------------------- #
 

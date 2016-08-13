@@ -32,7 +32,7 @@ class CIIntegrationTest < ActionDispatch::IntegrationTest
     should "alert maintainers when a build cannot be triggered" do
       skip "TMI: This is dependent on configured roles!"
       @project = create(:project, ci_server_name: "Mock")
-      project.add_teammate users(:boblail)
+      project.team.add_teammate users(:boblail)
 
       any_instance_of(Houston::Adapters::CIServer::MockAdapter::Job) do |job|
         stub(job).build! { |commit| raise Houston::Adapters::CIServer::Error }
@@ -71,7 +71,7 @@ class CIIntegrationTest < ActionDispatch::IntegrationTest
       commit = "whatever"
       results_url = "http://example.com/results"
       @project = create(:project, ci_server_name: "Mock")
-      project.add_teammate users(:boblail)
+      project.team.add_teammate users(:boblail)
       @test_run = TestRun.create!(project: project, sha: commit)
 
       any_instance_of(Houston::Adapters::CIServer::MockAdapter::Job) do |job|

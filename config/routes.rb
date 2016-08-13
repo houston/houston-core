@@ -26,9 +26,22 @@ Rails.application.routes.draw do
 
 
 
+  # Teams
+
+  resources :teams
+
+  scope "teams/:team_id" do
+    resources :projects, only: [:new]
+
+    get "projects/new/github", to: "projects#new_from_github", as: :add_github_projects
+    post "projects/new/github", to: "projects#create_from_github"
+  end
+
+
+
   # Projects
 
-  resources :projects do
+  resources :projects, except: [:new] do
     member do
       put :retire
     end
@@ -36,9 +49,6 @@ Rails.application.routes.draw do
     post "follow", to: "project_roles#create", :as => :follow
     delete "unfollow", to: "project_roles#destroy", :as => :unfollow
   end
-
-  get "projects/new/github", to: "projects#new_from_github", as: :add_github_projects
-  post "projects/new/github", to: "projects#create_from_github"
 
 
 

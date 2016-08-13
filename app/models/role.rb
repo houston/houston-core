@@ -5,29 +5,8 @@ class Role < ActiveRecord::Base
 
   validates :user_id, presence: true
   validates :project, presence: true
-  validates :name, presence: true, inclusion: {in: Houston.config.project_roles, message: "\"%{value}\" is unknown. It must be #{Houston.config.project_roles.to_sentence(last_word_connector: ", or ")}"}
-
-
-  Houston.config.project_roles.each do |role|
-    method_name = role.downcase.gsub(' ', '_')
-    class_eval <<-RUBY
-    def #{method_name}?
-      name == "#{role}"
-    end
-
-    def self.#{method_name.pluralize}
-      where(name: "#{role}")
-    end
-    RUBY
-  end
-
 
   class << self
-
-    def participants
-      where arel_table[:name].not_eq("Follower")
-    end
-
     def to_users
       User.where(id: all.select(:user_id))
     end
@@ -49,7 +28,6 @@ class Role < ActiveRecord::Base
     def any?
       count > 0
     end
-
   end
 
 end

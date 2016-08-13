@@ -15,6 +15,13 @@
     </div>
 
     <div class="control-group">
+      <%= f.label :team_id, :class => "control-label" %>
+      <div class="controls">
+        <%= f.select :team_id, [["", nil]] + Team.all.pluck(:name, :id), :class => "select_field" %>
+      </div>
+    </div>
+
+    <div class="control-group">
       <%= f.label :color, :class => "control-label" %>
       <div class="controls">
         <%= f.select :color, [["None", "default"]] + Houston.config.project_colors.keys.map { |name| [name.titleize, name] }, :class => "select_field" %>
@@ -103,18 +110,6 @@
         </div>
       <% end %>
     <% end %>
-
-    <hr />
-
-    <div class="control-group">
-      <%= f.label :roles, "Teammates", :class => "control-label" %>
-      <div class="controls changes-nested-editor">
-        <%= f.nested_editor_for :roles do |f| -%>
-          <%= f.select :user_id, [nil] + User.all.map { |user| [user.name, user.id] } %>
-          <%= f.select :name, [nil] + Houston.config.project_roles %>
-        <% end -%>
-      </div>
-    </div>
 
     <div class="form-actions">
       <%= f.submit nil, :class => "btn btn-primary" %>

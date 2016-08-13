@@ -1,73 +1,90 @@
 # This block uses the DSL defined by CanCan.
 # https://github.com/ryanb/cancan/wiki/Defining-Abilities
 
-Houston.config.abilities do |user|
-  if user.nil?
+Houston.config do
 
-    # Customers are allowed to see Release Notes of products, for production
-    can :read, Release do |release|
-      release.project.category == "Products" && (release.environment_name.blank? || release.environment_name == "production")
-    end
 
-    # Customers are allowed to see Features, Improvements, and Bugfixes
-    can :read, ReleaseChange, tag_slug: %w{feature improvement fix}
+  role "Maintainer" do |team|
 
-  else
+    # Maintainers can create releases
+    can :manage, Release, project_id: team.project_ids
 
-    # Everyone can see Releases to staging
-    can :read, Release
+    # Maintainers can change projects' settings
+    can :update, Project, id: team.project_ids
 
-    # Everyone is allowed to see Features, Improvements, and Bugfixes
-    can :read, ReleaseChange, tag_slug: %w{feature improvement fix}
+  end
 
-    # Everyone can see Projects
-    can :read, Project
 
-    # Everyone can see Tickets
-    can :read, Ticket
+  role "Developer" do |team|
 
-    # Everyone can see Milestones
-    can :read, Milestone
+    # Developers can see commits and can manage
+    # tickets, pull requests, and alerts
+    can :read, Commit, project_id: team.project_ids
+    can :update_tickets, Milestone, project_id: team.project_ids
+    can :manage, Task, project_id: team.project_ids
+    can :create, Ticket, project_id: team.project_ids
+    can :close, Ticket, project_id: team.project_ids
+    can :manage, Github::PullRequest, project_id: team.project_ids
+    can :manage, Houston::Alerts::Alert, project_id: team.project_ids
+    can :manage, Sprint
 
-    # Everyone can see Users and update themselves
-    can :read, User
-    can :update, user
+  end
 
-    # Everyone can make themselves a "Follower"
-    can :create, Role, name: "Follower"
 
-    # Everyone can remove themselves from a role
-    can :destroy, Role, user_id: user.id
+  role "Tester" do |team|
 
-    # Developers can
-    #  - create tickets
-    #  - see other kinds of Release Changes (like Refactors)
-    #  - update Sprints
-    #  - break tickets into tasks
-    if user.developer?
-      can :read, [Commit, ReleaseChange]
-      can :manage, Sprint
-      can :manage, Task
-    end
+    # Testers can create tickets and be assigned Alerts
+    can :create, Ticket, project_id: team.project_ids
+    can :manage, Houston::Alerts::Alert, project_id: team.project_ids
 
-    # Testers and Developers can
-    #  - create tickets
-    #  - see and manage alerts
-    if user.tester? or user.developer?
-      can :create, Ticket
-      can :manage, Houston::Alerts::Alert
-    end
+  end
 
-    # The following abilities are project-specific and depend on one's role
-    roles = user.roles.participants
-    if roles.any?
 
-      # Maintainers can manage Releases, close Tickets, and update Projects
-      roles.maintainers.pluck(:project_id).tap do |project_ids|
-        can :manage, Release, project_id: project_ids
-        can :close, Ticket, project_id: project_ids
-        can :update, Project, id: project_ids
+  abilities do |user|
+    if user.nil?
+
+      # Customers are allowed to see Release Notes of products, for production
+      can :read, Release do |release|
+        release.environment_name == "production"
       end
+
+    else
+
+      if user.admin?
+
+        # Admins can see Actions
+        can :read, Action
+
+      end
+
+      # Employees can see Teams
+      can :read, Team
+
+      # Employees can see Releases to staging
+      can :read, Release
+
+      # Employees can see Projects
+      can :read, Project
+
+      # Employees can see Tickets
+      can :read, Ticket
+
+      # Employees can see Roadmaps
+      can :read, Roadmap
+      can :read, Milestone
+
+      # Employees can see Users and update themselves
+      can :read, User
+      can :update, user
+
+      # Employees can read and tag and create feedback
+      can :read, Houston::Feedback::Comment
+      can :tag, Houston::Feedback::Comment
+      can :create, Houston::Feedback::Comment
+
+      # Employees can update their own feedback
+      can [:update, :destroy], Houston::Feedback::Comment, user_id: user.id
+
     end
   end
 end

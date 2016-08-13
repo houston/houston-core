@@ -59,7 +59,7 @@ class ProjectNotification < ViewMailer
     @additional_info = options[:additional_info]
 
     mail({
-      to:       options.fetch(:to, @project.maintainers),
+      to:       options.fetch(:to, @project.team_owners),
       subject:  "configuration error",
       template: "ci_configuration_error"
     })

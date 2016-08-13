@@ -214,23 +214,13 @@ Houston.config do
   # Roles and Abilities
   # ---------------------------------------------------------------------------
   #
-  # Every user will have one Role. You can refer to a user's roles when you
-  # define her abilities. Houston will add the role "Guest" to this list.
-  # "Guest" is the default role.
+  # A user may belong to one or more teams. Within each team, a user can be
+  # given one or more team-specific roles. Define those roles — and the abilities
+  # they grant below.
   #
-  # NOTE: Presently, Houston requires that "Tester" be one of these roles.
-
-  roles "Developer",
-        "Tester"
-
-  # Users additionally have any number of project-specific roles. You can
-  # refer to these as well when configuring abilities.
+  # Houston adds the "Team Owner" role which will be given the ability to manage
+  # teams and their projects.
   #
-  # NOTE: Presently, Houston requires that "Maintainer" be one of these.
-
-  project_roles "Maintainer",
-                "Owner"
-
   # Houston uses CanCan to check authorize users to do particular actions.
   # Houston will pass a user to the block defined below which should declare
   # what abilities that user has.

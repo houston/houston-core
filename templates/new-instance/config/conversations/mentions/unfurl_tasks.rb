@@ -1,6 +1,6 @@
 Houston::Slack.config do
   overhear(/\b(?<task>\d+[a-z]+)\b/) do |e|
-    next unless e.user && e.user.developer?
+    next unless e.user
     tasks = Task.joins(:ticket)
 
     if project = e.channel.name != "test" && Project.find_by_slug(e.channel.name)

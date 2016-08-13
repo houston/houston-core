@@ -5,14 +5,23 @@
     <ul class="nav pull-right">
       <% if current_user -%>
 
-        <% if can?(:manage, User) || can?(:read, Action) %>
+        <% if can?(:read, User) || can?(:read, Team) || can?(:read, Project) || can?(:read, Action) %>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog"></i> <b class="caret"></b></a>
             <ul class="dropdown-menu">
-              <% if can?(:manage, User) %>
+              <% if can?(:read, Team) %>
+                <li><%= link_to "Teams", main_app.teams_path %></li>
+              <% end %>
+              <% if can?(:read, Project) %>
+                <li><%= link_to "Projects", main_app.projects_path %></li>
+              <% end %>
+              <% if can?(:read, User) %>
                 <li><%= link_to "Users", main_app.users_path %></li>
               <% end %>
               <% if can?(:read, Action) %>
+                <% if can?(:read, User) || can?(:read, Team) || can?(:read, Project) %>
+                  <li class="divider"></li>
+                <% end %>
                 <li><%= link_to "Actions", main_app.actions_path %></li>
                 <li><%= link_to "Running Actions", main_app.running_actions_path %></li>
                 <li><%= link_to "Triggers", main_app.triggers_path %></li>
@@ -35,15 +44,7 @@
       <% end -%>
     </ul>
     <ul class="nav">
-
       <% Houston.config.navigation.each do |navigation| %><%= render_navigation navigation %><% end %>
-
-      <li class="divider-vertical"></li>
-
-      <% if can?(:read, Project) -%>
-        <%= render_nav_link "Projects", main_app.projects_path, icon: "fa-archive" %>
-      <% end -%>
-
     </ul>
   </div>
 </div>

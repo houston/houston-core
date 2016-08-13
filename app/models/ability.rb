@@ -4,9 +4,30 @@ class Ability
 
 
   def initialize(user)
-    if user && user.administrator?
-      can :manage, :all
-    elsif Houston.config.defines_abilities?
+    if user
+
+      # Owners can do everything
+
+      if user.owner?
+        can :manage, :all
+        return
+      end
+
+      # Admins can create teams
+
+      if user.admin?
+        can [:read, :create], Team
+      end
+
+      # Users get abilities based on their role
+      # in any teams they are members of
+
+      user.roles.each do |role|
+        Houston.config.configure_team_abilities(self, role)
+      end
+    end
+
+    if Houston.config.defines_abilities?
       Houston.config.configure_abilities(self, user)
     else
       default_abilities_for(user)
@@ -16,25 +37,13 @@ class Ability
 
 
   def default_abilities_for(user)
+    return unless user
 
-    # Anyone can see everything
+    # If you're logged in, you can see everything
     can :read, :all
 
-    if user
-
-      # If you're logged in, you can update yourself
-      can :update, user
-
-      if user.developer?
-
-        # Developers can manage projects and releases
-        can :manage, Project
-        can :manage, Release
-        can :manage, Sprint
-
-      end
-    end
-
+    # If you're logged in, you can update yourself
+    can :update, user
   end
 
 

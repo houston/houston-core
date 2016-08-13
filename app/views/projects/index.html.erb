@@ -1,8 +1,6 @@
 <% content_for :title do %>
 <h1 class="project-banner space-below">
   Projects
-  <%= link_to "New Project", new_project_path, :class => "btn btn-primary" if can?(:create, Project) %>
-  <%= link_to "Add Projects from GitHub", add_github_projects_path, :class => "btn btn-primary" if can?(:create, Project) %>
 
   <%= render partial: "projects/keyboard_shortcuts" %>
 </h1>
@@ -16,6 +14,7 @@
           <td class="table-margin"></td>
           <td class="project-feature-error"></td>
           <th class="project-title sort-desc">Title</th>
+          <th class="project-team">Team</th>
 <% if current_user.developer? %>
           <th class="project-last-commit">Last Commit</th>
         <% KeyDependency.all.each do |dependency| %>
@@ -52,6 +51,9 @@
               <%= link_to_if can?(:update, project), project.name, edit_project_path(project) %>
             </td>
 
+            <td class="project-team">
+              <%= project.team && project.team.name %>
+            </td>
 
 
 <% if current_user.developer? %>
@@ -117,13 +119,14 @@
 
             <td class="project-following">
               <% if current_user %>
-                <% roles_for_project = current_user.roles.find_all { |role| role.project_id == project.id }.map(&:name) %>
-                <% if roles_for_project.none? %>
-                  <%= button_to "Follow", project_follow_path(project), method: :post, class: "btn btn-primary" %>
-                <% elsif roles_for_project == %w{Follower} %>
-                  <%= button_to "Unfollow", project_unfollow_path(project), method: :delete, class: "btn" %>
+                <% if current_user.follows?(project) %>
+                  <%= button_to project_unfollow_path(project), method: :delete, class: "btn-link" do %>
+                    <i class="fa fa-star"/></i>
+                  <% end %>
                 <% else %>
-                  <%= roles_for_project.to_sentence %>
+                  <%= button_to project_follow_path(project), method: :post, class: "btn-link" do %>
+                    <i class="fa fa-star-o"/></i>
+                  <% end %>
                 <% end %>
               <% end %>
             </td>

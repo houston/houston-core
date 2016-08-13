@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_filter :extract_administrator, :only => [:update, :create]
+  before_filter :extract_role, :only => [:update, :create]
   load_and_authorize_resource
 
 
@@ -39,7 +39,7 @@ class UsersController < ApplicationController
     if params[:send_invitation]
       User.invite!(params[:user])
     else
-      @user.administrator = @administrator
+      @user.role = @role
       @user.save!
     end
 
@@ -53,7 +53,7 @@ class UsersController < ApplicationController
 
   def update
     @user = User.find(params[:id])
-    @user.administrator = @administrator
+    @user.role = @role
 
     attributes = params[:user]
     attributes[:alias_emails] = attributes.fetch(:alias_emails, "").split.map(&:strip)
@@ -79,9 +79,13 @@ class UsersController < ApplicationController
 private
 
 
-  def extract_administrator
-    @administrator = params[:user].delete(:administrator) == "1"
-    @administrator = false unless current_user.administrator?
+  def extract_role
+    @role = params[:user].delete(:role)
+    if current_user.owner?
+      @role = "Owner" if current_user.id == params[:id].to_i # Owners can't demote themselves
+    else
+      @role = "Member" # Others can't promote themselves
+    end
   end
 
 
@@ -102,7 +106,7 @@ private
 
   def user_params
     params.require(:user).permit(:first_name, :last_name, :email,
-                    :role, :password, :password_confirmation, :remember_me,
+                    :password, :password_confirmation, :remember_me,
                     :environments_subscribed_to, :view_options, :alias_emails)
   end
 

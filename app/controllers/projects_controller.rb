@@ -21,13 +21,14 @@ class ProjectsController < ApplicationController
 
   def new
     @title = "New Project"
-
-    @project = Project.new
-    @project.roles.build(user: current_user) if @project.roles.none?
+    @team = Team.find params[:team_id]
+    @project = @team.projects.build
+    authorize! :create, @project
   end
 
   def new_from_github
-    authorize! :create, Project
+    @team = Team.find params[:team_id]
+    authorize! :create, @team.projects.build
 
     existing_projects = Project.unscoped.where("props->>'git.location' LIKE '%github.com%'")
     github_repos = Houston.benchmark "Fetching repos" do
@@ -47,14 +48,15 @@ class ProjectsController < ApplicationController
 
 
   def create_from_github
-    authorize! :create, Project
+    @team = Team.find params[:team_id]
+    authorize! :create, @team.projects.build
 
     repos = params.fetch(:repos, [])
     projects = Project.transaction do
       repos.map do |repo|
         owner, name = repo.split("/")
         title = name.humanize.gsub(/\b(?<!['’.`])[a-z]/) { $&.capitalize }.gsub("-", "::")
-        Project.create!(
+        @team.projects.create!(
           name: title,
           slug: name,
           version_control_name: "Git",
@@ -63,7 +65,7 @@ class ProjectsController < ApplicationController
     end
 
     flash[:notice] = "#{projects.count} projects added"
-    redirect_to projects_path
+    redirect_to teams_path
 
   rescue ActiveRecord::RecordInvalid
     flash[:error] = $!.message
@@ -73,8 +75,6 @@ class ProjectsController < ApplicationController
 
   def edit
     @project = Project.find_by_slug!(params[:id])
-    @project.roles.build(user: current_user) if @project.roles.none?
-
     @title = "Edit #{@project.name}"
   end
 
@@ -83,7 +83,7 @@ class ProjectsController < ApplicationController
     @project = Project.new(project_attributes)
 
     if @project.save
-      redirect_to projects_path, notice: 'Project was successfully created.'
+      redirect_to teams_path, notice: 'Project was successfully created.'
     else
       flash.now[:error] = @project.errors[:base].join("\n")
       render action: "new"

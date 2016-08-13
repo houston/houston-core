@@ -12,6 +12,7 @@ class CreatingAReleaseTest < ActionDispatch::IntegrationTest
 
     @user = User.first
     @project = Project.create!(
+      team: Team.first,
       name: "Test",
       slug: "test",
       ticket_tracker_name: "Houston",

@@ -36,20 +36,11 @@
       </div>
     </div>
 
-    <% if can?(:manage, @user) %>
+    <% if current_user.owner? %>
       <div class="control-group">
         <%= f.label :role, :class => "control-label" %>
         <div class="controls">
-          <%= f.select :role, Houston.config.roles, :class => "select_field" %>
-        </div>
-      </div>
-    <% end %>
-
-    <% if can?(:manage, @user) %>
-      <div class="control-group">
-        <%= f.label :administrator, :class => "control-label" %>
-        <div class="controls">
-          <%= f.check_box :administrator, :class => "checkbox" %>
+          <%= f.select :role, User::ROLES, {class: "select_field"}, {disabled: (current_user == @user)} %>
         </div>
       </div>
     <% end %>

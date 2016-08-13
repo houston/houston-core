@@ -4,7 +4,6 @@ boblail:
   email: bob@example.com
   email_addresses:
   - bob@example.com
-  administrator: true
-  role: Developer
+  role: Owner
   encrypted_password: $2a$10$Pf9Q94yN7t/YGqGS6pBl5uOL8lUvqgWpGeXRMHGbgPU0ixbWzthOG
 # password: password
