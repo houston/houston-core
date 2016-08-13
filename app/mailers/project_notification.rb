@@ -16,14 +16,9 @@ class ProjectNotification < ViewMailer
   end
 
 
-  def test_results(test_run, options={})
+  def test_results(test_run, recipients, options={})
     @test_run = test_run
     @project = test_run.project
-
-    committers = test_run.commits_since_last_test_run.map { |commit| commit.author_email.downcase }
-    recipients = (committers + Array(test_run.agent_email)).uniq \
-               - @project.maintainers.map(&:email) \
-               + @project.maintainers
 
     mail({
       to:       recipients,
