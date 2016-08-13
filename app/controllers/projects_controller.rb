@@ -7,8 +7,6 @@ class ProjectsController < ApplicationController
   def index
     @title = "Projects"
     @projects = Project \
-      .includes(:owners)
-      .includes(:maintainers)
       .includes(:head)
       .unretired
     @test_runs = TestRun.most_recent.index_by(&:project_id)

@@ -16,8 +16,6 @@
           <td class="table-margin"></td>
           <td class="project-feature-error"></td>
           <th class="project-title sort-desc">Title</th>
-          <th class="project-maintainers">Maintainers</th>
-          <th class="project-owners">Owners</th>
 <% if current_user.developer? %>
           <th class="project-last-commit">Last Commit</th>
         <% KeyDependency.all.each do |dependency| %>
@@ -52,14 +50,6 @@
                 <b class="bubble"></b>
               <% end %>
               <%= link_to_if can?(:update, project), project.name, edit_project_path(project) %>
-            </td>
-
-            <td class="project-maintainers project-participants">
-              <% project.maintainers.each do |maintainer| %><%= link_to avatar_for(maintainer), user_path(maintainer), :class => "project-maintainer project-participant", :rel => "tooltip", :title => maintainer.name, "data-placement" => "right" %><span class="hidden-text"><%= maintainer.first_name %></span><!-- so sort works --><% end %>
-            </td>
-
-            <td class="project-owners project-participants">
-              <% project.owners.each do |owner| %><%= link_to avatar_for(owner), user_path(owner), :class => "project-owner project-participant", :rel => "tooltip", :title => owner.name, "data-placement" => "right" %><span class="hidden-text"><%= owner.first_name %></span><!-- so sort works --><% end %>
             </td>
 
 
