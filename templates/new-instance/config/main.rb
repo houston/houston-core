@@ -177,6 +177,9 @@ Houston.config do
   #   bundle config local.houston-<MODULE> ~/Projects/houston-<MODULE>
   #
 
+  use :feedback
+  use :roadmaps
+
   use :alerts do
 
     # Who can be assigned an Alert?
