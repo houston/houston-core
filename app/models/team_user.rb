@@ -18,7 +18,7 @@ class TeamUser < ActiveRecord::Base
     end
 
     def self.#{method_name.pluralize}
-      where(name: "#{role}")
+      with_role("#{role}")
     end
     RUBY
   end

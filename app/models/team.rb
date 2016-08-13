@@ -15,7 +15,7 @@ class Team < ActiveRecord::Base
   Houston.config.roles.each do |role|
     collection_name = role.downcase.gsub(' ', '_').pluralize
     class_eval <<-RUBY
-      has_many :#{collection_name}, -> { where(Role.arel_table[:name].eq("#{role}")) }, class_name: "User", through: :roles, source: :user
+      has_many :#{collection_name}, -> { where(["? = ANY(teams_users.roles)", "#{role}"]) }, class_name: "User", through: :roles, source: :user
     RUBY
   end
 
