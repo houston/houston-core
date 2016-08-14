@@ -1,4 +1,4 @@
-Rails.application.routes.draw do
+Houston::Engine.routes.draw do
 
   # You can add routes to your instance here
 
