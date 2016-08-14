@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
   devise_for :users, :controllers => { :sessions => "sessions" }
 
-  root to: "activity_feed#index", via: :get
+  root to: "teams#index", via: :get
   get "activity" => "activity_feed#index", as: :activity_feed
 
 
