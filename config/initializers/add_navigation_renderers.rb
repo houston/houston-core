@@ -1,13 +1,11 @@
 Houston.add_navigation_renderer :sprint do
   name "Sprint"
-  icon "fa-burndown"
   path { Houston::Application.routes.url_helpers.current_sprint_path }
   ability { |ability| ability.can?(:read, Sprint) }
 end
 
 Houston.add_navigation_renderer :pulls do
   name "Pulls"
-  icon "octokit-pull-request"
   path { Houston::Application.routes.url_helpers.pulls_path }
   ability { |ability| ability.can?(:read, Github::PullRequest) }
 end
@@ -16,21 +14,18 @@ end
 
 Houston.add_project_feature :ideas do
   name "Ideas"
-  icon "fa-lightbulb-o"
   path { |project| Houston::Application.routes.url_helpers.project_open_ideas_path(project) }
   ability { |ability, project| ability.can?(:read, project.tickets.build) }
 end
 
 Houston.add_project_feature :bugs do
   name "Bugs"
-  icon "fa-bug"
   path { |project| Houston::Application.routes.url_helpers.project_open_bugs_path(project) }
   ability { |ability, project| ability.can?(:read, project.tickets.build) }
 end
 
 Houston.add_project_feature :releases do
   name "Releases"
-  icon "fa-paper-plane"
   path { |project| Houston::Application.routes.url_helpers.releases_path(project) }
   ability { |ability, project| ability.can?(:read, project.releases.build) }
 
@@ -62,7 +57,6 @@ end
 
 Houston.add_project_feature :settings do
   name "Settings"
-  icon "fa-gear"
   path { |project| Houston::Application.routes.url_helpers.edit_project_path(project) }
   ability { |ability, project| ability.can?(:update, project) }
 end

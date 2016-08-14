@@ -21,7 +21,6 @@ module Houston
       feature = dsl.feature
       feature.slug = slug
       raise ArgumentError, "Renderer must supply name, but #{slug.inspect} doesn't" unless feature.name
-      raise ArgumentError, "Renderer must supply icon, but #{slug.inspect} doesn't" unless feature.icon
       raise ArgumentError, "Renderer must supply path lambda, but #{slug.inspect} doesn't" unless feature.path_block
 
       @navigation_renderers[slug] = feature
@@ -44,7 +43,6 @@ module Houston
       feature = dsl.feature
       feature.slug = slug
       raise ArgumentError, "Project Feature must supply name, but #{slug.inspect} doesn't" unless feature.name
-      raise ArgumentError, "Project Feature must supply icon, but #{slug.inspect} doesn't" unless feature.icon
       raise ArgumentError, "Project Feature must supply path lambda, but #{slug.inspect} doesn't" unless feature.path_block
 
       @available_project_features[slug] = feature
@@ -160,6 +158,7 @@ module Houston
       end
 
       def icon(value)
+        Houston.deprecation_notice "The icon option will be removed in Houston 0.9.0"
         feature.icon = value
       end
 

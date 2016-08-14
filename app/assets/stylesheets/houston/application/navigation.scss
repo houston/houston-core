@@ -14,18 +14,6 @@ $project-navbar-height: 34px;
   border-right-color: #303030;
 }
 
-.nav-icon {
-  display: inline-block;
-  height: 18px;
-
-  svg {
-    width: 18px;
-    height: 18px;
-
-    * { fill: #999; }
-  }
-}
-
 .navbar-inverse .nav > li > a:focus, .navbar-inverse .nav > li > a:hover {
   svg * { fill: white; }
 }
@@ -156,8 +144,6 @@ $current-project-active-bg: #222;
   padding: 0;
   height: $project-navbar-height;
 
-  .nav-icon svg * { fill: #333; }
-
   .project-no-features {
     color: white;
     line-height: $project-navbar-height;
@@ -178,8 +164,6 @@ $current-project-active-bg: #222;
 .project-navbar .nav > li.current {
   background: white;
   color: black;
-
-  .nav-icon svg * { fill: black; }
 }
 
 
@@ -211,18 +195,8 @@ $current-project-active-bg: #222;
 
 
 
-$threshhold: 768px;
-
-@media (max-width: $threshhold) {
-  .nav .nav-label { display: none; }
-}
-
 @media (max-width: 500px) {
   .project-navbar { padding-left: 0; padding-right: 0; }
-}
-
-@media (min-width: $threshhold) {
-  .nav .nav-icon { display: none; }
 }
 
 .project-banner {
