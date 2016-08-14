@@ -991,39 +991,6 @@ ALTER SEQUENCE tests_id_seq OWNED BY tests.id;
 
 
 --
--- Name: ticket_queues; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE ticket_queues (
-    id integer NOT NULL,
-    ticket_id integer,
-    queue character varying,
-    destroyed_at timestamp without time zone,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
-);
-
-
---
--- Name: ticket_queues_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE ticket_queues_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: ticket_queues_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE ticket_queues_id_seq OWNED BY ticket_queues.id;
-
-
---
 -- Name: tickets; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1375,13 +1342,6 @@ ALTER TABLE ONLY tests ALTER COLUMN id SET DEFAULT nextval('tests_id_seq'::regcl
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY ticket_queues ALTER COLUMN id SET DEFAULT nextval('ticket_queues_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
 ALTER TABLE ONLY tickets ALTER COLUMN id SET DEFAULT nextval('tickets_id_seq'::regclass);
 
 
@@ -1604,14 +1564,6 @@ ALTER TABLE ONLY tests
 
 ALTER TABLE ONLY tests
     ADD CONSTRAINT tests_unique_constraint UNIQUE (project_id, suite, name);
-
-
---
--- Name: ticket_queues_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY ticket_queues
-    ADD CONSTRAINT ticket_queues_pkey PRIMARY KEY (id);
 
 
 --
@@ -1941,20 +1893,6 @@ CREATE INDEX index_tests_on_project_id ON tests USING btree (project_id);
 
 
 --
--- Name: index_ticket_queues_on_queue; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_ticket_queues_on_queue ON ticket_queues USING btree (queue);
-
-
---
--- Name: index_ticket_queues_on_ticket_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX index_ticket_queues_on_ticket_id ON ticket_queues USING btree (ticket_id);
-
-
---
 -- Name: index_tickets_on_destroyed_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2093,8 +2031,6 @@ INSERT INTO schema_migrations (version) VALUES ('20120417175841');
 INSERT INTO schema_migrations (version) VALUES ('20120417190504');
 
 INSERT INTO schema_migrations (version) VALUES ('20120417195313');
-
-INSERT INTO schema_migrations (version) VALUES ('20120417195433');
 
 INSERT INTO schema_migrations (version) VALUES ('20120501230243');
 
@@ -2295,8 +2231,6 @@ INSERT INTO schema_migrations (version) VALUES ('20140217160450');
 INSERT INTO schema_migrations (version) VALUES ('20140217195942');
 
 INSERT INTO schema_migrations (version) VALUES ('20140327020121');
-
-INSERT INTO schema_migrations (version) VALUES ('20140401234330');
 
 INSERT INTO schema_migrations (version) VALUES ('20140406183224');
 
