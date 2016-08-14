@@ -2,12 +2,6 @@ module UrlHelper
 
 
 
-  def goldmine_case_number_url(number)
-    "http://goldmineweb/DisplayCase.aspx?CaseNumber=#{number}"
-  end
-
-
-
   def github_url?(project)
     project.repo.respond_to?(:project_url)
   end
