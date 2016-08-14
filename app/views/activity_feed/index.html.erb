@@ -1,18 +1,18 @@
-<div id="welcome">
+<div id="activity_feed">
   <div class="header">
     <h1>
       Projects I Follow
       <%= avatar_for(current_user, size: 132) %>
     </h1>
   </div>
-  
+
   <div id="timeline_body">
     <div class="timeline infinite-scroll">
       <p class="spinner"><i class="fa fa-spinner fa-spin fa-large"></i> Loading...</p>
       <%= render "activity/events" %>
     </div>
   </div>
-  
+
 </div>
 
 <% content_for :javascripts do %>

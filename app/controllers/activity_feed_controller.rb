@@ -1,14 +1,10 @@
-class WelcomeController < ApplicationController
+class ActivityFeedController < ApplicationController
   before_filter :authenticate_user!
   layout "minimal"
 
   def index
     load_activity
-  end
-
-  def activity
-    load_activity
-    render partial: "activity/events"
+    render partial: "activity/events" if request.xhr?
   end
 
 private
