@@ -1,8 +1,3 @@
-Houston.add_navigation_renderer :activity_feed do
-  name "Activity"
-  path { Houston::Application.routes.url_helpers.activity_feed_path }
-end
-
 Houston.add_navigation_renderer :sprint do
   name "Sprint"
   path { Houston::Application.routes.url_helpers.current_sprint_path }
