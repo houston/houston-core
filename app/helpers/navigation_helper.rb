@@ -27,23 +27,6 @@ module NavigationHelper
     nil
   end
 
-  def render_nav_menu(name, items: [])
-    items.flatten!
-
-    return "" if items.empty?
-
-    <<-HTML.html_safe
-    <li class="dropdown">
-      <a href="#" title="#{h name}" class="dropdown-toggle" data-toggle="dropdown">
-        #{h name} <b class="caret"></b>
-      </a>
-      <ul class="dropdown-menu releases-menu">
-        #{items.map(&:to_html).join("")}
-      </ul>
-    </li>
-    HTML
-  end
-
   def render_nav_link(name, href)
     if current_page? href
       "<li class=\"current\">#{h name}</li>".html_safe
