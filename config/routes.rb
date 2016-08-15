@@ -6,12 +6,6 @@ Rails.application.routes.draw do
 
 
 
-  # Dashboard
-
-  get "omnibar" => "omnibar#show"
-
-
-
   # Test Runs
 
   get "test_runs/:commit", to: "test_runs#show"
