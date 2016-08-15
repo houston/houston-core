@@ -1,6 +1,6 @@
 class TestRunsController < ApplicationController
-  before_filter :find_test_run
-  skip_before_filter :verify_authenticity_token, only: [:save_results]
+  before_action :find_test_run
+  skip_before_action :verify_authenticity_token, only: [:save_results]
 
   def show
     @title = "Test Results for #{@test_run.sha[0...8]}"

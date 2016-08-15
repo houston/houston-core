@@ -1,9 +1,9 @@
 class SprintsController < ApplicationController
   attr_reader :sprint, :task
 
-  before_filter :authenticate_user!, except: [:dashboard]
-  before_filter :find_sprint, only: [:show, :lock, :add_task, :remove_task]
-  before_filter :find_task, only: [:add_task, :remove_task]
+  before_action :authenticate_user!, except: [:dashboard]
+  before_action :find_sprint, only: [:show, :lock, :add_task, :remove_task]
+  before_action :find_task, only: [:add_task, :remove_task]
 
 
   def current

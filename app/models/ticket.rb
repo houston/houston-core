@@ -48,7 +48,7 @@ class Ticket < ActiveRecord::Base
 
     def mentioned_by_commits(*commits)
       ids = commits.flatten.map { |commit| commit.is_a?(Commit) ? commit.id : commit }
-      commits_tickets = Arel::Table.new("commits_tickets")
+      commits_tickets = CommitTicket.arel_table
       where arel_table[:id].in(commits_tickets
         .where(commits_tickets[:commit_id].in(ids))
         .project(commits_tickets[:ticket_id]))

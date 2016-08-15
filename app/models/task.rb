@@ -208,7 +208,7 @@ private
   end
 
   def prevent_destroying_a_tickets_last_task
-    return false if ticket.tasks.pluck(:id) == [id]
+    throw :abort if ticket.tasks.pluck(:id) == [id]
   end
 
   def self.to_number(letter)

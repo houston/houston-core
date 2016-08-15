@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_filter :extract_role, :only => [:update, :create]
+  before_action :extract_role, :only => [:update, :create]
   load_and_authorize_resource
 
 

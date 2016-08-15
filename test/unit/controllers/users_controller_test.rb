@@ -1,7 +1,7 @@
 require "test_helper"
 
 class UsersControllerTest < ActionController::TestCase
-  include Devise::TestHelpers
+  include Devise::Test::ControllerHelpers
 
 
   context "Owners" do
@@ -10,12 +10,12 @@ class UsersControllerTest < ActionController::TestCase
     end
 
     should "be able to change other users' roles" do
-      put :update, id: a_user.id, user: {role: "Owner"}
+      put :update, params: { id: a_user.id, user: {role: "Owner"} }
       assert_equal "Owner", a_user.reload.role
     end
 
     should "not be able to change their own role" do
-      put :update, id: owner.id, user: {role: "Member"}
+      put :update, params: { id: owner.id, user: {role: "Member"} }
       assert_equal "Owner", owner.reload.role
     end
   end
@@ -27,7 +27,7 @@ class UsersControllerTest < ActionController::TestCase
     end
 
     should "not be able to change their own role" do
-      put :update, id: a_user.id, user: {role: "Owner"}
+      put :update, params: { id: a_user.id, user: {role: "Owner"} }
       refute_equal "Owner", a_user.reload.role
     end
   end

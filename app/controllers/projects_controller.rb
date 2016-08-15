@@ -1,5 +1,5 @@
 class ProjectsController < ApplicationController
-  before_filter :convert_maintainers_attributes_to_maintainer_ids, only: [:create, :update]
+  before_action :convert_maintainers_attributes_to_maintainer_ids, only: [:create, :update]
   load_resource :find_by => :slug # will use find_by_permalink!(params[:id])
   authorize_resource
 

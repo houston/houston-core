@@ -57,8 +57,7 @@ class User < ActiveRecord::Base
   def self.with_email_address(*email_addresses)
     email_addresses = email_addresses.flatten.compact
     return none if email_addresses.none?
-    values = email_addresses.map { |email| connection.quote(email.downcase) }.join(",")
-    where("ARRAY[\"email_addresses\"] && ARRAY[#{values}]")
+    where ["email_addresses && ARRAY[?]", email_addresses.map(&:downcase)]
   end
 
   def self.find_by_email_address(email_address)

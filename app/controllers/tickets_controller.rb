@@ -1,5 +1,5 @@
 class TicketsController < ApplicationController
-  before_filter :find_ticket, only: [:show, :update, :close, :reopen]
+  before_action :find_ticket, only: [:show, :update, :close, :reopen]
 
   attr_reader :ticket
 

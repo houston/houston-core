@@ -21,7 +21,7 @@ class TicketTasksApiTest < ActionDispatch::IntegrationTest
 
 
     should "return a list of the tickets's tasks" do
-      get tasks_path, {}, env
+      get tasks_path, env: env
       assert_response :success
 
       expected_tasks = [
@@ -42,14 +42,14 @@ class TicketTasksApiTest < ActionDispatch::IntegrationTest
     should "respond with validation effors if description is omitted" do
       expected_response = MultiJson.dump(errors: ["Description can't be blank"])
 
-      post tasks_path, {effort: 2.1}, env
+      post tasks_path, params: {effort: 2.1}, env: env
       assert_response :unprocessable_entity
       assert_equal expected_response, response.body,
         "Expected the API to have responded with the appropriate error message"
     end
 
     should "add a new task to the ticket" do
-      post tasks_path, {description: "Step 3", effort: 2.1}, env
+      post tasks_path, params: {description: "Step 3", effort: 2.1}, env: env
       assert_response :created
       assert_equal [3, "Step 3", BigDecimal.new("2.1")], ticket.tasks.pluck(:number, :description, :effort).last,
         "Expected to find that the third task has been created"

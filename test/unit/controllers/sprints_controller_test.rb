@@ -1,7 +1,7 @@
 require "test_helper"
 
 class SprintsControllerTest < ActionController::TestCase
-  include Devise::TestHelpers
+  include Devise::Test::ControllerHelpers
 
   attr_reader :sprint
 
@@ -15,7 +15,7 @@ class SprintsControllerTest < ActionController::TestCase
     should "add the given task to the sprint" do
       task = create(:task, effort: 5)
       assert_difference "sprint.tasks.count", +1 do
-        post :add_task, id: sprint.id, task_id: task.id
+        post :add_task, params: { id: sprint.id, task_id: task.id }
         assert_response :ok
       end
     end
@@ -23,7 +23,7 @@ class SprintsControllerTest < ActionController::TestCase
     should "not add the task if the sprint is completed" do
       task = create(:task, effort: 5)
       Timecop.freeze 1.week.from_now do
-        post :add_task, id: sprint.id, task_id: task.id
+        post :add_task, params: { id: sprint.id, task_id: task.id }
         assert_response :unprocessable_entity
       end
     end
@@ -35,7 +35,7 @@ class SprintsControllerTest < ActionController::TestCase
       task = create(:task)
       sprint.tasks.add task
       assert_difference "sprint.tasks.count", -1 do
-        delete :remove_task, id: sprint.id, task_id: task.id
+        delete :remove_task, params: { id: sprint.id, task_id: task.id }
         assert_response :ok
       end
     end
@@ -44,7 +44,7 @@ class SprintsControllerTest < ActionController::TestCase
       task = create(:task)
       sprint.tasks.add task
       Timecop.freeze 1.week.from_now do
-        delete :remove_task, id: sprint.id, task_id: task.id
+        delete :remove_task, params: { id: sprint.id, task_id: task.id }
         assert_response :unprocessable_entity
       end
     end

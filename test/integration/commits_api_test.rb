@@ -27,7 +27,7 @@ class CommitsApiTest < ActionDispatch::IntegrationTest
 
 
   test "should return a list of the user's commits" do
-    get "/self/commits", {}, env
+    get "/self/commits", env: env
     assert_response :success
 
     expected_commits = [
@@ -47,7 +47,9 @@ class CommitsApiTest < ActionDispatch::IntegrationTest
 
 
   test "should return a list of the user's commits filtered by date range" do
-    get "/self/commits", {start_at: Time.local(2013, 5, 23), end_at: Time.local(2013, 5, 24)}, env
+    get "/self/commits",
+      params: {start_at: Time.local(2013, 5, 23), end_at: Time.local(2013, 5, 24)},
+      env: env
     assert_response :success
 
     expected_commits = [

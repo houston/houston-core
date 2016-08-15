@@ -1,5 +1,5 @@
 class HooksController < ApplicationController
-  skip_before_filter :verify_authenticity_token
+  skip_before_action :verify_authenticity_token
 
   # https://developer.github.com/webhooks/#events
   EVENT_HANDLERS = {
@@ -19,7 +19,7 @@ class HooksController < ApplicationController
 
     elsif event_processor = EVENT_HANDLERS[event]
       payload = params.fetch "hook"
-      event_processor.process! payload
+      event_processor.process! payload.to_h
       head 200
 
     else
@@ -31,7 +31,7 @@ class HooksController < ApplicationController
   def trigger
     event = "hooks:#{params[:hook]}"
     unless Houston.observer.observed?(event)
-      render text: "A hook with the slug '#{params[:hook]}' is not defined", status: 404
+      render plain: "A hook with the slug '#{params[:hook]}' is not defined", status: 404
       return
     end
 

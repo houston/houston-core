@@ -1,7 +1,7 @@
 require "test_helper"
 
 class ProjectOptionsControllerTest < ActionController::TestCase
-  include Devise::TestHelpers
+  include Devise::Test::ControllerHelpers
 
   attr_reader :project
 
@@ -21,7 +21,7 @@ class ProjectOptionsControllerTest < ActionController::TestCase
         "view.helmet" => "dark",
         "view.schwartz" => "up side" }
 
-      put :update, slug: "test", options: {"view.speed" => "light", "view.schwartz" => "up side"}
+      put :update, params: { slug: "test", options: {"view.speed" => "light", "view.schwartz" => "up side"} }
       assert_response :ok
       assert_equal expected_options, project.reload.props.to_h
     end
@@ -33,7 +33,7 @@ class ProjectOptionsControllerTest < ActionController::TestCase
       expected_options = {
         "view.speed" => "plaid" }
 
-      delete :destroy, slug: "test", key: "view.helmet"
+      delete :destroy, params: { slug: "test", key: "view.helmet" }
       assert_response :ok
       assert_equal expected_options, project.reload.props.to_h
     end

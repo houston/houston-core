@@ -15,7 +15,6 @@ group :test do
   gem "rr"
   gem "webmock", require: "webmock/minitest"
   gem "factory_girl_rails"
-  gem "test_after_commit"
 
   # For Jenkins
   gem "simplecov-json", require: false

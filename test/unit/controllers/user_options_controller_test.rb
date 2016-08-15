@@ -1,7 +1,7 @@
 require "test_helper"
 
 class UserOptionsControllerTest < ActionController::TestCase
-  include Devise::TestHelpers
+  include Devise::Test::ControllerHelpers
 
   attr_reader :user
 
@@ -21,7 +21,7 @@ class UserOptionsControllerTest < ActionController::TestCase
         "view.helmet" => "dark",
         "view.schwartz" => "up side" }
 
-      put :update, options: {"view.speed" => "light", "view.schwartz" => "up side"}
+      put :update, params: { options: {"view.speed" => "light", "view.schwartz" => "up side"} }
       assert_response :ok
       assert_equal expected_options, user.reload.props.to_h
     end
@@ -33,7 +33,7 @@ class UserOptionsControllerTest < ActionController::TestCase
       expected_options = {
         "view.speed" => "plaid" }
 
-      delete :destroy, key: "view.helmet"
+      delete :destroy, params: { key: "view.helmet" }
       assert_response :ok
       assert_equal expected_options, user.reload.props.to_h
     end

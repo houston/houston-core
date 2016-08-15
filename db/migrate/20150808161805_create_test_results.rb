@@ -26,7 +26,7 @@ class CreateTestResults < ActiveRecord::Migration
         .pluck(:suite, :name, :id)
         .map { |suite, name, id| [[suite, name], id] }]
 
-      test_runs.where(project_id: project_id).pluck_in_batches(:id, :tests, batch_size: 50) do |id, tests|
+      test_runs.where(project_id: project_id).pluck_in_batches(:id, :tests, of: 50) do |id, tests|
         test_results = Array(tests).map do |test_attributes|
           suite = test_attributes.fetch :suite
           name = test_attributes.fetch :name

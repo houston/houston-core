@@ -51,6 +51,8 @@ module Houston
           end
           new_object[key] = pack(value)
         end
+      when ActionController::Parameters
+        pack object.to_h
       when ActiveSupport::TimeWithZone
         object.to_datetime
       when *SERIALIZABLE_TYPES

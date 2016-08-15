@@ -1,5 +1,5 @@
 class ProjectOptionsController < ApplicationController
-  before_filter :get_project
+  before_action :get_project
   attr_reader :project
 
 

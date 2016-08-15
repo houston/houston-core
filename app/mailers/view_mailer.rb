@@ -35,7 +35,7 @@ class ViewMailer < ActionMailer::Base
   end
 
 
-  before_filter { @for_email = true }
+  before_action { @for_email = true }
 
 
 protected

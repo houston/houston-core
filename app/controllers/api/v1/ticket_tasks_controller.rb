@@ -1,10 +1,10 @@
 module Api
   module V1
     class TicketTasksController < ApplicationController
-      before_filter :api_authenticate!
-      before_filter :find_project_and_ticket
-      before_filter :find_task, only: [:update, :destroy]
-      skip_before_filter :verify_authenticity_token
+      before_action :api_authenticate!
+      before_action :find_project_and_ticket
+      before_action :find_task, only: [:update, :destroy]
+      skip_before_action :verify_authenticity_token
 
       attr_reader :project, :ticket, :task
 

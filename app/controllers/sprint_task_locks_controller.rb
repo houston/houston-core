@@ -1,6 +1,6 @@
 class SprintTaskLocksController < ApplicationController
-  before_filter :authenticate_user!
-  before_filter :find_sprint_and_task
+  before_action :authenticate_user!
+  before_action :find_sprint_and_task
 
   attr_reader :sprint, :task
 

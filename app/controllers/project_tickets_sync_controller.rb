@@ -1,5 +1,5 @@
 class ProjectTicketsSyncController < ApplicationController
-  before_filter :find_project
+  before_action :find_project
 
 
   def show

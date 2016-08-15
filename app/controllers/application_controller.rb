@@ -5,8 +5,8 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  before_filter :set_current_project
-  after_filter :save_current_project
+  before_action :set_current_project
+  after_action :save_current_project
 
 
   delegate :mobile?, to: :browser
@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
   rescue_from CanCan::AccessDenied do |exception|
     if current_user
       if request.xhr?
-        render text: exception.message, status: :unauthorized
+        render plain: exception.message, status: :unauthorized
       else
         redirect_url = request.referrer.blank? ? main_app.root_url : :back
         redirect_to redirect_url, :alert => exception.message
@@ -36,7 +36,7 @@ class ApplicationController < ActionController::Base
   end
 
   rescue_from UserCredentials::InsufficientPermissions do |exception|
-    render text: exception.message, status: 401
+    render plain: exception.message, status: 401
   end
 
   rescue_from Github::Unauthorized do |exception|

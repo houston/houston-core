@@ -9,7 +9,7 @@ class HooksControllerTest < ActionController::TestCase
     end
 
     should "respond with success" do
-      post :github, hook: {}
+      post :github, params: { hook: {} }
       assert_response :success
     end
   end
@@ -22,13 +22,14 @@ class HooksControllerTest < ActionController::TestCase
 
     should "respond with success" do
       stub.instance_of(Github::PullRequestEvent).process!
-      post :github, hook: github_pull_request_event_payload
+      post :github, params: { hook: github_pull_request_event_payload }
       assert_response :success
     end
 
     should "create or update a GitHub::PullRequest" do
-      mock(Github::PullRequest).upsert!(a_pull_request, as: "baxterthehacker")
-      post :github, hook: github_pull_request_event_payload
+      the_pull_request = hash_including(a_pull_request.pick("html_url"))
+      mock(Github::PullRequest).upsert!(the_pull_request, as: "baxterthehacker")
+      post :github, params: { hook: github_pull_request_event_payload }
     end
 
     should "add a label to GitHub::PullRequest when the action is \"labeled\"" do
@@ -36,8 +37,8 @@ class HooksControllerTest < ActionController::TestCase
       stub(Github::PullRequest).upsert! { pr }
       stub(pr).persisted? { true }
       mock(pr).add_label!({"name" => "new-label", "color" => "#445566"}, as: "baxterthehacker")
-      post :github, hook: github_pull_request_event_payload(action: "labeled",
-        label: {"name" => "new-label", "color" => "#445566"})
+      post :github, params: { hook: github_pull_request_event_payload(action: "labeled",
+        label: {"name" => "new-label", "color" => "#445566"}) }
     end
 
     should "remove a label to GitHub::PullRequest when the action is \"unlabeled\"" do
@@ -45,8 +46,8 @@ class HooksControllerTest < ActionController::TestCase
       stub(Github::PullRequest).upsert! { pr }
       stub(pr).persisted? { true }
       mock(pr).remove_label!({"name" => "removed-label", "color" => "#445566"}, as: "baxterthehacker")
-      post :github, hook: github_pull_request_event_payload(action: "unlabeled",
-        label: {"name" => "removed-label", "color" => "#445566"})
+      post :github, params: { hook: github_pull_request_event_payload(action: "unlabeled",
+        label: {"name" => "removed-label", "color" => "#445566"}) }
     end
   end
 
@@ -58,7 +59,7 @@ class HooksControllerTest < ActionController::TestCase
 
     should "respond with success" do
       stub.instance_of(Github::PostReceiveEvent).process!
-      post :github, hook: {}
+      post :github, params: { hook: github_push_event_payload }
       assert_response :success
     end
 
@@ -66,7 +67,7 @@ class HooksControllerTest < ActionController::TestCase
       project = create(:project, slug: "public-repo")
       expected_payload = hash_including(github_push_event_payload.slice("before", "after"))
       mock(Houston.observer).fire("hooks:project:post_receive", project: project, params: expected_payload)
-      post :github, hook: github_push_event_payload
+      post :github, params: { hook: github_push_event_payload }
     end
   end
 
@@ -77,7 +78,7 @@ class HooksControllerTest < ActionController::TestCase
     end
 
     should "respond with not_found" do
-      post :github, hook: {}
+      post :github, params: { hook: {} }
       assert_response :not_found
     end
   end

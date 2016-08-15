@@ -1,8 +1,8 @@
 class ProjectTicketsController < ApplicationController
   attr_reader :ticket
-  before_filter :find_project
-  before_filter :find_ticket, only: [:show, :close, :reopen]
-  before_filter :api_authenticate!, :only => :create
+  before_action :find_project
+  before_action :find_ticket, only: [:show, :close, :reopen]
+  before_action :api_authenticate!, :only => :create
   helper ExcelHelpers
 
 

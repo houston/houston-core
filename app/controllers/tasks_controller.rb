@@ -1,5 +1,5 @@
 class TasksController < ApplicationController
-  before_filter :find_task
+  before_action :find_task
 
   attr_reader :task
 

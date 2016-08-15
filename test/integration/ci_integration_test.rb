@@ -63,7 +63,8 @@ class CIIntegrationTest < ActionDispatch::IntegrationTest
         mock(job).fetch_results!(results_url).returns({})
       end
 
-      put "/projects/#{project.slug}/test_runs/#{commit}/results", {results_url: results_url}
+      put "/projects/#{project.slug}/test_runs/#{commit}/results",
+        params: {results_url: results_url}
       assert_response :success
     end
 
@@ -78,7 +79,8 @@ class CIIntegrationTest < ActionDispatch::IntegrationTest
         mock(job).fetch_results!(results_url) { raise Houston::Adapters::CIServer::Error }
       end
 
-      put "/projects/#{project.slug}/test_runs/#{commit}/results", {results_url: results_url}
+      put "/projects/#{project.slug}/test_runs/#{commit}/results",
+        params: {results_url: results_url}
 
       assert_equal "error", @test_run.reload.result
     end

@@ -1,9 +1,9 @@
 class ReleasesController < ApplicationController
   include UrlHelper
   include ReleaseHelper
-  before_filter :get_release_and_project, only: [:show, :edit, :update, :destroy]
-  before_filter :get_project_and_environment, only: [:index, :new, :create]
-  before_filter :load_tickets, only: [:new, :edit, :create, :update]
+  before_action :get_release_and_project, only: [:show, :edit, :update, :destroy]
+  before_action :get_project_and_environment, only: [:index, :new, :create]
+  before_action :load_tickets, only: [:new, :edit, :create, :update]
 
 
 

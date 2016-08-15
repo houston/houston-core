@@ -20,17 +20,17 @@ Gem::Specification.new do |spec|
 
 
   # For Houston as a Web Application
-  spec.add_dependency "rails", "~> 4.2.5"
+  spec.add_dependency "rails", "~> 5.0.0"
   spec.add_dependency "pg", "~> 0.18.3"
   # --------------------------------
   spec.add_dependency "activerecord-import"
-  spec.add_dependency "activerecord-pluck_in_batches"
+  spec.add_dependency "activerecord-pluck_in_batches", "~> 0.2.0"
   spec.add_dependency "addressable", "~> 2.3.8"
   spec.add_dependency "browser", "~> 1.1.0"
-  spec.add_dependency "cancan", "~> 1.6.10"
-  spec.add_dependency "default_value_for", "3.0.1"
-  spec.add_dependency "devise", "~> 3.5.0"
-  spec.add_dependency "devise_invitable", "~> 1.5.3"
+  spec.add_dependency "cancan", "~> 1.6.10" # cancancan
+  spec.add_dependency "default_value_for", "3.0.2"
+  spec.add_dependency "devise" #, "~> 3.5.0"
+  spec.add_dependency "devise_invitable" #, "~> 1.5.3"
   spec.add_dependency "houston-devise_ldap_authenticatable"
   spec.add_dependency "faraday", "~> 0.9.2"
   spec.add_dependency "faraday-http-cache", "~> 1.2.2"
@@ -48,6 +48,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "progressbar" # for long migrations
   spec.add_dependency "rack-utf8_sanitizer", "~> 1.3.1"
   spec.add_dependency "redcarpet", "~> 3.3.2"
+  spec.add_dependency "record_tag_helper", "~> 1.0" # to keep using div_for
   spec.add_dependency "strongbox", "~> 0.7.2" # for encrypting user credentials
   spec.add_dependency "thor"
   spec.add_dependency "thread_safe", "~> 0.3.5"
