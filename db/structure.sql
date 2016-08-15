@@ -133,7 +133,6 @@ ALTER SEQUENCE authorizations_id_seq OWNED BY authorizations.id;
 
 CREATE TABLE commits (
     id integer NOT NULL,
-    release_id integer,
     sha character varying,
     message text,
     committer character varying,
@@ -2411,4 +2410,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160812233255');
 INSERT INTO schema_migrations (version) VALUES ('20160813001242');
 
 INSERT INTO schema_migrations (version) VALUES ('20160814024129');
+
+INSERT INTO schema_migrations (version) VALUES ('20160815001515');
 
