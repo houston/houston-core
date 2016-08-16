@@ -10,7 +10,7 @@ rvm:
   # I would use 2.3.0, but Travis loads that binary on-demand
   # whereas it has the 2.2.0 binary handy for the Ruby VM.
   # This saves about 20 seconds.
-  - 2.2.0
+  - 2.3.1
 
 addons:
 
