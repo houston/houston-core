@@ -42,26 +42,27 @@ class EventChannelObserver
   constructor: ->
     @_subscriptions = {}
 
-  on: (event) ->
+  on: (event, callback) ->
+    promise = @_subscriptions[event]
 
     # We'll only subscribe to the event once, but
     # we can attach more callbacks to it later.
-    promise = @_subscriptions[event]
-    return promise if promise
+    unless promise
+      promise = @_subscriptions[event] = new EventChannelPromise()
 
-    promise = @_subscriptions[event] = new EventChannelPromise()
+      # Wait a second so that an immediately-registered "connected"
+      # callback will be invoked when the connection is established.
+      window.setTimeout ->
+        Houston.cable.subscriptions.create
+          channel: "EventsChannel"
+          event: event
+        ,
+          connected: -> promise.didConnect()
+          disconnected: -> promise.didDisconnect()
+          received: (data) -> promise.didReceive(data)
 
-    # Wait a second so that an immediately-registered "connected"
-    # callback will be invoked when the connection is established.
-    window.setTimeout ->
-      Houston.cable.subscriptions.create
-        channel: "EventsChannel"
-        event: event
-      ,
-        connected: -> promise.didConnect()
-        disconnected: -> promise.didDisconnect()
-        received: (data) -> promise.didReceive(data)
-
+    # If a callback was passed, tie it to the `received` event
+    promise.received(callback) if callback
     promise
 
 
