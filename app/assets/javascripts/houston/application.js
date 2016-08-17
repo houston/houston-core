@@ -15,6 +15,7 @@
 //= require md5
 //= require_tree ../../templates
 //= require_tree ./app
+//= require_self
 
 $.tablesorter.defaults.cssAsc = 'sort-asc';
 $.tablesorter.defaults.cssDesc = 'sort-desc';
