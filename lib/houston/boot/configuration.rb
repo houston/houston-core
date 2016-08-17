@@ -77,6 +77,13 @@ module_function
       Houston::Application.paths["log"] = root.join("log/#{Rails.env}.log")
       Houston::Application.paths["tmp"] = root.join("tmp")
       Houston::Application.paths["config/environments"] << root.join("config/environments")
+
+      # ActionCable sets the default path for its config file
+      # later on during initialization. We need to override the
+      # path just before ActionCable is initialized.
+      ActiveSupport.on_load(:action_cable) do
+        Houston::Application.paths["config/cable"] = Houston.root.join("config/cable.yml")
+      end
     end
 
     def title(*args)

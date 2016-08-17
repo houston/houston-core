@@ -1,5 +1,7 @@
 window.App =
 
+  cable: ActionCable.createConsumer()
+
   meta: (name)->
     $("meta[name=\"#{name}\"]").attr('content')
 

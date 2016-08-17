@@ -10,6 +10,7 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+//= require action_cable
 //= require_tree ./core
 //= require md5
 //= require_tree ../../templates
