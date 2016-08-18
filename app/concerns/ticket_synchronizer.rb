@@ -25,7 +25,7 @@ module TicketSynchronizer
     numbers = numbers.flatten.map(&:to_i).uniq
     return none if numbers.empty?
 
-    results = super(*numbers)
+    results = super(*numbers).to_a
     return results unless sync && ticket_tracker.supports?(:syncing_tickets)
 
     results.concat fetch_numbered(numbers - results.map(&:number))
