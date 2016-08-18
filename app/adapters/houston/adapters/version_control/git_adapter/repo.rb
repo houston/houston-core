@@ -177,6 +177,7 @@ module Houston
           end
 
           def find_commit(sha)
+            sha = sha.dup # in case sha is frozen; normalize_sha! will mutate it
             normalize_sha!(sha)
             object = connection.lookup(sha)
             object = object.target if object.is_a? Rugged::Tag::Annotation
