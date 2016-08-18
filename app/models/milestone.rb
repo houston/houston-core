@@ -37,7 +37,7 @@ class Milestone < ActiveRecord::Base
     end
     alias :open :uncompleted
 
-    def without(milestones)
+    def except(milestones)
       without_remote_ids(milestones.map(&:remote_id))
     end
 

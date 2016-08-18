@@ -58,7 +58,7 @@ class Ticket < ActiveRecord::Base
       where(number: numbers.flatten.map(&:to_i))
     end
 
-    def without(tickets)
+    def except(tickets)
       not_numbered(tickets.map(&:number))
     end
 
