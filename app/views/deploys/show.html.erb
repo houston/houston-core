@@ -38,7 +38,7 @@
   $(function() {
     var interval = 900;
     var timer = window.setInterval(function() {
-      $.getJSON(<%=raw project_deploy_path(project_id: @project.slug, id: @deploy.id).to_json %>, function(result) {
+      $.getJSON(<%=raw deploy_path(project_id: @project.slug, id: @deploy.id).to_json %>, function(result) {
         if(result.completed) {
           window.clearInterval(timer);
         }
