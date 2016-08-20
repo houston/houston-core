@@ -65,25 +65,28 @@ module_function
     # Global configuration
 
     def root(*args)
-      return @root if args.none?
-      @root = args.first
+      if args.any?
+        @root = args.first
 
-      # Keep structure.sql in instances' db directory
-      ActiveRecord::Tasks::DatabaseTasks.db_dir = root.join("db")
+        # Keep structure.sql in instances' db directory
+        ActiveRecord::Tasks::DatabaseTasks.db_dir = root.join("db")
 
-      # Configure Houston
-      Houston::Application.paths["config/database"] = root.join("config/database.yml")
-      Houston::Application.paths["public"] = root.join("public")
-      Houston::Application.paths["log"] = root.join("log/#{Rails.env}.log")
-      Houston::Application.paths["tmp"] = root.join("tmp")
-      Houston::Application.paths["config/environments"] << root.join("config/environments")
+        # Configure Houston
+        Houston::Application.paths["config/database"] = root.join("config/database.yml")
+        Houston::Application.paths["public"] = root.join("public")
+        Houston::Application.paths["log"] = root.join("log/#{Rails.env}.log")
+        Houston::Application.paths["tmp"] = root.join("tmp")
+        Houston::Application.paths["config/environments"] << root.join("config/environments")
 
-      # ActionCable sets the default path for its config file
-      # later on during initialization. We need to override the
-      # path just before ActionCable is initialized.
-      ActiveSupport.on_load(:action_cable) do
-        Houston::Application.paths["config/cable"] = Houston.root.join("config/cable.yml")
+        # ActionCable sets the default path for its config file
+        # later on during initialization. We need to override the
+        # path just before ActionCable is initialized.
+        ActiveSupport.on_load(:action_cable) do
+          Houston::Application.paths["config/cable"] = Houston.root.join("config/cable.yml")
+        end
       end
+
+      @root
     end
 
     def title(*args)
