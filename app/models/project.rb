@@ -19,6 +19,8 @@ class Project < ActiveRecord::Base
   before_validation :generate_default_slug, :set_default_color
   validates_presence_of :name, :slug, :color
 
+  validates :slug, format: { with: /\A[a-z0-9_\-]+\z/ }
+
 
 
   has_adapter :TicketTracker,
