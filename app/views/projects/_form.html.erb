@@ -3,7 +3,7 @@
     <div class="control-group">
       <%= f.label :name, :class => "control-label" %>
       <div class="controls">
-        <%= f.text_field :name, :class => "text_field" %>
+        <%= f.text_field :name, class: "text_field", autocomplete: "off" %>
       </div>
     </div>
 
@@ -127,8 +127,11 @@
   $(function() {
     NestedEditorFor.init();
 
-    function dasherize(string) {
-      return inflect.dasherize(inflect.underscore(string)).replace(/\./g, '').replace(/\s+/g, '_');
+    function dasherize(word) {
+      return word.replace(/([A-Z]+)([A-Z][a-z])/g, '$1-$2')
+        .replace(/([a-z\d])([A-Z])/g, '$1-$2')
+        .toLowerCase()
+        .replace(/[^a-z0-9_\-]/g, '-');
     }
 
     var $name = $('#project_name'),
