@@ -95,7 +95,14 @@ module_function
     end
 
     def host(*args)
-      @host = args.first if args.any?
+      if args.any?
+        @host = args.first
+
+        if Rails.env.production?
+          Houston::Application.config.action_cable.allowed_request_origins = %w{http https}
+            .map { |protocol| "#{protocol}://#{host}" }
+        end
+      end
       @host ||= nil
     end
 
