@@ -26,6 +26,6 @@ private
 
 end
 
-if Houston.server?
+if Houston.server
   puts "\e[94mRunning as a #{Houston.server.inspect} application\e[0m"
 end
