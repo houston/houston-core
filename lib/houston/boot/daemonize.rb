@@ -1,7 +1,7 @@
 module Houston
 
   def self.daemonize(name)
-    unless Houston.server? or ENV["HOUSTON_DAEMONS"].to_s.split(",").member?(name)
+    unless Houston.running_as_web_server? or ENV["HOUSTON_DAEMONS"].to_s.split(",").member?(name)
       puts "\e[94m[daemon:#{name}] Skipping daemon since we're not running as a server\e[0m" if Rails.env.development?
       Rails.logger.info "\e[94m[daemon:#{name}] Skipping daemon since we're not running as a server\e[0m"
       return

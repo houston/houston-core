@@ -1,6 +1,6 @@
 # This file is used by Rack-based servers to start the application.
 
-$WEB_SERVER = :rack
+$HOUSTON_PROCESS_TYPE = :web_server
 
 # Load and configure Houston
 require_relative "config/main"

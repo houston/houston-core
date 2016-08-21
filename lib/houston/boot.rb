@@ -1,5 +1,5 @@
 require "houston/boot/configuration"
-require "houston/boot/server"
+require "houston/boot/running_as"
 require "houston/boot/daemonize"
 require "houston/boot/extensions"
 require "houston/boot/events"

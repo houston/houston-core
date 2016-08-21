@@ -93,5 +93,12 @@ module Houston
     # Respond with a 400 when requests are malformed
     # http://stackoverflow.com/a/24727310/731300
     config.middleware.insert 0, Rack::UTF8Sanitizer
+
+    # Log the type of process that Houston is running in
+    config.before_initialize do
+      message = "\e[94mHouston is running as a \e[4m#{Houston.running_as.to_s.titleize}\e[0m"
+      puts message if Rails.env.development?
+      Rails.logger.debug message
+    end
   end
 end
