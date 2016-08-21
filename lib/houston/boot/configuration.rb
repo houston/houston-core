@@ -99,6 +99,8 @@ module_function
         @host = args.first
 
         if Rails.env.production?
+          Houston::Application.config.action_cable.mount_path = nil
+          Houston::Application.config.action_cable.url = "wss://#{host}:4200"
           Houston::Application.config.action_cable.allowed_request_origins = %w{http https}
             .map { |protocol| "#{protocol}://#{host}" }
         end
