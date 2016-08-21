@@ -1,7 +1,7 @@
 module Houston
 
   def self.server?
-    !!server
+    server.present? && server != :action_cable
   end
 
   def self.server
