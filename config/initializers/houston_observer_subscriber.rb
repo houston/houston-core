@@ -18,7 +18,7 @@ module Houston
       mutex.synchronize do
         return if subscribed_events.member?(event)
 
-        Rails.logger.info "\e[34m[subscriber] Subscribing to \e[1m#{event}\e[0m"
+        Rails.logger.info "\e[34m[subscriber] Listening to \e[1m#{event}\e[0m"
         subscribed_events << event
         Houston.observer.on event do |params|
           broadcast_event event, params
@@ -30,6 +30,7 @@ module Houston
     attr_reader :mutex, :subscribed_events
 
     def broadcast_event(event, params)
+      Rails.logger.info "\e[34m[subscriber] Broadcasting \e[1m#{event}\e[0m"
       params = MultiJson.load(Houston::Serializer.new.dump(params))
       ActionCable.server.broadcast(EventsChannel.name_of(event), params)
     end
