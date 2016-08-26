@@ -1,11 +1,11 @@
 class TeamsController < ApplicationController
   before_action :find_team, only: [:edit, :update]
-  load_and_authorize_resource
+  load_and_authorize_resource except: [:index]
 
 
   def index
     @title = "Teams"
-    @teams = Team.all
+    @teams = Team.all.select { |team| can?(:read, team) }
   end
 
 

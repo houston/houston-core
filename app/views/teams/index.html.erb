@@ -60,3 +60,7 @@
   </div>
 <% end %>
 </div>
+
+<% if can?(:read, Project) %>
+  <%= link_to "All Projects", projects_path %>
+<% end %>

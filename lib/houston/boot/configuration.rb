@@ -299,6 +299,7 @@ module_function
     def configure_team_abilities(context, teammate)
       teammate.roles.each do |role|
         abilities_block = @roles.fetch(role)
+        context.can :read, teammate.team
         context.instance_exec(teammate.team, &abilities_block)
       end
     end
