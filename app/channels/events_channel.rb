@@ -15,8 +15,6 @@ class EventsChannel < ApplicationCable::Channel
         next
       end
 
-      Houston.observer_subscriber.add event
-
       Rails.logger.info "\e[34m[subscriber] Subscribing to \e[1m#{event}\e[0m"
       stream_from EventsChannel.name_of(event)
     end
