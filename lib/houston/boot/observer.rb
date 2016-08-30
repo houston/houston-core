@@ -50,6 +50,9 @@ module Houston
       observers_of(event).each do |callback|
         callback.call params
       end
+      observers_of(:*).each do |callback|
+        callback.call event, params
+      end
       nil
     end
 
@@ -65,6 +68,7 @@ module Houston
     end
 
     def assert_registered!(event_name)
+      return if event_name == :*
       return if Houston.registered_event?(event_name)
       raise UnregisteredEventError, "#{event_name.inspect} is not a registered event"
     end
@@ -108,10 +112,10 @@ module Houston
         @raise_exceptions
       end
 
-      def call(params)
+      def call(*args)
         Houston.async(invoke_async?) do
           begin
-            @block.call(params)
+            @block.call(*args)
 
           rescue Exception # rescues StandardError by default; but we want to rescue and report all errors
             raise if raise_exceptions?
@@ -127,7 +131,7 @@ module Houston
     end
 
     class CallbackOnce < Callback
-      def call(params)
+      def call(*args)
         observer.off self
         super
       end
