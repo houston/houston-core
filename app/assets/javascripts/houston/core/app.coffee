@@ -2,6 +2,15 @@ window.App =
 
   cable: ActionCable.createConsumer()
 
+  play: (url)->
+    audio = new Audio(url)
+    audio.addEventListener "canplaythrough", ->
+      # Wait 1 second before playing the sound effect
+      # because Chromium on Raspbian will cut off the
+      # first second of any sound effect :-(
+      window.setTimeout (-> audio.play()), 1000
+    audio.load()
+
   meta: (name)->
     $("meta[name=\"#{name}\"]").attr('content')
 
@@ -176,4 +185,4 @@ window.App =
           $form.find('.alert').remove()
           Errors.fromResponse(response).renderToAlert().prependTo $form
 
-@Houston = @App
+window.Houston = window.App
