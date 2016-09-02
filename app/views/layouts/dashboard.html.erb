@@ -44,5 +44,13 @@
     <%= javascript_include_tag "houston/vendor" %>
     <%= javascript_include_tag "houston/dashboard" %>
     <%= yield :javascripts %><%# so that Engines can hook in and add scripts %>
+
+    <!--
+      Play silence continually
+      This keeps the audio channel open over HDMI (at least on
+      our Raspberry PIs). Otherwise the first second of a sound
+      effect is swallowed.
+    -->
+    <audio src="/sounds/silence.mp3" autoplay loop></audio>
   </body>
 </html>

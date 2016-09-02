@@ -4,11 +4,7 @@ window.App =
 
   play: (url)->
     audio = new Audio(url)
-    audio.addEventListener "canplaythrough", ->
-      # Wait 1 second before playing the sound effect
-      # because Chromium on Raspbian will cut off the
-      # first second of any sound effect :-(
-      window.setTimeout (-> audio.play()), 1000
+    audio.addEventListener "canplaythrough", -> audio.play()
     audio.load()
 
   meta: (name)->
