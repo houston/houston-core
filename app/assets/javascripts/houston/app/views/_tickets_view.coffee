@@ -1,7 +1,8 @@
 class @TicketsView extends Backbone.View
   supportsSorting: true
 
-  initialize: ->
+  initialize: (options)->
+    @options = options
     @tickets = @options.tickets
     @project = @options.project
 

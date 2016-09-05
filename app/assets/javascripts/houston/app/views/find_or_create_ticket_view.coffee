@@ -1,7 +1,8 @@
 class @FindOrCreateTicketView extends Backbone.View
   className: 'find-or-create-ticket'
 
-  initialize: ->
+  initialize: (options)->
+    @options = options
     @template = HandlebarsTemplates['tickets/find_or_create']
     @typeaheadTemplate = HandlebarsTemplates['tickets/typeahead']
     @tickets = @options.tickets

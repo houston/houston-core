@@ -1,6 +1,7 @@
 class @ShowSprintView extends Backbone.View
 
-  initialize: ->
+  initialize: (options)->
+    @options = options
     @sprintId = @options.sprintId
     @sprintStart = @options.sprintStart
     @height = @options.height ? 260

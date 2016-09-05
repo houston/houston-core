@@ -23,7 +23,8 @@ class window.NewTicketView extends Backbone.View
     'click #reset_ticket': 'resetNewTicket'
     'click #create_ticket': 'createNewTicket'
 
-  initialize: ->
+  initialize: (options)->
+    @options = options
     @$el = $('#new_ticket_view')
     @$el.html HandlebarsTemplates['new_ticket/form']()
     @project = @options.project

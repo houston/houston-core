@@ -1,7 +1,8 @@
 class @TicketModalView extends Backbone.View
   className: 'modal ticket-modal'
 
-  initialize: ->
+  initialize: (options)->
+    @options = options
     @project = @options.project
     @tickets = @options.tickets
     @ticketNumbers = if @tickets then @tickets.pluck('number') else @options.ticketNumbers

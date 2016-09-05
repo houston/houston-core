@@ -1,7 +1,8 @@
 class @AllTicketsView extends @TicketsView
   template: HandlebarsTemplates['tickets/index']
 
-  initialize: ->
+  initialize: (options)->
+    @options = options
     super
     @allTickets = @tickets
     $('#tickets_filter')

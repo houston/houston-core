@@ -8,7 +8,8 @@ class @EditSprintView extends @ShowSprintView
     'click .complete-task-button': 'toggleTaskCompleted'
     'submit #add_task_form': 'submitAddTaskForm'
 
-  initialize: ->
+  initialize: (options)->
+    @options = options
     super
     @sprintStart = @options.sprintStart
     @sprintEnd = @options.sprintEnd

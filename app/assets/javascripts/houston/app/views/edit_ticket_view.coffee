@@ -1,6 +1,7 @@
 class @EditTicketView extends Backbone.View
 
-  initialize: ->
+  initialize: (options)->
+    @options = options
     @ticket = @options.ticket
 
   render: ->
