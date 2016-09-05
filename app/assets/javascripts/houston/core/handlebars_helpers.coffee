@@ -75,7 +75,7 @@ Handlebars.registerHelper 'linkToCommit', (commit)->
 Handlebars.registerHelper 'userAvatar', (size)->
   user = window.user
   gravatarUrl = "https://www.gravatar.com/avatar/#{MD5(user.get('email').toLowerCase().trim())}?r=g&d=retro&s=#{size * 2}"
-  "<img src=\"#{gravatarUrl}\" width=\"#{size}\" height=\"#{size}\" rel=\"tooltip\" title=\"#{user.get('name')}\" />"
+  "<img src=\"#{gravatarUrl}\" class=\"avatar\" width=\"#{size}\" height=\"#{size}\" rel=\"tooltip\" title=\"#{user.get('name')}\" />"
 
 Handlebars.registerHelper 'avatar', (email, size, title)->
   return "<img class=\"avatar avatar-empty\" width=\"#{size}\" height=\"#{size}\" />" unless email
