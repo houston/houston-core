@@ -6,6 +6,7 @@ class TeamsController < ApplicationController
   def index
     @title = "Teams"
     @teams = Team.all.select { |team| can?(:read, team) }
+    authorize! :read, :teams
   end
 
 

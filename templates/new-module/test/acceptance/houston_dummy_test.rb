@@ -9,8 +9,8 @@ class DummyHoustonTest < ActionDispatch::IntegrationTest
       fill_in "user_password", with: "password"
       click_button "Sign in"
 
-      assert page.has_content?("Projects I Follow"),
-        "Expected to have been able to log in and to see the Timeline view"
+      assert page.has_content?("Teams"),
+        "Expected to have been able to log in and to see the Teams view"
     end
   end
 

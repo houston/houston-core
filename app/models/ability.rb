@@ -19,6 +19,10 @@ class Ability
         can [:read, :create], Team
       end
 
+      # If you're logged in, you can see teams
+
+      can :read, :teams
+
       # Users get abilities based on their role
       # in any teams they are members of
 
