@@ -158,3 +158,9 @@ Handlebars.registerHelper 'renderTaskStatus', (task)->
 
 Handlebars.registerHelper 'coalesce', (value, valueIfBlank)->
   value ? valueIfBlank
+
+Handlebars.registerHelper 'ifMe', (user, block)->
+  if user.id == window.user.id
+    block.fn(@)
+  else
+    block.inverse(@)
