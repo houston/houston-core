@@ -1,0 +1,20 @@
+h6 {
+  text-transform: uppercase;
+  font-weight: 500;
+  color: #ccc;
+}
+
+
+// Bootstrap Overrides
+textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  border-color: #ddd;
+
+  box-sizing: border-box;
+  height: 32px;
+}
+
+select {
+  border-color: #ddd;
+}
