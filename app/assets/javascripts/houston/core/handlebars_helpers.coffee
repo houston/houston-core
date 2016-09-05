@@ -155,3 +155,6 @@ Handlebars.registerHelper 'renderTaskStatus', (task)->
     if task.historical then 'Completed' else '<a class="complete-task-button"></a> Completed'
   else
     if task.historical then 'Open' else '<a class="complete-task-button"></a> Open'
+
+Handlebars.registerHelper 'coalesce', (value, valueIfBlank)->
+  value ? valueIfBlank
