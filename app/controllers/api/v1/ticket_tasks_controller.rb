@@ -13,7 +13,7 @@ module Api
       end
 
       def index
-        authorize! :read, Task
+        authorize! :read, Task.new(project: project)
         render json: ticket.tasks.map { |task| present_task(task) }
       end
 
