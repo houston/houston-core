@@ -82,10 +82,18 @@ module TicketSynchronizer
           end
           if has_legitimate_changes
             ticket.updated_by = project.ticket_tracker_name
-            Ticket.nosync { ticket.save }
+            Ticket.nosync do
+              unless ticket.save
+                Rails.logger.warn "\e[31mFailed to update ticket \e[1m#{project.slug}##{ticket.number}\e[0;31m: #{ticket.errors.full_messages.to_sentence}\e[0m"
+              end
+            end
           end
         else
-          ticket = Ticket.nosync { create(attributes) }
+          ticket = Ticket.nosync do
+            unless create(attributes).persisted?
+              Rails.logger.warn "\e[31mFailed to create ticket \e[1m#{project.slug}##{ticket.number}\e[0;31m: #{ticket.errors.full_messages.to_sentence}\e[0m"
+            end
+          end
         end
 
         # There's no reason why this shouldn't be set,
