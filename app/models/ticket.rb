@@ -25,7 +25,7 @@ class Ticket < ActiveRecord::Base
   validate :must_have_at_least_one_task
   validates_uniqueness_of :number, scope: :project_id, on: :create
 
-  before_validation :ensure_that_ticket_has_a_task, on: :create
+  before_validation :ensure_that_ticket_has_a_task
   before_save :parse_ticket_description, if: :description_changed?
   before_save :find_reporter, if: :find_reporter?
   after_save :propagate_milestone_change, if: :milestone_id_changed?
