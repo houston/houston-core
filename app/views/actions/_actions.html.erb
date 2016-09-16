@@ -6,7 +6,14 @@
     <td class="action-trigger"><%= action.trigger %></td>
     <td class="action-params"><%= format_action_params action.params %></td>
     <td class="action-succeded"><%= format_action_state action %></td>
-    <td class="action-exception"><%= action.error.message if action.error %><td>
+    <td class="action-exception">
+      <% if action.error %>
+        <% unless action.error.type.blank? %>
+          <b><%= action.error.type %></b>:
+        <% end %>
+        <%= action.error.message %>
+      <% end %>
+    <td>
     <td class="table-margin"></td>
   </tr>
 <% end %>

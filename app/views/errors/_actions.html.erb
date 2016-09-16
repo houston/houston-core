@@ -5,7 +5,12 @@
     <td class="action-name"><%= link_to action[:name], action_path(slug: action[:name]) %></td>
     <td class="action-trigger"><%= action.trigger %></td>
     <td class="action-params"><%= format_action_params action.params %></td>
-    <td class="action-error-message"><%= action.error.message %></td>
+    <td class="action-error-message">
+      <% unless action.error.type.blank? %>
+        <b><%= action.error.type %></b>:
+      <% end %>
+      <%= action.error.message %>
+    </td>
     <td class="table-margin"></td>
   </tr>
 <% end %>
