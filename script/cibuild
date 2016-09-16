@@ -7,5 +7,6 @@ bundle check || bundle
 
 # Split these up into separate processes
 # or we get the error `Application has been already initialized.`
+bin/rails db:environment:set RAILS_ENV=test
 bundle exec rake db:test:prepare
 bundle exec rake test
