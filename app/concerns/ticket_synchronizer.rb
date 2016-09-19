@@ -89,10 +89,9 @@ module TicketSynchronizer
             end
           end
         else
-          ticket = Ticket.nosync do
-            unless create(attributes).persisted?
-              Rails.logger.warn "\e[31mFailed to create ticket \e[1m#{project.slug}##{ticket.number}\e[0;31m: #{ticket.errors.full_messages.to_sentence}\e[0m"
-            end
+          ticket = Ticket.nosync { create(attributes) }
+          unless ticket.persisted?
+            Rails.logger.warn "\e[31mFailed to create ticket \e[1m#{project.slug}##{ticket.number}\e[0;31m: #{ticket.errors.full_messages.to_sentence}\e[0m"
           end
         end
 
