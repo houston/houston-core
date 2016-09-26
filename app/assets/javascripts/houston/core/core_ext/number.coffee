@@ -6,6 +6,7 @@ class window.Duration
   fromNow: -> @after(new Date())
   valueOf: ->
     switch @units
+      when 'seconds' then @n * Duration.SECOND
       when 'minutes' then @n * Duration.MINUTE
       when 'hours' then @n * Duration.HOUR
       when 'days' then @n * Duration.DAY
@@ -15,6 +16,7 @@ class window.Duration
 
 Duration::from = Duration::after
 
+Duration.SECOND = 1000
 Duration.MINUTE = 60000
 Duration.HOUR = Duration.MINUTE * 60
 Duration.DAY = Duration.HOUR * 24
@@ -24,6 +26,7 @@ Duration.AVGYEAR = Duration.DAY * 365
 Duration.transformDateBy = (date, n, units)->
   [year, month, day] = [date.getFullYear(), date.getMonth(), date.getDate()]
   switch units
+    when 'seconds' then new Date(date.getTime() + (n * Duration.SECOND))
     when 'minutes' then new Date(date.getTime() + (n * Duration.MINUTE))
     when 'hours' then new Date(date.getTime() + (n * Duration.HOUR))
     when 'days' then new Date(year, month, (day + n))
@@ -34,6 +37,7 @@ Duration.transformDateBy = (date, n, units)->
       new Date(year, month, Math.min(day, lastDayOfMonth))
     when 'years' then new Date(year + n, month, day)
 
+Number::seconds  = ()-> new Duration(Number(@), 'seconds')
 Number::minutes  = ()-> new Duration(Number(@), 'minutes')
 Number::hours    = ()-> new Duration(Number(@), 'hours')
 Number::days     = ()-> new Duration(Number(@), 'days')
