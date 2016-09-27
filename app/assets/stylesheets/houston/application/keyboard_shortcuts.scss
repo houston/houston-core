@@ -1,31 +1,29 @@
 .keyboard-shortcuts {
+  margin: 1em;
+  white-space: nowrap;
 
-  dt {
-    float: left;
-    clear: left;
-    width: 88px;
-    text-align: right;
-    padding: 4px 0;
+  th {
+    font-weight: normal;
+    text-align: left;
   }
+  td {
+    padding-left: 1em;
+    line-height: 22px;
+  }
+}
 
-  dd {
-    margin-left: 100px;
-    padding: 4px 0;
-    line-height: 24px;
-  }
-
-  .key {
-    display: inline-block;
-    min-width: 20px;
-    padding: 4px 2px;
-    font-family: Monaco, "Liberation Mono", Courier, monospace;
-    font-size: 11px;
-    line-height: 1;
-    color: #eee;
-    text-align: center;
-    text-shadow: 0 1px 0 rgba(0,0,0,0.5);
-    background-color: #333;
-    border-radius: 3px;
-    box-shadow: inset 0 -2px 0 #111;
-  }
+kbd {
+  font-family: Monaco, "Liberation Mono", Courier, monospace;
+  font-size: 10px;
+  line-height: 20px;
+  display: inline-block;
+  min-width: 20px;
+  text-align: center;
+  border-radius: 3px;
+  vertical-align: middle;
+  padding: 0 5px;
+  color: white;
+  background: #555;
+  box-shadow: inset -1px -2px 0 #000,1px 1px 1px rgba(0,0,0,0.2);
+  margin-right: 2px;
 }

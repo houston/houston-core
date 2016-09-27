@@ -164,3 +164,15 @@ Handlebars.registerHelper 'ifMe', (user, block)->
     block.fn(@)
   else
     block.inverse(@)
+
+Handlebars.registerHelper 'renderKeyCombos', (keys)->
+  _.map(keys, Handlebars.helpers.renderKeyCombo).join('<i> or </i>')
+
+Handlebars.registerHelper 'renderKeyCombo', (key)->
+  _.map(key.split(' '), (chord) ->
+    _.map(chord.split('+'), (key) ->
+      if key is "mod"
+        key = if /Mac|iPod|iPhone|iPad/.test(navigator.platform) then "cmd" else "ctrl"
+      "<kbd>#{inflect.capitalize key}</kbd>"
+    ).join('')
+  ).join('&nbsp;&nbsp;&nbsp;')

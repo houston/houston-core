@@ -2,11 +2,10 @@ class @KeyboardShortcutsModal
 
   constructor: ->
     @template = HandlebarsTemplates['keyboard_shortcuts']
-    @shortcuts = [
-        keys: ['?']
-        name: 'Keyboard shortcuts'
-    ]
 
   show: ->
-    $modal = $(@template(shortcuts: @shortcuts)).modal()
+    $modal = $(@template(shortcuts: Houston.shortcuts.toJSON())).modal()
     $modal.on 'hidden', -> $modal.remove()
+
+KeyboardShortcutsModal.show = ->
+  new KeyboardShortcutsModal().show()

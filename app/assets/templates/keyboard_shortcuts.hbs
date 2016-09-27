@@ -4,11 +4,13 @@
     <h3>Keyboard Shortcuts</h3>
   </div>
   <div class="modal-body">
-    <dl class="keyboard-shortcuts">
+    <table class="keyboard-shortcuts">
       {{#shortcuts}}
-        <dt>{{#keys}}<span class="key">{{this}}</span> {{/keys}}</dt>
-        <dd>{{name}}</dd>
+        <tr>
+          <th>{{{renderKeyCombos keys}}}</th>
+          <td>{{description}}</td>
+        </tr>
       {{/shortcuts}}
-    </dl>
+    </table>
   </div>
 </div>

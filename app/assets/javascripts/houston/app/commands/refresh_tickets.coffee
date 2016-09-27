@@ -21,16 +21,3 @@ $ ->
   $button.click (e)->
     e.preventDefault()
     refreshTickets()
-
-
-  $('#new_ticket_button').click (e)->
-    e.preventDefault()
-    App.showNewTicket()
-
-
-  showKeyboardShortcuts = ->
-    new KeyboardShortcutsModal().show()
-  Mousetrap.bind '?', ->  $('#keyboard_shortcuts_button').click()
-  $('#keyboard_shortcuts_button').click (e)->
-    e.preventDefault()
-    showKeyboardShortcuts()
