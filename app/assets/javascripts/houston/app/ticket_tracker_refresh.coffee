@@ -16,32 +16,20 @@ $ ->
     xhr.error =>
       alertify.error "Your project could not be synced with #{$button.attr('data-tracker')}"
 
-
-  showKeyboardShortcuts = ->
-    new KeyboardShortcutsModal().show()
-
-
   $button = $('#sync_tickets_button')
   $button.find('[data-toggle="tooltip"]').tooltip()
-
-  Mousetrap.bind 'R t', -> $button.click()
   $button.click (e)->
     e.preventDefault()
     refreshTickets()
 
 
-  Mousetrap.bind 'n t', -> $('#new_ticket_button').click()
   $('#new_ticket_button').click (e)->
     e.preventDefault()
     App.showNewTicket()
 
 
-
-  Mousetrap.bind 'g p', -> window.location = '/projects'
-  Mousetrap.bind 'g n t', -> window.location = '/tickets/new'
-  Mousetrap.bind 'g u', -> window.location = '/users'
-
-
+  showKeyboardShortcuts = ->
+    new KeyboardShortcutsModal().show()
   Mousetrap.bind '?', ->  $('#keyboard_shortcuts_button').click()
   $('#keyboard_shortcuts_button').click (e)->
     e.preventDefault()
