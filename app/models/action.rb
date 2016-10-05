@@ -33,6 +33,7 @@ class Action < ActiveRecord::Base
            Rugged::NetworkError,
            Unfuddle::ConnectionError,
            Octokit::BadGateway,
+           Octokit::ServerError,
            Octokit::InternalServerError,
            Net::OpenTimeout,
            exceptions_wrapping(PG::ConnectionBad)
