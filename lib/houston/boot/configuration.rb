@@ -81,9 +81,18 @@ module_function
         # ActionCable sets the default path for its config file
         # later on during initialization. We need to override the
         # path just before ActionCable is initialized.
+        cable_config = Houston.root.join("config/cable.yml")
         ActiveSupport.on_load(:action_cable) do
-          Houston::Application.paths["config/cable"] = Houston.root.join("config/cable.yml")
+          Houston::Application.paths["config/cable"] = cable_config
+
+          # Make sure that we've loaded the Instance's config file
+          # c.f. https://github.com/rails/rails/blob/v5.0.0.1/actioncable/lib/action_cable/engine.rb#L31
+          ActionCable.server.config.cable = Rails.application.config_for(cable_config).with_indifferent_access
         end
+
+        # Make sure that we've loaded the Instance's config file
+        # c.f. https://github.com/rails/rails/blob/v5.0.0.1/actioncable/lib/action_cable/engine.rb#L31
+        ActionCable.server.config.cable = Rails.application.config_for(cable_config).with_indifferent_access
       end
 
       @root
