@@ -1,8 +1,19 @@
 class FullTicketPresenter < TicketPresenter
+  attr_reader :ability
+
+  delegate :can?, to: :ability
+
+  def initialize(ability, tickets)
+    @ability = ability
+    super tickets
+  end
 
   def ticket_to_json(ticket)
     reporter = ticket.reporter
     super.merge(
+      permissions: {
+        update: can?(:update, ticket),
+        destroy: can?(:destroy, ticket) },
       description: ticket.description,
       changes: present_versions(ticket.tasks.versions.includes(:versioned) + ticket.versions),
       tasks: ticket.tasks.map { |task| task.ticket = ticket; {

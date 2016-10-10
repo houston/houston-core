@@ -7,7 +7,6 @@ class @TicketModalView extends Backbone.View
     @tickets = @options.tickets
     @ticketNumbers = if @tickets then @tickets.pluck('number') else @options.ticketNumbers
     @onClose = @options.onClose
-    @edit = @options.edit ? false
     @renderTaskView = @options.taskView
     @template = HandlebarsTemplates['tickets/modal']
     @renderTicket = HandlebarsTemplates['tickets/show']
@@ -58,10 +57,9 @@ class @TicketModalView extends Backbone.View
     @$el.find('.ticket-body').toggleClass 'show-task-frame', !!@taskView
     @taskView?.render()
 
-    console.log 'edit', @edit, document.getElementById('ticket_view')
     @editView = new EditTicketView(
       el: document.getElementById('ticket_view'),
-      ticket: @ticket).render() if @edit
+      ticket: @ticket).render() if @ticket.get('permissions').update
 
     $modal.on 'hidden', (e)->
       if $modal[0] == e.target

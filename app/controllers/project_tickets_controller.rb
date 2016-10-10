@@ -46,7 +46,7 @@ class ProjectTicketsController < ApplicationController
 
 
   def show
-    return render json: FullTicketPresenter.new(ticket) if request.format.json?
+    return render json: FullTicketPresenter.new(current_ability, ticket) if request.format.json?
     return render layout: false if request.xhr?
     render
   end
