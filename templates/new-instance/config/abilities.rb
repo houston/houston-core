@@ -20,7 +20,6 @@ Houston.config do
     # Developers can see commits and can manage
     # tickets, pull requests, and alerts
     can :read, Commit, project_id: team.project_ids
-    can :update_tickets, Milestone, project_id: team.project_ids
     can :manage, Task, project_id: team.project_ids
     can :create, Ticket, project_id: team.project_ids
     can :close, Ticket, project_id: team.project_ids
