@@ -112,7 +112,7 @@ class Project < ActiveRecord::Base
 
     class_eval <<-RUBY, __FILE__, __LINE__ + 1
     def #{method_name}
-      return TeamUser.none if team.nil?
+      return User.none if team.nil?
       team.#{method_name}
     end
     RUBY
