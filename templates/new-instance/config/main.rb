@@ -28,6 +28,9 @@ Houston.config do
   # This is the email address for emails send from Houston
   mailer_sender "houston@my-company.com"
 
+  # Range for password length. Default is 8..128.
+  # password_length 8..128
+
   # This is the passphrase you used when generating config/keypair.pem
   # Houston will use the keypair to encrypt and decrypt sensitive data
   # To generate a new keypair.pem, execute these commands:

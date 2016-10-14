@@ -140,6 +140,11 @@ module_function
       end.to_s
     end
 
+    def password_length(*args)
+      @password_length = args.first if args.any?
+      @password_length ||= 8..128
+    end
+
     def passphrase(*args)
       @passphrase = args.first if args.any?
       @passphrase ||= nil
