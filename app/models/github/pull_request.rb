@@ -263,7 +263,9 @@ module Github
     def associate_commits_with_self
       return unless commits_changes_before_commit?
 
-      Houston.try({max_tries: 2, base: 0}, ActiveRecord::RecordNotUnique) do
+      Houston.try({max_tries: 2, base: 0},
+          exceptions_wrapping(PG::LockNotAvailable),
+          ActiveRecord::RecordNotUnique) do
         self.commits = project.commits.between(base_sha, head_sha)
       end
 

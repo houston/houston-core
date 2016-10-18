@@ -36,7 +36,8 @@ class Action < ActiveRecord::Base
            Octokit::ServerError,
            Octokit::InternalServerError,
            Net::OpenTimeout,
-           exceptions_wrapping(PG::ConnectionBad)
+           exceptions_wrapping(PG::ConnectionBad),
+           exceptions_wrapping(PG::LockNotAvailable)
 
       # Note that the action failed, but do not report _these_ exceptions
       exception = $!
