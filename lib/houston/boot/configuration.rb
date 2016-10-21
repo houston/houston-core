@@ -24,11 +24,11 @@ module_function
 
     def initialize
       @root = Rails.root
-      @roles = {}
-      @roles["Team Owner"] = Proc.new do |team|
+      @roles = Hash.new { |hash, key| hash[key] = [] }
+      @roles["Team Owner"].push(Proc.new do |team|
         can :manage, team
         can :manage, Project, team_id: team.id
-      end
+      end)
       @modules = []
       @gems = []
       @ticket_types = {}
@@ -213,7 +213,7 @@ module_function
     end
 
     def role(role_name, &abilities_block)
-      @roles[role_name] = abilities_block
+      @roles[role_name].push abilities_block
     end
 
     def ticket_types(*args)
@@ -312,9 +312,10 @@ module_function
 
     def configure_team_abilities(context, teammate)
       teammate.roles.each do |role|
-        abilities_block = @roles.fetch(role)
         context.can :read, teammate.team
-        context.instance_exec(teammate.team, &abilities_block)
+        @roles.fetch(role).each do |abilities_block|
+          context.instance_exec(teammate.team, &abilities_block)
+        end
       end
     end
 
