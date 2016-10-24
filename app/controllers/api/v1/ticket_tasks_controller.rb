@@ -18,7 +18,7 @@ module Api
       end
 
       def create
-        task = ticket.tasks.build params.slice(:description, :effort)
+        task = ticket.tasks.build params.slice(:description, :effort).merge(project: project)
         authorize! :create, task
 
         task.updated_by = current_user
