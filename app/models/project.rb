@@ -1,7 +1,6 @@
 class Project < ActiveRecord::Base
   extend ProjectAdapter
   include Retirement
-  include FeatureState
   include Houston::Props
 
   belongs_to :team

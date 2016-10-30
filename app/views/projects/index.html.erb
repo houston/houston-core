@@ -12,7 +12,6 @@
       <thead>
         <tr>
           <td class="table-margin"></td>
-          <td class="project-feature-error"></td>
           <th class="project-title sort-desc">Title</th>
           <th class="project-team">Team</th>
 <% if current_user.developer? %>
@@ -32,15 +31,6 @@
         <% @projects.each do |project| %>
           <tr id="project_<%= project.id %>">
             <td class="table-margin"></td>
-
-            <td class="project-feature-error">
-              <% broken_features = project.broken_features(%w{
-                  publish_status_to_github
-                  publish_coverage_to_code_climate}) %>
-              <% if broken_features.any? %>
-                <i class="fa fa-bolt" rel="tooltip" data-tooltip-placement="top" title="<%= broken_features.map(&:titleize).to_sentence %> <%= broken_features.one? ? "is" : "are" %> not working"></i>
-              <% end %>
-            </td>
 
             <td class="project-title">
               <% if project.color %>
