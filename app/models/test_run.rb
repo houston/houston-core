@@ -32,6 +32,17 @@ class TestRun < ActiveRecord::Base
       where(["sha LIKE ?", "#{sha}%"]).limit(1).first
     end
 
+    def find_or_create_by_sha(sha)
+      find_by_sha(sha) || begin
+        test_run = build(sha: sha)
+        yield test_run if block_given?
+        test_run.tabp(&:save!)
+      end
+    rescue Houston::Adapters::VersionControl::CommitNotFound
+      nil
+    end
+
+
     def excluding(*test_runs_or_ids)
       ids = test_runs_or_ids.flatten.map { |test_run_or_id| test_run_or_id.respond_to?(:id) ? test_run_or_id.id : test_run_or_id }
       where arel_table[:id].not_in(ids)
@@ -227,6 +238,8 @@ class TestRun < ActiveRecord::Base
   end
 
   def completed!(results_url)
+    raise ArgumentError, "#{project.ci_server_name} did not supply 'results_url' when it triggered the post_build hook" if results_url.blank?
+
     self.completed_at = Time.now unless completed?
     self.results_url = results_url
     save!
@@ -391,6 +404,24 @@ class TestRun < ActiveRecord::Base
       commit.test_run.compare_results! if commit.test_run
     end
   end
+
+
+
+  def notify_of_invalid_configuration
+    begin
+      yield
+    rescue Houston::Adapters::CIServer::Error
+      message = "#{project.ci_server_name} is not appropriately configured to build #{project.name}."
+      ProjectNotification.ci_configuration_error(self, message, additional_info: $!.message).deliver!
+    end
+  end
+
+  def publish_status_to_github
+    return unless project.repo.respond_to? :commit_status_url
+    Github::CommitStatusReport.publish!(self)
+  end
+
+
 
 private
 

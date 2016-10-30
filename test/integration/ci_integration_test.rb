@@ -1,5 +1,6 @@
 require "test_helper"
 require "support/houston/adapters/ci_server/mock_adapter"
+require_relative "../../templates/new-instance/config/events/tests/run_tests_on_post_receive"
 
 
 # Tests config/initializers/run_tests_on_post_receive.rb
@@ -12,7 +13,6 @@ class CIIntegrationTest < ActionDispatch::IntegrationTest
       @project = create(:project, ci_server_name: "Mock")
 
       stub.instance_of(PostReceivePayload).commit { "63cd1ef" }
-      stub.instance_of(TestRun).validate! {}
 
       assert_difference "TestRun.count", +1 do
         post "/projects/#{project.slug}/hooks/post_receive"

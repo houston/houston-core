@@ -7,9 +7,11 @@ module Houston
 
   class Triggers < SimpleDelegator
     attr_reader :config
+    attr_accessor :async
 
     def initialize(config)
       @config = config
+      @async = true
       super ThreadSafe::Array.new
     end
 
@@ -57,7 +59,8 @@ module Houston
     end
 
     def call(params={})
-      config.actions.run action, self.params.merge(params.to_h), trigger: to_s
+      options = { trigger: to_s, async: triggers.async }
+      config.actions.run action, self.params.merge(params.to_h), options
     end
 
     def to_s

@@ -23,19 +23,19 @@ class TriggersTest < ActiveSupport::TestCase
 
   should "allow you to invoke an action without params" do
     trigger = triggers.at("5:30pm", "test-action")
-    mock(config.actions).run("test-action", {}, trigger: trigger.to_s)
+    mock(config.actions).run("test-action", {}, hash_including(trigger: trigger.to_s))
     trigger.call
   end
 
   should "allow triggers to pass params to an action" do
     trigger = triggers.at("5:30pm", "test-action", trigger_param: 1)
-    mock(config.actions).run("test-action", {trigger_param: 1}, {trigger: trigger.to_s})
+    mock(config.actions).run("test-action", {trigger_param: 1}, hash_including(trigger: trigger.to_s))
     trigger.call
   end
 
   should "allow callbacks to override triggers' params" do
     trigger = triggers.at("5:30pm", "test-action", trigger_param: 1)
-    mock(config.actions).run("test-action", {trigger_param: 2}, {trigger: trigger.to_s})
+    mock(config.actions).run("test-action", {trigger_param: 2}, hash_including(trigger: trigger.to_s))
     trigger.call(trigger_param: 2)
   end
 
