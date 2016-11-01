@@ -24,7 +24,7 @@ module Houston
   end
 
   def self._normalize_faraday_env(env)
-    env.except(:response).tap do |env|
+    env.to_h.except(:response).tap do |env|
       env[:url] = env[:url].to_s
     end
   end
