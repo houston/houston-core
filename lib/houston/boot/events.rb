@@ -21,7 +21,9 @@ Houston.register_events {{
   "github:pull:updated"             => params("pull_request", "changes").desc("A pull request was updated"),
   "github:pull:closed"              => params("pull_request").desc("A pull request was closed"),
   "github:pull:reopened"            => params("pull_request").desc("A pull request was reopened"),
-  "github:pull:synchronize"         => params("pull_request").desc("Commits where pushed to a pull request"),
+  "github:pull:synchronize"         => params("pull_request").desc("Commits were pushed to a pull request"),
+  "github:pull:reviewed"            => params("pull_request", "review").desc("A pull request was reviewed"),
+  "github:pull:reviewed:{state}"    => params("pull_request", "review").desc("A pull request was reviewed and {state}"),
 
   "hooks:{type}"                    => params("params").desc("/hooks/{type} was invoked"),
   "hooks:project:{type}"            => params("project", "params").desc("/hooks/project/:slug/{type} was invoked"),

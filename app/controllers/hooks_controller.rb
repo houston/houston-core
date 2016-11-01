@@ -7,7 +7,8 @@ class HooksController < ApplicationController
     "push" => Github::PostReceiveEvent,
     "commit_comment" => Github::CommitCommentEvent,
     "issue_comment" => Github::IssueCommentEvent,
-    "pull_request_review_comment" => Github::DiffCommentEvent
+    "pull_request_review_comment" => Github::DiffCommentEvent,
+    "pull_request_review" => Github::PullRequestReviewEvent
   }.freeze
 
   def github
