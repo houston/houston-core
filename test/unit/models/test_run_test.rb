@@ -115,7 +115,7 @@ class TestRunTest < ActiveSupport::TestCase
 
 
   test "#coverage_detail returns SourceFileCoverage objects for each tested file" do
-    project = Project.new(name: "Test", slug: "test", code_climate_repo_token: "repo_token")
+    project = Project.new(name: "Test", slug: "test")
     tr = TestRun.new(project: project, sha: "bd3e9e2", result: "pass", completed_at: Time.now, coverage: [
       { filename: "lib/test1.rb", coverage: [1,nil,nil,1,1,nil,1] },
       { filename: "lib/test2.rb", coverage: [1,nil,1,0,0,0,0,1,nil,1] }
