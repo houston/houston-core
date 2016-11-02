@@ -11,7 +11,7 @@ class TestRun < ActiveRecord::Base
   end
 
   validates :project, presence: true
-  validates :sha, presence: true, uniqueness: true
+  validates :sha, presence: true
   validates :results_url, :presence => true, :if => :completed?
   validates :result, inclusion: {in: %w{aborted pass fail error}, allow_nil: true, message: "\"%{value}\" is unknown. It must be pass, fail, error, or aborted"}
   validates_associated :test_results
