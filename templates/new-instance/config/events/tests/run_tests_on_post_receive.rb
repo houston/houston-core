@@ -38,17 +38,4 @@ Houston.config do
   #   8. Houston publishes results to GitHub:
   #      POST /repos/houston/houston/statuses/:sha
   on "test_run:complete" => "test-run:publish-status-to-github"
-
-  #   9. Houston publishes results to Code Climate.
-  on "test_run:complete" => "test-run:publish-coverage-to-codeclimate" do
-    begin
-      return if test_run.project.code_climate_repo_token.blank?
-      CodeClimate::CoverageReport.publish!(test_run)
-    rescue Houston::Adapters::VersionControl::CommitNotFound
-      # Got a bad Test Run, nothing we can do about it.
-    rescue CodeClimate::ServerError
-      # Error on Code Climate's end
-    end
-  end
-
 end

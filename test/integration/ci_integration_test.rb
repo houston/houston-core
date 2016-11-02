@@ -153,19 +153,6 @@ class CIIntegrationTest < ActionDispatch::IntegrationTest
         Houston.observer.fire "test_run:complete", test_run: test_run
       end
     end
-
-
-    should "publish test results to CodeClimate" do
-      @project = create(:project, code_climate_repo_token: "repo_token")
-      test_run = TestRun.new(project: project, sha: "bd3e9e2", result: "pass", completed_at: Time.now, coverage: [
-        { filename: "lib/test1.rb", coverage: [1,nil,nil,1,1,nil,1] },
-        { filename: "lib/test2.rb", coverage: [1,nil,1,0,0,0,0,1,nil,1] }
-      ])
-
-      mock(CodeClimate::CoverageReport).publish!(test_run)
-
-      Houston.observer.fire "test_run:complete", test_run: test_run
-    end
   end
 
 
