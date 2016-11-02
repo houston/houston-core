@@ -33,19 +33,28 @@ class HooksControllerTest < ActionController::TestCase
     end
 
     should "add a label to GitHub::PullRequest when the action is \"labeled\"" do
-      pr = Object.new
+      pr = Github::PullRequest.new(id: 1, json_labels: [])
       stub(Github::PullRequest).upsert! { pr }
       stub(pr).persisted? { true }
-      mock(pr).add_label!({"name" => "new-label", "color" => "#445566"}, as: "baxterthehacker")
+      mock.instance_of(Github::PullRequestEvent).replace_labels!(1, [{"name" => "new-label", "color" => "#445566"}], as: "baxterthehacker")
+      post :github, params: { hook: github_pull_request_event_payload(action: "labeled",
+        label: {"name" => "new-label", "color" => "#445566"}) }
+    end
+
+    should "not add a label twice to GitHub::PullRequest when the action is \"labeled\"" do
+      pr = Github::PullRequest.new(id: 1, json_labels: [{"name" => "new-label", "color" => "#333"}])
+      stub(Github::PullRequest).upsert! { pr }
+      stub(pr).persisted? { true }
+      mock.instance_of(Github::PullRequestEvent).replace_labels!(1, [{"name" => "new-label", "color" => "#445566"}], as: "baxterthehacker")
       post :github, params: { hook: github_pull_request_event_payload(action: "labeled",
         label: {"name" => "new-label", "color" => "#445566"}) }
     end
 
     should "remove a label to GitHub::PullRequest when the action is \"unlabeled\"" do
-      pr = Object.new
+      pr = Github::PullRequest.new(id: 1, json_labels: [{"name" => "removed-label", "color" => "#445566"}])
       stub(Github::PullRequest).upsert! { pr }
       stub(pr).persisted? { true }
-      mock(pr).remove_label!({"name" => "removed-label", "color" => "#445566"}, as: "baxterthehacker")
+      mock.instance_of(Github::PullRequestEvent).replace_labels!(1, [], as: "baxterthehacker")
       post :github, params: { hook: github_pull_request_event_payload(action: "unlabeled",
         label: {"name" => "removed-label", "color" => "#445566"}) }
     end

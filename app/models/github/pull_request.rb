@@ -187,26 +187,6 @@ module Github
       json_labels
     end
 
-    def add_label!(label, options={})
-      label = label.to_h.stringify_keys.pick("name", "color")
-
-      transaction do
-        pr = self.class.lock.find id
-        new_labels = pr.json_labels.reject { |l| l["name"] == label["name"] } + [label]
-        pr.update_attributes! json_labels: new_labels, actor: options[:as]
-      end
-    end
-
-    def remove_label!(label, options={})
-      label = label.to_h.stringify_keys.pick("name", "color")
-
-      transaction do
-        pr = self.class.lock.find id
-        new_labels = pr.json_labels.reject { |l| l["name"] == label["name"] }
-        pr.update_attributes! json_labels: new_labels, actor: options[:as]
-      end
-    end
-
 
 
     def to_s

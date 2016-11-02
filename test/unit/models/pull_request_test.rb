@@ -154,42 +154,4 @@ class PullRequestTest < ActiveSupport::TestCase
   end
 
 
-  context "Given a Pull Request" do
-    setup do
-      @project = Project.create!(
-        name: "Test",
-        slug: "test",
-        version_control_name: "Git",
-        props: {"git.location" => Rails.root.join("test", "data", "bare_repo.git").to_s})
-
-      @pull_request = Github::PullRequest.create!(
-        project: @project,
-        number: 1,
-        title: "Example Pull Request",
-        repo: "test",
-        url: "https://github.com/houston",
-        username: "boblail",
-        base_ref: "master",
-        base_sha: "e0e4580f44317a084dd5142fef6b4144a4394819",
-        head_ref: "divergent-branch",
-        head_sha: "baa3ef218a40f23fe542f98d8b8e60a2e8e0bff0",
-        labels: [{"name" => "old-label"}])
-    end
-
-    context "#add_label!" do
-      should "add a label to the pull request" do
-        @pull_request.add_label!("name" => "new-label")
-        assert_equal [{"name" => "old-label"}, {"name" => "new-label"}], @pull_request.reload.labels
-      end
-    end
-
-    context "#remove_label!" do
-      should "remove a label from the pull request" do
-        @pull_request.remove_label!("name" => "old-label")
-        assert_equal [], @pull_request.reload.labels
-      end
-    end
-  end
-
-
 end

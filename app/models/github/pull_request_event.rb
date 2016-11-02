@@ -28,9 +28,18 @@ module Github
       # project that exists in Houston.
       return unless pr && pr.persisted?
 
-      case action
-      when "labeled" then pr.add_label! payload["label"], as: actor
-      when "unlabeled" then pr.remove_label! payload["label"], as: actor
+      if action == "labeled" || action == "unlabeled"
+        label = payload["label"].to_h.stringify_keys.pick("name", "color")
+        new_labels = pr.json_labels.reject { |l| l["name"] == label["name"] }
+        new_labels << label if action == "labeled"
+        replace_labels! pr.id, new_labels, as: actor
+      end
+    end
+
+    def replace_labels!(id, new_labels, as: nil)
+      PullRequest.transaction do
+        pull_request = PullRequest.lock.find id
+        pull_request.update_attributes! json_labels: new_labels, actor: actor
       end
     end
 
