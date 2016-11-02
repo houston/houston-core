@@ -187,6 +187,16 @@ module Github
       json_labels
     end
 
+    def add_labels!(*labels)
+      project.repo.add_labels_to(labels.flatten, number)
+    end
+    alias :add_label! :add_labels!
+
+    def remove_labels!(*labels)
+      project.repo.remove_labels_from(labels.flatten, number)
+    end
+    alias :remove_label! :remove_labels!
+
 
 
     def to_s
