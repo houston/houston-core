@@ -9,6 +9,10 @@ module Houston
       model = record.class
       normal_attributes = record.attributes.each_with_object({}) do |(attribute, value), attributes|
         column = model.column_for_attribute(attribute)
+
+        # Don't serialize the attribute if the column was deleted
+        next if column.is_a?(ActiveRecord::ConnectionAdapters::NullColumn)
+
         attributes[attribute] = model.connection.type_cast_from_column(column, value)
       end
       { "class" => model.name, "attributes" => normal_attributes }
