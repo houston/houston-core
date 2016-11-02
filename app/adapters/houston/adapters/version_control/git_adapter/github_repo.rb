@@ -72,10 +72,13 @@ module Houston
           end
           alias :add_label_to :add_labels_to
 
-          def remove_label_from(label, issue_number)
+          def remove_labels_from(labels, issue_number)
             issue_number = issue_number.number if issue_number.respond_to? :number
-            Houston.github.remove_label repo_name, issue_number, label
+            Array(labels).each do |label|
+              Houston.github.remove_label repo_name, issue_number, label
+            end
           end
+          alias :remove_label_from :remove_labels_from
 
         end
       end
