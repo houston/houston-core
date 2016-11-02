@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
   after_action :save_current_project
 
 
-  delegate :mobile?, to: :browser
+  delegate :mobile?, to: "browser.device"
   helper_method :mobile?, :unfurling?
 
 

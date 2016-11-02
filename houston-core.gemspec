@@ -21,12 +21,12 @@ Gem::Specification.new do |spec|
 
   # For Houston as a Web Application
   spec.add_dependency "rails", "~> 5.0.0"
-  spec.add_dependency "pg", "~> 0.18.3"
+  spec.add_dependency "pg", "~> 0.19.0"
   # --------------------------------
   spec.add_dependency "activerecord-import"
   spec.add_dependency "activerecord-pluck_in_batches", "~> 0.2.0"
   spec.add_dependency "addressable", "~> 2.3.8"
-  spec.add_dependency "browser", "~> 1.1.0"
+  spec.add_dependency "browser", "~> 2.3.0"
   spec.add_dependency "cancan", "~> 1.6.10" # cancancan
   spec.add_dependency "default_value_for", "3.0.2"
   spec.add_dependency "devise" #, "~> 3.5.0"
@@ -41,7 +41,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "neat-rails"
   spec.add_dependency "nokogiri"
   spec.add_dependency "oauth2"
-  spec.add_dependency "oj", "~> 2.13"
+  spec.add_dependency "oj", "~> 2.17"
   spec.add_dependency "openxml-xlsx", ">= 0.2.0"
   spec.add_dependency "pg_search", "~> 1.0.5"
   spec.add_dependency "premailer", "~> 1.8.6"
@@ -86,7 +86,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "rugged", "~> 0.24.0" # for speaking to Git
 
   # For integration with GitHub
-  spec.add_dependency "octokit", "~> 4.3.0"
+  spec.add_dependency "octokit", "~> 4.4.1"
 
   # Implements Houston's TicketTracker::UnfuddleAdapter (TODO: extract)
   spec.add_dependency "boblail-unfuddle"
