@@ -75,7 +75,10 @@ module Houston
           def remove_labels_from(labels, issue_number)
             issue_number = issue_number.number if issue_number.respond_to? :number
             Array(labels).each do |label|
-              Houston.github.remove_label repo_name, issue_number, label
+              begin
+                Houston.github.remove_label repo_name, issue_number, label
+              rescue Octokit::NotFound
+              end
             end
           end
           alias :remove_label_from :remove_labels_from
