@@ -444,6 +444,7 @@ module_function
       action
     end
 
+    # DEPRECATED
     def at(*args, &block)
       time, action_name = extract_trigger_and_action!(args)
       action = assert_action! action_name, &block
@@ -463,7 +464,15 @@ module_function
       end
       # -------------------------------------------------------------- #
 
-      triggers.at time, action_name
+      # Houston.config.at is deprecated
+      # -------------------------------------------------------------- #
+      value = time
+      wdays, time = value.is_a?(Array) ? value : [:day, value]
+      interval = "#{wdays} at #{time}"
+      Houston.deprecation_notice "Houston.config.at(#{value.inspect}) is deprecated; use Houston.config.every(#{interval.inspect}) instead"
+      # -------------------------------------------------------------- #
+
+      triggers.every interval, action_name
       action
     end
 

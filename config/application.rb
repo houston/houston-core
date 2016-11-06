@@ -37,7 +37,6 @@ require "simplecov"
 require "strongbox"
 require "thread_safe"
 require "vestal_versions"
-require "whenever"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.

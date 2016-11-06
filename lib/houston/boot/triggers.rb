@@ -16,10 +16,6 @@ module Houston
     end
 
 
-    def at(value, action, params={})
-      push build(:at, value, action, params)
-    end
-
     def every(value, action, params={})
       push build(:every, value, action, params)
     end
@@ -51,7 +47,6 @@ module Houston
 
     def register!
       case method_name
-      when :at then config.timer.at(value, &method(:call))
       when :every then config.timer.every(value, &method(:call))
       when :on then config.observer.on(value, &method(:call))
       else raise NotImplementedError, "Unrecognized method name: #{method_name.inspect}"

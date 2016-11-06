@@ -3,11 +3,11 @@ require "test_helper"
 class PersistentTriggerTest < ActiveSupport::TestCase
 
 
-  context ".at" do
+  context ".every" do
     should "define a new trigger" do
-      trigger = PersistentTrigger.at("2:30pm", "test-action", example: 5)
-      assert_equal :at, trigger.type
-      assert_equal "2:30pm", trigger.value
+      trigger = PersistentTrigger.every("day at 2:30pm", "test-action", example: 5)
+      assert_equal :every, trigger.type
+      assert_equal "day at 2:30pm", trigger.value
       assert_equal "test-action", trigger.action
       assert_equal({example: 5}, trigger.params)
     end
@@ -22,9 +22,6 @@ class PersistentTriggerTest < ActiveSupport::TestCase
 
     should "require the type to be one of :at, :every, or :on" do
       trigger = PersistentTrigger.new
-
-      trigger.type = :at
-      refute trigger.tap(&:validate).errors[:type].any?
 
       trigger.type = :every
       refute trigger.tap(&:validate).errors[:type].any?
@@ -49,13 +46,13 @@ class PersistentTriggerTest < ActiveSupport::TestCase
 
     should "add the trigger to the database" do
       assert_difference "PersistentTrigger.count", +1 do
-        PersistentTrigger.at("1:30pm", "test-action", example: 5).save!
+        PersistentTrigger.every("day at 1:30pm", "test-action", example: 5).save!
       end
     end
 
     should "register the trigger" do
       assert_difference "Houston.config.triggers.count", +1 do
-        PersistentTrigger.at("2:30pm", "test-action", example: 5).save!
+        PersistentTrigger.every("day at 2:30pm", "test-action", example: 5).save!
       end
     end
   end
@@ -64,8 +61,8 @@ class PersistentTriggerTest < ActiveSupport::TestCase
   context ".load_all" do
     setup do
       PersistentTrigger.all.insert({
-        PersistentTrigger.column_for_attribute(:type) => "at",
-        PersistentTrigger.column_for_attribute(:value) => "9:00am",
+        PersistentTrigger.column_for_attribute(:type) => "every",
+        PersistentTrigger.column_for_attribute(:value) => "day at 9:00am",
         PersistentTrigger.column_for_attribute(:action) => "test-action",
         PersistentTrigger.column_for_attribute(:params) => {example: 5}
       })

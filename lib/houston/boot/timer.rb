@@ -1,5 +1,36 @@
 require "thread_safe"
 
+
+require "attentive"
+require "attentive/entity"
+
+Attentive::Entity.define "houston.trigger.every",
+    "{{duration:core.time.duration}}",
+    "day at {{time:core.time}}",
+    "weekday at {{time:core.time}}",
+    "{{wday:core.date.wday}} at {{time:core.time}}",
+    published: false do |match|
+
+  if match.matched?("duration")
+    duration = match["duration"]
+    seconds = duration.seconds + duration.minutes * 60 + duration.hours * 3600
+    [ :every, "#{seconds}s" ]
+
+  elsif match.matched?("time")
+    time = match["time"]
+    days = match["wday"] if match.matched?("wday")
+    days = "*" if match.to_s.starts_with?("day")
+    days = "1-5" if match.to_s.starts_with?("weekday")
+    [ :cron, "#{time.min} #{time.hour} * * #{days}" ]
+
+  else
+    nomatch!
+  end
+end
+
+TRIGGER_PHRASE = Attentive::Tokenizer.tokenize("{{houston.trigger.every}}", entities: true).freeze
+
+
 module Houston
   class Timer
 
@@ -11,19 +42,13 @@ module Houston
       end
     end
 
-    def at(time, &block)
-      return schedule_later :at, time, block unless $scheduler
-
-      days_of_the_week = :day
-      days_of_the_week, time = *time if time.is_a?(Array)
-      cronline = Whenever::Output::Cron.new(days_of_the_week, nil, time)
-      $scheduler.cron cronline.time_in_cron_syntax, &block
-    end
-
     def every(interval, &block)
       return schedule_later :every, interval, block unless $scheduler
 
-      $scheduler.every interval, &block
+      match = Attentive::Matcher.match!(TRIGGER_PHRASE, interval)
+      raise ArgumentError, "Unrecognized interval: #{interval.inspect}" unless match
+      method_name, argument = match["houston.trigger.every"]
+      $scheduler.public_send method_name, argument, &block
     end
 
   private

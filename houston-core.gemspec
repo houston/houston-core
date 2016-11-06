@@ -26,6 +26,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "activerecord-import"
   spec.add_dependency "activerecord-pluck_in_batches", "~> 0.2.0"
   spec.add_dependency "addressable", "~> 2.3.8"
+  spec.add_dependency "attentive", ">= 0.3.5"
   spec.add_dependency "browser", "~> 2.3.0"
   spec.add_dependency "cancan", "~> 1.6.10" # cancancan
   spec.add_dependency "default_value_for", "3.0.2"
@@ -61,7 +62,6 @@ Gem::Specification.new do |spec|
 
   # Houston's background jobs daemon
   spec.add_dependency "rufus-scheduler", "~> 3.2.0"
-  spec.add_dependency "whenever", "0.9.2" # Houston uses just the DSL for writing cron jobs
 
   # Used to create image charts for embedding in email
   # TODO: this product is deprecated, so find a replacement

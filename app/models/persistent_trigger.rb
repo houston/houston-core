@@ -4,7 +4,7 @@ class PersistentTrigger < ActiveRecord::Base
   serialize :value, Houston::Serializer.new
   serialize :params, Houston::ParamsSerializer.new
 
-  TYPES = [:at, :on, :every].freeze
+  TYPES = [:on, :every].freeze
   validates :type, inclusion: { in: TYPES, message: "{value} is not valid Trigger type; use #{TYPES.map(&:inspect).to_sentence(two_words_connector: " or ", last_word_connector: ", or ")}" }
   validate :action_must_be_defined
 
