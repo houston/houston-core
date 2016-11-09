@@ -188,12 +188,17 @@ module Github
     end
 
     def add_labels!(*labels)
-      project.repo.add_labels_to(labels.flatten, number)
+      Houston.github.add_labels_to_an_issue full_repo, number, Array(labels)
     end
     alias :add_label! :add_labels!
 
     def remove_labels!(*labels)
-      project.repo.remove_labels_from(labels.flatten, number)
+      Array(labels).each do |label|
+        begin
+          Houston.github.remove_label full_repo, number, label
+        rescue Octokit::NotFound
+        end
+      end
     end
     alias :remove_label! :remove_labels!
 
