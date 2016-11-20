@@ -270,27 +270,6 @@ Rails.application.routes.draw do
 
 
 
-  # Support non-digested assets
-  %w{vendor.css application.css vendor.js application.js}.each do |asset|
-    get asset, to: (Proc.new do |env|
-      begin
-        if Rails.env.development?
-          asset_path = "/dev-assets/#{asset}"
-        else
-          manifest_path = Dir.glob(File.join(Houston.root, "public/assets/manifest-*.json")).first
-          manifest_data = JSON.load(File.new(manifest_path))
-          asset_path = "/assets/#{manifest_data["assets"].fetch(asset)}"
-        end
-
-        [307, {"Location" => asset_path}, []]
-      rescue KeyError
-        [404, {}, []]
-      end
-    end)
-  end
-
-
-
   # Modules
 
   Houston.config.modules.each do |mod|
