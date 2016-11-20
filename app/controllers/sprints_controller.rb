@@ -15,7 +15,7 @@ class SprintsController < ApplicationController
   def show
     authorize! :read, sprint
     @title = "Sprint #{sprint.end_date.strftime("%-m/%-d")}"
-    @open_tasks = Task.joins(:ticket => :project).merge(Ticket.open) unless sprint.completed?
+    @open_tasks = Task.joins(:ticket => :project).merge(Ticket.open).merge(Project.unretired) unless sprint.completed?
     @tasks = @sprint.tasks
     render template: "sprints/show"
   end
