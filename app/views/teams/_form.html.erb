@@ -28,6 +28,10 @@
     <div class="form-actions">
       <%= f.submit nil, :class => "btn btn-primary" %>
       <%= link_to "Cancel", teams_path, :class => "btn" %>
+
+      <% if @team.persisted? && can?(:destroy, @team) %>
+        <button class="btn btn-delete btn-danger" id="delete_team_button">Delete</button>
+      <% end %>
     </div>
   </fieldset>
 <% end %>
@@ -40,6 +44,15 @@
     $(document.body).on('nested-editor.reset', function(e) {
       $(e.target).find(':checkbox').prop('checked', false);
     });
+
+    <% if @team.persisted? && can?(:destroy, @team) %>
+    $('#delete_team_button').click(function(e) {
+      e.preventDefault();
+      $.destroy('<%= team_path(@team) %>')
+        .success(function() { window.location = '/teams'; })
+        .error(function(response) { Errors.fromResponse(response).renderToAlert(); });
+    });
+    <% end %>
   });
 </script>
 <% end %>

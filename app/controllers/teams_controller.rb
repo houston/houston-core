@@ -1,5 +1,5 @@
 class TeamsController < ApplicationController
-  before_action :find_team, only: [:edit, :update]
+  before_action :find_team, only: [:edit, :update, :destroy]
   load_and_authorize_resource except: [:index]
 
 
@@ -43,6 +43,16 @@ class TeamsController < ApplicationController
     else
       flash.now[:error] = @team.errors[:base].join("\n")
       render action: "edit"
+    end
+  end
+
+
+  def destroy
+    if @team.projects.unretired.none?
+      @team.destroy
+      redirect_to teams_url
+    else
+      render json: { base: ["#{@team.name.inspect} can't be deleted yet because it has unretired projects"] }, status: 422
     end
   end
 
