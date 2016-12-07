@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
         redirect_to redirect_url, :alert => exception.message
       end
     else
-      session["user.return_to"] = request.url
+      store_location_for(:user, request.url)
       require_login
     end
   end
@@ -72,7 +72,7 @@ class ApplicationController < ActionController::Base
 
 
   def after_sign_in_path_for(user)
-    path = session["user_redirect_to"] || stored_location_for(user) || root_path
+    path = session["user.redirect_to"] || stored_location_for(user) || root_path
     path = root_path if path =~ /\/users\/(sign_in|password)/
     path
   end
