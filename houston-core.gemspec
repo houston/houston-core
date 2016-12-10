@@ -86,7 +86,4 @@ Gem::Specification.new do |spec|
   # Implements Houston's TicketTracker::UnfuddleAdapter (TODO: extract)
   spec.add_dependency "boblail-unfuddle"
 
-  # For deploying to EngineYard
-  spec.add_dependency "engineyard", "~> 3.2.1"
-
 end
