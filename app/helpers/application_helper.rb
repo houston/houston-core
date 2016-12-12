@@ -21,6 +21,22 @@ module ApplicationHelper
     "<li>#{link_to(link_text, url)}</li>".html_safe unless current_page?(url)
   end
 
+  def google_analytics_script_tag
+    id = Houston.config.google_analytics[:tracking_id]
+    return nil if id.blank?
+    return "<!-- Google Analytics for #{id.inspect} in Production -->".html_safe unless Rails.env.production?
+    <<-HTML.html_safe
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+      ga('create', #{id.inspect}, 'auto');
+      ga('send', 'pageview');
+    </script>
+    HTML
+  end
+
 
 
   def in_columns(collection, options={}, &block)

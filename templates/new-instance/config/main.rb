@@ -41,6 +41,12 @@ Houston.config do
   #
   passphrase ENV["HOUSTON_PASSPHRASE"]
 
+  # Enter your Google Analytics Tracking ID to add Google's
+  # Universal Analytics script to every page.
+  google_analytics do
+    tracking_id ENV["GA_TRACKING_ID"]
+  end
+
   # This is the SMTP server Houston will use to send emails
   smtp do
 

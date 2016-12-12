@@ -146,6 +146,11 @@ module_function
       end.to_s
     end
 
+    def google_analytics(&block)
+      @google_analytics = HashDsl.hash_from_block(block) if block_given?
+      @google_analytics ||= {}
+    end
+
     def password_length(*args)
       @password_length = args.first if args.any?
       @password_length ||= 8..128

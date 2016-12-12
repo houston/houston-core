@@ -88,5 +88,6 @@
       });
     </script>
     <%= yield :javascripts %><%# so that Engines can hook in and add scripts %>
+    <%= google_analytics_script_tag %>
   </body>
 </html>

@@ -44,6 +44,7 @@
     <%= javascript_include_tag "houston/vendor" %>
     <%= javascript_include_tag "houston/dashboard" %>
     <%= yield :javascripts %><%# so that Engines can hook in and add scripts %>
+    <%= google_analytics_script_tag %>
 
     <!--
       Play silence continually
