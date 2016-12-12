@@ -80,7 +80,7 @@ GEM
       activemodel (= 5.0.0.1)
       activesupport (= 5.0.0.1)
       arel (~> 7.0)
-    activerecord-import (0.16.1)
+    activerecord-import (0.16.2)
       activerecord (>= 3.2)
     activerecord-pluck_in_batches (0.2.0)
       activerecord (>= 4.2.7, < 5.1.0)
@@ -92,7 +92,7 @@ GEM
     addressable (2.3.8)
     ansi (1.5.0)
     arel (7.1.4)
-    attentive (0.3.5)
+    attentive (0.3.6)
       thread_safe
     bcrypt (3.1.11)
     boblail-unfuddle (0.7.1)
@@ -116,11 +116,11 @@ GEM
     coffee-script (2.4.1)
       coffee-script-source
       execjs
-    coffee-script-source (1.10.0)
+    coffee-script-source (1.11.1)
     concurrent-ruby (1.0.2)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
-    css_parser (1.4.6)
+    css_parser (1.4.7)
       addressable
     devise (4.2.0)
       bcrypt (~> 3.0)
@@ -181,7 +181,7 @@ GEM
     minitest-reporters-turn_reporter (0.1.2)
       minitest-reporters
     multi_json (1.12.1)
-    multi_xml (0.5.5)
+    multi_xml (0.6.0)
     multipart-post (2.0.0)
     neat-rails (0.5.0)
     nested_editor_for (0.1.1)
@@ -206,7 +206,7 @@ GEM
       nokogiri
       openxml-package (>= 0.2.0)
     orm_adapter (0.5.0)
-    ox (2.4.5)
+    ox (2.4.6)
     pg (0.19.0)
     pg_search (1.0.6)
       activerecord (>= 3.1)
@@ -295,7 +295,7 @@ GEM
     timecop (0.8.1)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
-    uglifier (3.0.3)
+    uglifier (3.0.4)
       execjs (>= 0.3.0, < 3)
     warden (1.2.6)
       rack (>= 1.0)
