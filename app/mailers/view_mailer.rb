@@ -13,6 +13,7 @@ class ViewMailer < ActionMailer::Base
   helper TestRunHelper
   helper TicketHelper
   helper UrlHelper
+  helper OembedHelper
 
   class_attribute :stylesheets
   self.stylesheets = %w{
