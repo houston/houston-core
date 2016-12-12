@@ -21,7 +21,6 @@ PATH
       handlebars_assets (~> 0.23.0)
       houston-devise_ldap_authenticatable
       houston-vestal_versions
-      hpricot (~> 0.8.6)
       neat-rails
       nested_editor_for
       nokogiri
@@ -162,7 +161,6 @@ GEM
     houston-vestal_versions (2.0.1)
       activerecord (>= 3, < 6)
       activesupport (>= 3, < 6)
-    hpricot (0.8.6)
     htmlentities (4.3.4)
     i18n (0.7.0)
     json (2.0.2)
