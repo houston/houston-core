@@ -41,7 +41,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "neat-rails"
   spec.add_dependency "nokogiri"
   spec.add_dependency "oauth2"
-  spec.add_dependency "oj", "~> 2.17"
+  spec.add_dependency "oj", "~> 2.18"
   spec.add_dependency "openxml-xlsx", ">= 0.2.0"
   spec.add_dependency "pg_search", "~> 1.0.5"
   spec.add_dependency "premailer", "~> 1.8.6"
