@@ -29,7 +29,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "attentive", ">= 0.3.5"
   spec.add_dependency "browser", "~> 2.3.0"
   spec.add_dependency "cancan", "~> 1.6.10" # cancancan
-  spec.add_dependency "default_value_for", "3.0.2"
   spec.add_dependency "devise" #, "~> 3.5.0"
   spec.add_dependency "devise_invitable" #, "~> 1.5.3"
   spec.add_dependency "houston-devise_ldap_authenticatable"

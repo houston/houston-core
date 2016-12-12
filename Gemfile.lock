@@ -11,7 +11,6 @@ PATH
       bundler
       cancan (~> 1.6.10)
       coffee-rails (~> 4.1.0)
-      default_value_for (= 3.0.2)
       devise
       devise_invitable
       faraday (~> 0.9.2)
@@ -124,8 +123,6 @@ GEM
       safe_yaml (~> 1.0.0)
     css_parser (1.4.6)
       addressable
-    default_value_for (3.0.2)
-      activerecord (>= 3.2.0, < 5.1)
     devise (4.2.0)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
