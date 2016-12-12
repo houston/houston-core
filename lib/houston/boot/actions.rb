@@ -1,5 +1,3 @@
-require "thread_safe"
-
 module Houston
   class Actions
     class ExecutionContext < ReadonlyHash
@@ -7,7 +5,7 @@ module Houston
 
 
     def initialize
-      @actions = ThreadSafe::Hash.new
+      @actions = Concurrent::Hash.new
     end
 
 

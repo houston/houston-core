@@ -1,10 +1,8 @@
-require "thread_safe"
-
 class OutputStream
 
   def initialize(deploy)
     @deploy = deploy
-    @lines = ThreadSafe::Array.new
+    @lines = Concurrent::Array.new
   end
 
   def <<(value)

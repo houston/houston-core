@@ -1,5 +1,3 @@
-require "thread_safe"
-
 module Houston
   class Observer
     attr_accessor :async
@@ -64,7 +62,7 @@ module Houston
     attr_reader :observers
 
     def observers_of(event)
-      observers[event] ||= ThreadSafe::Array.new
+      observers[event] ||= Concurrent::Array.new
     end
 
     def assert_registered!(event_name)

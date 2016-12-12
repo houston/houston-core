@@ -1,4 +1,3 @@
-require "thread_safe"
 require "delegate"
 
 module Houston
@@ -12,7 +11,7 @@ module Houston
     def initialize(config)
       @config = config
       @async = true
-      super ThreadSafe::Array.new
+      super Concurrent::Array.new
     end
 
 

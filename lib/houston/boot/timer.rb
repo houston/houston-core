@@ -1,6 +1,3 @@
-require "thread_safe"
-
-
 require "attentive"
 require "attentive/entity"
 
@@ -35,7 +32,7 @@ module Houston
   class Timer
 
     def initialize
-      @queued_timers = ThreadSafe::Array.new
+      @queued_timers = Concurrent::Array.new
 
       Houston.observer.on "daemon:scheduler:start", raise: true do
         schedule_queued_timers!
