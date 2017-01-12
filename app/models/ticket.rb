@@ -58,10 +58,6 @@ class Ticket < ActiveRecord::Base
       where(number: numbers.flatten.map(&:to_i))
     end
 
-    def except(tickets)
-      not_numbered(tickets.map(&:number))
-    end
-
     def not_numbered(*numbers)
       where(arel_table[:number].not_in(numbers.flatten.map(&:to_i)))
     end

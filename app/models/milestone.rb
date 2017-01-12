@@ -37,10 +37,6 @@ class Milestone < ActiveRecord::Base
     end
     alias :open :uncompleted
 
-    def except(milestones)
-      without_remote_ids(milestones.map(&:remote_id))
-    end
-
     def without_remote_ids(*ids)
       where(arel_table[:remote_id].not_in(ids.flatten.map(&:to_i)))
     end
