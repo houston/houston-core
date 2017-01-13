@@ -49,7 +49,7 @@ class ApplicationController < ActionController::Base
   end
 
   rescue_from ActiveRecord::RecordNotFound do
-    render file: "public/404", layout: false
+    render file: Houston.root.join("public/404"), layout: false
   end
 
   # Malformed request
