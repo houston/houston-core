@@ -2,7 +2,7 @@ class CreateTeams < ActiveRecord::Migration
   def up
     create_table :teams do |t|
       t.string :name
-      t.jsonb :props, default: "{}"
+      t.jsonb :props, default: {}
     end
 
     # Each project belongs to only one team

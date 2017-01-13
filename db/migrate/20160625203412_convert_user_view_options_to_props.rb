@@ -1,6 +1,6 @@
 class ConvertUserViewOptionsToProps < ActiveRecord::Migration
   def up
-    add_column :users, :props, :jsonb, default: "{}"
+    add_column :users, :props, :jsonb, default: {}
 
     require "progressbar"
     users = User.all

@@ -1,6 +1,6 @@
 class ConvertProjectExtendedAttributesToProps < ActiveRecord::Migration
   def up
-    add_column :projects, :props, :jsonb, default: "{}"
+    add_column :projects, :props, :jsonb, default: {}
 
     require "progressbar"
     projects = Project.all
