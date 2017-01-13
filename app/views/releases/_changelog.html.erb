@@ -35,7 +35,6 @@
 
     <% unless (defined?(draft) && draft) %>
       <div class="release-detail">
-        <%= render partial: "releases/tickets", locals: {tickets: @release.tickets} if can?(:read, Ticket) %>
         <%= render partial: "releases/commits", locals: {commits: @release.commits} if can?(:read, Commit) && !for_email? %>
       </div>
     <% end %>

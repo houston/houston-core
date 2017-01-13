@@ -57,7 +57,6 @@ module Api
           description: task.description,
           effort: task.effort,
           committedAt: task.first_commit_at,
-          releasedAt: task.first_release_at,
           completedAt: task.completed_at }
       end
 

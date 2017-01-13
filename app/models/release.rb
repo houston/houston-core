@@ -1,8 +1,6 @@
 class Release < ActiveRecord::Base
 
   after_create :load_commits!, :if => :can_read_commits?
-  after_create :release_each_ticket!
-  after_create :release_each_task!
   after_create { Houston.observer.fire "release:create", release: self }
   after_save :update_search_vector, :if => :search_vector_should_change?
 
@@ -12,8 +10,6 @@ class Release < ActiveRecord::Base
   belongs_to :commit_before, class_name: "Commit"
   belongs_to :commit_after, class_name: "Commit"
   has_and_belongs_to_many :commits, autosave: false # <-- a bug with autosave causes commit_ids to be saved twice
-  has_and_belongs_to_many :tickets, autosave: false # <-- a bug with autosave causes ticket_ids to be saved twice
-  has_many :tasks, through: :commits
 
   default_scope { order("created_at DESC") }
 
@@ -180,10 +176,6 @@ class Release < ActiveRecord::Base
     self.commits = project.commits.between(commit_before, commit_after)
   end
 
-  def load_tickets!
-    self.tickets = project.tickets.mentioned_by_commits(commits)
-  end
-
 
 
   def ignore?
@@ -216,18 +208,6 @@ private
   rescue Houston::Adapters::VersionControl::InvalidShaError
     @commit_not_found_error_message = $!.message
     nil
-  end
-
-  def release_each_ticket!
-    tickets.each do |ticket|
-      ticket.released!(self)
-    end
-  end
-
-  def release_each_task!
-    tasks.each do |task|
-      task.released!(self)
-    end
   end
 
   # http://www.postgresql.org/docs/9.1/static/textsearch-controls.html#TEXTSEARCH-HEADLINE

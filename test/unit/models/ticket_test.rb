@@ -2,66 +2,11 @@ require "test_helper"
 
 
 class TicketTest < ActiveSupport::TestCase
-  attr_reader :project, :ticket, :release, :released_at
+  attr_reader :project, :ticket
 
   setup do
     Ticket.nosync = true
     @project = create(:project)
-  end
-
-
-
-  context "#released!" do
-    setup do
-      @release = Release.new(project: project, user_id: 1)
-      @released_at = release.created_at = Time.zone.now
-      @ticket = create(:ticket, project: project)
-    end
-
-    should "trigger the ticket:release event" do
-      assert_triggered "ticket:release" do
-        ticket.released!(release)
-      end
-    end
-
-    should "assign first_release_at and last_release_at" do
-      ticket.released!(release)
-
-      assert_equal released_at, ticket.first_release_at
-      assert_equal released_at, ticket.last_release_at
-    end
-
-    context "on a ticket that has been released" do
-      setup do
-        project.update_column :version_control_name, "Mock"
-        @ticket.update_column :first_release_at, 5.days.ago
-        @ticket.releases << Release.create!(user_id: 1, project: project)
-      end
-
-      should "assign last_release_at" do
-        ticket.released!(release)
-
-        assert_equal released_at, ticket.last_release_at
-      end
-
-      should "not assign first_release_at" do
-        ticket.released!(release)
-
-        refute_equal released_at, ticket.first_release_at
-      end
-
-      context "and reopened" do
-        setup do
-          ticket.update_column :reopened_at, 1.hour.ago
-        end
-
-        should "assign first_release_at" do
-          ticket.released!(release)
-
-          assert_equal released_at, ticket.first_release_at
-        end
-      end
-    end
   end
 
 
@@ -73,8 +18,6 @@ class TicketTest < ActiveSupport::TestCase
         number: 1,
         summary: "Test summary",
         resolution: "fixed",
-        first_release_at: 1.year.ago,
-        last_release_at: 1.month.ago,
         type: "Bug")
     end
 
@@ -105,13 +48,6 @@ class TicketTest < ActiveSupport::TestCase
         ticket.reopen!
         assert_equal Time.zone.now, ticket.reopened_at
       end
-    end
-
-    should "clear first_release_at and last_release_at" do
-      ticket.reopen!
-
-      refute ticket.first_release_at, "Ticket#reopen! should reset Ticket#first_release_at"
-      refute ticket.last_release_at, "Ticket#reopen! should reset Ticket#last_release_at"
     end
   end
 

@@ -5,12 +5,6 @@ class LinkTicketsAndReleases < ActiveRecord::Migration
     end
 
     add_index :releases_tickets, [:release_id, :ticket_id], :unique => true
-
-    Release.all.each do |release|
-      release.tickets.each do |ticket|
-        ticket.releases << release
-      end
-    end
   end
 
   def down

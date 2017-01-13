@@ -95,15 +95,6 @@ class TaskTest < ActiveSupport::TestCase
       end
     end
 
-    context "is released, it" do
-      should "fire 'task:released'" do
-        a_release = Release.create!(project: project, commit0: "aed80008", user: User.first)
-        assert_triggered "task:released" do
-          task.released! a_release
-        end
-      end
-    end
-
     context "is completed, it" do
       should "fire 'task:completed'" do
         assert_triggered "task:completed" do

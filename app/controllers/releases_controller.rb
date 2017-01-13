@@ -3,7 +3,6 @@ class ReleasesController < ApplicationController
   include ReleaseHelper
   before_action :get_release_and_project, only: [:show, :edit, :update, :destroy]
   before_action :get_project_and_environment, only: [:index, :new, :create]
-  before_action :load_tickets, only: [:new, :edit, :create, :update]
 
 
 
@@ -31,7 +30,6 @@ class ReleasesController < ApplicationController
 
     if @release.can_read_commits?
       @release.load_commits!
-      @release.load_tickets!
       @release.build_changes_from_commits
     end
 
@@ -51,7 +49,6 @@ class ReleasesController < ApplicationController
 
     if @release.save
       Houston.deliver! ProjectNotification.release(@release) if params[:send_release_email]
-      @release.tickets.resolve_all! if params[:resolve_tickets]
 
       redirect_to @release
     else
@@ -60,7 +57,6 @@ class ReleasesController < ApplicationController
 
       if @release.can_read_commits?
         @release.load_commits!
-        @release.load_tickets!
       end
 
       render action: "new"
@@ -90,7 +86,6 @@ class ReleasesController < ApplicationController
     if params[:recreate]
       if @release.can_read_commits?
         @release.load_commits!
-        @release.load_tickets!
         @release.build_changes_from_commits
       end
     end
@@ -136,16 +131,6 @@ private
       .to(@environment)
       .includes(:project)
       .includes(:deploy)
-  end
-
-  def load_tickets
-    @tickets = @project.tickets.includes(:project).map do |ticket|
-      { id: ticket.id,
-        summary: ticket.summary,
-        closed: ticket.closed_at.present?,
-        ticketUrl: ticket.ticket_tracker_ticket_url,
-        number: ticket.number }
-    end
   end
 
 end

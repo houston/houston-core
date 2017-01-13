@@ -11,7 +11,6 @@ class Ticket < ActiveRecord::Base
   belongs_to :reporter, class_name: "User"
   belongs_to :milestone, counter_cache: true
   has_many :tasks, validate: false
-  has_and_belongs_to_many :releases
   has_and_belongs_to_many :commits, -> { where(unreachable: false) }
   has_and_belongs_to_many :released_commits, -> { reachable.released }, class_name: "Commit", association_foreign_key: "commit_id"
 
@@ -188,10 +187,6 @@ class Ticket < ActiveRecord::Base
     deployment.blank?
   end
 
-  def unreleased?
-    releases.before(reopened_at).empty?
-  end
-
 
 
   def tags
@@ -234,11 +229,6 @@ class Ticket < ActiveRecord::Base
 
 
 
-  def released!(release)
-    cache_release_attributes(release)
-    Houston.observer.fire "ticket:release", ticket: self, release: release
-  end
-
   def resolve!
     remote_ticket.resolve! if remote_ticket.respond_to?(:resolve!)
     update_attribute :resolution, "fixed"
@@ -262,10 +252,7 @@ class Ticket < ActiveRecord::Base
       resolution: "",
       closed_at: nil,
       reopened_at: Time.now, # <-- !todo: get rid of this after introducing tasks
-
-      deployment: nil, # <-- !todo: is this necessary?
-      first_release_at: nil,
-      last_release_at: nil)
+      deployment: nil) # <-- !todo: is this necessary?
   end
 
 
@@ -297,12 +284,6 @@ private
     @remote_ticket ||= ticket_tracker.find_ticket_by_number(number)
   end
   alias :remote :remote_ticket
-
-  def cache_release_attributes(release)
-    attributes = { last_release_at: release.created_at, deployment: release.environment_name }
-    attributes.merge!(first_release_at: release.created_at) if unreleased?
-    update_attributes attributes
-  end
 
   def parse_ticket_description
     Houston.config.parse_ticket_description(self)

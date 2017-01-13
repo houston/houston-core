@@ -10,7 +10,7 @@ class AddCompletedAtToTasks < ActiveRecord::Migration
 
     Task.joins(:project)
       .where(Project.arel_table[:category].not_eq("Libraries"))
-      .released
+      .where.not(first_release_at: nil)
       .update_all("completed_at=first_release_at")
   end
 

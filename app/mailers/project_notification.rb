@@ -40,7 +40,6 @@ class ProjectNotification < ViewMailer
 
     if @release.commits.empty? && @release.can_read_commits?
       @release.load_commits!
-      @release.load_tickets!
       @release.build_changes_from_commits
     end
 

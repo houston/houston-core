@@ -14,22 +14,6 @@ class ReleaseTest < ActiveSupport::TestCase
       stub(release).native_commits { nil }
     end
 
-    should "trigger `released!` on each ticket" do
-      a_ticket = Object.new
-      stub(release).tickets { [a_ticket] }
-      mock(a_ticket).released!(release)
-      release.save!
-    end
-
-    should "trigger `released!` on each task" do
-      a_task = Object.new
-      stub(release).tasks { [a_task] }
-      mock(a_task).released!(release)
-      release.save!
-    end
-
-
-
     context "when assigning commit0" do
       should "identify the before-commit" do
         commit = Commit.new(sha: "b62c3f32f72423b81a0282a1a4b97cad2cf129d4")

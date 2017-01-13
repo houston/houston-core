@@ -4,7 +4,6 @@ class Task < ActiveRecord::Base
 
   belongs_to :ticket
   belongs_to :project
-  has_and_belongs_to_many :releases
   has_and_belongs_to_many :commits
 
   validates :project_id, :ticket_id, :number, presence: true
@@ -43,14 +42,6 @@ class Task < ActiveRecord::Base
 
     def committed
       where(arel_table[:first_commit_at].not_eq(nil))
-    end
-
-    def unreleased
-      where first_release_at: nil
-    end
-
-    def released
-      where(arel_table[:first_release_at].not_eq(nil))
     end
 
     def completed
@@ -98,18 +89,6 @@ class Task < ActiveRecord::Base
 
 
 
-  def released!(release)
-    self.releases << release unless releases.exists?(release.id)
-    update_column :first_release_at, release.created_at unless released?
-    Houston.observer.fire "task:released", task: self
-  end
-
-  def released?
-    first_release_at.present?
-  end
-
-
-
   def mark_committed!(commit)
     update_column :first_commit_at, commit.authored_at unless committed?
     Houston.observer.fire "task:committed", task: self
@@ -133,7 +112,7 @@ class Task < ActiveRecord::Base
   end
 
   def manually_completed?
-    completed? && !committed? && !released?
+    completed? && !committed?
   end
 
 

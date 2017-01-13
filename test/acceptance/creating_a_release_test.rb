@@ -18,10 +18,6 @@ class CreatingAReleaseTest < ActionDispatch::IntegrationTest
       ticket_tracker_name: "Houston",
       version_control_name: "Git",
       props:  {"git.location" => Rails.root.join("test", "data", "bare_repo.git").to_s})
-    @ticket = @project.tickets.create!(
-      number: 116,
-      type: "Bug",
-      summary: "Make links in the ticket modal open a new window")
 
     visit "/users/sign_in"
     fill_in "user_email", with: "bob@example.com"
@@ -47,10 +43,6 @@ class CreatingAReleaseTest < ActionDispatch::IntegrationTest
       project.commits.between(commit0, commit1).each do |commit|
         assert page.has_content?(commit.summary), "Expected to find commit #{commit} on the page"
       end
-    end
-
-    should "show ticket #116, which was mentioned by one of the commits" do
-      assert page.has_content?(ticket.summary), "Expected to find ticket #{ticket.number} on the page"
     end
 
     context "clicking 'Create Release'" do

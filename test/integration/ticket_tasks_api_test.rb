@@ -26,9 +26,9 @@ class TicketTasksApiTest < ActionDispatch::IntegrationTest
 
       expected_tasks = [
         { "id" => @task1.id, "number" => 1, "letter" => "a", "description" => "Step 1",
-          "effort" => "3.0", "committedAt" => nil, "releasedAt" => nil, "completedAt" => nil },
+          "effort" => "3.0", "committedAt" => nil, "completedAt" => nil },
         { "id" => @task2.id, "number" => 2, "letter" => "b", "description" => "Step 2",
-          "effort" => "7.0", "committedAt" => nil, "releasedAt" => nil, "completedAt" => nil }
+          "effort" => "7.0", "committedAt" => nil, "completedAt" => nil }
       ]
 
       response_json = MultiJson.load(response.body)

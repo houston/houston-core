@@ -17,7 +17,6 @@ class CreateTasksForExistingTickets < ActiveRecord::Migration
           checked_out_by_id: ticket.checked_out_by_id,
           effort: effort
         })
-        task.releases = ticket.releases
         task.commits = ticket.commits
       end
       pbar.inc
