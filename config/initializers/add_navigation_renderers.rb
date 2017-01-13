@@ -1,9 +1,3 @@
-Houston.add_navigation_renderer :sprint do
-  name "Sprint"
-  path { Houston::Application.routes.url_helpers.current_sprint_path }
-  ability { |ability| ability.can?(:read, Sprint) }
-end
-
 Houston.add_navigation_renderer :pulls do
   name "Pulls"
   path { Houston::Application.routes.url_helpers.pulls_path }

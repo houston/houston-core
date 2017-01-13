@@ -18,8 +18,3 @@
 //  for Houston::Roadmap's dashboard
 //
 //= require ./app/views/_tickets_view
-//
-//  for Sprint Dashboard
-//
-//= require_tree ../../templates/sprints
-//= require ./app/views/_show_sprint_view

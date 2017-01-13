@@ -6,10 +6,4 @@ FactoryGirl.define do
     password "password"
     password_confirmation "password"
   end
-
-  factory :developer, :parent => :user do
-    after(:create) do |user|
-      Team.first.add_teammate user, "Developer"
-    end
-  end
 end

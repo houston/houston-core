@@ -2,10 +2,6 @@ Houston.config do
   host "houston.test.com"
   mailer_sender "houston@test.com"
 
-  role "Developer" do |team|
-    can :manage, Sprint
-  end
-
   # TODO: without ticket_types configured, tests that cover them should be skipped
   ticket_types({
     "Chore"       => "909090",

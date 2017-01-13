@@ -25,7 +25,6 @@ Houston.config do
     can :close, Ticket, project_id: team.project_ids
     can :manage, Github::PullRequest, project_id: team.project_ids
     can :manage, Houston::Alerts::Alert, project_id: team.project_ids
-    can :manage, Sprint
 
   end
 

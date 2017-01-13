@@ -149,8 +149,7 @@ Houston.config do
   # For examples, see config/initializers/add_navigation_renderers.rb
   #
   # These are the menu items that will be shown in Houston
-  navigation       :alerts,
-                   :sprint
+  navigation       :alerts
   project_features :tickets,
                    :testing,
                    :releases

@@ -8,7 +8,6 @@ class DropUnusedTables < ActiveRecord::Migration
     remove_column :releases, :environment_id
     remove_column :tasks, :checked_out_at
     remove_column :tasks, :checked_out_by_id
-    remove_column :tickets, :sprint_id
     remove_column :tickets, :checked_out_at
     remove_column :tickets, :checked_out_by_id
     remove_column :users, :old_environments_subscribed_to
@@ -27,7 +26,6 @@ class DropUnusedTables < ActiveRecord::Migration
     add_column :releases, :environment_id, :integer
     add_column :tasks, :checked_out_at, :timestamp
     add_column :tasks, :checked_out_by_id, :integer
-    add_column :tickets, :sprint_id, :integer
     add_column :tickets, :checked_out_at, :timestampd
     add_column :tickets, :checked_out_by_id, :integer
     add_column :users, :old_environments_subscribed_to, :string, default: "", null: false

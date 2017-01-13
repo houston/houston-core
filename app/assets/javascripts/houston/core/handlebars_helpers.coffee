@@ -91,9 +91,6 @@ Handlebars.registerHelper 'ifEq', (v1, v2, block)->
   else
     block.inverse(@)
 
-Handlebars.registerPartial 'sprintTask', (task)->
-  HandlebarsTemplates['sprints/task'](task)
-
 
 
 Handlebars.registerHelper 'timelineDateRange', (lastDate, date)->

@@ -4,7 +4,6 @@ class Task < ActiveRecord::Base
 
   belongs_to :ticket
   belongs_to :project
-  has_and_belongs_to_many :sprints, extend: UniqueAdd
   has_and_belongs_to_many :releases
   has_and_belongs_to_many :commits
 
@@ -56,19 +55,6 @@ class Task < ActiveRecord::Base
 
     def completed
       where(arel_table[:completed_at].not_eq(nil))
-    end
-
-    def completed_during(sprint)
-      where(arel_table[:completed_at].in(sprint.range).or(arel_table[:first_commit_at].in(sprint.range)))
-    end
-
-    def in_current_sprint
-      joins(:sprint).where("sprints.end_date >= current_date")
-    end
-
-    def checked_out_by(user, during: nil)
-      raise ArgumentError, "Please specify :during which Sprint" unless during
-      all.merge(SprintTask.where(sprint_id: during.id))
     end
 
     def find_by_project_and_shorthand(project_slug, shorthand)
@@ -150,11 +136,6 @@ class Task < ActiveRecord::Base
     completed? && !committed? && !released?
   end
 
-  def completed_during?(sprint)
-    return false unless completed?
-    completed_at < sprint.ends_at
-  end
-
 
 
   def reopen!
@@ -165,24 +146,6 @@ class Task < ActiveRecord::Base
 
   def open?
     !completed?
-  end
-
-
-
-  def checked_out?(sprint)
-    SprintTask.where(sprint_id: sprint.id, task_id: id).checked_out.exists?
-  end
-
-  def checked_out_by_me?(sprint, user)
-    SprintTask.where(sprint_id: sprint.id, task_id: id).checked_out_by(user).exists?
-  end
-
-  def check_out!(sprint, user)
-    SprintTask.where(sprint_id: sprint.id, task_id: id).check_out!(user)
-  end
-
-  def check_in!(sprint)
-    SprintTask.where(sprint_id: sprint.id, task_id: id).check_in!
   end
 
 
