@@ -386,33 +386,6 @@ module_function
 
 
 
-    # Configuration for Releases
-
-    def change_tags(*args)
-      if args.any?
-        @tag_map = {}
-        args.flatten.each_with_index do |hash, position|
-          Tag.new(hash.pick(:name, :color).merge(slug: hash[:as], position: position)).tap do |tag|
-            @tag_map[tag.slug] = tag
-            hash.fetch(:aliases, []).each do |slug|
-              @tag_map[slug] = tag
-            end
-          end
-        end
-      end
-      (@tag_map ||= {}).values.uniq
-    end
-
-    def fetch_tag(slug)
-      tag_map.fetch(slug, NullTag.instance)
-    end
-
-    attr_reader :tag_map
-
-
-
-
-
     #
 
     def key_dependencies(&block)
@@ -701,56 +674,6 @@ module_function
 
   def github
     @github ||= Octokit::Client.new(access_token: config.github[:access_token], auto_paginate: true)
-  end
-
-end
-
-
-
-class Tag
-
-  def initialize(options={})
-    @name = options[:name]
-    @slug = options[:slug]
-    @color = options[:color]
-    @position = options[:position]
-  end
-
-  attr_reader :name
-  attr_reader :slug
-  attr_reader :color
-  attr_reader :position
-
-  def to_partial_path
-    "tags/tag"
-  end
-
-end
-
-class NullTag
-
-  def self.instance
-    @instance ||= self.new
-  end
-
-  def nil?
-    true
-  end
-
-  def slug
-    nil
-  end
-
-  def color
-    "CCCCCC"
-  end
-
-  def name
-    "No tag"
-  end
-
-  def position
-    999
   end
 
 end

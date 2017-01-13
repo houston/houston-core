@@ -5,7 +5,6 @@ class DropUnusedTables < ActiveRecord::Migration
     remove_column :projects, :gemnasium_slug
     remove_column :pull_requests, :labels
     remove_column :pull_requests, :old_labels
-    remove_column :releases, :environment_id
     remove_column :tasks, :checked_out_at
     remove_column :tasks, :checked_out_by_id
     remove_column :tickets, :checked_out_at
@@ -23,7 +22,6 @@ class DropUnusedTables < ActiveRecord::Migration
     add_column :projects, :gemnasium_slug, :string
     add_column :pull_requests, :old_labels, :text, default: "", null: false
     add_column :pull_requests, :labels, :text, array: true, default: [], null: false
-    add_column :releases, :environment_id, :integer
     add_column :tasks, :checked_out_at, :timestamp
     add_column :tasks, :checked_out_by_id, :integer
     add_column :tickets, :checked_out_at, :timestampd

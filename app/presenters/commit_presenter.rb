@@ -10,8 +10,7 @@ class CommitPresenter
   end
 
   def commit_to_json(commit)
-    hash = {
-      id: commit.id,
+    { id: commit.id,
       sha: commit.sha,
       message: commit.summary,
       project: commit.project.slug,
@@ -19,17 +18,6 @@ class CommitPresenter
       committer: {
         name: commit.committer,
         email: commit.committer_email } }
-
-    release = commit.releases.earliest
-    if release
-      # NB: we want to sort these with TesterNotes
-      #     by the field 'createdAt', so while this
-      #     _actually_ represents 'releasedAt', we'll
-      #     call it 'createdAt' for now.
-      hash[:createdAt] = release.created_at
-      hash[:environment] = release.environment_name
-    end
-    hash
   end
 
   def verbose
@@ -39,9 +27,6 @@ class CommitPresenter
         hours: commit.hours_worked,
         tickets: commit.ticket_numbers,
         unreachable: commit.unreachable,
-        releases: commit.releases.map { |release| {
-          environment: release.environment_name,
-          createdAt: release.created_at } },
         committers: commit.committers.map { |committer| {
           id: committer.id,
           email: committer.email,

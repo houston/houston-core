@@ -5,7 +5,6 @@ class Commit < ActiveRecord::Base
   has_many :children, foreign_key: :parent_sha, primary_key: :sha, class_name: "Commit"
   has_one :test_run
   has_and_belongs_to_many :committers, class_name: "User"
-  has_and_belongs_to_many :releases
   has_and_belongs_to_many :pull_requests, class_name: "Github::PullRequest"
   has_and_belongs_to_many :tickets
   has_and_belongs_to_many :tasks
@@ -53,11 +52,6 @@ class Commit < ActiveRecord::Base
 
     def earliest
       first
-    end
-
-    def released
-      commits_releases = Arel::Table.new("commits_releases")
-      where(arel_table[:id].in(commits_releases.project(:commit_id)))
     end
   end
 

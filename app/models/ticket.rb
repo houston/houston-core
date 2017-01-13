@@ -12,7 +12,6 @@ class Ticket < ActiveRecord::Base
   belongs_to :milestone, counter_cache: true
   has_many :tasks, validate: false
   has_and_belongs_to_many :commits, -> { where(unreachable: false) }
-  has_and_belongs_to_many :released_commits, -> { reachable.released }, class_name: "Commit", association_foreign_key: "commit_id"
 
   default_scope { order(:number).where(destroyed_at: nil) }
 

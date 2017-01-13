@@ -10,11 +10,6 @@ Houston.config do
     "Bug"         => "C64537"
   })
 
-  # TODO: without these configured, the New Release acceptance test should be skipped
-  change_tags( {name: "New Feature", as: "feature", color: "8DB500"},
-               {name: "Improvement", as: "improvement", color: "3383A8", aliases: %w{enhancement}},
-               {name: "Bugfix", as: "fix", color: "C64537", aliases: %w{bugfix}} )
-
   # TODO: without jenkins configured, tests that cover them should be skipped
   ci_server :jenkins do
     host "jenkins.example.com"

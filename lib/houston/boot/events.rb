@@ -28,8 +28,6 @@ Houston.register_events {{
   "hooks:{type}"                    => params("params").desc("/hooks/{type} was invoked"),
   "hooks:project:{type}"            => params("project", "params").desc("/hooks/project/:slug/{type} was invoked"),
 
-  "release:create"                  => params("release").desc("A new release was created"),
-
   "task:committed"                  => params("task").desc("A commit mentioning this task was created"),
   "task:completed"                  => params("task").desc("A task was completed"),
   "task:reopened"                   => params("task").desc("A task was reopened"),

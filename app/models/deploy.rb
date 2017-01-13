@@ -2,7 +2,6 @@ class Deploy < ActiveRecord::Base
   include BelongsToCommit
 
   belongs_to :project
-  has_one :release
   belongs_to :user
 
   validates :project_id, :environment_name, presence: true
@@ -30,16 +29,6 @@ class Deploy < ActiveRecord::Base
     def environments
       reorder(nil).pluck "DISTINCT environment_name"
     end
-  end
-
-
-  def build_release
-    @release ||= Release.new(
-      project: project,
-      environment_name: environment_name,
-      commit0: project.releases.to(environment_name).most_recent_commit,
-      commit1: sha,
-      deploy: self)
   end
 
 

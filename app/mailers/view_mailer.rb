@@ -7,7 +7,6 @@ class ViewMailer < ActionMailer::Base
   helper EmailHelper
   helper EmojiHelper
   helper MarkdownHelper
-  helper ReleaseHelper
   helper ScoreCardHelper
   helper StaticChartHelper
   helper TestRunHelper
@@ -23,7 +22,6 @@ class ViewMailer < ActionMailer::Base
     houston/application/emoji.scss
     houston/application/markdown.scss
     houston/application/test_run.scss
-    houston/application/releases.scss
   }
 
   helper_method :can?, :cannot?, :current_ability, :stylesheets

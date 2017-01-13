@@ -2,7 +2,7 @@ class CommitsController < ApplicationController
   before_action :api_authenticate!, only: [:index, :self]
 
   def index
-    commits = Commit.includes(:releases).includes(:committers).includes(:project)
+    commits = Commit.includes(:committers).includes(:project)
 
     start_at = params[:start_at].to_time if params[:start_at]
     end_at = params[:end_at].to_time if params[:end_at]
@@ -13,7 +13,7 @@ class CommitsController < ApplicationController
   end
 
   def self
-    commits = current_user.commits.includes(:releases).includes(:committers).includes(:project)
+    commits = current_user.commits.includes(:committers).includes(:project)
 
     start_at = params[:start_at].to_time if params[:start_at]
     end_at = params[:end_at].to_time if params[:end_at]

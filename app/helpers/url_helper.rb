@@ -1,7 +1,5 @@
 module UrlHelper
 
-
-
   def github_url?(project)
     project.repo.respond_to?(:project_url)
   end
@@ -29,23 +27,5 @@ module UrlHelper
     feature = Houston.get_project_feature feature
     link_to feature.name, feature.project_path(project)
   end
-
-
-
-  def releases_path(project, *args)
-    options = args.extract_options!
-    environment_name = args.first
-    if environment_name
-      "/projects/#{project.to_param}/environments/#{environment_name}/releases"
-    else
-      super(project, options)
-    end
-  end
-
-  def new_release_url(release, options={})
-    super(release.project.to_param, release.environment_name, options.merge(deploy_id: release.deploy_id))
-  end
-
-
 
 end

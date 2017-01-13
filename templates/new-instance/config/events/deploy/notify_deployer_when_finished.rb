@@ -20,12 +20,12 @@ Houston.config do
 
     maintainers = deploy.project.maintainers
     maintainers.each do |maintainer|
-      Houston.deliver! ProjectNotification.maintainer_of_deploy(maintainer, deploy)
+      Houston.deliver! Houston::Releases::Mailer.maintainer_of_deploy(maintainer, deploy)
     end
 
     deployer = deploy.deployer
     if !deployer.blank? && !maintainers.with_email_address(deployer).exists?
-      Houston.deliver! ProjectNotification.maintainer_of_deploy(deployer, deploy)
+      Houston.deliver! Houston::Releases::Mailer.maintainer_of_deploy(deployer, deploy)
     end
   end
 end
