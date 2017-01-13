@@ -27,12 +27,6 @@ class window.Ticket extends Backbone.Model
     return false unless seriousness && likelihood && clumsiness
     (0.6 * seriousness + 0.3 * likelihood + 0.1 * clumsiness).toFixed(1)
 
-  releases: ->
-    @releasesCollection ||= new Releases(@get('releases'), ticket: @)
-
-  commits: ->
-    @commitsCollection ||= new Commits(@get('commits'), ticket: @)
-
 
 
   parse: (ticket)->
