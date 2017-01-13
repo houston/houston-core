@@ -21,7 +21,6 @@
         <% end %>
           <th class="project-last-build">Last Build</th>
 <% end %>
-          <th class="project-last-release">Last Release</th>
           <th class="project-features">Features</th>
           <td class="project-following"></td>
           <td class="table-margin"></td>
@@ -96,12 +95,6 @@
 
 <% end %>
 
-
-            <td class="project-last-release">
-              <% with_most_recent_release(project) do |release| %>
-                <%= link_to format_release_age(release), release_path(release) %>
-              <% end %>
-            </td>
 
             <td class="project-features">
               <%= project.features.map { |feature| link_to_project_feature(project, feature) }.join(", ").html_safe %>

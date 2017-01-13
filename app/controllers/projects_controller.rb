@@ -10,7 +10,6 @@ class ProjectsController < ApplicationController
       .includes(:head)
       .unretired
     @test_runs = TestRun.most_recent.index_by(&:project_id)
-    @releases = Release.where(environment_name: "production").most_recent.index_by(&:project_id)
   end
 
 
