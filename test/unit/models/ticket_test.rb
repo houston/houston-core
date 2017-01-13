@@ -43,11 +43,9 @@ class TicketTest < ActiveSupport::TestCase
       ticket.reopen!
     end
 
-    should "touch the reopened_at timestamp" do
-      Timecop.freeze Time.zone.now do
-        ticket.reopen!
-        assert_equal Time.zone.now, ticket.reopened_at
-      end
+    should "touch clear the closed_at timestamp" do
+      ticket.reopen!
+      assert_equal nil, ticket.closed_at
     end
   end
 

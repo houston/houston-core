@@ -250,7 +250,6 @@ class Ticket < ActiveRecord::Base
     update_attributes(
       resolution: "",
       closed_at: nil,
-      reopened_at: Time.now, # <-- !todo: get rid of this after introducing tasks
       deployment: nil) # <-- !todo: is this necessary?
   end
 
