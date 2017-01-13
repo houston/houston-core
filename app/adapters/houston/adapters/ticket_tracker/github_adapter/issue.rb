@@ -49,8 +49,7 @@ module Houston
               created_at:     created_at,
               closed_at:      closed_at,
 
-              tags:           tags,
-              prerequisites:  [] }
+              tags:           tags }
           end
 
 

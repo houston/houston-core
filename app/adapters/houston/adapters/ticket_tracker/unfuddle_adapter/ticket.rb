@@ -25,7 +25,6 @@ module Houston
 
             # optional
             @tags             = get_tags
-            @prerequisites    = parse_prerequisites(attributes["associations"])
             @due_date         = attributes["due_on"]
           end
 
@@ -42,7 +41,6 @@ module Houston
                       :closed_at,
 
                       :tags,
-                      :prerequisites,
                       :severity,
                       :component,
                       :due_date
@@ -59,7 +57,6 @@ module Houston
               closed_at:      closed_at,
 
               tags:           tags,
-              prerequisites:  prerequisites,
               due_date:       due_date }
           end
 
@@ -187,14 +184,6 @@ module Houston
             identify_tags_proc = unfuddle.config[:identify_tags]
             return [] unless identify_tags_proc
             identify_tags_proc.call(self)
-          end
-
-
-
-          def parse_prerequisites(associations)
-            Array.wrap(associations)
-              .select { |assocation| assocation["relationship"] == "parent" }
-              .map { |assocation| assocation["ticket"]["number"] }
           end
 
 
