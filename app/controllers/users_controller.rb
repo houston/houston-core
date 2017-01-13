@@ -12,7 +12,6 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @title = @user.name
-    @stats = stats_for_user(@user)
   end
 
 
@@ -86,21 +85,6 @@ private
     else
       @role = "Member" # Others can't promote themselves
     end
-  end
-
-
-  def stats_for_user(user)
-    ticket_resolutions = user.tickets.pluck(:resolution)
-    filed_tickets = ticket_resolutions.count
-    invalid_tickets = ticket_resolutions.count { |resolution| %w{invalid duplicate}.member?(resolution) }
-    fixed_tickets = ticket_resolutions.count { |resolution| resolution == "fixed" }
-    percent = 100.0 / filed_tickets
-
-    {
-      tickets: filed_tickets,
-      invalid_tickets: invalid_tickets * percent,
-      fixed_tickets: fixed_tickets * percent
-    }
   end
 
 

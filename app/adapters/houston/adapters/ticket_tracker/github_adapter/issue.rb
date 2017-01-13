@@ -16,7 +16,6 @@ module Houston
             @summary          = attributes["title"]
             @description      = attributes["body"]
             @reporter_email   = attributes["user"]["email"]
-            @resolution       = ""
             @milestone_id     = nil
             @type             = get_type
             @created_at       = attributes["created_at"] if attributes["created_at"]
@@ -33,7 +32,6 @@ module Houston
                       :summary,
                       :description,
                       :reporter_email,
-                      :resolution,
                       :milestone_id,
                       :type,
                       :tags,
@@ -46,7 +44,6 @@ module Houston
               summary:        summary,
               description:    description,
               reporter_email: reporter_email,
-              resolution:     resolution,
               milestone_id:   milestone_id,
               type:           type,
               created_at:     created_at,

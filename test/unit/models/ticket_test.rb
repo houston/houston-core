@@ -17,18 +17,18 @@ class TicketTest < ActiveSupport::TestCase
         project: project,
         number: 1,
         summary: "Test summary",
-        resolution: "fixed",
+        closed_at: Time.now,
         type: "Bug")
     end
 
-    context "an unresolved ticket" do
+    context "an open ticket" do
       setup do
-        ticket.update_column :resolution, ""
+        ticket.update_column :closed_at, nil
       end
 
       should "do nothing" do
         mock(ticket).remote_ticket.never
-        mock(ticket).update_attributes.never
+        mock(ticket).update_attribute.never
 
         ticket.reopen!
       end

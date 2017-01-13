@@ -3,11 +3,3 @@
 <% if current_user == @user %>
 <p>You can change your avatar by going to <a href="http://gravatar.com/">gravatar.com</a> and associating an image with your email address <b><%= current_user.email %></b>.</p>
 <% end %>
-
-<% stats = @stats %>
-<h4>Ticket Statistics</h4>
-<%= score_card :large do |s| %>
-  <% s.score "Filed", stats[:tickets] %>
-  <% s.percent "Duplicate<br /><small>or</small> Invalid".html_safe, stats[:invalid_tickets] %>
-  <% s.percent "Fixed", stats[:fixed_tickets] %>
-<% end %>

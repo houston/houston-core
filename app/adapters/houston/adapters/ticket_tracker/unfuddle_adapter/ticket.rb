@@ -18,7 +18,6 @@ module Houston
             @summary          = attributes["summary"]
             @description      = attributes["description"]
             @reporter_email   = attributes["reporter_email"]
-            @resolution       = attributes["resolution"]
             @milestone_id     = attributes["milestone_id"]
             @type             = get_type
             @created_at       = Time.parse(attributes["created_at"]) if attributes["created_at"]
@@ -37,7 +36,6 @@ module Houston
                       :summary,
                       :description,
                       :reporter_email,
-                      :resolution,
                       :milestone_id,
                       :type,
                       :created_at,
@@ -55,7 +53,6 @@ module Houston
               summary:        summary,
               description:    description,
               reporter_email: reporter_email,
-              resolution:     resolution,
               milestone_id:   milestone_id,
               type:           type,
               created_at:     created_at,

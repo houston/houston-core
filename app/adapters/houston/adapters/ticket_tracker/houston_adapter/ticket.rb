@@ -24,10 +24,6 @@ module Houston
             nil
           end
 
-          def resolution
-            ""
-          end
-
           def milestone_id
             nil
           end

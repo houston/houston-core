@@ -5,7 +5,7 @@ class Ticket < ActiveRecord::Base
 
   versioned only: [:summary, :description, :type,
                    :tags, :prerequisites,
-                   :closed_at, :resolution, :milestone_id]
+                   :closed_at, :milestone_id]
 
   belongs_to :project
   belongs_to :reporter, class_name: "User"
@@ -66,18 +66,6 @@ class Ticket < ActiveRecord::Base
 
     def bugs
       where(type: %w{Bug Chore})
-    end
-
-    def unresolved
-      unclosed.where(resolution: "")
-    end
-
-    def resolved
-      where(arel_table[:resolution].not_eq(""))
-    end
-
-    def fixed
-      where(resolution: "fixed")
     end
 
     def unclosed
@@ -154,14 +142,6 @@ class Ticket < ActiveRecord::Base
 
 
 
-  def unresolved?
-    resolution.blank?
-  end
-
-  def resolved?
-    !resolution.blank?
-  end
-
   def open?
     closed_at.nil?
   end
@@ -212,29 +192,17 @@ class Ticket < ActiveRecord::Base
 
 
 
-  def resolve!
-    remote_ticket.resolve! if remote_ticket.respond_to?(:resolve!)
-    update_attribute :resolution, "fixed"
-  end
-
   def close!
     remote_ticket.close! if remote_ticket
     update_attribute :closed_at, Time.now
   end
 
-  def unclose!
+  def reopen!
+    return unless closed_at?
     remote_ticket.reopen! if remote_ticket
     update_attribute :closed_at, nil
   end
-
-  def reopen!
-    return unless resolved?
-    remote_ticket.reopen! if remote_ticket
-
-    update_attributes(
-      resolution: "",
-      closed_at: nil)
-  end
+  alias :unclose! :reopen!
 
 
 
@@ -251,10 +219,6 @@ private
   def propagate_milestone_change
     return if nosync?
     remote_ticket.set_milestone!(milestone && milestone.remote_id) if remote_ticket.respond_to?(:set_milestone!)
-  end
-
-  def just_resolved?
-    resolution_changed? && resolution_was.blank?
   end
 
   def just_closed?
