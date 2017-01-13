@@ -45,7 +45,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "openxml-xlsx", ">= 0.2.0"
   spec.add_dependency "pg_search", "~> 1.0.5"
   spec.add_dependency "premailer", "~> 1.8.6"
-  spec.add_dependency "progressbar" # for long migrations
+  spec.add_dependency "progressbar", "~> 0.21.0" # for long migrations
   spec.add_dependency "rack-utf8_sanitizer", "~> 1.3.1"
   spec.add_dependency "redcarpet", "~> 3.3.2"
   spec.add_dependency "record_tag_helper", "~> 1.0" # to keep using div_for
