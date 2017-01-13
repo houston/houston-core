@@ -101,18 +101,6 @@ class Ticket < ActiveRecord::Base
       where(closed_at: date.to_time.beginning_of_day..date.to_time.end_of_day)
     end
 
-    def deployed
-      where(arel_table[:deployment].not_eq(nil))
-    end
-
-    def deployed_to(environment)
-      where(deployment: environment)
-    end
-
-    def unreleased
-      where(arel_table[:deployment].not_eq("Production"))
-    end
-
     def estimated
       # !todo: will change: must be defined in terms of tasks
       where("NULLIF(tickets.extended_attributes->'estimated_effort', '')::numeric > 0")
@@ -182,10 +170,6 @@ class Ticket < ActiveRecord::Base
     closed_at.present?
   end
 
-  def in_development?
-    deployment.blank?
-  end
-
 
 
   def tags
@@ -249,8 +233,7 @@ class Ticket < ActiveRecord::Base
 
     update_attributes(
       resolution: "",
-      closed_at: nil,
-      deployment: nil) # <-- !todo: is this necessary?
+      closed_at: nil)
   end
 
 
