@@ -76,8 +76,8 @@ module TicketSynchronizer
 
           # hstore always thinks it has changed
           has_legitimate_changes = ticket.changed?
-          if has_legitimate_changes && ticket.changed == %w{extended_attributes}
-            before, after = ticket.changes["extended_attributes"]
+          if has_legitimate_changes && ticket.changed == %w{props}
+            before, after = ticket.changes["props"]
             has_legitimate_changes = false if before == after
           end
           if has_legitimate_changes

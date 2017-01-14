@@ -2,7 +2,7 @@ class Milestone < ActiveRecord::Base
   extend Nosync
 
   belongs_to :project
-  has_many :tickets, -> { reorder("NULLIF(tickets.extended_attributes->'milestoneSequence', '')::int") }
+  has_many :tickets
 
   default_scope { where(destroyed_at: nil).order(:start_date) }
 

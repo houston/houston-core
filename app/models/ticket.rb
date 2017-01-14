@@ -1,5 +1,6 @@
 class Ticket < ActiveRecord::Base
   extend Nosync
+  include Houston::Props
 
   self.inheritance_column = nil
 
@@ -87,16 +88,6 @@ class Ticket < ActiveRecord::Base
       where(closed_at: date.to_time.beginning_of_day..date.to_time.end_of_day)
     end
 
-    def estimated
-      # !todo: will change: must be defined in terms of tasks
-      where("NULLIF(tickets.extended_attributes->'estimated_effort', '')::numeric > 0")
-    end
-
-    def unestimated
-      # !todo: will change: must be defined in terms of tasks
-      where("NOT defined(tickets.extended_attributes, 'estimated_effort') OR NULLIF(tickets.extended_attributes->'estimated_effort', '')::numeric <= 0")
-    end
-
     def resolve_all!
       return unless Rails.env.production?
       all.parallel.each do |ticket|
@@ -106,17 +97,6 @@ class Ticket < ActiveRecord::Base
       end
     end
 
-  end
-
-
-
-  def due_date
-    extended_attributes["due_date"]
-  end
-
-  def due_date=(value)
-    extended_attributes["due_date"] = value
-    extended_attributes_will_change!
   end
 
 
@@ -161,7 +141,11 @@ class Ticket < ActiveRecord::Base
 
 
   def extended_attributes
-    super || (self.extended_attributes = {})
+    raise NotImplementedError, "This feature has been deprecated; use props"
+  end
+
+  def extended_attributes=(value)
+    raise NotImplementedError, "This feature has been deprecated; use props"
   end
 
 

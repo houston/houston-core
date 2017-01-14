@@ -30,7 +30,7 @@ class TicketPresenter
       summary: ticket.summary,
       type: ticket.type.to_s.downcase.dasherize,
       tags: ticket.tags.map(&:to_h),
-      extendedAttributes: ticket.extended_attributes }
+      props: ticket.props }
   end
 
 end

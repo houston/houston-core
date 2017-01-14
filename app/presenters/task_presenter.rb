@@ -31,7 +31,7 @@ class TaskPresenter
       ticketUrl: project && ticket.ticket_tracker_ticket_url,
       ticketNumber: ticket.number,
       ticketType: ticket.type.to_s.downcase.dasherize,
-      ticketSequence: ticket.extended_attributes["sequence"],  # <-- embeds knowledge of Houston::Scheduler
+      ticketSequence: ticket.props["scheduler.sequence"],  # <-- embeds knowledge of Houston::Scheduler
 
       shorthand: task.shorthand,
       description: task.description,

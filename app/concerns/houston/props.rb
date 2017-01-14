@@ -88,6 +88,10 @@ module Houston
         @hash.dup
       end
 
+      def as_json(options={})
+        to_h
+      end
+
       def respond_to_missing?(method_name, *args)
         prop_name = method_name.to_s.gsub(/_before_type_cast$/, "")
         return true if key?(prop_name)
