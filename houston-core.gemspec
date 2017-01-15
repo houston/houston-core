@@ -12,7 +12,10 @@ Gem::Specification.new do |spec|
   spec.summary       = %q{Mission Control for your projects and teams}
   spec.homepage      = "https://github.com/houston/houston-core"
 
-  spec.files         = `git ls-files -z`.split("\x0")
+  spec.files         = `git ls-files -z`.split("\x0").reject { |file|
+    file =~ /^script\//
+    file =~ /^support\//
+  }
   spec.executables   = ["houston"]
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
@@ -30,8 +33,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency "browser", "~> 2.3.0"
   spec.add_dependency "cancan", "~> 1.6.10" # cancancan
   spec.add_dependency "concurrent-ruby", "~> 1.0.2"
-  spec.add_dependency "devise" #, "~> 3.5.0"
-  spec.add_dependency "devise_invitable" #, "~> 1.5.3"
+  spec.add_dependency "devise"
+  spec.add_dependency "devise_invitable"
   spec.add_dependency "houston-devise_ldap_authenticatable"
   spec.add_dependency "faraday", "~> 0.9.2"
   spec.add_dependency "faraday-http-cache", "~> 1.2.2"
@@ -62,9 +65,12 @@ Gem::Specification.new do |spec|
 
   # Used to create image charts for embedding in email
   # TODO: this product is deprecated, so find a replacement
+  # This is used only StaticChart,
+  # which is used only in StaticChartHelper,
+  # which is used only by the Test Results email
   spec.add_dependency "googlecharts", "~> 1.6.12"
 
-  # Used to edit a releases' changes and a project's followers
+  # Used to edit releases' changes and teams' roles
   spec.add_dependency "nested_editor_for"
 
   # Bundler is a runtime dependency because it used to parse Gemfiles
