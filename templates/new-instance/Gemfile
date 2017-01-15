@@ -14,23 +14,23 @@ gem "houston-core", "~> 0.5.1"
 # Merge to-do lists from Exception Reports, Gemnasium, support tickets, etc
 gem "houston-alerts", github: "houston/houston-alerts", branch: "master"
 
-# Use Houston with Slack!
-gem "houston-slack", github: "houston/houston-slack", branch: "master"
+# Track and report on test results with Houston
+gem "houston-ci", github: "houston/houston-ci", branch: "master"
 
 # Link projects to exception-trackers
 gem "houston-exceptions", github: "houston/houston-exceptions", branch: "master"
 
 # Generate release notes from commits
-# gem "houston-releases", github: "houston/houston-releases", branch: "master"
+gem "houston-releases", github: "houston/houston-releases", branch: "master"
 
-# Track and report on test results with Houston
-# gem "houston-ci", github: "houston/houston-ci", branch: "master"
+# Use Houston with Slack!
+gem "houston-slack", github: "houston/houston-slack", branch: "master"
 
 # Import, search, and tag customer feedback
 # gem "houston-feedback", github: "houston/houston-feedback", branch: "master"
 
 # Construct roadmaps with Houston
-# gem "houston-roadmap", github: "houston/houston-roadmap", branch: "master"
+# gem "houston-roadmaps", github: "houston/houston-roadmaps", branch: "master"
 
 # Manage your backlog in houston
 # gem "houston-scheduler", github: "houston/houston-scheduler", branch: "master"

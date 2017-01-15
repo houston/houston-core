@@ -146,7 +146,6 @@ Houston.config do
   # These are the menu items that will be shown in Houston
   navigation       :alerts
   project_features :tickets,
-                   :testing,
                    :releases
 
 
@@ -180,16 +179,6 @@ Houston.config do
   #   bundle config local.houston-<MODULE> ~/Projects/houston-<MODULE>
   #
 
-  use :ci
-  use :feedback
-  use :roadmaps
-
-  use :releases do
-    change_tags( {name: "New Feature", as: "feature", color: "8DB500"},
-                 {name: "Improvement", as: "improvement", color: "3383A8", aliases: %w{enhancement}},
-                 {name: "Bugfix", as: "fix", color: "C64537", aliases: %w{bugfix}} )
-  end
-
   use :alerts do
 
     # Who can be assigned an Alert?
@@ -211,12 +200,24 @@ Houston.config do
   end
   load "alerts/*"
 
+  use :ci
+
+  use :releases do
+    change_tags( {name: "New Feature", as: "feature", color: "8DB500"},
+                 {name: "Improvement", as: "improvement", color: "3383A8", aliases: %w{enhancement}},
+                 {name: "Bugfix", as: "fix", color: "C64537", aliases: %w{bugfix}} )
+  end
+
   use :slack do
     token ENV["HOUSTON_SLACK_TOKEN"]
     typing_speed 120 # characters/second
     listen_for(/^(hello|hey|hi),? @houston[\!\.]*$/i) { |e| e.reply "hello" }
   end
   load "conversations/**/*"
+
+  # use :feedback
+  # use :roadmaps
+  # use :scheduler
 
 
 
