@@ -11,14 +11,11 @@ module ProjectAdapter
       adapter_module = Houston::Adapters[adapter_namespace]
       raise ArgumentError, "#{adapter_module} should respond to `adapters`" unless adapter_module.respond_to?(:adapters)
       raise ArgumentError, "#{adapter_module} should respond to `adapter`" unless adapter_module.respond_to?(:adapter)
+      raise ArgumentError, "#{adapter_namespace} has already been defined" if adapters[adapter_module.name]
 
       adapter = Adapter.new(self, adapter_module)
-      adapters[adapter.name] = adapter
-
+      adapters[adapter_module.name] = adapter
       adapter.define_methods!
-
-      validate adapter.validation_method
-      before_update adapter.before_update_method
     end
   end
 
@@ -54,10 +51,25 @@ module ProjectAdapter
       :"parameters_for_#{attribute_name}_adapter"
     end
 
+    def concern_name
+      :"#{name.demodulize}Concern"
+    end
+
     def define_methods!
-      model.module_eval <<-RUBY, __FILE__ , __LINE__ + 1
-        def self.with_#{attribute_name}
+      concern = ProjectAdapter.const_set(concern_name, Module.new)
+      concern.extend ActiveSupport::Concern
+
+      class_methods = concern.const_set(:ClassMethods, Module.new)
+      class_methods.module_eval <<-RUBY, __FILE__ , __LINE__ + 1
+        def with_#{attribute_name}
           where arel_table[:#{attribute_name}_name].not_eq("None")
+        end
+      RUBY
+
+      concern.module_eval <<-RUBY, __FILE__ , __LINE__ + 1
+        included do
+          validate :#{validation_method}
+          before_update :#{before_update_method}
         end
 
         def has_#{attribute_name}?
@@ -91,6 +103,8 @@ module ProjectAdapter
           #{namespace}.adapter(#{attribute_name}_name)
         end
       RUBY
+
+      model.send :include, concern
     end
 
   end
