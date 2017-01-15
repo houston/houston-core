@@ -130,8 +130,6 @@ Rails.application.routes.draw do
     get "commits", to: "commits#self"
   end
 
-  get "commits/:sha", to: "commits#show", as: :commit
-
   namespace "api" do
     namespace "v1" do
       get "projects", to: "projects#index"

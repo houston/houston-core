@@ -1,5 +1,5 @@
 class CommitsController < ApplicationController
-  before_action :api_authenticate!, only: [:index, :self]
+  before_action :api_authenticate!
 
   def index
     commits = Commit.includes(:committers).includes(:project)
@@ -21,13 +21,6 @@ class CommitsController < ApplicationController
     commits = commits.during(start_at..end_at) if start_at && end_at
 
     render json: CommitPresenter.new(commits).verbose
-  end
-
-
-
-  def show
-    @commit = Commit.find_by_sha(params[:sha])
-    @project = @commit.project
   end
 
 end
