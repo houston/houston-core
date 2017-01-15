@@ -17,6 +17,12 @@ gem "houston-alerts", github: "houston/houston-alerts", branch: "master"
 # Use Houston with Slack!
 gem "houston-slack", github: "houston/houston-slack", branch: "master"
 
+# Generate release notes from commits
+# gem "houston-releases", github: "houston/houston-releases", branch: "master"
+
+# Track and report on test results with Houston
+# gem "houston-ci", github: "houston/houston-ci", branch: "master"
+
 # Import, search, and tag customer feedback
 # gem "houston-feedback", github: "houston/houston-feedback", branch: "master"
 

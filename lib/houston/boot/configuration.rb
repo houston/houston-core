@@ -1,4 +1,5 @@
 root = File.expand_path(File.join(File.dirname(__FILE__), "../../.."))
+require File.join(root, "lib/hash_dsl")
 require File.join(root, "lib/core_ext/hash")
 require File.join(root, "lib/core_ext/kernel")
 require File.join(root, "lib/core_ext/exception")
@@ -6,9 +7,7 @@ require File.join(root, "lib/houston/boot/triggers")
 require File.join(root, "lib/houston/boot/observer")
 require File.join(root, "lib/houston/boot/actions")
 require File.join(root, "lib/houston/boot/timer")
-
-$:.unshift File.expand_path(File.join(root, "app/adapters"))
-require "houston/adapters"
+require File.join(root, "lib/houston/adapters")
 
 module Houston
 module_function
@@ -574,38 +573,6 @@ module_function
       @values << options.merge(type: :gem, slug: slug, target_versions: target_versions)
     end
   end
-
-
-
-  class HashDsl
-    attr_reader :hash
-    alias :to_hash :hash
-    alias :to_h :hash
-
-    def initialize
-      @hash = {}
-    end
-
-    def self.from_block(block)
-      HashDsl.new.tap { |dsl| dsl.instance_eval(&block) }
-    end
-
-    def self.hash_from_block(block)
-      from_block(block).to_hash
-    end
-
-    def method_missing(method_name, *args, &block)
-      if block_given?
-        @hash[method_name] = HashDsl.hash_from_block(block)
-      elsif args.length == 1
-        @hash[method_name] = args.first
-      else
-        super
-      end
-    end
-  end
-
-
 
 
 

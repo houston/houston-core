@@ -1,7 +1,6 @@
 require "test_helper"
 require "support/houston/adapters/version_control/mock_adapter"
 require "support/houston/adapters/ticket_tracker/mock_adapter"
-require "support/houston/adapters/ci_server/mock_adapter"
 
 
 class ProjectTest < ActiveSupport::TestCase
@@ -34,11 +33,6 @@ class ProjectTest < ActiveSupport::TestCase
       assert_equal Houston::Adapters::TicketTracker::NoneAdapter, project.ticket_tracker_adapter
     end
 
-    should "find the specified built-in CIServer adapter" do
-      project = Project.new(ci_server_name: "None")
-      assert_equal Houston::Adapters::CIServer::NoneAdapter, project.ci_server_adapter
-    end
-
     should "find the specified extension version control adapter" do
       project = Project.new(version_control_name: "Mock")
       assert_equal Houston::Adapters::VersionControl::MockAdapter, project.version_control_adapter
@@ -47,11 +41,6 @@ class ProjectTest < ActiveSupport::TestCase
     should "find the specified extension ticket tracking adapter" do
       project = Project.new(ticket_tracker_name: "Mock")
       assert_equal Houston::Adapters::TicketTracker::MockAdapter, project.ticket_tracker_adapter
-    end
-
-    should "find the specified extension CIServer adapter" do
-      project = Project.new(ci_server_name: "Mock")
-      assert_equal Houston::Adapters::CIServer::MockAdapter, project.ci_server_adapter
     end
   end
 

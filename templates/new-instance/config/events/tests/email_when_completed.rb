@@ -6,6 +6,6 @@ Houston.config do
                - project.maintainers.map(&:email) \
                + project.maintainers
 
-    Houston.deliver! ProjectNotification.test_results(test_run, recipients)
+    Houston.deliver! Houston::Ci::Mailer.test_results(test_run, recipients)
   end
 end

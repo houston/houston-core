@@ -1,11 +1,10 @@
 require "test_helper"
-require "support/houston/adapters/ci_server/mock_adapter"
 
 
 class DeploysControllerTest < ActionController::TestCase
 
   setup do
-    @project = create(:project, ci_server_name: "Mock")
+    @project = create(:project)
     @environment = "production"
     Timecop.freeze
   end

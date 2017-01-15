@@ -44,17 +44,6 @@ COMMENT ON EXTENSION hstore IS 'data type for storing sets of (key, value) pairs
 
 SET search_path = public, pg_catalog;
 
---
--- Name: test_result_status; Type: TYPE; Schema: public; Owner: -
---
-
-CREATE TYPE test_result_status AS ENUM (
-    'fail',
-    'skip',
-    'pass'
-);
-
-
 SET default_tablespace = '';
 
 SET default_with_oids = false;
@@ -762,152 +751,6 @@ ALTER SEQUENCE teams_users_id_seq OWNED BY teams_users.id;
 
 
 --
--- Name: test_errors; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE test_errors (
-    id integer NOT NULL,
-    sha character varying,
-    output text
-);
-
-
---
--- Name: test_errors_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE test_errors_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: test_errors_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE test_errors_id_seq OWNED BY test_errors.id;
-
-
---
--- Name: test_results; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE test_results (
-    id integer NOT NULL,
-    test_run_id integer NOT NULL,
-    test_id integer NOT NULL,
-    status test_result_status NOT NULL,
-    different boolean,
-    duration double precision,
-    error_id integer,
-    new_test boolean
-);
-
-
---
--- Name: test_results_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE test_results_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: test_results_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE test_results_id_seq OWNED BY test_results.id;
-
-
---
--- Name: test_runs; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE test_runs (
-    id integer NOT NULL,
-    project_id integer NOT NULL,
-    sha character varying NOT NULL,
-    completed_at timestamp without time zone,
-    results_url character varying,
-    result character varying,
-    duration integer DEFAULT 0 NOT NULL,
-    fail_count integer DEFAULT 0 NOT NULL,
-    pass_count integer DEFAULT 0 NOT NULL,
-    skip_count integer DEFAULT 0 NOT NULL,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    tests text,
-    total_count integer DEFAULT 0 NOT NULL,
-    agent_email character varying,
-    branch character varying,
-    coverage text,
-    covered_percent numeric(6,5) DEFAULT 0 NOT NULL,
-    covered_strength numeric(6,5) DEFAULT 0 NOT NULL,
-    regression_count integer DEFAULT 0 NOT NULL,
-    commit_id integer,
-    user_id integer,
-    compared boolean DEFAULT false NOT NULL
-);
-
-
---
--- Name: test_runs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE test_runs_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: test_runs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE test_runs_id_seq OWNED BY test_runs.id;
-
-
---
--- Name: tests; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE tests (
-    id integer NOT NULL,
-    project_id integer NOT NULL,
-    suite character varying NOT NULL,
-    name text NOT NULL
-);
-
-
---
--- Name: tests_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE tests_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: tests_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE tests_id_seq OWNED BY tests.id;
-
-
---
 -- Name: tickets; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -930,7 +773,8 @@ CREATE TABLE tickets (
     milestone_id integer,
     destroyed_at timestamp without time zone,
     priority character varying DEFAULT 'normal'::character varying NOT NULL,
-    props jsonb DEFAULT '{}'::jsonb
+    props jsonb DEFAULT '{}'::jsonb,
+    due_date date
 );
 
 
@@ -1208,34 +1052,6 @@ ALTER TABLE ONLY teams_users ALTER COLUMN id SET DEFAULT nextval('teams_users_id
 
 
 --
--- Name: test_errors id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY test_errors ALTER COLUMN id SET DEFAULT nextval('test_errors_id_seq'::regclass);
-
-
---
--- Name: test_results id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY test_results ALTER COLUMN id SET DEFAULT nextval('test_results_id_seq'::regclass);
-
-
---
--- Name: test_runs id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY test_runs ALTER COLUMN id SET DEFAULT nextval('test_runs_id_seq'::regclass);
-
-
---
--- Name: tests id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY tests ALTER COLUMN id SET DEFAULT nextval('tests_id_seq'::regclass);
-
-
---
 -- Name: tickets id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1413,54 +1229,6 @@ ALTER TABLE ONLY teams
 
 ALTER TABLE ONLY teams_users
     ADD CONSTRAINT teams_users_pkey PRIMARY KEY (id);
-
-
---
--- Name: test_errors test_errors_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY test_errors
-    ADD CONSTRAINT test_errors_pkey PRIMARY KEY (id);
-
-
---
--- Name: test_results test_results_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY test_results
-    ADD CONSTRAINT test_results_pkey PRIMARY KEY (id);
-
-
---
--- Name: test_results test_results_unique_constraint; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY test_results
-    ADD CONSTRAINT test_results_unique_constraint UNIQUE (test_run_id, test_id);
-
-
---
--- Name: test_runs test_runs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY test_runs
-    ADD CONSTRAINT test_runs_pkey PRIMARY KEY (id);
-
-
---
--- Name: tests tests_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY tests
-    ADD CONSTRAINT tests_pkey PRIMARY KEY (id);
-
-
---
--- Name: tests tests_unique_constraint; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY tests
-    ADD CONSTRAINT tests_unique_constraint UNIQUE (project_id, suite, name);
 
 
 --
@@ -1692,55 +1460,6 @@ CREATE UNIQUE INDEX index_teams_users_on_team_id_and_user_id ON teams_users USIN
 
 
 --
--- Name: index_test_errors_on_sha; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_test_errors_on_sha ON test_errors USING btree (sha);
-
-
---
--- Name: index_test_results_on_test_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_test_results_on_test_id ON test_results USING btree (test_id);
-
-
---
--- Name: index_test_results_on_test_run_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_test_results_on_test_run_id ON test_results USING btree (test_run_id);
-
-
---
--- Name: index_test_runs_on_commit_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_test_runs_on_commit_id ON test_runs USING btree (commit_id);
-
-
---
--- Name: index_test_runs_on_project_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_test_runs_on_project_id ON test_runs USING btree (project_id);
-
-
---
--- Name: index_test_runs_on_sha; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_test_runs_on_sha ON test_runs USING btree (sha);
-
-
---
--- Name: index_tests_on_project_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_tests_on_project_id ON tests USING btree (project_id);
-
-
---
 -- Name: index_tickets_on_destroyed_at; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1844,6 +1563,6 @@ CREATE INDEX index_versions_on_versioned_id_and_versioned_type ON versions USING
 
 SET search_path TO "$user", public;
 
-INSERT INTO schema_migrations (version) VALUES ('20120324185914'), ('20120324202224'), ('20120324230038'), ('20120406185643'), ('20120408155047'), ('20120417175450'), ('20120417175841'), ('20120417190504'), ('20120417195313'), ('20120501230243'), ('20120504143615'), ('20120525013703'), ('20120607124115'), ('20120626140242'), ('20120626150333'), ('20120626151320'), ('20120626152020'), ('20120626152949'), ('20120715230922'), ('20120726231754'), ('20120804003344'), ('20120823025935'), ('20120826022643'), ('20120827190634'), ('20120913020218'), ('20120920023251'), ('20120922010212'), ('20121026014457'), ('20121027160548'), ('20121126005019'), ('20121214025558'), ('20121219202734'), ('20121220031008'), ('20121222170917'), ('20121222223325'), ('20121222223635'), ('20121224212623'), ('20121225175106'), ('20121230173644'), ('20121230174234'), ('20130105200429'), ('20130106184327'), ('20130106185425'), ('20130119203853'), ('20130119204608'), ('20130119211540'), ('20130119212008'), ('20130120182026'), ('20130302205014'), ('20130306023456'), ('20130306023613'), ('20130312224911'), ('20130319003918'), ('20130407195450'), ('20130407200624'), ('20130407220937'), ('20130416020627'), ('20130420151334'), ('20130420155332'), ('20130420172322'), ('20130420174002'), ('20130420174126'), ('20130428005808'), ('20130504014802'), ('20130504135741'), ('20130505144446'), ('20130505162039'), ('20130505212838'), ('20130518224352'), ('20130518224406'), ('20130518224655'), ('20130518224722'), ('20130519163615'), ('20130525192607'), ('20130525222131'), ('20130526024851'), ('20130706141443'), ('20130710233849'), ('20130711004558'), ('20130711013156'), ('20130728191005'), ('20130815232527'), ('20130914152419'), ('20130914155044'), ('20130921141449'), ('20131002005512'), ('20131002015547'), ('20131002145620'), ('20131003014023'), ('20131004015452'), ('20131004185618'), ('20131013185636'), ('20131027214942'), ('20131112010815'), ('20131216014505'), ('20131223194246'), ('20140106212047'), ('20140106212305'), ('20140114014144'), ('20140217150735'), ('20140217160450'), ('20140217195942'), ('20140327020121'), ('20140406183224'), ('20140411214022'), ('20140418133005'), ('20140419152214'), ('20140428023146'), ('20140429000919'), ('20140515174322'), ('20140515200824'), ('20140516005310'), ('20140516012049'), ('20140517012626'), ('20140521014652'), ('20140526155845'), ('20140526180608'), ('20140606232907'), ('20140806233301'), ('20140810224209'), ('20140824194031'), ('20140824194526'), ('20140907013836'), ('20140921201441'), ('20140925021043'), ('20140929004347'), ('20141027194819'), ('20141202004123'), ('20141226171730'), ('20150116153233'), ('20150119154013'), ('20150220215154'), ('20150222205616'), ('20150222214124'), ('20150223013721'), ('20150302153319'), ('20150323004452'), ('20150323011050'), ('20150805180939'), ('20150805233946'), ('20150806032230'), ('20150808161729'), ('20150808161805'), ('20150808162928'), ('20150808192103'), ('20150808193354'), ('20150809132417'), ('20150809201942'), ('20150817232311'), ('20150820023708'), ('20150902005758'), ('20150902010629'), ('20150902010853'), ('20150927014445'), ('20151108221505'), ('20151108223154'), ('20151108233510'), ('20151201042126'), ('20151202005557'), ('20151202011812'), ('20151205204922'), ('20151205214647'), ('20151209004458'), ('20151209030113'), ('20151228183704'), ('20160120145757'), ('20160317140151'), ('20160419230411'), ('20160420000616'), ('20160507135209'), ('20160507135846'), ('20160510233329'), ('20160625203412'), ('20160625221840'), ('20160625230420'), ('20160711170921'), ('20160713204605'), ('20160715173039'), ('20160812233255'), ('20160813001242'), ('20160814024129'), ('20160815001515'), ('20160916191300'), ('20161102012059'), ('20161102012231'), ('20170113164126'), ('20170113223920'), ('20170113224431'), ('20170113225759'), ('20170113230723'), ('20170113230944'), ('20170113231303'), ('20170113232119'), ('20170115003303'), ('20170115003536');
+INSERT INTO schema_migrations (version) VALUES ('20120324185914'), ('20120324202224'), ('20120324230038'), ('20120406185643'), ('20120408155047'), ('20120417175450'), ('20120417175841'), ('20120417190504'), ('20120417195313'), ('20120501230243'), ('20120504143615'), ('20120525013703'), ('20120607124115'), ('20120626140242'), ('20120626150333'), ('20120626151320'), ('20120626152020'), ('20120626152949'), ('20120715230922'), ('20120726231754'), ('20120804003344'), ('20120823025935'), ('20120826022643'), ('20120827190634'), ('20120913020218'), ('20120920023251'), ('20120922010212'), ('20121026014457'), ('20121027160548'), ('20121126005019'), ('20121214025558'), ('20121219202734'), ('20121220031008'), ('20121222170917'), ('20121222223325'), ('20121222223635'), ('20121224212623'), ('20121225175106'), ('20121230173644'), ('20130105200429'), ('20130119203853'), ('20130119204608'), ('20130119211540'), ('20130119212008'), ('20130120182026'), ('20130302205014'), ('20130312224911'), ('20130407195450'), ('20130407200624'), ('20130407220937'), ('20130416020627'), ('20130420151334'), ('20130420155332'), ('20130420172322'), ('20130420174002'), ('20130420174126'), ('20130428005808'), ('20130504014802'), ('20130504135741'), ('20130505144446'), ('20130505162039'), ('20130505212838'), ('20130518224352'), ('20130518224406'), ('20130518224655'), ('20130518224722'), ('20130519163615'), ('20130525192607'), ('20130706141443'), ('20130710233849'), ('20130711004558'), ('20130711013156'), ('20130728191005'), ('20130815232527'), ('20130914155044'), ('20130921141449'), ('20131002005512'), ('20131002015547'), ('20131002145620'), ('20131003014023'), ('20131004015452'), ('20131004185618'), ('20131013185636'), ('20131027214942'), ('20131112010815'), ('20131216014505'), ('20131223194246'), ('20140106212047'), ('20140106212305'), ('20140114014144'), ('20140217150735'), ('20140217160450'), ('20140217195942'), ('20140327020121'), ('20140406183224'), ('20140411214022'), ('20140418133005'), ('20140419152214'), ('20140428023146'), ('20140429000919'), ('20140515174322'), ('20140515200824'), ('20140516005310'), ('20140516012049'), ('20140517012626'), ('20140521014652'), ('20140526155845'), ('20140526180608'), ('20140606232907'), ('20140806233301'), ('20140810224209'), ('20140824194031'), ('20140824194526'), ('20140907013836'), ('20140921201441'), ('20140925021043'), ('20140929004347'), ('20141027194819'), ('20141202004123'), ('20141226171730'), ('20150116153233'), ('20150119154013'), ('20150220215154'), ('20150222205616'), ('20150222214124'), ('20150223013721'), ('20150302153319'), ('20150323004452'), ('20150323011050'), ('20150808192103'), ('20150808193354'), ('20150817232311'), ('20150820023708'), ('20150902005758'), ('20150902010629'), ('20150902010853'), ('20150927014445'), ('20151108221505'), ('20151108223154'), ('20151108233510'), ('20151201042126'), ('20151202005557'), ('20151202011812'), ('20151205204922'), ('20151205214647'), ('20151209004458'), ('20151209030113'), ('20151228183704'), ('20160120145757'), ('20160317140151'), ('20160419230411'), ('20160420000616'), ('20160507135209'), ('20160507135846'), ('20160510233329'), ('20160625203412'), ('20160625221840'), ('20160625230420'), ('20160711170921'), ('20160713204605'), ('20160715173039'), ('20160812233255'), ('20160813001242'), ('20160814024129'), ('20160815001515'), ('20160916191300'), ('20161102012059'), ('20161102012231'), ('20170113164126'), ('20170113223920'), ('20170113224431'), ('20170113225759'), ('20170113230723'), ('20170113230944'), ('20170113231303'), ('20170113232119'), ('20170115003303'), ('20170115003536');
 
 

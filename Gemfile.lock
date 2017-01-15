@@ -18,7 +18,6 @@ PATH
       faraday-http-cache (~> 1.2.2)
       faraday-raise-errors (~> 0.2.0)
       gemoji (~> 2.1.0)
-      googlecharts (~> 1.6.12)
       handlebars_assets (~> 0.23.0)
       houston-devise_ldap_authenticatable
       houston-vestal_versions
@@ -39,7 +38,6 @@ PATH
       rufus-scheduler (~> 3.2.0)
       rugged (~> 0.24.0)
       sass-rails (~> 5.0)
-      simplecov (~> 0.9.1)
       strongbox (~> 0.7.2)
       thor
       uglifier (>= 2.7.2)
@@ -147,7 +145,6 @@ GEM
     gemoji (2.1.0)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
-    googlecharts (1.6.12)
     handlebars_assets (0.23.1)
       execjs (~> 2.0)
       multi_json (~> 1.0)

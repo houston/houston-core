@@ -8,8 +8,6 @@ class ViewMailer < ActionMailer::Base
   helper EmojiHelper
   helper MarkdownHelper
   helper ScoreCardHelper
-  helper StaticChartHelper
-  helper TestRunHelper
   helper TicketHelper
   helper UrlHelper
   helper OembedHelper
@@ -21,7 +19,6 @@ class ViewMailer < ActionMailer::Base
     houston/core/scores.scss
     houston/application/emoji.scss
     houston/application/markdown.scss
-    houston/application/test_run.scss
   }
 
   helper_method :can?, :cannot?, :current_ability, :stylesheets

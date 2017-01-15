@@ -10,11 +10,6 @@ Houston.config do
     "Bug"         => "C64537"
   })
 
-  # TODO: without jenkins configured, tests that cover them should be skipped
-  ci_server :jenkins do
-    host "jenkins.example.com"
-  end
-
   # TODO: without errbit configured, tests that cover them should be skipped
   error_tracker :errbit do
     host "errbit.example.com"

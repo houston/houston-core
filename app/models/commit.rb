@@ -3,7 +3,6 @@ class Commit < ActiveRecord::Base
   belongs_to :project
   belongs_to :parent, foreign_key: :parent_sha, primary_key: :sha, class_name: "Commit"
   has_many :children, foreign_key: :parent_sha, primary_key: :sha, class_name: "Commit"
-  has_one :test_run
   has_and_belongs_to_many :committers, class_name: "User"
   has_and_belongs_to_many :pull_requests, class_name: "Github::PullRequest"
   has_and_belongs_to_many :tickets
@@ -202,12 +201,6 @@ class Commit < ActiveRecord::Base
 
   def associate_committers_with_self
     self.committers = identify_committers
-  end
-
-
-
-  def create_test_run!
-    super(project: project, sha: sha, commit: self)
   end
 
 

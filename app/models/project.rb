@@ -8,8 +8,6 @@ class Project < ActiveRecord::Base
   has_many :tickets, dependent: :destroy, extend: TicketSynchronizer
   has_many :milestones, dependent: :destroy, extend: MilestoneSynchronizer
   has_many :uncompleted_milestones, -> { uncompleted }, class_name: "Milestone"
-  has_many :test_runs, dependent: :destroy
-  has_many :tests, dependent: :destroy
   has_many :deploys
   has_many :pull_requests, class_name: "Github::PullRequest"
   belongs_to :head, class_name: "Commit", foreign_key: "head_sha", primary_key: "sha"
@@ -23,8 +21,7 @@ class Project < ActiveRecord::Base
 
   has_adapter :TicketTracker,
               :VersionControl,
-              :ErrorTracker,
-              :CIServer
+              :ErrorTracker
 
 
 
@@ -238,53 +235,6 @@ class Project < ActiveRecord::Base
   # ------------------------------------------------------------------------- #
 
 
-
-
-
-  # Continuous Integration
-  # ------------------------------------------------------------------------- #
-
-  def ci_server_job_url
-    ci_server.job_url
-  end
-
-  # ------------------------------------------------------------------------- #
-
-
-
-
-
-  def create_a_test_run(params)
-    unless has_ci_server?
-      Rails.logger.warn "[project.create_a_test_run] the project #{name} is not configured to be used with a Continuous Integration server"
-      return
-    end
-
-    payload = PostReceivePayload.new(params)
-
-    unless payload.commit
-      Rails.logger.error "[project.create_a_test_run] no commit found in payload"
-      return
-    end
-
-    if payload.commit == Houston::NULL_GIT_COMMIT
-      Rails.logger.error "[project.create_a_test_run] branch was deleted; not running tests again"
-      return
-    end
-
-    test_run = TestRun.new(
-      project: self,
-      sha: payload.commit,
-      agent_email: payload.agent_email,
-      branch: payload.branch)
-
-    test_run.notify_of_invalid_configuration do
-      test_run.start!
-    end
-
-  rescue ActiveRecord::RecordNotUnique
-    Rails.logger.warn "[hooks:project:post_receive] a test run exists for #{test_run.short_commit}; doing nothing"
-  end
 
 
 

@@ -30,10 +30,6 @@ Houston.register_events {{
 
   "task:committed"                  => params("task").desc("A commit mentioning this task was created"),
   "task:completed"                  => params("task").desc("A task was completed"),
-  "task:reopened"                   => params("task").desc("A task was reopened"),
-
-  "test_run:start"                  => params("test_run").desc("A test run was started on the CI server"),
-  "test_run:complete"               => params("test_run").desc("A test run was completed on the CI server"),
-  "test_run:compared"               => params("test_run").desc("The test results for a commit were compared to the results for its parent")
+  "task:reopened"                   => params("task").desc("A task was reopened")
 
 }}
