@@ -145,7 +145,6 @@ class Ticket < ActiveRecord::Base
   end
 
   def extended_attributes=(value)
-    raise NotImplementedError, "This feature has been deprecated; use props"
   end
 
 
