@@ -1,11 +1,3 @@
-Houston.add_navigation_renderer :pulls do
-  name "Pulls"
-  path { Houston::Application.routes.url_helpers.pulls_path }
-  ability { |ability| ability.can?(:read, Github::PullRequest) }
-end
-
-
-
 Houston.add_project_feature :ideas do
   name "Ideas"
   path { |project| Houston::Application.routes.url_helpers.project_open_ideas_path(project) }

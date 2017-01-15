@@ -203,11 +203,6 @@ Rails.application.routes.draw do
 
 
 
-  # Other
-
-  # Experiments
-  get "pulls", to: "github/pulls#index"
-
   # Tester Bar
   match "tester_bar/:action", :controller => "tester_bar", via: [:get, :post] if Rails.env.development?
 
