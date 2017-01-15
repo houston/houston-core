@@ -124,6 +124,10 @@ class Project < ActiveRecord::Base
   # Ticket Tracking
   # ------------------------------------------------------------------------- #
 
+  def self.with_syncable_ticket_tracker
+    where [ "COALESCE(#{table_name}.props->'#{prop_name}', 'None') NOT IN (?)", %w{None Houston} ]
+  end
+
   def ticket_tracker_project_url
     ticket_tracker.project_url
   end

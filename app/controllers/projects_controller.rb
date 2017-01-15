@@ -57,8 +57,9 @@ class ProjectsController < ApplicationController
         @team.projects.create!(
           name: title,
           slug: name,
-          version_control_name: "Git",
-          props: {"git.location" => "git@github.com:#{repo}.git"})
+          props: {
+            "adapter.versionControl" => "Git",
+            "git.location" => "git@github.com:#{repo}.git"})
       end
     end
 

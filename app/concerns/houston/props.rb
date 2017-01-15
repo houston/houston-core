@@ -54,7 +54,11 @@ module Houston
     end
 
     def update_prop!(prop_name, value)
-      update_column :props, props.merge!(prop_name => value)
+      update_props!(prop_name => value)
+    end
+
+    def update_props!(new_props)
+      update_column :props, props.merge!(new_props)
     end
 
     def props

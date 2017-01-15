@@ -7,7 +7,7 @@ class CommitSynchronizerTest < ActiveSupport::TestCase
   delegate :repo, to: :project
 
   setup do
-    @project = create(:project, version_control_name: "Mock")
+    @project = create(:project, props: {"adapter.versionControl" => "Mock"})
   end
 
 

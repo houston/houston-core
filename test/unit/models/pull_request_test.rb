@@ -15,8 +15,9 @@ class PullRequestTest < ActiveSupport::TestCase
       @project = Project.create!(
         name: "Test",
         slug: "test",
-        version_control_name: "Git",
-        props: {"git.location" => Rails.root.join("test", "data", "bare_repo.git").to_s})
+        props: {
+          "adapter.versionControl" => "Git",
+          "git.location" => Rails.root.join("test", "data", "bare_repo.git").to_s})
 
       @pull_request_payload = {
         "number" => 1,

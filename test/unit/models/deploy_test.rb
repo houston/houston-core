@@ -4,7 +4,7 @@ class DeployTest < ActiveSupport::TestCase
   attr_reader :project, :deploy, :commit, :previous_deploy, :previous_commit
 
   setup do
-    @project = create(:project, version_control_name: "Mock")
+    @project = create(:project, props: {"adapter.versionControl" => "Mock"})
   end
 
 

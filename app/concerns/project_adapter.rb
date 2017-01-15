@@ -55,14 +55,26 @@ module ProjectAdapter
       :"#{name.demodulize}Concern"
     end
 
+    def adapter_name_method
+      :"#{attribute_name}_name"
+    end
+
+    def prop_name
+      "adapter.#{attribute_name.to_s.camelize(:lower)}"
+    end
+
     def define_methods!
       concern = ProjectAdapter.const_set(concern_name, Module.new)
       concern.extend ActiveSupport::Concern
 
       class_methods = concern.const_set(:ClassMethods, Module.new)
       class_methods.module_eval <<-RUBY, __FILE__ , __LINE__ + 1
-        def with_#{attribute_name}
-          where arel_table[:#{attribute_name}_name].not_eq("None")
+        def with_#{attribute_name}(value=nil)
+          if value
+            where [ "COALESCE(projects.props->>'#{prop_name}', 'None') = ?", value ]
+          else
+            where "COALESCE(projects.props->>'#{prop_name}', 'None') != 'None'"
+          end
         end
       RUBY
 
@@ -72,8 +84,12 @@ module ProjectAdapter
           before_update :#{before_update_method}
         end
 
+        def #{adapter_name_method}
+          props["#{prop_name}"] || "None"
+        end
+
         def has_#{attribute_name}?
-          #{attribute_name}_name != "None"
+          #{adapter_name_method} != "None"
         end
 
         def #{validation_method}
@@ -100,7 +116,7 @@ module ProjectAdapter
         end
 
         def #{adapter_method}
-          #{namespace}.adapter(#{attribute_name}_name)
+          #{namespace}.adapter(#{adapter_name_method})
         end
       RUBY
 

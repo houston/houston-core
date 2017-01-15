@@ -9,13 +9,13 @@ class ProjectTest < ActiveSupport::TestCase
 
   context "Validation:" do
     should "validate version control parameters when a version control adapter is specified" do
-      project = Project.new(version_control_name: "Git", props:  {"git.location" => "/wrong/path"})
+      project = Project.new(props: {"adapter.versionControl" => "Git", "git.location" => "/wrong/path"})
       project.valid?
       assert project.errors["git.location"].any?
     end
 
     should "not validate version control parameters if no adapter is specified" do
-      project = Project.new(version_control_name: "None", props:  {"git.location" => "/wrong/path"})
+      project = Project.new(props: {"adapter.versionControl" => "None", "git.location" => "/wrong/path"})
       project.valid?
       refute project.errors["git.location"].any?
     end
@@ -24,22 +24,22 @@ class ProjectTest < ActiveSupport::TestCase
 
   context "Adapters:" do
     should "find the specified built-in version control adapter" do
-      project = Project.new(version_control_name: "None")
+      project = Project.new(props: {"adapter.versionControl" => "None"})
       assert_equal Houston::Adapters::VersionControl::NoneAdapter, project.version_control_adapter
     end
 
     should "find the specified built-in ticket tracking adapter" do
-      project = Project.new(ticket_tracker_name: "None")
+      project = Project.new(props: {"adapter.ticketTracker" => "None"})
       assert_equal Houston::Adapters::TicketTracker::NoneAdapter, project.ticket_tracker_adapter
     end
 
     should "find the specified extension version control adapter" do
-      project = Project.new(version_control_name: "Mock")
+      project = Project.new(props: {"adapter.versionControl" => "Mock"})
       assert_equal Houston::Adapters::VersionControl::MockAdapter, project.version_control_adapter
     end
 
     should "find the specified extension ticket tracking adapter" do
-      project = Project.new(ticket_tracker_name: "Mock")
+      project = Project.new(props: {"adapter.ticketTracker" => "Mock"})
       assert_equal Houston::Adapters::TicketTracker::MockAdapter, project.ticket_tracker_adapter
     end
   end
@@ -52,8 +52,9 @@ class ProjectTest < ActiveSupport::TestCase
       @project = Project.create!(
         name: "Test",
         slug: "test-01",
-        version_control_name: "Git",
-        props:  {"git.location" => "git@github.com:houston/fixture.git"})
+        props: {
+          "adapter.versionControl" => "Git",
+          "git.location" => "git@github.com:houston/fixture.git"})
     end
 
     teardown do
