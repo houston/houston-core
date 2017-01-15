@@ -1,5 +1,6 @@
 class Milestone < ActiveRecord::Base
   extend Nosync
+  include Houston::Props
 
   belongs_to :project
   has_many :tickets
@@ -53,6 +54,13 @@ class Milestone < ActiveRecord::Base
   end
 
 
+
+  def extended_attributes
+    raise NotImplementedError, "This feature has been deprecated; use props"
+  end
+
+  def extended_attributes=(value)
+  end
 
   def start_date
     raise NotImplementedError, "This feature has been deprecated; use props"
