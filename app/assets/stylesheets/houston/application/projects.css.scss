@@ -15,14 +15,12 @@ h2.uncategorized {
   font-weight: normal;
 }
 
-.project-last-build,
 .project-last-commit,
 .project-dependency {
   vertical-align: top !important;
 }
 
-.project-last-commit .commit-summary,
-.project-last-build .test-run-summary {
+.project-last-commit .commit-summary {
   font-size: 12px;
   line-height: normal;
 
@@ -33,20 +31,6 @@ h2.uncategorized {
 
 .friendly-duration {
   white-space: nowrap;
-}
-
-.project-last-build {
-  .test-run-summary {
-    margin-left: 18px;
-  }
-
-  .test-count {
-    white-space: nowrap;
-    display: block;
-    font-weight: 400;
-
-    .count { font-weight: bold; }
-  }
 }
 
 td.project-participants .hidden-text { display: inline-block; }

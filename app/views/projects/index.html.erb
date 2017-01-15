@@ -19,7 +19,6 @@
         <% KeyDependency.all.each do |dependency| %>
           <th class="project-dependency"><%= dependency.name %></th>
         <% end %>
-          <th class="project-last-build">Last Build</th>
 <% end %>
           <th class="project-features">Features</th>
           <td class="project-following"></td>
@@ -61,37 +60,6 @@
               <%= project.props["keyDependency.#{dependency.slug}"] %>
             </td>
           <% end %>
-
-            <td class="project-last-build">
-              <% with_most_recent_test_run(project) do |test_run| %>
-                <div style="white-space: nowrap;">
-                  <% case test_run.result
-                     when "error" %><i class="stoplight yellow"></i><%
-                     when "pass" %><i class="stoplight green"></i><%
-                     when "fail" %><i class="stoplight red"></i><%
-                     end %>
-                  <%= link_to format_time_ago(test_run.created_at),
-                              test_run_url(slug: project.slug, commit: test_run.sha) %>
-                </div>
-                <div class="test-run-summary test-run-<%= test_run.result || "pending" %>">
-                  <% case test_run.result
-                     when nil %>Pending<%
-                     when "aborted" %>Aborted<%
-                     when "error" %>Broken<%
-                     else %>
-                    <% if test_run.pass_count > 0 %>
-                      <span class="test-count test-count-pass"><span class="count"><%= test_run.pass_count %></span> passed</span>
-                    <% end %>
-                    <% if test_run.fail_count > 0 %>
-                      <span class="test-count test-count-fail"><span class="count"><%= test_run.fail_count %></span> failed</span>
-                    <% end %>
-                    <% if test_run.skip_count > 0 %>
-                      <span class="test-count test-count-skip"><span class="count"><%= test_run.skip_count %></span> skipped</span>
-                    <% end %>
-                  <% end %>
-                </div>
-              <% end %>
-            </td>
 
 <% end %>
 

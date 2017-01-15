@@ -9,7 +9,6 @@ class ProjectsController < ApplicationController
     @projects = Project \
       .includes(:head)
       .unretired
-    @test_runs = TestRun.most_recent.index_by(&:project_id)
   end
 
 
