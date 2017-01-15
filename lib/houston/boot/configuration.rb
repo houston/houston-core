@@ -366,8 +366,15 @@ module_function
 
     # Modules
 
-    def use(module_name, args={}, &block)
-      @modules << ::Houston::Module.new(module_name, args, &block)
+    def use(module_name, &block)
+      mod = self.module(module_name)
+      mod ||= ::Houston::Module.new(module_name).tap { |mod| @modules << mod }
+      if mod.accepts_configuration?
+        mod.load_configuration(block)
+      else raise ArgumentError, "#{module_name} does not accept configuration"
+      end if block_given?
+      mod.dependencies.each(&method(:use))
+      mod
     end
     attr_reader :modules
 
@@ -537,14 +544,20 @@ module_function
   class Module
     attr_reader :name
 
-    def initialize(module_name, options={}, &moduleconfig)
+    def initialize(module_name)
       @name = module_name.to_s
+    end
 
-      if namespace.respond_to?(:config) && block_given?
-        namespace.config(&moduleconfig)
-      elsif block_given? && !namespace.respond_to?(:config)
-        raise "#{name} does not accept configuration"
-      end
+    def accepts_configuration?
+      namespace.respond_to?(:config)
+    end
+
+    def load_configuration(moduleconfig)
+      namespace.config(&moduleconfig)
+    end
+
+    def dependencies
+      namespace.respond_to?(:dependencies) ? namespace.dependencies : []
     end
 
     def engine

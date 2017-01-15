@@ -1,4 +1,6 @@
 require "test_helper"
+require "support/houston/module1"
+require "support/houston/module2"
 
 class ConfigurationTest < ActiveSupport::TestCase
 
@@ -95,6 +97,51 @@ class ConfigurationTest < ActiveSupport::TestCase
       assert_raises Houston::Observer::MissingParamError do
         config.on "hooks:example" => "test-action"
       end
+    end
+  end
+
+
+  context "#use" do
+    should "add a module to the list of modules to be loaded" do
+      config.use :module1
+      assert config.uses?(:module1)
+    end
+
+    should "configure the module when passed a block" do
+      config.use :module1 do
+        self.option1 = "value1"
+      end
+      assert_equal "value1", Houston::Module1.config.option1
+    end
+
+    should "raise an exception if passed a block for a module that doesn't accept configuration" do
+      assert_raises ArgumentError do
+        config.use :module2 do
+          # Module2 doesn't accept configuration
+        end
+      end
+    end
+
+    should "not load a module twice" do
+      config.use :module1
+      config.use :module1
+      assert_equal 1, config.modules.length
+    end
+
+    should "combine configuration if a module is used more than once" do
+      config.use :module1 do
+        self.option1 = "value1"
+      end
+      config.use :module1 do
+        self.option2 = "value2"
+      end
+      assert_equal "value1", Houston::Module1.config.option1
+      assert_equal "value2", Houston::Module1.config.option2
+    end
+
+    should "automatically use a module that is declared as a dependency" do
+      config.use :module2
+      assert config.uses? :module1
     end
   end
 
