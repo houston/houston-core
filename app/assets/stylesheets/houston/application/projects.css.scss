@@ -6,27 +6,13 @@
   .project-dependency { display: none; }
 }
 
-@media (max-width:850px) {
-  .project-last-commit { display: none; }
-}
-
 h2.uncategorized {
   font-style: italic;
   font-weight: normal;
 }
 
-.project-last-commit,
 .project-dependency {
   vertical-align: top !important;
-}
-
-.project-last-commit .commit-summary {
-  font-size: 12px;
-  line-height: normal;
-
-  padding: 0 6px;
-  border-left: 3px solid #ccc;
-  margin: 3px 1px;
 }
 
 .friendly-duration {
