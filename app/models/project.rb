@@ -225,23 +225,6 @@ class Project < ActiveRecord::Base
 
 
 
-  # Error Tracker
-  # ------------------------------------------------------------------------- #
-
-  def error_tracker_project_url
-    error_tracker.project_url
-  end
-
-  def error_tracker_error_url(error_id)
-    error_tracker.error_url(error_id)
-  end
-
-  # ------------------------------------------------------------------------- #
-
-
-
-
-
 private
 
   def generate_default_slug
