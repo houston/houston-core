@@ -34,8 +34,6 @@ module_function
       @authentication_strategy = :database
       @authentication_strategy_configuration = {}
       @ticket_tracker_configuration = {}
-      @ci_server_configuration = {}
-      @error_tracker_configuration = {}
     end
 
     def triggers

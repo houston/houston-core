@@ -20,8 +20,7 @@ class Project < ActiveRecord::Base
 
 
   has_adapter :TicketTracker,
-              :VersionControl,
-              :ErrorTracker
+              :VersionControl
 
 
 
