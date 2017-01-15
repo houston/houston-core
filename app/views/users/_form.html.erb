@@ -72,11 +72,13 @@
           <p>Houston has remembered your credentials for:</p>
 
           <ul class="user-credentials">
-            <%= content_tag_for :li, @user.credentials do |user_credentials| %>
-              <span class="user-credentials-service"><%= user_credentials.service %></span>
-              <span class="user-credentials-delete">
-                <a class="btn btn-mini btn-danger delete-user-credentials" href="/credentials/<%= user_credentials.id %>" data-method="delete" data-confirm="Should Houston forget your credentials for <%= user_credentials.service %>?">Delete</a>
-              </span>
+            <% @user.credentials.each do |credentials| %>
+              <%= content_tag :li, id: "user_credentials_#{credentials.id}" do %>
+                <span class="user-credentials-service"><%= credentials.service %></span>
+                <span class="user-credentials-delete">
+                  <a class="btn btn-mini btn-danger delete-user-credentials" href="/credentials/<%= credentials.id %>" data-method="delete" data-confirm="Should Houston forget your credentials for <%= credentials.service %>?">Delete</a>
+                </span>
+              <% end %>
             <% end %>
           </ul>
         </div>

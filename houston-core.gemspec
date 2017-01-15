@@ -48,7 +48,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "progressbar", "~> 0.21.0" # for long migrations
   spec.add_dependency "rack-utf8_sanitizer", "~> 1.3.1"
   spec.add_dependency "redcarpet", "~> 3.3.2"
-  spec.add_dependency "record_tag_helper", "~> 1.0" # to keep using div_for
   spec.add_dependency "strongbox", "~> 0.7.2" # for encrypting user credentials
   spec.add_dependency "thor"
   spec.add_dependency "houston-vestal_versions"
