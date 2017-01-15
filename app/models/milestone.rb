@@ -4,7 +4,7 @@ class Milestone < ActiveRecord::Base
   belongs_to :project
   has_many :tickets
 
-  default_scope { where(destroyed_at: nil).order(:start_date) }
+  default_scope { where(destroyed_at: nil) }
 
   validates :project_id, presence: true
   validates :name, presence: true, uniqueness: {scope: :project_id}
@@ -50,6 +50,15 @@ class Milestone < ActiveRecord::Base
       return nil if remote_id.nil? or remote_id == 0
       where(remote_id: remote_id).pluck(:id).first
     end
+  end
+
+
+
+  def start_date
+    raise NotImplementedError, "This feature has been deprecated; use props"
+  end
+
+  def start_date=(value)
   end
 
 
