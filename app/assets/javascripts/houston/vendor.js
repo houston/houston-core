@@ -10,6 +10,10 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+//= require underscore
+//= require backbone
+//= require handlebars
+//= require d3
 //= require jquery-ui
 //= require bootstrap
 //= require jquery.pjax.js
