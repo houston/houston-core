@@ -2,17 +2,9 @@
   .project-features { display: none; }
 }
 
-@media (max-width:1050px) {
-  .project-dependency { display: none; }
-}
-
 h2.uncategorized {
   font-style: italic;
   font-weight: normal;
-}
-
-.project-dependency {
-  vertical-align: top !important;
 }
 
 .friendly-duration {

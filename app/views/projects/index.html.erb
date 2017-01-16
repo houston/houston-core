@@ -14,11 +14,10 @@
           <td class="table-margin"></td>
           <th class="project-title sort-desc">Title</th>
           <th class="project-team">Team</th>
-<% if current_user.developer? %>
-        <% KeyDependency.all.each do |dependency| %>
-          <th class="project-dependency"><%= dependency.name %></th>
+        <% Houston.project_columns.each do |column| %>
+          <% next unless column.permitted?(current_ability) %>
+          <th><%= column.name %></th>
         <% end %>
-<% end %>
           <th class="project-features">Features</th>
           <td class="project-following"></td>
           <td class="table-margin"></td>
@@ -42,17 +41,10 @@
               <%= project.team && project.team.name %>
             </td>
 
-
-<% if current_user.developer? %>
-
-          <% KeyDependency.all.each do |dependency| %>
-            <td class="project-dependency">
-              <%= project.props["keyDependency.#{dependency.slug}"] %>
-            </td>
+          <% Houston.project_columns.each do |column| %>
+            <% next unless column.permitted?(current_ability) %>
+            <td><%= column.render(project) %></td>
           <% end %>
-
-<% end %>
-
 
             <td class="project-features">
               <%= project.features.map { |feature| link_to_project_feature(project, feature) }.join(", ").html_safe %>

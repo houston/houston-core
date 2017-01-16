@@ -95,6 +95,21 @@ module Houston
 
 
 
+    def add_project_column(slug, &block)
+      dsl = ProjectColumnDsl.new(ProjectColumn.new)
+      dsl.instance_eval(&block)
+      feature = dsl.feature
+      feature.slug = slug
+
+      @project_columns[slug] = feature
+    end
+
+    def project_columns
+      @project_columns.values
+    end
+
+
+
     def registered_event?(event_name)
       events.any? { |event| event.matches? event_name }
     end
@@ -245,6 +260,42 @@ module Houston
       end
     end
 
+    class ProjectColumn
+      attr_accessor :html_block
+      attr_accessor :ability_block
+      attr_accessor :slug
+      attr_accessor :name
+
+      def render(project)
+        html_block.call project
+      end
+
+      def permitted?(ability)
+        return true if ability_block.nil?
+        ability_block.call ability
+      end
+    end
+
+    class ProjectColumnDsl
+      attr_reader :feature
+
+      def initialize(feature)
+        @feature = feature
+      end
+
+      def name(value)
+        feature.name = value
+      end
+
+      def html(&block)
+        feature.html_block = block
+      end
+
+      def ability(&block)
+        feature.ability_block = block
+      end
+    end
+
     class RegisterEventsDsl
       def params(*params)
         RegisterEventDsl.new.params(*params)
@@ -300,6 +351,7 @@ module Houston
   @available_project_features = {}
   @user_options = {}
   @project_options = {}
+  @project_columns = {}
   @project_header_commands = {}
   @events = []
   @event_matchers = []

@@ -22,18 +22,4 @@ class Environment
     nil
   end
 
-
-
-  def dependency_version(dependency)
-    lockfile = read_file("Gemfile.lock")
-    return nil unless lockfile
-
-    dependency = dependency.to_s
-    locked_gems = Bundler::LockfileParser.new(lockfile)
-    spec = locked_gems.specs.find { |spec| spec.name == dependency }
-    spec.version if spec
-  end
-
-
-
 end

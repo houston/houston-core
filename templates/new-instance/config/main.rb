@@ -108,12 +108,6 @@ Houston.config do
   # (Optional) These are the categories you can organize your projects by
   # project_categories "Products", "Services", "Libraries", "Tools"
 
-  # (Optional) What dependencies to list on the Projects page
-  # key_dependencies do
-  #   gem "rails"
-  #   gem "devise"
-  # end
-
   # (Optional) Given a commit, return an array of email addresses
   # This is useful if your team uses pair-programming and attributes
   # commits to pairs by combining email addresses.

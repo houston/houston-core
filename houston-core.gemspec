@@ -66,9 +66,6 @@ Gem::Specification.new do |spec|
   # Used to edit releases' changes and teams' roles
   spec.add_dependency "nested_editor_for"
 
-  # Bundler is a runtime dependency because it used to parse Gemfiles
-  spec.add_dependency "bundler"
-
   # Implements Houston's VersionControl::GitAdapter
   spec.add_dependency "rugged", "~> 0.24.0" # for speaking to Git
 

@@ -368,21 +368,6 @@ module_function
 
 
 
-    #
-
-    def key_dependencies(&block)
-      if block_given?
-        dependencies = Houston::Dependencies.new
-        dependencies.instance_eval(&block)
-        @dependencies = dependencies.values
-      end
-      @dependencies || []
-    end
-
-
-
-
-
     # Actions and Triggers
 
     def action(name, required_params=[], &block)
@@ -546,20 +531,6 @@ module_function
 
     def namespace
       @namespace ||= "houston/#{name}".camelize.constantize
-    end
-  end
-
-
-
-  class Dependencies
-    attr_reader :values
-
-    def initialize
-      @values = []
-    end
-
-    def gem(slug, target_versions=[], options={})
-      @values << options.merge(type: :gem, slug: slug, target_versions: target_versions)
     end
   end
 
