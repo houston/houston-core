@@ -39,15 +39,6 @@ class ApplicationController < ActionController::Base
     render plain: exception.message, status: 401
   end
 
-  rescue_from Github::Unauthorized do |exception|
-    session["user.return_to"] = request.referer
-    if request.xhr?
-      head 401, "X-Credentials" => "Oauth", "Location" => oauth_consumer_path(id: "github")
-    else
-      redirect_to oauth_consumer_path(id: "github")
-    end
-  end
-
   rescue_from ActiveRecord::RecordNotFound do
     render file: Houston.root.join("public/404"), layout: false
   end
