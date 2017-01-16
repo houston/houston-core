@@ -8,6 +8,7 @@ class UserCredentials < ActiveRecord::Base
   encrypt_with_public_key :password, key_pair: Houston.config.keypair
 
   validate :test_connection
+  validates :service, inclusion: { in: Houston.user_credentials_support_services }
 
   belongs_to :user
 
@@ -19,30 +20,8 @@ class UserCredentials < ActiveRecord::Base
     raise MissingCredentials
   end
 
-
-
   def test_connection
-    case service
-    when "Unfuddle" then test_unfuddle_connection
-    when "Github" then test_github_connection
-    else raise NotImplementedError, "The service #{service.inspect} is not recognized"
-    end
-  end
-
-  def test_github_connection
-    password = self.password.decrypt(Houston.config.passphrase)
-    Octokit::Client.new(login: login, password: password).user
-  rescue Octokit::Forbidden
-    errors.add(:base, "Account locked")
-  rescue Octokit::Unauthorized
-    errors.add(:base, "Invalid credentials")
-  end
-
-  def test_unfuddle_connection
-    password = self.password.decrypt(Houston.config.passphrase)
-    Unfuddle.with_config(username: login, password: password) { Unfuddle.instance.get("people/current") }
-  rescue Unfuddle::UnauthorizedError
-    errors.add(:base, "Invalid credentials")
+    Houston.test_connection_to(self)
   end
 
 end
