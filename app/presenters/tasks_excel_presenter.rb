@@ -90,7 +90,7 @@ private
 
   def commit_time(commits)
     return nil if commits.none?
-    commits.sum { |_, message, _| Commit.parse_message(message)[:hours_worked] }
+    commits.sum { |_, message, _| Commit.new(message: message).hours_worked }
   end
 
   def committers(commits)

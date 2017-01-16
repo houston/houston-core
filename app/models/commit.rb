@@ -153,40 +153,6 @@ class Commit < ActiveRecord::Base
 
 
 
-  def self.parse_message(message)
-    tags = []
-    tickets = []
-    attributes = {}
-    hours = 0
-    clean_message = normalize_commit_message(message)
-
-    clean_message.gsub!(TICKET_PATTERN) { tickets << [$1.to_i, $2]; "" }
-    clean_message.gsub!(TIME_PATTERN) { hours = $1.to_f; hours /= 60 if $2.starts_with?("m"); "" }
-    clean_message.gsub!(EXTRA_ATTRIBUTE_PATTERN) { (attributes[$1] ||= []).concat($2.split(",").map(&:strip).reject(&:blank?)); "" }
-    while clean_message.gsub!(TAG_PATTERN) { tags << $1; "" }; end
-
-    {tags: tags, tickets: tickets, hours_worked: hours, attributes: attributes, clean_message: clean_message.strip}
-  end
-
-  def self.normalize_commit_message(message)
-    message = message[/^.*(?=\n\n)/] || message # just take the first paragraph of the commit message
-    message = message.gsub(/[\n\s]+/, ' ') # normalize white space within the message
-  end
-
-
-
-  TAG_PATTERN = /^\s*\[([^\]]+)\]\s*/.freeze
-
-  TICKET_PATTERN = /\[#(\d+)([a-z]*)\]/.freeze
-
-  TIME_PATTERN = /\((\d*\.?\d+) ?(h|hrs?|hours?|m|min|minutes?)\)/.freeze
-
-  EXTRA_ATTRIBUTE_PATTERN = /\{\{([^:\}]+):[ \s]*([^\}]+)\}\}/.freeze
-
-  MERGE_COMMIT_PATTERN = /^Merge\b/.freeze
-
-
-
   def associate_tickets_with_self
     self.tickets = identify_tickets
   end
@@ -205,10 +171,36 @@ class Commit < ActiveRecord::Base
 
 
 
-private
+  TAG_PATTERN = /^\s*\[([^\]]+)\]\s*/.freeze
+  TICKET_PATTERN = /\[#(\d+)([a-z]*)\]/.freeze
+  TIME_PATTERN = /\((\d*\.?\d+) ?(h|hrs?|hours?|m|min|minutes?)\)/.freeze
+  EXTRA_ATTRIBUTE_PATTERN = /\{\{([^:\}]+):[ \s]*([^\}]+)\}\}/.freeze
+  MERGE_COMMIT_PATTERN = /^Merge\b/.freeze
+
+protected
 
   def parsed_message
-    @parsed_message ||= self.class.parse_message(message)
+    @parsed_message ||= parse_message(message)
+  end
+
+  def parse_message(message)
+    tags = []
+    tickets = []
+    attributes = {}
+    hours = 0
+    clean_message = normalize_commit_message(message)
+
+    clean_message.gsub!(TICKET_PATTERN) { tickets << [$1.to_i, $2]; "" }
+    clean_message.gsub!(TIME_PATTERN) { hours = $1.to_f; hours /= 60 if $2.starts_with?("m"); "" }
+    clean_message.gsub!(EXTRA_ATTRIBUTE_PATTERN) { (attributes[$1] ||= []).concat($2.split(",").map(&:strip).reject(&:blank?)); "" }
+    while clean_message.gsub!(TAG_PATTERN) { tags << $1; "" }; end
+
+    {tags: tags, tickets: tickets, hours_worked: hours, attributes: attributes, clean_message: clean_message.strip}
+  end
+
+  def normalize_commit_message(message)
+    message = message[/^.*(?=\n\n)/] || message # just take the first paragraph of the commit message
+    message = message.gsub(/[\n\s]+/, ' ') # normalize white space within the message
   end
 
   def identify_tickets
