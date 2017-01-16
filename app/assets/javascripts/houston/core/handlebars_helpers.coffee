@@ -62,13 +62,6 @@ Handlebars.registerHelper 'radioButton', (object, id, name, value, selectedValue
   input = input + ' checked="checked"' if value == selectedValue
   "#{input} />"
 
-Handlebars.registerHelper 'linkToCommit', (commit)->
-  sha = commit.sha[0...8]
-  if commit.linkTo
-    "<a href=\"#{commit.linkTo}\" target=\"_blank\">#{sha}</a>"
-  else
-    sha
-
 Handlebars.registerHelper 'userAvatar', (size)->
   user = window.user
   gravatarUrl = "https://www.gravatar.com/avatar/#{MD5(user.get('email').toLowerCase().trim())}?r=g&d=retro&s=#{size * 2}"
