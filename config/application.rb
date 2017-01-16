@@ -40,6 +40,8 @@ Bundler.require(*Rails.groups)
 require "coffee_script"
 require "uglifier"
 
+require "houston/params_serializer"
+
 module Houston
   def self.host=(value)
     @host = value
