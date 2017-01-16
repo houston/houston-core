@@ -7,7 +7,7 @@ class CreateHistoricalHeads < ActiveRecord::Migration
       t.timestamps
     end
 
-    Project.unretired.with_version_control.each do |project|
+    Project.unretired.where("projects.version_control_name != 'None'").each do |project|
       puts "Checking #{project.slug}"
       project.repo.refresh!
 

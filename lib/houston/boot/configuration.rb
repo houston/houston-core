@@ -30,10 +30,8 @@ module_function
       end)
       @modules = []
       @gems = []
-      @ticket_types = {}
       @authentication_strategy = :database
       @authentication_strategy_configuration = {}
-      @ticket_tracker_configuration = {}
     end
 
     def triggers
@@ -219,29 +217,9 @@ module_function
       @roles[role_name].push abilities_block
     end
 
-    def ticket_types(*args)
-      if args.any?
-        @ticket_types = args.first
-        @ticket_types.default = "EFEFEF"
-      end
-      @ticket_types.keys
-    end
-
-    def ticket_colors
-      @ticket_types
-    end
 
 
 
-
-
-    def parse_ticket_description(ticket=nil, &block)
-      if block_given?
-        @parse_ticket_description_proc = block
-      elsif ticket
-        @parse_ticket_description_proc.call(ticket) if @parse_ticket_description_proc
-      end
-    end
 
     def identify_committers(commit=nil, &block)
       if block_given?

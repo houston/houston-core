@@ -34,6 +34,16 @@ class ProjectAdapterTest < ActiveSupport::TestCase
         end
       end
 
+      context "test_adapter" do
+        should "return the class of the specified adapter" do
+          project = project_klass.new(name: "None", slug: "none", props: { "adapter.testAdapter" => "None" })
+          assert_equal Houston::Adapters::TestAdapter::NoneAdapter, project.test_adapter_adapter
+
+          project = project_klass.new(name: "Mock", slug: "mock", props: { "adapter.testAdapter" => "Mock" })
+          assert_equal Houston::Adapters::TestAdapter::MockAdapter, project.test_adapter_adapter
+        end
+      end
+
       context "with_test_adapter" do
         setup do
           project_klass.create!(name: "None", slug: "none", props: { "adapter.testAdapter" => "None" })

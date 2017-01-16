@@ -75,7 +75,4 @@ Gem::Specification.new do |spec|
   # For integration with GitHub
   spec.add_dependency "octokit", "~> 4.4.1"
 
-  # Implements Houston's TicketTracker::UnfuddleAdapter (TODO: extract)
-  spec.add_dependency "boblail-unfuddle"
-
 end

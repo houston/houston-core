@@ -83,13 +83,6 @@ Houston.config do
     "slate"         => "6c7a80",
     "silver"        => "a2a38b" )
 
-  # These are the types of tickets
-  ticket_types(
-    "Chore"       => "909090",
-    "Feature"     => "8DB500",
-    "Enhancement" => "3383A8",
-    "Bug"         => "C64537" )
-
 
 
   # General
@@ -214,6 +207,14 @@ Houston.config do
     listen_for(/^(hello|hey|hi),? @houston[\!\.]*$/i) { |e| e.reply "hello" }
   end
   load "conversations/**/*"
+
+  use :tickets do
+    ticket_types(
+      "Chore"       => "909090",
+      "Feature"     => "8DB500",
+      "Enhancement" => "3383A8",
+      "Bug"         => "C64537" )
+  end
 
   # use :feedback
   # use :roadmaps

@@ -1,12 +1,5 @@
 module CommitHelper
 
-  def format_commit(commit)
-    message = commit.summary
-    message = format_with_tickets_linked(commit.project, message)
-    message = mdown(message)
-    message
-  end
-
   def link_to_commit(commit, options={})
     return nil if commit.nil?
 
@@ -32,33 +25,6 @@ module CommitHelper
   def format_sha(sha)
     return "_"*8 if sha.blank?
     sha[0...7]
-  end
-
-  def format_with_tickets_linked(project, message)
-    message = h(message)
-
-    message.gsub! Commit::TICKET_PATTERN do |match|
-      ticket_number = Commit::TICKET_PATTERN.match(match)[1]
-      link_to match, project.ticket_tracker_ticket_url(ticket_number), "target" => "_blank", "rel" => "ticket", "data-number" => ticket_number
-    end
-
-    message.gsub! Commit::EXTRA_ATTRIBUTE_PATTERN do |match|
-      key, value = match.scan(Commit::EXTRA_ATTRIBUTE_PATTERN).first
-      format_extra_attribute(key, value)
-    end
-
-    message.html_safe
-  end
-
-  def format_extra_attribute(key, value)
-    "<span class=\"commit-extra-attribute\"><span class=\"commit-extra-attribute-key\">#{key}</span><span class=\"commit-extra-attribute-value\">#{value}</span></span>"
-  end
-
-  def commit_test_message(commit)
-    message = commit.message[/^.*$/]
-    return message unless @project
-    return message unless @project.repo.respond_to? :commit_url
-    link_to message, @project.repo.commit_url(commit), target: "_blank"
   end
 
 end

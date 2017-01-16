@@ -17,7 +17,6 @@ class Action < ActiveRecord::Base
     Faraday::HTTP::ServerError,
     Faraday::HTTP::Unauthorized,
     Faraday::TimeoutError,
-    Unfuddle::ConnectionError,
     Rugged::NetworkError,
     Octokit::BadGateway,
     Octokit::ServerError,

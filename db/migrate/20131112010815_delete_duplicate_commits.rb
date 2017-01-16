@@ -10,14 +10,12 @@ class DeleteDuplicateCommits < ActiveRecord::Migration
 
     ids_to_delete = []
     commits_by_sha.each do |sha, ids|
-      ticket_ids = select_values("SELECT ticket_id FROM commits_tickets WHERE commit_id IN (#{ids.join(", ")})").uniq
       committer_ids = select_values("SELECT user_id FROM commits_users WHERE commit_id IN (#{ids.join(", ")})").uniq
 
       id_to_keep = ids.shift
       ids_to_delete.concat ids
 
       commit = Commit.find(id_to_keep)
-      commit.ticket_ids = Ticket.where(id: ticket_ids).pluck(:id)
       commit.committer_ids = User.where(id: committer_ids).pluck(:id)
     end
 

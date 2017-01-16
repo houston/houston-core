@@ -108,22 +108,8 @@ $default: rgb(80,80,80);
 <% end %>
 
 
-
 .modal-header { background-color: #73746F; }
 
-
-td.ticket-type { padding: 0 !important; }
-.ticket-type {
-  background: #efefef;
-  width: 6px;
-  min-width: 6px;
-  max-width: 6px;
-
-  &.ticket-type-na { background: transparent; }
-  <% Houston.config.ticket_colors.each do |name, value| %>
-    &.ticket-type-<%= name.downcase %> { background: #<%= value %> !important; }
-  <% end %>
-}
 
 .stoplight {
   display: inline-block;

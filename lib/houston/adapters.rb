@@ -48,5 +48,4 @@ module Houston
   end
 end
 
-require "houston/adapters/ticket_tracker"
 require "houston/adapters/version_control"

@@ -1,10 +1,8 @@
 class PreventHstoreFieldsFromBeingNull < ActiveRecord::Migration
   FIELDS = [
-    [:milestones, :extended_attributes],
     [:projects,   :extended_attributes],
     [:projects,   :view_options],
     [:projects,   :feature_states],
-    [:tickets,    :extended_attributes],
     [:users,      :view_options]
   ]
 

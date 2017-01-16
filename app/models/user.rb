@@ -7,7 +7,6 @@ class User < ActiveRecord::Base
   has_many :roles, class_name: "TeamUser", dependent: :destroy
   has_and_belongs_to_many :teams
   has_many :credentials, :class_name => "UserCredentials", dependent: :destroy
-  has_many :tickets, foreign_key: "reporter_id"
   has_and_belongs_to_many :commits
   belongs_to :current_project, class_name: "Project"
 

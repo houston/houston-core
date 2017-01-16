@@ -8,7 +8,6 @@ class ViewMailer < ActionMailer::Base
   helper EmojiHelper
   helper MarkdownHelper
   helper ScoreCardHelper
-  helper TicketHelper
   helper UrlHelper
   helper OembedHelper
 

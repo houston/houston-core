@@ -1,7 +1,5 @@
 require "test_helper"
 require "support/houston/adapters/version_control/mock_adapter"
-require "support/houston/adapters/ticket_tracker/mock_adapter"
-
 
 class ProjectTest < ActiveSupport::TestCase
   attr_reader :project
@@ -18,29 +16,6 @@ class ProjectTest < ActiveSupport::TestCase
       project = Project.new(props: {"adapter.versionControl" => "None", "git.location" => "/wrong/path"})
       project.valid?
       refute project.errors["git.location"].any?
-    end
-  end
-
-
-  context "Adapters:" do
-    should "find the specified built-in version control adapter" do
-      project = Project.new(props: {"adapter.versionControl" => "None"})
-      assert_equal Houston::Adapters::VersionControl::NoneAdapter, project.version_control_adapter
-    end
-
-    should "find the specified built-in ticket tracking adapter" do
-      project = Project.new(props: {"adapter.ticketTracker" => "None"})
-      assert_equal Houston::Adapters::TicketTracker::NoneAdapter, project.ticket_tracker_adapter
-    end
-
-    should "find the specified extension version control adapter" do
-      project = Project.new(props: {"adapter.versionControl" => "Mock"})
-      assert_equal Houston::Adapters::VersionControl::MockAdapter, project.version_control_adapter
-    end
-
-    should "find the specified extension ticket tracking adapter" do
-      project = Project.new(props: {"adapter.ticketTracker" => "Mock"})
-      assert_equal Houston::Adapters::TicketTracker::MockAdapter, project.ticket_tracker_adapter
     end
   end
 

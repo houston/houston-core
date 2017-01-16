@@ -62,9 +62,6 @@ Handlebars.registerHelper 'radioButton', (object, id, name, value, selectedValue
   input = input + ' checked="checked"' if value == selectedValue
   "#{input} />"
 
-Handlebars.registerHelper 'formatTicketSummary', (message)->
-  App.formatTicketSummary(message)
-
 Handlebars.registerHelper 'linkToCommit', (commit)->
   sha = commit.sha[0...8]
   if commit.linkTo

@@ -52,21 +52,3 @@
     }
   }
 }
-
-#sync_tickets_button {
-
-  &.working {
-    i {
-      -moz-animation: fa-spin 2s infinite linear;
-      -o-animation: fa-spin 2s infinite linear;
-      -webkit-animation: fa-spin 2s infinite linear;
-      animation: fa-spin 2s infinite linear;
-    }
-  }
-
-  .ticket-tracker-last-sync {
-    display: inline-block;
-    .time-date { display: block; font-size:  9px; line-height: 1em; font-weight: 400; }
-    .time-time { display: block; font-size: 14px; line-height: 1em; font-weight: 200; }
-  }
-}

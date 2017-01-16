@@ -26,10 +26,6 @@ Houston.register_events {{
   "github:pull:reviewed:{state}"    => params("pull_request", "review").desc("A pull request was reviewed and {state}"),
 
   "hooks:{type}"                    => params("params").desc("/hooks/{type} was invoked"),
-  "hooks:project:{type}"            => params("project", "params").desc("/hooks/project/:slug/{type} was invoked"),
-
-  "task:committed"                  => params("task").desc("A commit mentioning this task was created"),
-  "task:completed"                  => params("task").desc("A task was completed"),
-  "task:reopened"                   => params("task").desc("A task was reopened")
+  "hooks:project:{type}"            => params("project", "params").desc("/hooks/project/:slug/{type} was invoked")
 
 }}

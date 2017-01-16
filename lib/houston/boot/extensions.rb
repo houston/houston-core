@@ -80,6 +80,21 @@ module Houston
 
 
 
+    def add_project_header_command(slug, &block)
+      dsl = ProjectBannerFeatureDsl.new(ProjectBannerFeature.new)
+      dsl.instance_eval(&block)
+      feature = dsl.feature
+      feature.slug = slug
+
+      @project_header_commands[slug] = feature
+    end
+
+    def project_header_commands
+      @project_header_commands.values
+    end
+
+
+
     def registered_event?(event_name)
       events.any? { |event| event.matches? event_name }
     end
@@ -203,6 +218,33 @@ module Houston
       end
     end
 
+    class ProjectBannerFeature
+      attr_accessor :partial
+      attr_accessor :ability_block
+      attr_accessor :slug
+
+      def permitted?(ability, project)
+        return true if ability_block.nil?
+        ability_block.call ability, project
+      end
+    end
+
+    class ProjectBannerFeatureDsl
+      attr_reader :feature
+
+      def initialize(feature)
+        @feature = feature
+      end
+
+      def partial(value)
+        feature.partial = value
+      end
+
+      def ability(&block)
+        feature.ability_block = block
+      end
+    end
+
     class RegisterEventsDsl
       def params(*params)
         RegisterEventDsl.new.params(*params)
@@ -258,6 +300,7 @@ module Houston
   @available_project_features = {}
   @user_options = {}
   @project_options = {}
+  @project_header_commands = {}
   @events = []
   @event_matchers = []
   @serializers = []

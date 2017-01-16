@@ -52,11 +52,6 @@ window.App =
       else
         match
 
-  formatTicketSummary: (message)->
-    message = Handlebars.Utils.escapeExpression(message)
-    [feature, sentence] = message.split(':', 2)
-    if sentence then "<b>#{feature}:</b>#{sentence}" else message
-
   formatPercent: (number)->
     (number * 100).toFixed(0) + '%'
 
@@ -81,14 +76,6 @@ window.App =
   uploadComplete: (id, args...)->
     $(id).trigger('upload:complete', args)
 
-  showNewTicket: (options)->
-    options ?= {}
-    $banner = $('.project-banner')
-    slug = $banner.attr('data-project-slug')
-    color = $banner.attr('data-project-color')
-    if slug and $('#new_ticket_modal').length is 0
-      new NewTicketModal(_.extend(options, slug: slug, color: color)).show()
-
   oauth: (url)->
     window.location = url
 
@@ -103,17 +90,6 @@ window.App =
   truncatedDate: (date)->
     date = new Date(date.getTime())
     App.truncateDate(date)
-
-  showTicket: (number, project, options)->
-    project = project || $('.project-banner').attr('data-project-slug')
-    return false unless number and project
-
-    options ||= {}
-    options.project = project
-    $context = options.$context || $('#tickets')
-    numbers = _.map($context.find('[rel="ticket"]:visible'), (el)-> +$(el).attr('data-number'))
-    options.ticketNumbers = numbers if numbers.length > 0
-    new TicketModalView(options).show(number)
 
   promptForCredentialsTo: (service)->
     html = """

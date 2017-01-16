@@ -5,14 +5,10 @@ class Commit < ActiveRecord::Base
   has_many :children, foreign_key: :parent_sha, primary_key: :sha, class_name: "Commit"
   has_and_belongs_to_many :committers, class_name: "User"
   has_and_belongs_to_many :pull_requests, class_name: "Github::PullRequest"
-  has_and_belongs_to_many :tickets
-  has_and_belongs_to_many :tasks
 
   default_scope { order(:created_at) }
 
   after_create :associate_committers_with_self
-  after_create :associate_tickets_with_self
-  after_create :associate_tasks_with_self
   after_create { Houston.observer.fire "commit:create", commit: self }
 
   validates :project, presence: true
@@ -112,22 +108,16 @@ class Commit < ActiveRecord::Base
 
 
 
+  def ticket_numbers
+    parsed_message[:tickets]
+  end
+
   def tags
     parsed_message[:tags]
   end
 
   def clean_message
     parsed_message[:clean_message]
-  end
-
-  def ticket_numbers
-    parsed_message[:tickets].map { |(number, task)| number }
-  end
-
-  def ticket_tasks
-    @ticket_tasks ||= parsed_message[:tickets].each_with_object({}) do |(number, task), tasks_by_ticket|
-      (tasks_by_ticket[number] ||= []).push(task) unless task.blank?
-    end
   end
 
   def hours_worked
@@ -153,18 +143,6 @@ class Commit < ActiveRecord::Base
 
 
 
-  def associate_tickets_with_self
-    self.tickets = identify_tickets
-  end
-
-  def associate_tasks_with_self
-    self.tasks = identify_tasks
-
-    tasks.each do |task|
-      task.mark_committed!(self)
-    end
-  end
-
   def associate_committers_with_self
     self.committers = identify_committers
   end
@@ -172,7 +150,7 @@ class Commit < ActiveRecord::Base
 
 
   TAG_PATTERN = /^\s*\[([^\]]+)\]\s*/.freeze
-  TICKET_PATTERN = /\[#(\d+)([a-z]*)\]/.freeze
+  TICKET_PATTERN = /\[#(\d+)\]/.freeze
   TIME_PATTERN = /\((\d*\.?\d+) ?(h|hrs?|hours?|m|min|minutes?)\)/.freeze
   EXTRA_ATTRIBUTE_PATTERN = /\{\{([^:\}]+):[ \s]*([^\}]+)\}\}/.freeze
   MERGE_COMMIT_PATTERN = /^Merge\b/.freeze
@@ -180,17 +158,16 @@ class Commit < ActiveRecord::Base
 protected
 
   def parsed_message
-    @parsed_message ||= parse_message(message)
+    @parsed_message ||= parse_message(normalize_commit_message(message))
   end
 
-  def parse_message(message)
-    tags = []
+  def parse_message(clean_message)
     tickets = []
+    tags = []
     attributes = {}
     hours = 0
-    clean_message = normalize_commit_message(message)
 
-    clean_message.gsub!(TICKET_PATTERN) { tickets << [$1.to_i, $2]; "" }
+    clean_message.gsub!(TICKET_PATTERN) { tickets << $1.to_i; "" }
     clean_message.gsub!(TIME_PATTERN) { hours = $1.to_f; hours /= 60 if $2.starts_with?("m"); "" }
     clean_message.gsub!(EXTRA_ATTRIBUTE_PATTERN) { (attributes[$1] ||= []).concat($2.split(",").map(&:strip).reject(&:blank?)); "" }
     while clean_message.gsub!(TAG_PATTERN) { tags << $1; "" }; end
@@ -201,29 +178,6 @@ protected
   def normalize_commit_message(message)
     message = message[/^.*(?=\n\n)/] || message # just take the first paragraph of the commit message
     message = message.gsub(/[\n\s]+/, ' ') # normalize white space within the message
-  end
-
-  def identify_tickets
-    project.find_or_create_tickets_by_number(ticket_numbers)
-  end
-
-  def identify_tasks
-    tickets.each_with_object([]) do |ticket, tasks|
-
-      # Allow committers who are not using the Tasks feature
-      # to mention a ticket (e.g. [#45]) and record progress
-      # against its only (default) task.
-      #
-      # Note: this behavior is complected with time. Tasks
-      # added _after_ this commit would alter the behavior
-      # of this method if it were run later, retroactively.
-      #
-      letters = ticket_tasks.fetch(ticket.number) do
-        ticket.tasks.count == 1 ? [ticket.tasks.first.letter] : []
-      end
-
-      tasks.concat ticket.tasks.lettered(*letters)
-    end
   end
 
 end

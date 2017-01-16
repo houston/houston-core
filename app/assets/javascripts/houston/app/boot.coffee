@@ -12,15 +12,6 @@ $ ->
 
   $('.project-banner').affix(offset: {top: 70})
 
-  $('body').on 'click', '[rel="ticket"]', (e)->
-    return if $(e.target).closest('a').length > 0
-
-    $link = $(@)
-    number = +$link.attr('data-number')
-    project = $link.attr('data-project')
-    $context = $link.closest('#tickets')
-    e.preventDefault() if App.showTicket(number, project, $context: $context)
-
   isMobile = $('html').hasClass('mobile')
 
   if isMobile
