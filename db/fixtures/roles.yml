@@ -1,9 +1,0 @@
-boblail_maintains_houston:
-  project: houston
-  user: boblail
-  name: Maintainer
-
-kylejones_follows_houston:
-  project: houston
-  user: kylejones
-  name: Follower
