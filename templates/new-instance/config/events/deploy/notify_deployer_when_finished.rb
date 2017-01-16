@@ -6,7 +6,7 @@ Houston.config do
     message = "#{deployer.first_name}, your deploy of #{deploy.project.slug} " <<
               "to #{deploy.environment_name} just finished. " <<
               slack_link_to("Click here to write release notes",
-                Rails.application.routes.url_helpers.new_release_url(
+                Houston::Releases::Engine.routes.url_helpers.new_release_url(
                   deploy.project.to_param,
                   deploy.environment_name,
                   host: Houston.config.host,
