@@ -12,9 +12,6 @@ Rails.application.routes.draw do
 
   scope "teams/:team_id" do
     resources :projects, only: [:new]
-
-    get "projects/new/github", to: "projects#new_from_github", as: :add_github_projects
-    post "projects/new/github", to: "projects#create_from_github"
   end
 
 
@@ -34,7 +31,6 @@ Rails.application.routes.draw do
 
   # Web Hooks
 
-  post "hooks/github", to: "hooks#github"
   post "hooks/:hook", to: "hooks#trigger"
 
   scope "projects/:project_id" do
@@ -42,17 +38,6 @@ Rails.application.routes.draw do
       get "hooks/:hook", to: "project_hooks#trigger", :as => :web_hook
       post "hooks/:hook", to: "project_hooks#trigger"
     end
-  end
-
-
-
-  # Deploys
-
-  scope "projects/:project_id" do
-    get "deploys/:id", to: "deploys#show", :as => :deploy
-
-    post "deploy", to: "deploys#create"
-    post "deploy/:environment", to: "deploys#create"
   end
 
 
@@ -83,12 +68,6 @@ Rails.application.routes.draw do
 
 
   # API
-
-  get "commits", to: "commits#index"
-
-  scope "self" do
-    get "commits", to: "commits#self"
-  end
 
   namespace "api" do
     namespace "v1" do

@@ -5,7 +5,7 @@
 #
 # curl -v -u USERNAME -X POST https://api.github.com/authorizations --data '{"scopes":["repo:status"]}'
 #
-Houston.config.github do
+Houston::Commits.config.github do
   # Access token for houstonbot with scopes: ["repo"]
   access_token ENV["HOUSTON_GITHUB_ACCESS_TOKEN"]
   key ENV["HOUSTON_GITHUB_KEY"]

@@ -2,7 +2,6 @@ class ViewMailer < ActionMailer::Base
   include AbstractController::Callbacks
 
   helper AvatarHelper
-  helper CommitHelper
   helper EmailHelper
   helper EmojiHelper
   helper MarkdownHelper

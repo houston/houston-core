@@ -108,16 +108,6 @@ Houston.config do
   # (Optional) These are the categories you can organize your projects by
   # project_categories "Products", "Services", "Libraries", "Tools"
 
-  # (Optional) Given a commit, return an array of email addresses
-  # This is useful if your team uses pair-programming and attributes
-  # commits to pairs by combining email addresses.
-  # https://robots.thoughtbot.com/how-to-create-github-avatars-for-pairs
-  identify_committers do |commit|
-    emails = [commit.committer_email]
-    emails = ["#{$1}@thoughtbot.com", "#{$2}@thoughtbot.com"] if commit.committer_email =~ /^([a-z\.]*)\+([a-z\.]*)@thoughtbot\.com/
-    emails
-  end
-
 
 
   # Navigation
@@ -186,6 +176,18 @@ Houston.config do
     end
   end
   load "alerts/*"
+
+  use :commits do
+    # (Optional) Given a commit, return an array of email addresses
+    # This is useful if your team uses pair-programming and attributes
+    # commits to pairs by combining email addresses.
+    # https://robots.thoughtbot.com/how-to-create-github-avatars-for-pairs
+    identify_committers do |commit|
+      emails = [commit.committer_email]
+      emails = ["#{$1}@thoughtbot.com", "#{$2}@thoughtbot.com"] if commit.committer_email =~ /^([a-z\.]*)\+([a-z\.]*)@thoughtbot\.com/
+      emails
+    end
+  end
 
   use :ci
 

@@ -53,7 +53,6 @@
       <% if can?(:create, team.projects.build) %>
         <div class="team-projects-add">
           <%= link_to "New Project", new_project_path(team), :class => "btn btn-mini btn-default" %>
-          <%= link_to "Add Projects from GitHub", add_github_projects_path(team), :class => "btn btn-mini btn-default" %>
         </div>
       <% end %>
     </div>

@@ -29,7 +29,6 @@ module_function
         can :manage, Project, team_id: team.id
       end)
       @modules = []
-      @gems = []
       @authentication_strategy = :database
       @authentication_strategy_configuration = {}
     end
@@ -221,18 +220,6 @@ module_function
 
 
 
-    def identify_committers(commit=nil, &block)
-      if block_given?
-        @identify_committers_proc = block
-      elsif commit
-        @identify_committers_proc ? Array(@identify_committers_proc.call(commit)) : [commit.committer_email]
-      end
-    end
-
-
-
-
-
     # Authentication options
 
     def authentication_strategy(strategy=nil, &block)
@@ -298,42 +285,6 @@ module_function
           context.instance_exec(teammate.team, &abilities_block)
         end
       end
-    end
-
-
-
-
-
-    # Adapters
-
-    Houston::Adapters.each do |name, path|
-      module_eval <<-RUBY
-        def #{path}(adapter, &block)
-          raise ArgumentError, "\#{adapter.inspect} is not a #{name}: known #{name} adapters are: \#{Houston::Adapters::#{name}.adapters.map { |name| ":\#{name.downcase}" }.join(", ")}" unless Houston::Adapters::#{name}.adapter?(adapter)
-          raise ArgumentError, "#{path} should be invoked with a block" unless block_given?
-
-          configuration = HashDsl.hash_from_block(block)
-
-          @#{path}_configuration ||= {}
-          @#{path}_configuration[adapter] = configuration
-        end
-
-        def #{path}_configuration(adapter)
-          raise ArgumentError, "\#{adapter.inspect} is not a #{name}: known #{name} adapters are: \#{Houston::Adapters::#{name}.adapters.map { |name| ":\#{name.downcase}" }.join(", ")}"  unless Houston::Adapters::#{name}.adapter?(adapter)
-
-          @#{path}_configuration ||= {}
-          @#{path}_configuration[adapter] || {}
-        end
-      RUBY
-    end
-
-    def github(&block)
-      @github_configuration = HashDsl.hash_from_block(block) if block_given?
-      @github_configuration ||= {}
-    end
-
-    def supports_pull_requests?
-      github[:organization].present?
     end
 
 
@@ -597,10 +548,6 @@ module_function
 
   def root
     config.root
-  end
-
-  def github
-    @github ||= Octokit::Client.new(access_token: config.github[:access_token], auto_paginate: true)
   end
 
 end

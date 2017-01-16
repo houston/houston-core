@@ -4,21 +4,11 @@ class Project < ActiveRecord::Base
   include Houston::Props
 
   belongs_to :team
-  has_many :commits, dependent: :destroy, extend: CommitSynchronizer
-  has_many :deploys
-  has_many :pull_requests, class_name: "Github::PullRequest"
-  belongs_to :head, class_name: "Commit", foreign_key: "head_sha", primary_key: "sha"
 
   before_validation :generate_default_slug, :set_default_color
   validates_presence_of :name, :slug, :color
 
   validates :slug, format: { with: /\A[a-z0-9_\-]+\z/ }
-
-
-
-  has_adapter :VersionControl
-
-
 
   default_scope { order(:name) }
 
@@ -28,16 +18,6 @@ class Project < ActiveRecord::Base
 
   def color_value
     Houston.config.project_colors[color]
-  end
-
-
-
-  def environments
-    @environments ||= deploys.environments.map(&:downcase).uniq
-  end
-
-  def environment(environment_name)
-    Environment.new(self, environment_name)
   end
 
 
@@ -66,6 +46,9 @@ class Project < ActiveRecord::Base
 
 
 
+  # Teammates
+  # ------------------------------------------------------------------------- #
+
   def self.with_feature(feature)
     where ["? = ANY(projects.selected_features)", feature]
   end
@@ -82,7 +65,7 @@ class Project < ActiveRecord::Base
     selected_features.member? feature_slug.to_sym
   end
 
-
+  # ------------------------------------------------------------------------- #
 
 
 
@@ -111,35 +94,6 @@ class Project < ActiveRecord::Base
   end
 
   # ------------------------------------------------------------------------- #
-
-
-
-
-
-  # Version Control
-  # ------------------------------------------------------------------------- #
-
-  alias :repo :version_control
-
-  def version_control_temp_path
-    Houston.root.join("tmp", "#{slug}.git").to_s # <-- the .git here is misleading; could be any kind of VCS
-  end
-
-  def find_commit_by_sha(sha)
-    commits.find_or_create_by_sha(sha)
-  end
-
-  def read_file(path, options={})
-    repo.read_file(path, options)
-  end
-
-  def on_github?
-    repo.is_a? Houston::Adapters::VersionControl::GitAdapter::GithubRepo
-  end
-
-  # ------------------------------------------------------------------------- #
-
-
 
 
 

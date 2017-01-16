@@ -47,5 +47,3 @@ module Houston
     end
   end
 end
-
-require "houston/adapters/version_control"

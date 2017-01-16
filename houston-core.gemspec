@@ -66,10 +66,4 @@ Gem::Specification.new do |spec|
   # Used to edit releases' changes and teams' roles
   spec.add_dependency "nested_editor_for"
 
-  # Implements Houston's VersionControl::GitAdapter
-  spec.add_dependency "rugged", "~> 0.24.0" # for speaking to Git
-
-  # For integration with GitHub
-  spec.add_dependency "octokit", "~> 4.4.1"
-
 end

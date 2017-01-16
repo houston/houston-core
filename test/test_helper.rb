@@ -12,7 +12,6 @@ require_relative "support/config"
 Rails.application.initialize!
 
 require "rails/test_help"
-require "support/houston/adapters/version_control/mock_adapter"
 require "capybara/rails"
 require "minitest/reporters/turn_reporter"
 require "houston/test_helpers"

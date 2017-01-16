@@ -17,10 +17,6 @@ class Action < ActiveRecord::Base
     Faraday::HTTP::ServerError,
     Faraday::HTTP::Unauthorized,
     Faraday::TimeoutError,
-    Rugged::NetworkError,
-    Octokit::BadGateway,
-    Octokit::ServerError,
-    Octokit::InternalServerError,
     Net::OpenTimeout,
     exceptions_wrapping(PG::ConnectionBad),
     exceptions_wrapping(PG::LockNotAvailable)
