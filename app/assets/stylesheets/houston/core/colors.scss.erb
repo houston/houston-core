@@ -8,7 +8,7 @@ $default: rgb(80,80,80);
 .label {
   vertical-align: baseline;
   font-weight: 400;
-  
+
   <% project_colors.each do |name| %>
     &.<%= name %> { background-color: $<%= name %>; }
   <% end %>
@@ -38,9 +38,15 @@ $default: rgb(80,80,80);
   position: relative;
   top: 1px;
   margin-left: 0.25em;
-  
+
   <% project_colors.each do |name| %>
     &.<%= name %> { background-color: $<%= name %>; }
+  <% end %>
+}
+
+.modal {
+  <% project_colors.each do |name| %>
+    &.<%= name %> .modal-header { background-color: $<%= name %>; }
   <% end %>
 }
 
@@ -105,11 +111,6 @@ $default: rgb(80,80,80);
 
 .modal-header { background-color: #73746F; }
 
-<% project_colors.each do |name| %>
-  #new_ticket_modal.<%= name %> {
-    .modal-header { background-color: $<%= name %>; }
-  }
-<% end %>
 
 td.ticket-type { padding: 0 !important; }
 .ticket-type {
@@ -117,7 +118,7 @@ td.ticket-type { padding: 0 !important; }
   width: 6px;
   min-width: 6px;
   max-width: 6px;
-  
+
   &.ticket-type-na { background: transparent; }
   <% Houston.config.ticket_colors.each do |name, value| %>
     &.ticket-type-<%= name.downcase %> { background: #<%= value %> !important; }
@@ -130,7 +131,7 @@ td.ticket-type { padding: 0 !important; }
   height: 9px;
   border-radius: 9px;
   margin-right: 4px;
-  
+
   &.red {           background-color: rgb(181,   0,   0); box-shadow: 0 0 7px rgba(181,   0,   0, 0.75); }  // #b50000
   &.yellow {        background-color: rgb(213, 177,  32); box-shadow: 0 0 7px rgba(213, 177,  32, 0.75); }  // #d5b120
   &.orange {        background-color: rgb(223, 138,  61); box-shadow: 0 0 7px rgba(223, 138,  61, 0.75); }  // #df8a3d
