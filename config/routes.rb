@@ -29,19 +29,6 @@ Rails.application.routes.draw do
 
 
 
-  # Web Hooks
-
-  post "hooks/:hook", to: "hooks#trigger"
-
-  scope "projects/:project_id" do
-    constraints :hook => /[\w\d\-_]+/ do
-      get "hooks/:hook", to: "project_hooks#trigger", :as => :web_hook
-      post "hooks/:hook", to: "project_hooks#trigger"
-    end
-  end
-
-
-
   # Users
 
   constraints :id => /\d+/ do
@@ -150,6 +137,20 @@ Rails.application.routes.draw do
 
   if defined?(Houston::Engine)
     mount Houston::Engine => "/"
+  end
+
+
+
+  # Web Hooks
+  # (at the bottom, allows modules or instances to define specific hooks)
+
+  post "hooks/:hook", to: "hooks#trigger"
+
+  scope "projects/:project_id" do
+    constraints :hook => /[\w\d\-_]+/ do
+      get "hooks/:hook", to: "project_hooks#trigger", :as => :web_hook
+      post "hooks/:hook", to: "project_hooks#trigger"
+    end
   end
 
 end
