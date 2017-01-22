@@ -63,32 +63,34 @@
 
     <% end %>
 
-    <hr />
+    <% if (features = Houston.config.project_features - [:settings]).any? %>
+      <hr />
 
-    <div class="control-group">
-      <label class="control-label">Features</label>
-      <div class="controls" style="padding-top: 5px; padding-bottom: 5px;">
-        <% Houston.config.project_features.each do |feature_slug| %>
-          <% feature = Houston.get_project_feature(feature_slug) %>
-          <label for="selected_features_<%= feature_slug %>">
-            <%= check_box_tag "project[selected_features][]", feature_slug, @project.feature?(feature_slug), id: "selected_features_#{feature_slug}", class: "project-feature" %>
-            <%= feature.name %>
-          </label>
+      <div class="control-group">
+        <label class="control-label">Features</label>
+        <div class="controls" style="padding-top: 5px; padding-bottom: 5px;">
+          <% features.each do |feature_slug| %>
+            <% feature = Houston.get_project_feature(feature_slug) %>
+            <label for="selected_features_<%= feature_slug %>">
+              <%= check_box_tag "project[selected_features][]", feature_slug, @project.feature?(feature_slug), id: "selected_features_#{feature_slug}", class: "project-feature" %>
+              <%= feature.name %>
+            </label>
 
-          <% if feature.fields.any? %>
-            <div class="project-feature-fields" data-feature="<%= feature_slug %>">
-              <%= f.fields_for :props do |f| %>
-                <% feature.fields.each do |form| %>
-                  <div class="project-feature-field">
-                    <%= form.render(self, f) %>
-                  </div>
+            <% if feature.fields.any? %>
+              <div class="project-feature-fields" data-feature="<%= feature_slug %>">
+                <%= f.fields_for :props do |f| %>
+                  <% feature.fields.each do |form| %>
+                    <div class="project-feature-field">
+                      <%= form.render(self, f) %>
+                    </div>
+                  <% end %>
                 <% end %>
-              <% end %>
-            </div>
+              </div>
+            <% end %>
           <% end %>
-        <% end %>
+        </div>
       </div>
-    </div>
+    <% end %>
 
     <%= f.fields_for :props do |f| %>
       <% Houston.project_options.each do |form| %>
