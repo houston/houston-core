@@ -1,20 +1,20 @@
 development:
   adapter: postgresql
   encoding: utf8
-  database: houston_development
+  database: <%= name %>_development
   host: localhost
   prepared_statements: false
 
 test:
   adapter: postgresql
   encoding: utf8
-  database: houston_test
+  database: <%= name %>_test
   host: localhost
   prepared_statements: false
 
 production:
   adapter: postgresql
   encoding: utf8
-  database: houston_production
+  database: <%= name %>_production
   host: localhost
   prepared_statements: false
