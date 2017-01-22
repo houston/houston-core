@@ -1,6 +1,7 @@
 require "rails"
 require "rails/generators"
 require "rails/generators/app_base"
+require "houston/version"
 
 module Generators
   class InstanceGenerator < Rails::Generators::AppBase
@@ -16,7 +17,7 @@ module Generators
       Dir.glob(path + "/**/*").each do |file|
         next if File.directory?(file)
         path = file[path_length..-1]
-        copy_file path, "#{app_path}/#{path}"
+        template path, "#{app_path}/#{path}"
       end
 
       File.chmod 0755, "#{app_path}/bin/rails"

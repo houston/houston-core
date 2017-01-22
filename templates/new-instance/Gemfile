@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
 # Use releases of the Houston gem
-gem "houston-core", "~> 0.5.1"
+gem "houston-core", "~> <%= Houston::VERSION %>"
 
 # Or run on Houston Edge
 # gem "houston-core", github: "houston/houston-core", branch: "master"
