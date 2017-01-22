@@ -53,6 +53,9 @@ gem "therubyracer", platforms: :ruby
 # (see config/environments/development.rb)
 gem "letter_opener", group: :development
 
+# Use Puma as our webserver
+gem "puma", group: :development
+
 # Report exceptions in Houston to Airbrake
 # gem "airbrake"
 
