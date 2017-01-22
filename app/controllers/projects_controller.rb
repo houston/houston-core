@@ -6,9 +6,7 @@ class ProjectsController < ApplicationController
 
   def index
     @title = "Projects"
-    @projects = Project \
-      .includes(:head)
-      .unretired
+    @projects = Project.unretired
   end
 
 
