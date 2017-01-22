@@ -93,5 +93,11 @@ module Houston
       puts message if Rails.env.development?
       Rails.logger.debug message
     end
+
+    def load_seed
+      seed_file = Houston.root.join("db/seeds.rb")
+      load(seed_file) if seed_file.exist?
+    end
+
   end
 end
