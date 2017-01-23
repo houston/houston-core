@@ -12,25 +12,25 @@ gem "houston-core", "~> <%= Houston::VERSION %>"
 # ----------------------------------------------------------------------------
 
 # Merge to-do lists from Exception Reports, Gemnasium, support tickets, etc
-gem "houston-alerts", github: "houston/houston-alerts", branch: "master"
+# gem "houston-alerts", github: "houston/houston-alerts", branch: "master"
 
 # Track and report on test results with Houston
-gem "houston-ci", github: "houston/houston-ci", branch: "master"
+# gem "houston-ci", github: "houston/houston-ci", branch: "master"
 
 # Link projects to version control
-gem "houston-commits", github: "houston/houston-commits", branch: "master"
+# gem "houston-commits", github: "houston/houston-commits", branch: "master"
 
 # Link projects to exception-trackers
-gem "houston-exceptions", github: "houston/houston-exceptions", branch: "master"
+# gem "houston-exceptions", github: "houston/houston-exceptions", branch: "master"
 
 # Generate release notes from commits
-gem "houston-releases", github: "houston/houston-releases", branch: "master"
+# gem "houston-releases", github: "houston/houston-releases", branch: "master"
 
 # Use Houston with Slack!
-gem "houston-slack", github: "houston/houston-slack", branch: "master"
+# gem "houston-slack", github: "houston/houston-slack", branch: "master"
 
 # Link projects to your ticket tracker
-gem "houston-tickets", github: "houston/houston-tickets", branch: "master"
+# gem "houston-tickets", github: "houston/houston-tickets", branch: "master"
 
 # Import, search, and tag customer feedback
 # gem "houston-feedback", github: "houston/houston-feedback", branch: "master"

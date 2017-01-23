@@ -2,10 +2,7 @@
 
 # Load Houston
 require "houston/application"
-
 require_relative "../lib/houston/engine"
-require_relative "../lib/slack_helpers"
-require_relative "../lib/time_helpers"
 
 # Configure Houston
 Houston.config do
@@ -121,9 +118,9 @@ Houston.config do
   # For examples, see config/initializers/add_navigation_renderers.rb
   #
   # These are the menu items that will be shown in Houston
-  navigation       :alerts
-  project_features :tickets,
-                   :releases
+  # navigation       :alerts
+  # project_features :tickets,
+  #                  :releases
 
 
 
@@ -156,64 +153,52 @@ Houston.config do
   #   bundle config local.houston-<MODULE> ~/Projects/houston-<MODULE>
   #
 
-  use :alerts do
+  # use :alerts do
+  #
+  #   # Who can be assigned an Alert?
+  #   workers { User.unretired }
+  #
+  # end
+  # load "alerts/*"
 
-    # Who can be assigned an Alert?
-    workers { User.unretired }
+  # use :commits do
+  #   # (Optional) Given a commit, return an array of email addresses
+  #   # This is useful if your team uses pair-programming and attributes
+  #   # commits to pairs by combining email addresses.
+  #   # https://robots.thoughtbot.com/how-to-create-github-avatars-for-pairs
+  #   identify_committers do |commit|
+  #     emails = [commit.committer_email]
+  #     emails = ["#{$1}@thoughtbot.com", "#{$2}@thoughtbot.com"] if commit.committer_email =~ /^([a-z\.]*)\+([a-z\.]*)@thoughtbot\.com/
+  #     emails
+  #   end
+  # end
 
-    # Set a target-time for the Alert to be closed.
-    # This block sets a goal of closing alerts within
-    # 2 business days.
-    set_deadline do |alert|
-      time_allowed = 2.days
-      if weekend?(alert.opened_at)
-        time_allowed.after(monday_after(alert.opened_at))
-      else
-        deadline = time_allowed.after(alert.opened_at)
-        deadline = 2.days.after(deadline) if weekend?(deadline)
-        deadline
-      end
-    end
-  end
-  load "alerts/*"
+  # use :ci
 
-  use :commits do
-    # (Optional) Given a commit, return an array of email addresses
-    # This is useful if your team uses pair-programming and attributes
-    # commits to pairs by combining email addresses.
-    # https://robots.thoughtbot.com/how-to-create-github-avatars-for-pairs
-    identify_committers do |commit|
-      emails = [commit.committer_email]
-      emails = ["#{$1}@thoughtbot.com", "#{$2}@thoughtbot.com"] if commit.committer_email =~ /^([a-z\.]*)\+([a-z\.]*)@thoughtbot\.com/
-      emails
-    end
-  end
+  # use :releases do
+  #   change_tags( {name: "New Feature", as: "feature", color: "8DB500"},
+  #                {name: "Improvement", as: "improvement", color: "3383A8", aliases: %w{enhancement}},
+  #                {name: "Bugfix", as: "fix", color: "C64537", aliases: %w{bugfix}} )
+  # end
 
-  use :ci
+  # use :slack do
+  #   token ENV["HOUSTON_SLACK_TOKEN"]
+  #   typing_speed 120 # characters/second
+  # end
+  # load "conversations/**/*"
 
-  use :releases do
-    change_tags( {name: "New Feature", as: "feature", color: "8DB500"},
-                 {name: "Improvement", as: "improvement", color: "3383A8", aliases: %w{enhancement}},
-                 {name: "Bugfix", as: "fix", color: "C64537", aliases: %w{bugfix}} )
-  end
-
-  use :slack do
-    token ENV["HOUSTON_SLACK_TOKEN"]
-    typing_speed 120 # characters/second
-    listen_for(/^(hello|hey|hi),? @houston[\!\.]*$/i) { |e| e.reply "hello" }
-  end
-  load "conversations/**/*"
-
-  use :tickets do
-    ticket_types(
-      "Chore"       => "909090",
-      "Feature"     => "8DB500",
-      "Enhancement" => "3383A8",
-      "Bug"         => "C64537" )
-  end
+  # use :tickets do
+  #   ticket_types(
+  #     "Chore"       => "909090",
+  #     "Feature"     => "8DB500",
+  #     "Enhancement" => "3383A8",
+  #     "Bug"         => "C64537" )
+  # end
 
   # use :feedback
+
   # use :roadmaps
+
   # use :scheduler
 
 
