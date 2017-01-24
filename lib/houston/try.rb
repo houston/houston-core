@@ -6,17 +6,19 @@ module Houston
     max_tries = options.fetch :max_tries, 3
     base = options.fetch :base, 2
     ignore = options.fetch :ignore, false
+    rescue_from = [StandardError] if rescue_from.empty?
 
     tries = 1
     begin
       yield tries
     rescue *rescue_from
-      unless (tries += 1) <= max_tries
+      if tries > max_tries
         return if ignore
         raise
       end
       Rails.logger.warn "\e[31m[try] \e[1m#{$!.class}\e[0;31m: #{$!.message}\e[0m"
       sleep base ** tries
+      tries += 1
       retry
     end
   end
