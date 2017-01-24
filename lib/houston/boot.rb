@@ -8,3 +8,4 @@ require "houston/boot/active_record_serializer"
 require "houston/boot/readonly_hash_serializer"
 
 require "houston/adapters"
+require "houston/try"
