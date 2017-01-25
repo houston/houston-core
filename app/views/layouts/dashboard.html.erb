@@ -16,9 +16,12 @@
     <![endif]-->
 
     <!-- Le styles -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+    <% if params[:font].present? -%>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900" rel="stylesheet">
+    <% end -%>
     <%= stylesheet_link_tag "houston/vendor", media: "all" %>
     <%= stylesheet_link_tag "houston/dashboard", media: "all" %>
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
     <%= yield :stylesheets %><%# so that Engines can hook in and add styles %>
 
     <!-- Le fav and touch icons -->
