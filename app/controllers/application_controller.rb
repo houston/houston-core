@@ -5,8 +5,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  before_action :set_current_project
-  after_action :save_current_project
+  around_action :with_current_project
 
 
   delegate :mobile?, to: "browser.device"
@@ -127,15 +126,15 @@ class ApplicationController < ActionController::Base
     @current_project ||= @project || (@default_project_slug ? Project[@default_project_slug] : (current_user && current_user.current_project))
   end
 
-  def set_current_project
+  def with_current_project
     @default_project_slug = params[:project] if params[:project].is_a?(String)
-  end
 
-  def save_current_project
-    return unless current_user && current_project
+    yield
 
-    current_user.current_project_id = current_project.id
-    current_user.save if current_user.current_project_id_changed?
+    if current_user && current_project
+      current_user.current_project_id = current_project.id
+      current_user.save if current_user.current_project_id_changed?
+    end
   end
 
 
