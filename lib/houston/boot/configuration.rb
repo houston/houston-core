@@ -346,29 +346,6 @@ module_function
       time, action_name = extract_trigger_and_action!(args)
       action = assert_action! action_name, &block
       action.assert_required_params! []
-
-      # Passing options to Houston.config.at is deprecated
-      # -------------------------------------------------------------- #
-      if args.first.is_a?(Hash)
-        options = args.first
-        if days_of_the_week = options.delete(:every)
-          Houston.deprecation_notice "Instead of passing every: #{days_of_the_week.inspect} to Houston.config.at, use Houston.config.at [#{days_of_the_week.inspect}, #{time}], ..."
-          time = [days_of_the_week, time]
-        end
-        options.keys.each do |key|
-          Houston.deprecation_notice "#{key.inspect} is an unknown option for Houston.config.at. In the next version of houston-core, Houston.config.at will no longer accept options"
-        end
-      end
-      # -------------------------------------------------------------- #
-
-      # Houston.config.at is deprecated
-      # -------------------------------------------------------------- #
-      value = time
-      wdays, time = value.is_a?(Array) ? value : [:day, value]
-      interval = "#{wdays} at #{time}"
-      Houston.deprecation_notice "Houston.config.at(#{value.inspect}) is deprecated; use Houston.config.every(#{interval.inspect}) instead"
-      # -------------------------------------------------------------- #
-
       triggers.every interval, action_name
       action
     end
@@ -377,17 +354,6 @@ module_function
       interval, action_name = extract_trigger_and_action!(args)
       action = assert_action! action_name, &block
       action.assert_required_params! []
-
-      # Passing options to Houston.config.every is deprecated
-      # -------------------------------------------------------------- #
-      if args.first.is_a?(Hash)
-        options = args.first
-        options.keys.each do |key|
-          Houston.deprecation_notice "#{key.inspect} is an unknown option for Houston.config.at. In the next version of houston-core, Houston.config.at will no longer accept options"
-        end
-      end
-      # -------------------------------------------------------------- #
-
       triggers.every interval, action_name
       action
     end
@@ -398,11 +364,6 @@ module_function
         raise ArgumentError, "Unrecognized trigger: #{args.inspect}"
       end
       return args.shift(2) if args.length >= 2
-      if args.length == 1
-        method_name = caller[0][/in `(.*)'/, 1]
-        Houston.deprecation_notice "<b>Houston.config.#{method_name}(#{args[0].inspect})</b> does not specify an action name\nIn a future version of Houston <b>Houston.config.#{method_name}(#{args[0]} => \"do-something\")</b> will be required", 2
-        return [args[0], "#{args[0]}:#{SecureRandom.hex}"]
-      end
       raise NotImplementedError, "I haven't been programmed to extract trigger and action_name from #{args.inspect}"
     end
 

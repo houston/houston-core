@@ -8,11 +8,6 @@ module Houston
     RUBY
   end
 
-  def self.server?
-    Houston.deprecation_notice "Houston.server? is deprecated; use Houston.running_as_web_server?"
-    running_as_web_server?
-  end
-
   def self.running_as
     @__process_type ||= discover_process_type
   end
