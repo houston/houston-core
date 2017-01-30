@@ -204,11 +204,6 @@ module Houston
         feature.name = value
       end
 
-      def icon(value)
-        Houston.deprecation_notice "The icon option will be removed in Houston 0.9.0"
-        feature.icon = value
-      end
-
       def path(&block)
         feature.path_block = block
       end

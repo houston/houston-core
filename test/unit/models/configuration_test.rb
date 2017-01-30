@@ -41,14 +41,6 @@ class ConfigurationTest < ActiveSupport::TestCase
       end
     end
 
-    should "define an action with a made-up name (for now) when you don't specify an action" do
-      action = nil
-      assert_difference ["config.triggers.count", "config.actions.count"], +1 do
-        action = config.every("10m") { }
-      end
-      assert_match /10m:[a-f0-9]{8,}/, action.name
-    end
-
     should "define a timer for an existing action" do
       assert_difference "config.triggers.count", +1 do
         config.action("test-action") { }
