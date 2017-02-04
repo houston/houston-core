@@ -134,8 +134,8 @@ Houston.config do
   #
   # To create a new module for Houston, run:
   #
-  #   gem install houston-cli
-  #   houston_new_module <MODULE>
+  #
+  #   houston new --module <MODULE>
   #
   # Then add the module to your Gemfile with:
   #
