@@ -14,7 +14,7 @@ module Generators
 
       path = source_paths[0]
       path_length = path.length + 1
-      Dir.glob(path + "/**/*").each do |file|
+      Dir.glob(path + "/**/*", File::FNM_DOTMATCH).each do |file|
         next if File.directory?(file)
         path = file[path_length..-1]
         template path, "#{app_path}/#{path}"
