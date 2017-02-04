@@ -27,7 +27,7 @@ module Generators
     end
 
     def name
-      app_path
+      File.basename(app_path)
     end
 
   end
