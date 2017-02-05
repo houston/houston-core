@@ -10,11 +10,9 @@ module Generators
     argument :app_path, type: :string
 
     def copy_files
-      copy_file ".gitignore", "#{app_path}/.gitignore"
-
       path = source_paths[0]
       path_length = path.length + 1
-      Dir.glob(path + "/**/*").each do |file|
+      Dir.glob(path + "/**/*", File::FNM_DOTMATCH).each do |file|
         next if File.directory?(file)
         path = file[path_length..-1]
         template path, "#{app_path}/#{path}"
@@ -27,7 +25,7 @@ module Generators
     end
 
     def name
-      app_path
+      File.basename(app_path)
     end
 
   end
