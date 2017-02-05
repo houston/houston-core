@@ -41,13 +41,6 @@ Rails.application.routes.draw do
 
 
 
-  # Settings
-
-  get "settings", to: "settings#show"
-  put "settings", to: "settings#update"
-
-
-
   # Uploads
 
   post "uploads/policies", to: "uploads#policies"
