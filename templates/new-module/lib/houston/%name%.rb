@@ -33,7 +33,6 @@ module Houston
   #
   #    add_navigation_renderer :<%= name %> do
   #      name "<%= camelized %>"
-  #      icon "fa-thumbs-up"
   #      path { Houston::<%= camelized %>::Engine.routes.url_helpers.<%= name %>_path }
   #      ability { |ability| ability.can? :read, Project }
   #    end
@@ -43,7 +42,6 @@ module Houston
   #
   #    add_project_feature :<%= name %> do
   #      name "<%= camelized %>"
-  #      icon "fa-thumbs-up"
   #      path { |project| Houston::<%= camelized %>::Engine.routes.url_helpers.project_<%= name %>_path(project) }
   #      ability { |ability, project| ability.can? :read, project }
   #    end
