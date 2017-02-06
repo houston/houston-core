@@ -35,17 +35,6 @@ class User < ActiveRecord::Base
   end
 
 
-  def developer?
-    puts "DEPRECATED: User#developer? will be removed"
-    legacy_role == "Developer"
-  end
-
-  def tester?
-    puts "DEPRECATED: User#tester? will be removed"
-    legacy_role == "Tester"
-  end
-
-
 
   def self.with_primary_email(email)
     email = email.downcase if email
