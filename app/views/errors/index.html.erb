@@ -27,7 +27,7 @@
 <% content_for :javascripts do %>
   <script type="text/javascript">
     $(function() {
-      $('#actions')
+      $('#errors')
         .tablesorter()
         .on('click', '.action-params-short', function() {
           $(this).hide().next().show();
