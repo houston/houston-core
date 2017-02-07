@@ -30,7 +30,7 @@
       $('#errors')
         .tablesorter()
         .on('click', '.action-params-short', function() {
-          $(this).hide().next().show();
+          $(this).next().modal();
         });
     });
     new InfiniteScroll({

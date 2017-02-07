@@ -1,3 +1,8 @@
 .modal-body.noscroll {
   overflow-y: visible;
 }
+.modal-header code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+}

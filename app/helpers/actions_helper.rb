@@ -6,8 +6,14 @@ module ActionsHelper
       <div class="action-params-short">
         <pre>{ #{params.keys.map(&:inspect).join(", ")} }</pre>
       </div>
-      <div class="action-params-full">
-        <pre>#{_add_white_space Houston::ParamsSerializer.new.dump(params)}</pre>
+      <div class="action-params-full modal">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h3><code>{ #{params.keys.map(&:inspect).join(", ")} }</code></h3>
+        </div>
+        <div class="modal-body">
+          <pre>#{_add_white_space Houston::ParamsSerializer.new.dump(params)}</pre>
+        </div>
       </div>
     HTML
   end
