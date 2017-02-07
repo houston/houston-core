@@ -75,6 +75,10 @@ class Action < ActiveRecord::Base
 
 
 
+  def retry!
+    Houston.actions.run name, params
+  end
+
   def exception=(exception)
     self.error = Error.find_or_create_for_exception(exception) if exception
   end

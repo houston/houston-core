@@ -44,4 +44,11 @@ class ActionsController < ApplicationController
     redirect_to "/actions", notice: "#{params[:slug]} is running"
   end
 
+  def retry
+    authorize! :run, Action
+    action = Action.find(params[:id])
+    action.retry!
+    redirect_to "/actions/#{action.name}", notice: "#{action.name} is running"
+  end
+
 end

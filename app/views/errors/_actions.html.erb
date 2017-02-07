@@ -11,6 +11,7 @@
       <% end %>
       <%= action.error.message %>
     </td>
+    <td class="action-retry"><%= button_to "Retry", retry_action_path(action), class: "btn-retry btn btn-mini btn-default" %></td>
     <td class="table-margin"></td>
   </tr>
 <% end %>
