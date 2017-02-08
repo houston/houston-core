@@ -136,4 +136,27 @@ window.App =
           $form.find('.alert').remove()
           Errors.fromResponse(response).renderToAlert().prependTo $form
 
+  confirmDelete: (options)->
+    html = """
+    <div class="modal hide">
+      <form class="form-horizontal" action="#{options.url}" method="POST">
+        <input type="hidden" name="_method" value="delete">
+        <input type="hidden" name="#{App.meta('csrf-param')}" value="#{App.meta('csrf-token')}">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h3>Delete #{options.resource}</h3>
+        </div>
+        <div class="modal-body">
+          #{options.message}
+        </div>
+        <div class="modal-footer">
+          <button data-dismiss="modal" class="btn btn-default">Cancel</button>
+          <button type="submit" class="btn btn-danger">Delete #{options.resource}</button>
+        </div>
+      </form>
+    </div>
+    """
+    $modal = $(html).modal()
+    $modal.on 'hidden', -> $(@).remove()
+
 window.Houston = window.App
