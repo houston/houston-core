@@ -22,11 +22,11 @@
     </div>
 
     <div class="control-group">
-      <%= f.label :color, :class => "control-label" %>
+      <%= f.label :color_name, :class => "control-label" %>
       <div class="controls">
-        <%= f.select :color, [["None", "default"]] + Houston.config.project_colors.keys.map { |name| [name.titleize, name] }, :class => "select_field" %>
+        <%= f.select :color_name, [["None", "default"]] + Houston.config.project_colors.keys.map { |name| [name.titleize, name] }, :class => "select_field" %>
         <% if Project.count > 0 %>
-          (Unused colors: <%= (Houston.config.project_colors.keys - Project.pluck(:color).uniq).map(&:titleize).join(", ") %>)
+          (Unused colors: <%= (Houston.config.project_colors.keys - Project.pluck(:color_name).uniq).map(&:titleize).join(", ") %>)
         <% end %>
       </div>
     </div>

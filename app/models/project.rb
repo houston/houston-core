@@ -6,7 +6,7 @@ class Project < ActiveRecord::Base
   belongs_to :team
 
   before_validation :generate_default_slug, :set_default_color
-  validates_presence_of :name, :slug, :color
+  validates_presence_of :name, :slug, :color_name
 
   validates :slug, format: { with: /\A[a-z0-9_\-]+\z/ }
 
@@ -16,8 +16,8 @@ class Project < ActiveRecord::Base
     slug
   end
 
-  def color_value
-    Houston.config.project_colors[color]
+  def color
+    Houston.config.project_colors[color_name]
   end
 
 
@@ -104,7 +104,7 @@ private
   end
 
   def set_default_color
-    self.color = "default" unless color
+    self.color_name = "default" unless color_name
   end
 
 end
