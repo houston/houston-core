@@ -198,8 +198,8 @@ module_function
 
 
     def project_colors(*args)
-      new_hash = Hash.new(ColorValue.new("505050"))
-      @project_colors = args.first.each_with_object(new_hash) { |(key, hex), hash| hash[key] = ColorValue.new(hex) } if args.any?
+      new_hash = Hash.new(ColorValue.new("default", "505050"))
+      @project_colors = args.first.each_with_object(new_hash) { |(key, hex), hash| hash[key] = ColorValue.new(key, hex) } if args.any?
       @project_colors ||= new_hash
     end
 
@@ -451,14 +451,20 @@ module_function
 
 
   class ColorValue
+    attr_reader :name
     attr_reader :hex
 
-    def initialize(hex)
+    def initialize(name, hex)
+      @name = name
       @hex = hex
     end
 
+    def as_json(options={})
+      name
+    end
+
     def to_s
-      @hex
+      name
     end
 
     def rgb
