@@ -29,8 +29,6 @@ module_function
         can :manage, Project, team_id: team.id
       end)
       @modules = []
-      @authentication_strategy = :database
-      @authentication_strategy_configuration = {}
     end
 
     def triggers
@@ -214,50 +212,6 @@ module_function
 
     def role(role_name, &abilities_block)
       @roles[role_name].push abilities_block
-    end
-
-
-
-
-
-    # Authentication options
-
-    def authentication_strategy(strategy=nil, &block)
-      @authentication_strategy = strategy if strategy
-      if block_given?
-        @authentication_strategy_configuration = HashDsl.hash_from_block(block)
-
-        if authentication_strategy == :ldap
-          %i{host port base field username_builder}.each do |required_field|
-            next if @authentication_strategy_configuration.key?(required_field)
-            raise "#{required_field} is a required field for :ldap authentication"
-          end
-        end
-      end
-
-      @authentication_strategy
-    end
-    attr_reader :authentication_strategy_configuration
-
-    def devise_configuration
-      # Include default devise modules. Others available are:
-      #      :registerable,
-      #      :encryptable,
-      #      :confirmable,
-      #      :lockable,
-      #      :timeoutable,
-      #      :omniauthable
-
-      configuration = [:database_authenticatable]
-      unless Rails.env.test? # <-- !todo: control when custom strategies are employed in the test suite
-        configuration << :ldap_authenticatable if authentication_strategy == :ldap
-      end
-      configuration.concat [
-       :recoverable,
-       :rememberable,
-       :trackable,
-       :validatable,
-       :invitable ]
     end
 
 

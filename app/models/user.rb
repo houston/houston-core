@@ -9,7 +9,12 @@ class User < ActiveRecord::Base
   has_many :credentials, :class_name => "UserCredentials", dependent: :destroy
   belongs_to :current_project, class_name: "Project"
 
-  devise *Houston.config.devise_configuration
+  devise :database_authenticatable,
+         :recoverable,
+         :rememberable,
+         :trackable,
+         :validatable,
+         :invitable
 
   default_scope { order("last_name, first_name") }
 
@@ -98,36 +103,6 @@ class User < ActiveRecord::Base
   def unfuddle_id=(value)
     raise NotImplementedError, "This feature has been deprecated; use props[\"unfuddle.id\"]"
   end
-
-
-
-  # LDAP Overrides
-  # ------------------------------------------------------------------------- #
-
-  def self.find_ldap_entry(ldap_connection, auth_key_value)
-    filter = Net::LDAP::Filter.eq(Houston.config.authentication_strategy_configuration[:field], auth_key_value)
-    ldap_connection.ldap.search(filter: filter).first
-  end
-
-  def self.find_for_ldap_authentication(attributes, entry)
-    email = entry.mail.first.downcase
-    user = where(email: email).first
-    if user && user.username.nil?
-      user.update_column :username, entry[Houston.config.authentication_strategy_configuration[:field]][0].to_s
-    end
-    user
-  end
-
-  def self.create_from_ldap_entry(attributes, entry)
-    create!(
-      email: entry.mail.first.downcase,
-      username: entry[Houston.config.authentication_strategy_configuration[:field]][0].to_s,
-      password: attributes[:password],
-      first_name: entry.givenname.first,
-      last_name: entry.sn.first )
-  end
-
-  # ------------------------------------------------------------------------- #
 
 
 
