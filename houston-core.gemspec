@@ -35,7 +35,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "concurrent-ruby", "~> 1.0.2"
   spec.add_dependency "devise"
   spec.add_dependency "devise_invitable"
-  spec.add_dependency "houston-devise_ldap_authenticatable"
   spec.add_dependency "faraday", "~> 0.9.2"
   spec.add_dependency "faraday-http-cache", "~> 1.2.2"
   spec.add_dependency "faraday-raise-errors", "~> 0.2.0"
