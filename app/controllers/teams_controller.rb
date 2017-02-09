@@ -5,7 +5,7 @@ class TeamsController < ApplicationController
 
   def index
     @title = "Teams"
-    @teams = Team.all.select { |team| can?(:read, team) }
+    @teams = Team.all.preload(:projects, roles: :user).select { |team| can?(:read, team) }
     authorize! :read, :teams
   end
 
