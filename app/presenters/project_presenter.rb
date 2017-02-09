@@ -20,8 +20,8 @@ class ProjectPresenter
       name: project.name,
       slug: project.slug,
       color: {
-        name: project.color,
-        hex: project.color_value.hex },
+        name: project.color.name,
+        hex: project.color.hex },
       props: project.props.to_h }
   end
 

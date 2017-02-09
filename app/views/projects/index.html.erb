@@ -30,7 +30,7 @@
 
             <td class="project-title">
               <% if project.color %>
-                <b class="bubble <%= project.color %>" rel="tooltip" title="<%= project.color.titleize %>" data-tooltip-placement="right"></b>
+                <b class="bubble <%= project.color %>" rel="tooltip" title="<%= project.color.name.titleize %>" data-tooltip-placement="right"></b>
               <% else %>
                 <b class="bubble"></b>
               <% end %>
