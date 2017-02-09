@@ -257,7 +257,7 @@ GEM
     simplecov-json (0.2)
       json
       simplecov
-    slackdown (0.2.1)
+    slackdown (0.2.2)
       kramdown (~> 1.13.2)
     slop (3.6.0)
     sprockets (3.7.1)
