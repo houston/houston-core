@@ -257,20 +257,6 @@ Devise.setup do |config|
   #   manager.default_strategies(:scope => :user).unshift :some_external_strategy
   # end
 
-  # ==> LDAP Configuration
-  if Houston.config.authentication_strategy == :ldap
-    config.ldap_logger = true
-    config.ldap_create_user = true
-    config.ldap_update_password = false
-    config.ldap_configuration = Houston.config.authentication_strategy_configuration.stringify_keys
-    config.ldap_check_group_membership = false
-    # config.ldap_check_attributes = false
-    config.ldap_use_admin_to_bind = false
-    config.ldap_ad_group_check = false
-    config.ldap_auth_username_builder = Houston.config.authentication_strategy_configuration[:username_builder]
-  end
-
-
   # ==> Mountable engine configurations
   # When using Devise inside an engine, let's call it `MyEngine`, and this engine
   # is mountable, there are some extra configurations to be taken into account.

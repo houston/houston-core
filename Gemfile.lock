@@ -17,7 +17,6 @@ PATH
       faraday-raise-errors (~> 0.2.0)
       gemoji (~> 2.1.0)
       handlebars_assets (~> 0.23.0)
-      houston-devise_ldap_authenticatable
       houston-vestal_versions
       kramdown
       neat-rails
@@ -144,9 +143,6 @@ GEM
       sprockets (>= 2.0.0)
       tilt (>= 1.2)
     hashdiff (0.3.2)
-    houston-devise_ldap_authenticatable (0.7.1)
-      devise (>= 3.0.0)
-      net-ldap (~> 0.12.1)
     houston-vestal_versions (2.0.1)
       activerecord (>= 3, < 6)
       activesupport (>= 3, < 6)
@@ -177,7 +173,6 @@ GEM
     multipart-post (2.0.0)
     neat-rails (0.5.0)
     nested_editor_for (0.1.1)
-    net-ldap (0.12.1)
     nio4r (1.2.1)
     nokogiri (1.7.1)
       mini_portile2 (~> 2.1.0)
