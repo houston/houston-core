@@ -1,8 +1,6 @@
-module Oauth
-  class Provider < ActiveRecord::Base
-    self.table_name = "oauth_providers"
-
-    validates :name, :site, :authorize_path, :token_path, :client_id, :client_secret, presence: true
+module Houston
+  class Provider
+    attr_accessor :name, :site, :authorize_path, :token_path, :client_id, :client_secret
 
     def authorize_url(params={})
       client.auth_code.authorize_url params.merge(redirect_uri: oauth2_callback_url)

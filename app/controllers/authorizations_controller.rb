@@ -1,9 +1,17 @@
 class AuthorizationsController < ApplicationController
+  before_action :authenticate_user!
 
   def index
     @title = "Authorizations"
-    authorize! :read, Authorization
-    @authorizations = Authorization.all
+    authorize! :read, :all_authorizations
+    @authorizations = Authorization.all.preload(:user)
+  end
+
+  def mine
+    @title = "My Authorizations"
+    authorize! :create, Authorization
+    @authorizations = current_user.authorizations
+    render action: :index
   end
 
   def new
@@ -13,31 +21,39 @@ class AuthorizationsController < ApplicationController
   end
 
   def create
-    @authorization = Authorization.new(params[:authorization])
+    @authorization = current_user.authorizations.build(params[:authorization])
     authorize! :create, @authorization
 
     if @authorization.save
-      redirect_to authorizations_path
+      redirect_to my_authorizations_path
     else
-      render action: :new
+      render action: :new, error: @authorization.errors.full_messages.to_sentence
     end
   end
 
   def edit
     @title = "Edit Authorization"
     @authorization = Authorization.find params[:id]
-    authorize! :update, Authorization
+    authorize! :update, @authorization
   end
 
   def update
     @authorization = Authorization.find params[:id]
-    authorize! :update, Authorization
+    authorize! :update, @authorization
 
     if @authorization.update_attributes(params[:authorization])
-      redirect_to authorizations_path
+      redirect_to my_authorizations_path
     else
       render action: :new
     end
+  end
+
+  def destroy
+    @authorization = Authorization.find params[:id]
+    authorize! :destroy, @authorization
+
+    @authorization.destroy
+    redirect_to my_authorizations_path, notice: "\"#{@authorization.name}\" revoked"
   end
 
   def grant

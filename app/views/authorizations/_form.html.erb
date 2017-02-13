@@ -12,9 +12,9 @@
 
   <fieldset>
     <div class="control-group">
-      <%= f.label :provider_id, class: "control-label" %>
+      <%= f.label :provider_name, "Provider", class: "control-label" %>
       <div class="controls">
-        <%= f.collection_select :provider_id, Oauth::Provider.all, :id, :name %>
+        <%= f.select :provider_name, Houston.oauth.providers.map(&:name) %>
       </div>
     </div>
 
@@ -28,6 +28,29 @@
 
   <div class="form-actions">
     <%= f.submit nil, class: "btn btn-primary" %>
-    <%= link_to "Cancel", authorizations_path, class: "btn" %>
+    <%= link_to "Cancel", my_authorizations_path, class: "btn" %>
+
+    <% if @authorization.persisted? && can?(:destroy, @authorization) %>
+      <button class="btn btn-delete btn-danger" id="delete_authorization_button">Revoke</button>
+    <% end %>
   </div>
+<% end %>
+
+<% content_for :javascripts do %>
+<script type="text/javascript">
+  $(function() {
+    <% if @authorization.persisted? && can?(:destroy, @authorization) %>
+    $('#delete_authorization_button').click(function(e) {
+      e.preventDefault();
+      App.confirmDelete({
+        resource: 'Authorization',
+        message: 'This will revoke "<%= @authorization.name %>".',
+        url: <%=raw authorization_path(@authorization).to_json %>
+      });
+    });
+    <% end %>
+
+    $('#authorization_name').select();
+  });
+</script>
 <% end %>

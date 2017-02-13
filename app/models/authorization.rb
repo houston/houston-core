@@ -1,8 +1,8 @@
 class Authorization < ActiveRecord::Base
 
-  belongs_to :provider, class_name: "Oauth::Provider"
+  belongs_to :user
 
-  validates :name, :provider_id, presence: true
+  validates :name, :user_id, presence: true
 
   def self.[](name)
     find_by(name: name)
@@ -12,6 +12,10 @@ class Authorization < ActiveRecord::Base
     Authorization.find(params.fetch(:state)).tap do |authorization|
       authorization.get_access_token! params.fetch(:code)
     end
+  end
+
+  def provider
+    Houston.oauth.get_provider(provider_name)
   end
 
   def granted?

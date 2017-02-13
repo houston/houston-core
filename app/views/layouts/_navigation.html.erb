@@ -26,6 +26,10 @@
                 <li><%= link_to "Running Actions", main_app.running_actions_path %></li>
                 <li><%= link_to "Triggers", main_app.triggers_path %></li>
                 <li><%= link_to "Errors", main_app.errors_path %></li>
+                <% if can?(:read, :all_authorizations) %>
+                  <li class="divider"></li>
+                  <li><%= link_to "Authorizations", main_app.authorizations_path %></li>
+                <% end %>
               <% end %>
             </ul>
           </li>
@@ -36,6 +40,11 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= avatar_for(current_user, size: 30) %> <b class="caret"></b></a>
           <ul class="dropdown-menu">
             <li><%= link_to "Settings", main_app.edit_user_path(current_user) %></li>
+            <% if can?(:create, Authorization) %>
+            <li class="divider"></li>
+            <li><%= link_to "My Authorizations", main_app.my_authorizations_path %></li>
+            <% end %>
+            <li class="divider"></li>
             <li><%= link_to "Sign out", main_app.destroy_user_session_path %></li>
           </ul>
         </li>
