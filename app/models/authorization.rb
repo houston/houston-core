@@ -15,7 +15,7 @@ class Authorization < ActiveRecord::Base
   end
 
   def granted?
-    expires_in.present?
+    access_token.present?
   end
 
   def authorize_url(params={})
@@ -36,7 +36,7 @@ class Authorization < ActiveRecord::Base
   end
 
   def expired?
-    return false unless granted?
+    return false if expires_in.nil?
     Time.now >= expires_at
   end
 
@@ -45,7 +45,7 @@ private
   def merge!(new_token)
     self.access_token = new_token.token
     self.expires_in = new_token.expires_in
-    self.expires_at = expires_in.seconds.from_now
+    self.expires_at = expires_in.seconds.from_now if expires_in
     self.refresh_token = new_token.refresh_token if new_token.respond_to?(:refresh_token)
     self.secret = new_token.secret if new_token.respond_to?(:secret)
     save!
