@@ -119,18 +119,19 @@ Rails.application.routes.draw do
 
 
 
-  # Modules
+  # The Instance
+  # (before Modules so that it can override routes in the modules)
 
-  Houston.config.modules.each do |mod|
-    mount mod.engine => "/"
+  if defined?(Houston::Engine)
+    mount Houston::Engine => "/"
   end
 
 
 
-  # The Instance
+  # Modules
 
-  if defined?(Houston::Engine)
-    mount Houston::Engine => "/"
+  Houston.config.modules.each do |mod|
+    mount mod.engine => "/"
   end
 
 
