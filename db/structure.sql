@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.6.1
--- Dumped by pg_dump version 9.6.1
+-- Dumped from database version 9.6.2
+-- Dumped by pg_dump version 9.6.2
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -88,7 +88,6 @@ CREATE TABLE ar_internal_metadata (
 CREATE TABLE authorizations (
     id integer NOT NULL,
     name character varying NOT NULL,
-    provider_id integer,
     scope character varying,
     access_token character varying,
     refresh_token character varying,
@@ -96,7 +95,9 @@ CREATE TABLE authorizations (
     expires_in integer,
     expires_at timestamp without time zone,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    provider_name character varying NOT NULL,
+    user_id integer NOT NULL
 );
 
 
@@ -224,42 +225,6 @@ CREATE SEQUENCE measurements_id_seq
 --
 
 ALTER SEQUENCE measurements_id_seq OWNED BY measurements.id;
-
-
---
--- Name: oauth_providers; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE oauth_providers (
-    id integer NOT NULL,
-    name character varying NOT NULL,
-    site character varying NOT NULL,
-    authorize_path character varying NOT NULL,
-    token_path character varying NOT NULL,
-    client_id character varying NOT NULL,
-    client_secret character varying NOT NULL,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
-);
-
-
---
--- Name: oauth_providers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE oauth_providers_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: oauth_providers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE oauth_providers_id_seq OWNED BY oauth_providers.id;
 
 
 --
@@ -612,13 +577,6 @@ ALTER TABLE ONLY measurements ALTER COLUMN id SET DEFAULT nextval('measurements_
 
 
 --
--- Name: oauth_providers id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY oauth_providers ALTER COLUMN id SET DEFAULT nextval('oauth_providers_id_seq'::regclass);
-
-
---
 -- Name: persistent_triggers id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -723,14 +681,6 @@ ALTER TABLE ONLY measurements
 
 
 --
--- Name: oauth_providers oauth_providers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY oauth_providers
-    ADD CONSTRAINT oauth_providers_pkey PRIMARY KEY (id);
-
-
---
 -- Name: persistent_triggers persistent_triggers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -807,6 +757,13 @@ ALTER TABLE ONLY versions
 --
 
 CREATE INDEX index_actions_on_name ON actions USING btree (name);
+
+
+--
+-- Name: index_authorizations_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_authorizations_on_user_id ON authorizations USING btree (user_id);
 
 
 --
@@ -964,11 +921,19 @@ CREATE INDEX index_versions_on_versioned_id_and_versioned_type ON versions USING
 
 
 --
+-- Name: authorizations fk_rails_4ecef5b8c5; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY authorizations
+    ADD CONSTRAINT fk_rails_4ecef5b8c5 FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
 SET search_path TO "$user", public;
 
-INSERT INTO schema_migrations (version) VALUES ('20120324185914'), ('20120408155047'), ('20120417175450'), ('20120417175841'), ('20120417190504'), ('20120504143615'), ('20120525013703'), ('20120607124115'), ('20120715230922'), ('20120726231754'), ('20120823025935'), ('20120826022643'), ('20120827190634'), ('20120913020218'), ('20120920023251'), ('20120922010212'), ('20121026014457'), ('20121126005019'), ('20121219202734'), ('20121222170917'), ('20121222223325'), ('20121222223635'), ('20121230173644'), ('20130105200429'), ('20130119203853'), ('20130302205014'), ('20130312224911'), ('20130407195450'), ('20130407200624'), ('20130416020627'), ('20130420151334'), ('20130420155332'), ('20130420172322'), ('20130420174002'), ('20130420174126'), ('20130428005808'), ('20130504014802'), ('20130518224406'), ('20130518224722'), ('20130519163615'), ('20130706141443'), ('20130728191005'), ('20130914155044'), ('20131002005512'), ('20131002015547'), ('20131216014505'), ('20140106212047'), ('20140106212305'), ('20140217150735'), ('20140217160450'), ('20140406183224'), ('20140411214022'), ('20140419152214'), ('20140429000919'), ('20140516005310'), ('20140517012626'), ('20140606232907'), ('20140907013836'), ('20140921201441'), ('20141027194819'), ('20141226171730'), ('20150116153233'), ('20150222205616'), ('20150222214124'), ('20150223013721'), ('20150302153319'), ('20151201042126'), ('20151202005557'), ('20151202011812'), ('20151205204922'), ('20151228183704'), ('20160317140151'), ('20160419230411'), ('20160420000616'), ('20160507135209'), ('20160507135846'), ('20160625203412'), ('20160625221840'), ('20160625230420'), ('20160711170921'), ('20160713204605'), ('20160715173039'), ('20160812233255'), ('20160813001242'), ('20160814024129'), ('20160916191300'), ('20161102012059'), ('20161102012231'), ('20170115150643'), ('20170116002818'), ('20170116210225'), ('20170118005958'), ('20170130011016'), ('20170205004452'), ('20170206002030'), ('20170206002732'), ('20170209022159');
+INSERT INTO schema_migrations (version) VALUES ('20120324185914'), ('20120408155047'), ('20120417175450'), ('20120417175841'), ('20120417190504'), ('20120504143615'), ('20120525013703'), ('20120607124115'), ('20120715230922'), ('20120726231754'), ('20120823025935'), ('20120826022643'), ('20120827190634'), ('20120913020218'), ('20120920023251'), ('20120922010212'), ('20121026014457'), ('20121126005019'), ('20121219202734'), ('20121222170917'), ('20121222223325'), ('20121222223635'), ('20121230173644'), ('20130105200429'), ('20130119203853'), ('20130302205014'), ('20130312224911'), ('20130407195450'), ('20130407200624'), ('20130416020627'), ('20130420151334'), ('20130420155332'), ('20130420172322'), ('20130420174002'), ('20130420174126'), ('20130428005808'), ('20130504014802'), ('20130518224406'), ('20130518224722'), ('20130519163615'), ('20130706141443'), ('20130728191005'), ('20130914155044'), ('20131002005512'), ('20131002015547'), ('20131216014505'), ('20140106212047'), ('20140106212305'), ('20140217150735'), ('20140217160450'), ('20140406183224'), ('20140411214022'), ('20140419152214'), ('20140429000919'), ('20140516005310'), ('20140517012626'), ('20140606232907'), ('20140907013836'), ('20140921201441'), ('20141027194819'), ('20141226171730'), ('20150116153233'), ('20150222205616'), ('20150222214124'), ('20150223013721'), ('20150302153319'), ('20151201042126'), ('20151202005557'), ('20151202011812'), ('20151205204922'), ('20151228183704'), ('20160317140151'), ('20160419230411'), ('20160420000616'), ('20160507135209'), ('20160507135846'), ('20160625203412'), ('20160625221840'), ('20160625230420'), ('20160711170921'), ('20160713204605'), ('20160715173039'), ('20160812233255'), ('20160813001242'), ('20160814024129'), ('20160916191300'), ('20161102012059'), ('20161102012231'), ('20170115150643'), ('20170116002818'), ('20170116210225'), ('20170118005958'), ('20170130011016'), ('20170205004452'), ('20170206002030'), ('20170206002732'), ('20170209022159'), ('20170213001453');
 
 

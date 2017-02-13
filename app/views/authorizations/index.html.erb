@@ -1,6 +1,6 @@
 <% content_for :title do %>
 <h1 class="project-banner space-below">
-  Authorizations
+  <%= @title %>
 
   <%= link_to "New Authorization", new_authorization_path, class: "btn btn-primary" if can?(:create, Authorization) %>
 </h1>
@@ -11,6 +11,8 @@
     <thead>
       <tr>
         <td class="table-margin"></td>
+        <td class="user-avatar"></td>
+        <th class="user-name sort-desc">User</th>
         <th class="authorization-name">Name</th>
         <th class="authorization-name">Provider</th>
         <th class="authorization-status">Satus</th>
@@ -21,6 +23,11 @@
       <% @authorizations.each do |authorization| %>
         <tr class="authorization">
           <td class="table-margin"></td>
+          <td class="user-avatar"><%= avatar_for(authorization.user, size: 32) %></td>
+          <td class="user-name">
+            <span class="first-name"><%= authorization.user.first_name %></span>
+            <span class="last-name"><%= authorization.user.last_name %></span>
+          </td>
           <td class="authorization-name"><%= link_to authorization.name, edit_authorization_path(authorization) %></td>
           <td class="authorization-provider"><%= authorization.provider.name %></td>
           <td class="authorization-status">
