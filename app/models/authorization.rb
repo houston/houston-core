@@ -1,4 +1,5 @@
 class Authorization < ActiveRecord::Base
+  include Houston::Props
 
   belongs_to :user
 
