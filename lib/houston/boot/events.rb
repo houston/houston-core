@@ -5,6 +5,9 @@ Houston.register_events {{
   "daemon:{type}:stop"              => desc("Daemon {type} has stopped"),
 
   "hooks:{type}"                    => params("params").desc("/hooks/{type} was invoked"),
-  "hooks:project:{type}"            => params("project", "params").desc("/hooks/project/:slug/{type} was invoked")
+  "hooks:project:{type}"            => params("project", "params").desc("/hooks/project/:slug/{type} was invoked"),
+
+  "authorization:grant"             => params("authorization").desc("Authorization was granted"),
+  "authorization:revoke"            => params("authorization").desc("Authorization was revoked")
 
 }}
