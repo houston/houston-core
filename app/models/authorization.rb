@@ -45,6 +45,10 @@ class Authorization < ActiveRecord::Base
     Time.now >= expires_at
   end
 
+  def url
+    "https://#{Houston.config.host}/auth/#{id}"
+  end
+
 private
 
   def merge!(new_token)

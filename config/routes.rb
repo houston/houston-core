@@ -72,6 +72,7 @@ Rails.application.routes.draw do
   patch "authorizations/:id" => "authorizations#update", as: :authorization
   delete "authorizations/:id" => "authorizations#destroy"
 
+  get "auth/:id" => "authorizations#grant"
   get "authorizations/:id/grant" => "authorizations#grant", as: :grant_authorization
   get "authorizations/:id/granted" => "authorizations#granted", as: :authorization_granted
   get "oauth2/callback" => "authorizations#oauth2_callback", as: :oauth2_callback
