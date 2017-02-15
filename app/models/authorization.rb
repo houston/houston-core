@@ -5,6 +5,11 @@ class Authorization < ActiveRecord::Base
 
   validates :name, :user_id, presence: true
 
+  after_destroy do
+    next unless granted?
+    Houston.observer.fire "authorization:revoke", authorization: self
+  end
+
   def self.[](name)
     find_by(name: name)
   end
@@ -58,6 +63,8 @@ private
     self.refresh_token = new_token.refresh_token if new_token.respond_to?(:refresh_token)
     self.secret = new_token.secret if new_token.respond_to?(:secret)
     save!
+
+    Houston.observer.fire "authorization:grant", authorization: self
   end
 
 end
