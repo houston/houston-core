@@ -59,6 +59,31 @@ class PersistentTriggerTest < ActiveSupport::TestCase
   end
 
 
+  context "#destroy" do
+    setup do
+      @user = users(:boblail)
+      Houston.config.actions.define("test-action") { }
+      @trigger = @user.triggers.every("day at 2:30pm", "test-action", example: 5).tap(&:save!)
+    end
+
+    teardown do
+      Houston.config.actions.undefine("test-action")
+    end
+
+    should "remove the trigger from the database" do
+      assert_difference "PersistentTrigger.count", -1 do
+        @trigger.destroy
+      end
+    end
+
+    should "unregister the trigger" do
+      assert_difference "Houston.config.triggers.count", -1 do
+        @trigger.destroy
+      end
+    end
+  end
+
+
   context ".load_all" do
     setup do
       PersistentTrigger.all.insert({
