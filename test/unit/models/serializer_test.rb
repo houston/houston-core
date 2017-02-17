@@ -38,6 +38,20 @@ class SerializerTest < ActiveSupport::TestCase
       like: /"class":"Project","attributes":{.*},"\^S":"Houston::ActiveRecordSerializer"/)
   end
 
+  should "not explode when trying to serialize an object with an attribute that isn't a column" do
+    serialized_project = '{"class":"Project","attributes":{"id":18,"name":"Example","missing_column":true},"^S":"Houston::ActiveRecordSerializer"}'
+    project_with_bad_attribute = load(serialized_project)
+    refute_raises do
+      dump(project_with_bad_attribute)
+    end
+  end
+
+  should "serialize serialized attributes correctly" do
+    action = Action.new(params: {key: "value"})
+    assert_serializes(action,
+      like: /"params":"{\\\":key\\\":\\\"value\\\"}"/)
+  end
+
   should "work even when you set a value" do
     project = Project.create!(name: "Test", slug: "test")
     project.updated_at = 1.week.after(project.updated_at) # ActiveSupport::TimeWithZone
@@ -58,7 +72,11 @@ private
       assert_match expectation, serialized, "The object wasn't serialized as expected"
     end
 
-    assert_equal object, load(serialized), "The object wasn't deserialized as expected"
+    if object.is_a?(ActiveRecord::Base)
+      assert_equal object.attributes, load(serialized)&.attributes, "The object wasn't deserialized as expected"
+    else
+      assert_equal object, load(serialized), "The object wasn't deserialized as expected"
+    end
   end
 
   def load(string)
