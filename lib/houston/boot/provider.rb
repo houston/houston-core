@@ -26,7 +26,7 @@ module Houston
     end
 
     def oauth2_callback_url
-      "http://#{Houston.host}/oauth2/callback"
+      "https://#{Houston.host}/oauth2/callback"
     end
 
   end
