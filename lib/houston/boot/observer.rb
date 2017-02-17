@@ -23,7 +23,12 @@ module Houston
       nil
     end
 
-    def off(callback)
+    def off(callback, &block)
+      if block_given?
+        event = callback
+        callback = observers_of(event).detect { |callback| callback.block == block }
+        return nil unless callback
+      end
       observers_of(callback.event).delete callback
       nil
     end
@@ -91,7 +96,7 @@ module Houston
 
 
     class Callback
-      attr_reader :observer, :event
+      attr_reader :observer, :event, :block
 
       def initialize(observer, event, options, block)
         @observer = observer
@@ -113,7 +118,7 @@ module Houston
       def call(*args)
         Houston.async(invoke_async?) do
           begin
-            @block.call(*args)
+            block.call(*args)
 
           rescue Exception # rescues StandardError by default; but we want to rescue and report all errors
             raise if raise_exceptions?
