@@ -81,6 +81,22 @@ class ObserverTest < ActiveSupport::TestCase
   end
 
 
+  context "Houston.observer.off" do
+    should "unregister a callback" do
+      calls = 0
+      callback = Proc.new { calls += 1 }
+      assert_difference "calls", +1 do
+        Houston.observer.on "test0", &callback
+        Houston.observer.fire "test0"
+      end
+      assert_no_difference "calls" do
+        Houston.observer.off "test0", &callback
+        Houston.observer.fire "test0"
+      end
+    end
+  end
+
+
   context "callback params" do
     should "be retrievable by array-style access" do
       callback_params = :not_called
