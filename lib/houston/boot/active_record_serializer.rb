@@ -7,13 +7,9 @@ module Houston
 
     def pack(record)
       model = record.class
+      type_caster = model.type_caster
       normal_attributes = record.attributes.each_with_object({}) do |(attribute, value), attributes|
-        column = model.column_for_attribute(attribute)
-
-        # Don't serialize the attribute if the column was deleted
-        next if column.is_a?(ActiveRecord::ConnectionAdapters::NullColumn)
-
-        attributes[attribute] = model.connection.type_cast_from_column(column, value)
+        attributes[attribute] = type_caster.type_cast_for_database(attribute, value)
       end
       { "class" => model.name, "attributes" => normal_attributes }
     end
