@@ -143,23 +143,6 @@ module Houston
 
 
 
-    def accept_credentials_for(service, &test_connection_proc)
-      @credentials_services[service] = test_connection_proc
-    end
-
-    def user_credentials_support_services
-      @credentials_services.values
-    end
-
-    def test_connection_to(credentials)
-      login = credentials.login
-      password = credentials.password.decrypt(Houston.config.passphrase)
-      errors = credentials.errors
-      @credentials_services[credentials.service].call(login, password, errors)
-    end
-
-
-
   private
 
     class GlobalFeature
@@ -368,6 +351,5 @@ module Houston
   @events = []
   @event_matchers = []
   @serializers = []
-  @credentials_services = {}
   extend Houston::Extensions
 end

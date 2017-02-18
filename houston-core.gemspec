@@ -49,7 +49,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "premailer", "~> 1.8.6"
   spec.add_dependency "progressbar", "~> 0.21.0" # for long migrations
   spec.add_dependency "rack-utf8_sanitizer", "~> 1.3.1"
-  spec.add_dependency "strongbox", "~> 0.7.2" # for encrypting user credentials
   spec.add_dependency "thor"
   spec.add_dependency "houston-vestal_versions"
 

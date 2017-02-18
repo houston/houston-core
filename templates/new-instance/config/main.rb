@@ -36,16 +36,6 @@ Houston.config do
   # Range for password length. Default is 8..128.
   # password_length 8..128
 
-  # This is the passphrase you used when generating config/keypair.pem
-  # Houston will use the keypair to encrypt and decrypt sensitive data
-  # To generate a new keypair.pem, execute these commands:
-  #
-  #   openssl genrsa -des3 -out config/private.pem 2048
-  #   openssl rsa -in config/private.pem -out config/public.pem -outform PEM -pubout
-  #   cat config/private.pem config/public.pem >> config/keypair.pem
-  #
-  passphrase ENV["HOUSTON_PASSPHRASE"]
-
   # Enter your Google Analytics Tracking ID to add Google's
   # Universal Analytics script to every page.
   google_analytics do
