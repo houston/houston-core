@@ -1,4 +1,5 @@
 module Houston::<%= camelized %>
   class ApplicationController < ::ApplicationController
+    layout "houston/<%= name %>/application"
   end
 end
