@@ -117,6 +117,11 @@ module_function
       @host ||= nil
     end
 
+    def secret_key_base(*args)
+      return Houston::Application.config.secret_key_base if args.none?
+      Houston::Application.config.secret_key_base = args.first
+    end
+
     def time_zone(*args)
       return Rails.application.config.time_zone if args.none?
       Rails.application.config.time_zone = args.first
