@@ -1,5 +1,3 @@
-root = File.expand_path(File.join(File.dirname(__FILE__), "../.."))
-require File.join(root, "lib/houston/boot/configuration")
 require "shellwords"
 
 namespace :keypair do
