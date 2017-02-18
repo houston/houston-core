@@ -302,15 +302,6 @@ module_function
       action
     end
 
-    # DEPRECATED
-    def at(*args, &block)
-      time, action_name = extract_trigger_and_action!(args)
-      action = assert_action! action_name, &block
-      action.assert_required_params! []
-      triggers.every interval, action_name
-      action
-    end
-
     def every(*args, &block)
       interval, action_name = extract_trigger_and_action!(args)
       action = assert_action! action_name, &block

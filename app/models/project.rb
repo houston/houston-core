@@ -22,24 +22,6 @@ class Project < ActiveRecord::Base
 
 
 
-  def extended_attributes
-    raise NotImplementedError, "This feature has been deprecated; use props"
-  end
-
-  def extended_attributes=(value)
-    raise NotImplementedError, "This feature has been deprecated; use props"
-  end
-
-  def view_options
-    raise NotImplementedError, "This feature has been deprecated; use props"
-  end
-
-  def view_options=(value)
-    raise NotImplementedError, "This feature has been deprecated; use props"
-  end
-
-
-
   def self.[](slug)
     find_by_slug(slug)
   end
@@ -86,11 +68,6 @@ class Project < ActiveRecord::Base
   def teammates
     return User.none if team.nil?
     team.users
-  end
-
-  def followers # <-- redefine followers to be everyone who participates in or follows the project
-    puts "DEPRECATED: Project#followers is deprecated; use Project#teammates instead"
-    teammates
   end
 
   # ------------------------------------------------------------------------- #
