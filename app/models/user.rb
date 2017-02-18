@@ -90,22 +90,6 @@ class User < ActiveRecord::Base
     Role.where(user: self).to_projects.unretired
   end
 
-  def view_options
-    raise NotImplementedError, "This feature has been deprecated; use props"
-  end
-
-  def view_options=(value)
-    raise NotImplementedError, "This feature has been deprecated; use props"
-  end
-
-  def unfuddle_id
-    raise NotImplementedError, "This feature has been deprecated; use props[\"unfuddle.id\"]"
-  end
-
-  def unfuddle_id=(value)
-    raise NotImplementedError, "This feature has been deprecated; use props[\"unfuddle.id\"]"
-  end
-
 
 
 private
