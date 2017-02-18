@@ -61,9 +61,6 @@ Rails.application.routes.draw do
 
   # Authorizations
 
-  put "credentials", to: "user_credentials#upsert"
-  delete "credentials/:id", to: "user_credentials#destroy"
-
   get "authorizations" => "authorizations#index", as: :authorizations
   get "my/authorizations" => "authorizations#mine", as: :my_authorizations
   get "authorizations/new" => "authorizations#new", as: :new_authorization

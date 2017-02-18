@@ -8,7 +8,6 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :teams
   has_many :authorizations, dependent: :destroy
   has_many :triggers, class_name: "PersistentTrigger", dependent: :destroy
-  has_many :credentials, :class_name => "UserCredentials", dependent: :destroy
   belongs_to :current_project, class_name: "Project"
 
   devise :database_authenticatable,

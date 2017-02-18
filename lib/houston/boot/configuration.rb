@@ -155,15 +155,6 @@ module_function
       @password_length ||= 8..128
     end
 
-    def passphrase(*args)
-      @passphrase = args.first if args.any?
-      @passphrase ||= nil
-    end
-
-    def keypair
-      root.join("config", "keypair.pem")
-    end
-
     def parallelization(*args)
       @parallelization = args.first if args.any?
       @parallelization ||= :off

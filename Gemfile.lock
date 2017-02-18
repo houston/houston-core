@@ -34,7 +34,6 @@ PATH
       rufus-scheduler (~> 3.2.0)
       sass-rails (~> 5.0)
       slackdown (>= 0.2.1)
-      strongbox (~> 0.7.2)
       thor
       uglifier (>= 2.7.2)
 
@@ -267,8 +266,6 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
-    strongbox (0.7.2)
-      activerecord
     thor (0.19.4)
     thread_safe (0.3.5)
     tilt (2.0.6)

@@ -26,18 +26,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  rescue_from UserCredentials::MissingCredentials do
-    head 401, "X-Credentials" => "Missing Credentials"
-  end
-
-  rescue_from UserCredentials::InvalidCredentials do
-    head 401, "X-Credentials" => "Invalid Credentials"
-  end
-
-  rescue_from UserCredentials::InsufficientPermissions do |exception|
-    render plain: exception.message, status: 401
-  end
-
   rescue_from ActiveRecord::RecordNotFound do
     render file: Houston.root.join("public/404"), layout: false
   end
