@@ -61,7 +61,6 @@ class AuthorizationsController < ApplicationController
     if @authorization.granted?
       redirect_to authorizations_url, notice: "Already Granted"
     else
-      puts "\e[96;4m#{@authorization.authorize_url}\e[0m"
       redirect_to @authorization.authorize_url
     end
   end
