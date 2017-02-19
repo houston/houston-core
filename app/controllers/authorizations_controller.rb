@@ -66,8 +66,12 @@ class AuthorizationsController < ApplicationController
   end
 
   def oauth2_callback
-    authorization = Authorization.set_access_token! params
-    redirect_to authorization_granted_url(authorization)
+    if params.key?(:code) && params.key?(:state)
+      authorization = Authorization.set_access_token! params
+      redirect_to authorization_granted_url(authorization)
+    else
+      @error = params.fetch(:error, "An unknown error occurred")
+    end
   end
 
   def granted
