@@ -20,6 +20,10 @@ class Project < ActiveRecord::Base
     Houston.config.project_colors[color_name]
   end
 
+  def followers
+    Role.where(name: "Follower", project_id: id).to_users
+  end
+
 
 
   def self.[](slug)
