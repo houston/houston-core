@@ -28,7 +28,7 @@ class Project < ActiveRecord::Base
 
 
 
-  # Teammates
+  # Features
   # ------------------------------------------------------------------------- #
 
   def self.with_feature(feature)
