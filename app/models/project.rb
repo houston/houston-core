@@ -4,6 +4,7 @@ class Project < ActiveRecord::Base
   include Houston::Props
 
   belongs_to :team
+  has_and_belongs_to_many :followers, join_table: "follows", class_name: "User"
 
   before_validation :generate_default_slug, :set_default_color
   validates_presence_of :name, :slug, :color_name
@@ -18,10 +19,6 @@ class Project < ActiveRecord::Base
 
   def color
     Houston.config.project_colors[color_name]
-  end
-
-  def followers
-    Role.where(name: "Follower", project_id: id).to_users
   end
 
 
