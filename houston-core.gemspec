@@ -62,7 +62,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "coffee-rails", "~> 4.1.0"
 
   # Houston's background jobs daemon
-  spec.add_dependency "rufus-scheduler", "~> 3.2.0"
+  spec.add_dependency "rufus-scheduler", "~> 3.3.4"
 
   # Used to edit releases' changes and teams' roles
   spec.add_dependency "nested_editor_for"
