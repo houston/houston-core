@@ -3,7 +3,7 @@ class UserOptionsController < ApplicationController
 
 
   def update
-    current_user.props.merge! params[:options]
+    current_user.props.merge! params[:options].to_unsafe_hash # <-- TODO: should props be declared and then permitted?
     current_user.save!
     head :ok
   end
