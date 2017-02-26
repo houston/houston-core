@@ -31,7 +31,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "addressable", "~> 2.3.8"
   spec.add_dependency "attentive", ">= 0.3.6"
   spec.add_dependency "browser", "~> 2.3.0"
-  spec.add_dependency "cancan", "~> 1.6.10" # cancancan
+  spec.add_dependency "cancancan", "~> 1.16.0"
   spec.add_dependency "concurrent-ruby", "~> 1.0.2"
   spec.add_dependency "devise"
   spec.add_dependency "devise_invitable"
