@@ -28,8 +28,8 @@ Gem::Specification.new do |spec|
   # --------------------------------
   spec.add_dependency "activerecord-import"
   spec.add_dependency "activerecord-pluck_in_batches", "~> 0.2.0"
-  spec.add_dependency "addressable", "~> 2.3.8"
-  spec.add_dependency "attentive", ">= 0.3.6"
+  spec.add_dependency "addressable", "~> 2.3.8" # <-- 2.5.0 raises "invalid scheme format" for "git@github.com"
+  spec.add_dependency "attentive", ">= 0.3.9"
   spec.add_dependency "browser", "~> 2.3.0"
   spec.add_dependency "cancancan", "~> 1.16.0"
   spec.add_dependency "concurrent-ruby", "~> 1.0.2"
@@ -46,7 +46,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "oj", "~> 2.18"
   spec.add_dependency "openxml-xlsx", ">= 0.2.0"
   spec.add_dependency "pg_search", "~> 1.0.5"
-  spec.add_dependency "premailer", "~> 1.8.6"
+  spec.add_dependency "premailer", "~> 1.10.0"
   spec.add_dependency "progressbar", "~> 0.21.0" # for long migrations
   spec.add_dependency "rack-utf8_sanitizer", "~> 1.3.1"
   spec.add_dependency "thor"
