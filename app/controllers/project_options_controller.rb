@@ -4,7 +4,7 @@ class ProjectOptionsController < ApplicationController
 
 
   def update
-    project.props.merge! params[:options]
+    project.props.merge! params[:options].to_unsafe_hash # <-- TODO: should props be declared and then permitted?
     project.save!
     head :ok
   end
