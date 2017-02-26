@@ -193,6 +193,36 @@ ALTER SEQUENCE errors_id_seq OWNED BY errors.id;
 
 
 --
+-- Name: follows; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE follows (
+    id integer NOT NULL,
+    user_id integer,
+    project_id integer
+);
+
+
+--
+-- Name: follows_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE follows_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: follows_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE follows_id_seq OWNED BY follows.id;
+
+
+--
 -- Name: measurements; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -536,6 +566,13 @@ ALTER TABLE ONLY errors ALTER COLUMN id SET DEFAULT nextval('errors_id_seq'::reg
 
 
 --
+-- Name: follows id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY follows ALTER COLUMN id SET DEFAULT nextval('follows_id_seq'::regclass);
+
+
+--
 -- Name: measurements id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -629,6 +666,14 @@ ALTER TABLE ONLY consumer_tokens
 
 ALTER TABLE ONLY errors
     ADD CONSTRAINT errors_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: follows follows_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY follows
+    ADD CONSTRAINT follows_pkey PRIMARY KEY (id);
 
 
 --
@@ -729,6 +774,20 @@ CREATE UNIQUE INDEX index_consumer_tokens_on_token ON consumer_tokens USING btre
 --
 
 CREATE UNIQUE INDEX index_errors_on_sha ON errors USING btree (sha);
+
+
+--
+-- Name: index_follows_on_project_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_follows_on_project_id ON follows USING btree (project_id);
+
+
+--
+-- Name: index_follows_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_follows_on_user_id ON follows USING btree (user_id);
 
 
 --
@@ -872,11 +931,27 @@ CREATE INDEX index_versions_on_versioned_id_and_versioned_type ON versions USING
 
 
 --
+-- Name: follows fk_rails_32479bd030; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY follows
+    ADD CONSTRAINT fk_rails_32479bd030 FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;
+
+
+--
 -- Name: authorizations fk_rails_4ecef5b8c5; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY authorizations
     ADD CONSTRAINT fk_rails_4ecef5b8c5 FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
+-- Name: follows fk_rails_572bf69092; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY follows
+    ADD CONSTRAINT fk_rails_572bf69092 FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
 
 
 --
@@ -984,6 +1059,7 @@ INSERT INTO schema_migrations (version) VALUES
 ('20170209022159'),
 ('20170213001453'),
 ('20170215012012'),
-('20170216041034');
+('20170216041034'),
+('20170226201504');
 
 

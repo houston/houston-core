@@ -23,8 +23,8 @@ Rails.application.routes.draw do
       put :retire
     end
 
-    post "follow", to: "project_roles#create", :as => :follow
-    delete "unfollow", to: "project_roles#destroy", :as => :unfollow
+    post "follow", to: "project_follows#create", :as => :follow
+    delete "unfollow", to: "project_follows#destroy", :as => :unfollow
   end
 
 

@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :teams
   has_many :authorizations, dependent: :destroy
   has_many :triggers, class_name: "PersistentTrigger", dependent: :destroy
+  has_and_belongs_to_many :followed_projects, -> { unretired }, join_table: "follows", class_name: "Project"
   belongs_to :current_project, class_name: "Project"
 
   devise :database_authenticatable,
@@ -81,12 +82,18 @@ class User < ActiveRecord::Base
     "#{first_name} #{last_name}"
   end
 
-  def follows?(project)
-    Role.where(user: self).to_projects.member?(project)
+
+
+  def follow!(project)
+    followed_projects << project
   end
 
-  def followed_projects
-    Role.where(user: self).to_projects.unretired
+  def unfollow!(project)
+    followed_projects.delete project
+  end
+
+  def follows?(project)
+    followed_projects.member?(project)
   end
 
 
