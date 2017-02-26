@@ -6,7 +6,7 @@ class ProjectsController < ApplicationController
 
   def index
     @title = "Projects"
-    @projects = Project.unretired
+    @projects = Project.preload(:team).unretired
   end
 
 
