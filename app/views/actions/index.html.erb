@@ -5,7 +5,7 @@
 <% end %>
 
 <% if $scheduler %>
-  <p><b>Status:</b> <%= $scheduler.up? ? "Up (Started #{format_time $scheduler.started_at})".html_safe : "Down" %></p>
+  <p><b>Status:</b> <%= $scheduler.up? ? "Up (Started #{format_time $scheduler.started_at.to_time})".html_safe : "Down" %></p>
 <% else %>
   <p><b>Status:</b> Unavailable</p>
 <% end %>
