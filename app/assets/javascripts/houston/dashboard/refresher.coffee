@@ -9,6 +9,7 @@ class @Refresher
     @innerRadius = @width / 3
     @outerRadius = @width / 2
     @_container = 'body'
+    @$window = $(window)
 
   rate: (@_rate)-> @
   container: (@_container)-> @
@@ -46,7 +47,9 @@ class @Refresher
       .attr('d', @arc)
 
     @tween = _.bind(@arcTween, @)
-    setInterval(_.bind(@tick, @), @_rate)
+    @tickInterval = setInterval(_.bind(@tick, @), @_rate)
+    @$window.on "blur", => clearInterval(@tickInterval)
+    @$window.on "focus", => @restart()
     @start()
 
   start: ->
@@ -60,11 +63,15 @@ class @Refresher
         .ease('linear')
         .call(@tween, (@_rate / @_interval) * τ)
 
+  restart: ->
+    @_callback() if @_callback
+    @tickInterval = setInterval(_.bind(@tick, @), @_rate)
+    @start()
+
   tick: ->
     time = +(new Date())
     if time > @_endTime
-      @_callback() if @_callback
-      @start()
+      @restart()
     else
       percent = (time + @_rate - @_startTime) / @_interval
       @foreground.transition()
