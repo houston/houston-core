@@ -53,7 +53,7 @@ class AuthorizationsController < ApplicationController
     authorize! :destroy, @authorization
 
     @authorization.destroy
-    redirect_to my_authorizations_path, notice: "\"#{@authorization.name}\" revoked"
+    redirect_to my_authorizations_path, notice: "Authorization to #{@authorization.provider_name} revoked"
   end
 
   def grant

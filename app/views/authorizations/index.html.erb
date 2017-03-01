@@ -13,7 +13,6 @@
         <td class="table-margin"></td>
         <td class="user-avatar"></td>
         <th class="user-name sort-desc">User</th>
-        <th class="authorization-name">Name</th>
         <th class="authorization-name">Provider</th>
         <th class="authorization-status">Satus</th>
         <td class="table-margin"></td>
@@ -28,8 +27,7 @@
             <span class="first-name"><%= authorization.user.first_name %></span>
             <span class="last-name"><%= authorization.user.last_name %></span>
           </td>
-          <td class="authorization-name"><%= link_to authorization.name, edit_authorization_path(authorization) %></td>
-          <td class="authorization-provider"><%= authorization.provider.name %></td>
+          <td class="authorization-provider"><%= link_to authorization.provider.name, edit_authorization_path(authorization) %></td>
           <td class="authorization-status">
             <% if authorization.granted? %>
               Granted
