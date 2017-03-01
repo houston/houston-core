@@ -3,16 +3,13 @@ class Authorization < ActiveRecord::Base
 
   belongs_to :user
 
-  validates :name, :user_id, presence: true
+  validates :user_id, presence: true
 
   after_destroy do
     next unless granted?
     Houston.observer.fire "authorization:revoke", authorization: self
   end
 
-  def self.[](name)
-    find_by(name: name)
-  end
 
   def self.set_access_token!(params)
     Authorization.find(params.fetch(:state)).tap do |authorization|
