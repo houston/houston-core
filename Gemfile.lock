@@ -182,10 +182,10 @@ GEM
       multi_xml (~> 0.5)
       rack (>= 1.2, < 3)
     oj (2.18.1)
-    openxml-package (0.2.6)
+    openxml-package (0.2.7)
       nokogiri
       ox
-      rubyzip (~> 1.1.0)
+      rubyzip (~> 1.2.1)
     openxml-xlsx (0.2.3)
       nokogiri
       openxml-package (>= 0.2.0)
@@ -237,7 +237,7 @@ GEM
       railties (>= 4.2.0, < 5.1)
     rr (1.2.0)
     ruby-progressbar (1.8.1)
-    rubyzip (1.1.7)
+    rubyzip (1.2.1)
     rufus-scheduler (3.3.4)
       tzinfo
     safe_yaml (1.0.4)
