@@ -38,7 +38,7 @@
     });
     new InfiniteScroll({
       load: function($tbody) {
-        var timestamp = $tbody.find('.action-error:last').attr('data-timestamp');
+        var timestamp = $tbody.find('.action:last').attr('data-timestamp');
         return $.get(window.location.pathname, {before: timestamp});
       }
     });
