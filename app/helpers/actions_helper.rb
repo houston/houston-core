@@ -46,7 +46,9 @@ module ActionsHelper
   end
 
   def format_action_state(action)
-    if action.in_progress?
+    if !action.started?
+      '&mdash;'.html_safe
+    elsif action.in_progress?
       '<i class="fa fa-spinner fa-pulse"></i>'.html_safe
     elsif action.succeeded?
       '<i class="fa fa-check success"></i>'.html_safe

@@ -35,7 +35,7 @@ class ActionsController < ApplicationController
 
   def running
     authorize! :read, Action
-    @actions = Action.where(finished_at: nil)
+    @actions = Action.running
   end
 
   def run
