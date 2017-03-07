@@ -3,7 +3,7 @@ class Action < ActiveRecord::Base
   validates :name, :started_at, presence: true
   belongs_to :error
 
-  default_scope -> { order(started_at: :desc) }
+  default_scope -> { order(created_at: :desc) }
 
   serialize :params, Houston::ParamsSerializer.new
 
@@ -77,7 +77,10 @@ class Action < ActiveRecord::Base
   end
 
   def retry!
-    Houston.actions.run name, params
+    update_attributes! started_at: Time.now, finished_at: nil, succeeded: nil, exception: nil
+    Houston.async do
+      run!
+    end
   end
 
   def exception=(exception)

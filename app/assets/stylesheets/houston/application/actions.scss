@@ -8,6 +8,13 @@ td.action-reliability {
   padding-right: 16px !important;
 }
 
+.action-errors {
+  .action-duration { display: none; }
+}
+.action-show {
+  .action-name { display: none; }
+}
+
 .action-params {
   pre {
     border: none;
