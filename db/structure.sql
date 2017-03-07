@@ -46,7 +46,8 @@ CREATE TABLE actions (
     succeeded boolean,
     error_id integer,
     trigger character varying,
-    params text
+    params text,
+    created_at timestamp without time zone NOT NULL
 );
 
 
@@ -1060,6 +1061,7 @@ INSERT INTO schema_migrations (version) VALUES
 ('20170215012012'),
 ('20170216041034'),
 ('20170226201504'),
-('20170301014051');
+('20170301014051'),
+('20170307032041');
 
 
