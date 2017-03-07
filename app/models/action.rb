@@ -30,6 +30,10 @@ class Action < ActiveRecord::Base
       where arel_table[:started_at].lteq time
     end
 
+    def running
+      where.not(started_at: nil).where(finished_at: nil)
+    end
+
     def run!(action_name, params, trigger)
       action = create!(name: action_name, trigger: trigger, params: params)
       action.run!

@@ -10,9 +10,17 @@ td.action-reliability {
 
 .action-errors {
   .action-duration { display: none; }
+  .action-started { display: none; }
+  .action-finished { display: none; }
 }
 .action-show {
   .action-name { display: none; }
+}
+.action-running {
+  .action-created { display: none; }
+  .action-finished { display: none; }
+  .action-succeeded { display: none; }
+  .action-exception { display: none; }
 }
 
 .action-params {
