@@ -80,6 +80,7 @@ Rails.application.routes.draw do
 
   get "actions", to: "actions#index", as: :actions
   get "actions/running", to: "actions#running", as: :running_actions
+  get "actions/unqueued", to: "actions#unqueued", as: :unqueued_actions
   get "actions/:slug", to: "actions#show", as: :action, constraints: { slug: /[^\/]+/ }
   post "actions/:slug", to: "actions#run", as: :run_action, constraints: { slug: /[^\/]+/ }
   post "actions/:id/retry", to: "actions#retry", as: :retry_action

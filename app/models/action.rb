@@ -34,6 +34,10 @@ class Action < ActiveRecord::Base
       where.not(started_at: nil).where(finished_at: nil)
     end
 
+    def unqueued
+      where(started_at: nil)
+    end
+
     def run!(action_name, params, trigger)
       action = create!(name: action_name, trigger: trigger, params: params)
       action.run!
