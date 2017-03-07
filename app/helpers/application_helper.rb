@@ -86,16 +86,6 @@ module ApplicationHelper
     end
   end
 
-  def format_action_state(job)
-    if job.in_progress?
-      '<i class="fa fa-spinner fa-pulse"></i>'.html_safe
-    elsif job.succeeded?
-      '<i class="fa fa-check success"></i>'.html_safe
-    else
-      '<i class="fa fa-times failure"></i>'.html_safe
-    end
-  end
-
   MINUTE = 60
   HOUR = MINUTE * 60
   DAY = HOUR * 24
