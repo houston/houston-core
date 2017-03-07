@@ -1,12 +1,12 @@
 module Houston
   class Actions
-    class ExecutionContext < ReadonlyHash
-    end
-
+    class UndefinedActionError < ArgumentError; end
+    class ExecutionContext < ReadonlyHash; end
 
     def initialize
       @actions = Concurrent::Hash.new
     end
+
 
 
     def names
@@ -25,9 +25,21 @@ module Houston
       actions[name]
     end
 
+    def fetch(name)
+      actions.fetch(name)
+    rescue KeyError
+      raise UndefinedActionError, "#{name.inspect} is not defined"
+    end
+
     def to_a
       actions.values
     end
+
+    def clear
+      actions.clear
+    end
+
+
 
     def define(name, required_params=[], &block)
       raise ArgumentError, "#{name.inspect} is already defined" if exists?(name)
@@ -45,9 +57,9 @@ module Houston
     end
 
 
+
     def run(name, params={}, options={})
-      raise ArgumentError, "#{name.inspect} is not defined" unless exists?(name)
-      action = actions.fetch(name)
+      action = fetch(name)
 
       unless params.is_a?(Hash)
         raise ArgumentError, "params must be a Hash" unless params.respond_to?(:to_h)
@@ -58,14 +70,14 @@ module Houston
       assert_serializable! params
 
       Houston.async(options.fetch(:async, true)) do
-        action.send :run!, params, options
+        ::Action.run! name, params, options.fetch(:trigger, "manual")
       end
     end
 
 
+
   private
     attr_reader :actions
-
 
     def assert_required_params!(action, params)
       action.assert_required_params! params.keys.map(&:to_s)
@@ -76,6 +88,7 @@ module Houston
     end
 
 
+
     class Action < Struct.new(:name, :required_params, :block)
       def initialize(name, required_params, block)
         super name, required_params.map(&:to_s), block
@@ -83,24 +96,14 @@ module Houston
 
       def assert_required_params!(params)
         missing_params = required_params - params
-        if missing_params.any?
-          raise Houston::Observer::MissingParamError, "#{missing_params.first.inspect} is a required param of the action #{name.inspect}"
-        end
+        raise Houston::Observer::MissingParamError, "#{missing_params.first.inspect} is a required param of the action #{name.inspect}" if missing_params.any?
       end
 
-    private
-
-      def run!(params, options={})
-        params = ExecutionContext.new(params)
-        trigger = options.fetch(:trigger, "manual")
-
-        ::Action.record name, params, trigger do
-          Rails.logger.info "\e[34m[#{trigger} => #{name}] Running job\e[0m"
-          params.instance_eval(&block)
-        end
+      def execute(params)
+        assert_required_params! params.keys.map(&:to_s)
+        ExecutionContext.new(params).instance_eval(&block)
       end
     end
-
 
   end
 end

@@ -7,7 +7,6 @@ class Action < ActiveRecord::Base
 
   serialize :params, Houston::ParamsSerializer.new
 
-
   @ignored_exceptions = [
     SocketError,
     Errno::ECONNREFUSED,
@@ -31,49 +30,51 @@ class Action < ActiveRecord::Base
       where arel_table[:started_at].lteq time
     end
 
-    def record(action_name, params, trigger)
+    def run!(action_name, params, trigger)
       action = create!(name: action_name, started_at: Time.now, trigger: trigger, params: params)
-      begin
-        exception = nil
-
-        Houston.reconnect do
-          yield
-        end
-
-      rescue *ignored_exceptions
-
-        # Note that the action failed, but do not report _these_ exceptions
-        exception = $!
-
-      rescue Exception # rescues StandardError by default; but we want to rescue and report all errors
-
-        # Report all other exceptions
-        exception = $!
-        Houston.report_exception($!, parameters: {
-          action_id: action.id,
-          action_name: action_name,
-          trigger: trigger,
-          params: params
-        })
-
-      ensure
-        begin
-          Houston.reconnect do
-            action.finish! exception
-          end
-        rescue Exception # rescues StandardError by default; but we want to rescue and report all errors
-          Houston.report_exception($!, parameters: {
-            action_id: action.id,
-            action_name: action_name,
-            trigger: trigger,
-            params: params
-          })
-        end
-      end
+      action.run!
     end
   end
 
 
+
+  def run!
+    exception = nil
+
+    Houston.reconnect do
+      Houston.actions.fetch(name).execute(params)
+    end
+
+  rescue *::Action.ignored_exceptions
+
+    # Note that the action failed, but do not report _these_ exceptions
+    exception = $!
+
+  rescue Exception # rescues StandardError by default; but we want to rescue and report all errors
+
+    # Report all other exceptions
+    exception = $!
+    Houston.report_exception($!, parameters: {
+      action_id: id,
+      action_name: name,
+      trigger: trigger,
+      params: params
+    })
+
+  ensure
+    begin
+      Houston.reconnect do
+        finish! exception
+      end
+    rescue Exception # rescues StandardError by default; but we want to rescue and report all errors
+      Houston.report_exception($!, parameters: {
+        action_id: id,
+        action_name: name,
+        trigger: trigger,
+        params: params
+      })
+    end
+  end
 
   def retry!
     Houston.actions.run name, params
