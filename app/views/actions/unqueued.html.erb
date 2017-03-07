@@ -1,0 +1,41 @@
+<% content_for :title do %>
+<h1 class="project-banner space-below">
+  Unqueued Actions
+</h1>
+<% end %>
+
+<div class="nomargin action-unqueued">
+  <table id="actions" class="table table-sortable table-striped">
+    <thead>
+      <tr>
+        <td class="table-margin"></td>
+        <th class="action-created">Queued</th>
+        <th class="action-name">Action</th>
+        <th class="action-started">Started</th>
+        <th class="action-finished">Finished</th>
+        <th class="action-duration">Duration</th>
+        <th class="action-trigger">Trigger</th>
+        <th class="action-params">Params</th>
+        <th class="action-succeeded">Succeeded</th>
+        <th class="action-exception">Exception</th>
+        <th class="action-retry">Retry</th>
+        <td class="table-margin"></td>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render "actions/actions" %>
+    </tbody>
+  </table>
+</div>
+
+<% content_for :javascripts do %>
+  <script type="text/javascript">
+    $(function() {
+      $('#actions')
+        .tablesorter()
+        .on('click', '.action-params-short', function() {
+          $(this).next().modal();
+        });
+    });
+  </script>
+<% end %>

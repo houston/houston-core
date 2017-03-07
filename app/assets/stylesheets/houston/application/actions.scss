@@ -22,6 +22,13 @@ td.action-reliability {
   .action-succeeded { display: none; }
   .action-exception { display: none; }
 }
+.action-unqueued {
+  .action-started { display: none; }
+  .action-finished { display: none; }
+  .action-duration { display: none; }
+  .action-succeeded { display: none; }
+  .action-exception { display: none; }
+}
 
 .action-params {
   pre {

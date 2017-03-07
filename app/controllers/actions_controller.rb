@@ -38,6 +38,11 @@ class ActionsController < ApplicationController
     @actions = Action.running
   end
 
+  def unqueued
+    authorize! :read, Action
+    @actions = Action.unqueued
+  end
+
   def run
     authorize! :run, Action
     Houston.actions.run params[:slug]
