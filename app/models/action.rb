@@ -3,6 +3,8 @@ class Action < ActiveRecord::Base
   validates :name, presence: true
   belongs_to :error
 
+  after_create :enqueue
+
   default_scope -> { order(created_at: :desc) }
 
   serialize :params, Houston::ParamsSerializer.new
@@ -39,57 +41,15 @@ class Action < ActiveRecord::Base
     end
 
     def run!(action_name, params, trigger)
-      action = create!(name: action_name, trigger: trigger, params: params)
-      action.run!
+      create!(name: action_name, trigger: trigger, params: params)
     end
   end
 
 
-
-  def run!
-    exception = nil
-
-    Houston.reconnect do
-      touch :started_at
-      Houston.actions.fetch(name).execute(params)
-    end
-
-  rescue *::Action.ignored_exceptions
-
-    # Note that the action failed, but do not report _these_ exceptions
-    exception = $!
-
-  rescue Exception # rescues StandardError by default; but we want to rescue and report all errors
-
-    # Report all other exceptions
-    exception = $!
-    Houston.report_exception($!, parameters: {
-      action_id: id,
-      action_name: name,
-      trigger: trigger,
-      params: params
-    })
-
-  ensure
-    begin
-      Houston.reconnect do
-        finish! exception
-      end
-    rescue Exception # rescues StandardError by default; but we want to rescue and report all errors
-      Houston.report_exception($!, parameters: {
-        action_id: id,
-        action_name: name,
-        trigger: trigger,
-        params: params
-      })
-    end
-  end
 
   def retry!
-    update_attributes! started_at: Time.now, finished_at: nil, succeeded: nil, exception: nil
-    Houston.async do
-      run!
-    end
+    update_attributes! started_at: nil, finished_at: nil, succeeded: nil, exception: nil
+    enqueue
   end
 
   def exception=(exception)
@@ -115,6 +75,10 @@ class Action < ActiveRecord::Base
 
   def in_progress?
     started_at.present? && finished_at.nil?
+  end
+
+  def enqueue
+    ActionRunner.perform_later self
   end
 
 end

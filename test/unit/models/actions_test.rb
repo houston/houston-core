@@ -107,7 +107,7 @@ private
   end
 
   def run!(params={}, options={})
-    actions.run "test-action", params, options.merge(async: false)
+    actions.run "test-action", params, options
   end
 
 end

@@ -27,7 +27,6 @@ end
 
 
 Houston.observer.async = false
-Houston.triggers.async = false
 
 
 
