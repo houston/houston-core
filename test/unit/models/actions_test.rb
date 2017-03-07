@@ -3,8 +3,13 @@ require "test_helper"
 class ActionsTest < ActiveSupport::TestCase
 
   def setup
+    Houston.instance_variable_set :@actions, Houston::Actions.new
     actions.define("test-action") { }
     Action.delete_all
+  end
+
+  def teardown
+    Houston.actions.clear
   end
 
 
@@ -98,7 +103,7 @@ class ActionsTest < ActiveSupport::TestCase
 private
 
   def actions
-    @actions ||= Houston::Actions.new
+    Houston.actions
   end
 
   def run!(params={}, options={})

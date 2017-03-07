@@ -70,8 +70,10 @@ module Houston
     end
 
     def call(params={})
-      options = { trigger: to_s, async: triggers.async }
-      config.actions.run action, self.params.merge(params.to_h), options
+      Rails.logger.info "\e[34m[#{to_s} => #{action}]\e[0m"
+      config.actions.run action, self.params.merge(params.to_h),
+        trigger: to_s,
+        async: triggers.async
     end
 
     def to_s
