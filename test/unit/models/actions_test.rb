@@ -85,11 +85,12 @@ class ActionsTest < ActiveSupport::TestCase
     end
 
     should "invoke actions in the context of their params" do
-      actions.redefine("test-action") do
-        assert respond_to?(:example)
-        assert_equal 5, example
-      end
+      context = nil
+      actions.redefine("test-action") { context = self }
       run! example: 5
+
+      assert context.respond_to?(:example)
+      assert_equal 5, context.example
     end
   end
 
