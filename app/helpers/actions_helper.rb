@@ -45,4 +45,14 @@ module ActionsHelper
     output
   end
 
+  def format_action_state(action)
+    if action.in_progress?
+      '<i class="fa fa-spinner fa-pulse"></i>'.html_safe
+    elsif action.succeeded?
+      '<i class="fa fa-check success"></i>'.html_safe
+    else
+      '<i class="fa fa-times failure"></i>'.html_safe
+    end
+  end
+
 end
