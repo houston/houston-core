@@ -1,6 +1,6 @@
 class Action < ActiveRecord::Base
 
-  validates :name, :started_at, presence: true
+  validates :name, presence: true
   belongs_to :error
 
   default_scope -> { order(created_at: :desc) }
@@ -31,7 +31,7 @@ class Action < ActiveRecord::Base
     end
 
     def run!(action_name, params, trigger)
-      action = create!(name: action_name, started_at: Time.now, trigger: trigger, params: params)
+      action = create!(name: action_name, trigger: trigger, params: params)
       action.run!
     end
   end
@@ -42,6 +42,7 @@ class Action < ActiveRecord::Base
     exception = nil
 
     Houston.reconnect do
+      touch :started_at
       Houston.actions.fetch(name).execute(params)
     end
 
@@ -96,12 +97,16 @@ class Action < ActiveRecord::Base
     finished_at - started_at
   end
 
+  def started?
+    started_at.present?
+  end
+
   def finished?
     finished_at.present?
   end
 
   def in_progress?
-    finished_at.nil?
+    started_at.present? && finished_at.nil?
   end
 
 end
