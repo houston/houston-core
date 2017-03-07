@@ -54,6 +54,8 @@ module Houston
         pack object.to_h
       when ActiveSupport::TimeWithZone
         object.to_datetime
+      when ActiveRecord::ConnectionAdapters::PostgreSQL::OID::Array::Data
+        pack object.values
       when *SERIALIZABLE_TYPES
         object
       else

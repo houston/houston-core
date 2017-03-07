@@ -58,6 +58,12 @@ class SerializerTest < ActiveSupport::TestCase
     refute_match /"^o":"ActiveSupport::TimeWithZone"/, dump(x: project)
   end
 
+  should "serialize a record with a Postgres array" do
+    refute_raises do
+      dump(Project.create!(name: "Test", slug: "test", selected_features: %w{feedback releases}))
+    end
+  end
+
 
 private
 
