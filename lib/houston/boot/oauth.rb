@@ -14,8 +14,6 @@ module Houston
       raise ArgumentError, "Provider must define a site" if provider.site.blank?
       raise ArgumentError, "Provider must define a authorize_path" if provider.authorize_path.blank?
       raise ArgumentError, "Provider must define a token_path" if provider.token_path.blank?
-      raise ArgumentError, "Provider must define a client_id" if provider.client_id.blank?
-      raise ArgumentError, "Provider must define a client_secret" if provider.client_secret.blank?
 
       @providers.push provider
       provider
@@ -45,14 +43,6 @@ module Houston
 
       def token_path(value)
         provider.token_path = value
-      end
-
-      def client_id(value)
-        provider.client_id = value
-      end
-
-      def client_secret(value)
-        provider.client_secret = value
       end
     end
 
