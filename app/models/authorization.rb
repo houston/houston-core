@@ -11,14 +11,42 @@ class Authorization < ActiveRecord::Base
   end
 
 
-  def self.set_access_token!(params)
-    Authorization.find(params.fetch(:state)).tap do |authorization|
-      authorization.get_access_token! params.fetch(:code)
+
+  class << self
+    def for(user)
+      where(user_id: user.id)
+    end
+
+    def granted
+      where.not(access_token: nil)
+    end
+
+    def with_scope(*scopes)
+      where("regexp_split_to_array(scope, '[,\\s]+') @> ARRAY[?]", scopes)
+    end
+    alias :with_scopes :with_scope
+
+
+
+    def providers
+      Houston.config.oauth_providers.map(&:classify)
+    end
+
+    def provider
+      @provider ||= Houston.oauth.get_provider(name.underscore)
+    end
+
+    def set_access_token!(params)
+      Authorization.find(params.fetch(:state)).tap do |authorization|
+        authorization.get_access_token! params.fetch(:code)
+      end
     end
   end
 
+
+
   def provider
-    Houston.oauth.get_provider(provider_name)
+    self.class.provider
   end
 
   def granted?
@@ -48,7 +76,7 @@ class Authorization < ActiveRecord::Base
   end
 
   def url
-    "https://#{Houston.config.host}/auth/#{id}"
+    "#{Houston.root_url}/auth/#{id}"
   end
 
 private
@@ -64,4 +92,8 @@ private
     Houston.observer.fire "authorization:grant", authorization: self
   end
 
+end
+
+Houston.config.oauth_providers.each do |provider|
+  require_dependency provider
 end

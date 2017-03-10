@@ -96,9 +96,9 @@ CREATE TABLE authorizations (
     expires_at timestamp without time zone,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    provider_name character varying NOT NULL,
     user_id integer NOT NULL,
-    props jsonb DEFAULT '{}'::jsonb
+    props jsonb DEFAULT '{}'::jsonb,
+    type character varying NOT NULL
 );
 
 
@@ -1063,6 +1063,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20170226201504'),
 ('20170301014051'),
 ('20170307032041'),
-('20170307035755');
+('20170307035755'),
+('20170310024505');
 
 

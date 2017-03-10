@@ -1,9 +1,9 @@
-<%= form_for @authorization, html: {class: "form-horizontal"} do |f| %>
+<%= form_for @authorization, url: {controller: "authorizations"}, html: {class: "form-horizontal"} do |f| %>
   <fieldset>
     <div class="control-group">
-      <%= f.label :provider_name, "Provider", class: "control-label" %>
+      <%= f.label :type, "Provider", class: "control-label" %>
       <div class="controls">
-        <%= f.select :provider_name, Houston.oauth.providers.map(&:name) %>
+        <%= f.select :type, Authorization.providers %>
       </div>
     </div>
 
@@ -33,7 +33,7 @@
       e.preventDefault();
       App.confirmDelete({
         resource: 'Authorization',
-        message: 'This will revoke authorization for "<%= @authorization.provider_name %>".',
+        message: 'This will revoke authorization for "<%= @authorization.provider.name %>".',
         url: <%=raw authorization_path(@authorization).to_json %>
       });
     });

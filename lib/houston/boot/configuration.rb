@@ -21,11 +21,12 @@ module_function
 
 
   class Configuration
-    attr_reader :observer, :actions, :timer
+    attr_reader :observer, :actions, :timer, :oauth_providers
 
     def initialize
       @root = Rails.root
       @use_ssl = Rails.env.production?
+      @oauth_providers = []
       @roles = Hash.new { |hash, key| hash[key] = [] }
       @roles["Team Owner"].push(Proc.new do |team|
         can :manage, team
@@ -182,6 +183,19 @@ module_function
     def s3(&block)
       @s3 = HashDsl.hash_from_block(block) if block_given?
       @s3 ||= {}
+    end
+
+    def oauth(provider_name, &block)
+      settings = HashDsl.hash_from_block(block)
+      provider = Houston.oauth.get_provider(provider_name)
+      raise ArgumentError, "#{provider_name.inspect} is not a registered Oauth provider (#{Houston.oauth.providers.map { |provider| provider.name.inspect }.join(", ")})" unless provider
+      raise ArgumentError, "Provider must define a client_id" if settings[:client_id].blank?
+      raise ArgumentError, "Provider must define a client_secret" if settings[:client_secret].blank?
+
+      provider.client_id = settings[:client_id]
+      provider.client_secret = settings[:client_secret]
+
+      @oauth_providers << provider_name.to_s
     end
 
     def project_categories(*args)
