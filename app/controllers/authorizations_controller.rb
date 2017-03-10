@@ -1,5 +1,6 @@
 class AuthorizationsController < ApplicationController
   before_action :authenticate_user!
+  before_action :find_authorization, only: [:edit, :update, :destroy, :grant, :granted]
 
   def index
     @title = "Authorizations"
@@ -33,12 +34,10 @@ class AuthorizationsController < ApplicationController
 
   def edit
     @title = "Edit Authorization"
-    @authorization = Authorization.find params[:id]
     authorize! :update, @authorization
   end
 
   def update
-    @authorization = Authorization.find params[:id]
     authorize! :update, @authorization
 
     if @authorization.update_attributes(params[:authorization])
@@ -49,7 +48,6 @@ class AuthorizationsController < ApplicationController
   end
 
   def destroy
-    @authorization = Authorization.find params[:id]
     authorize! :destroy, @authorization
 
     @authorization.destroy
@@ -57,7 +55,6 @@ class AuthorizationsController < ApplicationController
   end
 
   def grant
-    @authorization = Authorization.find(params[:id])
     if @authorization.granted?
       redirect_to authorizations_url, notice: "Already Granted"
     else
@@ -75,6 +72,11 @@ class AuthorizationsController < ApplicationController
   end
 
   def granted
+  end
+
+private
+  def find_authorization
+    @authorization = Authorization.find(params[:id])
   end
 
 end
