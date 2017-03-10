@@ -49,6 +49,12 @@ module Houston
     Houston.config.host
   end
 
+  def self.root_url
+    protocol = "http"
+    protocol = "https" if Houston.config.use_ssl?
+    "#{protocol}://#{host}"
+  end
+
   class Application < Rails::Application
     # This Rails application gets initialized different ways: many times it is
     # intialized from within a Houston instance project. This line ensures that

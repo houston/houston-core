@@ -25,6 +25,7 @@ module_function
 
     def initialize
       @root = Rails.root
+      @use_ssl = Rails.env.production?
       @roles = Hash.new { |hash, key| hash[key] = [] }
       @roles["Team Owner"].push(Proc.new do |team|
         can :manage, team
@@ -115,6 +116,15 @@ module_function
         end
       end
       @host ||= nil
+    end
+
+    def use_ssl(*args)
+      @use_ssl = args.first if args.any?
+      @use_ssl
+    end
+
+    def use_ssl?
+      @use_ssl
     end
 
     def secret_key_base(*args)
