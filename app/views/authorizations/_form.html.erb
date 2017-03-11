@@ -3,14 +3,14 @@
     <div class="control-group">
       <%= f.label :type, "Provider", class: "control-label" %>
       <div class="controls">
-        <%= f.select :type, Authorization.providers %>
+        <%= f.select :type, Authorization.providers, {}, disabled: @authorization.persisted? %>
       </div>
     </div>
 
     <div class="control-group">
       <%= f.label :scope, class: "control-label" %>
       <div class="controls">
-        <%= f.text_field :scope, class: "text_field" %>
+        <%= f.text_field :scope, class: "text_field", readonly: @authorization.persisted? %>
       </div>
     </div>
   </fieldset>
