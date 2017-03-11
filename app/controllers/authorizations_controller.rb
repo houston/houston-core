@@ -72,9 +72,15 @@ class AuthorizationsController < ApplicationController
   end
 
   def granted
+    redirect_to session[granted_redirect] if session.key?(granted_redirect)
   end
 
 private
+
+  def granted_redirect
+    "#{@authorization.id}_granted_redirect_url"
+  end
+
   def find_authorization
     @authorization = Authorization.find(params[:id])
   end
