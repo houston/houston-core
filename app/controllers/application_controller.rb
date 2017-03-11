@@ -127,6 +127,15 @@ class ApplicationController < ActionController::Base
 
 
 
+  def oauth_authorize!(klass, scope:, redirect_to: nil)
+    authorization = klass.for(current_user).find_or_create_by!(scope: scope)
+    raise ArgumentError, "authorization already exists" if authorization.granted?
+    session["#{authorization.id}_granted_redirect_url"] = redirect_to if redirect_to
+    redirect_to authorization.url
+  end
+
+
+
   def no_cache
     response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
     response.headers["Pragma"] = "no-cache"
