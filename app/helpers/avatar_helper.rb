@@ -5,7 +5,7 @@ module AvatarHelper
   def avatar_for(user, options={})
     size = options.fetch(:size, 24)
 
-    return "<div class=\"avatar avatar-empty\" style=\"width:#{size}px; height:#{size}px\" />".html_safe unless user
+    return "<div class=\"avatar avatar-empty\" style=\"width:#{size}px; height:#{size}px\"></div>".html_safe unless user
 
     "<img class=\"avatar user-#{user.id}\" src=\"#{gravatar_url(user.email, size: size * 2)}\" width=\"#{size}\" height=\"#{size}\" alt=\"#{user.name}\" />".html_safe
   end
