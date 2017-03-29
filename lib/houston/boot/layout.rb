@@ -17,7 +17,7 @@ module Houston
       ExtensionDsl.new(extensions_by_layout, *extensions_by_layout.keys)
     end
 
-    delegate :metadata, :stylesheets, :footers, :scripts, to: :all
+    delegate :meta, :stylesheets, :footers, :scripts, to: :all
 
     class ExtensionDsl
 
@@ -26,8 +26,8 @@ module Houston
         @layouts = layouts
       end
 
-      def metadata(&block)
-        add :metadata, block
+      def meta(&block)
+        add :meta, block
       end
 
       def stylesheets(&block)
@@ -53,9 +53,7 @@ module Houston
 
     end
 
-    Extensions = Struct.new(:metadata, :stylesheets, :footers, :scripts) do
-      alias_method :meta, :metadata
-
+    Extensions = Struct.new(:meta, :stylesheets, :footers, :scripts) do
       def initialize
         super [], [], [], []
       end
