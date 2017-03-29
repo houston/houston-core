@@ -19,7 +19,6 @@ PATH
       handlebars_assets (~> 0.23.0)
       kramdown
       neat-rails (~> 0.5.1)
-      nested_editor_for
       nokogiri
       oauth2
       oj (~> 2.18)
@@ -167,7 +166,6 @@ GEM
     multi_xml (0.6.0)
     multipart-post (2.0.0)
     neat-rails (0.5.1)
-    nested_editor_for (0.1.1)
     nio4r (2.0.0)
     nokogiri (1.7.0.1)
       mini_portile2 (~> 2.1.0)

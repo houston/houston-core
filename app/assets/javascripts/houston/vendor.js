@@ -20,7 +20,6 @@
 //= require jquery.autosize.js
 //= require jquery.timeago.js
 //= require mousetrap
-//= require nested_editor_for
 //= require showdown
 //= require neat
 //= require alertify
