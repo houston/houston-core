@@ -109,11 +109,6 @@ Rails.application.routes.draw do
 
 
 
-  # Tester Bar
-  match "tester_bar/:action", :controller => "tester_bar", via: [:get, :post] if Rails.env.development?
-
-
-
   # The Instance
   # (before Modules so that it can override routes in the modules)
 

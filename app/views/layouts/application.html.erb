@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" class="
-  <%= "tester-bar" if Rails.env.development? %>
   <%= "mobile" if mobile? %>">
   <head>
     <meta charset="utf-8">
@@ -51,7 +50,6 @@
 
       <%= yield -%>
 
-      <%= render partial: "layouts/tester_bar" if Rails.env.development? -%>
     </div> <!-- /container -->
 
     <%= render_layout_extensions("application", :footers) %>
