@@ -119,8 +119,6 @@
 <% content_for :javascripts do %>
 <script type="text/javascript">
   $(function() {
-    NestedEditorFor.init();
-
     function dasherize(word) {
       return word.replace(/([A-Z]+)([A-Z][a-z])/g, '$1-$2')
         .replace(/([a-z\d])([A-Z])/g, '$1-$2')

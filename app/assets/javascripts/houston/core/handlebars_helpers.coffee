@@ -72,6 +72,14 @@ Handlebars.registerHelper 'ifMe', (user, block)->
   else
     block.inverse(@)
 
+Handlebars.registerHelper 'ifEql', (value1, value2, options)->
+  if value1 == value2
+    options.fn(@)
+
+Handlebars.registerHelper 'ifIn', (value, array, options)->
+  if _.contains(array, value)
+    options.fn(@)
+
 Handlebars.registerHelper 'renderKeyCombos', (keys)->
   _.map(keys, Handlebars.helpers.renderKeyCombo).join('<i> or </i>')
 
