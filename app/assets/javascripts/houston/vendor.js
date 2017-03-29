@@ -16,7 +16,6 @@
 //= require d3
 //= require jquery-ui
 //= require bootstrap
-//= require jquery.pjax.js
 //= require jquery.tablesorter.js
 //= require jquery.autosize.js
 //= require jquery.timeago.js
