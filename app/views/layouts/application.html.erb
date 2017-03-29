@@ -37,14 +37,14 @@
     <% if mobile? %>
       <%= render "layouts/mobile_navigation" %>
 
-      <div class="container-fluid" id="body">
+      <div class="<%= layout_container_fluid? ? "container-fluid" : "container" %>" id="body">
         <%= yield :title %>
     <% else %>
       <%= render "layouts/navigation" %>
 
       <%= yield :title %>
 
-      <div class="container-fluid" id="body">
+      <div class="<%= layout_container_fluid? ? "container-fluid" : "container" %>" id="body">
     <% end %>
 
       <%= yield -%>
