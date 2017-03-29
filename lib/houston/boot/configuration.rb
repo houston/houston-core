@@ -9,6 +9,7 @@ require File.join(root, "lib/houston/boot/actions")
 require File.join(root, "lib/houston/boot/timer")
 require File.join(root, "lib/houston/boot/provider")
 require File.join(root, "lib/houston/boot/oauth")
+require File.join(root, "lib/houston/boot/layout")
 require File.join(root, "lib/houston/adapters")
 
 module Houston
@@ -467,6 +468,11 @@ module_function
   def oauth
     return @oauth if defined?(@oauth)
     @oauth = Houston::Oauth.new
+  end
+
+  def layout
+    return @layout if defined?(@layout)
+    @layout = Houston::Layout.new
   end
 
   def triggers
