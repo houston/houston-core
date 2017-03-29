@@ -42,26 +42,6 @@ Handlebars.registerHelper 'markdown', (markdown)-> App.mdown(markdown)
 
 Handlebars.registerHelper 'emojify', (string)-> App.emojify(string)
 
-Handlebars.registerHelper 'classForAge', (seconds)->
-  if seconds < (6 * Duration.HOUR)
-    'infant'
-  else if seconds < (2 * Duration.DAY)
-    'child'
-  else if seconds < (7 * Duration.DAY)
-    'adult'
-  else if seconds < (4 * Duration.WEEK)
-    'senior'
-  else if seconds < (26 * Duration.WEEK)
-    'old'
-  else
-    'ancient'
-
-Handlebars.registerHelper 'radioButton', (object, id, name, value, selectedValue)->
-  id = "#{object}_#{id}_#{name}_#{value}"
-  input = "<input type=\"radio\" id=\"#{id}\" name=\"#{name}\" value=\"#{value}\""
-  input = input + ' checked="checked"' if value == selectedValue
-  "#{input} />"
-
 Handlebars.registerHelper 'userAvatar', (size)->
   user = window.user
   gravatarUrl = "https://www.gravatar.com/avatar/#{MD5(user.get('email').toLowerCase().trim())}?r=g&d=retro&s=#{size * 2}"
@@ -82,15 +62,6 @@ Handlebars.registerHelper 'ifEq', (v1, v2, block)->
     block.inverse(@)
 
 
-
-Handlebars.registerHelper 'renderTaskWorker', (task)->
-  if task.checkedOutByMe and !task.historical and task.open
-    '<button class="btn btn-danger check-out-button active" data-toggle="button">Check in</button>'
-  else if task.checkedOutBy
-    Handlebars.helpers.avatar(task.checkedOutBy.email, 24, task.checkedOutBy.firstName) +
-     " #{task.checkedOutBy.firstName}"
-  else if task.open
-    '<button class="btn btn-info check-out-button" data-toggle="button">Check out</button>'
 
 Handlebars.registerHelper 'coalesce', (value, valueIfBlank)->
   value ? valueIfBlank
