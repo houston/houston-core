@@ -14,8 +14,10 @@
 //= require_tree ./core
 //= require md5
 //= require_tree ../../templates
-//= require_tree ./app
 //= require_self
+//= require_tree ./app
+
+window.Neat.template = HandlebarsTemplates
 
 $.tablesorter.defaults.cssAsc = 'sort-asc';
 $.tablesorter.defaults.cssDesc = 'sort-desc';

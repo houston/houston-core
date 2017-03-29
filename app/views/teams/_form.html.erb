@@ -11,18 +11,7 @@
 
     <div class="control-group">
       <%= f.label :roles, "Teammates", :class => "control-label" %>
-      <div class="controls changes-nested-editor">
-        <%= f.nested_editor_for :roles do |f| -%>
-          <%= f.select :user_id, [nil] + User.unretired.pluck("CONCAT(first_name, ' ', last_name)", :id) %>
-          <% Houston.config.roles.each do |role| %>
-            <% role_slug = role.downcase.gsub(" ", "_").pluralize %>
-            <label style="display: inline-block">
-              <input type="checkbox" name="team[roles_attributes][0][roles][]" value="<%= role %>" <%= "checked" if f.object.roles.member?(role) %> />
-              <%= role %>
-            </label>
-          <% end %>
-        <% end -%>
-      </div>
+      <div id="team_roles" class="controls changes-nested-editor nested editor"></div>
     </div>
 
     <div class="form-actions">
@@ -39,11 +28,12 @@
 <% content_for :javascripts do %>
 <script type="text/javascript">
   $(function() {
-    NestedEditorFor.init();
-
-    $(document.body).on('nested-editor.reset', function(e) {
-      $(e.target).find(':checkbox').prop('checked', false);
-    });
+    new Houston.TeamRolesView({
+      el: $('#team_roles')[0],
+      roles: <%=raw Houston.config.roles.to_json %>,
+      users: <%=raw User.unretired.pluck("CONCAT(first_name, ' ', last_name)", :id).map { |name, id| { name: name, id: id } }.to_json %>,
+      values: <%=raw @team.roles.map { |role| { id: role.id, userId: role.user_id, roles: role.roles } }.to_json %>
+    }).render();
 
     <% if @team.persisted? && can?(:destroy, @team) %>
     $('#delete_team_button').click(function(e) {
