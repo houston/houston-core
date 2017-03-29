@@ -1,3 +1,7 @@
+toDate = (timestamp)->
+  return timestamp if _.isDate(timestamp)
+  new Date(timestamp)
+
 Handlebars.registerHelper 'timelineDateRange', (lastDate, date)->
   return Handlebars.helpers.timelineDate(date) unless lastDate
   days = (lastDate - date) / Duration.DAY
