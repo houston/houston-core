@@ -28,7 +28,6 @@ require "progressbar"
 require "rack/utf8_sanitizer"
 require "kramdown"
 require "slackdown"
-require "vestal_versions"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
