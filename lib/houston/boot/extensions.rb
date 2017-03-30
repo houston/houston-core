@@ -1,9 +1,21 @@
 require "houston/boot/serializer"
+require "houston/boot/extensions/oauth"
+require "houston/boot/extensions/layout"
 
 
 module Houston
   module Extensions
     attr_reader :events, :serializers
+
+    def oauth
+      return @oauth if defined?(@oauth)
+      @oauth = Houston::Oauth.new
+    end
+
+    def layout
+      return @layout if defined?(@layout)
+      @layout = Houston::Layout.new
+    end
 
 
 
