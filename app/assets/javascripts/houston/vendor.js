@@ -10,18 +10,37 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+//* Houston's client-side stack
 //= require underscore
 //= require backbone
 //= require handlebars
-//= require d3
-//= require jquery-ui
-//= require bootstrap
-//= require jquery.tablesorter.js
-//= require jquery.autosize.js
-//= require jquery.timeago.js
-//= require mousetrap
-//= require showdown
 //= require neat
+//= require bootstrap
+//= require jquery-ui
+//
+//* for graphics
+//= require d3
+//
+//* for rendering Markdown
+//= require showdown
+//
+//* for showing Flash messages
 //= require alertify
+//
+//* for accepting files
 //= require dropzone
+//
+//* for Houston's mobile navigation
 //= require slideout
+//
+//* for rendering simple tables
+//= require jquery.tablesorter.js
+//
+//* for formatting times as elapsed, `formatTimeAgo` helper
+//= require jquery.timeago.js
+//
+//* for defining keyboard shortcuts
+//= require mousetrap
+//
+//* for autogrowing textareas
+//= require jquery.autosize.js
