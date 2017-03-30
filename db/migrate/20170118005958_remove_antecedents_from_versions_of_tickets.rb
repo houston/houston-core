@@ -1,5 +1,5 @@
 class RemoveAntecedentsFromVersionsOfTickets < ActiveRecord::Migration[5.0]
-  include VestalVersions
+  class Version < ActiveRecord::Base; end
 
   def up
     versions = Version.where("modifications like '%!ruby/object:TicketAntecedent%'")
