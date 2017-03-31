@@ -21,7 +21,7 @@ PATH
       houston-vestal_versions
       neat-rails
       nested_editor_for
-      nokogiri
+      nokogiri (~> 1.7)
       oauth2
       oj (~> 2.18)
       openxml-xlsx (>= 0.2.0)
@@ -177,7 +177,7 @@ GEM
     nested_editor_for (0.1.1)
     net-ldap (0.12.1)
     nio4r (1.2.1)
-    nokogiri (1.7.0.1)
+    nokogiri (1.7.1)
       mini_portile2 (~> 2.1.0)
     oauth2 (1.3.0)
       faraday (>= 0.8, < 0.11)
