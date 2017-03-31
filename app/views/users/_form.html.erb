@@ -47,7 +47,7 @@
 
 
 
-    <%= f.fields_for :props do |f| %>
+    <%= f.fields_for :props, @user.props do |f| %>
       <% Houston.user_options.each do |form| %>
         <hr />
 

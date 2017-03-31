@@ -78,7 +78,7 @@
 
             <% if feature.fields.any? %>
               <div class="project-feature-fields" data-feature="<%= feature_slug %>">
-                <%= f.fields_for :props do |f| %>
+                <%= f.fields_for :props, @project.props do |f| %>
                   <% feature.fields.each do |form| %>
                     <div class="project-feature-field">
                       <%= form.render(self, f) %>
@@ -92,7 +92,7 @@
       </div>
     <% end %>
 
-    <%= f.fields_for :props do |f| %>
+    <%= f.fields_for :props, @project.props do |f| %>
       <% Houston.project_options.each do |form| %>
         <hr />
 
