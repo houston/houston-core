@@ -1,10 +1,14 @@
 require "houston/boot/serializer"
 require "houston/boot/extensions/oauth"
 require "houston/boot/extensions/layout"
+require "houston/boot/extensions/view"
+require "houston/boot/extensions/deprecated_methods"
 
 
 module Houston
   module Extensions
+    include Houston::Extensions::DeprecatedMethods
+
     attr_reader :events, :serializers
 
     def oauth
@@ -15,6 +19,11 @@ module Houston
     def layout
       return @layout if defined?(@layout)
       @layout = Houston::Layout.new
+    end
+
+    def view
+      return @view if defined?(@view)
+      @view = Houston::Views.new
     end
 
 
@@ -62,33 +71,6 @@ module Houston
 
 
 
-    def add_user_option(slug, &block)
-      dsl = FormBuilderDsl.new
-      dsl.instance_eval(&block)
-      form = dsl.form
-      form.slug = slug
-
-      @user_options[slug] = form
-    end
-
-    def user_options
-      @user_options.values
-    end
-
-
-
-    def add_project_option(slug, &block)
-      dsl = FormBuilderDsl.new
-      dsl.instance_eval(&block)
-      form = dsl.form
-      form.slug = slug
-
-      @project_options[slug] = form
-    end
-
-    def project_options
-      @project_options.values
-    end
 
 
 
@@ -103,21 +85,6 @@ module Houston
 
     def project_header_commands
       @project_header_commands.values
-    end
-
-
-
-    def add_project_column(slug, &block)
-      dsl = ProjectColumnDsl.new(ProjectColumn.new)
-      dsl.instance_eval(&block)
-      feature = dsl.feature
-      feature.slug = slug
-
-      @project_columns[slug] = feature
-    end
-
-    def project_columns
-      @project_columns.values
     end
 
 
@@ -267,42 +234,6 @@ module Houston
       end
     end
 
-    class ProjectColumn
-      attr_accessor :html_block
-      attr_accessor :ability_block
-      attr_accessor :slug
-      attr_accessor :name
-
-      def render(project)
-        html_block.call project
-      end
-
-      def permitted?(ability)
-        return true if ability_block.nil?
-        ability_block.call ability
-      end
-    end
-
-    class ProjectColumnDsl
-      attr_reader :feature
-
-      def initialize(feature)
-        @feature = feature
-      end
-
-      def name(value)
-        feature.name = value
-      end
-
-      def html(&block)
-        feature.html_block = block
-      end
-
-      def ability(&block)
-        feature.ability_block = block
-      end
-    end
-
     class RegisterEventsDsl
       def params(*params)
         RegisterEventDsl.new.params(*params)
@@ -356,12 +287,14 @@ module Houston
 
   @navigation_renderers = {}
   @available_project_features = {}
-  @user_options = {}
-  @project_options = {}
-  @project_columns = {}
   @project_header_commands = {}
   @events = []
   @event_matchers = []
   @serializers = []
   extend Houston::Extensions
 end
+
+Houston.view["projects"].has :Table
+Houston.view["users"].has :Table
+Houston.view["edit_project"].has :Form
+Houston.view["edit_user"].has :Form

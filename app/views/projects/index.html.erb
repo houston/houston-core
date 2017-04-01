@@ -14,7 +14,7 @@
           <td class="table-margin"></td>
           <th class="project-title sort-desc">Title</th>
           <th class="project-team">Team</th>
-        <% Houston.project_columns.each do |column| %>
+        <% Houston.view["projects"].columns.each do |column| %>
           <% next unless column.permitted?(current_ability) %>
           <th><%= column.name %></th>
         <% end %>
@@ -41,9 +41,9 @@
               <%= project.team && project.team.name %>
             </td>
 
-          <% Houston.project_columns.each do |column| %>
+          <% Houston.view["projects"].columns.each do |column| %>
             <% next unless column.permitted?(current_ability) %>
-            <td><%= column.render(project) %></td>
+            <td><%= column.render(self, project) %></td>
           <% end %>
 
             <td class="project-features">

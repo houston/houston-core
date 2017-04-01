@@ -93,13 +93,13 @@
     <% end %>
 
     <%= f.fields_for :props, @project.props do |f| %>
-      <% Houston.project_options.each do |form| %>
+      <% Houston.view["edit_project"].fields.each do |field| %>
         <hr />
 
         <div class="control-group">
-          <label class="control-label"><%= form.name %></label>
+          <label class="control-label" for="<%= field.id %>"><%= field.label %></label>
           <div class="controls">
-            <%= form.render(self, f) %>
+            <%= field.render(self, f) %>
           </div>
         </div>
       <% end %>
