@@ -92,18 +92,9 @@
       </div>
     <% end %>
 
-    <%= f.fields_for :props, @project.props do |f| %>
-      <% Houston.view["edit_project"].fields.each do |field| %>
-        <hr />
 
-        <div class="control-group">
-          <label class="control-label" for="<%= field.id %>"><%= field.label %></label>
-          <div class="controls">
-            <%= field.render(self, f) %>
-          </div>
-        </div>
-      <% end %>
-    <% end %>
+    <%= render_props_fields(f, "edit_project") %>
+
 
     <div class="form-actions">
       <%= f.submit nil, :class => "btn btn-primary" %>
