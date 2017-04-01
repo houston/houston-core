@@ -3,6 +3,10 @@ module Houston
     attr_reader :extensions_by_layout
 
     def initialize
+      reset!
+    end
+
+    def reset!
       @extensions_by_layout =
         { "application" => Extensions.new,
           "dashboard" => Extensions.new }
