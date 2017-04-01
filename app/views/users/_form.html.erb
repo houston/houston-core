@@ -48,13 +48,13 @@
 
 
     <%= f.fields_for :props, @user.props do |f| %>
-      <% Houston.user_options.each do |form| %>
+      <% Houston.view["edit_user"].fields.each do |field| %>
         <hr />
 
         <div class="control-group">
-          <label class="control-label"><%= form.name %></label>
+          <label class="control-label" for="<%= field.id %>"><%= field.label %></label>
           <div class="controls">
-            <%= form.render(self, f) %>
+            <%= field.render(self, f) %>
           </div>
         </div>
       <% end %>
