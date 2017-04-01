@@ -7,6 +7,10 @@ module Houston
   class Serializer
     class UnserializableError < ArgumentError; end
 
+    def initialize(serializers=Houston.serializers)
+      @serializers = serializers
+    end
+
     def load(string)
       begin
         object = Oj.load(string, nilnil: true, auto_define: false)
@@ -25,6 +29,7 @@ module Houston
     end
 
   private
+    attr_reader :serializers
 
     def unpack(object)
       if object.is_a?(Array)
@@ -59,7 +64,7 @@ module Houston
       when *SERIALIZABLE_TYPES
         object
       else
-        Houston.serializers.each do |serializer|
+        serializers.each do |serializer|
           next unless serializer.applies_to?(object)
           packed_object = serializer.pack(object)
           packed_object["^S"] = serializer.class.name if serializer.respond_to?(:unpack)

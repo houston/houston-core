@@ -2,6 +2,7 @@ require "houston/boot/serializer"
 require "houston/boot/extensions/events"
 require "houston/boot/extensions/layout"
 require "houston/boot/extensions/oauth"
+require "houston/boot/extensions/serializers"
 require "houston/boot/extensions/view"
 require "houston/boot/extensions/deprecated_methods"
 
@@ -10,11 +11,10 @@ module Houston
   module Extensions
     include Houston::Extensions::DeprecatedMethods
 
-    attr_reader :serializers
 
-    def oauth
-      return @oauth if defined?(@oauth)
-      @oauth = Houston::Oauth.new
+    def events
+      return @events if defined?(@events)
+      @events = Houston::Events.new
     end
 
     def layout
@@ -22,20 +22,29 @@ module Houston
       @layout = Houston::Layout.new
     end
 
+    def oauth
+      return @oauth if defined?(@oauth)
+      @oauth = Houston::Oauth.new
+    end
+
+    def serializers
+      return @serializers if defined?(@serializers)
+      @serializers = Houston::Serializers.new
+    end
+
     def view
       return @view if defined?(@view)
       @view = Houston::Views.new
-    end
-
-    def events
-      return @events if defined?(@events)
-      @events = Houston::Events.new
     end
 
 
 
     def register_events(&block)
       events.register(&block)
+    end
+
+    def add_serializer(serializer)
+      serializers.add(serializer)
     end
 
 
@@ -83,9 +92,6 @@ module Houston
 
 
 
-
-
-
     def add_project_header_command(slug, &block)
       dsl = ProjectBannerFeatureDsl.new(ProjectBannerFeature.new)
       dsl.instance_eval(&block)
@@ -97,20 +103,6 @@ module Houston
 
     def project_header_commands
       @project_header_commands.values
-    end
-
-
-
-
-
-
-    def add_serializer(serializer)
-      [:applies_to?, :pack].each do |method|
-        next if serializer.respond_to?(method)
-        raise ArgumentError, "`serializer` must respond to `#{method}`"
-      end
-
-      @serializers.push serializer
     end
 
 
@@ -234,7 +226,6 @@ module Houston
   @navigation_renderers = {}
   @available_project_features = {}
   @project_header_commands = {}
-  @serializers = []
   extend Houston::Extensions
 end
 
