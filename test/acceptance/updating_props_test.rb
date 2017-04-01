@@ -1,16 +1,5 @@
 require "test_helper"
 
-# Given a runtime-defined field for project
-Houston.view["edit_project"].add_field("Test Field") do |f|
-  f.text_field "test.field", id: "__props_test_field"
-end
-
-# Given a runtime-defined field for user
-Houston.view["edit_user"].add_field("Test Field") do |f|
-  f.text_field "test.field", id: "__props_test_field"
-end
-
-
 class UpdatingPropersTest < ActionDispatch::IntegrationTest
   include Capybara::DSL
 
@@ -25,10 +14,18 @@ class UpdatingPropersTest < ActionDispatch::IntegrationTest
     click_button "Sign in"
   end
 
+  teardown do
+    Houston.view.reset!
+  end
+
 
   context "A runtime-defined field for projects" do
     setup do
       @project = FactoryGirl.create(:project)
+
+      Houston.view["edit_project"].add_field("Test Field") do |f|
+        f.text_field "test.field", id: "__props_test_field"
+      end
     end
 
     should "be rendered on the Edit Project view" do
@@ -50,6 +47,10 @@ class UpdatingPropersTest < ActionDispatch::IntegrationTest
   context "A runtime-defined field for users" do
     setup do
       @user = users(:boblail)
+
+      Houston.view["edit_user"].add_field("Test Field") do |f|
+        f.text_field "test.field", id: "__props_test_field"
+      end
     end
 
     should "be rendered on the Edit Project view" do

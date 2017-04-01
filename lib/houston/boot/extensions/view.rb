@@ -11,6 +11,10 @@ module Houston
     def [](view)
       @views[view]
     end
+
+    def reset!
+      @views.values.each(&:reset!)
+    end
   end
 
 
@@ -20,6 +24,9 @@ module Houston
         extend self.class.const_get(constant)
       end
       self
+    end
+
+    def reset!
     end
   end
 
@@ -58,6 +65,11 @@ module Houston
       end)
     end
 
+    def reset!
+      @columns = []
+      super
+    end
+
     Column = Struct.new(:name) do
       include Permitted, Render
     end
@@ -80,6 +92,11 @@ module Houston
         field.instance_variable_set :@render_block, block
         @fields << field
       end)
+    end
+
+    def reset!
+      @fields = []
+      super
     end
 
     Field = Struct.new(:label) do
