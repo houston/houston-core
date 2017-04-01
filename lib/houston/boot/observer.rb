@@ -72,12 +72,12 @@ module Houston
 
     def assert_registered!(event_name)
       return if event_name == :*
-      return if Houston.registered_event?(event_name)
+      return if Houston.events.registered?(event_name)
       raise UnregisteredEventError, "#{event_name.inspect} is not a registered event"
     end
 
     def assert_registered_params!(event_name, params)
-      event = Houston.get_registered_event(event_name)
+      event = Houston.events[event_name]
 
       missing_params = event.params - params.keys.map(&:to_s)
       unregistered_params = params.keys.map(&:to_s) - event.params

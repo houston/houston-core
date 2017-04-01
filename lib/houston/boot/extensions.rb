@@ -1,6 +1,7 @@
 require "houston/boot/serializer"
-require "houston/boot/extensions/oauth"
+require "houston/boot/extensions/events"
 require "houston/boot/extensions/layout"
+require "houston/boot/extensions/oauth"
 require "houston/boot/extensions/view"
 require "houston/boot/extensions/deprecated_methods"
 
@@ -9,7 +10,7 @@ module Houston
   module Extensions
     include Houston::Extensions::DeprecatedMethods
 
-    attr_reader :events, :serializers
+    attr_reader :serializers
 
     def oauth
       return @oauth if defined?(@oauth)
@@ -24,6 +25,17 @@ module Houston
     def view
       return @view if defined?(@view)
       @view = Houston::Views.new
+    end
+
+    def events
+      return @events if defined?(@events)
+      @events = Houston::Events.new
+    end
+
+
+
+    def register_events(&block)
+      events.register(&block)
     end
 
 
@@ -89,25 +101,6 @@ module Houston
 
 
 
-    def registered_event?(event_name)
-      events.any? { |event| event.matches? event_name }
-    end
-
-    def get_registered_event(event_name)
-      events.find { |event| event.matches? event_name }
-    end
-
-    def register_event(name, description)
-      events.push Event.new(name, description)
-    end
-
-    def register_events(&block)
-      dsl = RegisterEventsDsl.new
-      hash = dsl.instance_eval(&block)
-      hash.each do |name, description|
-        register_event(name, description.to_h)
-      end
-    end
 
 
 
@@ -234,53 +227,6 @@ module Houston
       end
     end
 
-    class RegisterEventsDsl
-      def params(*params)
-        RegisterEventDsl.new.params(*params)
-      end
-
-      def description(value)
-        RegisterEventDsl.new.description(value)
-      end
-      alias :desc :description
-    end
-
-    class RegisterEventDsl
-      def initialize
-        @hash = {}
-      end
-
-      def params(*params)
-        @hash[:params] = params
-        self
-      end
-
-      def description(value)
-        @hash[:description] = value
-        self
-      end
-      alias :desc :description
-
-      def to_h
-        @hash
-      end
-    end
-
-    class Event
-      attr_reader :name, :description, :params
-
-      def initialize(name, options)
-        @name = name
-        @description = options.fetch(:description)
-        @params = options.fetch(:params, [])
-        @matcher = Regexp.new("\\A#{name.gsub /\{([^:}]+)\}/, "(?<\\1>[^:]+)"}\\z")
-      end
-
-      def matches?(event_name)
-        @matcher === event_name
-      end
-    end
-
   end
 
 
@@ -288,8 +234,6 @@ module Houston
   @navigation_renderers = {}
   @available_project_features = {}
   @project_header_commands = {}
-  @events = []
-  @event_matchers = []
   @serializers = []
   extend Houston::Extensions
 end
