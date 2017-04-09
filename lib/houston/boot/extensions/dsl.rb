@@ -25,6 +25,13 @@ module Houston
       __getobj__.instance_variable_set :@ability_block, block
     end
   end
+
+  module AcceptsName
+    def name(*args)
+      __getobj__.name = args.first if args.any?
+      __getobj__.name
+    end
+  end
 end
 
 def Chain(*modules)

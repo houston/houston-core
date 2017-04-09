@@ -27,6 +27,14 @@ module Houston
         dsl.add_field_to "edit_project"
       end
 
+      def add_navigation_renderer(slug, &block)
+        Houston.deprecation_notice 'Houston.add_navigation_renderer is deprecated and will be removed in houston-core 1.0; use Houston.navigation.add_link instead'
+
+        dsl = DeprecatedNavigationDsl.new
+        dsl.instance_eval(&block)
+        dsl.add_to_navigation(slug)
+      end
+
 
 
 
@@ -46,7 +54,8 @@ module Houston
 
         def add_column_to(view_name)
           column = Houston.view[view_name].add_column @name, &@render_block
-          column.ability(&@ability_block) if @ability_block
+          ability_block = @ability_block
+          column.ability { ability_block.call(self) } if ability_block
           column
         end
       end
@@ -64,6 +73,28 @@ module Houston
 
         def add_field_to(view_name)
           Houston.view[view_name].add_field @label, &@render_block
+        end
+      end
+
+      class DeprecatedNavigationDsl
+        def name(value)
+          @name = value
+        end
+
+        def path(&block)
+          @path_block = block
+        end
+
+        def ability(&block)
+          @ability_block = block
+        end
+
+        def add_to_navigation(slug)
+          Houston.navigation.add_link(slug, &@path_block).tap do |link|
+            ability_block = @ability_block
+            link.ability { ability_block.call(self) } if ability_block
+            link.content { @name } unless @name == slug.to_s.titleize
+          end
         end
       end
 
