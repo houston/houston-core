@@ -1,6 +1,7 @@
 require "houston/boot/serializer"
 require "houston/boot/extensions/events"
 require "houston/boot/extensions/layout"
+require "houston/boot/extensions/navigation"
 require "houston/boot/extensions/oauth"
 require "houston/boot/extensions/serializers"
 require "houston/boot/extensions/view"
@@ -20,6 +21,11 @@ module Houston
     def layout
       return @layout if defined?(@layout)
       @layout = Houston::Layout.new
+    end
+
+    def navigation
+      return @navigation if defined?(@navigation)
+      @navigation = Houston::Navigation.new
     end
 
     def oauth
@@ -47,26 +53,6 @@ module Houston
       serializers.add(serializer)
     end
 
-
-
-    def available_navigation_renderers
-      @navigation_renderers.keys
-    end
-
-    def get_navigation_renderer(name)
-      @navigation_renderers.fetch(name)
-    end
-
-    def add_navigation_renderer(slug, &block)
-      dsl = FeatureDsl.new(GlobalFeature.new)
-      dsl.instance_eval(&block)
-      feature = dsl.feature
-      feature.slug = slug
-      raise ArgumentError, "Renderer must supply name, but #{slug.inspect} doesn't" unless feature.name
-      raise ArgumentError, "Renderer must supply path lambda, but #{slug.inspect} doesn't" unless feature.path_block
-
-      @navigation_renderers[slug] = feature
-    end
 
 
 
@@ -223,7 +209,6 @@ module Houston
 
 
 
-  @navigation_renderers = {}
   @available_project_features = {}
   @project_header_commands = {}
   extend Houston::Extensions
