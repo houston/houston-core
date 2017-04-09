@@ -1,4 +1,5 @@
 require "concurrent/hash"
+require "houston/boot/extensions/dsl"
 
 module Houston
   class Views
@@ -31,26 +32,6 @@ module Houston
   end
 
 
-  module Permitted
-    def permitted?(ability, *args)
-      return true if @ability_block.nil?
-      ability.instance_exec(*args, &@ability_block)
-    end
-  end
-
-  module Render
-    def render(view, *args)
-      view.instance_exec(*args, &@render_block)
-    end
-  end
-
-  module AbilityBlock
-    def ability(&block)
-      __getobj__.instance_variable_set :@ability_block, block
-    end
-  end
-
-
   module View::Table
     attr_reader :columns
 
@@ -59,7 +40,7 @@ module Houston
     end
 
     def add_column(name, &block)
-      ColumnBuilder.new(Column.new(name).tap do |column|
+      Chain(AbilityBlock, Column.new(name).tap do |column|
         column.instance_variable_set :@render_block, block
         @columns << column
       end)
@@ -73,10 +54,6 @@ module Houston
     Column = Struct.new(:name) do
       include Permitted, Render
     end
-
-    class ColumnBuilder < SimpleDelegator
-      include AbilityBlock
-    end
   end
 
 
@@ -88,7 +65,7 @@ module Houston
     end
 
     def add_field(label, &block)
-      FieldBuilder.new(Field.new(label).tap do |field|
+      Chain(AbilityBlock, Field.new(label).tap do |field|
         field.instance_variable_set :@render_block, block
         @fields << field
       end)
@@ -103,14 +80,8 @@ module Houston
       include Permitted, Render
 
       def id
-        "__props_#{label.gsub(" ", "_").underscore}"
+        "__props_#{label.tr(" ", "_").underscore}"
       end
     end
-
-    class FieldBuilder < SimpleDelegator
-      include AbilityBlock
-    end
   end
-
-
 end
