@@ -1,6 +1,6 @@
 require "test_helper"
 
-class ViewExtensionsTest < ActiveSupport::TestCase
+class ViewExtensionTest < ActiveSupport::TestCase
   attr_reader :column, :field
 
   context "Houston.view" do

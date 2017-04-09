@@ -1,6 +1,6 @@
 require "test_helper"
 
-class EventsExtensionsTest < ActiveSupport::TestCase
+class EventsExtensionTest < ActiveSupport::TestCase
 
 
   context "Houston.events" do

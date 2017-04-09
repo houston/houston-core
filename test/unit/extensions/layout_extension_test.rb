@@ -1,6 +1,6 @@
 require "test_helper"
 
-class LayoutExtensionsTest < ActiveSupport::TestCase
+class LayoutExtensionTest < ActiveSupport::TestCase
 
 
   context "Houston.layout" do

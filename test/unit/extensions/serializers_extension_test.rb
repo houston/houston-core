@@ -1,6 +1,6 @@
 require "test_helper"
 
-class SerializersExtensionsTest < ActiveSupport::TestCase
+class SerializersExtensionTest < ActiveSupport::TestCase
 
 
   context "Houston.serializers" do
