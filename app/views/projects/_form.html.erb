@@ -22,11 +22,11 @@
     </div>
 
     <div class="control-group">
-      <%= f.label :color, :class => "control-label" %>
+      <%= f.label :color_name, :class => "control-label" %>
       <div class="controls">
-        <%= f.select :color, [["None", "default"]] + Houston.config.project_colors.keys.map { |name| [name.titleize, name] }, :class => "select_field" %>
+        <%= f.select :color_name, [["None", "default"]] + Houston.config.project_colors.keys.map { |name| [name.titleize, name] }, :class => "select_field" %>
         <% if Project.count > 0 %>
-          (Unused colors: <%= (Houston.config.project_colors.keys - Project.pluck(:color).uniq).map(&:titleize).join(", ") %>)
+          (Unused colors: <%= (Houston.config.project_colors.keys - Project.pluck(:color_name).uniq).map(&:titleize).join(", ") %>)
         <% end %>
       </div>
     </div>
@@ -70,7 +70,7 @@
         <label class="control-label">Features</label>
         <div class="controls" style="padding-top: 5px; padding-bottom: 5px;">
           <% features.each do |feature_slug| %>
-            <% feature = Houston.get_project_feature(feature_slug) %>
+            <% feature = Houston.project_features[feature_slug] %>
             <label for="selected_features_<%= feature_slug %>">
               <%= check_box_tag "project[selected_features][]", feature_slug, @project.feature?(feature_slug), id: "selected_features_#{feature_slug}", class: "project-feature" %>
               <%= feature.name %>
@@ -78,7 +78,7 @@
 
             <% if feature.fields.any? %>
               <div class="project-feature-fields" data-feature="<%= feature_slug %>">
-                <%= f.fields_for :props do |f| %>
+                <%= f.fields_for :props, @project.props do |f| %>
                   <% feature.fields.each do |form| %>
                     <div class="project-feature-field">
                       <%= form.render(self, f) %>
@@ -92,18 +92,9 @@
       </div>
     <% end %>
 
-    <%= f.fields_for :props do |f| %>
-      <% Houston.project_options.each do |form| %>
-        <hr />
 
-        <div class="control-group">
-          <label class="control-label"><%= form.name %></label>
-          <div class="controls">
-            <%= form.render(self, f) %>
-          </div>
-        </div>
-      <% end %>
-    <% end %>
+    <%= render_props_fields(f, "edit_project") %>
+
 
     <div class="form-actions">
       <%= f.submit nil, :class => "btn btn-primary" %>
@@ -119,8 +110,6 @@
 <% content_for :javascripts do %>
 <script type="text/javascript">
   $(function() {
-    NestedEditorFor.init();
-
     function dasherize(word) {
       return word.replace(/([A-Z]+)([A-Z][a-z])/g, '$1-$2')
         .replace(/([a-z\d])([A-Z])/g, '$1-$2')

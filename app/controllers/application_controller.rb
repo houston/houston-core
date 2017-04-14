@@ -26,18 +26,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  rescue_from UserCredentials::MissingCredentials do
-    head 401, "X-Credentials" => "Missing Credentials"
-  end
-
-  rescue_from UserCredentials::InvalidCredentials do
-    head 401, "X-Credentials" => "Invalid Credentials"
-  end
-
-  rescue_from UserCredentials::InsufficientPermissions do |exception|
-    render plain: exception.message, status: 401
-  end
-
   rescue_from ActiveRecord::RecordNotFound do
     render file: Houston.root.join("public/404"), layout: false
   end
@@ -135,6 +123,15 @@ class ApplicationController < ActionController::Base
       current_user.current_project_id = current_project.id
       current_user.save if current_user.current_project_id_changed?
     end
+  end
+
+
+
+  def oauth_authorize!(klass, scope:, redirect_to: nil)
+    authorization = klass.for(current_user).find_or_create_by!(scope: scope)
+    raise ArgumentError, "authorization already exists" if authorization.granted?
+    session["#{authorization.id}_granted_redirect_url"] = redirect_to if redirect_to
+    redirect_to authorization.url
   end
 
 

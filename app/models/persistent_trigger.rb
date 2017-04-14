@@ -4,11 +4,16 @@ class PersistentTrigger < ActiveRecord::Base
   serialize :value, Houston::Serializer.new
   serialize :params, Houston::ParamsSerializer.new
 
+  belongs_to :user
+
   TYPES = [:on, :every].freeze
+
+  validates :user_id, presence: true
   validates :type, inclusion: { in: TYPES, message: "{value} is not valid Trigger type; use #{TYPES.map(&:inspect).to_sentence(two_words_connector: " or ", last_word_connector: ", or ")}" }
   validate :action_must_be_defined
 
   after_create :register!
+  after_destroy :unregister!
 
 
   TYPES.each do |type|
@@ -31,8 +36,13 @@ class PersistentTrigger < ActiveRecord::Base
 
 
   def register!
-    trigger = Houston.config.triggers.build(type, value, action, params)
+    trigger = Houston.config.triggers.build(type, value, action, params.merge(trigger: self), persistent_trigger_id: id)
     Houston.config.triggers.push(trigger) unless Houston.config.triggers.member?(trigger)
+  end
+
+  def unregister!
+    trigger = Houston.config.triggers.detect { |trigger| trigger.persistent_trigger_id == id }
+    Houston.config.triggers.delete(trigger) if trigger
   end
 
 

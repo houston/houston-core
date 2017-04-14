@@ -1,14 +1,10 @@
-<% content_for :title do %>
-<% without = (defined?(without) && without) || [] %>
-<h1 class="project-banner <%= project.color %> space-below" data-project-slug="<%= project.slug %>" data-project-color="<%= project.color %>">
+<% project_banner(project) do %>
   <% if defined?(subtitle) %><small><%= subtitle %></small><% end %>
   <%= project.name %><% if defined?(postfix) %><small class="colon">:</small> <small class="postfix"><%= postfix %></small><% end %>
 
   <% Houston.project_header_commands.each do |command| %>
-    <% next if without.include?(command.slug.to_s) %>
     <% next unless command.permitted?(current_ability, project) %>
     <%= render partial: command.partial, locals: { project: project } %>
   <% end %>
-  <%= render partial: "projects/keyboard_shortcuts" unless without.include?("keyboard_shortcuts") %>
-</h1>
+  <%= render partial: "projects/keyboard_shortcuts" %>
 <% end %>

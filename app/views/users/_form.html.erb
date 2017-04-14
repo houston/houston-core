@@ -46,44 +46,7 @@
     <% end %>
 
 
-
-    <%= f.fields_for :props do |f| %>
-      <% Houston.user_options.each do |form| %>
-        <hr />
-
-        <div class="control-group">
-          <label class="control-label"><%= form.name %></label>
-          <div class="controls">
-            <%= form.render(self, f) %>
-          </div>
-        </div>
-      <% end %>
-    <% end %>
-
-
-
-    <% if @user.credentials.any? %>
-      <hr />
-
-      <div class="control-group">
-        <label class="control-label">Credentials</label>
-        <div class="controls">
-
-          <p>Houston has remembered your credentials for:</p>
-
-          <ul class="user-credentials">
-            <% @user.credentials.each do |credentials| %>
-              <%= content_tag :li, id: "user_credentials_#{credentials.id}" do %>
-                <span class="user-credentials-service"><%= credentials.service %></span>
-                <span class="user-credentials-delete">
-                  <a class="btn btn-mini btn-danger delete-user-credentials" href="/credentials/<%= credentials.id %>" data-method="delete" data-confirm="Should Houston forget your credentials for <%= credentials.service %>?">Delete</a>
-                </span>
-              <% end %>
-            <% end %>
-          </ul>
-        </div>
-      </div>
-    <% end %>
+    <%= render_props_fields(f, "edit_user") %>
 
 
     <% if @user.new_record? %>

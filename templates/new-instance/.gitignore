@@ -7,10 +7,6 @@
 # Ignore bundler config.
 /.bundle
 
-# Ignore sensitive passwords and things.
-config/keypair.pem
-
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
-

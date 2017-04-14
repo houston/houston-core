@@ -23,8 +23,8 @@ Rails.application.routes.draw do
       put :retire
     end
 
-    post "follow", to: "project_roles#create", :as => :follow
-    delete "unfollow", to: "project_roles#destroy", :as => :unfollow
+    post "follow", to: "project_follows#create", :as => :follow
+    delete "unfollow", to: "project_follows#destroy", :as => :unfollow
   end
 
 
@@ -38,13 +38,6 @@ Rails.application.routes.draw do
       end
     end
   end
-
-
-
-  # Settings
-
-  get "settings", to: "settings#show"
-  put "settings", to: "settings#update"
 
 
 
@@ -68,24 +61,18 @@ Rails.application.routes.draw do
 
   # Authorizations
 
-  put "credentials", to: "user_credentials#upsert"
-  delete "credentials/:id", to: "user_credentials#destroy"
-
   get "authorizations" => "authorizations#index", as: :authorizations
+  get "my/authorizations" => "authorizations#mine", as: :my_authorizations
   get "authorizations/new" => "authorizations#new", as: :new_authorization
   post "authorizations" => "authorizations#create"
   get "authorizations/:id/edit" => "authorizations#edit", as: :edit_authorization
   patch "authorizations/:id" => "authorizations#update", as: :authorization
+  delete "authorizations/:id" => "authorizations#destroy"
 
+  get "auth/:id" => "authorizations#grant"
   get "authorizations/:id/grant" => "authorizations#grant", as: :grant_authorization
   get "authorizations/:id/granted" => "authorizations#granted", as: :authorization_granted
   get "oauth2/callback" => "authorizations#oauth2_callback", as: :oauth2_callback
-
-  get "oauth/providers" => "oauth/providers#index", as: :oauth_providers
-  get "oauth/providers/new" => "oauth/providers#new", as: :new_oauth_provider
-  post "oauth/providers" => "oauth/providers#create"
-  get "oauth/providers/:id/edit" => "oauth/providers#edit", as: :edit_oauth_provider
-  patch "oauth/providers/:id" => "oauth/providers#update", as: :oauth_provider
 
 
 
@@ -93,6 +80,7 @@ Rails.application.routes.draw do
 
   get "actions", to: "actions#index", as: :actions
   get "actions/running", to: "actions#running", as: :running_actions
+  get "actions/unqueued", to: "actions#unqueued", as: :unqueued_actions
   get "actions/:slug", to: "actions#show", as: :action, constraints: { slug: /[^\/]+/ }
   post "actions/:slug", to: "actions#run", as: :run_action, constraints: { slug: /[^\/]+/ }
   post "actions/:id/retry", to: "actions#retry", as: :retry_action
@@ -121,8 +109,12 @@ Rails.application.routes.draw do
 
 
 
-  # Tester Bar
-  match "tester_bar/:action", :controller => "tester_bar", via: [:get, :post] if Rails.env.development?
+  # The Instance
+  # (before Modules so that it can override routes in the modules)
+
+  if defined?(Houston::Engine)
+    mount Houston::Engine => "/"
+  end
 
 
 
@@ -130,14 +122,6 @@ Rails.application.routes.draw do
 
   Houston.config.modules.each do |mod|
     mount mod.engine => "/"
-  end
-
-
-
-  # The Instance
-
-  if defined?(Houston::Engine)
-    mount Houston::Engine => "/"
   end
 
 

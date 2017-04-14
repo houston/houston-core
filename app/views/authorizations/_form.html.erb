@@ -1,33 +1,45 @@
-<%= form_for @authorization, html: {class: "form-horizontal"} do |f| %>
+<%= form_for @authorization, url: {controller: "authorizations"}, html: {class: "form-horizontal"} do |f| %>
   <fieldset>
     <div class="control-group">
-      <%= f.label :name, class: "control-label" %>
+      <%= f.label :type, "Provider", class: "control-label" %>
       <div class="controls">
-        <%= f.text_field :name, class: "text_field" %>
-      </div>
-    </div>
-  </fieldset>
-
-<hr />
-
-  <fieldset>
-    <div class="control-group">
-      <%= f.label :provider_id, class: "control-label" %>
-      <div class="controls">
-        <%= f.collection_select :provider_id, Oauth::Provider.all, :id, :name %>
+        <%= f.select :type, Authorization.providers, {}, disabled: @authorization.persisted? %>
       </div>
     </div>
 
     <div class="control-group">
       <%= f.label :scope, class: "control-label" %>
       <div class="controls">
-        <%= f.text_field :scope, class: "text_field" %>
+        <%= f.text_field :scope, class: "text_field", readonly: @authorization.persisted? %>
       </div>
     </div>
   </fieldset>
 
   <div class="form-actions">
     <%= f.submit nil, class: "btn btn-primary" %>
-    <%= link_to "Cancel", authorizations_path, class: "btn" %>
+    <%= link_to "Cancel", my_authorizations_path, class: "btn" %>
+
+    <% if @authorization.persisted? && can?(:destroy, @authorization) %>
+      <button class="btn btn-delete btn-danger" id="delete_authorization_button">Revoke</button>
+    <% end %>
   </div>
+<% end %>
+
+<% content_for :javascripts do %>
+<script type="text/javascript">
+  $(function() {
+    <% if @authorization.persisted? && can?(:destroy, @authorization) %>
+    $('#delete_authorization_button').click(function(e) {
+      e.preventDefault();
+      App.confirmDelete({
+        resource: 'Authorization',
+        message: 'This will revoke authorization for "<%= @authorization.provider.name %>".',
+        url: <%=raw authorization_path(@authorization).to_json %>
+      });
+    });
+    <% end %>
+
+    $('#authorization_name').select();
+  });
+</script>
 <% end %>

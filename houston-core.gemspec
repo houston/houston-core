@@ -28,32 +28,32 @@ Gem::Specification.new do |spec|
   # --------------------------------
   spec.add_dependency "activerecord-import"
   spec.add_dependency "activerecord-pluck_in_batches", "~> 0.2.0"
-  spec.add_dependency "addressable", "~> 2.3.8"
-  spec.add_dependency "attentive", ">= 0.3.6"
+  spec.add_dependency "addressable", "~> 2.3.8" # <-- 2.5.0 raises "invalid scheme format" for "git@github.com"
+  spec.add_dependency "attentive", ">= 0.3.9"
   spec.add_dependency "browser", "~> 2.3.0"
-  spec.add_dependency "cancan", "~> 1.6.10" # cancancan
+  spec.add_dependency "cancancan", "~> 1.16.0"
   spec.add_dependency "concurrent-ruby", "~> 1.0.2"
   spec.add_dependency "devise"
   spec.add_dependency "devise_invitable"
-  spec.add_dependency "houston-devise_ldap_authenticatable"
   spec.add_dependency "faraday", "~> 0.9.2"
   spec.add_dependency "faraday-http-cache", "~> 1.2.2"
   spec.add_dependency "faraday-raise-errors", "~> 0.2.0"
   spec.add_dependency "gemoji", "~> 2.1.0"
   spec.add_dependency "handlebars_assets", "~> 0.23.0"
-  spec.add_dependency "neat-rails"
+  spec.add_dependency "neat-rails", "~> 0.5.1"
   spec.add_dependency "nokogiri", "~> 1.7"
   spec.add_dependency "oauth2"
   spec.add_dependency "oj", "~> 2.18"
   spec.add_dependency "openxml-xlsx", ">= 0.2.0"
   spec.add_dependency "pg_search", "~> 1.0.5"
-  spec.add_dependency "premailer", "~> 1.8.6"
+  spec.add_dependency "premailer", "~> 1.10.0"
   spec.add_dependency "progressbar", "~> 0.21.0" # for long migrations
   spec.add_dependency "rack-utf8_sanitizer", "~> 1.3.1"
-  spec.add_dependency "redcarpet", "~> 3.3.2"
-  spec.add_dependency "strongbox", "~> 0.7.2" # for encrypting user credentials
   spec.add_dependency "thor"
-  spec.add_dependency "houston-vestal_versions"
+
+  # For parsing Markdown
+  spec.add_dependency "kramdown"
+  spec.add_dependency "slackdown", ">= 0.2.1"
 
   # The Asset Pipeline
   spec.add_dependency "sass-rails", "~> 5.0"
@@ -61,9 +61,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "coffee-rails", "~> 4.1.0"
 
   # Houston's background jobs daemon
-  spec.add_dependency "rufus-scheduler", "~> 3.2.0"
-
-  # Used to edit releases' changes and teams' roles
-  spec.add_dependency "nested_editor_for"
+  spec.add_dependency "rufus-scheduler", "~> 3.3.4"
 
 end

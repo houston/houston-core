@@ -4,9 +4,10 @@ class Project < ActiveRecord::Base
   include Houston::Props
 
   belongs_to :team
+  has_and_belongs_to_many :followers, join_table: "follows", class_name: "User"
 
   before_validation :generate_default_slug, :set_default_color
-  validates_presence_of :name, :slug, :color
+  validates_presence_of :name, :slug, :color_name
 
   validates :slug, format: { with: /\A[a-z0-9_\-]+\z/ }
 
@@ -16,26 +17,8 @@ class Project < ActiveRecord::Base
     slug
   end
 
-  def color_value
-    Houston.config.project_colors[color]
-  end
-
-
-
-  def extended_attributes
-    raise NotImplementedError, "This feature has been deprecated; use props"
-  end
-
-  def extended_attributes=(value)
-    raise NotImplementedError, "This feature has been deprecated; use props"
-  end
-
-  def view_options
-    raise NotImplementedError, "This feature has been deprecated; use props"
-  end
-
-  def view_options=(value)
-    raise NotImplementedError, "This feature has been deprecated; use props"
+  def color
+    Houston.config.project_colors[color_name]
   end
 
 
@@ -88,11 +71,6 @@ class Project < ActiveRecord::Base
     team.users
   end
 
-  def followers # <-- redefine followers to be everyone who participates in or follows the project
-    puts "DEPRECATED: Project#followers is deprecated; use Project#teammates instead"
-    teammates
-  end
-
   # ------------------------------------------------------------------------- #
 
 
@@ -104,7 +82,7 @@ private
   end
 
   def set_default_color
-    self.color = "default" unless color
+    self.color_name = "default" unless color_name
   end
 
 end

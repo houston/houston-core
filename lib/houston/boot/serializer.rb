@@ -7,6 +7,10 @@ module Houston
   class Serializer
     class UnserializableError < ArgumentError; end
 
+    def initialize(serializers=Houston.serializers)
+      @serializers = serializers
+    end
+
     def load(string)
       begin
         object = Oj.load(string, nilnil: true, auto_define: false)
@@ -25,15 +29,15 @@ module Houston
     end
 
   private
+    attr_reader :serializers
 
     def unpack(object)
       if object.is_a?(Array)
         object.map { |item| unpack(item) }
       elsif object.is_a?(Hash)
         object = object.each_with_object({}) { |(key, value), new_object| new_object[key] = unpack(value) }
-        if serializer = object["^S"]
-          object = serializer.constantize.new.unpack(object)
-        end
+        serializer = object["^S"]
+        object = serializer.constantize.new.unpack(object) if serializer
         object
       else
         object
@@ -55,13 +59,15 @@ module Houston
         pack object.to_h
       when ActiveSupport::TimeWithZone
         object.to_datetime
+      when ActiveRecord::ConnectionAdapters::PostgreSQL::OID::Array::Data
+        pack object.values
       when *SERIALIZABLE_TYPES
         object
       else
-        Houston.serializers.each do |serializer|
+        serializers.each do |serializer|
           next unless serializer.applies_to?(object)
           packed_object = serializer.pack(object)
-          packed_object.merge!("^S" => serializer.class.name) if serializer.respond_to?(:unpack)
+          packed_object["^S"] = serializer.class.name if serializer.respond_to?(:unpack)
           return pack(packed_object)
         end
 
@@ -77,8 +83,8 @@ module Houston
       Date,
       DateTime,
       FalseClass,
-      Fixnum,
       Float,
+      Integer,
       NilClass,
       String,
       Symbol,

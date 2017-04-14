@@ -7,6 +7,7 @@ require File.join(root, "lib/houston/boot/triggers")
 require File.join(root, "lib/houston/boot/observer")
 require File.join(root, "lib/houston/boot/actions")
 require File.join(root, "lib/houston/boot/timer")
+require File.join(root, "lib/houston/boot/provider")
 require File.join(root, "lib/houston/adapters")
 
 module Houston
@@ -19,18 +20,18 @@ module_function
 
 
   class Configuration
-    attr_reader :observer, :actions, :timer
+    attr_reader :observer, :actions, :timer, :oauth_providers
 
     def initialize
       @root = Rails.root
+      @use_ssl = Rails.env.production?
+      @oauth_providers = []
       @roles = Hash.new { |hash, key| hash[key] = [] }
       @roles["Team Owner"].push(Proc.new do |team|
         can :manage, team
         can :manage, Project, team_id: team.id
       end)
       @modules = []
-      @authentication_strategy = :database
-      @authentication_strategy_configuration = {}
     end
 
     def triggers
@@ -117,6 +118,20 @@ module_function
       @host ||= nil
     end
 
+    def use_ssl(*args)
+      @use_ssl = args.first if args.any?
+      @use_ssl
+    end
+
+    def use_ssl?
+      @use_ssl
+    end
+
+    def secret_key_base(*args)
+      return Houston::Application.config.secret_key_base if args.none?
+      Houston::Application.config.secret_key_base = args.first
+    end
+
     def time_zone(*args)
       return Rails.application.config.time_zone if args.none?
       Rails.application.config.time_zone = args.first
@@ -150,15 +165,6 @@ module_function
       @password_length ||= 8..128
     end
 
-    def passphrase(*args)
-      @passphrase = args.first if args.any?
-      @passphrase ||= nil
-    end
-
-    def keypair
-      root.join("config", "keypair.pem")
-    end
-
     def parallelization(*args)
       @parallelization = args.first if args.any?
       @parallelization ||= :off
@@ -178,6 +184,19 @@ module_function
       @s3 ||= {}
     end
 
+    def oauth(provider_name, &block)
+      settings = HashDsl.hash_from_block(block)
+      provider = Houston.oauth.get_provider(provider_name)
+
+      raise ArgumentError, "Provider must define a client_id" if settings[:client_id].blank?
+      raise ArgumentError, "Provider must define a client_secret" if settings[:client_secret].blank?
+
+      provider.client_id = settings[:client_id]
+      provider.client_secret = settings[:client_secret]
+
+      @oauth_providers << provider_name.to_s
+    end
+
     def project_categories(*args)
       @project_categories = args if args.any?
       @project_categories ||= []
@@ -185,21 +204,21 @@ module_function
 
     def navigation(*args)
       @navigation = args if args.any?
-      return Houston.available_navigation_renderers unless @navigation
-      @navigation & Houston.available_navigation_renderers
+      return Houston.navigation.slugs unless @navigation
+      @navigation & Houston.navigation.slugs
     end
 
     def project_features(*args)
       @project_features = args if args.any?
-      return Houston.available_project_features unless @project_features
-      @project_features & Houston.available_project_features
+      return Houston.project_features.all unless @project_features
+      @project_features & Houston.project_features.all
     end
 
 
 
     def project_colors(*args)
-      new_hash = Hash.new(ColorValue.new("505050"))
-      @project_colors = args.first.each_with_object(new_hash) { |(key, hex), hash| hash[key] = ColorValue.new(hex) } if args.any?
+      new_hash = Hash.new(ColorValue.new("default", "505050"))
+      @project_colors = args.first.each_with_object(new_hash) { |(key, hex), hash| hash[key] = ColorValue.new(key, hex) } if args.any?
       @project_colors ||= new_hash
     end
 
@@ -214,50 +233,6 @@ module_function
 
     def role(role_name, &abilities_block)
       @roles[role_name].push abilities_block
-    end
-
-
-
-
-
-    # Authentication options
-
-    def authentication_strategy(strategy=nil, &block)
-      @authentication_strategy = strategy if strategy
-      if block_given?
-        @authentication_strategy_configuration = HashDsl.hash_from_block(block)
-
-        if authentication_strategy == :ldap
-          %i{host port base field username_builder}.each do |required_field|
-            next if @authentication_strategy_configuration.key?(required_field)
-            raise "#{required_field} is a required field for :ldap authentication"
-          end
-        end
-      end
-
-      @authentication_strategy
-    end
-    attr_reader :authentication_strategy_configuration
-
-    def devise_configuration
-      # Include default devise modules. Others available are:
-      #      :registerable,
-      #      :encryptable,
-      #      :confirmable,
-      #      :lockable,
-      #      :timeoutable,
-      #      :omniauthable
-
-      configuration = [:database_authenticatable]
-      unless Rails.env.test? # <-- !todo: control when custom strategies are employed in the test suite
-        configuration << :ldap_authenticatable if authentication_strategy == :ldap
-      end
-      configuration.concat [
-       :recoverable,
-       :rememberable,
-       :trackable,
-       :validatable,
-       :invitable ]
     end
 
 
@@ -327,7 +302,7 @@ module_function
 
     def on(*args, &block)
       event_name, action_name = extract_trigger_and_action!(args)
-      event = Houston.get_registered_event(event_name)
+      event = Houston.events[event_name]
 
       unless event
         puts "\e[31mUnregistered event: \e[1m#{event_name}\e[0;90m\n#{caller[0]}\e[0m\n\n"
@@ -341,53 +316,10 @@ module_function
       action
     end
 
-    # DEPRECATED
-    def at(*args, &block)
-      time, action_name = extract_trigger_and_action!(args)
-      action = assert_action! action_name, &block
-      action.assert_required_params! []
-
-      # Passing options to Houston.config.at is deprecated
-      # -------------------------------------------------------------- #
-      if args.first.is_a?(Hash)
-        options = args.first
-        if days_of_the_week = options.delete(:every)
-          Houston.deprecation_notice "Instead of passing every: #{days_of_the_week.inspect} to Houston.config.at, use Houston.config.at [#{days_of_the_week.inspect}, #{time}], ..."
-          time = [days_of_the_week, time]
-        end
-        options.keys.each do |key|
-          Houston.deprecation_notice "#{key.inspect} is an unknown option for Houston.config.at. In the next version of houston-core, Houston.config.at will no longer accept options"
-        end
-      end
-      # -------------------------------------------------------------- #
-
-      # Houston.config.at is deprecated
-      # -------------------------------------------------------------- #
-      value = time
-      wdays, time = value.is_a?(Array) ? value : [:day, value]
-      interval = "#{wdays} at #{time}"
-      Houston.deprecation_notice "Houston.config.at(#{value.inspect}) is deprecated; use Houston.config.every(#{interval.inspect}) instead"
-      # -------------------------------------------------------------- #
-
-      triggers.every interval, action_name
-      action
-    end
-
     def every(*args, &block)
       interval, action_name = extract_trigger_and_action!(args)
       action = assert_action! action_name, &block
       action.assert_required_params! []
-
-      # Passing options to Houston.config.every is deprecated
-      # -------------------------------------------------------------- #
-      if args.first.is_a?(Hash)
-        options = args.first
-        options.keys.each do |key|
-          Houston.deprecation_notice "#{key.inspect} is an unknown option for Houston.config.at. In the next version of houston-core, Houston.config.at will no longer accept options"
-        end
-      end
-      # -------------------------------------------------------------- #
-
       triggers.every interval, action_name
       action
     end
@@ -398,11 +330,6 @@ module_function
         raise ArgumentError, "Unrecognized trigger: #{args.inspect}"
       end
       return args.shift(2) if args.length >= 2
-      if args.length == 1
-        method_name = caller[0][/in `(.*)'/, 1]
-        Houston.deprecation_notice "<b>Houston.config.#{method_name}(#{args[0].inspect})</b> does not specify an action name\nIn a future version of Houston <b>Houston.config.#{method_name}(#{args[0]} => \"do-something\")</b> will be required", 2
-        return [args[0], "#{args[0]}:#{SecureRandom.hex}"]
-      end
       raise NotImplementedError, "I haven't been programmed to extract trigger and action_name from #{args.inspect}"
     end
 
@@ -490,14 +417,20 @@ module_function
 
 
   class ColorValue
+    attr_reader :name
     attr_reader :hex
 
-    def initialize(hex)
+    def initialize(name, hex)
+      @name = name
       @hex = hex
     end
 
+    def as_json(options={})
+      name
+    end
+
     def to_s
-      @hex
+      name
     end
 
     def rgb

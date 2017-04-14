@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.6.0
--- Dumped by pg_dump version 9.6.0
+-- Dumped from database version 9.6.2
+-- Dumped by pg_dump version 9.6.2
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -28,20 +28,6 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
---
--- Name: hstore; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS hstore WITH SCHEMA public;
-
-
---
--- Name: EXTENSION hstore; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION hstore IS 'data type for storing sets of (key, value) pairs';
-
-
 SET search_path = public, pg_catalog;
 
 SET default_tablespace = '';
@@ -55,12 +41,13 @@ SET default_with_oids = false;
 CREATE TABLE actions (
     id integer NOT NULL,
     name character varying NOT NULL,
-    started_at timestamp without time zone NOT NULL,
+    started_at timestamp without time zone,
     finished_at timestamp without time zone,
     succeeded boolean,
     error_id integer,
     trigger character varying,
-    params text
+    params text,
+    created_at timestamp without time zone NOT NULL
 );
 
 
@@ -101,8 +88,6 @@ CREATE TABLE ar_internal_metadata (
 
 CREATE TABLE authorizations (
     id integer NOT NULL,
-    name character varying NOT NULL,
-    provider_id integer,
     scope character varying,
     access_token character varying,
     refresh_token character varying,
@@ -110,7 +95,10 @@ CREATE TABLE authorizations (
     expires_in integer,
     expires_at timestamp without time zone,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    user_id integer NOT NULL,
+    props jsonb DEFAULT '{}'::jsonb,
+    type character varying NOT NULL
 );
 
 
@@ -131,43 +119,6 @@ CREATE SEQUENCE authorizations_id_seq
 --
 
 ALTER SEQUENCE authorizations_id_seq OWNED BY authorizations.id;
-
-
---
--- Name: consumer_tokens; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE consumer_tokens (
-    id integer NOT NULL,
-    user_id integer,
-    type character varying(30),
-    token character varying(1024),
-    refresh_token character varying,
-    secret character varying,
-    expires_at integer,
-    expires_in character varying,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
-);
-
-
---
--- Name: consumer_tokens_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE consumer_tokens_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: consumer_tokens_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE consumer_tokens_id_seq OWNED BY consumer_tokens.id;
 
 
 --
@@ -202,6 +153,36 @@ CREATE SEQUENCE errors_id_seq
 --
 
 ALTER SEQUENCE errors_id_seq OWNED BY errors.id;
+
+
+--
+-- Name: follows; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE follows (
+    id integer NOT NULL,
+    user_id integer,
+    project_id integer
+);
+
+
+--
+-- Name: follows_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE follows_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: follows_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE follows_id_seq OWNED BY follows.id;
 
 
 --
@@ -241,42 +222,6 @@ ALTER SEQUENCE measurements_id_seq OWNED BY measurements.id;
 
 
 --
--- Name: oauth_providers; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE oauth_providers (
-    id integer NOT NULL,
-    name character varying NOT NULL,
-    site character varying NOT NULL,
-    authorize_path character varying NOT NULL,
-    token_path character varying NOT NULL,
-    client_id character varying NOT NULL,
-    client_secret character varying NOT NULL,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
-);
-
-
---
--- Name: oauth_providers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE oauth_providers_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: oauth_providers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE oauth_providers_id_seq OWNED BY oauth_providers.id;
-
-
---
 -- Name: persistent_triggers; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -285,7 +230,8 @@ CREATE TABLE persistent_triggers (
     type character varying NOT NULL,
     value text NOT NULL,
     params text DEFAULT '{}'::text NOT NULL,
-    action character varying NOT NULL
+    action character varying NOT NULL,
+    user_id integer NOT NULL
 );
 
 
@@ -318,7 +264,7 @@ CREATE TABLE projects (
     slug character varying NOT NULL,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    color character varying DEFAULT 'default'::character varying NOT NULL,
+    color_name character varying DEFAULT 'default'::character varying NOT NULL,
     retired_at timestamp without time zone,
     category character varying,
     version_control_name character varying DEFAULT 'None'::character varying NOT NULL,
@@ -396,36 +342,6 @@ CREATE TABLE schema_migrations (
 
 
 --
--- Name: settings; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE settings (
-    id integer NOT NULL,
-    name character varying NOT NULL,
-    value character varying NOT NULL
-);
-
-
---
--- Name: settings_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE settings_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: settings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE settings_id_seq OWNED BY settings.id;
-
-
---
 -- Name: teams; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -489,42 +405,6 @@ ALTER SEQUENCE teams_users_id_seq OWNED BY teams_users.id;
 
 
 --
--- Name: user_credentials; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE user_credentials (
-    id integer NOT NULL,
-    user_id integer,
-    service character varying,
-    login character varying,
-    password bytea,
-    password_key bytea,
-    password_iv bytea,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
-);
-
-
---
--- Name: user_credentials_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE user_credentials_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: user_credentials_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE user_credentials_id_seq OWNED BY user_credentials.id;
-
-
---
 -- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -548,15 +428,12 @@ CREATE TABLE users (
     invitation_limit integer,
     invited_by_type character varying,
     invited_by_id integer,
-    legacy_role character varying DEFAULT 'Guest'::character varying,
     authentication_token character varying,
-    legacy_administrator boolean DEFAULT false,
     first_name character varying,
     last_name character varying,
     retired_at timestamp without time zone,
     email_addresses text[],
     invitation_created_at timestamp without time zone,
-    environments_subscribed_to text[] DEFAULT '{}'::text[] NOT NULL,
     current_project_id integer,
     nickname character varying,
     username character varying,
@@ -638,13 +515,6 @@ ALTER TABLE ONLY authorizations ALTER COLUMN id SET DEFAULT nextval('authorizati
 
 
 --
--- Name: consumer_tokens id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY consumer_tokens ALTER COLUMN id SET DEFAULT nextval('consumer_tokens_id_seq'::regclass);
-
-
---
 -- Name: errors id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -652,17 +522,17 @@ ALTER TABLE ONLY errors ALTER COLUMN id SET DEFAULT nextval('errors_id_seq'::reg
 
 
 --
+-- Name: follows id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY follows ALTER COLUMN id SET DEFAULT nextval('follows_id_seq'::regclass);
+
+
+--
 -- Name: measurements id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY measurements ALTER COLUMN id SET DEFAULT nextval('measurements_id_seq'::regclass);
-
-
---
--- Name: oauth_providers id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY oauth_providers ALTER COLUMN id SET DEFAULT nextval('oauth_providers_id_seq'::regclass);
 
 
 --
@@ -687,13 +557,6 @@ ALTER TABLE ONLY roles ALTER COLUMN id SET DEFAULT nextval('roles_id_seq'::regcl
 
 
 --
--- Name: settings id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY settings ALTER COLUMN id SET DEFAULT nextval('settings_id_seq'::regclass);
-
-
---
 -- Name: teams id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -705,13 +568,6 @@ ALTER TABLE ONLY teams ALTER COLUMN id SET DEFAULT nextval('teams_id_seq'::regcl
 --
 
 ALTER TABLE ONLY teams_users ALTER COLUMN id SET DEFAULT nextval('teams_users_id_seq'::regclass);
-
-
---
--- Name: user_credentials id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY user_credentials ALTER COLUMN id SET DEFAULT nextval('user_credentials_id_seq'::regclass);
 
 
 --
@@ -753,14 +609,6 @@ ALTER TABLE ONLY authorizations
 
 
 --
--- Name: consumer_tokens consumer_tokens_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY consumer_tokens
-    ADD CONSTRAINT consumer_tokens_pkey PRIMARY KEY (id);
-
-
---
 -- Name: errors errors_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -769,19 +617,19 @@ ALTER TABLE ONLY errors
 
 
 --
+-- Name: follows follows_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY follows
+    ADD CONSTRAINT follows_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: measurements measurements_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY measurements
     ADD CONSTRAINT measurements_pkey PRIMARY KEY (id);
-
-
---
--- Name: oauth_providers oauth_providers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY oauth_providers
-    ADD CONSTRAINT oauth_providers_pkey PRIMARY KEY (id);
 
 
 --
@@ -817,14 +665,6 @@ ALTER TABLE ONLY schema_migrations
 
 
 --
--- Name: settings settings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY settings
-    ADD CONSTRAINT settings_pkey PRIMARY KEY (id);
-
-
---
 -- Name: teams teams_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -838,14 +678,6 @@ ALTER TABLE ONLY teams
 
 ALTER TABLE ONLY teams_users
     ADD CONSTRAINT teams_users_pkey PRIMARY KEY (id);
-
-
---
--- Name: user_credentials user_credentials_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY user_credentials
-    ADD CONSTRAINT user_credentials_pkey PRIMARY KEY (id);
 
 
 --
@@ -872,10 +704,10 @@ CREATE INDEX index_actions_on_name ON actions USING btree (name);
 
 
 --
--- Name: index_consumer_tokens_on_token; Type: INDEX; Schema: public; Owner: -
+-- Name: index_authorizations_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_consumer_tokens_on_token ON consumer_tokens USING btree (token);
+CREATE INDEX index_authorizations_on_user_id ON authorizations USING btree (user_id);
 
 
 --
@@ -883,6 +715,20 @@ CREATE UNIQUE INDEX index_consumer_tokens_on_token ON consumer_tokens USING btre
 --
 
 CREATE UNIQUE INDEX index_errors_on_sha ON errors USING btree (sha);
+
+
+--
+-- Name: index_follows_on_project_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_follows_on_project_id ON follows USING btree (project_id);
+
+
+--
+-- Name: index_follows_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_follows_on_user_id ON follows USING btree (user_id);
 
 
 --
@@ -1026,11 +872,140 @@ CREATE INDEX index_versions_on_versioned_id_and_versioned_type ON versions USING
 
 
 --
+-- Name: follows fk_rails_32479bd030; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY follows
+    ADD CONSTRAINT fk_rails_32479bd030 FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: authorizations fk_rails_4ecef5b8c5; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY authorizations
+    ADD CONSTRAINT fk_rails_4ecef5b8c5 FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
+-- Name: follows fk_rails_572bf69092; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY follows
+    ADD CONSTRAINT fk_rails_572bf69092 FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
+
+
+--
 -- PostgreSQL database dump complete
 --
 
 SET search_path TO "$user", public;
 
-INSERT INTO schema_migrations (version) VALUES ('20120324185914'), ('20120408155047'), ('20120417175450'), ('20120417175841'), ('20120417190504'), ('20120504143615'), ('20120525013703'), ('20120607124115'), ('20120715230922'), ('20120726231754'), ('20120823025935'), ('20120826022643'), ('20120827190634'), ('20120913020218'), ('20120920023251'), ('20120922010212'), ('20121026014457'), ('20121126005019'), ('20121219202734'), ('20121222170917'), ('20121222223325'), ('20121222223635'), ('20121230173644'), ('20130105200429'), ('20130119203853'), ('20130302205014'), ('20130312224911'), ('20130407195450'), ('20130407200624'), ('20130416020627'), ('20130420151334'), ('20130420155332'), ('20130420172322'), ('20130420174002'), ('20130420174126'), ('20130428005808'), ('20130504014802'), ('20130518224406'), ('20130518224722'), ('20130519163615'), ('20130706141443'), ('20130728191005'), ('20130914155044'), ('20131002005512'), ('20131002015547'), ('20131216014505'), ('20140106212047'), ('20140106212305'), ('20140217150735'), ('20140217160450'), ('20140406183224'), ('20140411214022'), ('20140419152214'), ('20140429000919'), ('20140516005310'), ('20140517012626'), ('20140606232907'), ('20140907013836'), ('20140921201441'), ('20141027194819'), ('20141226171730'), ('20150116153233'), ('20150222205616'), ('20150222214124'), ('20150223013721'), ('20150302153319'), ('20151201042126'), ('20151202005557'), ('20151202011812'), ('20151205204922'), ('20151228183704'), ('20160317140151'), ('20160419230411'), ('20160420000616'), ('20160507135209'), ('20160507135846'), ('20160625203412'), ('20160625221840'), ('20160625230420'), ('20160711170921'), ('20160713204605'), ('20160715173039'), ('20160812233255'), ('20160813001242'), ('20160814024129'), ('20160916191300'), ('20161102012059'), ('20161102012231'), ('20170115150643'), ('20170116002818'), ('20170116210225'), ('20170118005958');
+INSERT INTO "schema_migrations" (version) VALUES
+('20120324185914'),
+('20120408155047'),
+('20120417175450'),
+('20120417175841'),
+('20120417190504'),
+('20120504143615'),
+('20120525013703'),
+('20120607124115'),
+('20120715230922'),
+('20120726231754'),
+('20120823025935'),
+('20120826022643'),
+('20120827190634'),
+('20120913020218'),
+('20120920023251'),
+('20120922010212'),
+('20121026014457'),
+('20121126005019'),
+('20121219202734'),
+('20121222170917'),
+('20121222223325'),
+('20121222223635'),
+('20121230173644'),
+('20130105200429'),
+('20130119203853'),
+('20130302205014'),
+('20130312224911'),
+('20130407195450'),
+('20130407200624'),
+('20130416020627'),
+('20130420151334'),
+('20130420155332'),
+('20130420172322'),
+('20130420174002'),
+('20130420174126'),
+('20130428005808'),
+('20130504014802'),
+('20130518224406'),
+('20130518224722'),
+('20130706141443'),
+('20130728191005'),
+('20130914155044'),
+('20131002005512'),
+('20131002015547'),
+('20131216014505'),
+('20140106212047'),
+('20140106212305'),
+('20140217150735'),
+('20140217160450'),
+('20140406183224'),
+('20140411214022'),
+('20140419152214'),
+('20140429000919'),
+('20140516005310'),
+('20140517012626'),
+('20140606232907'),
+('20140907013836'),
+('20140921201441'),
+('20141027194819'),
+('20141226171730'),
+('20150116153233'),
+('20150222205616'),
+('20150222214124'),
+('20150223013721'),
+('20150302153319'),
+('20151201042126'),
+('20151202005557'),
+('20151202011812'),
+('20151205204922'),
+('20151228183704'),
+('20160317140151'),
+('20160419230411'),
+('20160420000616'),
+('20160507135209'),
+('20160507135846'),
+('20160625203412'),
+('20160625221840'),
+('20160625230420'),
+('20160711170921'),
+('20160713204605'),
+('20160715173039'),
+('20160812233255'),
+('20160813001242'),
+('20160814024129'),
+('20160916191300'),
+('20161102012059'),
+('20161102012231'),
+('20170115150643'),
+('20170116002818'),
+('20170116210225'),
+('20170118005958'),
+('20170130011016'),
+('20170205004452'),
+('20170206002030'),
+('20170206002732'),
+('20170209022159'),
+('20170213001453'),
+('20170215012012'),
+('20170216041034'),
+('20170226201504'),
+('20170301014051'),
+('20170307032041'),
+('20170307035755'),
+('20170310024505'),
+('20170329030329');
 
 

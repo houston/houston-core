@@ -29,13 +29,18 @@ class ActionsController < ApplicationController
     authorize! :read, Action
     @action_name = params[:slug]
     @actions = Action.where(name: @action_name).preload(:error).limit(50)
-    @actions = @actions.where(Action.arel_table[:started_at].lt(params[:before])) if params[:before]
+    @actions = @actions.where(Action.arel_table[:created_at].lt(params[:before])) if params[:before]
     render partial: "actions/actions" if request.xhr?
   end
 
   def running
     authorize! :read, Action
-    @actions = Action.where(finished_at: nil)
+    @actions = Action.running
+  end
+
+  def unqueued
+    authorize! :read, Action
+    @actions = Action.unqueued
   end
 
   def run
@@ -48,7 +53,7 @@ class ActionsController < ApplicationController
     authorize! :run, Action
     action = Action.find(params[:id])
     action.retry!
-    redirect_to "/actions/#{action.name}", notice: "#{action.name} is running"
+    redirect_to :back
   end
 
 end

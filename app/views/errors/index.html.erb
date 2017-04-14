@@ -4,22 +4,26 @@
 </h1>
 <% end %>
 
-<div class="nomargin">
+<div class="nomargin action-errors">
   <table id="errors" class="table table-sortable table-striped">
     <thead>
       <tr>
         <td class="table-margin"></td>
-        <th class="action-time">Time</th>
+        <th class="action-created">Queued</th>
         <th class="action-name">Action</th>
+        <th class="action-started">Started</th>
+        <th class="action-finished">Finished</th>
+        <th class="action-duration">Duration</th>
         <th class="action-trigger">Trigger</th>
         <th class="action-params">Params</th>
-        <th class="action-error-message">Message</th>
+        <td class="action-succeeded"></td>
+        <th class="action-exception">Exception</th>
         <th class="action-retry">Retry</th>
         <td class="table-margin"></td>
       </tr>
     </thead>
     <tbody class="infinite-scroll">
-      <%= render "errors/actions" %>
+      <%= render "actions/actions" %>
     </tbody>
   </table>
 </div>
@@ -36,7 +40,7 @@
     });
     new InfiniteScroll({
       load: function($tbody) {
-        var timestamp = $tbody.find('.action-error:last').attr('data-timestamp');
+        var timestamp = $tbody.find('.action:last').attr('data-timestamp');
         return $.get(window.location.pathname, {before: timestamp});
       }
     });

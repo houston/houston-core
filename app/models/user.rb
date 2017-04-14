@@ -6,10 +6,17 @@ class User < ActiveRecord::Base
 
   has_many :roles, class_name: "TeamUser", dependent: :destroy
   has_and_belongs_to_many :teams
-  has_many :credentials, :class_name => "UserCredentials", dependent: :destroy
+  has_many :authorizations, dependent: :destroy
+  has_many :triggers, class_name: "PersistentTrigger", dependent: :destroy
+  has_and_belongs_to_many :followed_projects, -> { unretired }, join_table: "follows", class_name: "Project"
   belongs_to :current_project, class_name: "Project"
 
-  devise *Houston.config.devise_configuration
+  devise :database_authenticatable,
+         :recoverable,
+         :rememberable,
+         :trackable,
+         :validatable,
+         :invitable
 
   default_scope { order("last_name, first_name") }
 
@@ -32,17 +39,6 @@ class User < ActiveRecord::Base
       role == "#{role}"
     end
     RUBY
-  end
-
-
-  def developer?
-    puts "DEPRECATED: User#developer? will be removed"
-    legacy_role == "Developer"
-  end
-
-  def tester?
-    puts "DEPRECATED: User#tester? will be removed"
-    legacy_role == "Tester"
   end
 
 
@@ -86,59 +82,19 @@ class User < ActiveRecord::Base
     "#{first_name} #{last_name}"
   end
 
+
+
+  def follow!(project)
+    followed_projects << project
+  end
+
+  def unfollow!(project)
+    followed_projects.delete project
+  end
+
   def follows?(project)
-    Role.where(user: self).to_projects.member?(project)
+    followed_projects.member?(project)
   end
-
-  def followed_projects
-    Role.where(user: self).to_projects.unretired
-  end
-
-  def view_options
-    raise NotImplementedError, "This feature has been deprecated; use props"
-  end
-
-  def view_options=(value)
-    raise NotImplementedError, "This feature has been deprecated; use props"
-  end
-
-  def unfuddle_id
-    raise NotImplementedError, "This feature has been deprecated; use props[\"unfuddle.id\"]"
-  end
-
-  def unfuddle_id=(value)
-    raise NotImplementedError, "This feature has been deprecated; use props[\"unfuddle.id\"]"
-  end
-
-
-
-  # LDAP Overrides
-  # ------------------------------------------------------------------------- #
-
-  def self.find_ldap_entry(ldap_connection, auth_key_value)
-    filter = Net::LDAP::Filter.eq(Houston.config.authentication_strategy_configuration[:field], auth_key_value)
-    ldap_connection.ldap.search(filter: filter).first
-  end
-
-  def self.find_for_ldap_authentication(attributes, entry)
-    email = entry.mail.first.downcase
-    user = where(email: email).first
-    if user && user.username.nil?
-      user.update_column :username, entry[Houston.config.authentication_strategy_configuration[:field]][0].to_s
-    end
-    user
-  end
-
-  def self.create_from_ldap_entry(attributes, entry)
-    create!(
-      email: entry.mail.first.downcase,
-      username: entry[Houston.config.authentication_strategy_configuration[:field]][0].to_s,
-      password: attributes[:password],
-      first_name: entry.givenname.first,
-      last_name: entry.sn.first )
-  end
-
-  # ------------------------------------------------------------------------- #
 
 
 

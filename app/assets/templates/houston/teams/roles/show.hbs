@@ -1,0 +1,19 @@
+<input data-attr="id" type="hidden" value="{{id}}" name="team[roles_attributes][{{index}}][id]">
+
+<input data-attr="_destroy" type="hidden" value="{{#if destroyed}}1{{else}}0{{/if}}" attr="team[roles_attributes][{{index}}][_destroy]" name="team[roles_attributes][{{index}}][_destroy]">
+
+<select name="team[roles_attributes][{{index}}][user_id]">
+  {{#each options.users}}
+    <option {{#ifEql id ../userId}}selected{{/ifEql}} value="{{id}}">{{name}}</option>
+  {{/each}}
+</select>
+
+{{#each options.roles}}
+  <label style="display: inline-block">
+    <input type="checkbox" name="team[roles_attributes][{{../index}}][roles][]" {{#ifIn this ../roles}}checked{{/ifIn}} value="{{this}}">
+    {{this}}
+  </label>
+{{/each}}
+
+<span class="delete-nested"><a class="delete-link delete-button delete-nested-link" href="#" title="Delete">Delete</a></span>
+<span class="add-nested"><a class="add-link add-nested-link" href="#" title="Add">Add</a></span>

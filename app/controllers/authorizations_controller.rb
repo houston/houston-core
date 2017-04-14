@@ -1,9 +1,18 @@
 class AuthorizationsController < ApplicationController
+  before_action :authenticate_user!
+  before_action :find_authorization, only: [:edit, :update, :destroy, :grant, :granted]
 
   def index
     @title = "Authorizations"
-    authorize! :read, Authorization
-    @authorizations = Authorization.all
+    authorize! :read, :all_authorizations
+    @authorizations = Authorization.all.preload(:user)
+  end
+
+  def mine
+    @title = "My Authorizations"
+    authorize! :create, Authorization
+    @authorizations = current_user.authorizations
+    render action: :index
   end
 
   def new
@@ -13,49 +22,67 @@ class AuthorizationsController < ApplicationController
   end
 
   def create
-    @authorization = Authorization.new(params[:authorization])
+    @authorization = current_user.authorizations.build(params[:authorization])
     authorize! :create, @authorization
 
     if @authorization.save
-      redirect_to authorizations_path
+      redirect_to my_authorizations_path
     else
-      render action: :new
+      render action: :new, error: @authorization.errors.full_messages.to_sentence
     end
   end
 
   def edit
     @title = "Edit Authorization"
-    @authorization = Authorization.find params[:id]
-    authorize! :update, Authorization
+    authorize! :update, @authorization
   end
 
   def update
-    @authorization = Authorization.find params[:id]
-    authorize! :update, Authorization
+    authorize! :update, @authorization
 
     if @authorization.update_attributes(params[:authorization])
-      redirect_to authorizations_path
+      redirect_to my_authorizations_path
     else
       render action: :new
     end
   end
 
+  def destroy
+    authorize! :destroy, @authorization
+
+    @authorization.destroy
+    redirect_to my_authorizations_path, notice: "Authorization to #{@authorization.provider.name} revoked"
+  end
+
   def grant
-    @authorization = Authorization.find(params[:id])
     if @authorization.granted?
       redirect_to authorizations_url, notice: "Already Granted"
     else
-      puts "\e[96;4m#{@authorization.authorize_url}\e[0m"
       redirect_to @authorization.authorize_url
     end
   end
 
   def oauth2_callback
-    authorization = Authorization.set_access_token! params
-    redirect_to authorization_granted_url(authorization)
+    if params.key?(:code) && params.key?(:state)
+      authorization = Authorization.set_access_token! params
+      redirect_to authorization_granted_url(authorization)
+    else
+      @error = params.fetch(:error, "An unknown error occurred")
+    end
   end
 
   def granted
+    redirect_to session[granted_redirect] if session.key?(granted_redirect)
+  end
+
+private
+
+  def granted_redirect
+    "#{@authorization.id}_granted_redirect_url"
+  end
+
+  def find_authorization
+    @authorization = Authorization.find(params[:id])
   end
 
 end

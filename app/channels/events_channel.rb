@@ -10,7 +10,7 @@ class EventsChannel < ApplicationCable::Channel
     events = params[:events] if params.key?(:events)
 
     events.each do |event|
-      unless Houston.registered_event?(event)
+      unless Houston.events.registered?(event)
         Rails.logger.info "\e[31m[subscriber] \e[1m#{event}\e[0;31m is not a registered event\e[0m"
         next
       end

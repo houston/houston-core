@@ -12,13 +12,11 @@ require "cancan"
 require "concurrent"
 require "devise"
 require "devise_invitable"
-require "devise_ldap_authenticatable"
 require "faraday"
 require "faraday-http-cache"
 require "faraday-raise-errors"
 require "gemoji"
 require "handlebars_assets"
-require "nested_editor_for"
 require "neat-rails"
 require "nokogiri"
 require "oauth2"
@@ -27,9 +25,8 @@ require "openxml/xlsx"
 require "premailer"
 require "progressbar"
 require "rack/utf8_sanitizer"
-require "redcarpet"
-require "strongbox"
-require "vestal_versions"
+require "kramdown"
+require "slackdown"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -48,6 +45,12 @@ module Houston
   def self.host
     return @host if defined?(@host)
     Houston.config.host
+  end
+
+  def self.root_url
+    protocol = "http"
+    protocol = "https" if Houston.config.use_ssl?
+    "#{protocol}://#{host}"
   end
 
   class Application < Rails::Application

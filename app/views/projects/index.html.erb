@@ -14,7 +14,7 @@
           <td class="table-margin"></td>
           <th class="project-title sort-desc">Title</th>
           <th class="project-team">Team</th>
-        <% Houston.project_columns.each do |column| %>
+        <% Houston.view["projects"].columns.each do |column| %>
           <% next unless column.permitted?(current_ability) %>
           <th><%= column.name %></th>
         <% end %>
@@ -30,7 +30,7 @@
 
             <td class="project-title">
               <% if project.color %>
-                <b class="bubble <%= project.color %>" rel="tooltip" title="<%= project.color.titleize %>" data-tooltip-placement="right"></b>
+                <b class="bubble <%= project.color %>" rel="tooltip" title="<%= project.color.name.titleize %>" data-tooltip-placement="right"></b>
               <% else %>
                 <b class="bubble"></b>
               <% end %>
@@ -41,9 +41,9 @@
               <%= project.team && project.team.name %>
             </td>
 
-          <% Houston.project_columns.each do |column| %>
+          <% Houston.view["projects"].columns.each do |column| %>
             <% next unless column.permitted?(current_ability) %>
-            <td><%= column.render(project) %></td>
+            <td><%= column.render(self, project) %></td>
           <% end %>
 
             <td class="project-features">

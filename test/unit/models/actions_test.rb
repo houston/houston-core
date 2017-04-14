@@ -3,8 +3,13 @@ require "test_helper"
 class ActionsTest < ActiveSupport::TestCase
 
   def setup
+    Houston.instance_variable_set :@actions, Houston::Actions.new
     actions.define("test-action") { }
     Action.delete_all
+  end
+
+  def teardown
+    Houston.actions.clear
   end
 
 
@@ -85,11 +90,12 @@ class ActionsTest < ActiveSupport::TestCase
     end
 
     should "invoke actions in the context of their params" do
-      actions.redefine("test-action") do
-        assert respond_to?(:example)
-        assert_equal 5, example
-      end
+      context = nil
+      actions.redefine("test-action") { context = self }
       run! example: 5
+
+      assert context.respond_to?(:example)
+      assert_equal 5, context.example
     end
   end
 
@@ -97,7 +103,7 @@ class ActionsTest < ActiveSupport::TestCase
 private
 
   def actions
-    @actions ||= Houston::Actions.new
+    Houston.actions
   end
 
   def run!(params={}, options={})

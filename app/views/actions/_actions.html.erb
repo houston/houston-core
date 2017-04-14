@@ -1,11 +1,14 @@
 <% @actions.each do |action| %>
-  <tr class="action" data-timestamp="<%= action.started_at.iso8601 %>">
+  <tr class="action" data-timestamp="<%= action.created_at.iso8601 %>">
     <td class="table-margin"></td>
-    <td class="action-time"><%= format_time action.started_at %></td>
-    <td class="action-duration"><%= format_duration action.duration %></td>
+    <td class="action-created"><%= format_time action.created_at %></td>
+    <td class="action-name"><%= link_to action[:name], action_path(slug: action[:name]) %></td>
+    <td class="action-started"><%= format_time action.started_at %></td>
+    <td class="action-finished"><%= format_time action.finished_at %></td>
+    <td class="action-duration"><%= format_duration action.duration || (action.started? ? Time.now - action.started_at : nil) %></td>
     <td class="action-trigger"><%= action.trigger %></td>
     <td class="action-params"><%= format_action_params action.params %></td>
-    <td class="action-succeded"><%= format_action_state action %></td>
+    <td class="action-succeeded"><%= format_action_state action %></td>
     <td class="action-exception">
       <% if action.error %>
         <% unless action.error.type.blank? %>
@@ -13,7 +16,7 @@
         <% end %>
         <%= action.error.message %>
       <% end %>
-    <td>
+    </td>
     <td class="action-retry"><%= button_to "Retry", retry_action_path(action), class: "btn-retry btn btn-mini btn-default" %></td>
     <td class="table-margin"></td>
   </tr>

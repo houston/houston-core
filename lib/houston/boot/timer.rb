@@ -48,6 +48,16 @@ module Houston
       $scheduler.public_send method_name, argument, &block
     end
 
+    def stop(interval, block)
+      return queued_timers.delete [:every, interval, block] unless $scheduler
+
+      # Look up the job by its handler
+      # Note: this doesn't check `interval`. Conceivably, two jobs could be
+      # set up at different intervals that both invoke the same block.
+      job = $scheduler.jobs.detect { |job| job.handler == block }
+      job.unschedule
+    end
+
   private
 
     attr_reader :queued_timers

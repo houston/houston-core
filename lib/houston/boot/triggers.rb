@@ -23,8 +23,8 @@ module Houston
       push build(:on, event, action, params)
     end
 
-    def build(method_name, value, action, params)
-      Trigger.new(self, method_name, value, action, params)
+    def build(method_name, value, action, params, persistent_trigger_id: nil)
+      Trigger.new(self, method_name, value, action, params, persistent_trigger_id)
     end
 
     def push(trigger)
@@ -34,27 +34,46 @@ module Houston
       trigger
     end
 
+    def delete(trigger)
+      i = find_index(trigger)
+      return unless i
+      trigger = self[i]
+      trigger.unregister!
+      delete_at i
+    end
+
   end
 
 
-  class Trigger < Struct.new(:method_name, :value, :action, :params)
+  class Trigger < Struct.new(:method_name, :value, :action, :params, :persistent_trigger_id)
 
     def initialize(triggers, *args)
       @triggers = triggers
+      @callback = method(:call).to_proc
       super *args
     end
 
     def register!
       case method_name
-      when :every then config.timer.every(value, &method(:call))
-      when :on then config.observer.on(value, &method(:call))
+      when :every then config.timer.every(value, &callback)
+      when :on then config.observer.on(value, &callback)
+      else raise NotImplementedError, "Unrecognized method name: #{method_name.inspect}"
+      end
+    end
+
+    def unregister!
+      case method_name
+      when :every then config.timer.stop(value, callback)
+      when :on then config.observer.off(value, &callback)
       else raise NotImplementedError, "Unrecognized method name: #{method_name.inspect}"
       end
     end
 
     def call(params={})
-      options = { trigger: to_s, async: triggers.async }
-      config.actions.run action, self.params.merge(params.to_h), options
+      Rails.logger.info "\e[34m[#{to_s} => #{action}]\e[0m"
+      config.actions.run action, self.params.merge(params.to_h),
+        trigger: to_s,
+        async: triggers.async
     end
 
     def to_s
@@ -62,7 +81,7 @@ module Houston
     end
 
   private
-    attr_reader :triggers
+    attr_reader :triggers, :callback
 
     def config
       triggers.config

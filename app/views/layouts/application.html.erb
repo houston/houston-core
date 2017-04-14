@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" class="
-  <%= "tester-bar" if Rails.env.development? %>
   <%= "mobile" if mobile? %>">
   <head>
     <meta charset="utf-8">
@@ -12,6 +11,7 @@
     <meta name="revision" content="<%= revision %>" />
     <meta name="env" content="<%= Rails.env %>" />
     <meta name="s3-bucket" content="<%= Houston.config.s3[:bucket] %>" />
+    <%= render_layout_extensions("application", :meta) %>
     <%= yield :meta %>
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -25,6 +25,7 @@
     <%= stylesheet_link_tag "houston/print", media: "print" %>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
+    <%= render_layout_extensions("application", :stylesheets) %>
     <%= yield :stylesheets %><%# so that Engines can hook in and add styles %>
 
     <!-- Le fav and touch icons -->
@@ -35,22 +36,23 @@
   <body>
 
     <% if mobile? %>
-      <%= render "layouts/mobile_navigation" %>
+      <%= render "layouts/mobile_navigation" if layout_show_navigation? %>
 
-      <div class="container-fluid" id="body">
+      <div class="<%= layout_container_fluid? ? "container-fluid" : "container" %>" id="body">
         <%= yield :title %>
     <% else %>
-      <%= render "layouts/navigation" %>
+      <%= render "layouts/navigation" if layout_show_navigation? %>
 
       <%= yield :title %>
 
-      <div class="container-fluid" id="body">
+      <div class="<%= layout_container_fluid? ? "container-fluid" : "container" %>" id="body">
     <% end %>
 
       <%= yield -%>
 
-      <%= render partial: "layouts/tester_bar" if Rails.env.development? -%>
     </div> <!-- /container -->
+
+    <%= render_layout_extensions("application", :footers) %>
 
     <!-- Le javascript
     ================================================== -->
@@ -81,7 +83,10 @@
         <% end %>
       });
     </script>
+
+    <%= render_layout_extensions("application", :scripts) %>
     <%= yield :javascripts %><%# so that Engines can hook in and add scripts %>
+
     <%= google_analytics_script_tag %>
   </body>
 </html>
