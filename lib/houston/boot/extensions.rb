@@ -1,4 +1,3 @@
-require "houston/boot/serializer"
 require "houston/boot/extensions/events"
 require "houston/boot/extensions/layout"
 require "houston/boot/extensions/navigation"
