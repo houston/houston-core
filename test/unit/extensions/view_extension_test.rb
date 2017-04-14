@@ -16,12 +16,12 @@ class ViewExtensionTest < ActiveSupport::TestCase
 
     should "support `has` as a shortcut for extend" do
       view = views["test"].has :Table
-      assert_kind_of Houston::Extensions::View::Table, view
+      assert_kind_of Houston::Extensions::HasTable, view
     end
   end
 
 
-  context "Houston::View::Table#add_column" do
+  context "HasTable#add_column" do
     setup do
       views["widgets"].has :Table
       @column = views["widgets"].add_column("Rotation") { 45 }
@@ -49,7 +49,7 @@ class ViewExtensionTest < ActiveSupport::TestCase
   end
 
 
-  context "Houston::View::Form#add_field" do
+  context "HasForm#add_field" do
     setup do
       views["widgets"].has :Form
       @field = views["widgets"].add_field("Material") do |f|
