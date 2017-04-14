@@ -1,5 +1,4 @@
-<% content_for :title do %>
-<h1 class="project-banner <%= project.color %> space-below" data-project-slug="<%= project.slug %>" data-project-color="<%= project.color %>">
+<% project_banner(project) do %>
   <% if defined?(subtitle) %><small><%= subtitle %></small><% end %>
   <%= project.name %><% if defined?(postfix) %><small class="colon">:</small> <small class="postfix"><%= postfix %></small><% end %>
 
@@ -8,5 +7,4 @@
     <%= render partial: command.partial, locals: { project: project } %>
   <% end %>
   <%= render partial: "projects/keyboard_shortcuts" %>
-</h1>
 <% end %>
