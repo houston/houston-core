@@ -4,8 +4,8 @@ class SerializersExtensionTest < ActiveSupport::TestCase
 
 
   context "Houston.serializers" do
-    should "be an instance of Houston::Serializers" do
-      assert_kind_of Houston::Serializers, Houston.serializers
+    should "be an instance of Houston::Extensions::Serializers" do
+      assert_kind_of Houston::Extensions::Serializers, Houston.serializers
     end
   end
 
@@ -29,7 +29,7 @@ private
   end
 
   def serializers
-    @serializers ||= Houston::Serializers.new
+    @serializers ||= Houston::Extensions::Serializers.new
   end
 
   UnserializableNumber = Struct.new(:value)

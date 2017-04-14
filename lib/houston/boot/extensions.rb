@@ -15,32 +15,32 @@ module Houston
 
     def events
       return @events if defined?(@events)
-      @events = Houston::Events.new
+      @events = Houston::Extensions::Events.new
     end
 
     def layout
       return @layout if defined?(@layout)
-      @layout = Houston::Layout.new
+      @layout = Houston::Extensions::Layout.new
     end
 
     def navigation
       return @navigation if defined?(@navigation)
-      @navigation = Houston::Navigation.new
+      @navigation = Houston::Extensions::Navigation.new
     end
 
     def oauth
       return @oauth if defined?(@oauth)
-      @oauth = Houston::Oauth.new
+      @oauth = Houston::Extensions::Oauth.new
     end
 
     def serializers
       return @serializers if defined?(@serializers)
-      @serializers = Houston::Serializers.new
+      @serializers = Houston::Extensions::Serializers.new
     end
 
     def view
       return @view if defined?(@view)
-      @view = Houston::Views.new
+      @view = Houston::Extensions::Views.new
     end
 
 

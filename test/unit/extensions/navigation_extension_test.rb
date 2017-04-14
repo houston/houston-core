@@ -5,8 +5,8 @@ class NavigationExtensionTest < ActiveSupport::TestCase
 
 
   context "Houston.navigation" do
-    should "be an instance of Houston::Navigation" do
-      assert_kind_of Houston::Navigation, Houston.navigation
+    should "be an instance of Houston::Extensions::Navigation" do
+      assert_kind_of Houston::Extensions::Navigation, Houston.navigation
     end
   end
 
@@ -48,7 +48,7 @@ class NavigationExtensionTest < ActiveSupport::TestCase
 private
 
   def navigation
-    @navigation ||= Houston::Navigation.new
+    @navigation ||= Houston::Extensions::Navigation.new
   end
 
   def privileged_user
