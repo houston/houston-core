@@ -6,11 +6,9 @@ module Houston
 
   class Triggers < SimpleDelegator
     attr_reader :config
-    attr_accessor :async
 
     def initialize(config)
       @config = config
-      @async = true
       super Concurrent::Array.new
     end
 
@@ -71,9 +69,7 @@ module Houston
 
     def call(params={})
       Rails.logger.info "\e[34m[#{to_s} => #{action}]\e[0m"
-      config.actions.run action, self.params.merge(params.to_h),
-        trigger: to_s,
-        async: triggers.async
+      config.actions.run action, self.params.merge(params.to_h), trigger: to_s
     end
 
     def to_s

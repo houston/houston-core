@@ -69,9 +69,7 @@ module Houston
       assert_required_params! action, params
       assert_serializable! params
 
-      Houston.async(options.fetch(:async, true)) do
-        ::Action.run! name, params, options.fetch(:trigger, "manual")
-      end
+      ::Action.run! name, params, options.fetch(:trigger, "manual")
     end
 
 
