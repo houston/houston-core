@@ -3,6 +3,7 @@ require "houston/boot/extensions/events"
 require "houston/boot/extensions/layout"
 require "houston/boot/extensions/navigation"
 require "houston/boot/extensions/oauth"
+require "houston/boot/extensions/features"
 require "houston/boot/extensions/serializers"
 require "houston/boot/extensions/view"
 require "houston/boot/extensions/deprecated_methods"
@@ -33,6 +34,11 @@ module Houston
       @oauth = Houston::Extensions::Oauth.new
     end
 
+    def project_features
+      return @project_features if defined?(@project_features)
+      @project_features = Houston::Extensions::Features.new
+    end
+
     def serializers
       return @serializers if defined?(@serializers)
       @serializers = Houston::Extensions::Serializers.new
@@ -57,27 +63,6 @@ module Houston
 
 
 
-    def available_project_features
-      @available_project_features.keys
-    end
-
-    def get_project_feature(slug)
-      @available_project_features.fetch(slug)
-    end
-
-    def add_project_feature(slug, &block)
-      dsl = FeatureDsl.new(ProjectFeature.new)
-      dsl.instance_eval(&block)
-      feature = dsl.feature
-      feature.slug = slug
-      raise ArgumentError, "Project Feature must supply name, but #{slug.inspect} doesn't" unless feature.name
-      raise ArgumentError, "Project Feature must supply path lambda, but #{slug.inspect} doesn't" unless feature.path_block
-
-      @available_project_features[slug] = feature
-    end
-
-
-
     def add_project_header_command(slug, &block)
       dsl = ProjectBannerFeatureDsl.new(ProjectBannerFeature.new)
       dsl.instance_eval(&block)
@@ -94,89 +79,6 @@ module Houston
 
 
   private
-
-    class GlobalFeature
-      attr_accessor :name, :slug, :icon, :path_block, :ability_block
-
-      def path
-        path_block.call
-      end
-
-      def permitted?(ability)
-        return true if ability_block.nil?
-        ability_block.call ability
-      end
-    end
-
-    class ProjectFeature < GlobalFeature
-      attr_accessor :fields
-
-      def initialize
-        self.fields = []
-      end
-
-      def project_path(project)
-        path_block.call project
-      end
-      alias :path :project_path
-
-      def permitted?(ability, project)
-        return true if ability_block.nil?
-        ability_block.call ability, project
-      end
-    end
-
-    class FeatureDsl
-      attr_reader :feature
-
-      def initialize(feature)
-        @feature = feature
-      end
-
-      def name(value)
-        feature.name = value
-      end
-
-      def path(&block)
-        feature.path_block = block
-      end
-
-      def ability(&block)
-        feature.ability_block = block
-      end
-
-      def field(slug, &block)
-        dsl = FormBuilderDsl.new
-        dsl.instance_eval(&block)
-        form = dsl.form
-        form.slug = slug
-        feature.fields.push form
-      end
-    end
-
-    class ProjectFeatureForm
-      attr_accessor :slug, :name, :render_block
-
-      def render(view, f)
-        view.instance_exec(f, &render_block).html_safe
-      end
-    end
-
-    class FormBuilderDsl
-      attr_reader :form
-
-      def initialize
-        @form = ProjectFeatureForm.new
-      end
-
-      def name(value)
-        form.name = value
-      end
-
-      def html(&block)
-        form.render_block = block
-      end
-    end
 
     class ProjectBannerFeature
       attr_accessor :partial
@@ -209,7 +111,6 @@ module Houston
 
 
 
-  @available_project_features = {}
   @project_header_commands = {}
   extend Houston::Extensions
 end
@@ -218,3 +119,7 @@ Houston.view["projects"].has :Table
 Houston.view["users"].has :Table
 Houston.view["edit_project"].has :Form
 Houston.view["edit_user"].has :Form
+
+Houston.project_features
+  .add(:settings) { |project| Houston::Application.routes.url_helpers.edit_project_path(project) }
+  .ability { |project| can?(:update, project) }

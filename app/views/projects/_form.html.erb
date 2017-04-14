@@ -70,7 +70,7 @@
         <label class="control-label">Features</label>
         <div class="controls" style="padding-top: 5px; padding-bottom: 5px;">
           <% features.each do |feature_slug| %>
-            <% feature = Houston.get_project_feature(feature_slug) %>
+            <% feature = Houston.project_features[feature_slug] %>
             <label for="selected_features_<%= feature_slug %>">
               <%= check_box_tag "project[selected_features][]", feature_slug, @project.feature?(feature_slug), id: "selected_features_#{feature_slug}", class: "project-feature" %>
               <%= feature.name %>
