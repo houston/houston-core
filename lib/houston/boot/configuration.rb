@@ -187,7 +187,7 @@ module_function
     def oauth(provider_name, &block)
       settings = HashDsl.hash_from_block(block)
       provider = Houston.oauth.get_provider(provider_name)
-      raise ArgumentError, "#{provider_name.inspect} is not a registered Oauth provider (#{Houston.oauth.providers.map { |provider| provider.name.inspect }.join(", ")})" unless provider
+
       raise ArgumentError, "Provider must define a client_id" if settings[:client_id].blank?
       raise ArgumentError, "Provider must define a client_secret" if settings[:client_secret].blank?
 
