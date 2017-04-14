@@ -4,14 +4,14 @@ class LayoutExtensionTest < ActiveSupport::TestCase
 
 
   context "Houston.layout" do
-    should "be an instance of Houston::Layout" do
-      assert_kind_of Houston::Layout, Houston.layout
+    should "be an instance of Houston::Extensions::Layout" do
+      assert_kind_of Houston::Extensions::Layout, Houston.layout
     end
   end
 
   context 'Houston.layout["application"]' do
-    should "be an instance of Houston::Layout::ExtensionDsl" do
-      assert_kind_of Houston::Layout::ExtensionDsl, Houston.layout["application"]
+    should "be an instance of Houston::Extensions::Layout::ExtensionDsl" do
+      assert_kind_of Houston::Extensions::Layout::ExtensionDsl, Houston.layout["application"]
     end
   end
 
@@ -68,7 +68,7 @@ class LayoutExtensionTest < ActiveSupport::TestCase
 private
 
   def layout
-    @layout ||= Houston::Layout.new
+    @layout ||= Houston::Extensions::Layout.new
   end
 
 end

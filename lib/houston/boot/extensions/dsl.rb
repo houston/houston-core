@@ -1,35 +1,37 @@
 require "delegate"
 
 module Houston
-  module Permitted
-    def permitted?(ability, *args)
-      return true if @ability_block.nil?
-      ability.instance_exec(*args, &@ability_block)
+  module Extensions
+    module Permitted
+      def permitted?(ability, *args)
+        return true if @ability_block.nil?
+        ability.instance_exec(*args, &@ability_block)
+      end
     end
-  end
 
-  module Render
-    def render(view, *args)
-      view.instance_exec(*args, &@render_block)
+    module Render
+      def render(view, *args)
+        view.instance_exec(*args, &@render_block)
+      end
     end
-  end
 
-  module LinkTo
-    def path(*args)
-      @path_block.call(*args)
+    module LinkTo
+      def path(*args)
+        @path_block.call(*args)
+      end
     end
-  end
 
-  module AbilityBlock
-    def ability(&block)
-      __getobj__.instance_variable_set :@ability_block, block
+    module AbilityBlock
+      def ability(&block)
+        __getobj__.instance_variable_set :@ability_block, block
+      end
     end
-  end
 
-  module AcceptsName
-    def name(*args)
-      __getobj__.name = args.first if args.any?
-      __getobj__.name
+    module AcceptsName
+      def name(*args)
+        __getobj__.name = args.first if args.any?
+        __getobj__.name
+      end
     end
   end
 end

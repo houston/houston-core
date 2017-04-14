@@ -4,19 +4,19 @@ class ViewExtensionTest < ActiveSupport::TestCase
   attr_reader :column, :field
 
   context "Houston.view" do
-    should "be an instance of Houston::Views" do
-      assert_kind_of Houston::Views, Houston.view
+    should "be an instance of Houston::Extensions::Views" do
+      assert_kind_of Houston::Extensions::Views, Houston.view
     end
   end
 
   context 'Houston.view["anything"]' do
     should "be an instance of Houston::View" do
-      assert_kind_of Houston::View, Houston.view["anything"]
+      assert_kind_of Houston::Extensions::View, Houston.view["anything"]
     end
 
     should "support `has` as a shortcut for extend" do
       view = views["test"].has :Table
-      assert_kind_of Houston::View::Table, view
+      assert_kind_of Houston::Extensions::View::Table, view
     end
   end
 
@@ -84,7 +84,7 @@ class ViewExtensionTest < ActiveSupport::TestCase
 private
 
   def views
-    @views ||= Houston::Views.new
+    @views ||= Houston::Extensions::Views.new
   end
 
   def privileged_user
