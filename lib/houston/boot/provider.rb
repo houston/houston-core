@@ -2,6 +2,10 @@ module Houston
   class Provider
     attr_accessor :name, :site, :authorize_path, :token_path, :client_id, :client_secret
 
+    def initialize(name)
+      @name = name
+    end
+
     def authorize_url(params={})
       client.auth_code.authorize_url params.merge(redirect_uri: oauth2_callback_url)
     end

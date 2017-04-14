@@ -1,28 +1,39 @@
+require "concurrent/array"
+
 module Houston
   module Extensions
     class Oauth
-      attr_reader :providers # <-- should be readonly
+      class ProviderNotFound < ArgumentError; end
 
       def initialize
-        @providers = [] # <-- does it need to be threadsafe?
+        reset!
+      end
+
+      def reset!
+        @providers = Concurrent::Hash.new
+      end
+
+      def providers
+        @providers.keys
       end
 
       def add_provider(name, &block)
-        provider = Houston::Provider.new
-        provider.name = name.to_sym
+        provider = Houston::Provider.new(name.to_sym)
         ProviderDsl.new(provider).instance_eval(&block)
 
         raise ArgumentError, "Provider must define a site" if provider.site.blank?
         raise ArgumentError, "Provider must define a authorize_path" if provider.authorize_path.blank?
         raise ArgumentError, "Provider must define a token_path" if provider.token_path.blank?
 
-        @providers.push provider
-        provider
+        @providers[provider.name] = provider
       end
 
       def get_provider(name)
         name = name.to_sym
-        providers.detect { |provider| provider.name == name }
+        @providers.fetch(name)
+      rescue KeyError
+        puts "registered providers: #{providers.inspect}"
+        raise ProviderNotFound, "An Oauth Provider named #{name.inspect} has not been registered"
       end
 
 
