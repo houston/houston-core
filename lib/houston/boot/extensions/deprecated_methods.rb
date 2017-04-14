@@ -3,28 +3,28 @@ module Houston
     module DeprecatedMethods
 
 
-      def add_project_column(slug, &block)
+      def add_project_column(_slug, &block)
         Houston.deprecation_notice 'Houston.add_project_column is deprecated and will be removed in houston-core 1.0; use Houston.views["project"].add_column instead'
 
         dsl = DeprecatedColumnDsl.new
         dsl.instance_eval(&block)
-        dsl.add_column_to "projects"
+        dsl.add_to Houston.view["projects"]
       end
 
-      def add_user_option(slug, &block)
+      def add_user_option(_slug, &block)
         Houston.deprecation_notice 'Houston.add_user_option is deprecated and will be removed in houston-core 1.0; use Houston.views["edit_user"].add_field instead'
 
         dsl = DeprecatedFieldDsl.new
         dsl.instance_eval(&block)
-        dsl.add_field_to "edit_user"
+        dsl.add_to Houston.view["edit_user"]
       end
 
-      def add_project_option(slug, &block)
+      def add_project_option(_slug, &block)
         Houston.deprecation_notice 'Houston.add_project_option is deprecated and will be removed in houston-core 1.0; use Houston.views["edit_project"].add_field instead'
 
         dsl = DeprecatedFieldDsl.new
         dsl.instance_eval(&block)
-        dsl.add_field_to "edit_project"
+        dsl.add_to Houston.view["edit_project"]
       end
 
       def add_navigation_renderer(slug, &block)
@@ -34,6 +34,15 @@ module Houston
         dsl.instance_eval(&block)
         dsl.add_to_navigation(slug)
       end
+
+      def add_project_feature(slug, &block)
+        Houston.deprecation_notice 'Houston.add_project_feature is deprecated and will be removed in houston-core 1.0; use Houston.project_features.add instead'
+
+        dsl = DeprecatedProjectFeatureDsl.new
+        dsl.instance_eval(&block)
+        dsl.add_to_project_features(slug)
+      end
+
 
 
 
@@ -52,8 +61,8 @@ module Houston
           @ability_block = block
         end
 
-        def add_column_to(view_name)
-          column = Houston.view[view_name].add_column @name, &@render_block
+        def add_to(view)
+          column = view.add_column @name, &@render_block
           ability_block = @ability_block
           column.ability { ability_block.call(self) } if ability_block
           column
@@ -71,8 +80,9 @@ module Houston
           @render_block = block
         end
 
-        def add_field_to(view_name)
-          Houston.view[view_name].add_field @label, &@render_block
+        def add_to(view)
+          render_block = @render_block
+          view.add_field(@label) { |*args| instance_exec(*args, &render_block).html_safe }
         end
       end
 
@@ -93,7 +103,46 @@ module Houston
           Houston.navigation.add_link(slug, &@path_block).tap do |link|
             ability_block = @ability_block
             link.ability { ability_block.call(self) } if ability_block
-            link.content { @name } unless @name == slug.to_s.titleize
+            link.name { @name } unless @name == slug.to_s.titleize
+          end
+        end
+      end
+
+      class DeprecatedProjectFeatureDsl
+        def initialize
+          @field_blocks = []
+        end
+
+        def name(value)
+          @name = value
+        end
+
+        def path(&block)
+          @path_block = block
+        end
+
+        def ability(&block)
+          @ability_block = block
+        end
+
+        def field(_slug, &block)
+          @field_blocks.push block
+        end
+
+        def add_to_project_features(slug)
+          raise ArgumentError, "Project Feature must supply name, but #{slug.inspect} doesn't" unless @name
+          raise ArgumentError, "Project Feature must supply path lambda, but #{slug.inspect} doesn't" unless @path_block
+
+          Houston.project_features.add(slug, &@path_block).tap do |feature|
+            ability_block = @ability_block
+            feature.ability { |project| ability_block.call(self, project) } if ability_block
+            feature.name { @name } unless @name == slug.to_s.titleize
+
+            @field_blocks.each do |block|
+              dsl = DeprecatedFieldDsl.new
+              dsl.instance_eval(&block)
+              dsl.add_to feature
+            end
           end
         end
       end

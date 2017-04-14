@@ -210,8 +210,8 @@ module_function
 
     def project_features(*args)
       @project_features = args if args.any?
-      return Houston.available_project_features unless @project_features
-      @project_features & Houston.available_project_features
+      return Houston.project_features.all unless @project_features
+      @project_features & Houston.project_features.all
     end
 
 

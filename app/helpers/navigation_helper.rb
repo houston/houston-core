@@ -18,10 +18,10 @@ module NavigationHelper
   end
 
   def render_nav_for_feature(feature)
-    feature = Houston.get_project_feature feature
+    feature = Houston.project_features[feature]
     return unless feature.permitted?(current_ability, current_project)
 
-    render_nav_link feature.name, feature.project_path(current_project)
+    render_nav_link feature.name, feature.path(current_project)
   rescue KeyError
     Rails.logger.error "\e[31;1mThere is no project feature named #{feature.inspect}\e[0m"
     nil
