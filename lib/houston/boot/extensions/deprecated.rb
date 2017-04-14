@@ -1,6 +1,6 @@
 module Houston
   module Extensions
-    module DeprecatedMethods
+    module Deprecated
 
 
       def add_project_column(_slug, &block)
@@ -41,6 +41,21 @@ module Houston
         dsl = DeprecatedProjectFeatureDsl.new
         dsl.instance_eval(&block)
         dsl.add_to_project_features(slug)
+      end
+
+      def add_project_header_command(slug, &block)
+        Houston.deprecation_notice 'Houston.add_project_header_command is deprecated and will be removed in houston-core 1.0'
+
+        dsl = ProjectBannerFeatureDsl.new(ProjectBannerFeature.new)
+        dsl.instance_eval(&block)
+        feature = dsl.feature
+        feature.slug = slug
+
+        project_header_commands.push feature
+      end
+
+      def project_header_commands
+        @project_header_commands ||= []
       end
 
 
@@ -144,6 +159,33 @@ module Houston
               dsl.add_to feature
             end
           end
+        end
+      end
+
+      class ProjectBannerFeature
+        attr_accessor :partial
+        attr_accessor :ability_block
+        attr_accessor :slug
+
+        def permitted?(ability, project)
+          return true if ability_block.nil?
+          ability_block.call ability, project
+        end
+      end
+
+      class ProjectBannerFeatureDsl
+        attr_reader :feature
+
+        def initialize(feature)
+          @feature = feature
+        end
+
+        def partial(value)
+          feature.partial = value
+        end
+
+        def ability(&block)
+          feature.ability_block = block
         end
       end
 
