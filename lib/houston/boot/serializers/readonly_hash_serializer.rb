@@ -11,5 +11,3 @@ module Houston
 
   end
 end
-
-Houston.add_serializer Houston::ReadonlyHashSerializer.new
