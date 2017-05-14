@@ -1,6 +1,6 @@
 require "test_helper"
 
-class UpdatingPropersTest < ActionDispatch::IntegrationTest
+class UpdatingPropsTest < ActionDispatch::IntegrationTest
   include Capybara::DSL
 
   attr_reader :project, :user
