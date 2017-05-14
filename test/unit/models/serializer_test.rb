@@ -19,7 +19,7 @@ class SerializerTest < ActiveSupport::TestCase
   end
 
   should "let Oj serialize times" do
-    assert_equal '{"^t":1468587630.542999999e59}',
+    assert_equal '{"^t":1468587630.542999999}',
       dump(Time.new(2016, 7, 15, 13, 1, 30, 59.457))
   end
 

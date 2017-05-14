@@ -24,7 +24,7 @@ Gem::Specification.new do |spec|
 
   # For Houston as a Web Application
   spec.add_dependency "rails", "~> 5.0.0"
-  spec.add_dependency "pg", "~> 0.19.0"
+  spec.add_dependency "pg", "~> 0.20.0"
   # --------------------------------
   spec.add_dependency "activerecord-import"
   spec.add_dependency "activerecord-pluck_in_batches", "~> 0.2.0"
@@ -43,7 +43,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "neat-rails", "~> 0.5.1"
   spec.add_dependency "nokogiri", "~> 1.7"
   spec.add_dependency "oauth2"
-  spec.add_dependency "oj", "~> 2.18"
+  spec.add_dependency "oj", "~> 3.0"
   spec.add_dependency "openxml-xlsx", ">= 0.2.0"
   spec.add_dependency "pg_search", "~> 1.0.5"
   spec.add_dependency "premailer", "~> 1.10.0"
@@ -61,6 +61,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "coffee-rails", "~> 4.1.0"
 
   # Houston's background jobs daemon
-  spec.add_dependency "rufus-scheduler", "~> 3.3.4"
+  spec.add_dependency "rufus-scheduler", "~> 3.4.0"
 
 end
