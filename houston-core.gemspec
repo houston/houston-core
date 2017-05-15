@@ -40,6 +40,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "faraday-raise-errors", "~> 0.2.0"
   spec.add_dependency "gemoji", "~> 2.1.0"
   spec.add_dependency "handlebars_assets", "~> 0.23.0"
+  spec.add_dependency "mail", "~> 2.6.6.rc1" # Entirely for CVE; https://github.com/mikel/mail/commit/37908c3
   spec.add_dependency "neat-rails", "~> 0.5.1"
   spec.add_dependency "nokogiri", "~> 1.7"
   spec.add_dependency "oauth2"

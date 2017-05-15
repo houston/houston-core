@@ -18,6 +18,7 @@ PATH
       gemoji (~> 2.1.0)
       handlebars_assets (~> 0.23.0)
       kramdown
+      mail (~> 2.6.6.rc1)
       neat-rails (~> 0.5.1)
       nokogiri (~> 1.7)
       oauth2
@@ -150,7 +151,7 @@ GEM
       addressable (~> 2.3)
     loofah (2.0.3)
       nokogiri (>= 1.5.9)
-    mail (2.6.5)
+    mail (2.6.6.rc1)
       mime-types (>= 1.16, < 4)
     method_source (0.8.2)
     mime-types (3.1)
