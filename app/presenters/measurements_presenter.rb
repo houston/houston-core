@@ -8,7 +8,8 @@ class MeasurementsPresenter
   def to_json(*args)
     Houston.benchmark "[#{self.class.name.underscore}] Render JSON" do
       query = measurements.select(<<-SQL)
-        taken_at "timestamp",
+        id,
+        (taken_at AT TIME ZONE 'UTC') AT TIME ZONE '#{Time.zone.now.strftime("%Z")}' "timestamp",
         name,
         value,
         json_build_object('type', subject_type, 'id', subject_id) "subject"
