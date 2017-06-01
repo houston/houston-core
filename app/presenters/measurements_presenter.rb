@@ -15,7 +15,7 @@ class MeasurementsPresenter
         json_build_object('type', subject_type, 'id', subject_id) "subject"
       SQL
 
-      ActiveRecord::Base.connection.select_value("select array_to_json(array_agg(row_to_json(t))) from (#{query.to_sql}) t")
+      ActiveRecord::Base.connection.select_value("select array_to_json(array_agg(row_to_json(t))) from (#{query.to_sql}) t") || []
     end
   end
 
