@@ -37,7 +37,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "devise_invitable"
   spec.add_dependency "faraday", "~> 0.9.2"
   spec.add_dependency "faraday-http-cache", "~> 1.2.2"
-  spec.add_dependency "faraday-raise-errors", "~> 0.2.0"
+  spec.add_dependency "faraday-raise-errors", "~> 0.3.0"
   spec.add_dependency "gemoji", "~> 2.1.0"
   spec.add_dependency "handlebars_assets", "~> 0.23.0"
   spec.add_dependency "mail", "~> 2.6.6"

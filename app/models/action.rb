@@ -15,6 +15,7 @@ class Action < ActiveRecord::Base
     Faraday::SSLError,
     Faraday::HTTP::ServerError,
     Faraday::HTTP::Unauthorized,
+    Faraday::HTTP::TooManyRequests,
     Faraday::TimeoutError,
     Net::OpenTimeout,
     exceptions_wrapping(PG::ConnectionBad),
