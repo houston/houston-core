@@ -19,7 +19,7 @@ class EventsExtensionTest < ActiveSupport::TestCase
     end
 
     should "return nil for an unregistered event" do
-      assert_equal nil, Houston.events["anything"]
+      assert_nil Houston.events["anything"]
     end
   end
 
