@@ -14,7 +14,7 @@ group :test do
   gem "timecop"
   gem "rr"
   gem "webmock", require: "webmock/minitest"
-  gem "factory_girl_rails", "4.8.0"
+  gem "factory_girl_rails", "4.9.0"
   gem "launchy"
 
   # For Jenkins
