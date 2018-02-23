@@ -24,7 +24,7 @@ Gem::Specification.new do |spec|
 
   # For Houston as a Web Application
   spec.add_dependency "rails", "~> 5.0.0"
-  spec.add_dependency "pg", "~> 0.20.0"
+  spec.add_dependency "pg", "~> 0.21.0"
   # --------------------------------
   spec.add_dependency "activerecord-import"
   spec.add_dependency "activerecord-pluck_in_batches", "~> 0.2.0"
