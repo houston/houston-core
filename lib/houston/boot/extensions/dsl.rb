@@ -24,13 +24,14 @@ module Houston
     module AbilityBlock
       def ability(&block)
         __getobj__.instance_variable_set :@ability_block, block
+        self
       end
     end
 
     module AcceptsName
-      def name(*args)
-        __getobj__.name = args.first if args.any?
-        __getobj__.name
+      def name(name)
+        __getobj__.name = name
+        self
       end
     end
 
