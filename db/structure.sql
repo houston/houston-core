@@ -2,14 +2,15 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.6.2
--- Dumped by pg_dump version 9.6.2
+-- Dumped from database version 10.5
+-- Dumped by pg_dump version 10.5
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
 SET check_function_bodies = false;
 SET client_min_messages = warning;
 SET row_security = off;
@@ -28,8 +29,6 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
-SET search_path = public, pg_catalog;
-
 SET default_tablespace = '';
 
 SET default_with_oids = false;
@@ -38,7 +37,7 @@ SET default_with_oids = false;
 -- Name: actions; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE actions (
+CREATE TABLE public.actions (
     id integer NOT NULL,
     name character varying NOT NULL,
     started_at timestamp without time zone,
@@ -55,7 +54,7 @@ CREATE TABLE actions (
 -- Name: actions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE actions_id_seq
+CREATE SEQUENCE public.actions_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -67,14 +66,46 @@ CREATE SEQUENCE actions_id_seq
 -- Name: actions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE actions_id_seq OWNED BY actions.id;
+ALTER SEQUENCE public.actions_id_seq OWNED BY public.actions.id;
+
+
+--
+-- Name: api_tokens; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.api_tokens (
+    id integer NOT NULL,
+    name character varying NOT NULL,
+    user_id integer NOT NULL,
+    value character varying NOT NULL
+);
+
+
+--
+-- Name: api_tokens_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.api_tokens_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: api_tokens_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.api_tokens_id_seq OWNED BY public.api_tokens.id;
 
 
 --
 -- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE ar_internal_metadata (
+CREATE TABLE public.ar_internal_metadata (
     key character varying NOT NULL,
     value character varying,
     created_at timestamp without time zone NOT NULL,
@@ -86,7 +117,7 @@ CREATE TABLE ar_internal_metadata (
 -- Name: authorizations; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE authorizations (
+CREATE TABLE public.authorizations (
     id integer NOT NULL,
     scope character varying,
     access_token character varying,
@@ -106,7 +137,7 @@ CREATE TABLE authorizations (
 -- Name: authorizations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE authorizations_id_seq
+CREATE SEQUENCE public.authorizations_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -118,14 +149,14 @@ CREATE SEQUENCE authorizations_id_seq
 -- Name: authorizations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE authorizations_id_seq OWNED BY authorizations.id;
+ALTER SEQUENCE public.authorizations_id_seq OWNED BY public.authorizations.id;
 
 
 --
 -- Name: errors; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE errors (
+CREATE TABLE public.errors (
     id integer NOT NULL,
     sha character varying NOT NULL,
     message text NOT NULL,
@@ -140,7 +171,7 @@ CREATE TABLE errors (
 -- Name: errors_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE errors_id_seq
+CREATE SEQUENCE public.errors_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -152,14 +183,14 @@ CREATE SEQUENCE errors_id_seq
 -- Name: errors_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE errors_id_seq OWNED BY errors.id;
+ALTER SEQUENCE public.errors_id_seq OWNED BY public.errors.id;
 
 
 --
 -- Name: follows; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE follows (
+CREATE TABLE public.follows (
     id integer NOT NULL,
     user_id integer,
     project_id integer
@@ -170,7 +201,7 @@ CREATE TABLE follows (
 -- Name: follows_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE follows_id_seq
+CREATE SEQUENCE public.follows_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -182,14 +213,14 @@ CREATE SEQUENCE follows_id_seq
 -- Name: follows_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE follows_id_seq OWNED BY follows.id;
+ALTER SEQUENCE public.follows_id_seq OWNED BY public.follows.id;
 
 
 --
 -- Name: measurements; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE measurements (
+CREATE TABLE public.measurements (
     id integer NOT NULL,
     subject_type character varying,
     subject_id integer,
@@ -206,7 +237,7 @@ CREATE TABLE measurements (
 -- Name: measurements_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE measurements_id_seq
+CREATE SEQUENCE public.measurements_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -218,14 +249,14 @@ CREATE SEQUENCE measurements_id_seq
 -- Name: measurements_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE measurements_id_seq OWNED BY measurements.id;
+ALTER SEQUENCE public.measurements_id_seq OWNED BY public.measurements.id;
 
 
 --
 -- Name: persistent_triggers; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE persistent_triggers (
+CREATE TABLE public.persistent_triggers (
     id integer NOT NULL,
     type character varying NOT NULL,
     value text NOT NULL,
@@ -239,7 +270,7 @@ CREATE TABLE persistent_triggers (
 -- Name: persistent_triggers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE persistent_triggers_id_seq
+CREATE SEQUENCE public.persistent_triggers_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -251,14 +282,14 @@ CREATE SEQUENCE persistent_triggers_id_seq
 -- Name: persistent_triggers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE persistent_triggers_id_seq OWNED BY persistent_triggers.id;
+ALTER SEQUENCE public.persistent_triggers_id_seq OWNED BY public.persistent_triggers.id;
 
 
 --
 -- Name: projects; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE projects (
+CREATE TABLE public.projects (
     id integer NOT NULL,
     name character varying NOT NULL,
     slug character varying NOT NULL,
@@ -284,7 +315,7 @@ CREATE TABLE projects (
 -- Name: projects_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE projects_id_seq
+CREATE SEQUENCE public.projects_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -296,14 +327,14 @@ CREATE SEQUENCE projects_id_seq
 -- Name: projects_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE projects_id_seq OWNED BY projects.id;
+ALTER SEQUENCE public.projects_id_seq OWNED BY public.projects.id;
 
 
 --
 -- Name: roles; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE roles (
+CREATE TABLE public.roles (
     id integer NOT NULL,
     user_id integer,
     project_id integer,
@@ -317,7 +348,7 @@ CREATE TABLE roles (
 -- Name: roles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE roles_id_seq
+CREATE SEQUENCE public.roles_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -329,14 +360,14 @@ CREATE SEQUENCE roles_id_seq
 -- Name: roles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE roles_id_seq OWNED BY roles.id;
+ALTER SEQUENCE public.roles_id_seq OWNED BY public.roles.id;
 
 
 --
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE schema_migrations (
+CREATE TABLE public.schema_migrations (
     version character varying NOT NULL
 );
 
@@ -345,7 +376,7 @@ CREATE TABLE schema_migrations (
 -- Name: teams; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE teams (
+CREATE TABLE public.teams (
     id integer NOT NULL,
     name character varying,
     props jsonb DEFAULT '{}'::jsonb
@@ -356,7 +387,7 @@ CREATE TABLE teams (
 -- Name: teams_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE teams_id_seq
+CREATE SEQUENCE public.teams_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -368,14 +399,14 @@ CREATE SEQUENCE teams_id_seq
 -- Name: teams_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE teams_id_seq OWNED BY teams.id;
+ALTER SEQUENCE public.teams_id_seq OWNED BY public.teams.id;
 
 
 --
 -- Name: teams_users; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE teams_users (
+CREATE TABLE public.teams_users (
     id integer NOT NULL,
     team_id integer,
     user_id integer,
@@ -389,7 +420,7 @@ CREATE TABLE teams_users (
 -- Name: teams_users_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE teams_users_id_seq
+CREATE SEQUENCE public.teams_users_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -401,14 +432,14 @@ CREATE SEQUENCE teams_users_id_seq
 -- Name: teams_users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE teams_users_id_seq OWNED BY teams_users.id;
+ALTER SEQUENCE public.teams_users_id_seq OWNED BY public.teams_users.id;
 
 
 --
 -- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE users (
+CREATE TABLE public.users (
     id integer NOT NULL,
     email character varying DEFAULT ''::character varying NOT NULL,
     encrypted_password character varying DEFAULT ''::character varying,
@@ -446,7 +477,7 @@ CREATE TABLE users (
 -- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE users_id_seq
+CREATE SEQUENCE public.users_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -458,14 +489,14 @@ CREATE SEQUENCE users_id_seq
 -- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE users_id_seq OWNED BY users.id;
+ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
 -- Name: versions; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE versions (
+CREATE TABLE public.versions (
     id integer NOT NULL,
     versioned_type character varying,
     versioned_id integer,
@@ -485,7 +516,7 @@ CREATE TABLE versions (
 -- Name: versions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE versions_id_seq
+CREATE SEQUENCE public.versions_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -497,106 +528,121 @@ CREATE SEQUENCE versions_id_seq
 -- Name: versions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE versions_id_seq OWNED BY versions.id;
+ALTER SEQUENCE public.versions_id_seq OWNED BY public.versions.id;
 
 
 --
 -- Name: actions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY actions ALTER COLUMN id SET DEFAULT nextval('actions_id_seq'::regclass);
+ALTER TABLE ONLY public.actions ALTER COLUMN id SET DEFAULT nextval('public.actions_id_seq'::regclass);
+
+
+--
+-- Name: api_tokens id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.api_tokens ALTER COLUMN id SET DEFAULT nextval('public.api_tokens_id_seq'::regclass);
 
 
 --
 -- Name: authorizations id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY authorizations ALTER COLUMN id SET DEFAULT nextval('authorizations_id_seq'::regclass);
+ALTER TABLE ONLY public.authorizations ALTER COLUMN id SET DEFAULT nextval('public.authorizations_id_seq'::regclass);
 
 
 --
 -- Name: errors id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY errors ALTER COLUMN id SET DEFAULT nextval('errors_id_seq'::regclass);
+ALTER TABLE ONLY public.errors ALTER COLUMN id SET DEFAULT nextval('public.errors_id_seq'::regclass);
 
 
 --
 -- Name: follows id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY follows ALTER COLUMN id SET DEFAULT nextval('follows_id_seq'::regclass);
+ALTER TABLE ONLY public.follows ALTER COLUMN id SET DEFAULT nextval('public.follows_id_seq'::regclass);
 
 
 --
 -- Name: measurements id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY measurements ALTER COLUMN id SET DEFAULT nextval('measurements_id_seq'::regclass);
+ALTER TABLE ONLY public.measurements ALTER COLUMN id SET DEFAULT nextval('public.measurements_id_seq'::regclass);
 
 
 --
 -- Name: persistent_triggers id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY persistent_triggers ALTER COLUMN id SET DEFAULT nextval('persistent_triggers_id_seq'::regclass);
+ALTER TABLE ONLY public.persistent_triggers ALTER COLUMN id SET DEFAULT nextval('public.persistent_triggers_id_seq'::regclass);
 
 
 --
 -- Name: projects id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY projects ALTER COLUMN id SET DEFAULT nextval('projects_id_seq'::regclass);
+ALTER TABLE ONLY public.projects ALTER COLUMN id SET DEFAULT nextval('public.projects_id_seq'::regclass);
 
 
 --
 -- Name: roles id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY roles ALTER COLUMN id SET DEFAULT nextval('roles_id_seq'::regclass);
+ALTER TABLE ONLY public.roles ALTER COLUMN id SET DEFAULT nextval('public.roles_id_seq'::regclass);
 
 
 --
 -- Name: teams id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY teams ALTER COLUMN id SET DEFAULT nextval('teams_id_seq'::regclass);
+ALTER TABLE ONLY public.teams ALTER COLUMN id SET DEFAULT nextval('public.teams_id_seq'::regclass);
 
 
 --
 -- Name: teams_users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY teams_users ALTER COLUMN id SET DEFAULT nextval('teams_users_id_seq'::regclass);
+ALTER TABLE ONLY public.teams_users ALTER COLUMN id SET DEFAULT nextval('public.teams_users_id_seq'::regclass);
 
 
 --
 -- Name: users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
+ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
 
 
 --
 -- Name: versions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY versions ALTER COLUMN id SET DEFAULT nextval('versions_id_seq'::regclass);
+ALTER TABLE ONLY public.versions ALTER COLUMN id SET DEFAULT nextval('public.versions_id_seq'::regclass);
 
 
 --
 -- Name: actions actions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY actions
+ALTER TABLE ONLY public.actions
     ADD CONSTRAINT actions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: api_tokens api_tokens_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.api_tokens
+    ADD CONSTRAINT api_tokens_pkey PRIMARY KEY (id);
 
 
 --
 -- Name: ar_internal_metadata ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY ar_internal_metadata
+ALTER TABLE ONLY public.ar_internal_metadata
     ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
 
 
@@ -604,7 +650,7 @@ ALTER TABLE ONLY ar_internal_metadata
 -- Name: authorizations authorizations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY authorizations
+ALTER TABLE ONLY public.authorizations
     ADD CONSTRAINT authorizations_pkey PRIMARY KEY (id);
 
 
@@ -612,7 +658,7 @@ ALTER TABLE ONLY authorizations
 -- Name: errors errors_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY errors
+ALTER TABLE ONLY public.errors
     ADD CONSTRAINT errors_pkey PRIMARY KEY (id);
 
 
@@ -620,7 +666,7 @@ ALTER TABLE ONLY errors
 -- Name: follows follows_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY follows
+ALTER TABLE ONLY public.follows
     ADD CONSTRAINT follows_pkey PRIMARY KEY (id);
 
 
@@ -628,7 +674,7 @@ ALTER TABLE ONLY follows
 -- Name: measurements measurements_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY measurements
+ALTER TABLE ONLY public.measurements
     ADD CONSTRAINT measurements_pkey PRIMARY KEY (id);
 
 
@@ -636,7 +682,7 @@ ALTER TABLE ONLY measurements
 -- Name: persistent_triggers persistent_triggers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY persistent_triggers
+ALTER TABLE ONLY public.persistent_triggers
     ADD CONSTRAINT persistent_triggers_pkey PRIMARY KEY (id);
 
 
@@ -644,7 +690,7 @@ ALTER TABLE ONLY persistent_triggers
 -- Name: projects projects_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY projects
+ALTER TABLE ONLY public.projects
     ADD CONSTRAINT projects_pkey PRIMARY KEY (id);
 
 
@@ -652,7 +698,7 @@ ALTER TABLE ONLY projects
 -- Name: roles roles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY roles
+ALTER TABLE ONLY public.roles
     ADD CONSTRAINT roles_pkey PRIMARY KEY (id);
 
 
@@ -660,7 +706,7 @@ ALTER TABLE ONLY roles
 -- Name: schema_migrations schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY schema_migrations
+ALTER TABLE ONLY public.schema_migrations
     ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
 
 
@@ -668,7 +714,7 @@ ALTER TABLE ONLY schema_migrations
 -- Name: teams teams_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY teams
+ALTER TABLE ONLY public.teams
     ADD CONSTRAINT teams_pkey PRIMARY KEY (id);
 
 
@@ -676,7 +722,7 @@ ALTER TABLE ONLY teams
 -- Name: teams_users teams_users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY teams_users
+ALTER TABLE ONLY public.teams_users
     ADD CONSTRAINT teams_users_pkey PRIMARY KEY (id);
 
 
@@ -684,7 +730,7 @@ ALTER TABLE ONLY teams_users
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY users
+ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
 
 
@@ -692,7 +738,7 @@ ALTER TABLE ONLY users
 -- Name: versions versions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY versions
+ALTER TABLE ONLY public.versions
     ADD CONSTRAINT versions_pkey PRIMARY KEY (id);
 
 
@@ -700,199 +746,221 @@ ALTER TABLE ONLY versions
 -- Name: index_actions_on_name; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_actions_on_name ON actions USING btree (name);
+CREATE INDEX index_actions_on_name ON public.actions USING btree (name);
+
+
+--
+-- Name: index_api_tokens_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_api_tokens_on_user_id ON public.api_tokens USING btree (user_id);
+
+
+--
+-- Name: index_api_tokens_on_value; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_api_tokens_on_value ON public.api_tokens USING btree (value);
 
 
 --
 -- Name: index_authorizations_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_authorizations_on_user_id ON authorizations USING btree (user_id);
+CREATE INDEX index_authorizations_on_user_id ON public.authorizations USING btree (user_id);
 
 
 --
 -- Name: index_errors_on_sha; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_errors_on_sha ON errors USING btree (sha);
+CREATE UNIQUE INDEX index_errors_on_sha ON public.errors USING btree (sha);
 
 
 --
 -- Name: index_follows_on_project_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_follows_on_project_id ON follows USING btree (project_id);
+CREATE INDEX index_follows_on_project_id ON public.follows USING btree (project_id);
 
 
 --
 -- Name: index_follows_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_follows_on_user_id ON follows USING btree (user_id);
+CREATE INDEX index_follows_on_user_id ON public.follows USING btree (user_id);
 
 
 --
 -- Name: index_measurements_on_name; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_measurements_on_name ON measurements USING btree (name);
+CREATE INDEX index_measurements_on_name ON public.measurements USING btree (name);
 
 
 --
 -- Name: index_measurements_on_subject_type_and_subject_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_measurements_on_subject_type_and_subject_id ON measurements USING btree (subject_type, subject_id);
+CREATE INDEX index_measurements_on_subject_type_and_subject_id ON public.measurements USING btree (subject_type, subject_id);
 
 
 --
 -- Name: index_measurements_on_taken_at; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_measurements_on_taken_at ON measurements USING btree (taken_at);
+CREATE INDEX index_measurements_on_taken_at ON public.measurements USING btree (taken_at);
 
 
 --
 -- Name: index_measurements_on_taken_on; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_measurements_on_taken_on ON measurements USING btree (taken_on);
+CREATE INDEX index_measurements_on_taken_on ON public.measurements USING btree (taken_on);
 
 
 --
 -- Name: index_projects_on_slug; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_projects_on_slug ON projects USING btree (slug);
+CREATE UNIQUE INDEX index_projects_on_slug ON public.projects USING btree (slug);
 
 
 --
 -- Name: index_roles_on_user_id_and_project_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_roles_on_user_id_and_project_id ON roles USING btree (user_id, project_id);
+CREATE INDEX index_roles_on_user_id_and_project_id ON public.roles USING btree (user_id, project_id);
 
 
 --
 -- Name: index_roles_on_user_id_and_project_id_and_name; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_roles_on_user_id_and_project_id_and_name ON roles USING btree (user_id, project_id, name);
+CREATE INDEX index_roles_on_user_id_and_project_id_and_name ON public.roles USING btree (user_id, project_id, name);
 
 
 --
 -- Name: index_teams_users_on_team_id_and_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_teams_users_on_team_id_and_user_id ON teams_users USING btree (team_id, user_id);
+CREATE UNIQUE INDEX index_teams_users_on_team_id_and_user_id ON public.teams_users USING btree (team_id, user_id);
 
 
 --
 -- Name: index_users_on_authentication_token; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_users_on_authentication_token ON users USING btree (authentication_token);
+CREATE INDEX index_users_on_authentication_token ON public.users USING btree (authentication_token);
 
 
 --
 -- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_users_on_email ON users USING btree (email);
+CREATE UNIQUE INDEX index_users_on_email ON public.users USING btree (email);
 
 
 --
 -- Name: index_users_on_email_addresses; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_users_on_email_addresses ON users USING btree (email_addresses);
+CREATE INDEX index_users_on_email_addresses ON public.users USING btree (email_addresses);
 
 
 --
 -- Name: index_users_on_invitation_token; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_users_on_invitation_token ON users USING btree (invitation_token);
+CREATE INDEX index_users_on_invitation_token ON public.users USING btree (invitation_token);
 
 
 --
 -- Name: index_users_on_invited_by_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_users_on_invited_by_id ON users USING btree (invited_by_id);
+CREATE INDEX index_users_on_invited_by_id ON public.users USING btree (invited_by_id);
 
 
 --
 -- Name: index_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_users_on_reset_password_token ON users USING btree (reset_password_token);
+CREATE UNIQUE INDEX index_users_on_reset_password_token ON public.users USING btree (reset_password_token);
 
 
 --
 -- Name: index_versions_on_created_at; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_versions_on_created_at ON versions USING btree (created_at);
+CREATE INDEX index_versions_on_created_at ON public.versions USING btree (created_at);
 
 
 --
 -- Name: index_versions_on_number; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_versions_on_number ON versions USING btree (number);
+CREATE INDEX index_versions_on_number ON public.versions USING btree (number);
 
 
 --
 -- Name: index_versions_on_tag; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_versions_on_tag ON versions USING btree (tag);
+CREATE INDEX index_versions_on_tag ON public.versions USING btree (tag);
 
 
 --
 -- Name: index_versions_on_user_id_and_user_type; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_versions_on_user_id_and_user_type ON versions USING btree (user_id, user_type);
+CREATE INDEX index_versions_on_user_id_and_user_type ON public.versions USING btree (user_id, user_type);
 
 
 --
 -- Name: index_versions_on_user_name; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_versions_on_user_name ON versions USING btree (user_name);
+CREATE INDEX index_versions_on_user_name ON public.versions USING btree (user_name);
 
 
 --
 -- Name: index_versions_on_versioned_id_and_versioned_type; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_versions_on_versioned_id_and_versioned_type ON versions USING btree (versioned_id, versioned_type);
+CREATE INDEX index_versions_on_versioned_id_and_versioned_type ON public.versions USING btree (versioned_id, versioned_type);
 
 
 --
 -- Name: follows fk_rails_32479bd030; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY follows
-    ADD CONSTRAINT fk_rails_32479bd030 FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.follows
+    ADD CONSTRAINT fk_rails_32479bd030 FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
 
 
 --
 -- Name: authorizations fk_rails_4ecef5b8c5; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY authorizations
-    ADD CONSTRAINT fk_rails_4ecef5b8c5 FOREIGN KEY (user_id) REFERENCES users(id);
+ALTER TABLE ONLY public.authorizations
+    ADD CONSTRAINT fk_rails_4ecef5b8c5 FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --
 -- Name: follows fk_rails_572bf69092; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY follows
-    ADD CONSTRAINT fk_rails_572bf69092 FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE;
+ALTER TABLE ONLY public.follows
+    ADD CONSTRAINT fk_rails_572bf69092 FOREIGN KEY (project_id) REFERENCES public.projects(id) ON DELETE CASCADE;
+
+
+--
+-- Name: api_tokens fk_rails_f16b5e0447; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.api_tokens
+    ADD CONSTRAINT fk_rails_f16b5e0447 FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --
@@ -1006,6 +1074,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20170307032041'),
 ('20170307035755'),
 ('20170310024505'),
-('20170329030329');
+('20170329030329'),
+('20181102202848');
 
 

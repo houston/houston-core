@@ -76,6 +76,18 @@ Rails.application.routes.draw do
 
 
 
+  # API Tokens
+
+  get "api_tokens" => "api_tokens#index", as: :api_tokens
+  get "my/api_tokens" => "api_tokens#mine", as: :my_api_tokens
+  get "api_tokens/new" => "api_tokens#new", as: :new_api_token
+  post "api_tokens" => "api_tokens#create"
+  get "api_tokens/:id/edit" => "api_tokens#edit", as: :edit_api_token
+  patch "api_tokens/:id" => "api_tokens#update", as: :api_token
+  delete "api_tokens/:id" => "api_tokens#destroy"
+
+
+
   # Actions
 
   get "actions", to: "actions#index", as: :actions

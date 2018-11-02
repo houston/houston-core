@@ -29,6 +29,7 @@
                 <% if can?(:read, :all_authorizations) %>
                   <li class="divider"></li>
                   <li><%= link_to "Authorizations", main_app.authorizations_path %></li>
+                  <li><%= link_to "API Tokens", main_app.api_tokens_path %></li>
                 <% end %>
               <% end %>
             </ul>
@@ -43,6 +44,7 @@
             <% if can?(:create, Authorization) %>
             <li class="divider"></li>
             <li><%= link_to "My Authorizations", main_app.my_authorizations_path %></li>
+            <li><%= link_to "My API Tokens", main_app.my_api_tokens_path %></li>
             <% end %>
             <li class="divider"></li>
             <li><%= link_to "Sign out", main_app.destroy_user_session_path %></li>

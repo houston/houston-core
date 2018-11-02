@@ -1,0 +1,51 @@
+<%= form_for @api_token, html: {class: "form-horizontal"} do |f| %>
+  <fieldset>
+    <div class="control-group">
+      <%= f.label :name, class: "control-label" %>
+      <div class="controls">
+        <%= f.text_field :name, class: "text_field" %>
+      </div>
+    </div>
+
+    <% if @api_token.persisted? %>
+    <div class="control-group">
+      <%= f.label :value, class: "control-label" %>
+      <div class="controls">
+        <%= f.text_field :value, class: "text_field", readonly: true %>
+      </div>
+    </div>
+    <% end %>
+  </fieldset>
+
+  <div class="form-actions">
+    <%= f.submit nil, class: "btn btn-primary" %>
+    <%= link_to "Cancel", my_api_tokens_path, class: "btn" %>
+
+    <% if @api_token.persisted? && can?(:destroy, @api_token) %>
+      <button class="btn btn-delete btn-danger" id="delete_api_token_button">Delete</button>
+    <% end %>
+  </div>
+<% end %>
+
+<% content_for :javascripts do %>
+<script type="text/javascript">
+  $(function() {
+    <% if @api_token.persisted? && can?(:destroy, @api_token) %>
+    $('#delete_api_token_button').click(function(e) {
+      e.preventDefault();
+      App.confirmDelete({
+        resource: 'API Token',
+        message: 'This will delete the API Token "<%= @api_token.name %>".',
+        url: <%=raw api_token_path(@api_token).to_json %>
+      });
+    });
+    <% end %>
+
+    <% if @api_token.persisted? %>
+      $('#api_token_value').select();
+    <% else %>
+      $('#api_token_name').select();
+    <% end %>
+  });
+</script>
+<% end %>

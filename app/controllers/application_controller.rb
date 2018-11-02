@@ -4,7 +4,9 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
+  skip_before_action :verify_authenticity_token, if: :authenticated_via_token?
 
+  prepend_before_action :token_authenticate!
   around_action :with_current_project
 
 
@@ -80,6 +82,23 @@ class ApplicationController < ActionController::Base
   def read_revision
     revision_path = Rails.root.join("REVISION")
     File.exists?(revision_path) ? File.read(revision_path).chomp : ""
+  end
+
+
+
+  def token_authenticate!
+    return if current_user
+
+    token = request.authorization[/\ABearer (.*)\z/, 1] if request.authorization
+    user = User.joins(:api_tokens).find_by(api_tokens: { value: token }) if token
+    return unless user
+
+    @current_user = user
+    @authenticated_via_token = true
+  end
+
+  def authenticated_via_token?
+    @authenticated_via_token == true
   end
 
 

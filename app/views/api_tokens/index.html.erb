@@ -1,0 +1,44 @@
+<% content_for :title do %>
+<h1 class="project-banner space-below">
+  <%= @title %>
+
+  <%= link_to "New API Token", new_api_token_path, class: "btn btn-primary" if can?(:create, ApiToken) %>
+</h1>
+<% end %>
+
+<div class="nomargin">
+  <table id="api_tokens" class="table table-sortable table-striped">
+    <thead>
+      <tr>
+        <td class="table-margin"></td>
+        <td class="user-avatar"></td>
+        <th class="user-name sort-desc">User</th>
+        <th class="api-token-name">Name</th>
+        <td class="table-margin"></td>
+      </tr>
+    </thead>
+    <tbody>
+      <% @api_tokens.each do |api_token| %>
+        <tr class="api_token">
+          <td class="table-margin"></td>
+          <td class="user-avatar"><%= avatar_for(api_token.user, size: 32) %></td>
+          <td class="user-name">
+            <span class="first-name"><%= api_token.user.first_name %></span>
+            <span class="last-name"><%= api_token.user.last_name %></span>
+          </td>
+          <td class="api-token-name"><%= link_to api_token.name, edit_api_token_path(api_token) %></td>
+          <td class="table-margin"></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+
+<% content_for :javascripts do %>
+  <script type="text/javascript">
+    $(function() {
+      $('#api_tokens').tablesorter();
+    });
+  </script>
+<% end %>
