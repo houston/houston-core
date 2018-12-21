@@ -36,13 +36,13 @@ class PersistentTrigger < ActiveRecord::Base
 
 
   def register!
-    trigger = Houston.config.triggers.build(type, value, action, params.merge(trigger: self), persistent_trigger_id: id)
-    Houston.config.triggers.push(trigger) unless Houston.config.triggers.member?(trigger)
+    return if registered_trigger
+    @registered_trigger = Houston.config.triggers.create(type, value, action, params.merge(trigger: self), persistent_trigger_id: id)
   end
 
   def unregister!
-    trigger = Houston.config.triggers.detect { |trigger| trigger.persistent_trigger_id == id }
-    Houston.config.triggers.delete(trigger) if trigger
+    return unless registered_trigger
+    Houston.config.triggers.delete(registered_trigger)
   end
 
 
@@ -51,6 +51,10 @@ private
   def action_must_be_defined
     return if Houston.config.actions.exists?(action)
     errors.add :action, "#{action.inspect} is not defined"
+  end
+
+  def registered_trigger
+    @registered_trigger ||= Houston.config.triggers.detect { |trigger| trigger.persistent_trigger_id == id }
   end
 
 end

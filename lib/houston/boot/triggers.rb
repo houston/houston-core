@@ -27,6 +27,10 @@ module Houston
       Trigger.new(self, method_name, value, action, params, persistent_trigger_id)
     end
 
+    def create(*args)
+      push build(*args)
+    end
+
     def push(trigger)
       raise DuplicateTriggerError, "That exact trigger has already been defined" if member?(trigger)
       super trigger
