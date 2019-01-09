@@ -17,7 +17,9 @@
         <%= action.error.message %>
       <% end %>
     </td>
+    <% if can?(:run, Action) %>
     <td class="action-retry"><%= button_to "Retry", retry_action_path(action), class: "btn-retry btn btn-mini btn-default" %></td>
+    <% end %>
     <td class="table-margin"></td>
   </tr>
 <% end %>

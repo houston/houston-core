@@ -19,7 +19,9 @@
         <th class="action-params">Params</th>
         <th class="action-succeeded">Succeeded</th>
         <th class="action-exception">Exception</th>
+        <% if can?(:run, Action) %>
         <th class="action-retry">Retry</th>
+        <% end %>
         <td class="table-margin"></td>
       </tr>
     </thead>

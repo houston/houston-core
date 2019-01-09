@@ -48,7 +48,7 @@
             <td class="action-duration" data-position="0">&mdash;</td>
           <% end %>
           <td class="action-run-now">
-            <% if action[:required_params].empty? %>
+            <% if action[:required_params].empty? && can?(:run, Action) %>
               <%= button_to "Run now", run_action_path(slug: action[:name]), :class => "btn btn-default" %>
             <% end %>
           </td>
