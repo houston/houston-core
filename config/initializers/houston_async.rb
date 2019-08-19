@@ -4,7 +4,8 @@ module Houston
   def self.async(do_async=true)
     return yield unless do_async
     Thread.new do
-      ActiveRecord::Base.connection_pool.with_connection do
+      ActiveRecord::Base.connection_pool.with_connection do |connection|
+        connection.verify!
         begin
           yield
         rescue Exception # rescues StandardError by default; but we want to rescue and report all errors
@@ -20,7 +21,8 @@ module Houston
   def self.async!(do_async=true)
     return yield unless do_async
     Thread.new do
-      ActiveRecord::Base.connection_pool.with_connection do
+      ActiveRecord::Base.connection_pool.with_connection do |connection|
+        connection.verify!
         begin
           yield
         ensure
