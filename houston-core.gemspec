@@ -23,8 +23,8 @@ Gem::Specification.new do |spec|
 
 
   # For Houston as a Web Application
-  spec.add_dependency "rails", "~> 5.0.0"
-  spec.add_dependency "pg", "~> 0.21.0"
+  spec.add_dependency "rails", "~> 5.1.0"
+  spec.add_dependency "pg", "~> 1.2.0"
   # --------------------------------
   spec.add_dependency "activerecord-import"
   spec.add_dependency "activerecord-pluck_in_batches", "~> 0.2.0"
@@ -59,7 +59,7 @@ Gem::Specification.new do |spec|
   # The Asset Pipeline
   spec.add_dependency "sass-rails", "~> 5.0"
   spec.add_dependency "uglifier", ">= 2.7.2"
-  spec.add_dependency "coffee-rails", "~> 4.1.0"
+  spec.add_dependency "coffee-rails"
 
   # Houston's background jobs daemon
   spec.add_dependency "rufus-scheduler", "~> 3.4.0"

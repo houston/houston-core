@@ -81,8 +81,9 @@ module Houston
       end
 
       def merge!(new_props)
-        new_props.each_key(&Houston::Props.method(:valid_prop_name!))
-        @record.props = @hash = @hash.merge(new_props)
+        props_hash = new_props.respond_to?(:to_unsafe_hash) ? new_props.to_unsafe_hash : new_props.to_h
+        props_hash.each_key(&Houston::Props.method(:valid_prop_name!))
+        @record.props = @hash = @hash.merge(props_hash)
       end
 
       def delete!(key)
