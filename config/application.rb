@@ -5,7 +5,6 @@ require "houston/boot"
 
 # Require gems listed in gemspec
 require "activerecord-import"
-require "activerecord/pluck_in_batches"
 require "addressable/uri"
 require "browser"
 require "cancan"
