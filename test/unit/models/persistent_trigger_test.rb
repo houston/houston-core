@@ -86,13 +86,13 @@ class PersistentTriggerTest < ActiveSupport::TestCase
 
   context ".load_all" do
     setup do
-      PersistentTrigger.all.insert({
-        PersistentTrigger.column_for_attribute(:user_id) => users(:boblail).id,
-        PersistentTrigger.column_for_attribute(:type) => "every",
-        PersistentTrigger.column_for_attribute(:value) => "day at 9:00am",
-        PersistentTrigger.column_for_attribute(:action) => "test-action",
-        PersistentTrigger.column_for_attribute(:params) => {example: 5}
-      })
+      fixture = {
+        user_id: users(:boblail).id,
+        type: "every",
+        value: Houston::Serializer.new.dump("day at 9:00am"),
+        action: "test-action",
+        params: Houston::ParamsSerializer.new.dump({ example: 5 }) }
+      PersistentTrigger.connection.insert_fixture(fixture, "persistent_triggers")
     end
 
     teardown do
