@@ -54,7 +54,7 @@ module Houston
 
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 5.1
+    config.load_defaults 6.0
 
     # This Rails application gets initialized different ways: many times it is
     # intialized from within a Houston instance project. This line ensures that
