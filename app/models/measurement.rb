@@ -1,6 +1,6 @@
 class Measurement < ActiveRecord::Base
 
-  belongs_to :subject, polymorphic: true
+  belongs_to :subject, polymorphic: true, optional: true
 
   validates :name, :value, :taken_at, presence: true
   validates :name, length: { maximum: 50 }
