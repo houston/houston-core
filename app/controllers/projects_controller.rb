@@ -74,7 +74,7 @@ private
 
 
   def project_attributes
-    attrs = params[:project]
+    attrs = params[:project].permit!
     attrs[:selected_features] ||= []
     attrs
   end

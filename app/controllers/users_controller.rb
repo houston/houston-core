@@ -54,7 +54,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @user.role = @role
 
-    attributes = params[:user]
+    attributes = user_params
     attributes[:alias_emails] = attributes.fetch(:alias_emails, "").split.map(&:strip)
     @user.props.merge! attributes.delete(:props) if attributes.key?(:props)
 
@@ -89,9 +89,18 @@ private
 
 
   def user_params
-    params.require(:user).permit(:first_name, :last_name, :email,
-                    :password, :password_confirmation, :remember_me,
-                    :environments_subscribed_to, :view_options, :alias_emails)
+    params.permit(user: [
+      :first_name,
+      :last_name,
+      :email,
+      :password,
+      :password_confirmation,
+      :remember_me,
+      :environments_subscribed_to,
+      :view_options,
+      :alias_emails,
+      { props: {} }
+    ])[:user]
   end
 
 

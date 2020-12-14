@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
   has_many :authorizations, dependent: :destroy
   has_many :triggers, class_name: "PersistentTrigger", dependent: :destroy
   has_and_belongs_to_many :followed_projects, -> { unretired }, join_table: "follows", class_name: "Project"
-  belongs_to :current_project, class_name: "Project"
+  belongs_to :current_project, class_name: "Project", optional: true
 
   devise :database_authenticatable,
          :recoverable,

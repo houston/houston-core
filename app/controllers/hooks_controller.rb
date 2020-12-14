@@ -8,7 +8,7 @@ class HooksController < ApplicationController
       return
     end
 
-    payload = params.except(:action, :controller).merge({
+    payload = params.permit!.to_h.except(:action, :controller).merge({
       sender: {
         ip: request.remote_ip,
         agent: request.user_agent

@@ -64,8 +64,7 @@ private
   end
 
   def team_attributes
-    params.fetch(:team)
-    # params.require(:team).permit(:name, :roles_attributes)
+    params.require(:team).permit!
   end
 
 end

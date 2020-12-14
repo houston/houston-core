@@ -22,7 +22,7 @@ class AuthorizationsController < ApplicationController
   end
 
   def create
-    @authorization = current_user.authorizations.build(params[:authorization])
+    @authorization = current_user.authorizations.build(authorization_params)
     authorize! :create, @authorization
 
     if @authorization.save
@@ -40,7 +40,7 @@ class AuthorizationsController < ApplicationController
   def update
     authorize! :update, @authorization
 
-    if @authorization.update_attributes(params[:authorization])
+    if @authorization.update_attributes(authorization_params)
       redirect_to my_authorizations_path
     else
       render action: :new
@@ -76,6 +76,10 @@ class AuthorizationsController < ApplicationController
   end
 
 private
+
+  def authorization_params
+    params.require(:authorization).permit!
+  end
 
   def granted_redirect
     "#{@authorization.id}_granted_redirect_url"

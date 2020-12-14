@@ -1,7 +1,7 @@
 class Action < ActiveRecord::Base
 
   validates :name, presence: true
-  belongs_to :error
+  belongs_to :error, optional: true
 
   default_scope -> { order(created_at: :desc) }
 

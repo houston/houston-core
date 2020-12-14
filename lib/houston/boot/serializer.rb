@@ -56,7 +56,7 @@ module Houston
           new_object[key] = pack(value)
         end
       when ActionController::Parameters
-        pack object.to_h
+        pack object.to_unsafe_hash
       when ActiveSupport::TimeWithZone
         object.to_datetime
       when ActiveRecord::ConnectionAdapters::PostgreSQL::OID::Array::Data

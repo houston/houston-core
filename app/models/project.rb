@@ -3,7 +3,7 @@ class Project < ActiveRecord::Base
   include Retirement
   include Houston::Props
 
-  belongs_to :team
+  belongs_to :team, optional: true
   has_and_belongs_to_many :followers, join_table: "follows", class_name: "User"
 
   before_validation :generate_default_slug, :set_default_color
