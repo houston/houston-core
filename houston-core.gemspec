@@ -30,7 +30,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "addressable", "~> 2.3.8" # <-- 2.5.0 raises "invalid scheme format" for "git@github.com"
   spec.add_dependency "attentive", ">= 0.3.9"
   spec.add_dependency "browser", "~> 2.3.0"
-  spec.add_dependency "cancancan", "~> 1.16.0"
+  spec.add_dependency "cancancan", ">= 3.0.0"
   spec.add_dependency "concurrent-ruby", "~> 1.0.2"
   spec.add_dependency "devise"
   spec.add_dependency "devise_invitable"
