@@ -53,7 +53,7 @@ class ActionsController < ApplicationController
     authorize! :run, Action
     action = Action.find(params[:id])
     action.retry!
-    redirect_to :back
+    redirect_back fallback_location: root_path
   end
 
 end

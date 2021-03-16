@@ -5,12 +5,12 @@ class ProjectFollowsController < ApplicationController
 
   def create
     current_user.follow! project
-    redirect_to :back, notice: "You are now following #{project.name}"
+    redirect_back fallback_location: root_path, notice: "You are now following #{project.name}"
   end
 
   def destroy
     current_user.unfollow! project
-    redirect_to :back, notice: "You are no longer following #{project.name}"
+    redirect_back fallback_location: root_path, notice: "You are no longer following #{project.name}"
   end
 
 
