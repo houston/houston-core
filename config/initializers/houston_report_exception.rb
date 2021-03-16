@@ -12,7 +12,7 @@ module Houston
       if defined?(Airbrake)
         other_data[:parameters] ||= {}
         case exception
-        when Faraday::HTTP::Error
+        when Faraday::ServerError, Faraday::ClientError
           other_data[:parameters].merge!(_normalize_faraday_env(exception.env))
         end
         other_data[:parameters].merge!(exception.additional_information)
