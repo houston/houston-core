@@ -78,6 +78,7 @@ private
     attrs[:selected_features] ||= []
     attrs
   end
+  alias project_params project_attributes
 
 
   def convert_maintainers_attributes_to_maintainer_ids
