@@ -74,7 +74,8 @@ module Houston
     .ability { |project| can?(:update, project) }
 
   register_events {{
-    "daemon:{type}:start"   => desc("Daemon {type} has started"),
+    "daemon:{type}:start"   => desc("Daemon {type} is starting"),
+    "daemon:{type}:started" => desc("Daemon {type} has started"),
     "daemon:{type}:restart" => desc("Daemon {type} has restarted"),
     "daemon:{type}:stop"    => desc("Daemon {type} has stopped"),
 
