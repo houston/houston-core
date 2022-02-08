@@ -66,5 +66,6 @@ private
   def team_attributes
     params.require(:team).permit!
   end
+  alias team_params team_attributes
 
 end
