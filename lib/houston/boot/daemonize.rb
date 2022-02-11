@@ -14,6 +14,7 @@ module Houston
         connected_at = Time.now
         Houston.observer.fire "daemon:#{name}:start"
         yield
+        Houston.observer.fire "daemon:#{name}:started"
 
       rescue Exception
         puts "\e[91m#{$!.class}: #{$!.message}\e[0m" if Rails.env.development?

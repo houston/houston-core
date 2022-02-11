@@ -34,7 +34,7 @@ module Houston
     def initialize
       @queued_timers = Concurrent::Array.new
 
-      Houston.observer.on "daemon:scheduler:start", raise: true do
+      Houston.observer.on "daemon:scheduler:started", raise: true do
         schedule_queued_timers!
       end
     end
