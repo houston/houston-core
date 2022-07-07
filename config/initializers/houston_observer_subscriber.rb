@@ -11,7 +11,7 @@ Houston.observer.on :* do |event, params|
   end
 
   if channels.member? event_channel
-    params = MultiJson.load(Houston::Serializer.new.dump(params))
+    params = JSON.load(Houston::Serializer.new.dump(params))
     ActionCable.server.broadcast(EventsChannel.name_of(event), params)
   end
 end

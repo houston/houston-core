@@ -25,7 +25,7 @@ class UploadsController < ApplicationController
     filename = Digest::SHA1.hexdigest(unique_file_name) + ext
     object_name = "uploads/#{current_user.id}/#{filename}"
 
-    policy_document = MultiJson.dump({
+    policy_document = JSON.dump({
       "expiration" => 1.day.from_now.utc.iso8601,
       "conditions" => [
         {"bucket" => Houston.config.s3[:bucket]},
