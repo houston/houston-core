@@ -46,7 +46,7 @@ class ProjectsController < ApplicationController
 
     @project.props.merge! project_attributes.delete(:props) if project_attributes.key?(:props)
 
-    if @project.update_attributes(project_attributes)
+    if @project.update(project_attributes)
       redirect_to projects_path, notice: 'Project was successfully updated.'
     else
       flash.now[:error] = @project.errors[:base].join("\n")

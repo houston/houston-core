@@ -58,7 +58,7 @@ class UsersController < ApplicationController
     attributes[:alias_emails] = attributes.fetch(:alias_emails, "").split.map(&:strip)
     @user.props.merge! attributes.delete(:props) if attributes.key?(:props)
 
-    if @user.update_attributes(attributes)
+    if @user.update(attributes)
       redirect_to @user, notice: 'User was successfully updated.'
     else
       flash.now[:error] = @user.errors[:base].join("\n")
