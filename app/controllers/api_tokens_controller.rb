@@ -40,7 +40,7 @@ class ApiTokensController < ApplicationController
   def update
     authorize! :update, @api_token
 
-    if @api_token.update_attributes(params.require(:api_token).permit(:name))
+    if @api_token.update(params.require(:api_token).permit(:name))
       redirect_to my_api_tokens_path
     else
       render action: :new

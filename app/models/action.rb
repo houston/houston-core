@@ -86,7 +86,7 @@ class Action < ActiveRecord::Base
   end
 
   def retry!
-    update_attributes! started_at: Time.now, finished_at: nil, succeeded: nil, exception: nil
+    update! started_at: Time.now, finished_at: nil, succeeded: nil, exception: nil
     Houston.async do
       run!
     end
@@ -97,7 +97,7 @@ class Action < ActiveRecord::Base
   end
 
   def finish!(exception)
-    update_attributes! finished_at: Time.now, succeeded: exception.nil?, exception: exception
+    update! finished_at: Time.now, succeeded: exception.nil?, exception: exception
   end
 
   def duration

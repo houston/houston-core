@@ -33,7 +33,8 @@ class SerializerTest < ActiveSupport::TestCase
   end
 
   should "serialize ActiveRecord objects by their raw attributes" do
-    project = Project.create!(name: "Test", slug: "test")
+    time = Time.new(2023, 1, 1)
+    project = Project.create!(name: "Test", slug: "test", created_at: time, updated_at: time)
     assert_serializes(project,
       like: /"class":"Project","attributes":{.*},"\^S":"Houston::ActiveRecordSerializer"/)
   end

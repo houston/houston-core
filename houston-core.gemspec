@@ -23,7 +23,7 @@ Gem::Specification.new do |spec|
 
 
   # For Houston as a Web Application
-  spec.add_dependency "rails", "~> 6.0.3"
+  spec.add_dependency "rails", "~> 6.1.4"
   spec.add_dependency "pg", "~> 1.2.0"
   # --------------------------------
   spec.add_dependency "activerecord-import"

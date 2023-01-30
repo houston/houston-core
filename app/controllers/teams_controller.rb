@@ -38,7 +38,7 @@ class TeamsController < ApplicationController
   def update
     @team.props.merge! team_attributes.delete(:props) if team_attributes.key?(:props)
 
-    if @team.update_attributes(team_attributes)
+    if @team.update(team_attributes)
       redirect_to teams_path, notice: "Team was successfully updated."
     else
       flash.now[:error] = @team.errors[:base].join("\n")

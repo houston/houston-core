@@ -40,7 +40,7 @@ class AuthorizationsController < ApplicationController
   def update
     authorize! :update, @authorization
 
-    if @authorization.update_attributes(authorization_params)
+    if @authorization.update(authorization_params)
       redirect_to my_authorizations_path
     else
       render action: :new
