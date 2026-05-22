@@ -1,0 +1,59 @@
+<% title "Identity" %>
+
+<h1 class="project-banner space-below">
+  Identity
+  <small>Your Beltic-issued credential, plus options to strengthen it</small>
+</h1>
+
+<% if @credential&.active? %>
+  <section>
+    <h3>Your identity
+      <span class="label label-success">Verified</span>
+    </h3>
+
+    <dl class="dl-horizontal">
+      <dt>Credential ID</dt>
+      <dd><code><%= @credential.short_id %></code></dd>
+
+      <dt>Trust level</dt>
+      <dd><%= @trust_level %></dd>
+
+      <dt>Issued</dt>
+      <dd><%= @credential.issued_at&.to_s(:long) %></dd>
+
+      <dt>Expires</dt>
+      <dd><%= @credential.expires_at&.to_s(:long) %></dd>
+    </dl>
+
+    <%= link_to "Re-verify identity", new_identity_verification_path, class: "btn" %>
+    <%= link_to "Strengthen your identity", new_identity_strengthening_path, class: "btn" %>
+  </section>
+
+  <section style="margin-top: 2em;">
+    <h3>Strengthen your identity</h3>
+    <p>Raise your trust level by adding evidence. Each upload re-issues your credential at a higher tier; old ones are revoked atomically.</p>
+    <ul>
+      <% if @trust_level == "idv_verified" %>
+        <li><strong>✓ Government ID verified.</strong> You're at <code>idv_verified</code>.</li>
+      <% else %>
+        <li>Upload a government ID → <code>idv_verified</code> trust level</li>
+      <% end %>
+      <li>Connect external identity (LinkedIn, GitHub) → stacked <code>outcome_attestation</code> credentials</li>
+      <li>Upload supporting evidence (address proof, employer letter) → added to <code>evidence_refs</code></li>
+    </ul>
+  </section>
+
+  <section style="margin-top: 2em;">
+    <h3>Danger zone</h3>
+    <%= button_to "Revoke credential", identity_verification_path, method: :delete,
+        class: "btn btn-danger",
+        data: { confirm: "Revoke your Beltic credential? You'll lose all agent authorizations and must re-verify before issuing new ones." } %>
+  </section>
+
+<% else %>
+  <div class="alert">
+    <h3>Identity not verified</h3>
+    <p>Verify your identity to unlock agent authorization and other features that need a portable, verifiable identity.</p>
+    <%= link_to "Verify identity", new_identity_verification_path, class: "btn btn-primary" %>
+  </div>
+<% end %>

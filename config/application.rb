@@ -26,6 +26,10 @@ require "rack/utf8_sanitizer"
 require "kramdown"
 require "slackdown"
 
+# Beltic verifiable-credentials integration
+require "jwt"
+require "lockbox"
+
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)

@@ -1,0 +1,42 @@
+<% title @agent.name %>
+
+<h1 class="project-banner space-below">
+  <%= @agent.name %>
+  <small>did:jwk — <%= @agent.did %></small>
+</h1>
+
+<dl class="dl-horizontal">
+  <dt>Status</dt><dd><%= @agent.status %></dd>
+  <dt>Confirmation</dt><dd><%= @agent.confirmation_mode %></dd>
+  <dt>Daily limit</dt>
+  <dd>
+    <% if @agent.spend_limit_amount_cents %>
+      $<%= "%.2f" % (@agent.spend_limit_amount_cents.to_f / 100) %>
+      <%= @agent.spend_limit_currency %> / <%= @agent.spend_limit_period %>
+    <% else %>—<% end %>
+  </dd>
+  <dt>Per-transaction max</dt>
+  <dd>
+    <% if @agent.per_transaction_max_cents %>
+      $<%= "%.2f" % (@agent.per_transaction_max_cents.to_f / 100) %>
+    <% else %>—<% end %>
+  </dd>
+  <dt>Currencies</dt><dd><%= Array(@agent.authorized_currencies).join(", ") %></dd>
+  <dt>Idle timeout</dt><dd><%= @agent.max_idle_duration_iso8601 %></dd>
+  <% if @credential %>
+    <dt>Credential</dt>
+    <dd>
+      <code><%= @credential.short_id %></code>,
+      issued <%= @credential.issued_at&.to_s(:long) %>,
+      expires <%= @credential.expires_at&.to_s(:long) %>
+    </dd>
+  <% end %>
+</dl>
+
+<%= link_to "Re-authorize (update limits)", new_agent_authorization_path(agent_id: @agent.id), class: "btn" %>
+
+<% if @agent.authorized? %>
+  <%= button_to "Revoke credential", agent_authorization_path(agent_id: @agent.id), method: :delete,
+      class: "btn btn-danger",
+      data: { confirm: "Revoke #{@agent.name}? Beltic will mark its credential revoked immediately." } %>
+<% end %>

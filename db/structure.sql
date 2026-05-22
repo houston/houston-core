@@ -1,9 +1,7 @@
---
--- PostgreSQL database dump
---
+\restrict xStEcSXgux3eP0jwNaP8rlDwEmiRXKvQBLG6ImoUbgRu3n4ryaK6M8fLNrgHk6K
 
--- Dumped from database version 10.5
--- Dumped by pg_dump version 10.5
+-- Dumped from database version 14.23 (Homebrew)
+-- Dumped by pg_dump version 14.23 (Homebrew)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -12,26 +10,13 @@ SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SELECT pg_catalog.set_config('search_path', '', false);
 SET check_function_bodies = false;
+SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
---
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
-
-
---
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
-
-
 SET default_tablespace = '';
 
-SET default_with_oids = false;
+SET default_table_access_method = heap;
 
 --
 -- Name: actions; Type: TABLE; Schema: public; Owner: -
@@ -67,6 +52,48 @@ CREATE SEQUENCE public.actions_id_seq
 --
 
 ALTER SEQUENCE public.actions_id_seq OWNED BY public.actions.id;
+
+
+--
+-- Name: agents; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.agents (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    name character varying NOT NULL,
+    did character varying NOT NULL,
+    status character varying DEFAULT 'active'::character varying NOT NULL,
+    spend_limit_amount_cents integer,
+    spend_limit_currency character varying,
+    spend_limit_period character varying,
+    per_transaction_max_cents integer,
+    authorized_currencies jsonb DEFAULT '[]'::jsonb NOT NULL,
+    max_idle_duration_iso8601 character varying,
+    confirmation_threshold_cents integer,
+    confirmation_mode character varying DEFAULT 'threshold'::character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: agents_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.agents_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: agents_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.agents_id_seq OWNED BY public.agents.id;
 
 
 --
@@ -469,7 +496,9 @@ CREATE TABLE public.users (
     nickname character varying,
     username character varying,
     props jsonb DEFAULT '{}'::jsonb,
-    role character varying DEFAULT 'Member'::character varying
+    role character varying DEFAULT 'Member'::character varying,
+    beltic_user_credential_id bigint,
+    beltic_trust_level character varying
 );
 
 
@@ -490,6 +519,49 @@ CREATE SEQUENCE public.users_id_seq
 --
 
 ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
+
+
+--
+-- Name: verifiable_credentials; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.verifiable_credentials (
+    id bigint NOT NULL,
+    credential_id character varying NOT NULL,
+    credential_type character varying NOT NULL,
+    subject_type character varying NOT NULL,
+    subject_id bigint NOT NULL,
+    status character varying DEFAULT 'active'::character varying NOT NULL,
+    signed_payload_ciphertext text,
+    claims jsonb DEFAULT '{}'::jsonb NOT NULL,
+    evidence_refs jsonb DEFAULT '[]'::jsonb NOT NULL,
+    delegated_by_credential_id bigint,
+    issued_at timestamp without time zone,
+    expires_at timestamp without time zone,
+    revoked_at timestamp without time zone,
+    raw_response jsonb DEFAULT '{}'::jsonb NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: verifiable_credentials_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.verifiable_credentials_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: verifiable_credentials_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.verifiable_credentials_id_seq OWNED BY public.verifiable_credentials.id;
 
 
 --
@@ -536,6 +608,13 @@ ALTER SEQUENCE public.versions_id_seq OWNED BY public.versions.id;
 --
 
 ALTER TABLE ONLY public.actions ALTER COLUMN id SET DEFAULT nextval('public.actions_id_seq'::regclass);
+
+
+--
+-- Name: agents id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agents ALTER COLUMN id SET DEFAULT nextval('public.agents_id_seq'::regclass);
 
 
 --
@@ -616,6 +695,13 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 
 
 --
+-- Name: verifiable_credentials id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.verifiable_credentials ALTER COLUMN id SET DEFAULT nextval('public.verifiable_credentials_id_seq'::regclass);
+
+
+--
 -- Name: versions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -628,6 +714,14 @@ ALTER TABLE ONLY public.versions ALTER COLUMN id SET DEFAULT nextval('public.ver
 
 ALTER TABLE ONLY public.actions
     ADD CONSTRAINT actions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: agents agents_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agents
+    ADD CONSTRAINT agents_pkey PRIMARY KEY (id);
 
 
 --
@@ -735,6 +829,14 @@ ALTER TABLE ONLY public.users
 
 
 --
+-- Name: verifiable_credentials verifiable_credentials_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.verifiable_credentials
+    ADD CONSTRAINT verifiable_credentials_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: versions versions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -743,10 +845,38 @@ ALTER TABLE ONLY public.versions
 
 
 --
+-- Name: idx_active_vcs_by_expiry; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_active_vcs_by_expiry ON public.verifiable_credentials USING btree (expires_at) WHERE ((status)::text = 'active'::text);
+
+
+--
 -- Name: index_actions_on_name; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_actions_on_name ON public.actions USING btree (name);
+
+
+--
+-- Name: index_agents_on_did; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_agents_on_did ON public.agents USING btree (did);
+
+
+--
+-- Name: index_agents_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_agents_on_user_id ON public.agents USING btree (user_id);
+
+
+--
+-- Name: index_agents_on_user_id_and_status; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_agents_on_user_id_and_status ON public.agents USING btree (user_id, status);
 
 
 --
@@ -855,6 +985,20 @@ CREATE INDEX index_users_on_authentication_token ON public.users USING btree (au
 
 
 --
+-- Name: index_users_on_beltic_trust_level; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_on_beltic_trust_level ON public.users USING btree (beltic_trust_level);
+
+
+--
+-- Name: index_users_on_beltic_user_credential_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_on_beltic_user_credential_id ON public.users USING btree (beltic_user_credential_id);
+
+
+--
 -- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -887,6 +1031,27 @@ CREATE INDEX index_users_on_invited_by_id ON public.users USING btree (invited_b
 --
 
 CREATE UNIQUE INDEX index_users_on_reset_password_token ON public.users USING btree (reset_password_token);
+
+
+--
+-- Name: index_verifiable_credentials_on_credential_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_verifiable_credentials_on_credential_id ON public.verifiable_credentials USING btree (credential_id);
+
+
+--
+-- Name: index_verifiable_credentials_on_status; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_verifiable_credentials_on_status ON public.verifiable_credentials USING btree (status);
+
+
+--
+-- Name: index_verifiable_credentials_on_subject_type_and_subject_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_verifiable_credentials_on_subject_type_and_subject_id ON public.verifiable_credentials USING btree (subject_type, subject_id);
 
 
 --
@@ -956,6 +1121,30 @@ ALTER TABLE ONLY public.follows
 
 
 --
+-- Name: verifiable_credentials fk_rails_da9c5b2388; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.verifiable_credentials
+    ADD CONSTRAINT fk_rails_da9c5b2388 FOREIGN KEY (delegated_by_credential_id) REFERENCES public.verifiable_credentials(id);
+
+
+--
+-- Name: users fk_rails_e0b143aec5; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT fk_rails_e0b143aec5 FOREIGN KEY (beltic_user_credential_id) REFERENCES public.verifiable_credentials(id);
+
+
+--
+-- Name: agents fk_rails_ef89880eea; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.agents
+    ADD CONSTRAINT fk_rails_ef89880eea FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- Name: api_tokens fk_rails_f16b5e0447; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -966,6 +1155,8 @@ ALTER TABLE ONLY public.api_tokens
 --
 -- PostgreSQL database dump complete
 --
+
+\unrestrict xStEcSXgux3eP0jwNaP8rlDwEmiRXKvQBLG6ImoUbgRu3n4ryaK6M8fLNrgHk6K
 
 SET search_path TO "$user", public;
 
@@ -1075,6 +1266,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20170307035755'),
 ('20170310024505'),
 ('20170329030329'),
-('20181102202848');
+('20181102202848'),
+('20260522120000'),
+('20260522120001'),
+('20260522120002');
 
 

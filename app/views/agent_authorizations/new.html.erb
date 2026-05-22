@@ -1,0 +1,116 @@
+<% title "Authorize agent" %>
+
+<h1 class="project-banner space-below">
+  Authorize <%= @agent.name.presence || "this agent" %>
+  <small>Set the spending limits Beltic will encode into the credential</small>
+</h1>
+
+<% if @user_credential.present? %>
+  <div class="alert alert-info">
+    <strong>Linked to your verified Beltic identity.</strong>
+    Trust level: <%= @user_credential.claims["trust_level"] %> · expires
+    <%= @user_credential.expires_at&.to_s(:long) %>
+  </div>
+<% end %>
+
+<%
+  # New agent: POST /agents (AgentsController#create).
+  # Re-authorize existing: POST /agents/:agent_id/authorization (AgentAuthorizationsController#create).
+  form_url    = @agent.persisted? ? agent_authorization_path(agent_id: @agent.id) : agents_path
+  form_method = :post
+%>
+<%= form_with model: @agent,
+              url:   form_url,
+              method: form_method,
+              scope: :agent,
+              class: "form-horizontal",
+              local: true do |f| %>
+
+  <fieldset>
+    <legend>Agent</legend>
+
+    <div class="control-group">
+      <%= f.label :name, class: "control-label" %>
+      <div class="controls"><%= f.text_field :name, required: true %></div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Spending limits</legend>
+    <p><small>These map to <code>claims.spend_limit</code> and <code>claims.authorized_currencies</code> on the Beltic credential.</small></p>
+
+    <div class="control-group">
+      <%= f.label :spend_limit_amount_cents, "Daily limit (cents)", class: "control-label" %>
+      <div class="controls">
+        <%= f.number_field :spend_limit_amount_cents, min: 0, step: 1, value: 25000 %>
+        <%= f.select :spend_limit_currency, %w[USD BRL EUR GBP CAD], { selected: "USD" }, class: "input-small" %>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <%= f.label :per_transaction_max_cents, "Per-transaction max (cents)", class: "control-label" %>
+      <div class="controls">
+        <%= f.number_field :per_transaction_max_cents, min: 0, step: 1, value: 10000 %>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <%= f.label :spend_limit_period, class: "control-label" %>
+      <div class="controls">
+        <%= f.select :spend_limit_period, Agent::SPEND_PERIODS.map { |p| [p.humanize, p] }, selected: "daily" %>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <%= f.label :authorized_currencies, class: "control-label" %>
+      <div class="controls">
+        <%= f.collection_check_boxes :authorized_currencies, %w[USD BRL EUR GBP CAD], :to_s, :to_s do |b| %>
+          <label class="checkbox inline"><%= b.check_box %> <%= b.text %></label>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <%= f.label :max_idle_duration_iso8601, "Auto-pause if idle (ISO-8601)", class: "control-label" %>
+      <div class="controls"><%= f.text_field :max_idle_duration_iso8601, value: "PT4H", placeholder: "e.g. PT4H, P1D" %></div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Confirm before purchase</legend>
+
+    <% [
+      ["always",    "Always confirm with me",        "Best for a new agent you don't trust yet."],
+      ["threshold", "Only purchases above a threshold", "Recommended — agent runs autonomously under the limit, asks above it."],
+      ["never",     "Never (full autonomy)",         "Agent can spend up to your daily limit without asking. Higher-risk."],
+    ].each do |mode, label, helper| %>
+      <div class="control-group">
+        <div class="controls">
+          <label class="radio">
+            <%= f.radio_button :confirmation_mode, mode, checked: (mode == "threshold") %>
+            <strong><%= label %></strong>
+            <p class="help-block"><small><%= helper %></small></p>
+          </label>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="control-group">
+      <%= f.label :confirmation_threshold_cents, "Threshold (cents)", class: "control-label" %>
+      <div class="controls"><%= f.number_field :confirmation_threshold_cents, value: 5000, min: 0 %></div>
+    </div>
+  </fieldset>
+
+  <div class="alert alert-info">
+    <strong>What gets sent to Beltic:</strong>
+    Beltic mints an <code>agent_authorization</code> credential containing the agent's DID,
+    your user credential ID as <code>delegated_by_subject_id</code>, the spend limits and
+    currencies above, and the actions the agent is permitted. The credential is revoked
+    instantly when you remove the agent.
+  </div>
+
+  <div class="form-actions">
+    <%= f.submit "Authorize agent", class: "btn btn-primary" %>
+    <%= link_to "Cancel", :back, class: "btn" %>
+  </div>
+<% end %>

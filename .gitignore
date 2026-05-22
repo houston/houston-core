@@ -7,6 +7,12 @@
 # Ignore bundler config.
 /.bundle
 Gemfile.lock
+/vendor/bundle
+
+# Local environment overrides (secrets, DB port, etc.)
+/.env
+/.env.*
+!/.env.example
 
 # Ignore all logfiles and tempfiles.
 /log/*

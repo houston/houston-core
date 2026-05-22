@@ -1,0 +1,99 @@
+<% title "Verify Your Identity" %>
+
+<h1 class="project-banner space-below">
+  Verify Your Identity
+  <small>Issue your Beltic identity credential</small>
+</h1>
+
+<%= form_with url: identity_verification_path, method: :post, class: "form-horizontal", local: true do |f| %>
+
+  <p>
+    Houston uses Beltic to issue you a verifiable identity credential. Review the
+    information below and complete the required fields. Beltic stores only what's
+    needed to issue your credential.
+  </p>
+
+  <fieldset>
+    <legend>Information from your account</legend>
+    <p><small>Pulled from your Houston profile — read only</small></p>
+
+    <div class="control-group">
+      <label class="control-label">Full name</label>
+      <div class="controls"><span class="uneditable-input"><%= current_user.full_name %></span></div>
+    </div>
+
+    <div class="control-group">
+      <label class="control-label">Email</label>
+      <div class="controls"><span class="uneditable-input"><%= current_user.email %></span></div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Required attestations</legend>
+
+    <div class="control-group">
+      <label class="control-label" for="nationality">Nationality <span class="text-error">*</span></label>
+      <div class="controls">
+        <%= select_tag :nationality,
+            options_for_select([["Select country", ""]] + country_options),
+            class: "input-large", required: true %>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label class="control-label" for="date_of_birth">Date of birth <span class="text-error">*</span></label>
+      <div class="controls">
+        <%= date_field_tag :date_of_birth, nil, required: true %>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label class="control-label optional" for="id_document_type">Government ID type</label>
+      <div class="controls">
+        <%= select_tag :id_document_type, options_for_select([
+              ["None", ""],
+              ["Passport", "passport"],
+              ["Driver's License", "drivers_license"],
+              ["National ID", "national_id"],
+              ["Residence Permit", "residence_permit"],
+            ]), class: "input-large" %>
+        <p class="help-block"><small>Strongly recommended — unlocks idv_verified trust level</small></p>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <label class="control-label optional" for="id_document_country">ID document country</label>
+      <div class="controls">
+        <%= select_tag :id_document_country,
+            options_for_select([["Required if document type selected", ""]] + country_options),
+            class: "input-large" %>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Declarations</legend>
+
+    <% [
+      ["confirm_accuracy",     "I confirm the information above is accurate and current."],
+      ["consent_issuance",     "I consent to Beltic issuing a Verifiable Credential based on this information."],
+      ["understand_revocation","I understand this credential may be revoked if found inaccurate."],
+    ].each do |key, label| %>
+      <div class="control-group">
+        <div class="controls">
+          <label class="checkbox">
+            <%= check_box_tag "declarations[#{key}]", "1", false, required: true %>
+            <%= label %>
+          </label>
+        </div>
+      </div>
+    <% end %>
+  </fieldset>
+
+  <p><small>Your credential will be valid for 1 year. It can be revoked at any time from your profile settings.</small></p>
+
+  <div class="form-actions">
+    <%= submit_tag "Issue Credential", class: "btn btn-primary" %>
+    <%= link_to "Cancel", :back, class: "btn" %>
+  </div>
+<% end %>

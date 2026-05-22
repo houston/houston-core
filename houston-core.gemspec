@@ -36,6 +36,10 @@ Gem::Specification.new do |spec|
   spec.add_dependency "devise_invitable"
   spec.add_dependency "faraday"
   spec.add_dependency "faraday-http-cache"
+
+  # Beltic verifiable-credentials integration
+  spec.add_dependency "jwt", "~> 2.7"
+  spec.add_dependency "lockbox", "~> 1.3"
   spec.add_dependency "gemoji", "~> 2.1.0"
   spec.add_dependency "handlebars_assets", "~> 0.23.0"
   spec.add_dependency "mail"

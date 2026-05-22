@@ -2,14 +2,16 @@ development:
   adapter: postgresql
   encoding: utf8
   database: houston_core_development
-  host: localhost
+  host: <%= ENV.fetch("HOUSTON_DB_HOST", "localhost") %>
+  port: <%= ENV.fetch("HOUSTON_DB_PORT", 5432) %>
   prepared_statements: false
 
 test:
   adapter: postgresql
   encoding: utf8
   database: houston_core_test
-  host: localhost
+  host: <%= ENV.fetch("HOUSTON_DB_HOST", "localhost") %>
+  port: <%= ENV.fetch("HOUSTON_DB_PORT", 5432) %>
   prepared_statements: false
 
 # Just so we can precompile assets locally
@@ -17,5 +19,6 @@ production:
   adapter: postgresql
   encoding: utf8
   database: houston_core_development
-  host: localhost
+  host: <%= ENV.fetch("HOUSTON_DB_HOST", "localhost") %>
+  port: <%= ENV.fetch("HOUSTON_DB_PORT", 5432) %>
   prepared_statements: false

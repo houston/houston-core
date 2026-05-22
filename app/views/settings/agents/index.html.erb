@@ -1,0 +1,62 @@
+<% title "Agents" %>
+
+<h1 class="project-banner space-below">
+  Agents
+  <small>Agents you've authorized to act on your behalf</small>
+</h1>
+
+<% if @agents.any? %>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Agent</th>
+        <th>Status</th>
+        <th>Daily limit</th>
+        <th>Confirmation</th>
+        <th>Credential</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @agents.each do |agent| %>
+        <tr>
+          <td><%= link_to agent.name, settings_agent_path(agent) %></td>
+          <td>
+            <span class="label <%= agent.status == "active" ? "label-success" : "" %>">
+              <%= agent.status %>
+            </span>
+          </td>
+          <td>
+            <% if agent.spend_limit_amount_cents %>
+              $<%= "%.2f" % (agent.spend_limit_amount_cents.to_f / 100) %>
+              <%= agent.spend_limit_currency %> / <%= agent.spend_limit_period %>
+            <% else %>—<% end %>
+          </td>
+          <td><%= agent.confirmation_mode %></td>
+          <td>
+            <% if (vc = agent.authorization_credential) %>
+              <code><%= vc.short_id %></code>
+            <% else %>
+              <em>none</em>
+            <% end %>
+          </td>
+          <td>
+            <% if agent.authorized? %>
+              <%= button_to "Revoke", agent_authorization_path(agent_id: agent.id), method: :delete,
+                  class: "btn btn-small btn-danger",
+                  data: { confirm: "Revoke #{agent.name}? Beltic will mark its credential revoked immediately." } %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <div class="alert">
+    <p>You haven't authorized any agents yet.</p>
+  </div>
+<% end %>
+
+<p>
+  <%= link_to "+ Authorize new agent", new_agent_path, class: "btn btn-primary" %>
+</p>

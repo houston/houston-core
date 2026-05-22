@@ -59,6 +59,27 @@ Rails.application.routes.draw do
 
 
 
+  # Beltic Verifiable Credentials
+  # See docs/integrations/beltic.md
+
+  resource :identity_verification,    only: [:new, :create, :destroy], path: "identity/verify"
+  resource :identity_strengthening,   only: [:new, :create],            path: "identity/strengthen"
+
+  namespace :settings do
+    resource  :identity, only: [:show], controller: "identity"
+    resources :agents,   only: [:index, :show]
+  end
+
+  resources :agents, only: [:new, :create] do
+    resource :authorization, only: [:new, :create, :destroy], controller: "agent_authorizations"
+  end
+
+  namespace :webhooks do
+    resource :beltic, only: [:create], controller: "beltic"
+  end
+
+
+
   # Authorizations
 
   get "authorizations" => "authorizations#index", as: :authorizations
